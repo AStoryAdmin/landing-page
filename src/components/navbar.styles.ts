@@ -16,6 +16,8 @@ export const NavContainer = styled.nav`
   justify-content: space-between;
   transition: all 0.4s ease-in-out;
   background: transparent;
+  //border-bottom: 1px solid #2b2117;
+  background-color: #EFE6D4;
 `;
 
 export const NavLogo = styled.button`
