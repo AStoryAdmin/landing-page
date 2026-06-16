@@ -1,17 +1,32 @@
-import styled, { keyframes, css } from 'styled-components';
+import styled from 'styled-components';
 
-export const FirstPageContaniner = styled.section`
-    background-color: #EFE6D4;
+const colors = {
+    cream: '#EFE6D4',
+    orange: '#B45A2B',
+    orangeHover: '#a14e22',
+    orangeText: '#f4ebe1',
+    darkBrown: 'rgba(43, 33, 23, 0.72)',
+    darkBrownHover: '#2B2117',
+    mutedBrown: 'rgba(43, 33, 23, 0.5)',
+};
+
+const fonts = {
+    body: "'Figtree', sans-serif",
+    display: "'Cormorant Garamond', serif",
+};
+
+export const FirstPageContainer = styled.section`
+    background-color: ${colors.cream};
     text-align: center;
     width: auto;
     padding-top: 180px;
     padding-bottom: 100%;
+    font-family: ${fonts.body};
 `;
 
 export const Intro = styled.p`
     text-transform: uppercase;
-    color: #B45A2B;
-    font-family: 'Figtree', serif;
+    color: ${colors.orange};
     font-size: 12.25px;
     font-weight: 1000;
     letter-spacing: 0.22em;
@@ -19,26 +34,24 @@ export const Intro = styled.p`
 `;
 
 export const Title = styled.h1`
-    background-color: #EFE6D4;
-    font-family:'Cormorant Garamond',serif;
+    font-family: ${fonts.display};
     font-size: 75px;
     font-weight: 300;
-    line-height:0.96;
-    letter-spacing:-0.025em;
+    line-height: 0.96;
+    letter-spacing: -0.025em;
     border: none;
     margin: 30px;
 `;
 
 export const ListenText = styled.span`
     font-style: italic;
-    color: #B45A2B;
+    color: ${colors.orange};
 `;
 
-export const Description1 = styled.h3`
+export const Description = styled.p`
     max-width: 650px;
-    margin: 0 auto; //centers the block itself horizontally on the page
+    margin: 0 auto;
     margin-bottom: 20px;
-    font-family: 'Figtree', serif;
     font-size: 20px;
     font-weight: 100;
     letter-spacing: 0.01em;
@@ -46,15 +59,14 @@ export const Description1 = styled.h3`
 `;
 
 export const Highlight = styled.span`
-    color: #B45A2B;
+    color: ${colors.orange};
     font-weight: bold;
 `;
 
-export const Description2 = styled.p`
+export const ExtraDescription = styled.p`
     max-width: 520px;
     margin: 0 auto;
     margin-bottom: 20px;
-    font-family: 'Figtree', serif;
     font-size: 15px;
     font-weight: 100;
     letter-spacing: 0.04em;
@@ -62,22 +74,22 @@ export const Description2 = styled.p`
     opacity: 50%;
 `;
 
+// ---- Buttons ----
 export const Buttons = styled.div`
     display: flex;
     flex-direction: row;
     gap: 15px;
-    justify-content: center; /* Aligns buttons horizontally */
+    justify-content: center;
     padding: 10px;
 `;
 
 export const WaitlistButton = styled.button`
-    font-family: 'Figtree', sans-serif;
     font-size: 0.82rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    background: #b45a2b;
-    color: #f4ebe1;
+    background: ${colors.orange};
+    color: ${colors.orangeText};
     border: none;
     padding: 1.5rem 2rem;
     border-radius: 3px;
@@ -85,48 +97,41 @@ export const WaitlistButton = styled.button`
     transition: all 0.3s ease;
 
     &:hover {
-        background-color: #a14e22;
-        transform:translateY(-1px);
+        background-color: ${colors.orangeHover};
+        transform: translateY(-1px);
     }
 `;
 
 export const ActionButton = styled.button`
-    font-family: 'Figtree', sans-serif;
     font-size: 0.82rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     background: none;
-    color: rgba(43,33,23,0.72);
-    border: 0.8px solid;
+    color: ${colors.darkBrown};
+    border: 1px solid ${colors.darkBrown};
     padding: 1.5rem 3rem;
     border-radius: 3px;
     cursor: pointer;
-    transition: all 0.1s ease;
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
 
     &:hover {
-        border-color: #2B2117;
-        border: 1.2px solid;
-        color: #2B2117;
-        transform:translateY(-1px);
+        color: ${colors.darkBrownHover};
+        transform: translateY(-1.5px);
     }
 `;
 
 export const BulletPoints = styled.span`
-    display:flex;
-    gap:1.75rem;
-    justify-content:center;
-    flex-wrap:wrap;
-    margin-top:2rem;
-    color: rgba(43, 33, 23, 0.5);
-    font-family: 'Figtree', sans-serif;
+    display: flex;
+    gap: 1.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    color: ${colors.mutedBrown};
     font-size: 0.82rem;
 `;
 
 export const BulletIcon = styled.span`
-    color: #b45a2b;
+    color: ${colors.orange};
 `;
-
-// .trust-strip{}
-// .trust-item{font-size:0.68rem;letter-spacing:0.04em;color:var(--ink-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap;}
-// .trust-item span{color:var(--ember);}

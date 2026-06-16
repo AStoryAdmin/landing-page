@@ -1,12 +1,11 @@
-import { useState } from 'react';
-import {FirstPageContaniner, Intro, Title, ListenText, Description1, Highlight, Description2, Buttons, WaitlistButton, ActionButton, BulletPoints, BulletIcon} from './body.styles';
+import {FirstPageContainer, Intro, Title, ListenText, Description, Highlight, ExtraDescription, Buttons, WaitlistButton, ActionButton, BulletPoints, BulletIcon} from './body.styles';
 
 const Body = () => {
     return (
-        <FirstPageContaniner>
+        <FirstPageContainer>
             {/* TITLE */}
             <Intro>
-                    A Story · coming soon to iPhone & Android
+                    A Story &middot; coming soon to iPhone & Android
             </Intro>
             <Title>
                     <span>Talk.</span>
@@ -16,12 +15,12 @@ const Body = () => {
                     <span>Remembered.</span>
             </Title>
             {/* DESCRIPTION */}
-            <Description1>
+            <Description>
                 A warm AI that <Highlight>gently interviews the people you love</Highlight> — and turns a lifetime of memories into a story your family keeps forever.
-            </Description1>
-            <Description2>
+            </Description>
+            <ExtraDescription>
                 The most meaningful gift you can give a parent or grandparent: someone, finally, to ask. Captured in their own voice, while there's still time.
-            </Description2>
+            </ExtraDescription>
             {/* BUTTONS */}
             <Buttons>
                 <WaitlistButton>
@@ -32,10 +31,10 @@ const Body = () => {
                 </ActionButton>
             </Buttons>
             <BulletPoints>
-                <BulletIcon>✦</BulletIcon> Private & secure 
-                <BulletIcon>✦</BulletIcon> Made for families
+                <BulletIcon>&#10022;</BulletIcon> Private &amp; secure 
+                <BulletIcon>&#10022;</BulletIcon> Made for families
             </BulletPoints>
-        </FirstPageContaniner>
+        </FirstPageContainer>
     )
 }
 
