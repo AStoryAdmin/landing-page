@@ -19,8 +19,7 @@ export const FirstPageContainer = styled.section`
     background-color: ${colors.cream};
     text-align: center;
     width: auto;
-    padding-top: 180px;
-    padding-bottom: 100%;
+    padding: 180px 0;
     font-family: ${fonts.body};
 `;
 
@@ -74,7 +73,6 @@ export const ExtraDescription = styled.p`
     opacity: 50%;
 `;
 
-// ---- Buttons ----
 export const Buttons = styled.div`
     display: flex;
     flex-direction: row;
