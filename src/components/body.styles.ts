@@ -1,13 +1,21 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import bgImg from './../assets/astory_hero_family_yard.png';
 
 const colors = {
+    bgCream: 'rgba(239, 230, 212, 0.85)',
     cream: '#EFE6D4',
+    paper: '#F6EFE2',
     orange: '#B45A2B',
     orangeHover: '#a14e22',
-    orangeText: '#f4ebe1',
-    darkBrown: 'rgba(43, 33, 23, 0.72)',
-    darkBrownHover: '#2B2117',
+    gold: '#C7A24E',
+    softYellow: '#E6D8BF',
+    dark: '#120E08',
     mutedBrown: 'rgba(43, 33, 23, 0.5)',
+    gray: 'rgba(254, 252, 248, 0.5)',
+    whiteGray: 'rgba(43, 33, 23, 0.4)',
+    darkgray: 'rgba(43, 33, 23, 0.2)',
+    black: '#000000',
+    green: '#5A9E6F',
 };
 
 const fonts = {
@@ -15,17 +23,38 @@ const fonts = {
     display: "'Cormorant Garamond', serif",
 };
 
-export const FirstPageContainer = styled.section`
-    background-color: ${colors.cream};
+const pulseDot = keyframes`
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+`;
+
+export const BodyContainer = styled.div`
+    background: ${colors.cream}; 
+`;
+
+export const CardView = styled.div`
+    padding: 100px 30px;
+`;
+
+export const ImageContainer = styled.div`
+    background-image: url(${bgImg});
+    background-size: cover;     
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: ${colors.bgCream};
+    background-blend-mode: lighten; 
     text-align: center;
-    width: auto;
-    padding: 180px 0;
-    font-family: ${fonts.body};
+    font-family: ${fonts.body}; 
 `;
 
 export const Intro = styled.p`
     text-transform: uppercase;
     color: ${colors.orange};
+    font-family: ${fonts.body};
     font-size: 12.25px;
     font-weight: 1000;
     letter-spacing: 0.22em;
@@ -34,12 +63,11 @@ export const Intro = styled.p`
 
 export const Title = styled.h1`
     font-family: ${fonts.display};
-    font-size: 75px;
-    font-weight: 300;
+    font-size: 40px;
+    font-weight: 100;
     line-height: 0.96;
     letter-spacing: -0.025em;
     border: none;
-    margin: 30px;
 `;
 
 export const ListenText = styled.span`
@@ -55,11 +83,8 @@ export const Description = styled.p`
     font-weight: 100;
     letter-spacing: 0.01em;
     line-height: 1.55;
-`;
-
-export const Highlight = styled.span`
-    color: ${colors.orange};
-    font-weight: bold;
+    font-family: ${fonts.body};
+    color: ${colors.mutedBrown}
 `;
 
 export const ExtraDescription = styled.p`
@@ -78,19 +103,17 @@ export const Buttons = styled.div`
     flex-direction: row;
     gap: 15px;
     justify-content: center;
-    padding: 10px;
 `;
 
-export const WaitlistButton = styled.button`
+export const AccessButton = styled.button`
     font-size: 0.82rem;
     font-weight: 600;
     letter-spacing: 0.12em;
-    text-transform: uppercase;
     background: ${colors.orange};
-    color: ${colors.orangeText};
+    color: ${colors.cream};
     border: none;
     padding: 1.5rem 2rem;
-    border-radius: 3px;
+    border-radius: 40px;
     cursor: pointer;
     transition: all 0.3s ease;
 
@@ -100,29 +123,20 @@ export const WaitlistButton = styled.button`
     }
 `;
 
-export const ActionButton = styled.button`
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+export const DemoButton = styled(AccessButton)`
     background: none;
-    color: ${colors.darkBrown};
-    border: 1px solid ${colors.darkBrown};
-    padding: 1.5rem 3rem;
-    border-radius: 3px;
-    cursor: pointer;
-    box-sizing: border-box;
-    transition: all 0.3s ease-in-out;
+    color: ${colors.black};
+    border: 1px solid ${colors.mutedBrown};
 
     &:hover {
-        color: ${colors.darkBrownHover};
+        background: ${colors.darkgray};
         transform: translateY(-1.5px);
     }
 `;
 
 export const BulletPoints = styled.span`
     display: flex;
-    gap: 1.75rem;
+    gap: 1rem;
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 2rem;
@@ -132,4 +146,220 @@ export const BulletPoints = styled.span`
 
 export const BulletIcon = styled.span`
     color: ${colors.orange};
+`;
+
+export const InstructionContainer = styled.div`
+    background-color: ${colors.bgCream};
+`;
+
+export const StepCard = styled.div`
+    border: 1px solid ${colors.darkgray};
+    border-radius: 16px;
+    background: ${colors.paper};
+`;
+
+export const Grid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+`;
+
+export const Column = styled.div`
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid ${colors.darkgray};
+
+    &:last-child {
+        border-right: none;
+    }
+`;
+
+export const StepNumber = styled.span`
+    font-family: ${fonts.display};
+    font-size: 4rem;
+    font-weight: 300;
+    color: ${colors.darkgray};
+    line-height: 1;
+`;
+
+export const StepTitle = styled.h3`
+    font-family: ${fonts.display};
+    font-size: 2rem;
+    font-weight: 400;
+    color: ${colors.black};
+`;
+
+export const Content = styled.span`
+    font-family: ${fonts.body};
+    font-size: 0.93rem;
+    font-weight: 300;
+    color: ${colors.mutedBrown};
+    line-height: 1.75;
+    padding-top: 6px;
+`;
+
+export const Link = styled.button`
+    font-family: ${fonts.body};
+    font-size: 0.93rem;
+    font-weight: 300;
+    color: ${colors.mutedBrown};
+    line-height: 1.75;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 8px 0px;
+    text-align: left;
+    transition: color 0.2s;
+
+    &:hover {
+        color: #B45A2B;
+    }
+`;
+
+export const PurposeContainer = styled.div`
+    background-color: ${colors.softYellow};
+    text-align: center;
+`;
+
+export const GiftButton = styled(AccessButton)`
+`;
+
+export const TagRow = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding-top: 50px;
+`;
+
+export const Tag = styled.span`
+    font-family: ${fonts.body};
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: ${colors.whiteGray};
+    background-color: ${colors.cream};
+    border-radius: 999px;
+    padding: 0.7rem 1.25rem;
+`;
+
+export const ScaleContainer = styled.div`
+    text-align: center;
+    background-color: ${colors.dark};
+`;
+
+export const ScaleNumber = styled(StepNumber)`
+    color: ${colors.gold};
+    
+`;
+
+export const ScaleContent = styled(Content)`
+    padding-top: 6px;
+    color: ${colors.cream};
+    
+`;
+
+export const ScaleRef = styled.span`
+    padding-top: 6px;
+    color: ${colors.gray};
+    
+`;
+
+export const ScaleColumn = styled(Column)`
+    border-right: 1px solid ${colors.gray};
+
+    &:last-child {
+        border-right: none;
+    }
+`;
+
+export const ReviewContainer = styled.div`
+    background-color: ${colors.paper};
+`;
+
+export const Heading = styled.div`
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+`;
+
+export const StatusDot = styled.span`
+    width: 8px;
+    height: 8px;
+    background-color: ${colors.green};
+    border-radius: 50%; 
+    display: inline-block;     
+    margin-right: 10px;
+    
+    animation: ${pulseDot} 2s infinite;
+`;
+
+export const StatusFamily = styled.span`
+    font-family: ${fonts.body};
+    font-size: 15px;
+    color: ${colors.mutedBrown};
+    padding-right: 20px;
+`;
+
+export const ReviewColumn = styled(Column)`
+    background-color: ${colors.cream};
+    margin-right: 20px;
+    border: none;
+    border-left: 3px solid ${colors.orange};
+    border-radius: 20px;
+`;
+
+export const ReviewContent = styled(Content)`
+    font-family: ${fonts.display};
+    font-size: 18px;
+    color: ${colors.black};
+    font-style: italic;
+`;
+
+export const User = styled(Content)`
+    font-size: 13px;
+`;
+
+export const Divider = styled.hr`
+    border: none;
+    border-top: 1px solid ${colors.darkgray};
+    margin: 50px 0px;
+`;
+
+export const Comparsion = styled.p`
+    text-align: center;
+    font-family: ${fonts.display};
+    font-size: 20px;
+    margin: 0px 120px;
+`;
+
+export const Bold = styled.span`
+    font-weight: bold;
+`;
+
+export const OurBrand = styled(Bold)`
+    font-weight: bold;
+    color: ${colors.orange};
+`;
+
+export const QuoteContainer = styled.div`
+    text-align: center;
+    background-color: ${colors.dark};
+`;
+
+export const Quote = styled(Title)`
+    font-style: italic;
+    color: ${colors.paper};
+`;
+
+export const Subtitle = styled.p`
+    color: ${colors.gray};
+`;
+
+export const AccessContainer = styled.div`
+    text-align: center;
+`;
+
+export const FamilyButton = styled(DemoButton)`
 `;

@@ -1,12 +1,13 @@
 import Navbar from './components/navbar'
 import Body from './components/body'
-import Story from './components/story'
+import Footer from './components/footer'
 
 function App() {
   return (
     <>  
       <Navbar/>
       <Body/>
+      <Footer/>
     </>
   )
 }
