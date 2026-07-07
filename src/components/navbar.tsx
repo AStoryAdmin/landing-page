@@ -1,41 +1,32 @@
-import { useState } from 'react';
-import { NavContainer, NavLogo, NavActionsContainer, NavMusicButton, NavLink, NavCta } from './navbar.styles';
+import { NavContainer, NavLogo, NavActionsContainer, NavLink, NavCta } from './navbar.styles';
 
-// Import your transparent PNG file here
-import logoImg from './../assets/logo.png'
-import musicOnImg from './../assets/music-on.png'
-import musicOffImg from './../assets/music-off.png'
+import logoImg from './../assets/light_logo.png'
 
 const Navbar = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const toggleMusic = () => {
-    setIsPlaying(!isPlaying)
-    console.log('play music')
-  };
 
   return (
     <NavContainer>
       <NavLogo>
-        <img src={logoImg} alt="Story Logo" />
+        <img src={logoImg} alt="Light-mode Story Logo" />
         Story
       </NavLogo>
 
       <NavActionsContainer>
-        <NavMusicButton
-          $isPlaying={isPlaying}
-          onClick={toggleMusic}
-          aria-label="Toggle music"
-        >
-          {isPlaying ? <img src={musicOnImg} /> : <img src={musicOffImg} />}
-        </NavMusicButton>
-
-        <NavLink onClick={() => console.log("Open Our Story")}>
-          Our Story
+        <NavLink onClick={() => console.log("Open Home")}>
+          Home
+        </NavLink>
+        <NavLink onClick={() => console.log("Open Experience")}>
+          The Experience
+        </NavLink>
+        <NavLink onClick={() => console.log("Open For Families")}>
+          For Families
+        </NavLink>
+        <NavLink onClick={() => console.log("Open For Instituitions")}>
+          For Instituitions
         </NavLink>
 
         <NavCta>
-          Join Waitlist
+          Get early access
         </NavCta>
       </NavActionsContainer>
     </NavContainer>
