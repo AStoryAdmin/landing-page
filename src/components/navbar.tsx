@@ -1,6 +1,6 @@
 import { NavContainer, NavLogo, NavActionsContainer, NavLink, NavCta } from './navbar.styles';
 
-import logoImg from './../assets/lightLogo.png'
+import logoImg from './../assets/light_logo.png'
 
 const Navbar = () => {
 

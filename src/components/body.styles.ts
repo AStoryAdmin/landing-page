@@ -34,6 +34,8 @@ const pulseDot = keyframes`
 
 export const BodyContainer = styled.div`
     background: ${colors.cream}; 
+    // Prevents accidental text-highlighting and the text-editing cursor on hover
+    user-select: none;
 `;
 
 export const CardView = styled.div`
@@ -55,9 +57,9 @@ export const Intro = styled.p`
     text-transform: uppercase;
     color: ${colors.orange};
     font-family: ${fonts.body};
-    font-size: 12.25px;
+    font-size: 15px;
     font-weight: 1000;
-    letter-spacing: 0.22em;
+    letter-spacing: 4px;
     padding-top: 6px;
 `;
 
@@ -65,8 +67,9 @@ export const Title = styled.h1`
     font-family: ${fonts.display};
     font-size: 40px;
     font-weight: 100;
-    line-height: 0.96;
-    letter-spacing: -0.025em;
+    line-height: 1;
+    // tightening the text
+    letter-spacing: -1px;
     border: none;
 `;
 
@@ -81,8 +84,8 @@ export const Description = styled.p`
     margin-bottom: 20px;
     font-size: 20px;
     font-weight: 100;
-    letter-spacing: 0.01em;
-    line-height: 1.55;
+    letter-spacing: 1px;
+    line-height: 1.5;
     font-family: ${fonts.body};
     color: ${colors.mutedBrown}
 `;
@@ -93,7 +96,7 @@ export const ExtraDescription = styled.p`
     margin-bottom: 20px;
     font-size: 15px;
     font-weight: 100;
-    letter-spacing: 0.04em;
+    letter-spacing: 1px;
     line-height: 1.85;
     opacity: 50%;
 `;

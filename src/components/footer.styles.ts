@@ -22,6 +22,9 @@ export const FooterContainer = styled.footer`
     letter-spacing: 0.01em;
     line-height: 1.55;
     font-family: ${fonts.body};
+
+    // Prevents accidental text-highlighting and the text-editing cursor on hover
+    user-select: none;
 `;
 
 export const FooterLogo = styled.button`

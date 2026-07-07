@@ -20,6 +20,9 @@ export const NavContainer = styled.nav`
   transition: all 0.4s ease-in-out;
   background-color: ${colors.cream};
   box-shadow: 0px 1px 10px 1px ${colors.whiteGray};
+
+  // Prevents accidental text-highlighting and the text-editing cursor on hover
+  user-select: none;
 `;
 
 const fonts = {

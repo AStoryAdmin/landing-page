@@ -10,11 +10,6 @@ const colors = {
     shadow: 'rgba(0,0,0,0.55)',
 };
 
-const fonts = {
-    body: "'Figtree', sans-serif",
-    display: "'Cormorant Garamond', serif",
-};
-
 export const PhoneContainer = styled.div `
     position: relative;
     width: 330px;
