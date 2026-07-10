@@ -19,7 +19,7 @@ export const FooterContainer = styled.footer`
     color: ${colors.grayCream};
     font-size: 15px;
     font-weight: 100;
-    letter-spacing: 0.01em;
+    letter-spacing: 1px;
     line-height: 1.55;
     font-family: ${fonts.body};
 
@@ -32,7 +32,7 @@ export const FooterLogo = styled.button`
   align-items: center;
   gap: 10px;
   font-family: ${fonts.display};
-  font-size: 1.55rem;
+  font-size: 25px;
   font-weight: 600;
   color: ${colors.gold};
   cursor: pointer;
@@ -55,7 +55,7 @@ export const Grid = styled.div`
 `;
 
 export const HeaderColumn = styled.div`
-    padding: 2.5rem;
+    padding: 40px;
     display: flex;
     flex-direction: column;
 
@@ -92,7 +92,7 @@ export const BottomRow = styled.div`
     align-items: center;
     justify-content: center;
     gap: 150px;
-    padding-top: 2rem;
+    padding-top: 32px;
 `;
 
 export const License = styled.p`

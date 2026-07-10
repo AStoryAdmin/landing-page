@@ -30,7 +30,7 @@ export const SignupContainer = styled.div`
 export const Heading = styled.div`
     background: ${colors.dark};
     padding: 120px 30px;
-    letter-spacing: 0.01em;
+    letter-spacing: 2px;
 `;
 
 export const StatusDot = styled.span`
@@ -100,7 +100,7 @@ export const ActionIntro = styled.p`
     font-family: ${fonts.body};
     font-size: 12.25px;
     font-weight: 1000;
-    letter-spacing: 0.22em;
+    letter-spacing: 4px;
     padding-top: 6px;
 `;
 
@@ -135,7 +135,7 @@ export const First = styled.div`
         text-transform: uppercase;
         font-size: 14px;
         font-weight: 600;
-        letter-spacing: 0.08em;
+        letter-spacing: 2px;
         color: ${colors.darkGray};
         font-family: ${fonts.body};
     }
@@ -175,11 +175,11 @@ export const SignupButton = styled.button`
     width: 100%;
     font-size: 15px;
     font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: 2px;
     background: ${colors.orange};
     color: ${colors.cream};
     border: none;
-    padding: 1.5rem 2rem;
+    padding: 24px 32px;
     border-radius: 40px;
     cursor: pointer;
     transition: all 0.3s ease;
