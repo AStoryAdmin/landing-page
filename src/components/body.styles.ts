@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import bgImg from './../assets/astory_hero_family_yard.png';
+import { Link } from 'react-router-dom';
 
 const colors = {
     bgCream: 'rgba(239, 230, 212, 0.85)',
@@ -108,7 +109,7 @@ export const Buttons = styled.div`
     justify-content: center;
 `;
 
-export const AccessButton = styled.button`
+export const AccessButton = styled(Link)`
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 2px;
@@ -119,6 +120,7 @@ export const AccessButton = styled.button`
     border-radius: 40px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
 
     &:hover {
         background-color: ${colors.orangeHover};
@@ -201,7 +203,7 @@ export const Content = styled.span`
     padding-top: 6px;
 `;
 
-export const Link = styled.button`
+export const Links = styled.button`
     font-family: ${fonts.body};
     font-size: 15px;
     font-weight: 300;

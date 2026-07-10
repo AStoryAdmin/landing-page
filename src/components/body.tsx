@@ -1,4 +1,4 @@
-import {CardView, BodyContainer, ImageContainer, Intro, Title, ListenText, Description, Buttons, AccessButton, DemoButton, BulletPoints, BulletIcon, InstructionContainer, StepCard, Grid, Column, StepNumber, StepTitle, Content, Link, PurposeContainer, TagRow, Tag, ScaleContainer, ScaleNumber, ScaleContent, ScaleRef, ScaleColumn, ReviewContainer, Heading, StatusFamily, StatusDot, ReviewColumn, ReviewContent, User, Divider, Comparsion, Bold, OurBrand, QuoteContainer, Quote, Subtitle, AccessContainer, FamilyButton} from './body.styles';
+import {CardView, BodyContainer, ImageContainer, Intro, Title, ListenText, Description, Buttons, AccessButton, DemoButton, BulletPoints, BulletIcon, InstructionContainer, StepCard, Grid, Column, StepNumber, StepTitle, Content, Links, PurposeContainer, TagRow, Tag, ScaleContainer, ScaleNumber, ScaleContent, ScaleRef, ScaleColumn, ReviewContainer, Heading, StatusFamily, StatusDot, ReviewColumn, ReviewContent, User, Divider, Comparsion, Bold, OurBrand, QuoteContainer, Quote, Subtitle, AccessContainer, FamilyButton} from './body.styles';
 
 const Body = () => {
     return (
@@ -14,7 +14,7 @@ const Body = () => {
                         A Story turns voice conversations with your older loved ones into a private family archive &mdash; and a printed keepsake book. Finally, someone to ask, before it's too late.
                     </Description>
                     <Buttons>
-                        <AccessButton>Start your family's story</AccessButton>
+                        <AccessButton to="/signup">Start your family's story</AccessButton>
                         <DemoButton>Try the Live Demo</DemoButton>
                     </Buttons>
                     <BulletPoints>
@@ -41,7 +41,7 @@ const Body = () => {
                                 <Content>
                                     A warm AI guide asks the questions that open the door &mdash; about childhood, family, love, work, and legacy. Stories come out in their own words, at their own pace. No technology experience required.
                                 </Content>
-                                <Link>See the conversation</Link>
+                                <Links>See the conversation</Links>
                             </Column>
                             <Column>
                                 <StepNumber>2</StepNumber>
@@ -49,7 +49,7 @@ const Body = () => {
                                 <Content>
                                     Every answer becomes a memory card &mdash; searchable, organized by chapter of life, and beautiful. Photos attach directly to the moment they belong to. A whole life, finally in its place.
                                 </Content>
-                                <Link>Try the demo</Link>
+                                <Links>Try the demo</Links>
                             </Column>
                             <Column>
                                 <StepNumber>3</StepNumber>
@@ -57,7 +57,7 @@ const Body = () => {
                                 <Content>
                                     A printed hardcover book arrives at your door &mdash; a memoir, laid out by chapter, photos alongside the stories they belong to. A digital archive lives on your phone. Both last forever.
                                 </Content>
-                                <Link>See the keepsake</Link>
+                                <Links>See the keepsake</Links>
                             </Column>
                         </Grid>
                     </StepCard>
@@ -72,7 +72,7 @@ const Body = () => {
                         A parent or grandparent who would never bring it up themselves &mdash; just waiting for someone to open the door.
                     </Description>
                     <Buttons>
-                        <AccessButton>Give this as a gift</AccessButton>
+                        <AccessButton to="/signup">Give this as a gift</AccessButton>
                     </Buttons>
                     <TagRow>
                         <Tag>Mother's Day</Tag>
@@ -155,7 +155,7 @@ const Body = () => {
                         Join our founding families. A 20-minute conversation with us — then a lifetime of stories, organized and yours forever.
                     </Description>
                     <Buttons>
-                        <AccessButton>Get early access</AccessButton>
+                        <AccessButton to="/signup">Get early access</AccessButton>
                         <FamilyButton>Learn why it matters</FamilyButton>
                     </Buttons>
                 </CardView>

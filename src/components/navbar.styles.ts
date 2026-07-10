@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const colors = {
   darkBrown: '#2B2117',
@@ -30,7 +31,7 @@ const fonts = {
     display: "'Cormorant Garamond', serif",
 };
 
-export const NavLogo = styled.button`
+export const NavLogo = styled(Link)`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -57,7 +58,7 @@ export const NavActionsContainer = styled.div`
   gap: 16px;
 `;
 
-export const NavLink = styled.button`
+export const NavLink = styled(Link)`
   font-family: ${fonts.body};
   font-size: 14px;
   font-weight: 500;
@@ -67,6 +68,7 @@ export const NavLink = styled.button`
   border: none;
   cursor: pointer;
   transition: color 0.3s ease;
+  text-decoration: none;
 
   &:hover {
     color: ${colors.orange};
@@ -79,7 +81,7 @@ export const NavLink = styled.button`
   }
 `;
 
-export const NavCta = styled.button`
+export const NavCta = styled(Link)`
   font-family: ${fonts.body};
   font-size: 13px;
   font-weight: 600;
@@ -91,6 +93,8 @@ export const NavCta = styled.button`
   cursor: pointer;
   background: ${colors.darkBrown};
   transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
 
   &:hover {
     background: ${colors.orange};
