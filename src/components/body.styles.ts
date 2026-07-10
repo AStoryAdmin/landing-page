@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import bgImg from './../assets/astory_hero_family_yard.png';
+import bgImg from './../assets/heroFamilyYard.png';
 import { Link } from 'react-router-dom';
 
 const colors = {
