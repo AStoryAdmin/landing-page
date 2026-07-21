@@ -51,21 +51,19 @@ const Signup = () => {
                     digitsOnly += char;
             }
         
-
             setFormData((prev) => ({...prev, phone: digitsOnly}));
             setShowError((prev) => ({...prev, phone: ''}));
         }
     };
 
     const validateEmail = (email: string) => {
-        const atCount = email.split('@').length - 1;
-        if (atCount !== 1) {
-            return false;
-        }
-
         const parts = email.split('@');
         const beforeAt = parts[0];
         const afterAt = parts[1];
+
+        if (parts.length !== 2) {
+            return false;
+        }
 
         if (beforeAt.length === 0 || afterAt.length === 0 || beforeAt.includes(' ') || afterAt.includes(' ') || !afterAt.includes('.')) {
             return false;

@@ -1,4 +1,4 @@
-import {CardView, BodyContainer, ImageContainer, Intro, Title, ListenText, Description, Buttons, AccessButton, DemoButton, BulletPoints, BulletIcon, InstructionContainer, StepCard, Grid, Column, StepNumber, StepTitle, Content, Links, PurposeContainer, TagRow, Tag, ScaleContainer, ScaleNumber, ScaleContent, ScaleRef, ScaleColumn, ReviewContainer, Heading, StatusFamily, StatusDot, ReviewColumn, ReviewContent, User, Divider, Comparsion, Bold, OurBrand, QuoteContainer, Quote, Subtitle, AccessContainer, FamilyButton} from './body.styles';
+import {CardView, BodyContainer, ImageContainer, Intro, Title, ListenText, Description, Buttons, AccessButton, DemoButton, BulletPoints, BulletIcon, InstructionContainer, StepCard, Grid, Column, StepNumber, StepTitle, Content, Links, PurposeContainer, TagRow, Tag, ScaleContainer, ScaleNumber, ScaleContent, ScaleRef, ScaleColumn, ReviewContainer, Heading, StatusFamily, StatusDot, ReviewColumn, ReviewContent, User, Divider, Comparsion, Bold, OurBrand, QuoteContainer, Quote, Subtitle, AccessContainer, FamilyButton} from './home.styles';
 
 const Body = () => {
     return (
@@ -156,7 +156,7 @@ const Body = () => {
                     </Description>
                     <Buttons>
                         <AccessButton to="/signup">Get early access</AccessButton>
-                        <FamilyButton>Learn why it matters</FamilyButton>
+                        <FamilyButton to="/experience">Learn why it matters</FamilyButton>
                     </Buttons>
                 </CardView>
             </AccessContainer>
