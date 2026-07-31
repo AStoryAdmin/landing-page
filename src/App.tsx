@@ -5,6 +5,7 @@ import Footer from './components/footer'
 import Signup from './components/signup'
 import Experience from './components/experience'
 import Family from './components/family'
+import Institution from './components/institution';
 import ScrollToTop from './components/scrollToTop';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Body />} />
         <Route path="/experience" element={<Experience />} />
         <Route path="/family" element={<Family />} />
+        <Route path="/institution" element={<Institution />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
       <Footer />

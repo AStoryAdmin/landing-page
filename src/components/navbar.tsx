@@ -21,8 +21,8 @@ const Navbar = () => {
         <NavLink to="/family">
           For Families
         </NavLink>
-        <NavLink to="/instituition">
-          For Instituitions
+        <NavLink to="/institution">
+          For Institutions
         </NavLink>
 
         <NavCta to="/signup">

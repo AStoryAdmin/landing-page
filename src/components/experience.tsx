@@ -184,7 +184,7 @@ const Experience = () => {
                     <DarkTitle>Start capturing their story today.</DarkTitle>
                     <DarkDescription>From the first question to a printed book at your door — a gentle, unhurried process designed for anyone, regardless of age or technology experience.</DarkDescription>
                     <DemoButton to="/signup">Get early access</DemoButton>
-                    <FamilyButton>For Family &amp; Care</FamilyButton>
+                    <FamilyButton to="/family">For Family &amp; Care</FamilyButton>
                 </CardView>
             </AccessContainer>
         </ExperienceContainer>

@@ -7,7 +7,7 @@ const colors = {
     orangeHover: '#a14e22',
     gold: '#C7A24E',
     dark: '#120E08',
-    mutedBrown: 'rgba(43, 33, 23, 0.3)',
+    whiteGray: 'rgba(43, 33, 23, 0.2)',
     gray: 'rgba(254, 252, 248, 0.5)',
     darkGray: 'rgba(43, 33, 23, 0.7)',
 };
@@ -371,10 +371,10 @@ export const CtaActions = styled.div`
 
 export const OutlineButton = styled(PrimaryButton)`
     background: none;
-    color: ${colors.darkGray};
-    border: 1px solid ${colors.darkGray};
+    color: ${colors.dark};
+    border: 1px solid ${colors.dark};
 
     &:hover {
-        background: ${colors.mutedBrown};
+        background: ${colors.whiteGray};
     }
 `;
