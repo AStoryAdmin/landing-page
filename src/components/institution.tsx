@@ -182,7 +182,7 @@ const Institution = () => {
                     </OpenAllGrid>
 
                     <CenteredCta>
-                        <PrimaryButton>Start a conversation</PrimaryButton>
+                        <PrimaryButton to="/experience">Start a conversation</PrimaryButton>
                     </CenteredCta>
                 </CardView>
             </OpenAllSection>
@@ -291,8 +291,8 @@ const Institution = () => {
                         A 30-minute walk-through with your care team &mdash; no commitment required. We'll show you the resident and family experience end to end, and answer every question you have. Most programs are live within a week.
                     </CtaSub>
                     <CtaActions>
-                        <PrimaryButton>Book an institutional demo</PrimaryButton>
-                        <PrivacyButton>Our privacy commitments</PrivacyButton>
+                        <PrimaryButton to="/signup">Book an institutional demo</PrimaryButton>
+                        <PrivacyButton to="/privacy">Our privacy commitments</PrivacyButton>
                     </CtaActions>
                 </CardView>
             </CtaSection>

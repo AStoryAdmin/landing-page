@@ -12,6 +12,7 @@ const Experience = () => {
                     <Intro>The Experience</Intro>
                     <Title>See how a life becomes <HighlightText>a story.</HighlightText></Title>
                     <Description>From the first question to a printed book at your door — a gentle, unhurried process designed for anyone, regardless of age or technology experience.</Description>
+                    {/* scroll down to demo phone hasnt been implemented */}
                     <DemoButton>Watch the conversation</DemoButton>
                 </CardView>
             </OpeningContainer>

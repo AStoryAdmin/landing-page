@@ -6,6 +6,10 @@ import Signup from './components/signup'
 import Experience from './components/experience'
 import Family from './components/family'
 import Institution from './components/institution';
+import Story from './components/story';
+import Terms from './components/terms';
+import Privacy from './components/privacy';
+import FAQ from './components/faq';
 import ScrollToTop from './components/scrollToTop';
 
 function App() {
@@ -19,6 +23,10 @@ function App() {
         <Route path="/family" element={<Family />} />
         <Route path="/institution" element={<Institution />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/story" element={<Story />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/faq" element={<FAQ />} />
       </Routes>
       <Footer />
     </BrowserRouter>
