@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
-import bgImg from './../assets/astory_hero_family_yard.png';
+import bgImg from './../assets/heroFamilyYard.png';
+import { Link } from 'react-router-dom';
 
 const colors = {
     bgCream: 'rgba(239, 230, 212, 0.85)',
@@ -108,17 +109,18 @@ export const Buttons = styled.div`
     justify-content: center;
 `;
 
-export const AccessButton = styled.button`
-    font-size: 0.82rem;
+export const AccessButton = styled(Link)`
+    font-size: 14px;
     font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: 2px;
     background: ${colors.orange};
     color: ${colors.cream};
     border: none;
-    padding: 1.5rem 2rem;
+    padding: 24px 32px;
     border-radius: 40px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
 
     &:hover {
         background-color: ${colors.orangeHover};
@@ -139,12 +141,12 @@ export const DemoButton = styled(AccessButton)`
 
 export const BulletPoints = styled.span`
     display: flex;
-    gap: 1rem;
+    gap: 16px;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 2rem;
+    margin-top: 36px;
     color: ${colors.mutedBrown};
-    font-size: 0.82rem;
+    font-size: 14px;
 `;
 
 export const BulletIcon = styled.span`
@@ -167,7 +169,7 @@ export const Grid = styled.div`
 `;
 
 export const Column = styled.div`
-    padding: 2.5rem;
+    padding: 40px;
     display: flex;
     flex-direction: column;
     border-right: 1px solid ${colors.darkgray};
@@ -179,7 +181,7 @@ export const Column = styled.div`
 
 export const StepNumber = styled.span`
     font-family: ${fonts.display};
-    font-size: 4rem;
+    font-size: 64px;
     font-weight: 300;
     color: ${colors.darkgray};
     line-height: 1;
@@ -187,23 +189,23 @@ export const StepNumber = styled.span`
 
 export const StepTitle = styled.h3`
     font-family: ${fonts.display};
-    font-size: 2rem;
+    font-size: 36px;
     font-weight: 400;
     color: ${colors.black};
 `;
 
 export const Content = styled.span`
     font-family: ${fonts.body};
-    font-size: 0.93rem;
+    font-size: 15px;
     font-weight: 300;
     color: ${colors.mutedBrown};
     line-height: 1.75;
     padding-top: 6px;
 `;
 
-export const Link = styled.button`
+export const Links = styled.button`
     font-family: ${fonts.body};
-    font-size: 0.93rem;
+    font-size: 15px;
     font-weight: 300;
     color: ${colors.mutedBrown};
     line-height: 1.75;
@@ -230,21 +232,21 @@ export const GiftButton = styled(AccessButton)`
 export const TagRow = styled.div`
     display: flex;
     justify-content: center;
-    gap: 0.75rem;
+    gap: 12px;
     flex-wrap: wrap;
     padding-top: 50px;
 `;
 
 export const Tag = styled.span`
     font-family: ${fonts.body};
-    font-size: 0.7rem;
+    font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 3px;
     text-transform: uppercase;
     color: ${colors.whiteGray};
     background-color: ${colors.cream};
     border-radius: 999px;
-    padding: 0.7rem 1.25rem;
+    padding: 12px 20px;
 `;
 
 export const ScaleContainer = styled.div`

@@ -1,18 +1,18 @@
 import { NavContainer, NavLogo, NavActionsContainer, NavLink, NavCta } from './navbar.styles';
 
-import logoImg from './../assets/light_logo.png'
+import logoImg from './../assets/lightLogo.png'
 
 const Navbar = () => {
 
   return (
     <NavContainer>
-      <NavLogo>
+      <NavLogo to="/">
         <img src={logoImg} alt="Light-mode Story Logo" />
         Story
       </NavLogo>
 
       <NavActionsContainer>
-        <NavLink onClick={() => console.log("Open Home")}>
+        <NavLink to="/">
           Home
         </NavLink>
         <NavLink onClick={() => console.log("Open Experience")}>
@@ -25,7 +25,7 @@ const Navbar = () => {
           For Instituitions
         </NavLink>
 
-        <NavCta>
+        <NavCta to="/signup">
           Get early access
         </NavCta>
       </NavActionsContainer>

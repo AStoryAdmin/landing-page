@@ -1,6 +1,6 @@
 import { FooterContainer, FooterLogo, Grid, HeaderColumn, Column, Subtitle, Section, Page, Divider, BottomRow, License, Email, Platform} from './footer.styles';
 
-import logoImg from './../assets/dark_logo.png'
+import logoImg from './../assets/darkLogo.png'
 
 const Footer = () => {
     return (

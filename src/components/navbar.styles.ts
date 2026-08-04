@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const colors = {
   darkBrown: '#2B2117',
@@ -13,7 +14,7 @@ export const NavContainer = styled.nav`
   top: 0;
   left: 0;
   right: 0;
-  padding: 1.3rem 3rem;
+  padding: 21px 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -30,12 +31,12 @@ const fonts = {
     display: "'Cormorant Garamond', serif",
 };
 
-export const NavLogo = styled.button`
+export const NavLogo = styled(Link)`
   display: flex;
   align-items: center;
   gap: 10px;
   font-family: ${fonts.display};
-  font-size: 1.55rem;
+  font-size: 25px;
   font-weight: 600;
   color: ${colors.darkBrown};
   cursor: pointer;
@@ -54,19 +55,20 @@ export const NavLogo = styled.button`
 export const NavActionsContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 16px;
 `;
 
-export const NavLink = styled.button`
+export const NavLink = styled(Link)`
   font-family: ${fonts.body};
-  font-size: 0.85rem;
+  font-size: 14px;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 2px;
   color: ${colors.whiteGray};
   background: none;
   border: none;
   cursor: pointer;
   transition: color 0.3s ease;
+  text-decoration: none;
 
   &:hover {
     color: ${colors.orange};
@@ -79,18 +81,20 @@ export const NavLink = styled.button`
   }
 `;
 
-export const NavCta = styled.button`
+export const NavCta = styled(Link)`
   font-family: ${fonts.body};
-  font-size: 0.76rem;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 2px;
   color: ${colors.cream};
   border: 1px solid ${colors.darkBrown};
-  padding: 0.5rem 1.25rem;
+  padding: 8px 20px;
   border-radius: 25px;
   cursor: pointer;
   background: ${colors.darkBrown};
   transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
 
   &:hover {
     background: ${colors.orange};
