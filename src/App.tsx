@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/navbar'
-import Body from './components/body'
+import Body from './components/home'
 import Footer from './components/footer'
 import Signup from './components/signup'
+import Experience from './components/experience'
 import ScrollToTop from './components/scrollToTop';
 
 function App() {
@@ -11,8 +12,10 @@ function App() {
       <ScrollToTop />
       <Navbar />
       <Routes>
+        <Route path="/experience" element={<Experience />} />
         <Route path="/" element={<Body />} />
         <Route path="/signup" element={<Signup />} />
+        
       </Routes>
       <Footer />
     </BrowserRouter>

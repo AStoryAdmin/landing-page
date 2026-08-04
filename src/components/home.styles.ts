@@ -40,7 +40,7 @@ export const BodyContainer = styled.div`
 `;
 
 export const CardView = styled.div`
-    padding: 100px 30px;
+    padding: 150px 30px;
 `;
 
 export const ImageContainer = styled.div`

@@ -14,6 +14,8 @@ export const NavContainer = styled.nav`
   top: 0;
   left: 0;
   right: 0;
+  //stacking order: navbar always on top
+  z-index: 99;
   padding: 21px 48px;
   display: flex;
   align-items: center;

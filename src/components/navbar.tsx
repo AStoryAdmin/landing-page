@@ -15,7 +15,7 @@ const Navbar = () => {
         <NavLink to="/">
           Home
         </NavLink>
-        <NavLink onClick={() => console.log("Open Experience")}>
+        <NavLink to="/experience">
           The Experience
         </NavLink>
         <NavLink onClick={() => console.log("Open For Families")}>
