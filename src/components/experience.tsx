@@ -13,7 +13,7 @@ const Experience = () => {
                     <Title>See how a life becomes <HighlightText>a story.</HighlightText></Title>
                     <Description>From the first question to a printed book at your door — a gentle, unhurried process designed for anyone, regardless of age or technology experience.</Description>
                     {/* scroll down to demo phone hasnt been implemented */}
-                    <DemoButton>Watch the conversation</DemoButton>
+                    <DemoButton to="#demo">Watch the conversation</DemoButton>
                 </CardView>
             </OpeningContainer>
 
@@ -120,7 +120,7 @@ const Experience = () => {
                             <InstructTitle>A conversation unlike any other.</InstructTitle>
                             <Subtitle>A Story's AI doesn't interrogate &mdash; it listens. It asks one warm question, hears the answer, then follows naturally wherever the story leads. Below is a real example.</Subtitle>
                         </Summary>
-                        <PhoneDemo>
+                        <PhoneDemo id="demo">
                             <StatusBar>
                                 <StatusTime>9:41</StatusTime>
                                 <img src={phonebar} alt="Phone status bar" width="80" height="50"/>

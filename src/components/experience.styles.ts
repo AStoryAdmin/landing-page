@@ -87,6 +87,7 @@ export const DemoButton = styled(Link)`
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
+    scroll-margin-top: 100px;
 
     &:hover {
         background: ${colors.orangeHover};
