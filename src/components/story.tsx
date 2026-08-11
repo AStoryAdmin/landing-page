@@ -1,7 +1,7 @@
 import {Container, ContainerDark, StoryHero, HeroTitle, HeroSub, Byline, StorySection, StoryDark, Paragraph, Emphasis, ChapterHeadline, PullQuote, PullQuoteText, StoryDivider, SigInitial, SigDetails, GhostButton, Arrow, TeamSection, Label, SectionTitle, TeamGrid, TeamCard, TeamPhoto, TeamInfo, TeamRole, TeamBio, MissionSection, MissionText, MissionSub, CtaSection, FoundingBadge, CtaTitle, CtaSub, HeroActions, PrimaryButton, OutlineButton} from './story.styles';
 import { Link } from 'react-router-dom';
-import daniel from './../assets/astoryDaniel.png';
-import bao from './../assets/astoryBao.png';
+import danielPhoto from './../assets/astoryDaniel.png';
+import baoPhoto from './../assets/astoryBao.png';
 
 const Story = () => {
     return (
@@ -70,7 +70,7 @@ const Story = () => {
                     <TeamGrid>
                         <TeamCard>
                             <TeamPhoto>
-                                <img src={daniel} alt="Daniel Hoang Nguyen" />
+                                <img src={danielPhoto} alt="Daniel Hoang Nguyen" />
                             </TeamPhoto>
                             <TeamInfo>
                                 <strong>Daniel Hoang Nguyen</strong>
@@ -81,7 +81,7 @@ const Story = () => {
 
                         <TeamCard>
                             <TeamPhoto>
-                                <img src={bao} alt="Bao Vo" />
+                                <img src={baoPhoto} alt="Bao Vo" />
                             </TeamPhoto>
                             <TeamInfo>
                                 <strong>Bao Vo</strong>
