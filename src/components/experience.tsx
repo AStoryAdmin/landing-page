@@ -1,7 +1,7 @@
 import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, PhoneDemo, DemoIntro, StatusBar, StatusTime, Screen, PlayDemo, PlayDemoButton, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription} from './experience.styles'
 import {TagRow, Tag, Divider} from './home.styles';
 import FlipBook from './flipBook';
-import phonebar from './../assets/statusBar.png';
+import phonebar from './../assets/statusbar.png';
 import bookImg from './../assets/seniorInterview.png';
 
 const Experience = () => {
