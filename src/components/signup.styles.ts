@@ -188,6 +188,12 @@ export const SignupButton = styled.button`
         background-color: ${colors.orangeHover};
         transform: translateY(-1px);
     }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
 `;
 
 export const Note = styled.p`
@@ -247,4 +253,14 @@ export const ErrorMsg = styled.span`
     font-size: 15px;
     font-family: ${fonts.body};
     margin-top: 6px;
+`;
+
+export const SuccessMsg = styled.span`
+    display: block;
+    text-align: center;
+    font-weight: 600;
+    color: ${colors.green};
+    font-size: 15px;
+    font-family: ${fonts.body};
+    margin-top: 14px;
 `;

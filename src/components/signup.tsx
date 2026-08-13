@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { UseFormSetValue } from 'react-hook-form';
-import { SignupContainer, Heading, Intro, StatusDot, Title, Highlight, Description, Stats, Form, ActionIntro, FormTitle, Contact, Name, First, Last, Email, Phone, SignupButton, Note, Divider, CurrStatusDot, MembershipIntro, Card, Review, User, ErrorMsg} from "./signup.styles";
+import { supabase } from '../lib/supabase';
+import { SignupContainer, Heading, Intro, StatusDot, Title, Highlight, Description, Stats, Form, ActionIntro, FormTitle, Contact, Name, First, Last, Email, Phone, SignupButton, Note, Divider, CurrStatusDot, MembershipIntro, Card, Review, User, ErrorMsg, SuccessMsg} from "./signup.styles";
 
 type FormValues = {
     firstName: string;
@@ -53,10 +55,32 @@ const emailFieldOptions = {
 };
 
 const Signup = () => {
-    const {register, handleSubmit, setValue, formState: { errors }} = useForm<FormValues>();
+    const {register, handleSubmit, setValue, reset, formState: { errors, isSubmitting }} = useForm<FormValues>();
+    const [submitError, setSubmitError] = useState<string | null>(null);
+    const [submitted, setSubmitted] = useState(false);
 
-    const onSubmit = (data: FormValues) => {
-        console.log('Submit:', data);
+    const onSubmit = async (data: FormValues) => {
+        setSubmitError(null);
+        const email = data.email.trim().toLowerCase();
+        const { error } = await supabase
+            .from('waitlist_signups')
+            .insert({
+                first_name: data.firstName.trim(),
+                last_name: data.lastName.trim(),
+                email,
+                phone: data.phone?.trim() ?? '',
+            });
+
+        // 23505 = unique_violation: this email is already on the list. That's a
+        // success from the visitor's point of view, so treat it like one.
+        if (error && error.code !== '23505') {
+            console.error('[waitlist] signup failed:', error);
+            setSubmitError('Something went wrong saving your spot. Please try again.');
+            return;
+        }
+
+        setSubmitted(true);
+        reset();
     };
 
     return (
@@ -124,7 +148,15 @@ const Signup = () => {
                             {...register('phone', phoneFieldOptions(setValue))}
                         />
                     </Phone>
-                    <SignupButton type="submit">Reserve my spot &mdash; it's free</SignupButton>
+                    <SignupButton type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? 'Reserving…' : "Reserve my spot — it's free"}
+                    </SignupButton>
+                    {submitError && <ErrorMsg>{submitError}</ErrorMsg>}
+                    {submitted && (
+                        <SuccessMsg>
+                            You're in — your spot is reserved. Daniel will reach out personally within 24 hours.
+                        </SuccessMsg>
+                    )}
                     <Note>No spam, ever. Just a personal note from Daniel the moment we're ready for you. Perfect for a parent or grandparent &mdash; mention in the phone field if this is a gift.</Note>
                 </Contact>
                 <Divider />
