@@ -18,11 +18,11 @@ const Navbar = () => {
         <NavLink to="/experience">
           The Experience
         </NavLink>
-        <NavLink to="/family">
+        <NavLink onClick={() => console.log("Open For Families")}>
           For Families
         </NavLink>
-        <NavLink to="/institution">
-          For Institutions
+        <NavLink onClick={() => console.log("Open For Instituitions")}>
+          For Instituitions
         </NavLink>
 
         <NavCta to="/signup">

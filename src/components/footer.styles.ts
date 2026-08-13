@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 const colors = {
   gold: '#C7A24E',
@@ -28,7 +27,7 @@ export const FooterContainer = styled.footer`
     user-select: none;
 `;
 
-export const FooterLogo = styled(Link)`
+export const FooterLogo = styled.button`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -78,16 +77,9 @@ export const Section = styled.div`
     text-transform: uppercase;
 `;
 
-export const Page = styled(Link)`
+export const Page = styled.div`
     padding-top: 30px;
     cursor: pointer;
-    text-decoration: none;
-    color: rgba(254, 252, 248, 0.5);   /* ← add this */
-    transition: color 0.2s ease;
-
-    &:hover {
-        color: ${colors.gold};
-    }
 `;
 
 export const Divider = styled.hr`

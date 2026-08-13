@@ -1,7 +1,7 @@
-import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, FamilyButton, SignupButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, PhoneDemo, DemoIntro, StatusBar, StatusTime, Screen, PlayDemo, PlayDemoButton, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription} from './experience.styles'
+import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, PhoneDemo, DemoIntro, StatusBar, StatusTime, Screen, PlayDemo, PlayDemoButton, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription} from './experience.styles'
 import {TagRow, Tag, Divider} from './home.styles';
 import FlipBook from './flipBook';
-import phonebar from './../assets/statusbar.png';
+import phonebar from './../assets/statusBar.png';
 import bookImg from './../assets/seniorInterview.png';
 
 const Experience = () => {
@@ -12,10 +12,7 @@ const Experience = () => {
                     <Intro>The Experience</Intro>
                     <Title>See how a life becomes <HighlightText>a story.</HighlightText></Title>
                     <Description>From the first question to a printed book at your door — a gentle, unhurried process designed for anyone, regardless of age or technology experience.</Description>
-                    {/* scroll down to demo phone hasnt been implemented */}
-                    <a href="#demo" style={{textDecoration: 'none'}}>
-                        <DemoButton as="span">Watch the conversation</DemoButton>
-                    </a>
+                    <DemoButton>Watch the conversation</DemoButton>
                 </CardView>
             </OpeningContainer>
 
@@ -116,7 +113,7 @@ const Experience = () => {
                     </TagRow>
 
                     <Divider />
-                    <Demo id="demo">
+                    <Demo>
                         <Summary>
                             <DemoIntro>Try it</DemoIntro>
                             <InstructTitle>A conversation unlike any other.</InstructTitle>
@@ -186,8 +183,8 @@ const Experience = () => {
                     <DarkIntro>Ready to begin?</DarkIntro>
                     <DarkTitle>Start capturing their story today.</DarkTitle>
                     <DarkDescription>From the first question to a printed book at your door — a gentle, unhurried process designed for anyone, regardless of age or technology experience.</DarkDescription>
-                    <SignupButton to="/signup">Get early access</SignupButton>
-                    <FamilyButton to="/family">For Family &amp; Care</FamilyButton>
+                    <DemoButton to="/signup">Get early access</DemoButton>
+                    <FamilyButton>For Family &amp; Care</FamilyButton>
                 </CardView>
             </AccessContainer>
         </ExperienceContainer>

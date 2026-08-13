@@ -15,7 +15,7 @@ const filterName = (value: string) => {
     let lettersOnly = "";
     for (let i = 0; i < value.length; i++) {
         const char = value[i];
-        const isLetter = Array.from(value).every((char) => /[A-Za-z]/.test(char));
+        const isLetter = (char >= "a" && char <= "z") || (char >= "A" && char <= "Z");
         const isAllowedSymbol = char === " " || char === "-" || char === "'";
         if (isLetter || isAllowedSymbol) {
             lettersOnly += char;
