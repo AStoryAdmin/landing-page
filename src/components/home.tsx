@@ -15,7 +15,7 @@ const Body = () => {
                     </Description>
                     <Buttons>
                         <AccessButton to="/signup">Start your family's story</AccessButton>
-                        <DemoButton>Try the Live Demo</DemoButton>
+                        <DemoButton to="/experience">Try the Live Demo</DemoButton>
                     </Buttons>
                     <BulletPoints>
                         <BulletIcon>&#x2713;</BulletIcon> Private &amp; secure

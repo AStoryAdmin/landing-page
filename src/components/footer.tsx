@@ -7,7 +7,7 @@ const Footer = () => {
         <FooterContainer>
                 <Grid>
                     <HeaderColumn>
-                        <FooterLogo>
+                        <FooterLogo to="/">
                             <img src={logoImg} alt="Dark-mode Story Logo" />
                             Story
                         </FooterLogo>
@@ -18,23 +18,23 @@ const Footer = () => {
 
                     <Column>
                         <Section>Product</Section>
-                        <Page>Home</Page>
-                        <Page>The Experience</Page>
-                        <Page>For Families</Page>
-                        <Page>For Institutions</Page>
+                        <Page to="/">Home</Page>
+                        <Page to="/experience">The Experience</Page>
+                        <Page to="/family">For Families</Page>
+                        <Page to="/institution">For Institutions</Page>
                     </Column>
 
                     <Column>
                         <Section>Company</Section>
-                        <Page>Our story</Page>
-                        <Page>Contact</Page>
+                        <Page to="/story">Our story</Page>
+                        <Page to="/signup">Contact</Page>
                     </Column>
 
                     <Column>
                         <Section>Legal</Section>
-                        <Page>Terms of service</Page>
-                        <Page>Privacy policy</Page>
-                        <Page>FAQ</Page>
+                        <Page to="/terms">Terms of service</Page>
+                        <Page to="/privacy">Privacy policy</Page>
+                        <Page to="/faq">FAQ</Page>
                     </Column>
                 </Grid>
                 <Divider />

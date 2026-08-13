@@ -74,7 +74,7 @@ export const Description = styled.p`
     color: ${colors.gray};
 `;
 
-export const DemoButton = styled(Link)`
+export const DemoButton = styled.div`
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 2px;
@@ -198,6 +198,7 @@ export const Demo = styled.div`
     gap: 80px;
     align-items: center;
     margin-top: 100px;
+    scroll-margin-top: 150px;
 `;
 
 export const DemoIntro = styled(Intro)`
@@ -387,7 +388,28 @@ export const DarkDescription = styled(Description)`
     color: ${colors.dark};
 `;
 
-export const FamilyButton = styled(DemoButton)`
+export const SignupButton = styled(Link)`
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    background: ${colors.orange};
+    color: ${colors.cream};
+    border: none;
+    padding: 24px 32px;
+    margin-top: 20px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    scroll-margin-top: 100px;
+
+    &:hover {
+        background: ${colors.orangeHover};
+        transform: translateY(-1px);
+    }
+`;
+
+export const FamilyButton = styled(SignupButton)`
     margin-left: 10px;
     background: none;
     color: ${colors.dark};
@@ -398,3 +420,5 @@ export const FamilyButton = styled(DemoButton)`
         transform: translateY(-1.5px);
     }
 `;
+
+
