@@ -199,6 +199,11 @@ export const Demo = styled.div`
     align-items: center;
     margin-top: 100px;
     scroll-margin-top: 150px;
+
+    @media (max-width: 900px) {
+        flex-direction: column;
+        gap: 40px;
+    }
 `;
 
 export const DemoIntro = styled(Intro)`
@@ -207,6 +212,10 @@ export const DemoIntro = styled(Intro)`
 
 export const Summary = styled.div`
     max-width: 50%;
+
+    @media (max-width: 900px) {
+        max-width: 100%;
+    }
 `;
 
 export const PhoneDemo = styled.div`

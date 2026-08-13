@@ -1,7 +1,7 @@
-import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, FamilyButton, SignupButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, PhoneDemo, DemoIntro, StatusBar, StatusTime, Screen, PlayDemo, PlayDemoButton, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription} from './experience.styles'
+import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, FamilyButton, SignupButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription} from './experience.styles'
 import {TagRow, Tag, Divider} from './home.styles';
 import FlipBook from './flipBook';
-import phonebar from './../assets/statusbar.png';
+import DemoPhone from './demoPhone';
 import bookImg from './../assets/seniorInterview.png';
 
 const Experience = () => {
@@ -12,7 +12,6 @@ const Experience = () => {
                     <Intro>The Experience</Intro>
                     <Title>See how a life becomes <HighlightText>a story.</HighlightText></Title>
                     <Description>From the first question to a printed book at your door — a gentle, unhurried process designed for anyone, regardless of age or technology experience.</Description>
-                    {/* scroll down to demo phone hasnt been implemented */}
                     <a href="#demo" style={{textDecoration: 'none'}}>
                         <DemoButton as="span">Watch the conversation</DemoButton>
                     </a>
@@ -122,16 +121,7 @@ const Experience = () => {
                             <InstructTitle>A conversation unlike any other.</InstructTitle>
                             <Subtitle>A Story's AI doesn't interrogate &mdash; it listens. It asks one warm question, hears the answer, then follows naturally wherever the story leads. Below is a real example.</Subtitle>
                         </Summary>
-                        <PhoneDemo>
-                            <StatusBar>
-                                <StatusTime>9:41</StatusTime>
-                                <img src={phonebar} alt="Phone status bar" width="80" height="50"/>
-                            </StatusBar>
-                            <Screen></Screen>
-                            <PlayDemo>
-                                <PlayDemoButton>&#9658;</PlayDemoButton>
-                            </PlayDemo>
-                        </PhoneDemo>
+                        <DemoPhone />
                     </Demo>
                 </CardView>
             </AIContainer>
