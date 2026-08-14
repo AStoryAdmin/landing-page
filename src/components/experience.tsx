@@ -1,4 +1,4 @@
-import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, FamilyButton, SignupButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription} from './experience.styles'
+import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription} from './experience.styles'
 import {TagRow, Tag, Divider} from './home.styles';
 import FlipBook from './flipBook';
 import DemoPhone from './demoPhone';
@@ -13,7 +13,7 @@ const Experience = () => {
                     <Title>See how a life becomes <HighlightText>a story.</HighlightText></Title>
                     <Description>From the first question to a printed book at your door — a gentle, unhurried process designed for anyone, regardless of age or technology experience.</Description>
                     <a href="#demo" style={{textDecoration: 'none'}}>
-                        <DemoButton as="span">Watch the conversation</DemoButton>
+                        <DemoButton as="span" to="#demo">Watch the conversation</DemoButton>
                     </a>
                 </CardView>
             </OpeningContainer>
@@ -176,7 +176,7 @@ const Experience = () => {
                     <DarkIntro>Ready to begin?</DarkIntro>
                     <DarkTitle>Start capturing their story today.</DarkTitle>
                     <DarkDescription>From the first question to a printed book at your door — a gentle, unhurried process designed for anyone, regardless of age or technology experience.</DarkDescription>
-                    <SignupButton to="/signup">Get early access</SignupButton>
+                    <DemoButton to="/signup">Get early access</DemoButton>
                     <FamilyButton to="/family">For Family &amp; Care</FamilyButton>
                 </CardView>
             </AccessContainer>

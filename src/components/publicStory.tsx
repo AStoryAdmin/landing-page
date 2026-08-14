@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import {
     Page, Inner, Brand, Hero, Avatar, Name, Intro, Timeline, MemoryCard,
     MemoryImg, MemoryBody, Era, MemoryTitle, Period, MemoryText, Footer, Centered,
+    SectionTitle, Testimonial, TestimonialText, TestimonialWho, TestimonialPhotos,
 } from './publicStory.styles';
 
 type Memory = {
@@ -16,6 +17,15 @@ type Memory = {
     photos: string[];
 };
 
+type Testimonial = {
+    id: string;
+    contributor_name: string;
+    relationship: string;
+    body: string;
+    photos: string[];
+    created_at: string;
+};
+
 type PublicStoryData = {
     name: string;
     last_name: string;
@@ -23,6 +33,7 @@ type PublicStoryData = {
     intro: string;
     relationship: string;
     memories: Memory[];
+    testimonials?: Testimonial[];
 };
 
 const PublicStory = () => {
@@ -110,6 +121,28 @@ const PublicStory = () => {
                         ))
                     )}
                 </Timeline>
+
+                {story.testimonials && story.testimonials.length > 0 && (
+                    <>
+                        <SectionTitle>From family</SectionTitle>
+                        {story.testimonials.map((t) => (
+                            <Testimonial key={t.id}>
+                                <TestimonialText>{t.body}</TestimonialText>
+                                {t.photos?.length > 0 && (
+                                    <TestimonialPhotos>
+                                        {t.photos.map((url, i) => (
+                                            <img key={url + i} src={url} alt="" loading="lazy" />
+                                        ))}
+                                    </TestimonialPhotos>
+                                )}
+                                <TestimonialWho>
+                                    {t.contributor_name || 'Someone'}
+                                    {t.relationship ? ` · ${t.relationship}` : ''}
+                                </TestimonialWho>
+                            </Testimonial>
+                        ))}
+                    </>
+                )}
 
                 <Footer>
                     Preserved with <b>A</b> Story — every family has a story worth preserving.

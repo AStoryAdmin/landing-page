@@ -132,6 +132,54 @@ export const MemoryText = styled.p`
     white-space: pre-wrap;
 `;
 
+export const SectionTitle = styled.h2`
+    font-family: ${fonts.display};
+    font-weight: 500;
+    font-size: 34px;
+    color: ${colors.dark};
+    margin: 56px 0 20px;
+    text-align: center;
+`;
+
+export const Testimonial = styled.blockquote`
+    background: ${colors.paper};
+    border: 1px solid ${colors.line};
+    border-left: 3px solid ${colors.orange};
+    border-radius: 16px;
+    margin: 0 0 16px;
+    padding: 20px 22px;
+`;
+
+export const TestimonialText = styled.p`
+    font-family: ${fonts.display};
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.6;
+    color: ${colors.ink};
+    margin: 0;
+    white-space: pre-wrap;
+`;
+
+export const TestimonialWho = styled.footer`
+    font-size: 14px;
+    color: ${colors.softInk};
+    margin-top: 12px;
+`;
+
+export const TestimonialPhotos = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+
+    img {
+        width: 92px;
+        height: 92px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+`;
+
 export const Footer = styled.div`
     text-align: center;
     margin-top: 56px;

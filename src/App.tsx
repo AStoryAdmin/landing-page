@@ -9,12 +9,14 @@ import Institution from './components/institution';
 import Story from './components/story';
 import Terms from './components/terms';
 import PublicStory from './components/publicStory';
+import Contribute from './components/contribute';
 import Privacy from './components/privacy';
 import FAQ from './components/faq';
 import ScrollToTop from './components/scrollToTop';
 
 // Marketing pages share the navbar + footer chrome. The public story view
-// (/p/:slug) is a standalone page with none of it.
+// (/p/:slug) and the contribute flow (/contribute/:slug) are standalone
+// pages with none of it.
 function MarketingLayout() {
   return (
     <>
@@ -30,6 +32,8 @@ function App() {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
+        <Route path="/p/:slug" element={<PublicStory />} />
+        <Route path="/contribute/:slug" element={<Contribute />} />
         <Route element={<MarketingLayout />}>
           <Route path="/" element={<Body />} />
           <Route path="/experience" element={<Experience />} />
@@ -40,7 +44,6 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/faq" element={<FAQ />} />
-          <Route path="/p/:slug" element={<PublicStory />} />
         </Route>
       </Routes>
     </BrowserRouter>
