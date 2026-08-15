@@ -101,11 +101,11 @@ export const PhoneBody = styled.div`
 `;
 
 export const ChatMsgs = styled.div`
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 16px;
-    min-height: 200px;
+    padding: 20px;
 `;
 
 export const Bubble = styled.div<{ $role: 'ai' | 'user'; $show: boolean }>`
@@ -180,7 +180,7 @@ export const TypingIndicator = styled.div`
 
 export const ChatAction = styled.div`
     flex-shrink: 0;
-    padding: 12px 16px;
+    padding: 16px 20px;
     border-top: 1px solid ${colors.ink08};
     background: ${colors.paper2};
 `;
@@ -213,7 +213,7 @@ export const ChatPlayButton = styled.button`
 
 export const VoicePanel = styled.div`
     flex-shrink: 0;
-    padding: 16px;
+    padding: 20px;
     background: ${colors.paper3};
     border-top: 1px solid ${colors.ink08};
 `;
@@ -315,7 +315,7 @@ export const VoiceHint = styled.span`
 
 export const MemoryCardReveal = styled.div<{ $show: boolean }>`
     flex-shrink: 0;
-    padding: 0 16px 16px;
+    padding: 0 20px 20px;
     opacity: 0;
     transform: translateY(10px);
     transition: opacity 500ms ease, transform 500ms ease;
