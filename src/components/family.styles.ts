@@ -358,18 +358,6 @@ export const CtaSection = styled.div`
     text-align: center;
 `;
 
-export const FoundingBadge = styled.div`
-    display: inline-block;
-    color: ${colors.orangeText};
-    border: 1px solid ${colors.orange};
-    border-radius: 25px;
-    padding: 8px 20px;
-    font-family: ${fonts.body};
-    font-size: 13px;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
-`;
-
 export const CtaTitle = styled(SectionTitle)`
     color: ${colors.dark};
 `;

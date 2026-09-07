@@ -69,9 +69,9 @@ const sections: SectionData[] = [
     {
         num: 8,
         id: 's8',
-        title: 'Promotions and founding families',
+        title: 'Promotions',
         content: (
-            <Paragraph>From time to time we offer promotions, such as the founding-families offer of three months free and a raffle for lifetime memberships. Each promotion is subject to its own official rules, which are made available at the time of the promotion and which control in the event of any conflict with these Terms. Promotions may be modified or withdrawn where permitted by law.</Paragraph>
+            <Paragraph>From time to time we offer promotions, trials or introductory pricing. Each promotion is subject to its own official rules, which are made available at the time of the promotion and which control in the event of any conflict with these Terms. Promotions may be modified or withdrawn where permitted by law.</Paragraph>
         ),
     },
     {

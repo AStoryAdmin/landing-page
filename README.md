@@ -23,7 +23,8 @@ npm run dev
 | `npm run build:static` | `build` plus a static HTML snapshot of every route (see **Prerendering**) |
 | `npm run preview` | Serves `dist/` locally on :4173 |
 | `npm run lint` | ESLint |
-| `npm run assets` | Regenerates favicons, the social card, and the manifest into `public/` |
+| `npm run assets` | Regenerates favicons, icons, the social card and the manifest from the traced logo |
+| `npm run logo` | Re-traces the logo artwork out of the brand source (see **The brand system**) |
 | `npm run images` | Converts `src/assets` photography to WebP |
 | `npm run seo` | Regenerates `public/sitemap.xml` and `public/robots.txt` |
 | `npm run a11y` | axe-core WCAG 2.1 A/AA audit of every route (needs `npm run preview` running) |
@@ -65,9 +66,36 @@ The guideline's alternate **Version Terracotta** palette is preserved in
 on the guideline's scale — 84 / 60 / 48 / 32 / 24px, rendered fluidly with
 `clamp()` so the ratios hold from a 360px phone to a 1600px desktop.
 
-**Logo**: `src/components/ui/Logo.tsx` draws the mark as vector, so it stays
-sharp from 84px down to the guideline's 24px minimum, carries the safe zone as
-padding, and cannot be distorted or recoloured by a page.
+**Logo**: the site ships the guideline's own artwork as vector, not a lookalike
+rebuilt from a web font. `scripts/trace-logo.mjs` traces the approved lockups
+out of the Illustrator source into `src/components/ui/logoPaths.ts`, and
+`src/components/ui/Logo.tsx` renders them:
+
+| Variant | What it is | Used by |
+| --- | --- | --- |
+| `simple` | Simplified Horizontal Logo — mark + wordmark | Navbar (default) |
+| `horizontal` | Horizontal Logo — mark + wordmark + descriptor line | Footer |
+| `mark` | The mark alone | Favicons, icons |
+
+Each element (the mark's strokes, the gold waveform, the "A", "Story", the
+descriptor) is a separate path purely so the approved light and dark colourways
+can be applied. **The geometry is never altered** — the guideline forbids
+compressing, distorting, restructuring or recolouring the logo's internals, and
+the safe zone is carried as padding on the component. `npm run assets` derives
+the favicons, touch icons, PWA icons and social card from the same paths, so a
+favicon cannot drift out of step with the navbar.
+
+To regenerate after an artwork change, render the two lockups out of the brand
+source and re-trace:
+
+```bash
+node scripts/pdfshot.mjs <guideline.pdf> /tmp/a 2 12 "95,1362,270,115"   # horizontal
+node scripts/pdfshot.mjs <guideline.pdf> /tmp/b 2 16 "229,811,178,66"    # simplified
+node scripts/trace-logo.mjs /tmp/a-p2.png /tmp/b-p2.png
+npm run assets
+```
+
+(The Illustrator file is PDF-compatible, so `.ai` can be passed directly.)
 
 ### Colour rules worth knowing
 
@@ -141,14 +169,15 @@ non-3D album layout below 700px.
 - `src/assets/astoryDaniel.webp` and `astoryBao.webp` are generated brand
   placeholders. Replace them with real headshots (600×600) and remove the two
   names from `SKIP` in `scripts/optimize-images.mjs`.
-- Pricing shows "Free" for founding access and "Quoted" for the two programme
-  plans. When list prices exist, edit `PLANS` at the top of
+- Pricing shows "Free" for families during early access and "Quoted" for the two
+  programme plans. When list prices exist, edit `PLANS` at the top of
   `src/components/pricing.tsx` — nothing else needs to change.
 - The waitlist form writes `segment`, `organization`, `role`, `org_type`,
   `org_size` and `message` alongside the original four columns. If those
   columns do not exist yet the insert retries with the original four and packs
   the organization context into `phone`, so no lead is lost — but adding the
   columns is worth doing.
-- Testimonials and the founding-spot counter in the announcement bar are
-  hard-coded. Update them in `src/components/home.tsx` and
-  `src/components/navbar.tsx`.
+- Testimonials are hard-coded in `src/components/home.tsx`, and the
+  announcement strip above the navbar is in `src/components/navbar.tsx`.
+- The book price ($79–$129) appears on `/experience`, `/pricing` and `/faq`.
+  Change all three together.

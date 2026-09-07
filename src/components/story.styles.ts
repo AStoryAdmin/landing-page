@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { color, font } from '../styles/theme';
 
 const colors = {
@@ -26,11 +26,6 @@ const fonts = {
     display: font.display,
     script: font.script,
 };
-
-const pulseDot = keyframes`
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-`;
 
 export const Container = styled.div`
     max-width: 1080px;
@@ -372,25 +367,6 @@ export const CtaSection = styled.div`
     padding: 96px 0;
     text-align: center;
     border-top: 1px solid ${colors.ink08};
-`;
-
-export const FoundingBadge = styled.div`
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: ${colors.lightOrange};
-    color: ${colors.orangeText};
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    margin-bottom: 24px;
-
-    &::before {
-        font-size: 7px;
-        animation: ${pulseDot} 2s ease infinite;
-    }
 `;
 
 export const CtaTitle = styled.h2`

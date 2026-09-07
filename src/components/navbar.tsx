@@ -91,14 +91,13 @@ const Navbar = () => {
         <NavShell ref={shellRef} $solid={solid}>
             <Announce>
                 <span>
-                    Founding access is open &mdash;{' '}
-                    <strong>87 of 100 family spots left</strong>
+                    A Story is <strong>free for families</strong> while we are in early access.
                 </span>
-                <Link to="/signup">Claim yours &rarr;</Link>
+                <Link to="/signup">Start a story &rarr;</Link>
             </Announce>
 
             <NavInner aria-label="Primary">
-                <Logo size={32} tone="light" />
+                <Logo height={40} tone="light" variant="simple" />
                 <NavSpacer />
 
                 <NavLinks $open={open} id={menuId}>

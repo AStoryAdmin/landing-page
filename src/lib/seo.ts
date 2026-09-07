@@ -114,7 +114,7 @@ export const productSchema = () => ({
         '@type': 'Offer',
         price: '0',
         priceCurrency: 'USD',
-        description: 'Free to start — founding access.',
+        description: 'Free for families during early access.',
     },
 });
 

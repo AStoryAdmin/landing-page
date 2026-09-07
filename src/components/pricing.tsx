@@ -7,16 +7,16 @@ import { DriverTable, HonestGrid, HonestItem, Page, Plan, PlanGrid } from './pri
 
 /*
  * Pricing lives in one place so it can be updated without touching layout.
- * During founding access the family plan is genuinely free, and the two
- * programme plans are quoted per engagement — so no number is invented here.
- * When list prices are set, change `price` and `priceNote` and nothing else.
+ * The family plan is genuinely free during early access and the two programme
+ * plans are quoted per engagement, so no number is invented here. When list
+ * prices are set, change `price` and `priceNote` and nothing else.
  */
 const PLANS = [
     {
         audience: 'Families',
-        name: 'Founding access',
+        name: 'Early access',
         price: 'Free',
-        priceNote: 'During early access · 87 of 100 spots left',
+        priceNote: 'While we are in early access',
         blurb:
             'Everything needed to capture one person’s life story and share it with the whole family. No card, no trial clock.',
         features: [
@@ -28,7 +28,7 @@ const PLANS = [
             'Personal onboarding call with our founder',
             'Full export whenever you want it',
         ],
-        cta: { label: 'Claim a founding spot', to: '/signup', variant: 'primary' as const },
+        cta: { label: "Start your family's story", to: '/signup', variant: 'primary' as const },
         foot: 'The hardcover keepsake is $79–$129 depending on length, plus shipping, and is always quoted before you order. The digital archive is free.',
     },
     {
@@ -39,7 +39,7 @@ const PLANS = [
         blurb:
             'Founder interviews, retiring-employee capture, anniversary archives and onboarding libraries — run as a program rather than a one-off project.',
         features: [
-            'Everything in Founding access',
+            'Everything in Early access',
             'Prompt sets built for your organization',
             'Role-based access and admin controls',
             'Searchable institutional archive',
@@ -60,7 +60,7 @@ const PLANS = [
         blurb:
             'Reminiscence as a standing activity for senior living, memory care and hospice — designed to be low-burden for staff.',
         features: [
-            'Everything in Founding access',
+            'Everything in Early access',
             'Resident-controlled consent and access',
             'Staff view of resident life history',
             'Family sharing across any distance',
@@ -75,8 +75,8 @@ const PLANS = [
 
 const PRICING_FAQ = [
     {
-        q: 'Is founding access really free?',
-        a: 'Yes — free for the first 100 families, with no card required and no trial that quietly ends. We are early, we want the feedback, and we would rather earn the paid relationship later.',
+        q: 'Is it really free for families?',
+        a: 'Yes — no card required and no trial that quietly ends. We are early, we want the feedback, and we would rather earn the paid relationship later than extract it now.',
     },
     {
         q: 'What does the printed book cost?',
@@ -96,7 +96,7 @@ const Pricing = () => (
     <Page>
         <Seo
             title="Pricing — A Story"
-            description="Founding access is free for families. Organization and care-community programs are quoted per engagement on a 30-minute call. Full export always included, no lock-in."
+            description="Free for families during early access. Organization and care-community programs are quoted per engagement on a 30-minute call. Full export always included, no lock-in."
             path="/pricing"
             schema={[
                 organizationSchema(),

@@ -1,7 +1,7 @@
 import Seo from './ui/Seo';
 import { breadcrumbSchema, organizationSchema } from '../lib/seo';
 import { Link } from 'react-router-dom';
-import {FamilyContainer, CardView, Label, GoldLabel, HeroLabel, SectionTitle, Paragraph, Italic, ItalicAccent, PrimaryButton, GhostButton, Arrow, HeroSection, HeroTitle, HeroSub, WhySection, WhyLayout, StatStack, StatCard, StatNum, StatCaption, WhoSection, WhoIntro, WhoCards, WhoCard, CardTitle, WhyNowSection, WhyNowTitle, WhyNowGrid, WhyNowCard, WhyNowNum, WhyNowCardTitle, WhyNowText, PrivacySection, PrivacySub, PromiseGrid, PromiseCard, PromiseIcon, PromiseTitle, PromiseText, PrivacyFooterNote, FounderSection, FounderLayout, Blockquote, FounderPhoto, CtaSection, FoundingBadge, CtaTitle, CtaSub, CtaActions, OutlineButton} from './family.styles';
+import {FamilyContainer, CardView, Label, GoldLabel, HeroLabel, SectionTitle, Paragraph, Italic, ItalicAccent, PrimaryButton, GhostButton, Arrow, HeroSection, HeroTitle, HeroSub, WhySection, WhyLayout, StatStack, StatCard, StatNum, StatCaption, WhoSection, WhoIntro, WhoCards, WhoCard, CardTitle, WhyNowSection, WhyNowTitle, WhyNowGrid, WhyNowCard, WhyNowNum, WhyNowCardTitle, WhyNowText, PrivacySection, PrivacySub, PromiseGrid, PromiseCard, PromiseIcon, PromiseTitle, PromiseText, PrivacyFooterNote, FounderSection, FounderLayout, Blockquote, FounderPhoto, CtaSection, CtaTitle, CtaSub, CtaActions, OutlineButton} from './family.styles';
 import daniel from './../assets/astoryDaniel.webp';
 
 const Families = () => {
@@ -190,10 +190,9 @@ const Families = () => {
 
             <CtaSection>
                 <CardView>
-                    <FoundingBadge>Founding families &middot; limited spots</FoundingBadge>
                     <Label>See it in action.</Label>
                     <CtaTitle>The most meaningful gift<br />you can give.</CtaTitle>
-                    <CtaSub>Join our founding families. We'll walk you through the full experience &mdash; and the first conversation starts the same day.</CtaSub>
+                    <CtaSub>We&rsquo;ll walk you through the full experience &mdash; and the first conversation can start the same day.</CtaSub>
                     <CtaActions>
                         <Link to="/signup">
                             <PrimaryButton>Get early access</PrimaryButton>

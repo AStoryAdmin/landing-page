@@ -1,6 +1,6 @@
 import Seo from './ui/Seo';
 import { breadcrumbSchema, organizationSchema } from '../lib/seo';
-import {Container, ContainerDark, StoryHero, HeroTitle, HeroSub, Byline, StorySection, StoryDark, Paragraph, Emphasis, ChapterHeadline, PullQuote, PullQuoteText, StoryDivider, SigInitial, SigDetails, GhostButton, Arrow, TeamSection, Label, SectionTitle, TeamGrid, TeamCard, TeamPhoto, TeamInfo, TeamRole, TeamBio, MissionSection, MissionText, MissionSub, CtaSection, FoundingBadge, CtaTitle, CtaSub, HeroActions, PrimaryButton, OutlineButton} from './story.styles';
+import {Container, ContainerDark, StoryHero, HeroTitle, HeroSub, Byline, StorySection, StoryDark, Paragraph, Emphasis, ChapterHeadline, PullQuote, PullQuoteText, StoryDivider, SigInitial, SigDetails, GhostButton, Arrow, TeamSection, Label, SectionTitle, TeamGrid, TeamCard, TeamPhoto, TeamInfo, TeamRole, TeamBio, MissionSection, MissionText, MissionSub, CtaSection, CtaTitle, CtaSub, HeroActions, PrimaryButton, OutlineButton} from './story.styles';
 import { Link } from 'react-router-dom';
 import danielPhoto from './../assets/astoryDaniel.webp';
 import baoPhoto from './../assets/astoryBao.webp';
@@ -118,10 +118,9 @@ const Story = () => {
 
             <CtaSection>
                 <Container>
-                    <FoundingBadge>Founding families &middot; limited spots</FoundingBadge>
                     <Label>Don't wait for someday.</Label>
                     <CtaTitle>Someday is how the stories get lost.</CtaTitle>
-                    <CtaSub>Join our founding families. A 20-minute conversation with us &mdash; then a lifetime of stories, organized and yours forever.</CtaSub>
+                    <CtaSub>A 20-minute conversation with us &mdash; then a lifetime of stories, organized and yours forever.</CtaSub>
                     <HeroActions>
                         <Link to="/signup">
                             <PrimaryButton>Get early access</PrimaryButton>

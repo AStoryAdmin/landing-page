@@ -138,14 +138,14 @@ const Signup = () => {
         <Page>
             <Seo
                 title={isOrg ? 'Book a demo — A Story for Organizations' : 'Get early access — A Story'}
-                description="Reserve founding access for your family, or book a 30-minute walkthrough for your organization or care community. We reply personally within one business day."
+                description="Start your family's story, or book a 30-minute walkthrough for your organization or care community. We reply personally within one business day."
                 path="/signup"
                 schema={[organizationSchema()]}
             />
 
             <Layout>
                 <Pitch>
-                    <Badge><LiveDot /> {isOrg ? 'Partner programs · now onboarding' : 'Founding families · first 100 spots'}</Badge>
+                    <Badge><LiveDot /> {isOrg ? 'Partner programs · now onboarding' : 'Early access · free for families'}</Badge>
                     <Title>
                         {isOrg ? (
                             <>Let&rsquo;s keep your organization&rsquo;s <em>memory.</em></>
@@ -168,7 +168,7 @@ const Signup = () => {
                                   'First interview inside two weeks, with no IT project',
                               ]
                             : [
-                                  'Free during founding access — no card, no trial clock',
+                                  'Free while we are in early access — no card, no trial clock',
                                   'A personal onboarding call so nobody is left to figure it out alone',
                                   'Private and encrypted; never sold, never used to train AI',
                                   'Perfect as a gift — tell us below and we will set it up that way',
@@ -218,13 +218,13 @@ const Signup = () => {
                             <p>
                                 {isOrg
                                     ? 'Thank you — we have your details. Expect an email within one business day to find a time for the walkthrough. If it is urgent, reply to it and say so.'
-                                    : 'Your founding spot is reserved. Daniel will reach out personally, usually within 24 hours, to get the first conversation set up.'}
+                                    : 'You are on the list. Daniel will reach out personally, usually within 24 hours, to get the first conversation set up.'}
                             </p>
                         </SuccessPanel>
                     ) : (
                         <>
                             <FormTitle>
-                                {isOrg ? 'Book a 30-minute demo' : 'Claim your founding spot'}
+                                {isOrg ? 'Book a 30-minute demo' : "Start your family's story"}
                             </FormTitle>
                             <FormSub>
                                 {isOrg

@@ -13,7 +13,7 @@ import {
     AudienceCard, AudienceGrid, AudienceStrip, Divider, FaqItem, FaqList, Feature, FeatureList, Hero,
     HeroActions, HeroBadge, HeroCopy, HeroInner, HeroSub, HeroTitle, HeroTrust, No, OrgBand, OrgInner,
     OrgPoints, Page, PromiseCard, PromiseGrid, ProofImage, ProofSplit, PullQuote, QuoteCard, QuoteGrid,
-    QuoteHead, SectionHead, StatGrid, StatItem, StatusDot, StatusFamily, Step, StepGrid, StepNumber,
+    QuoteHead, SectionHead, StatGrid, StatItem, Step, StepGrid, StepNumber,
     StepText, StepTitle, Table, TableWrap, Yes,
 } from './home.styles';
 
@@ -309,10 +309,9 @@ const Home = () => (
             <Container>
                 <QuoteHead>
                     <div>
-                        <Eyebrow>What founding partners say</Eyebrow>
+                        <Eyebrow>What people say</Eyebrow>
                         <H2 style={{ marginBottom: 0 }}>Stories that almost weren&rsquo;t told.</H2>
                     </div>
-                    <StatusFamily><StatusDot /> 10 founding families &middot; early access</StatusFamily>
                 </QuoteHead>
 
                 <QuoteGrid>

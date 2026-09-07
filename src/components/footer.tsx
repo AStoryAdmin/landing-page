@@ -4,7 +4,7 @@ import { Button } from './ui/primitives';
 import { SITE } from '../lib/seo';
 import {
     BottomLinks, BottomRow, BrandColumn, BrandLine, Column, CtaActions, CtaBand, CtaInner, CtaSub,
-    CtaTitle, Divider, External, FooterContainer, Inner, Page, Platform, ScriptLine, Section, Top,
+    CtaTitle, Divider, External, FooterContainer, Inner, Page, Platform, Section, Top,
 } from './footer.styles';
 
 /**
@@ -40,8 +40,7 @@ const Footer = () => {
                 <Inner>
                     <Top>
                         <BrandColumn>
-                            <Logo size={34} tone="dark" showTagline={false} />
-                            <ScriptLine>The memories &amp; Life Story</ScriptLine>
+                            <Logo height={56} tone="dark" variant="horizontal" />
                             <BrandLine>
                                 A Story keeps what people carry — for families, for care communities, and for
                                 organizations whose history deserves to outlive the people who made it.

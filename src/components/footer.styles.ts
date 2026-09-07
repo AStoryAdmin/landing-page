@@ -44,13 +44,6 @@ export const BrandLine = styled.p`
     margin-top: ${space.xs};
 `;
 
-export const ScriptLine = styled.p`
-    font-family: ${font.script};
-    font-size: 1.6rem;
-    color: ${color.goldText};
-    line-height: 1.2;
-`;
-
 export const Column = styled.div`
     display: flex;
     flex-direction: column;
