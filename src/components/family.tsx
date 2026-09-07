@@ -1,10 +1,24 @@
+import Seo from './ui/Seo';
+import { breadcrumbSchema, organizationSchema } from '../lib/seo';
 import { Link } from 'react-router-dom';
-import {FamilyContainer, CardView, Label, GoldLabel, HeroLabel, SectionTitle, Paragraph, Italic, PrimaryButton, GhostButton, Arrow, HeroSection, HeroTitle, HeroSub, WhySection, WhyLayout, StatStack, StatCard, StatNum, StatCaption, WhoSection, WhoIntro, WhoCards, WhoCard, CardTitle, WhyNowSection, WhyNowTitle, WhyNowGrid, WhyNowCard, WhyNowNum, WhyNowCardTitle, WhyNowText, PrivacySection, PrivacySub, PromiseGrid, PromiseCard, PromiseIcon, PromiseTitle, PromiseText, PrivacyFooterNote, FounderSection, FounderLayout, Blockquote, FounderPhoto, CtaSection, FoundingBadge, CtaTitle, CtaSub, CtaActions, OutlineButton} from './family.styles';
-import daniel from './../assets/astoryDaniel.png';
+import {FamilyContainer, CardView, Label, GoldLabel, HeroLabel, SectionTitle, Paragraph, Italic, ItalicAccent, PrimaryButton, GhostButton, Arrow, HeroSection, HeroTitle, HeroSub, WhySection, WhyLayout, StatStack, StatCard, StatNum, StatCaption, WhoSection, WhoIntro, WhoCards, WhoCard, CardTitle, WhyNowSection, WhyNowTitle, WhyNowGrid, WhyNowCard, WhyNowNum, WhyNowCardTitle, WhyNowText, PrivacySection, PrivacySub, PromiseGrid, PromiseCard, PromiseIcon, PromiseTitle, PromiseText, PrivacyFooterNote, FounderSection, FounderLayout, Blockquote, FounderPhoto, CtaSection, FoundingBadge, CtaTitle, CtaSub, CtaActions, OutlineButton} from './family.styles';
+import daniel from './../assets/astoryDaniel.webp';
 
 const Families = () => {
     return (
         <FamilyContainer>
+            <Seo
+                title="A Story for families — ask before the chance passes"
+                description="Capture a parent's or grandparent's life story with a guided voice conversation. A private family archive, contributions from relatives anywhere, and a printed hardcover book."
+                path="/family"
+                schema={[
+                    organizationSchema(),
+                    breadcrumbSchema([
+                        { name: 'Home', path: '/' },
+                        { name: 'For families', path: '/family' },
+                    ]),
+                ]}
+            />
             <HeroSection>
                 <CardView>
                     <HeroLabel>For families &amp; care</HeroLabel>
@@ -24,7 +38,7 @@ const Families = () => {
                             <Label>Why it matters</Label>
                             <SectionTitle>Every day is a day closer to a story you'll never hear.</SectionTitle>
                             <Paragraph>Most families never get to ask. Life gets busy. The person who holds all the stories gets older. And then one day it's too late &mdash; and you realize you never found out what her childhood was like, what he dreamed of becoming, what the house they grew up in smelled like in summer.</Paragraph>
-                            <Paragraph>A Story gives you a way to ask, while there's still time. Not as a journalist. Not as a therapist. As a warm presence that sits with the people you love and says: <Italic>I have time. Tell me everything.</Italic></Paragraph>
+                            <Paragraph>A Story gives you a way to ask, while there's still time. Not as a journalist. Not as a therapist. As a warm presence that sits with the people you love and says: <ItalicAccent>I have time. Tell me everything.</ItalicAccent></Paragraph>
                             <Link to="/signup">
                                 <PrimaryButton>Get early access</PrimaryButton>
                             </Link>
@@ -72,11 +86,11 @@ const Families = () => {
                         </WhoCard>
 
                         <WhoCard>
-                            <GoldLabel>For senior living &amp; memory care</GoldLabel>
+                            <Label>For senior living &amp; memory care</Label>
                             <CardTitle>Dignity through story.</CardTitle>
                             <Paragraph>A Story is used in senior living communities and memory care settings as a gentle, meaningful activity &mdash; a way for residents to feel heard, for families to stay connected across distances, and for staff to understand the whole person, not just the patient.</Paragraph>
                             <Paragraph>Reminiscence has well-documented benefits for cognitive health and emotional well-being. A Story makes it beautiful.</Paragraph>
-                            <Link to="/instituition">
+                            <Link to="/institution">
                                 <GhostButton>Inquire about partnerships<Arrow>&rarr;</Arrow></GhostButton>
                             </Link>
                         </WhoCard>
@@ -111,7 +125,7 @@ const Families = () => {
 
             <PrivacySection>
                 <CardView>
-                    <GoldLabel>Privacy &amp; trust</GoldLabel>
+                    <Label>Privacy &amp; trust</Label>
                     <SectionTitle>Their story belongs to them.<br />Only them.</SectionTitle>
                     <PrivacySub>These are people's life stories &mdash; the most personal thing there is. We built A Story around one principle: the storyteller is in complete control, always.</PrivacySub>
 
@@ -168,7 +182,7 @@ const Families = () => {
                         </div>
 
                         <FounderPhoto>
-                            <img src={daniel} alt="Daniel Hoang Nguyen, Founder of A Story"/>
+                            <img src={daniel} alt="Daniel Hoang Nguyen, founder of A Story" loading="lazy" decoding="async" />
                         </FounderPhoto>
                     </FounderLayout>
                 </CardView>

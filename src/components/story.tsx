@@ -1,11 +1,25 @@
+import Seo from './ui/Seo';
+import { breadcrumbSchema, organizationSchema } from '../lib/seo';
 import {Container, ContainerDark, StoryHero, HeroTitle, HeroSub, Byline, StorySection, StoryDark, Paragraph, Emphasis, ChapterHeadline, PullQuote, PullQuoteText, StoryDivider, SigInitial, SigDetails, GhostButton, Arrow, TeamSection, Label, SectionTitle, TeamGrid, TeamCard, TeamPhoto, TeamInfo, TeamRole, TeamBio, MissionSection, MissionText, MissionSub, CtaSection, FoundingBadge, CtaTitle, CtaSub, HeroActions, PrimaryButton, OutlineButton} from './story.styles';
 import { Link } from 'react-router-dom';
-import danielPhoto from './../assets/astoryDaniel.png';
-import baoPhoto from './../assets/astoryBao.png';
+import danielPhoto from './../assets/astoryDaniel.webp';
+import baoPhoto from './../assets/astoryBao.webp';
 
 const Story = () => {
     return (
         <>
+            <Seo
+                title="Our story — why A Story exists"
+                description="Two strokes in one year, and a grandson who had never asked how his grandparents met. The reason A Story was built, told by the person who built it."
+                path="/story"
+                schema={[
+                    organizationSchema(),
+                    breadcrumbSchema([
+                        { name: 'Home', path: '/' },
+                        { name: 'Our story', path: '/story' },
+                    ]),
+                ]}
+            />
             <StoryHero>
                 <Container>
                     <Label>A note from the founder</Label>
@@ -70,7 +84,7 @@ const Story = () => {
                     <TeamGrid>
                         <TeamCard>
                             <TeamPhoto>
-                                <img src={danielPhoto} alt="Daniel Hoang Nguyen" />
+                                <img src={danielPhoto} alt="Daniel Hoang Nguyen" loading="lazy" decoding="async" />
                             </TeamPhoto>
                             <TeamInfo>
                                 <strong>Daniel Hoang Nguyen</strong>
@@ -81,7 +95,7 @@ const Story = () => {
 
                         <TeamCard>
                             <TeamPhoto>
-                                <img src={baoPhoto} alt="Bao Vo" />
+                                <img src={baoPhoto} alt="Bao Vo" loading="lazy" decoding="async" />
                             </TeamPhoto>
                             <TeamInfo>
                                 <strong>Bao Vo</strong>

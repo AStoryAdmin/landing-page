@@ -1,24 +1,28 @@
 import styled from 'styled-components';
+import { color, font } from '../styles/theme';
 import { Link } from 'react-router-dom';
 
 const colors = {
-    bgCream: 'rgba(239, 230, 212, 0.85)',
-    cream: '#EFE6D4',
-    paper: '#F6EFE2',
-    orange: '#B45A2B',
-    orangeHover: '#a14e22',
-    gold: '#C7A24E',
-    softYellow: '#E6D8BF',
-    dark: '#120E08',
-    mutedBrown: 'rgba(43, 33, 23, 0.3)',
-    gray: 'rgba(254, 252, 248, 0.5)',
-    darkGray: 'rgba(43, 33, 23, 0.7)',
-    darkGrayHover: 'rgba(43, 33, 23, 0.2)',
+    bgCream: 'rgba(243, 235, 221, 0.9)',
+    cream: color.ivory,
+    paper: color.paper,
+    orange: color.accent,
+    onAccent: color.paperPure,
+    orangeText: color.accentText,
+    orangeHover: color.accentHover,
+    gold: color.gold,
+    softYellow: color.goldWash,
+    dark: color.primaryDeep,
+    mutedBrown: color.faint,
+    gray: color.onDarkMuted,
+    darkGray: color.body,
+    darkGrayHover: color.primaryLine,
 };
 
 const fonts = {
-    body: "'Figtree', sans-serif",
-    display: "'Cormorant Garamond', serif",
+    body: font.body,
+    display: font.display,
+    script: font.script,
 };
 
 export const ExperienceContainer = styled.div`
@@ -32,7 +36,7 @@ export const OpeningContainer = styled.div`
 `;
 
 export const CardView = styled.div`
-    padding: 150px 80px;
+    padding: clamp(72px, 9vw, 150px) clamp(20px, 5vw, 80px);
     max-width: 1300px;
     margin: 0 auto;
 `;
@@ -79,7 +83,7 @@ export const DemoButton = styled(Link)`
     font-weight: 600;
     letter-spacing: 2px;
     background: ${colors.orange};
-    color: ${colors.cream};
+    color: ${colors.onAccent};
     border: none;
     padding: 24px 32px;
     margin-top: 20px;
@@ -98,7 +102,7 @@ export const InstructionContainer = styled.div`
 `;
 
 export const StepIntro = styled(Intro)`
-    color: ${colors.orange};
+    color: ${colors.orangeText};
 `;
 
 export const InstructTitle = styled(Title)`
@@ -119,6 +123,7 @@ export const Subtitle = styled.p`
 export const StepCard= styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    @media (max-width: 860px) { grid-template-columns: 1fr; }
     margin-top: 50px;
     gap: 50px;
 `;
@@ -134,6 +139,8 @@ export const Column= styled.div`
 export const OddColumn= styled(Column)`
     grid-column: 1 / -1;
     flex-direction: row;
+
+    @media (max-width: 640px) { flex-direction: column; }
     align-items: baseline;
     gap: 30px;
 `;
@@ -177,6 +184,8 @@ export const Grid = styled.div`
 
     //creates 4 columns of exactly equal width (1 fraction unit)
     grid-template-columns: repeat(4, 1fr);
+    @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 640px) { grid-template-columns: 1fr; }
 `;
 
 export const RoleColumn = styled.div`
@@ -221,8 +230,8 @@ export const Summary = styled.div`
 export const PhoneDemo = styled.div`
     display: flex;
     flex-direction: column;
-    max-width: 50%;
-    width: 330px;
+    max-width: 100%;
+    width: min(330px, 86vw);
     height: 660px;
     border-radius: 42px;
     //content outside frame dont get cut off
@@ -265,7 +274,7 @@ export const PlayDemo = styled.div`
 
 export const PlayDemoButton = styled.button`
     background: ${colors.cream};
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     border: none;
     margin-top: 1px;
     padding: 15px 20px;
@@ -386,7 +395,7 @@ export const BookImg = styled.div`
 `;
 
 export const DarkIntro = styled(Intro)`
-    color: ${colors.orange};
+    color: ${colors.orangeText};
 `;
 
 export const DarkTitle = styled(Title)`

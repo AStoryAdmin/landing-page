@@ -1,20 +1,24 @@
 import styled from 'styled-components';
+import { color, font } from '../styles/theme';
 
 const colors = {
-    cream: '#EFE6D4',
-    paper2: '#F1E9DA',
-    orange: '#B45A2B',
-    orangeHover: '#a14e22',
-    dark: '#120E08',
-    gray: 'rgba(254, 252, 248, 0.5)',
-    darkGray: 'rgba(43, 33, 23, 0.7)',
-    ink15: 'rgba(43, 33, 23, 0.15)',
-    ink08: 'rgba(43, 33, 23, 0.08)',
+    cream: color.ivory,
+    paper2: color.paper,
+    orange: color.accent,
+    onAccent: color.paperPure,
+    orangeText: color.accentText,
+    orangeHover: color.accentHover,
+    dark: color.primaryDeep,
+    gray: color.onDarkMuted,
+    darkGray: color.body,
+    ink15: color.primaryLine,
+    ink08: 'rgba(15, 74, 88, 0.08)',
 };
 
 const fonts = {
-    body: "'Figtree', sans-serif",
-    display: "'Cormorant Garamond', serif",
+    body: font.body,
+    display: font.display,
+    script: font.script,
 };
 
 
@@ -30,7 +34,7 @@ export const NarrowContainer = styled(Container)`
 
 export const Label = styled.p`
     text-transform: uppercase;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     font-family: ${fonts.body};
     font-size: 15px;
     font-weight: 700;
@@ -40,13 +44,13 @@ export const Label = styled.p`
 `;
 
 export const LegalLink = styled.a`
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     text-decoration: underline;
 `;
 
 export const FaqHero = styled.div`
     background: ${colors.paper2};
-    padding: 180px 0 90px;
+    padding: clamp(64px, 8vw, 120px) 0 clamp(48px, 6vw, 90px);
     border-bottom: 1px solid ${colors.ink08};
 `;
 
@@ -75,7 +79,7 @@ export const HeroSub = styled.p`
 
 export const FaqSection = styled.div`
     background: ${colors.cream};
-    padding: 100px 0;
+    padding: clamp(56px, 7vw, 100px) 0;
 `;
 
 export const FaqGroup = styled.div`
@@ -92,7 +96,7 @@ export const FaqGroupLabel = styled.p`
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     margin-bottom: 32px;
     padding-bottom: 12px;
     border-bottom: 1px solid ${colors.ink08};
@@ -124,7 +128,7 @@ export const FaqQuestion = styled.button<FaqQuestionProps>`
     transition: color 0.2s ease;
 
     &:hover {
-        color: ${colors.orange};
+        color: ${colors.orangeText};
     }
 `;
 
@@ -174,7 +178,7 @@ export const Bold = styled.strong`
 
 export const CtaSection = styled.div`
     background: ${colors.paper2};
-    padding: 100px 0;
+    padding: clamp(56px, 7vw, 100px) 0;
     text-align: center;
     border-top: 1px solid ${colors.ink08};
 `;
@@ -212,7 +216,7 @@ export const PrimaryButton = styled.button`
     font-weight: 600;
     letter-spacing: 2px;
     background: ${colors.orange};
-    color: ${colors.cream};
+    color: ${colors.onAccent};
     border: none;
     padding: 22px 32px;
     border-radius: 40px;

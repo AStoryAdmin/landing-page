@@ -1,0 +1,9 @@
+# A Story
+User-agent: *
+Allow: /
+
+# Private, per-person links — never public pages.
+Disallow: /p/
+Disallow: /contribute/
+
+Sitemap: https://astoryapp.com/sitemap.xml

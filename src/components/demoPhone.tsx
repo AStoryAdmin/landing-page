@@ -39,7 +39,7 @@ import {
     DemoEndPrimary,
     DemoEndSecondary,
 } from './demoPhone.styles';
-import statusBarImg from './../assets/statusbar.png';
+import statusBarImg from './../assets/statusbar.webp';
 
 type Role = 'ai' | 'user';
 
@@ -123,7 +123,7 @@ const DemoPhone = () => {
     const [memoryCardVisible, setMemoryCardVisible] = useState(false);
     const [showEndCta, setShowEndCta] = useState(false);
 
-    const [speechSupported, setSpeechSupported] = useState(true);
+    const [speechSupported] = useState(() => Boolean(getSpeechRecognitionCtor()));
     const [isRecording, setIsRecording] = useState(false);
     const [micError, setMicError] = useState(false);
     const [transcript, setTranscript] = useState('');
@@ -152,10 +152,7 @@ const DemoPhone = () => {
 
     useEffect(() => {
         const SR = getSpeechRecognitionCtor();
-        if (!SR) {
-            setSpeechSupported(false);
-            return;
-        }
+        if (!SR) return;
 
         const recognition = new SR();
         recognition.continuous = true;
@@ -185,7 +182,9 @@ const DemoPhone = () => {
             if (isRecordingRef.current) {
                 try {
                     recognition.start();
-                } catch {}
+                } catch {
+                    /* recognition was already running — nothing to recover. */
+                }
             }
         };
 
@@ -194,7 +193,9 @@ const DemoPhone = () => {
         return () => {
             try {
                 recognition.stop();
-            } catch {}
+            } catch {
+                /* recognition was already stopped — nothing to recover. */
+            }
         };
     }, []);
 
@@ -260,7 +261,9 @@ const DemoPhone = () => {
         setIsRecording(true);
         try {
             recognitionRef.current?.start();
-        } catch {}
+        } catch {
+            /* the browser refused the start/stop — the UI state already reflects it. */
+        }
     }
 
     function stopRecording() {
@@ -268,7 +271,9 @@ const DemoPhone = () => {
         setIsRecording(false);
         try {
             recognitionRef.current?.stop();
-        } catch {}
+        } catch {
+            /* the browser refused the start/stop — the UI state already reflects it. */
+        }
     }
 
     function clearTranscript() {
@@ -284,7 +289,7 @@ const DemoPhone = () => {
         <PhoneContainer>
             <StatusBar>
                 <span>9:41</span>
-                <img src={statusBarImg} alt="Demo phone status bar" width={80} height={20} />
+                <img src={statusBarImg} alt="" aria-hidden="true" width={80} height={20} loading="lazy" decoding="async" />
             </StatusBar>
 
             <PhoneBody ref={phoneBodyRef}>

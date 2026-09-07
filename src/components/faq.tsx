@@ -1,3 +1,6 @@
+import Seo from './ui/Seo';
+import { breadcrumbSchema, faqSchema, organizationSchema } from '../lib/seo';
+import { nodeToText } from '../lib/nodeText';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {Container, NarrowContainer, Label, LegalLink, FaqHero, HeroTitle, HeroSub, FaqSection, FaqGroup, FaqGroupLabel, FaqItem, FaqQuestion, FaqQuestionIcon, FaqAnswer, FaqAnswerInner, AnswerParagraph, Bold, CtaSection, CtaTitle, CtaSub, CtaActions, PrimaryButton, OutlineButton} from './faq.styles';
@@ -167,11 +170,11 @@ const faqGroups: FaqGroupData[] = [
                 question: 'What does A Story cost?',
                 answer: (
                     <>
-                        <AnswerParagraph>A Story is currently in early access. We are onboarding founding families and institutional partners through personal demos &mdash; pricing is shared during those conversations and is designed to be accessible for individual families.</AnswerParagraph>
+                        <AnswerParagraph>For families, founding access is free &mdash; no card, no trial clock. That covers unlimited guided interviews, the private archive, family contributions, searchable transcripts and a full export whenever you want one. Founding families also keep preferred pricing when we launch publicly.</AnswerParagraph>
+                        <AnswerParagraph>The printed hardcover keepsake is separate: $79&ndash;$129 depending on page count, plus shipping, and always quoted before you order. Organization and care-community programmes are quoted per engagement on a 30-minute call.</AnswerParagraph>
                         <AnswerParagraph>
-                            Founding families who book a demo now will receive preferred pricing when we launch publicly.{' '}
-                            <LegalLink href="mailto:contact@astoryapp.com?subject=Book a Demo">Book a free 20-minute demo</LegalLink>{' '}
-                            to learn more.
+                            <Bold><Link to="/pricing">See the full pricing breakdown</Link></Bold>, or{' '}
+                            <LegalLink href="mailto:contact@astoryapp.com?subject=Book a Demo">book a free 20-minute demo</LegalLink>.
                         </AnswerParagraph>
                     </>
                 ),
@@ -198,8 +201,68 @@ const faqGroups: FaqGroupData[] = [
                 ),
             }
         ]
+    },
+    {
+        label: 'For organizations',
+        items: [
+            {
+                id: 'org-what',
+                question: 'What does A Story do for a company or organization?',
+                answer: (
+                    <>
+                        <AnswerParagraph>The same guided interview that gets a grandmother talking about 1958 gets a founder talking about 1997. Organizations use A Story to capture founder and leadership interviews, the judgment of long-tenured employees before they retire, milestone and anniversary histories, and the culture stories that new hires never otherwise hear.</AnswerParagraph>
+                        <AnswerParagraph>You end up with a searchable internal archive, an onboarding story library, and a printed hardcover history of the organization &mdash; the thing that gets handed to whoever runs the place in fifty years. <Bold>See <Link to="/organizations">A Story for Organizations</Link> for the full picture.</Bold></AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'org-time',
+                question: 'How much time does it take from our people?',
+                answer: (
+                    <>
+                        <AnswerParagraph>A useful archive comes from three to five sessions of twenty to forty minutes per storyteller. Nobody blocks out a day, and sessions resume exactly where they left off &mdash; a founder can do fifteen minutes between meetings and pick it up the following week.</AnswerParagraph>
+                        <AnswerParagraph>On your side, the coordinating effort is a few hours a month: deciding who to record and making the introductions. There is no interviewer to train, no transcription queue, and no editing backlog.</AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'org-security',
+                question: 'Will this pass our security and legal review?',
+                answer: (
+                    <>
+                        <AnswerParagraph>Content is encrypted at rest and in transit, access is scoped per person and revocable, and every participant consents to what is recorded and who can see it. We never train AI models on your content and never share it with third parties &mdash; contractually, not just as a policy statement.</AnswerParagraph>
+                        <AnswerParagraph>We provide a data processing agreement, a subprocessor list, data-flow documentation and encryption standards for review, and we answer security questionnaires within 24 hours. In clinical settings we also provide a business associate agreement.</AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'org-pricing',
+                question: 'How is an organization program priced?',
+                answer: (
+                    <>
+                        <AnswerParagraph>Per program, quoted after a 30-minute call. Three things move the number: how many people you want interviewed, whether you want printed volumes and how many, and whether we facilitate the flagship sessions ourselves.</AnswerParagraph>
+                        <AnswerParagraph>What does not move the number: how many colleagues read the archive, how much you record, or how long you keep it. There is no per-viewer licensing and no storage metering. <Bold>See <Link to="/pricing">pricing</Link>.</Bold></AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'org-ownership',
+                question: 'What happens to the archive if we stop working with you?',
+                answer: (
+                    <>
+                        <AnswerParagraph>You keep everything. A full export of audio, transcripts, media and metadata is available on request within 48 hours, in open formats, whether or not you are still a customer.</AnswerParagraph>
+                        <AnswerParagraph>We do not delete archives on lapse and we do not hold anyone's history hostage to a renewal. That is a deliberate design decision, not a concession.</AnswerParagraph>
+                    </>
+                ),
+            }
+        ]
     }
 ];
+
+/* Every question on the page, flattened for the FAQPage rich result. */
+const schemaEntries = faqGroups.flatMap((group) =>
+    group.items.map((item) => ({ q: item.question, a: nodeToText(item.answer) }))
+);
 
 const Faq = () => {
     const [openId, setOpenId] = useState<string | null>(null);
@@ -211,6 +274,19 @@ const Faq = () => {
 
     return (
         <>
+            <Seo
+                title="Frequently asked questions — A Story"
+                description="How the guided interview works, what it costs, who owns the stories, how privacy is handled, and what organizations and care communities can expect."
+                path="/faq"
+                schema={[
+                    organizationSchema(),
+                    breadcrumbSchema([
+                        { name: 'Home', path: '/' },
+                        { name: 'FAQ', path: '/faq' },
+                    ]),
+                    faqSchema(schemaEntries),
+                ]}
+            />
             <FaqHero>
                 <Container>
                     <Label>Questions &amp; answers</Label>

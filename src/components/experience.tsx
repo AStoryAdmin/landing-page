@@ -1,12 +1,26 @@
+import Seo from './ui/Seo';
+import { breadcrumbSchema, organizationSchema } from '../lib/seo';
 import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription} from './experience.styles'
 import {TagRow, Tag, Divider} from './home.styles';
 import FlipBook from './flipBook';
 import DemoPhone from './demoPhone';
-import bookImg from './../assets/seniorInterview.png';
+import bookImg from './../assets/astoryHardcoverBook.webp';
 
 const Experience = () => {
     return (
         <ExperienceContainer>
+            <Seo
+                title="How A Story works — from first question to printed book"
+                description="Five steps from the first question to a hardcover memoir: a guided voice interview, memory cards organised by chapter, family contributions, and a printed keepsake shipped to your door."
+                path="/experience"
+                schema={[
+                    organizationSchema(),
+                    breadcrumbSchema([
+                        { name: 'Home', path: '/' },
+                        { name: 'The experience', path: '/experience' },
+                    ]),
+                ]}
+            />
             <OpeningContainer>
                 <CardView>
                     <Intro>The Experience</Intro>
@@ -130,7 +144,7 @@ const Experience = () => {
                 <CardView>
                     <Intro>See a real example</Intro>
                     <Title>Tap through <HighlightText>Margaret's story.</HighlightText></Title>
-                    <Description>Generated from 30 minutes of voice interview, family photos, and timeline-linked memories. Click the right page to turn forward, left to go back.</Description>
+                    <Description>Generated from 30 minutes of voice interview, family photos, and timeline-linked memories. Use the arrows below to move through the album &mdash; or click a page directly.</Description>
                     <FlipBook />
                     <Note>A Story &middot; Margaret's Archive &middot; 1952-2026</Note>
 
@@ -159,13 +173,13 @@ const Experience = () => {
                                 <PriceDivider />
                                 <PriceDetails>
                                     <span>Hardcover, ships in 3&ndash;4 weeks</span>
-                                    <span>Included free with your Family Archive plan</span>
+                                    <span>Digital archive always included, free</span>
                                 </PriceDetails>
                             </PriceBox>
                         </Summary>
 
                         <BookImg>
-                            <img src={bookImg} alt="The keepsake book" />
+                            <img src={bookImg} alt="An open A Story hardcover memoir on a table, photographs printed beside the stories they belong to" loading="lazy" decoding="async" />
                         </BookImg>
                     </Demo>
                 </CardView>

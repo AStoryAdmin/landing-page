@@ -1,3 +1,5 @@
+import Seo from './ui/Seo';
+import { breadcrumbSchema, organizationSchema } from '../lib/seo';
 import {CardView, Label, HeroSection, HeroTitle, HeroSub, LegalMeta, BodySection, LegalContent, Notice, Toc, TocLabel, TocList, TocItem, TocLink, Section, SectionNum, SectionTitle, Paragraph, LegalLink} from './terms.styles';
 
 type SectionData = {
@@ -184,6 +186,18 @@ const sections: SectionData[] = [
 const Terms = () => {
     return (
         <>
+            <Seo
+                title="Terms of service — A Story"
+                description="The terms that govern use of A Story, written to be read rather than skipped."
+                path="/terms"
+                schema={[
+                    organizationSchema(),
+                    breadcrumbSchema([
+                        { name: 'Home', path: '/' },
+                        { name: 'Terms of service', path: '/terms' },
+                    ]),
+                ]}
+            />
             <HeroSection>
                 <CardView>
                     <Label>Legal</Label>

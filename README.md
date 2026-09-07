@@ -1,73 +1,154 @@
-# React + TypeScript + Vite
+# A Story — landing page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Marketing site for A Story: guided voice conversations that become a private,
+searchable archive and a printed hardcover book — for families, care
+communities, and organizations preserving the history that made them.
 
-Currently, two official plugins are available:
+React 19 · TypeScript · Vite · styled-components · React Router · Supabase.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Getting started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+cp .env.example .env      # fill in the Supabase keys
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Dev server with HMR |
+| `npm run build` | Regenerates `sitemap.xml`/`robots.txt`, typechecks, builds to `dist/` |
+| `npm run build:static` | `build` plus a static HTML snapshot of every route (see **Prerendering**) |
+| `npm run preview` | Serves `dist/` locally on :4173 |
+| `npm run lint` | ESLint |
+| `npm run assets` | Regenerates favicons, the social card, and the manifest into `public/` |
+| `npm run images` | Converts `src/assets` photography to WebP |
+| `npm run seo` | Regenerates `public/sitemap.xml` and `public/robots.txt` |
+| `npm run a11y` | axe-core WCAG 2.1 A/AA audit of every route (needs `npm run preview` running) |
+| `npm run shots` | Screenshots every route at desktop and phone widths |
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Environment
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Variable | Purpose |
+| --- | --- |
+| `VITE_SUPABASE_URL` | Supabase project URL |
+| `VITE_SUPABASE_ANON_KEY` | Supabase anon key |
+| `VITE_SITE_URL` | Canonical origin — used for canonical tags, OG URLs and the sitemap. Defaults to `https://astoryapp.com`. |
+
+Without the Supabase variables the site still renders; the signup form shows an
+"email us" message instead of silently failing.
+
+---
+
+## The brand system
+
+Everything visual resolves back to **`src/styles/theme.ts`**, which implements
+the *A Story Brand Guideline, Version Teal (2026)*. No component should contain
+a raw hex value.
+
+| Token | Value | Role |
+| --- | --- | --- |
+| `color.primary` | `#0F4A58` Deep Teal | Primary ground and headings |
+| `color.accent` | `#B85126` Terracotta | Calls to action, emphasis |
+| `color.gold` | `#E0A03F` Warm Gold | Highlight — **fills and display type only** |
+| `color.goldText` | `#EBC86A` Vintage Brass | Gold *text* on dark grounds |
+| `color.goldOnLight` | `#8A5A12` | Gold-toned text on light grounds |
+| `color.body` | `#4C4C4C` Charcoal | Body copy |
+| `color.ivory` | `#F3EBDD` Soft Ivory | Page ground |
+
+The guideline's alternate **Version Terracotta** palette is preserved in
+`palette.terracottaVersion` — switching versions is a change to one file.
+
+**Type**: Cormorant Garamond (display), Figtree (body), Caveat (script accent),
+on the guideline's scale — 84 / 60 / 48 / 32 / 24px, rendered fluidly with
+`clamp()` so the ratios hold from a 360px phone to a 1600px desktop.
+
+**Logo**: `src/components/ui/Logo.tsx` draws the mark as vector, so it stays
+sharp from 84px down to the guideline's 24px minimum, carries the safe zone as
+padding, and cannot be distorted or recoloured by a page.
+
+### Colour rules worth knowing
+
+Two are enforced by the audit and easy to break by accident:
+
+- **Warm Gold is not a text colour.** At 13px it measures 4.33:1 on Deep Teal
+  and 1.91:1 on Soft Ivory. Use `goldText` on dark, `goldOnLight` on light.
+- **Terracotta text uses `accentText` (`#9E4420`)**, not `accent`. Full
+  Terracotta is 4.13:1 on ivory — fine as a fill, short of AA as small text.
+
+---
+
+## Structure
+
 ```
+src/
+  styles/theme.ts        brand tokens — the single source of truth
+  styles/global.ts       reset, focus rings, skip link, reduced motion
+  components/ui/         primitives (Section, Button, Card…), Logo, icons, Seo, Reveal
+  components/*.tsx       one file per route, with its own *.styles.ts
+  lib/seo.ts             per-route head tags + JSON-LD builders
+  lib/supabase.ts        lazily constructed client
+  hooks/                 shared hooks
+scripts/                 build and maintenance tooling (see the table above)
+```
+
+Routes: `/`, `/experience`, `/family`, `/organizations`, `/institution`,
+`/pricing`, `/signup`, `/story`, `/faq`, `/privacy`, `/terms`, plus the
+standalone `/p/:slug` (shared archive) and `/contribute/:slug` flows and a 404.
+
+Only the home page ships in the initial bundle; every other route is a separate
+chunk fetched on navigation, and Supabase loads only with the signup page.
+
+---
+
+## Prerendering
+
+`npm run build:static` loads the production build in headless Chromium and
+writes a finished HTML snapshot to `dist/<route>/index.html`. Social crawlers
+(LinkedIn, Slack, X, iMessage) do not run JavaScript, so without this every
+shared link shows the same generic card. With it, each route carries its own
+title, description, OG image, canonical URL and JSON-LD.
+
+Your host must serve static files *before* the SPA fallback — Netlify
+(`public/_redirects`) and Vercel (`vercel.json`) both do, as does nginx with
+`try_files $uri $uri/index.html /index.html`. Note that `vite preview` does
+not: it answers `/organizations` with the SPA shell, and only
+`/organizations/` with the snapshot. That is a preview-server quirk, not a
+build problem.
+
+Prerendering needs the `playwright` devDependency. Plain `npm run build` never
+touches it, so CI without browsers still works.
+
+---
+
+## Accessibility
+
+`npm run a11y` runs axe-core (WCAG 2.1 A and AA) over every route at 1440px and
+390px. The site currently reports **zero violations**. Please keep it there —
+the audit takes about a minute.
+
+Also in place: a skip link, one visible focus ring on every interactive
+element, `prefers-reduced-motion` honoured throughout, keyboard controls on the
+album spread, labelled scrollable regions for wide tables, and a compact
+non-3D album layout below 700px.
+
+---
+
+## Known follow-ups
+
+- `src/assets/astoryDaniel.webp` and `astoryBao.webp` are generated brand
+  placeholders. Replace them with real headshots (600×600) and remove the two
+  names from `SKIP` in `scripts/optimize-images.mjs`.
+- Pricing shows "Free" for founding access and "Quoted" for the two programme
+  plans. When list prices exist, edit `PLANS` at the top of
+  `src/components/pricing.tsx` — nothing else needs to change.
+- The waitlist form writes `segment`, `organization`, `role`, `org_type`,
+  `org_size` and `message` alongside the original four columns. If those
+  columns do not exist yet the insert retries with the original four and packs
+  the organization context into `phone`, so no lead is lost — but adding the
+  columns is worth doing.
+- Testimonials and the founding-spot counter in the announcement bar are
+  hard-coded. Update them in `src/components/home.tsx` and
+  `src/components/navbar.tsx`.

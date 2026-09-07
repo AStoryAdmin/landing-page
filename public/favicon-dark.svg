@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="A Story">
+  <rect width="1024" height="1024" rx="232" fill="#0F4A58"/>
+  <path d="M509 148 L178 882 L296 882 L512 225 Z" fill="#F3EBDD"/>
+  <path d="M515 148 L846 882 L728 882 L512 225 Z" fill="#F3EBDD"/>
+  <path d="M512 726 C512 726 406 643 406 566 C406 519 441 493 478 493 C499 493 509 506 512 514 C515 506 525 493 546 493 C583 493 618 519 618 566 C618 643 512 726 512 726 Z" fill="#E0A03F"/>
+</svg>

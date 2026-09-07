@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
+import { getSupabase } from '../lib/supabase';
 import {
     Page, Inner, Brand, Hero, Avatar, Name, Intro, Timeline, MemoryCard,
     MemoryImg, MemoryBody, Era, MemoryTitle, Period, MemoryText, Footer, Centered,
@@ -44,7 +44,8 @@ const PublicStory = () => {
     useEffect(() => {
         let cancelled = false;
         (async () => {
-            if (!slug) {
+            const supabase = getSupabase();
+            if (!slug || !supabase) {
                 setState('missing');
                 return;
             }

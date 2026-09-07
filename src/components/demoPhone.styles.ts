@@ -1,28 +1,32 @@
 import styled, { keyframes, css } from 'styled-components';
+import { color, font } from '../styles/theme';
 import { Link } from 'react-router-dom';
 
 const colors = {
-    dark: '#120E08',
-    cream: '#EFE6D4',
-    paper: '#F6EFE2',
-    paper2: '#F1E8D8',
-    paper3: '#ECE0CB',
-    orange: '#B45A2B',
-    orangeSoft: 'rgba(180,90,43,0.12)',
-    gold: '#C7A24E',
-    ink08: 'rgba(43,33,23,0.08)',
-    ink15: 'rgba(43,33,23,0.15)',
-    ink40: 'rgba(43,33,23,0.45)',
-    ink70: 'rgba(43,33,23,0.7)',
-    fireBg: '#120E08',
-    fireText: '#F6EFE2',
-    fire60: 'rgba(246,239,226,0.6)',
-    success: '#5A9E6F',
+    dark: color.primaryDeep,
+    cream: color.ivory,
+    paper: color.paper,
+    paper2: color.ivory,
+    paper3: color.ivoryDeep,
+    orange: color.accent,
+    onAccent: color.paperPure,
+    orangeText: color.accentText,
+    orangeSoft: color.accentWash,
+    gold: color.gold,
+    ink08: 'rgba(15, 74, 88, 0.08)',
+    ink15: color.primaryLine,
+    ink40: color.faint,
+    ink70: color.body,
+    fireBg: color.primaryDeep,
+    fireText: color.onDark,
+    fire60: color.onDarkMuted,
+    success: color.live,
 };
 
 const fonts = {
-    body: "'Figtree', sans-serif",
-    display: "'Cormorant Garamond', serif",
+    body: font.body,
+    display: font.display,
+    script: font.script,
 };
 
 const bounce = keyframes`
@@ -137,7 +141,7 @@ export const Bubble = styled.div<{ $role: 'ai' | 'user'; $show: boolean }>`
             : css`
                   align-self: flex-end;
                   background: ${colors.orange};
-                  color: ${colors.cream};
+                  color: ${colors.onAccent};
                   border-bottom-right-radius: 4px;
               `}
 `;
@@ -195,7 +199,7 @@ export const ChatPlayButton = styled.button`
     font-family: ${fonts.body};
     font-size: 13px;
     font-weight: 500;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     background: transparent;
     border: none;
     border-radius: 10px;
@@ -279,7 +283,7 @@ export const VoiceMicButton = styled.button<{ $on: boolean }>`
         $on &&
         css`
             background: ${colors.orange};
-            color: ${colors.cream};
+            color: ${colors.onAccent};
             border-color: ${colors.orange};
             box-shadow: 0 0 0 4px ${colors.orangeSoft};
         `}
@@ -374,7 +378,7 @@ export const McEra = styled.span`
     font-weight: 600;
     letter-spacing: 0.07em;
     text-transform: uppercase;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     background: ${colors.orangeSoft};
     padding: 3px 10px;
     border-radius: 20px;
@@ -476,7 +480,7 @@ export const DemoEndPrimary = styled(Link)`
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.5px;
-    color: ${colors.cream};
+    color: ${colors.onAccent};
     background: ${colors.orange};
     border-radius: 30px;
     padding: 11px 20px;

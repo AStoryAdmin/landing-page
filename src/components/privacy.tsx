@@ -1,3 +1,5 @@
+import Seo from './ui/Seo';
+import { breadcrumbSchema, organizationSchema } from '../lib/seo';
 import {CardView, Label, HeroSection, HeroTitle, HeroSub, LegalMeta, BodySection, LegalContent, Toc, TocLabel, TocList, TocItem, TocLink, Section, SectionNum, SectionTitle, Paragraph, List, ListItem, LegalLink, Bold} from './privacy.styles';
 
 const sections = [
@@ -21,6 +23,18 @@ const sections = [
 const Privacy = () => {
     return (
         <>
+            <Seo
+                title="Privacy policy — A Story"
+                description="What we collect, what we never do with it, and how a storyteller stays in control. We do not sell data and we do not train AI models on your stories."
+                path="/privacy"
+                schema={[
+                    organizationSchema(),
+                    breadcrumbSchema([
+                        { name: 'Home', path: '/' },
+                        { name: 'Privacy policy', path: '/privacy' },
+                    ]),
+                ]}
+            />
             <HeroSection>
                 <CardView>
                     <Label>Legal</Label>

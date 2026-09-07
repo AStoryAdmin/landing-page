@@ -1,19 +1,23 @@
 import styled from 'styled-components';
+import { color, font } from '../styles/theme';
 
 const colors = {
-    dark: '#120E08',
-    ink: '#2B2117',
-    softInk: '#5C4A38',
-    cream: '#EFE6D4',
-    paper: '#F6EFE2',
-    orange: '#b45a2b',
-    gold: '#C7A24E',
-    line: 'rgba(43, 33, 23, 0.12)',
+    dark: color.primaryDeep,
+    ink: color.ink,
+    softInk: color.bodyMuted,
+    cream: color.ivory,
+    paper: color.paper,
+    orange: color.accent,
+    onAccent: color.paperPure,
+    orangeText: color.accentText,
+    gold: color.gold,
+    line: color.primaryLine,
 };
 
 const fonts = {
-    body: "'Figtree', sans-serif",
-    display: "'Cormorant Garamond', serif",
+    body: font.body,
+    display: font.display,
+    script: font.script,
 };
 
 export const Page = styled.div`
@@ -54,7 +58,7 @@ export const Avatar = styled.div<{ $img?: string }>`
     display: flex;
     align-items: center;
     justify-content: center;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     font-family: ${fonts.display};
     font-size: 42px;
 `;
@@ -105,7 +109,7 @@ export const Era = styled.p`
     letter-spacing: 3px;
     font-size: 12px;
     font-weight: 700;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     margin: 0 0 8px;
 `;
 

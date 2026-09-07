@@ -1,50 +1,99 @@
-import { FooterContainer, FooterLogo, Grid, HeaderColumn, Column, Subtitle, Section, Page, Divider, BottomRow, License, Email, Platform} from './footer.styles';
+import { useLocation } from 'react-router-dom';
+import Logo from './ui/Logo';
+import { Button } from './ui/primitives';
+import { SITE } from '../lib/seo';
+import {
+    BottomLinks, BottomRow, BrandColumn, BrandLine, Column, CtaActions, CtaBand, CtaInner, CtaSub,
+    CtaTitle, Divider, External, FooterContainer, Inner, Page, Platform, ScriptLine, Section, Top,
+} from './footer.styles';
 
-import logoImg from './../assets/darkLogo.png'
-
+/**
+ * Every marketing page ends the same way: one clear invitation, then the map of
+ * the site. The CTA band is suppressed on /signup, where the page itself is the
+ * conversion surface.
+ */
 const Footer = () => {
+    const { pathname } = useLocation();
+    const showCta = pathname !== '/signup';
+
     return (
-        <FooterContainer>
-                <Grid>
-                    <HeaderColumn>
-                        <FooterLogo to="/">
-                            <img src={logoImg} alt="Dark-mode Story Logo" />
-                            Story
-                        </FooterLogo>
-                        <Subtitle>
-                            A memory-keeping service for families. Made easy for the people who have a lifetime to share.
-                        </Subtitle>
-                    </HeaderColumn>
+        <>
+            {showCta && (
+                <CtaBand aria-labelledby="footer-cta-title">
+                    <CtaInner>
+                        <CtaTitle id="footer-cta-title">
+                            The stories are still here. <em>The chance to ask is the part that runs out.</em>
+                        </CtaTitle>
+                        <CtaSub>
+                            Start with one conversation this week — a parent, a founder, a resident, a retiring
+                            colleague. We&rsquo;ll handle the rest.
+                        </CtaSub>
+                        <CtaActions>
+                            <Button to="/signup" $variant="gold">Start a story — free</Button>
+                            <Button to="/signup?for=organization" $variant="onDark">Talk to us about your organization</Button>
+                        </CtaActions>
+                    </CtaInner>
+                </CtaBand>
+            )}
 
-                    <Column>
-                        <Section>Product</Section>
-                        <Page to="/">Home</Page>
-                        <Page to="/experience">The Experience</Page>
-                        <Page to="/family">For Families</Page>
-                        <Page to="/institution">For Institutions</Page>
-                    </Column>
+            <FooterContainer>
+                <Inner>
+                    <Top>
+                        <BrandColumn>
+                            <Logo size={34} tone="dark" showTagline={false} />
+                            <ScriptLine>The memories &amp; Life Story</ScriptLine>
+                            <BrandLine>
+                                A Story keeps what people carry — for families, for care communities, and for
+                                organizations whose history deserves to outlive the people who made it.
+                            </BrandLine>
+                        </BrandColumn>
 
-                    <Column>
-                        <Section>Company</Section>
-                        <Page to="/story">Our story</Page>
-                        <Page to="/signup">Contact</Page>
-                    </Column>
+                        <Column>
+                            <Section>Product</Section>
+                            <Page to="/experience">How it works</Page>
+                            <Page to="/pricing">Pricing</Page>
+                            <Page to="/experience#demo">Live demo</Page>
+                            <Page to="/experience#book">The keepsake book</Page>
+                        </Column>
 
-                    <Column>
-                        <Section>Legal</Section>
-                        <Page to="/terms">Terms of service</Page>
-                        <Page to="/privacy">Privacy policy</Page>
-                        <Page to="/faq">FAQ</Page>
-                    </Column>
-                </Grid>
-                <Divider />
-                <BottomRow>
-                    <License>&#169; 2026 A Story. All rights reserved.</License>
-                    <Email>contact@astoryapp.com</Email>
-                    <Platform>Web &middot; iOS &middot; Android</Platform>
-                </BottomRow>
-        </FooterContainer>
-        
-    )
-}
+                        <Column>
+                            <Section>Who it&rsquo;s for</Section>
+                            <Page to="/family">Families</Page>
+                            <Page to="/organizations">Organizations</Page>
+                            <Page to="/institution">Care communities</Page>
+                            <Page to="/signup?for=organization">Book a demo</Page>
+                        </Column>
+
+                        <Column>
+                            <Section>Company</Section>
+                            <Page to="/story">Our story</Page>
+                            <Page to="/faq">FAQ</Page>
+                            <External href={`mailto:${SITE.email}`}>Contact</External>
+                            <Page to="/signup">Early access</Page>
+                        </Column>
+
+                        <Column>
+                            <Section>Trust</Section>
+                            <Page to="/privacy">Privacy policy</Page>
+                            <Page to="/terms">Terms of service</Page>
+                            <Page to="/organizations#security">Security &amp; compliance</Page>
+                            <Page to="/institution#compliance">Data commitments</Page>
+                        </Column>
+                    </Top>
+
+                    <Divider />
+
+                    <BottomRow>
+                        <span>&copy; {new Date().getFullYear()} A Story. All rights reserved.</span>
+                        <BottomLinks>
+                            <External href={`mailto:${SITE.email}`}>{SITE.email}</External>
+                            <Platform>Web &middot; iOS &middot; Android</Platform>
+                        </BottomLinks>
+                    </BottomRow>
+                </Inner>
+            </FooterContainer>
+        </>
+    );
+};
+
 export default Footer;

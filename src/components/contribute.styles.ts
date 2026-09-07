@@ -1,21 +1,25 @@
 import styled from 'styled-components';
+import { color, font } from '../styles/theme';
 
 const colors = {
-    dark: '#120E08',
-    ink: '#2B2117',
-    softInk: '#5C4A38',
-    cream: '#EFE6D4',
-    paper: '#F6EFE2',
-    orange: '#b45a2b',
-    orangeHover: '#8C3E18',
-    green: '#5A9E6F',
-    red: '#c0392b',
-    line: 'rgba(43, 33, 23, 0.14)',
+    dark: color.primaryDeep,
+    ink: color.ink,
+    softInk: color.bodyMuted,
+    cream: color.ivory,
+    paper: color.paper,
+    orange: color.accent,
+    onAccent: color.paperPure,
+    orangeText: color.accentText,
+    orangeHover: color.accentHover,
+    green: color.live,
+    red: color.error,
+    line: color.primaryLine,
 };
 
 const fonts = {
-    body: "'Figtree', sans-serif",
-    display: "'Cormorant Garamond', serif",
+    body: font.body,
+    display: font.display,
+    script: font.script,
 };
 
 export const Page = styled.div`
@@ -56,7 +60,7 @@ export const Avatar = styled.div<{ $img?: string }>`
     display: flex;
     align-items: center;
     justify-content: center;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     font-family: ${fonts.display};
     font-size: 34px;
 `;
@@ -180,7 +184,7 @@ export const Submit = styled.button`
     border-radius: 999px;
     border: none;
     background: ${colors.orange};
-    color: ${colors.cream};
+    color: ${colors.onAccent};
     font-family: ${fonts.body};
     font-size: 16px;
     font-weight: 600;
@@ -244,7 +248,7 @@ export const Again = styled.button`
     margin-top: 18px;
     background: none;
     border: none;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     font-family: ${fonts.body};
     font-size: 15px;
     font-weight: 600;
