@@ -1,4 +1,5 @@
 import { CONTACT } from '../lib/contact';
+import { PRICE } from '../lib/pricing';
 import Seo from './ui/Seo';
 import { breadcrumbSchema, organizationSchema } from '../lib/seo';
 import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, DemoButtonAnchor, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription} from './experience.styles'
@@ -141,7 +142,7 @@ const Experience = () => {
                 </CardView>
             </AIContainer>
 
-            <InteractiveBookContainer>
+            <InteractiveBookContainer id="book">
                 <CardView>
                     <Intro>See a real example</Intro>
                     <Title>Tap through <HighlightText>Margaret's story.</HighlightText></Title>
@@ -170,11 +171,11 @@ const Experience = () => {
                             </BulletList>
 
                             <PriceBox>
-                                <Price>$79 &ndash; $129</Price>
+                                <Price>{PRICE.gift}</Price>
                                 <PriceDivider />
                                 <PriceDetails>
-                                    <span>Hardcover, ships in 3&ndash;4 weeks</span>
-                                    <span>Digital archive always included, free</span>
+                                    <span>One payment &middot; hardcover included</span>
+                                    <span>Ships 3&ndash;4 weeks after you approve it</span>
                                 </PriceDetails>
                             </PriceBox>
                         </Summary>

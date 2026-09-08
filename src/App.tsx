@@ -5,7 +5,7 @@ import GlobalStyle from './styles/global';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
 import Home from './components/home';
-import ScrollToTop from './components/scrollToTop';
+import RouteTransition from './components/ui/RouteTransition';
 
 /*
  * Only the home page ships in the initial bundle. Every other route is a
@@ -40,9 +40,11 @@ function MarketingLayout() {
         <>
             <Navbar />
             <Main id="main">
-                <Suspense fallback={<RouteFallback />}>
-                    <Outlet />
-                </Suspense>
+                <RouteTransition>
+                    <Suspense fallback={<RouteFallback />}>
+                        <Outlet />
+                    </Suspense>
+                </RouteTransition>
             </Main>
             <Footer />
         </>
@@ -52,9 +54,11 @@ function MarketingLayout() {
 /** Shared archive and contribute flows are standalone — no marketing chrome. */
 function BareLayout() {
     return (
-        <Suspense fallback={<RouteFallback />}>
-            <Outlet />
-        </Suspense>
+        <RouteTransition>
+            <Suspense fallback={<RouteFallback />}>
+                <Outlet />
+            </Suspense>
+        </RouteTransition>
     );
 }
 
@@ -63,7 +67,6 @@ function App() {
         <BrowserRouter>
             <GlobalStyle />
             <a className="skip-link" href="#main">Skip to content</a>
-            <ScrollToTop />
             <Routes>
                 <Route element={<BareLayout />}>
                     <Route path="/p/:slug" element={<PublicStory />} />

@@ -426,7 +426,7 @@ export const CtaActions = styled.div`
 `;
 
 export const TrustBarInner = styled(CardView)`
-    padding: 0 80px;
+    padding: 0 clamp(20px, 5vw, 80px);
 `;
 
 export const QuoteCardView = styled(CardView)`

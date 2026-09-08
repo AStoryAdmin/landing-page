@@ -35,6 +35,12 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
+    /*
+     * Scroll anchoring fights the route transition: when a lazy route's
+     * placeholder is replaced by the real page, the browser "helpfully" keeps
+     * the reader's position, leaving every navigation a little below the top.
+     */
+    overflow-anchor: none;
   }
 
   h1, h2, h3, h4 {

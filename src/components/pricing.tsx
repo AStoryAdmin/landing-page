@@ -1,104 +1,69 @@
-import { CONTACT } from '../lib/contact';
 import Seo from './ui/Seo';
 import Reveal from './ui/Reveal';
-import { Actions, ButtonAnchor, Container, Eyebrow, H2, Lead, Note, Section } from './ui/primitives';
+import { Actions, Button, ButtonAnchor, Container, Eyebrow, H2, Lead, Note, Section } from './ui/primitives';
 import { IconArrow, IconCheck } from './ui/icons';
+import { CONTACT } from '../lib/contact';
+import { PRICE } from '../lib/pricing';
 import { breadcrumbSchema, faqSchema, organizationSchema } from '../lib/seo';
-import { DriverTable, HonestGrid, HonestItem, Page, Plan, PlanGrid } from './pricing.styles';
+import {
+    CompareItem, CompareRow, DriverTable, HonestGrid, HonestItem, IncludedList, Page, Price,
+    PriceActions, PriceCard, PriceNote, PriceSub, ProgramCard, ProgramGrid,
+} from './pricing.styles';
 
-/*
- * Pricing lives in one place so it can be updated without touching layout.
- * The family plan is genuinely free during early access and the two programme
- * plans are quoted per engagement, so no number is invented here. When list
- * prices are set, change `price` and `priceNote` and nothing else.
+const INCLUDED = [
+    'A card and a link to give, with your note on it',
+    'Unlimited guided voice interviews',
+    'One hardcover book, edited and laid out',
+    'A private archive, organised by chapter of life',
+    'Photos attached to the memory they belong to',
+    'As many family members as you like — free',
+    'Searchable transcripts and the original audio',
+    'Full export of everything, whenever you ask',
+];
+
+/**
+ * The comparison every gift buyer runs in their head anyway. Naming it is more
+ * persuasive than defending the number in the abstract.
  */
-const PLANS = [
-    {
-        audience: 'The gift',
-        name: 'A Story for one person',
-        price: 'Free',
-        priceNote: 'The archive, free while we are in early access',
-        blurb:
-            'Everything needed to capture one person’s life story and hand it to the whole family. You buy once; there is no per-person charge for anyone you share it with.',
-        features: [
-            'A card and a link to give, with your note on it',
-            'Unlimited guided voice interviews',
-            'Private archive, organized by chapter of life',
-            'Photo uploads attached to the right memory',
-            'Invite as many family members as you like — free',
-            'Searchable transcripts and saved audio',
-            'A personal hand-hold from us if they get stuck',
-            'Full export whenever you want it',
-        ],
-        cta: { label: "Start your family's story", href: CONTACT.gift, variant: 'primary' as const },
-        foot: 'The hardcover keepsake is $79–$129 depending on length, plus shipping, and is always quoted before you order. The digital archive is free.',
-    },
-    {
-        audience: 'Organizations',
-        name: 'Heritage program',
-        price: 'Quoted',
-        priceNote: 'Per program · scoped on a 30-minute call',
-        blurb:
-            'Founder interviews, retiring-employee capture, anniversary archives and onboarding libraries — run as a program rather than a one-off project.',
-        features: [
-            'Everything in Early access',
-            'Prompt sets built for your organization',
-            'Role-based access and admin controls',
-            'Searchable institutional archive',
-            'Printed hardcover company history',
-            'Onboarding story library, curated by theme',
-            'DPA, security documentation, named contact',
-        ],
-        cta: { label: 'Book a demo', href: CONTACT.organization, variant: 'gold' as const },
-        featured: true,
-        flag: 'Most requested',
-        foot: 'Priced by number of storytellers and whether you want a printed volume. No per-seat licensing for listeners.',
-    },
-    {
-        audience: 'Care communities',
-        name: 'Community program',
-        price: 'Quoted',
-        priceNote: 'Per community · live within a week',
-        blurb:
-            'Reminiscence as a standing activity for senior living, memory care and hospice — designed to be low-burden for staff.',
-        features: [
-            'Everything in Early access',
-            'Resident-controlled consent and access',
-            'Staff view of resident life history',
-            'Family sharing across any distance',
-            'Monthly activity guides and prompts',
-            'HIPAA-aligned handling, BAA on request',
-            'Onboarding for new staff, ongoing',
-        ],
-        cta: { label: 'Book a walkthrough', href: CONTACT.community, variant: 'outline' as const },
-        foot: 'Priced per community rather than per resident, so offering it widely never costs you more.',
-    },
+const ALTERNATIVES = [
+    { thing: 'A cashmere jumper', fate: 'Worn twice. In a charity bag by the spring after next.' },
+    { thing: 'Dinner for four', fate: 'A lovely evening. Nobody will be able to tell you what they ate.' },
+    { thing: 'Another photo frame', fate: 'One picture, on a shelf, of a day somebody else chose.' },
+    { thing: 'A Story', fate: 'Their whole life, in their voice, read by people not born yet.', ours: true },
 ];
 
 const PRICING_FAQ = [
     {
-        q: 'So what am I actually paying for?',
-        a: 'The hardcover book, at $79–$129 depending on length. The archive itself is free while we are in early access — no card, and no trial that quietly ends. We would rather earn the paid relationship later than extract it now.',
+        q: 'Is that the whole price?',
+        a: `Yes. ${PRICE.gift} covers the interviews, the archive, everyone you invite, and one hardcover book, shipped. There is no subscription, no per-person charge, and nothing that renews behind your back.`,
     },
     {
-        q: 'What does the printed book cost?',
-        a: '$79–$129 depending on page count, plus shipping — quoted before you order, and priced close to what printing and delivery actually cost. The digital archive is free either way, and you are never charged for a book you did not ask for.',
+        q: 'What if the whole family wants a copy of the book?',
+        a: `Extra copies are ${PRICE.extraCopy} each, priced close to what printing and posting actually cost. Most families order them once they have read the first one — there is no rush and no deadline.`,
+    },
+    {
+        q: 'Do I pay again next year?',
+        a: 'No. You are buying a gift, not a subscription. The archive stays open and they can keep adding to it for as long as they want to, at no further cost.',
+    },
+    {
+        q: 'What if they never use it?',
+        a: 'Tell us and we will make it right. We would far rather refund a gift than have it sit there as a reproach — and it costs us nothing to be decent about this.',
     },
     {
         q: 'Why is organization pricing not listed?',
-        a: 'Because a four-person founder archive and a 200-person anniversary program are not the same product. We scope it on a 30-minute call and send a fixed number — no discovery marathon, no seat-count games.',
+        a: 'Because a four-person founder archive and a 200-person anniversary programme are not the same product. We scope it on a 30-minute call and send a fixed number — no discovery marathon, no seat-count games.',
     },
     {
-        q: 'What happens to our archive if we stop paying?',
-        a: 'You keep it. A full export of audio, transcripts, photos and metadata is available on request within 48 hours, in open formats. We do not hold anyone’s history hostage.',
+        q: 'What happens to a programme archive if we stop paying?',
+        a: 'You keep it. A full export of audio, transcripts, photos and metadata is available on request within 48 hours, in open formats, whether or not you are still a customer.',
     },
 ];
 
 const Pricing = () => (
     <Page>
         <Seo
-            title="Pricing — A Story"
-            description="What it costs to give A Story: the archive is free during early access, the hardcover keepsake is $79–$129. Organization and care-community programs are quoted per engagement."
+            title="Pricing — one price, one gift, the whole family"
+            description={`A Story costs ${PRICE.gift} — one payment, including the hardcover book, with no subscription and no charge for the family members you invite. Organization and care-community programmes are quoted per engagement.`}
             path="/pricing"
             schema={[
                 organizationSchema(),
@@ -110,87 +75,69 @@ const Pricing = () => (
             ]}
         />
 
+        {/* ─── The one number ───────────────────────────────────────── */}
         <Section $tone="wash" $tight>
             <Container>
-                <div style={{ maxWidth: 760, marginBottom: 'clamp(40px, 5vw, 64px)' }}>
+                <div style={{ maxWidth: 720, margin: '0 auto clamp(36px, 4vw, 56px)', textAlign: 'center' }}>
                     <Eyebrow>Pricing</Eyebrow>
-                    <H2>Priced so the asking is never the expensive part.</H2>
-                    <Lead>
-                        Giving it costs the price of the book. The archive is free while we are in early
-                        access, and it never costs more because more of the family joined in. Organizations
-                        and care communities are quoted per program on one short call.
+                    <H2>One price. One gift. The whole family.</H2>
+                    <Lead $center>
+                        You pay once, when you give it. Nothing renews, nothing is metered, and inviting
+                        fifteen relatives costs exactly the same as inviting none.
                     </Lead>
                 </div>
 
-                <PlanGrid>
-                    {PLANS.map((p, i) => (
-                        <Reveal key={p.name} delay={i * 90}>
-                            <Plan $featured={p.featured}>
-                                {p.flag && <span className="flag">{p.flag}</span>}
-                                <p className="audience">{p.audience}</p>
-                                <h2>{p.name}</h2>
-                                <div className="price">{p.price}</div>
-                                <p className="priceNote">{p.priceNote}</p>
-                                <p className="blurb">{p.blurb}</p>
-                                <ul>
-                                    {p.features.map((f) => (
-                                        <li key={f}><IconCheck size={16} /><span>{f}</span></li>
-                                    ))}
-                                </ul>
-                                <ButtonAnchor href={p.cta.href} $variant={p.cta.variant}>{p.cta.label}</ButtonAnchor>
-                                <p className="foot">{p.foot}</p>
-                            </Plan>
-                        </Reveal>
-                    ))}
-                </PlanGrid>
+                <Reveal>
+                    <PriceCard>
+                        <Price>{PRICE.gift}</Price>
+                        <PriceNote>{PRICE.giftNote}</PriceNote>
+                        <PriceSub>
+                            Everything below is included. There is no upgrade, no premium tier, and no part
+                            of this held back to sell you later.
+                        </PriceSub>
 
-                <Note style={{ marginTop: 28, textAlign: 'center' }}>
-                    Every plan includes a full export of everything you record. Prices are quoted before you
-                    commit to anything.
+                        <IncludedList>
+                            {INCLUDED.map((item) => (
+                                <li key={item}><IconCheck size={16} /><span>{item}</span></li>
+                            ))}
+                        </IncludedList>
+
+                        <PriceActions>
+                            <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
+                            <Button to="/experience" $variant="outline">See what they receive</Button>
+                        </PriceActions>
+                    </PriceCard>
+                </Reveal>
+
+                <Note style={{ marginTop: 24, textAlign: 'center' }}>
+                    Extra copies of the book are {PRICE.extraCopy} each, at close to printing cost. Nothing
+                    else costs anything, ever.
                 </Note>
             </Container>
         </Section>
 
-        {/* ─── What drives the number ───────────────────────────────── */}
+        {/* ─── What else that buys ──────────────────────────────────── */}
         <Section $tone="ivory" $tight>
             <Container>
                 <div style={{ maxWidth: 760, marginBottom: 'clamp(32px, 4vw, 48px)' }}>
-                    <Eyebrow>How a quote is built</Eyebrow>
-                    <H2>You should be able to predict the number before we send it.</H2>
+                    <Eyebrow>Worth comparing</Eyebrow>
+                    <H2>You were going to spend it anyway.</H2>
                     <Lead>
-                        Three things move the price. Nothing else does — not the number of people who read the
-                        archive, not how much you record, not how long you keep it.
+                        The honest question is not whether {PRICE.gift} is a lot. It is what the same money
+                        buys if you spend it the way you did last year.
                     </Lead>
                 </div>
 
-                <DriverTable tabIndex={0} role="region" aria-label="What moves the price, scrolls horizontally">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th scope="col">What moves the price</th>
-                                <th scope="col">How it works</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">Storytellers</th>
-                                <td>How many people you want interviewed. Three founders is a small program; a hundred-person anniversary project is a large one.</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Printed volumes</th>
-                                <td>Whether you want a hardcover history, and how many copies. Editing and layout are included in the program; printing is at cost.</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Hands-on facilitation</th>
-                                <td>Whether A Story runs the interviews on its own, or a person from our side steers the flagship sessions with you.</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Not: listeners or storage</th>
-                                <td>Everyone who should read the archive can. We do not charge per viewer, per gigabyte, or per year of retention.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </DriverTable>
+                <CompareRow>
+                    {ALTERNATIVES.map((a, i) => (
+                        <Reveal key={a.thing} delay={i * 80}>
+                            <CompareItem $ours={a.ours}>
+                                <p className="thing">{a.thing}</p>
+                                <p className="fate">{a.fate}</p>
+                            </CompareItem>
+                        </Reveal>
+                    ))}
+                </CompareRow>
             </Container>
         </Section>
 
@@ -203,12 +150,12 @@ const Pricing = () => (
                 </div>
                 <HonestGrid>
                     <HonestItem>
-                        <h3>No lock-in</h3>
-                        <p>A full export — audio, transcripts, photos, metadata — is available on request within 48 hours, in open formats, whether or not you are still a customer.</p>
+                        <h3>No subscription</h3>
+                        <p>This is a gift, and gifts do not renew. You will never get an email telling you that their memories are about to lapse.</p>
                     </HonestItem>
                     <HonestItem>
-                        <h3>No surprise renewal</h3>
-                        <p>Program pricing is fixed for the term. We tell you before anything renews, in plain language, and a decision not to renew costs you nothing.</p>
+                        <h3>No charge per person</h3>
+                        <p>Invite the whole family. Every extra person makes the archive better, and none of them costs you a penny.</p>
                     </HonestItem>
                     <HonestItem>
                         <h3>No selling of anything</h3>
@@ -216,14 +163,84 @@ const Pricing = () => (
                     </HonestItem>
                     <HonestItem>
                         <h3>No paywalled memories</h3>
-                        <p>If a plan lapses, the archive is not deleted and the stories are not held hostage. You will always be able to retrieve what belongs to you.</p>
+                        <p>Nothing is ever locked behind a later payment. A full export — audio, transcripts, photos — is available on request, always.</p>
                     </HonestItem>
                 </HonestGrid>
             </Container>
         </Section>
 
+        {/* ─── Programmes ───────────────────────────────────────────── */}
+        <Section $tone="ivory" $tight id="programmes">
+            <Container>
+                <div style={{ maxWidth: 760, marginBottom: 'clamp(32px, 4vw, 48px)' }}>
+                    <Eyebrow>Not buying a present?</Eyebrow>
+                    <H2>Programmes are quoted, not listed.</H2>
+                    <Lead>
+                        Organizations and care communities run this at a different scale and for a different
+                        reason. One short call, then a fixed number.
+                    </Lead>
+                </div>
+
+                <ProgramGrid>
+                    <ProgramCard>
+                        <p className="audience">Organizations</p>
+                        <h3>Heritage programme</h3>
+                        <p className="quote">Per programme &middot; scoped on a 30-minute call</p>
+                        <p className="blurb">
+                            Founder interviews, retiring-employee capture, anniversary archives and
+                            onboarding libraries &mdash; run as a programme rather than a one-off project,
+                            with role-based access, a printed company history and a named contact.
+                        </p>
+                        <ButtonAnchor href={CONTACT.organization} $variant="teal">Book a demo</ButtonAnchor>
+                    </ProgramCard>
+                    <ProgramCard>
+                        <p className="audience">Care communities</p>
+                        <h3>Community programme</h3>
+                        <p className="quote">Per community &middot; live within a week</p>
+                        <p className="blurb">
+                            Reminiscence as a standing activity for senior living, memory care and hospice.
+                            Priced per community rather than per resident, so offering it widely never costs
+                            you more. HIPAA-aligned handling, BAA on request.
+                        </p>
+                        <ButtonAnchor href={CONTACT.community} $variant="outline">Book a walkthrough</ButtonAnchor>
+                    </ProgramCard>
+                </ProgramGrid>
+
+                <div style={{ marginTop: 'clamp(32px, 4vw, 48px)' }}>
+                    <DriverTable tabIndex={0} role="region" aria-label="What moves a programme quote, scrolls horizontally">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">What moves a programme quote</th>
+                                    <th scope="col">How it works</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Storytellers</th>
+                                    <td>How many people you want interviewed. Three founders is a small programme; a hundred-person anniversary project is a large one.</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Printed volumes</th>
+                                    <td>Whether you want a hardcover history, and how many copies. Editing and layout are included; printing is at cost.</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Hands-on facilitation</th>
+                                    <td>Whether A Story runs the interviews on its own, or someone from our side steers the flagship sessions with you.</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Not: listeners or storage</th>
+                                    <td>Everyone who should read the archive can. We do not charge per viewer, per gigabyte, or per year of retention.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </DriverTable>
+                </div>
+            </Container>
+        </Section>
+
         {/* ─── FAQ ──────────────────────────────────────────────────── */}
-        <Section $tone="ivory" $tight>
+        <Section $tone="paper" $tight>
             <Container>
                 <div style={{ maxWidth: 760, marginBottom: 'clamp(32px, 4vw, 48px)' }}>
                     <Eyebrow>Pricing questions</Eyebrow>
@@ -239,7 +256,7 @@ const Pricing = () => (
                 </HonestGrid>
                 <Actions>
                     <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
-                    <ButtonAnchor href={CONTACT.organization} $variant="outline">Get a program quote <IconArrow /></ButtonAnchor>
+                    <Button to="/faq" $variant="ghost">Read every question <IconArrow /></Button>
                 </Actions>
             </Container>
         </Section>

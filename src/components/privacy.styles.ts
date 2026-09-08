@@ -25,7 +25,7 @@ const fonts = {
 export const CardView = styled.div`
     max-width: 1300px;
     margin: 0 auto;
-    padding: 0 80px;
+    padding: 0 clamp(20px, 5vw, 80px);
 `;
 
 export const Label = styled.span`
@@ -75,7 +75,7 @@ export const BodySection = styled.div`
 `;
 
 export const LegalContent = styled.div`
-    max-width: 720px;
+    max-width: 1080px;
 `;
 
 export const Toc = styled.nav`

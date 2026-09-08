@@ -235,8 +235,8 @@ const faqGroups: FaqGroupData[] = [
                 question: 'What does A Story cost?',
                 answer: (
                     <>
-                        <AnswerParagraph>For families, A Story is free while we are in early access &mdash; no card, no trial clock. That covers unlimited guided interviews, the private archive, family contributions, searchable transcripts and a full export whenever you want one. Families who join now keep preferred pricing when we launch publicly.</AnswerParagraph>
-                        <AnswerParagraph>The printed hardcover keepsake is separate: $79&ndash;$129 depending on page count, plus shipping, and always quoted before you order. Organization and care-community programmes are quoted per engagement on a 30-minute call.</AnswerParagraph>
+                        <AnswerParagraph>$149, once. That covers the guided interviews, the private archive, everyone in the family you invite, searchable transcripts, a full export whenever you want one, and one hardcover book. There is no subscription and no per-person charge.</AnswerParagraph>
+                        <AnswerParagraph>Extra copies of the book, for the rest of the family, are $59 each &mdash; close to what printing and posting cost. Organization and care-community programmes are quoted per engagement on a 30-minute call.</AnswerParagraph>
                         <AnswerParagraph>
                             <Bold><Link to="/pricing">See the full pricing breakdown</Link></Bold>, or{' '}
                             <LegalLink href="mailto:contact@astoryapp.com?subject=Book a Demo">book a free 20-minute demo</LegalLink>.

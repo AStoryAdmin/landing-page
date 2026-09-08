@@ -25,7 +25,7 @@ const fonts = {
 export const Container = styled.div`
     max-width: 1300px;
     margin: 0 auto;
-    padding: 0 80px;
+    padding: 0 clamp(20px, 5vw, 80px);
 `;
 
 export const NarrowContainer = styled(Container)`

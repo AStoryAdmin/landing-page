@@ -138,6 +138,16 @@ the recipient receives.
 Only the home page ships in the initial bundle; every other route is a separate
 chunk fetched on navigation.
 
+## Pricing
+
+One number, defined once in **`src/lib/pricing.ts`**, read by the home page,
+the pricing page, the experience page and the FAQ. The file also records *why*
+the pricing is shaped this way — a one-time gift price rather than a free
+archive plus a paid book — which matters more than the figure.
+
+**The figure itself is a recommendation, not a decision.** Validate it against
+your cost of goods and change the constant.
+
 ## Calls to action
 
 There is no signup form. Every conversion path on the site is a `mailto:` with
@@ -183,6 +193,27 @@ non-3D album layout below 700px.
 
 ---
 
+## Route transitions
+
+`src/components/ui/RouteTransition.tsx` handles what happens between pages, and
+it is fussier than it looks. Three things bite here, all documented in the file:
+
+- The global stylesheet needs `scroll-behavior: smooth` for in-page anchors,
+  which turns a programmatic `scrollTo(0, 0)` into an animated ride back up
+  through the page you just left. The reset temporarily suspends it.
+- The component must sit **outside** `<Suspense>`. Inside it, a lazy route chunk
+  suspends the subtree, so it unmounted on every navigation and its effect never
+  ran at all.
+- Chrome's scroll anchoring re-pins the position when the route placeholder is
+  swapped for real content, which left every navigation a few dozen pixels below
+  the top. Disabled on `body`.
+
+Anchors on other pages (`/experience#book`) belong to a chunk that has not
+loaded yet, so the target is polled for briefly rather than abandoned on the
+first frame.
+
+---
+
 ## Known follow-ups
 
 - `src/assets/astoryDaniel.webp` and `astoryBao.webp` are generated brand
@@ -194,6 +225,9 @@ non-3D album layout below 700px.
 - The gift card shown on the home page is rendered from CSS, not a photograph,
   so it always matches the brand. The real artefact a buyer receives does not
   exist yet — building it is the obvious next step, and the copy promises it.
+- The terms now promise a refund for a gift that goes unused, and the privacy
+  policy describes the buyer/storyteller split. Both need a lawyer's eye before
+  launch; they are written to be honest, not to be authoritative.
 - Testimonials are hard-coded in `src/components/home.tsx`, and the
   announcement strip above the navbar is in `src/components/navbar.tsx`.
 - The book price ($79–$129) appears on `/experience`, `/pricing` and `/faq`.

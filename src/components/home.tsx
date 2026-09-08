@@ -8,12 +8,13 @@ import {
     IconLock, IconMic, IconNoTrain, IconShield, IconUsers,
 } from './ui/icons';
 import { CONTACT } from '../lib/contact';
+import { PRICE } from '../lib/pricing';
 import { faqSchema, organizationSchema, productSchema } from '../lib/seo';
 import productImg from './../assets/astoryProduct.webp';
 import {
     AlsoBand, AlsoCard, AlsoGrid, Divider, FaqItem, FaqList, Feature, FeatureList, GiftCard,
     HandoverSplit, Hero, HeroActions, HeroBadge, HeroCopy, HeroInner, HeroSub, HeroTitle, HeroTrust,
-    No, Objection, ObjectionGrid, Page, ProofImage, ProofSplit, PromiseCard, PromiseGrid, PullQuote,
+    No, Objection, ObjectionGrid, Page, PriceStrip, ProofImage, ProofSplit, PromiseCard, PromiseGrid, PullQuote,
     QuoteCard, QuoteGrid, SectionHead, StatGrid, StatItem, Step, StepGrid, StepNumber, StepText,
     StepTitle, Table, TableWrap, Tag, TagRow, Yes,
 } from './home.styles';
@@ -148,9 +149,19 @@ const Home = () => (
                     </StepGrid>
                 </Reveal>
 
-                <Actions $center>
+                <PriceStrip>
+                    <div>
+                        <p className="amount">{PRICE.gift}</p>
+                    </div>
+                    <p className="what">
+                        <strong>One payment, and the hardcover book is in it.</strong> No subscription, and
+                        no charge for the relatives you invite &mdash; however many of them there are.
+                    </p>
                     <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
-                    <Button to="/pricing" $variant="ghost">What it costs <IconArrow /></Button>
+                </PriceStrip>
+
+                <Actions $center>
+                    <Button to="/pricing" $variant="ghost">See exactly what is included <IconArrow /></Button>
                 </Actions>
             </Container>
         </Section>

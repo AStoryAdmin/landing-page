@@ -203,6 +203,42 @@ export const StepText = styled.p`
     flex: 1;
 `;
 
+export const PriceStrip = styled.div`
+    margin-top: clamp(28px, 3vw, 40px);
+    padding: clamp(22px, 2.6vw, 30px) clamp(24px, 3vw, 40px);
+    background: ${color.primaryWash};
+    border: 1px solid ${color.primaryLine};
+    border-radius: ${radius.lg};
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: ${space.lg};
+
+    .amount {
+        font-family: ${font.display};
+        font-size: clamp(2.25rem, 1.6rem + 2.4vw, 3rem);
+        font-weight: ${weight.light};
+        line-height: 1;
+        letter-spacing: ${tracking.display};
+        color: ${color.primary};
+    }
+
+    .what {
+        font-size: ${type.sm};
+        line-height: ${leading.relaxed};
+        color: ${color.bodyMuted};
+        max-width: 52ch;
+    }
+
+    strong { color: ${color.ink}; font-weight: ${weight.semibold}; }
+
+    ${media.md} {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+`;
+
 /* ── What you actually hand over ──────────────────────────────────────── */
 
 export const HandoverSplit = styled.div`

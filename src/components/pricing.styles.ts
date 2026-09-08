@@ -5,92 +5,52 @@ export const Page = styled.div`
     background: ${color.ivory};
 `;
 
-export const PlanGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: ${space.lg};
-    align-items: stretch;
+/* ── The one price ────────────────────────────────────────────────────── */
 
-    ${media.lg} { grid-template-columns: 1fr; max-width: 560px; margin-inline: auto; }
+export const PriceCard = styled.div`
+    max-width: 720px;
+    margin-inline: auto;
+    text-align: center;
+    background: ${color.paperPure};
+    border: 1px solid ${color.primaryLine};
+    border-radius: ${radius.xl};
+    padding: clamp(32px, 4vw, 56px);
+    box-shadow: ${shadow.md};
 `;
 
-export const Plan = styled.div<{ $featured?: boolean }>`
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: clamp(26px, 3vw, 36px);
-    border-radius: ${radius.xl};
-    background: ${({ $featured }) => ($featured ? color.primary : color.paperPure)};
-    border: 1px solid ${({ $featured }) => ($featured ? color.primary : color.primaryLine)};
-    box-shadow: ${({ $featured }) => ($featured ? shadow.lg : shadow.sm)};
-    position: relative;
-    transition: transform ${motion.base}, box-shadow ${motion.base};
+export const Price = styled.p`
+    font-family: ${font.display};
+    font-size: clamp(4rem, 2.4rem + 6vw, 7rem);
+    font-weight: ${weight.light};
+    line-height: 1;
+    letter-spacing: ${tracking.display};
+    color: ${color.primary};
+`;
 
-    &:hover { transform: translateY(-3px); box-shadow: ${shadow.lg}; }
+export const PriceNote = styled.p`
+    margin-top: ${space.sm};
+    font-size: ${type.sm};
+    font-weight: ${weight.semibold};
+    letter-spacing: ${tracking.wide};
+    color: ${color.accentText};
+`;
 
-    .flag {
-        position: absolute;
-        top: -13px;
-        left: clamp(26px, 3vw, 36px);
-        font-size: ${type.caption};
-        font-weight: ${weight.bold};
-        letter-spacing: ${tracking.eyebrow};
-        text-transform: uppercase;
-        color: ${color.primaryDeep};
-        background: ${color.gold};
-        border-radius: ${radius.pill};
-        padding: 5px 14px;
-    }
+export const PriceSub = styled.p`
+    margin: ${space.lg} auto 0;
+    max-width: 46ch;
+    font-size: ${type.sm};
+    line-height: ${leading.relaxed};
+    color: ${color.bodyMuted};
+`;
 
-    .audience {
-        font-size: ${type.caption};
-        font-weight: ${weight.bold};
-        letter-spacing: ${tracking.eyebrow};
-        text-transform: uppercase;
-        color: ${({ $featured }) => ($featured ? color.goldText : color.accentText)};
-        margin-bottom: ${space.sm};
-    }
-
-    h2 {
-        font-family: ${font.display};
-        font-size: 2rem;
-        font-weight: ${weight.medium};
-        color: ${({ $featured }) => ($featured ? color.onDark : color.ink)};
-        margin-bottom: ${space.xs};
-    }
-
-    .price {
-        font-family: ${font.display};
-        font-size: 2.75rem;
-        font-weight: ${weight.light};
-        line-height: 1.1;
-        letter-spacing: ${tracking.display};
-        color: ${({ $featured }) => ($featured ? color.goldText : color.primary)};
-        margin: ${space.md} 0 ${space.xxs};
-    }
-
-    .priceNote {
-        font-size: ${type.xs};
-        color: ${({ $featured }) => ($featured ? color.onDarkFaint : color.faint)};
-        margin-bottom: ${space.lg};
-    }
-
-    .blurb {
-        font-size: ${type.sm};
-        line-height: ${leading.relaxed};
-        color: ${({ $featured }) => ($featured ? color.onDarkMuted : color.bodyMuted)};
-        margin-bottom: ${space.lg};
-    }
-
-    ul {
-        list-style: none;
-        margin: 0 0 ${space.xl};
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        gap: ${space.sm};
-        flex: 1;
-    }
+export const IncludedList = styled.ul`
+    list-style: none;
+    margin: ${space.xl} 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: ${space.sm} ${space.lg};
+    text-align: left;
 
     li {
         display: grid;
@@ -98,20 +58,58 @@ export const Plan = styled.div<{ $featured?: boolean }>`
         gap: ${space.sm};
         font-size: ${type.sm};
         line-height: ${leading.normal};
-        color: ${({ $featured }) => ($featured ? color.onDarkMuted : color.bodyMuted)};
+        color: ${color.body};
     }
 
-    li svg { color: ${({ $featured }) => ($featured ? color.gold : color.accent)}; margin-top: 3px; }
+    li svg { color: ${color.accent}; margin-top: 3px; }
 
-    a { width: 100%; }
+    ${media.sm} { grid-template-columns: 1fr; }
+`;
 
-    .foot {
-        margin-top: ${space.md};
-        font-size: ${type.caption};
-        line-height: 1.5;
-        color: ${({ $featured }) => ($featured ? color.onDarkFaint : color.faint)};
+export const PriceActions = styled.div`
+    margin-top: ${space.xl};
+    display: flex;
+    justify-content: center;
+    gap: ${space.sm};
+    flex-wrap: wrap;
+
+    ${media.xs} { flex-direction: column; }
+`;
+
+/* ── What else that money buys ────────────────────────────────────────── */
+
+export const CompareRow = styled.div`
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: ${space.lg};
+
+    ${media.lg} { grid-template-columns: 1fr 1fr; }
+    ${media.xs} { grid-template-columns: 1fr; }
+`;
+
+export const CompareItem = styled.div<{ $ours?: boolean }>`
+    height: 100%;
+    padding: clamp(20px, 2.2vw, 28px);
+    border-radius: ${radius.lg};
+    background: ${({ $ours }) => ($ours ? color.primary : color.paperPure)};
+    border: 1px solid ${({ $ours }) => ($ours ? color.primary : color.primaryLine)};
+
+    .thing {
+        font-family: ${font.display};
+        font-size: 1.35rem;
+        line-height: ${leading.snug};
+        color: ${({ $ours }) => ($ours ? color.onDark : color.ink)};
+        margin-bottom: ${space.xs};
+    }
+
+    .fate {
+        font-size: ${type.sm};
+        line-height: ${leading.relaxed};
+        color: ${({ $ours }) => ($ours ? color.onDarkMuted : color.bodyMuted)};
     }
 `;
+
+/* ── Commitments ──────────────────────────────────────────────────────── */
 
 export const HonestGrid = styled.div`
     display: grid;
@@ -136,6 +134,64 @@ export const HonestItem = styled.div`
         color: ${color.bodyMuted};
     }
 `;
+
+/* ── The two programme plans, demoted ─────────────────────────────────── */
+
+export const ProgramGrid = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: ${space.lg};
+
+    ${media.md} { grid-template-columns: 1fr; }
+`;
+
+export const ProgramCard = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: clamp(24px, 2.8vw, 34px);
+    border-radius: ${radius.lg};
+    background: ${color.paperPure};
+    border: 1px solid ${color.primaryLine};
+    transition: transform ${motion.base}, box-shadow ${motion.base};
+
+    &:hover { transform: translateY(-2px); box-shadow: ${shadow.md}; }
+
+    .audience {
+        font-size: ${type.caption};
+        font-weight: ${weight.bold};
+        letter-spacing: ${tracking.eyebrow};
+        text-transform: uppercase;
+        color: ${color.accentText};
+        margin-bottom: ${space.sm};
+    }
+
+    h3 {
+        font-family: ${font.display};
+        font-size: 1.75rem;
+        font-weight: ${weight.medium};
+        color: ${color.ink};
+        margin-bottom: ${space.xs};
+    }
+
+    .quote {
+        font-size: ${type.xs};
+        color: ${color.faint};
+        margin-bottom: ${space.md};
+    }
+
+    p.blurb {
+        font-size: ${type.sm};
+        line-height: ${leading.relaxed};
+        color: ${color.bodyMuted};
+        margin-bottom: ${space.lg};
+        flex: 1;
+    }
+
+    a { width: fit-content; }
+`;
+
+/* ── What moves a programme quote ─────────────────────────────────────── */
 
 export const DriverTable = styled.div`
     overflow-x: auto;
