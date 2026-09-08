@@ -5,13 +5,13 @@ import { Actions, Button, ButtonAnchor, Container, Eyebrow, H2, Lead, Note, Sect
 import { IconArrow, IconCheck } from './ui/icons';
 import { CONTACT } from '../lib/contact';
 import { AT_CHECKOUT, buyLabel, checkoutFor } from '../lib/checkout';
-import { FOREVER, PLANS, PRICE } from '../lib/pricing';
+import { FOREVER, KEEPS_LINE, PLANS, PRICE } from '../lib/pricing';
 import { breadcrumbSchema, faqSchema, organizationSchema } from '../lib/seo';
 import {
     BookPrice, BookPrices, BookSplit, CompareItem, CompareRow, DriverTable, ForeverBand, ForeverLead,
     ForeverList, ForeverStops, HonestGrid, HonestItem, IncludedList, Page, PlanAction, PlanBadge,
     PlanBadgeSpacer, PlanBlurb, PlanCard, PlanGrid, PlanMeter, PlanName, PlanPrice, PlanWho,
-    ProgramCard, ProgramGrid, Reassure,
+    PlanKeeps, ProgramCard, ProgramGrid, Reassure,
 } from './pricing.styles';
 
 /**
@@ -54,8 +54,8 @@ const PRICING_FAQ = [
         a: 'Everything except the AI conversations keeps working, forever. The archive stays open and searchable, everyone you invited keeps their access, and the family can go on recording, writing and adding photos as long as they like — using the same question bank the AI was working from. Nothing is deleted and nothing renews behind your back.',
     },
     {
-        q: 'Why is Express more expensive than three months?',
-        a: 'Because it is unlimited, and because it exists for the week when there is no time left to be relaxed about this — a birthday on Saturday, a reunion, someone who has started to decline. It removes every cap at the moment that matters. If you are not in a hurry, you want the three-month package instead, and it costs less.',
+        q: 'Why does The Gathering cost more than three months?',
+        a: 'Because it covers up to five storytellers instead of one. It is built for the week the family is actually in the same house — Tết, Christmas, a reunion, or the week everyone comes home because somebody is ill. Anyone in the room can be interviewed, not just the person you bought it for. If it is one storyteller and you are not in a hurry, the three-month package is the one you want, and it costs less.',
     },
     {
         q: 'Is the hardcover book included?',
@@ -124,6 +124,7 @@ const Pricing = () => (
                                     <p className="note">{plan.meterNote}</p>
                                 </PlanMeter>
                                 <PlanBlurb>{plan.blurb}</PlanBlurb>
+                                <PlanKeeps>{KEEPS_LINE}</PlanKeeps>
                                 <PlanAction>
                                     <ButtonAnchor
                                         href={checkoutFor(plan.id, plan.name)}

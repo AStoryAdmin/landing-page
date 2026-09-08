@@ -37,6 +37,10 @@ import {
     McTranscript,
     McClip,
     McWave,
+    McLinked,
+    McChip,
+    McShared,
+    McAt,
     DemoEndCta,
     DemoEndInner,
     DemoEndLabel,
@@ -95,13 +99,15 @@ function getSpeechRecognitionCtor(): SpeechRecognitionConstructor | undefined {
 }
 
 const SCRIPT: ScriptTurn[] = [
-    { role: 'ai', text: "Tell me about your childhood home. What do you remember most about it?", delay: 500 },
-    { role: 'user', text: "It was a small farmhouse in Kentucky. Three rooms and a big porch that ran the whole front of the house. We didn't have much, but my mother always kept it beautiful.", delay: 2600 },
-    { role: 'ai', text: "That porch sounds like it mattered. What did your family do out there — was it the kind of place people gathered in the evenings?", delay: 3400 },
-    { role: 'user', text: "Every evening after supper. Daddy would sit in his rocking chair and sometimes play guitar. Neighbors would walk over. That porch was where everything happened in summer.", delay: 3100 },
-    { role: 'ai', text: "I love that — music after supper, neighbors drifting over. Do you remember a particular evening that stays with you? A night you'd want your grandchildren to know about?", delay: 3700 },
-    { role: 'user', text: "There was one summer when he played until the fireflies came out. We all went quiet, just listening. I must have been six or seven. I've never forgotten it.", delay: 3200 },
-    { role: 'ai', text: "Fireflies and your father's guitar. Everyone going quiet at the same moment. That's exactly the kind of evening A Story is made for — I'm glad it's written down now.", delay: 3100 },
+    { role: 'ai', text: "Hello — is that Margaret? This is A Story. Your daughter Ellie set this up for you and asked me to call. There's nothing you need to do, and we can stop whenever you like.", delay: 500 },
+    { role: 'user', text: "Oh — yes. She did say something about it. I'm not sure I'm any good at this sort of thing.", delay: 2400 },
+    { role: 'ai', text: "Almost everyone says that, and then they talk for an hour. There's no right way to do it. Can I ask — is there anything you already know you'd want the grandchildren to have?", delay: 2900 },
+    { role: 'user', text: "I suppose I'd want them to know their grandfather. Walter. He passed in '09 and they were very small.", delay: 2700 },
+    { role: 'ai', text: "Then let's start with him. Not his whole life — just one ordinary evening with Walter that you can still see. Where are you?", delay: 2900 },
+    { role: 'user', text: "The porch. Summer evenings after supper — he'd sit out there in the rocking chair with his guitar, and the neighbors would wander over.", delay: 2700 },
+    { role: 'ai', text: "Is there one particular night on that porch? One you'd want them to have?", delay: 2500 },
+    { role: 'user', text: "There was one summer when he played until the fireflies came out. We all went quiet, just listening. I must have been six or seven. I've never forgotten it.", delay: 2800 },
+    { role: 'ai', text: "Fireflies, and everyone going quiet at the same moment. That is exactly the kind of evening nobody ever writes down. It's written down now, Margaret.", delay: 2700 },
 ];
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -115,6 +121,13 @@ const PlayIcon = () => (
 const ChevronIcon = () => (
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <polyline points="6 9 12 15 18 9" />
+    </svg>
+);
+
+const EyeIcon = () => (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
+        <circle cx="12" cy="12" r="3" />
     </svg>
 );
 
@@ -136,9 +149,10 @@ const WAVE_BARS = [5, 9, 14, 8, 16, 11, 6, 13, 9, 15, 7, 12, 5, 10, 14, 8];
  * not a replacement for it.
  */
 const TRANSCRIPT = [
-    { who: 'A Story', text: 'Do you remember a particular evening that stays with you? A night you’d want your grandchildren to know about?' },
-    { who: 'Margaret', text: 'There was one summer when he played until the fireflies came out. We all went quiet, just listening. I must have been six or seven. I’ve never forgotten it.' },
-    { who: 'A Story', text: 'Fireflies and your father’s guitar. Everyone going quiet at the same moment.' },
+    { who: 'A Story', at: '04:12', text: 'Then let’s start with him. Not his whole life — just one ordinary evening with Walter that you can still see. Where are you?' },
+    { who: 'Margaret', at: '04:21', text: 'The porch. Summer evenings after supper — he’d sit out there in the rocking chair with his guitar, and the neighbors would wander over.' },
+    { who: 'A Story', at: '04:39', text: 'Is there one particular night on that porch? One you’d want them to have?' },
+    { who: 'Margaret', at: '04:44', text: 'There was one summer when he played until the fireflies came out. We all went quiet, just listening. I must have been six or seven. I’ve never forgotten it.' },
 ];
 
 const PlayingIcon = () => (
@@ -335,7 +349,7 @@ const DemoPhone = () => {
                     <ChatDot $accent />
                     <ChatDot />
                     <ChatDot />
-                    <ChatBarLabel>A Story · Childhood</ChatBarLabel>
+                    <ChatBarLabel>A Story · calling Margaret</ChatBarLabel>
                 </ChatBar>
 
                 <ChatMsgs role="log" aria-live="polite" aria-label="Conversation demo">
@@ -434,12 +448,25 @@ const DemoPhone = () => {
                                 <McTranscript id="mc-transcript">
                                     {TRANSCRIPT.map((t) => (
                                         <p key={t.text}>
-                                            <span className="who">{t.who}</span>
+                                            <span className="who">{t.who}<McAt>{t.at}</McAt></span>
                                             {t.text}
                                         </p>
                                     ))}
                                 </McTranscript>
                             )}
+
+                            <McLinked>
+                                <span className="lbl">Linked</span>
+                                <McChip>Walter, her father</McChip>
+                                <McChip>The porch</McChip>
+                                <McChip>Kentucky</McChip>
+                                <McChip>c. 1952</McChip>
+                            </McLinked>
+
+                            <McShared>
+                                <EyeIcon />
+                                <span><b>Margaret decides who sees this.</b> Right now: Ellie, Tom and 4 others.</span>
+                            </McShared>
 
                             <McClip>
                                 <WaveIcon />

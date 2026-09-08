@@ -236,7 +236,7 @@ const faqGroups: FaqGroupData[] = [
                 question: 'What does A Story cost?',
                 answer: (
                     <>
-<AnswerParagraph>You pay to capture, and never to keep. $150 buys three months of guided conversations with one storyteller; $390 covers up to three storytellers for the same three months; and Express is $250 for one storyteller with no cap at all, for the week when there is no time to be relaxed about it.</AnswerParagraph>
+<AnswerParagraph>You pay to capture, and never to keep. $150 buys three months of guided conversations with one storyteller; $390 covers up to three storytellers for the same three months; and The Gathering is $199 for one week with up to five storytellers &mdash; built for Tết, Christmas, a reunion, or any week the family is finally in the same house.</AnswerParagraph>
                         <AnswerParagraph>Whichever one you buy, the archive, the exports, the photo uploads, the question bank and everyone you invite are free &mdash; during the window and forever afterwards. When it ends, only the AI conversations pause. Nothing renews, nothing lapses, and nothing you have already recorded is ever locked.</AnswerParagraph>
                         <AnswerParagraph>The hardcover is $89, priced on its own so that printing one never means the story is finished, with extra copies at $59. Organization and care-community programs are quoted per engagement on a 30-minute call.</AnswerParagraph>
                         <AnswerParagraph>

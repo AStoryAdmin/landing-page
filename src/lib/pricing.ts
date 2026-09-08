@@ -24,12 +24,25 @@
  *    book, is the worst possible moment: the feeling has passed and the amount
  *    is now judged against pages produced.
  *
- * 3. Urgency costs more, not less. EXPRESS is for someone with days rather
- *    than months — a birthday on Saturday, a decline, a reunion. That is the
- *    highest willingness to pay in this market *and* the heaviest use of voice
- *    AI. Pricing it below the three-month package would have made the
- *    three-month package unsellable and put the worst unit economics on the
- *    cheapest plan.
+ * 3. The highest-intent moment is when the family is already in the room.
+ *    THE GATHERING is priced and named for it — Tết, Christmas, a reunion, a
+ *    funeral where everyone has finally come home. Somebody always says "we
+ *    should record Grandma" that week and nobody ever does. It still covers
+ *    the urgent case (a decline, a hospital bed) without naming it, which is
+ *    kinder and sells to the same person.
+ *
+ *    It stays above the three-month package at $199, because a package that
+ *    undercut the default would make the default unsellable — but $199 clears
+ *    the $200 line, and multiple storytellers make the value obvious without
+ *    having to argue about urgency.
+ *
+ *    It is NOT unlimited, and that was a deliberate reversal. Unlimited
+ *    conversations across unlimited people for a week is unbounded cost on
+ *    exactly the buyer most motivated to use it: five storytellers going hard
+ *    for seven days is plausibly fifty hours of voice AI, which is a loss on
+ *    any price this product can charge. Forty conversations across five people
+ *    is nearly six a day — generous enough that almost nobody reaches it, and
+ *    bounded enough to survive the ones who do.
  *
  * 4. Meter a pool, not a rate. A per-day cap does not bound anything: three
  *    conversations a day across ninety days is two hundred and seventy calls.
@@ -88,17 +101,17 @@ export type Plan = {
 export const PLANS: Plan[] = [
     {
         id: 'express',
-        name: 'Express',
-        who: 'One storyteller, and a date you cannot move',
-        price: '$250',
-        amount: '250',
+        name: 'The Gathering',
+        who: 'Everyone under one roof, for one week',
+        price: '$199',
+        amount: '199',
         window: '7 days',
-        meter: 'Unlimited guided conversations',
-        meterNote: 'No cap, no rationing — talk as much as the week allows',
+        meter: '40 conversations, up to 5 storytellers',
+        meterNote: 'Nearly six a day — more than a week can realistically hold',
         blurb:
-            'For a birthday on Saturday, a reunion, a hospital bed, a decline that has started. ' +
-            'Everything the three-month package does, compressed into the week you actually have, ' +
-            'with nothing held back.',
+            'For the week the family is actually together: Tết, Christmas, a reunion, a hospital ' +
+            'bed, a funeral where everyone has finally come home. Anybody in the house can be ' +
+            'interviewed, not just the one person you bought it for.',
     },
     {
         id: 'one',
@@ -129,6 +142,13 @@ export const PLANS: Plan[] = [
             'storyteller never wastes anybody else’s conversations.',
     },
 ];
+
+/**
+ * Shown on every plan card. The promise that the keeping is free is the single
+ * strongest thing about this pricing, and it was living below the fold.
+ */
+export const KEEPS_LINE =
+    'Then the app is yours free, forever — keep adding memories, export a PDF any time, order a book whenever you want one.';
 
 /** The default package, referenced by pages that quote a single figure. */
 export const PRICE = {
@@ -168,8 +188,9 @@ export const FOREVER = {
         'Record, write and upload photos yourself — unlimited, always',
         'The full question bank, so the family can keep interviewing each other',
         'Full export of audio, transcripts and photos, whenever you ask',
-        'Order a book from any chapter, any year from now',
+        'Download the whole archive as a PDF, free, as often as you like',
+        'Order a printed book from any chapter, any year from now',
     ],
     /** The single thing that stops, stated plainly rather than buried. */
-    stops: 'Only the AI-guided conversations pause when the window closes. Nothing is deleted, nothing is locked, and nothing renews behind your back — when there is more to capture, you buy another window.',
+    stops: 'Only the AI-guided conversations pause when the window closes. You keep the full A Story app — adding memories, uploading photos, exporting a PDF whenever you want one, and ordering a printed book later if you decide you want to hold it. Nothing is deleted, nothing is locked, and nothing renews behind your back. When there is more to capture, you buy another window.',
 } as const;

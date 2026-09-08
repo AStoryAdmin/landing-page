@@ -211,6 +211,16 @@ export const PlanBlurb = styled.p`
     flex: 1;
 `;
 
+/** The forever promise, repeated on every card because it sells all three. */
+export const PlanKeeps = styled.p`
+    margin-top: ${space.md};
+    padding-top: ${space.md};
+    border-top: 1px dashed ${color.primaryLine};
+    font-size: ${type.xs};
+    line-height: ${leading.relaxed};
+    color: ${color.accentText};
+`;
+
 export const PlanAction = styled.div`
     margin-top: ${space.lg};
 

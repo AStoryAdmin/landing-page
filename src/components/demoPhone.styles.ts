@@ -540,6 +540,64 @@ export const McWave = styled.span`
     }
 `;
 
+/* ── What the archive added that the conversation didn't ──────────────────
+ * Expanding a transcript directly under the conversation you just watched
+ * shows nothing new. These two rows are the part that only exists because
+ * the archive processed it: the people and places it recognised and linked,
+ * and who in the family can now see it.
+ */
+
+export const McLinked = styled.div`
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+
+    .lbl {
+        font-family: ${fonts.body};
+        font-size: 9.5px;
+        font-weight: 700;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        color: ${colors.ink40};
+    }
+`;
+
+export const McChip = styled.span`
+    font-family: ${fonts.body};
+    font-size: 10px;
+    font-weight: 600;
+    color: ${colors.orangeText};
+    background: ${colors.orangeSoft};
+    border-radius: 20px;
+    padding: 2px 8px;
+`;
+
+export const McShared = styled.p`
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 10px;
+    font-family: ${fonts.body};
+    font-size: 10.5px;
+    color: ${colors.ink70};
+
+    b { font-weight: 600; color: ${colors.dark}; }
+    svg { color: ${colors.ink40}; flex-shrink: 0; }
+`;
+
+/** Timestamp beside each transcript line — proof it is indexed, not pasted. */
+export const McAt = styled.span`
+    font-family: ${fonts.body};
+    font-size: 9.5px;
+    font-variant-numeric: tabular-nums;
+    color: ${colors.ink40};
+    margin-left: 6px;
+    font-weight: 500;
+    letter-spacing: .02em;
+`;
+
 export const McMeta = styled.div`
     display: flex;
     align-items: center;
