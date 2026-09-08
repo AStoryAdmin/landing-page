@@ -6,7 +6,7 @@ import { media } from '../../styles/theme';
 /**
  * Moves between routes without the page appearing to scroll.
  *
- * The old behaviour called `window.scrollTo(0, 0)` on every navigation. Because
+ * The old behavior called `window.scrollTo(0, 0)` on every navigation. Because
  * the global stylesheet sets `scroll-behavior: smooth` — which it needs for
  * in-page anchors — that reset was *animated*, so clicking a footer link sent
  * the reader on a long ride back up through a page they had just left. This
@@ -41,12 +41,27 @@ if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
 }
 
-/** Scrolls without triggering the global smooth behaviour. */
+/**
+ * Scrolls without triggering the global smooth behavior.
+ *
+ * Two things are needed here, and either one alone still animates:
+ *
+ * `behavior: 'auto'` does *not* mean "instant" — it means "use the element's
+ * computed `scroll-behavior`", which the global stylesheet sets to `smooth`.
+ * `'instant'` is the value that actually overrules the CSS.
+ *
+ * The inline override is kept for engines that predate `'instant'`, but
+ * assigning it is not enough on its own: `scrollTo` reads the *computed*
+ * style, and Chrome answers from the cache it recalculated before the
+ * assignment. Reading the value back forces the recalc first.
+ */
 const jumpTo = (top: number) => {
     const root = document.documentElement;
     const previous = root.style.scrollBehavior;
     root.style.scrollBehavior = 'auto';
-    window.scrollTo({ top, left: 0, behavior: 'auto' });
+    /* Forces the style recalc that makes the line above take effect. */
+    void getComputedStyle(root).scrollBehavior;
+    window.scrollTo({ top, left: 0, behavior: 'instant' });
     root.style.scrollBehavior = previous;
 };
 
@@ -61,8 +76,13 @@ const RouteTransition = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         if (first.current) {
             first.current = false;
-            /* On a deep link, still honour the hash once the page has painted. */
-            if (hash) requestAnimationFrame(() => document.querySelector(hash)?.scrollIntoView());
+            /* On a deep link, still honor the hash once the page has painted. */
+            if (hash) {
+                requestAnimationFrame(() => {
+                    const target = document.querySelector(hash);
+                    if (target) jumpTo(target.getBoundingClientRect().top + window.scrollY - 24);
+                });
+            }
             return;
         }
 
