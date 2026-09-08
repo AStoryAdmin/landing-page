@@ -1,7 +1,8 @@
+import { CONTACT } from '../lib/contact';
 import { Link } from 'react-router-dom';
 import Seo from './ui/Seo';
 import { breadcrumbSchema, organizationSchema } from '../lib/seo';
-import {InstitutionContainer, CardView, Label, GoldLabel, SectionTitle, WideSectionTitle, NarrowSectionTitle, Paragraph, SmallNote, Italic, ItalicAccent, PrimaryButton, HeroSection, HeroTitle, HeroSub, HeroLabel, HeroButtons, TrustBarSection, TrustBarInner, TrustList, TrustItem, EvidenceSection, EvidenceLayout, EvidenceStats, EvidenceStat, StatNum, StatText, QuoteSection, QuoteCardView, DarkQuoteText, DarkQuoteCite, LightQuoteText, LightQuoteCite, UseCasesSection, IntroText, WideIntroText, UseCasesGrid, UseCaseCard, UseCaseIcon, CardTitle, OpenAllSection, OpenAllGrid, OpenAllItem, OpenAllTitle, OpenAllText, CenteredCta, ImplementationSection, ImplGrid, ImplGridSpaced, ImplStep, ImplStepNum, ComplianceSection, ComplianceTitle, ComplianceSub, ComplianceGrid, ComplianceItem, ComplianceItemTitle, ComplianceItemText, TestimonialSection, CtaSection, CtaTitle, CtaSub, CtaActions, PrivacyButton} from './institution.styles';
+import {InstitutionContainer, CardView, Label, GoldLabel, SectionTitle, WideSectionTitle, NarrowSectionTitle, Paragraph, SmallNote, Italic, ItalicAccent, PrimaryButtonAnchor, HeroSection, HeroTitle, HeroSub, HeroLabel, HeroButtons, TrustBarSection, TrustBarInner, TrustList, TrustItem, EvidenceSection, EvidenceLayout, EvidenceStats, EvidenceStat, StatNum, StatText, QuoteSection, QuoteCardView, DarkQuoteText, DarkQuoteCite, LightQuoteText, LightQuoteCite, UseCasesSection, IntroText, WideIntroText, UseCasesGrid, UseCaseCard, UseCaseIcon, CardTitle, OpenAllSection, OpenAllGrid, OpenAllItem, OpenAllTitle, OpenAllText, CenteredCta, ImplementationSection, ImplGrid, ImplGridSpaced, ImplStep, ImplStepNum, ComplianceSection, ComplianceTitle, ComplianceSub, ComplianceGrid, ComplianceItem, ComplianceItemTitle, ComplianceItemText, TestimonialSection, CtaSection, CtaTitle, CtaSub, CtaActions, PrivacyButton} from './institution.styles';
 
 const Institution = () => {
     return (
@@ -24,7 +25,7 @@ const Institution = () => {
                     <HeroTitle>Every resident has a life worth knowing.<br /><Italic>A Story helps you learn it.</Italic></HeroTitle>
                     <HeroSub>For nursing homes, assisted living communities, memory care units, and hospitals that believe great care starts with knowing the whole person &mdash; not just the diagnosis.</HeroSub>
                     <HeroButtons>
-                        <PrimaryButton to="/signup">Book an institutional demo</PrimaryButton>
+                        <PrimaryButtonAnchor href={CONTACT.community}>Book an institutional demo</PrimaryButtonAnchor>
                     </HeroButtons>
                 </CardView>
             </HeroSection>
@@ -201,7 +202,7 @@ const Institution = () => {
                     </OpenAllGrid>
 
                     <CenteredCta>
-                        <PrimaryButton to="/signup?for=organization">Start a conversation</PrimaryButton>
+                        <PrimaryButtonAnchor href={CONTACT.community}>Start a conversation</PrimaryButtonAnchor>
                     </CenteredCta>
                 </CardView>
             </OpenAllSection>
@@ -310,7 +311,7 @@ const Institution = () => {
                         A 30-minute walk-through with your care team &mdash; no commitment required. We'll show you the resident and family experience end to end, and answer every question you have. Most programs are live within a week.
                     </CtaSub>
                     <CtaActions>
-                        <PrimaryButton to="/signup">Book an institutional demo</PrimaryButton>
+                        <PrimaryButtonAnchor href={CONTACT.community}>Book an institutional demo</PrimaryButtonAnchor>
                         <PrivacyButton to="/privacy">Our privacy commitments</PrivacyButton>
                     </CtaActions>
                 </CardView>

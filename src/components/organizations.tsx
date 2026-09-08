@@ -1,6 +1,7 @@
+import { CONTACT } from '../lib/contact';
 import Seo from './ui/Seo';
 import Reveal from './ui/Reveal';
-import { Actions, Button, Container, Eyebrow, H2, Lead, Note, Section } from './ui/primitives';
+import { Actions, Button, ButtonAnchor, Container, Eyebrow, H2, Lead, Note, Section } from './ui/primitives';
 import {
     IconArchive, IconArrow, IconBook, IconBuilding, IconCheck, IconExport, IconGlobe, IconHeart,
     IconLock, IconMic, IconNoTrain, IconSearch, IconShield, IconSpark, IconUsers,
@@ -113,7 +114,7 @@ const Organizations = () => (
                         place in fifty years.
                     </HeroSub>
                     <Actions>
-                        <Button to="/signup?for=organization" $variant="gold">Book a 30-minute demo</Button>
+                        <ButtonAnchor href={CONTACT.organization} $variant="gold">Book a 30-minute demo</ButtonAnchor>
                         <Button to="/pricing" $variant="onDark">See how pricing works</Button>
                     </Actions>
                 </HeroCopy>
@@ -287,7 +288,7 @@ const Organizations = () => (
                 </Timeline>
 
                 <Actions>
-                    <Button to="/signup?for=organization" $variant="gold">Start with a 30-minute call <IconArrow /></Button>
+                    <ButtonAnchor href={CONTACT.organization} $variant="gold">Start with a 30-minute call <IconArrow /></ButtonAnchor>
                 </Actions>
             </Container>
         </Section>
@@ -410,7 +411,7 @@ const Organizations = () => (
                     ))}
                 </FaqGrid>
                 <Actions>
-                    <Button to="/signup?for=organization" $variant="primary">Book a 30-minute demo</Button>
+                    <ButtonAnchor href={CONTACT.organization} $variant="primary">Book a 30-minute demo</ButtonAnchor>
                     <Button to="/faq" $variant="ghost">Read every question <IconArrow /></Button>
                 </Actions>
             </Container>

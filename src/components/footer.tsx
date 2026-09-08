@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import Logo from './ui/Logo';
-import { Button } from './ui/primitives';
+import { ButtonAnchor, Button } from './ui/primitives';
+import { CONTACT } from '../lib/contact';
 import { SITE } from '../lib/seo';
 import {
     BottomLinks, BottomRow, BrandColumn, BrandLine, Column, CtaActions, CtaBand, CtaInner, CtaSub,
@@ -8,33 +9,54 @@ import {
 } from './footer.styles';
 
 /**
- * Every marketing page ends the same way: one clear invitation, then the map of
- * the site. The CTA band is suppressed on /signup, where the page itself is the
- * conversion surface.
+ * Every marketing page ends with the same invitation. The organization and
+ * care-community pages get their own version of it, since the person reading
+ * those is not buying a present.
  */
 const Footer = () => {
     const { pathname } = useLocation();
-    const showCta = pathname !== '/signup';
+    const forOrgs = pathname === '/organizations' || pathname === '/institution';
 
     return (
         <>
-            {showCta && (
-                <CtaBand aria-labelledby="footer-cta-title">
-                    <CtaInner>
-                        <CtaTitle id="footer-cta-title">
-                            The stories are still here. <em>The chance to ask is the part that runs out.</em>
-                        </CtaTitle>
-                        <CtaSub>
-                            Start with one conversation this week — a parent, a founder, a resident, a retiring
-                            colleague. We&rsquo;ll handle the rest.
-                        </CtaSub>
-                        <CtaActions>
-                            <Button to="/signup" $variant="gold">Start a story — free</Button>
-                            <Button to="/signup?for=organization" $variant="onDark">Talk to us about your organization</Button>
-                        </CtaActions>
-                    </CtaInner>
-                </CtaBand>
-            )}
+            <CtaBand aria-labelledby="footer-cta-title">
+                <CtaInner>
+                    {forOrgs ? (
+                        <>
+                            <CtaTitle id="footer-cta-title">
+                                The stories are still here. <em>The people who hold them are leaving.</em>
+                            </CtaTitle>
+                            <CtaSub>
+                                Thirty minutes, your questions answered, and a scoped plan with a fixed
+                                number. No procurement marathon, no obligation.
+                            </CtaSub>
+                            <CtaActions>
+                                <ButtonAnchor
+                                    href={pathname === '/institution' ? CONTACT.community : CONTACT.organization}
+                                    $variant="gold"
+                                >
+                                    Talk to us
+                                </ButtonAnchor>
+                                <Button to="/pricing" $variant="onDark">See how pricing works</Button>
+                            </CtaActions>
+                        </>
+                    ) : (
+                        <>
+                            <CtaTitle id="footer-cta-title">
+                                One gift. <em>Your whole family opens it.</em>
+                            </CtaTitle>
+                            <CtaSub>
+                                Give it this year, while the person who holds the stories is still here to
+                                tell them. You send one link. We do the rest.
+                            </CtaSub>
+                            <CtaActions>
+                                <ButtonAnchor href={CONTACT.gift} $variant="gold">Gift a story</ButtonAnchor>
+                                <Button to="/experience" $variant="onDark">See what they receive</Button>
+                            </CtaActions>
+                        </>
+                    )}
+                </CtaInner>
+            </CtaBand>
 
             <FooterContainer>
                 <Inner>
@@ -42,33 +64,32 @@ const Footer = () => {
                         <BrandColumn>
                             <Logo height={56} tone="dark" variant="horizontal" />
                             <BrandLine>
-                                A Story keeps what people carry — for families, for care communities, and for
-                                organizations whose history deserves to outlive the people who made it.
+                                The gift of being asked. A Story keeps what the people you love carry &mdash;
+                                in their own voice, for everyone who comes after.
                             </BrandLine>
                         </BrandColumn>
 
                         <Column>
-                            <Section>Product</Section>
+                            <Section>The gift</Section>
                             <Page to="/experience">How it works</Page>
                             <Page to="/pricing">Pricing</Page>
-                            <Page to="/experience#demo">Live demo</Page>
+                            <Page to="/#occasions">Occasions</Page>
                             <Page to="/experience#book">The keepsake book</Page>
                         </Column>
 
                         <Column>
-                            <Section>Who it&rsquo;s for</Section>
-                            <Page to="/family">Families</Page>
-                            <Page to="/organizations">Organizations</Page>
-                            <Page to="/institution">Care communities</Page>
-                            <Page to="/signup?for=organization">Book a demo</Page>
+                            <Section>Learn more</Section>
+                            <Page to="/family">Why it matters</Page>
+                            <Page to="/experience#demo">Live demo</Page>
+                            <Page to="/faq">FAQ</Page>
+                            <Page to="/story">Our story</Page>
                         </Column>
 
                         <Column>
-                            <Section>Company</Section>
-                            <Page to="/story">Our story</Page>
-                            <Page to="/faq">FAQ</Page>
-                            <External href={`mailto:${SITE.email}`}>Contact</External>
-                            <Page to="/signup">Early access</Page>
+                            <Section>Also for</Section>
+                            <Page to="/organizations">Organizations</Page>
+                            <Page to="/institution">Care communities</Page>
+                            <External href={CONTACT.organization}>Talk to us</External>
                         </Column>
 
                         <Column>
@@ -76,7 +97,7 @@ const Footer = () => {
                             <Page to="/privacy">Privacy policy</Page>
                             <Page to="/terms">Terms of service</Page>
                             <Page to="/organizations#security">Security &amp; compliance</Page>
-                            <Page to="/institution#compliance">Data commitments</Page>
+                            <External href={CONTACT.general}>Contact</External>
                         </Column>
                     </Top>
 

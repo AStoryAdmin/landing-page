@@ -18,6 +18,71 @@ type FaqGroupData = {
 
 const faqGroups: FaqGroupData[] = [
     {
+        label: 'Giving it as a gift',
+        items: [
+            {
+                id: 'gift-day',
+                question: 'What do I actually hand them on the day?',
+                answer: (
+                    <>
+                        <AnswerParagraph>A card with a short note from you and one link underneath. We send you a version to print at home and a version to text or email, so it works whether you are handing it over at the table or you are three time zones away.</AnswerParagraph>
+                        <AnswerParagraph>There is nothing for them to redeem, activate or set up. They tap the link when they feel like it &mdash; that evening, or in February. Nothing expires.</AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'gift-tech',
+                question: 'The person I am giving it to is hopeless with technology.',
+                answer: (
+                    <>
+                        <AnswerParagraph>Then they are exactly who this was built for. There is no app to install, no account to create, no password, and nothing to type. They tap the link once and talk. If they can answer a phone call, they can do this.</AnswerParagraph>
+                        <AnswerParagraph>If they do get stuck, we help them directly &mdash; you do not become their tech support.</AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'gift-work',
+                question: 'How much work is this for me after I buy it?',
+                answer: (
+                    <>
+                        <AnswerParagraph>Sending the link. That is the whole job. A Story does the asking, the transcribing, the organising by chapter of life, and the book layout. You are told when there is something new to read.</AnswerParagraph>
+                        <AnswerParagraph>This is the difference between a gift and a project, and it is the thing we care most about getting right. Nobody wants to give a present that turns into homework for themselves.</AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'gift-family',
+                question: 'Can my brothers and sisters go in on it with me?',
+                answer: (
+                    <>
+                        <AnswerParagraph>Yes, and many families do &mdash; four siblings splitting one gift is a common way this gets bought. There is one purchase and one archive; everybody you invite can read it, add photos, correct a name, or record their own memory.</AnswerParagraph>
+                        <AnswerParagraph>We never charge per family member. Inviting fifteen cousins costs exactly the same as inviting nobody. <Bold>See <Link to="/pricing">pricing</Link>.</Bold></AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'gift-unused',
+                question: 'What if they never get round to using it?',
+                answer: (
+                    <>
+                        <AnswerParagraph>Most people who insist they have nothing worth telling end up talking for hours &mdash; being asked properly is unusual enough that it tends to land. But it does not always, and there is no clock: the link stays open, and the first question is waiting whenever they are.</AnswerParagraph>
+                        <AnswerParagraph>If it genuinely is not for them, tell us and we will make it right. We would rather refund a gift than have it sit there as a reproach.</AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'gift-timing',
+                question: 'Will it arrive in time for Christmas or a birthday?',
+                answer: (
+                    <>
+                        <AnswerParagraph>The card and the link are ready within minutes, so the gift itself is never the thing that runs late. Tell us the date and we will make sure you have everything to hand over on the day.</AnswerParagraph>
+                        <AnswerParagraph>The printed book comes later, once there are stories to print &mdash; three to four weeks from the moment you approve the layout. Most families treat the book as a second gift that arrives months after the first.</AnswerParagraph>
+                    </>
+                ),
+            }
+        ]
+    },
+    {
         label: 'About A Story',
         items: [
             {
@@ -276,7 +341,7 @@ const Faq = () => {
         <>
             <Seo
                 title="Frequently asked questions — A Story"
-                description="How the guided interview works, what it costs, who owns the stories, how privacy is handled, and what organizations and care communities can expect."
+                description="What you hand over on the day, whether it works for someone who hates technology, what it costs, who owns the stories, and what organizations and care communities can expect."
                 path="/faq"
                 schema={[
                     organizationSchema(),
@@ -290,7 +355,7 @@ const Faq = () => {
             <FaqHero>
                 <Container>
                     <Label>Questions &amp; answers</Label>
-                    <HeroTitle>Everything you want to know about A Story.</HeroTitle>
+                    <HeroTitle>Everything you want to know before you give it.</HeroTitle>
                     <HeroSub>
                         Can't find your answer here? Email us at <br />
                         <LegalLink href="mailto:contact@astoryapp.com">contact@astoryapp.com</LegalLink> &mdash; we respond to every message.

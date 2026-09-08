@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { color, font } from '../styles/theme';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const colors = {
     cream: color.ivory,
@@ -81,7 +81,7 @@ export const ItalicAccent = styled(Italic)`
     color: ${colors.orangeText};
 `;
 
-export const PrimaryButton = styled(Link)`
+const primaryButtonCss = css`
     text-decoration: none;
     font-family: ${fonts.body};
     margin-top: 20px;
@@ -100,6 +100,15 @@ export const PrimaryButton = styled(Link)`
         background: ${colors.orangeHover};
         transform: translateY(-1px);
     }
+`;
+
+export const PrimaryButton = styled(Link)`
+    ${primaryButtonCss};
+`;
+
+/** The same button as an anchor, for mailto conversion links. */
+export const PrimaryButtonAnchor = styled.a`
+    ${primaryButtonCss};
 `;
 
 export const GhostButton = styled.button`

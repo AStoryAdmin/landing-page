@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { color, font } from '../styles/theme';
 import { Link } from 'react-router-dom';
 
@@ -78,7 +78,7 @@ export const Description = styled.p`
     color: ${colors.gray};
 `;
 
-export const DemoButton = styled(Link)`
+const demoButtonCss = css`
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 2px;
@@ -96,6 +96,15 @@ export const DemoButton = styled(Link)`
         background: ${colors.orangeHover};
         transform: translateY(-1px);
     }
+`;
+
+export const DemoButton = styled(Link)`
+    ${demoButtonCss};
+`;
+
+/** The same button as an anchor, for mailto conversion links. */
+export const DemoButtonAnchor = styled.a`
+    ${demoButtonCss};
 `;
 
 export const InstructionContainer = styled.div`

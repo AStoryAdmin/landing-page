@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import heroImg from './../assets/heroFamilyYard.webp';
 import {
@@ -72,7 +72,7 @@ export const HeroBadge = styled.p`
     font-weight: ${weight.semibold};
     letter-spacing: ${tracking.eyebrow};
     text-transform: uppercase;
-    color: ${color.gold};
+    color: ${color.goldText};
     border: 1px solid rgba(224, 160, 63, 0.35);
     background: rgba(224, 160, 63, 0.08);
     border-radius: ${radius.pill};
@@ -91,7 +91,7 @@ export const HeroTitle = styled.h1`
 
     em {
         font-style: italic;
-        color: ${color.gold};
+        color: ${color.goldText};
     }
 `;
 
@@ -99,7 +99,7 @@ export const HeroSub = styled.p`
     font-size: ${type.lead};
     line-height: ${leading.relaxed};
     color: ${color.onDarkMuted};
-    max-width: 60ch;
+    max-width: 58ch;
     margin-bottom: ${space.xl};
 
     ${media.md} { margin-inline: auto; }
@@ -131,113 +131,48 @@ export const HeroTrust = styled.ul`
         gap: ${space.xs};
     }
 
-    svg { color: ${color.gold}; flex-shrink: 0; }
+    svg { color: ${color.goldText}; flex-shrink: 0; }
 
     ${media.md} { justify-content: center; }
 `;
 
-/* ── Audience router ──────────────────────────────────────────────────── */
-
-export const AudienceStrip = styled.section`
-    background: ${color.paper};
-    padding: clamp(48px, 5vw, 72px) ${space.gutter};
-    border-bottom: 1px solid ${color.primaryLine};
-`;
-
-export const AudienceGrid = styled.div`
-    max-width: ${layout.maxWidth};
-    margin-inline: auto;
-    display: grid;
-    gap: ${space.md};
-    grid-template-columns: repeat(3, 1fr);
-
-    ${media.md} { grid-template-columns: 1fr; }
-`;
-
-export const AudienceCard = styled(Link)`
-    display: flex;
-    flex-direction: column;
-    gap: ${space.xs};
-    padding: clamp(22px, 2.4vw, 30px);
-    background: ${color.paperPure};
-    border: 1px solid ${color.primaryLine};
-    border-radius: ${radius.lg};
-    text-decoration: none;
-    transition: transform ${motion.base}, box-shadow ${motion.base}, border-color ${motion.base};
-
-    .tag {
-        font-size: ${type.caption};
-        font-weight: ${weight.bold};
-        letter-spacing: ${tracking.eyebrow};
-        text-transform: uppercase;
-        color: ${color.accentText};
-    }
-
-    h3 {
-        font-family: ${font.display};
-        font-size: 1.6rem;
-        font-weight: ${weight.medium};
-        color: ${color.ink};
-        margin: 0;
-    }
-
-    p {
-        font-size: ${type.sm};
-        line-height: ${leading.relaxed};
-        color: ${color.bodyMuted};
-        flex: 1;
-    }
-
-    .go {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        margin-top: ${space.sm};
-        font-size: ${type.sm};
-        font-weight: ${weight.semibold};
-        color: ${color.primary};
-        transition: gap ${motion.fast};
-    }
-
-    &:hover {
-        transform: translateY(-3px);
-        box-shadow: ${shadow.lg};
-        border-color: ${color.accentLine};
-        .go { gap: 12px; }
-    }
-`;
-
-/* ── Shared section furniture ─────────────────────────────────────────── */
-
-export const SectionHead = styled.div<{ $center?: boolean }>`
-    max-width: ${({ $center }) => ($center ? '760px' : 'none')};
-    margin-inline: ${({ $center }) => ($center ? 'auto' : '0')};
-    text-align: ${({ $center }) => ($center ? 'center' : 'left')};
-    margin-bottom: clamp(36px, 4vw, 56px);
-`;
-
-/* ── Steps ────────────────────────────────────────────────────────────── */
+/* ── The four steps of gifting ────────────────────────────────────────── */
 
 export const StepGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     background: ${color.paperPure};
     border: 1px solid ${color.primaryLine};
     border-radius: ${radius.lg};
     overflow: hidden;
 
-    ${media.md} { grid-template-columns: 1fr; }
+    ${media.lg} { grid-template-columns: 1fr 1fr; }
+    ${media.sm} { grid-template-columns: 1fr; }
 `;
 
 export const Step = styled.div`
-    padding: clamp(28px, 3vw, 40px);
+    padding: clamp(24px, 2.6vw, 34px);
     border-right: 1px solid ${color.primaryLine};
     display: flex;
     flex-direction: column;
 
     &:last-child { border-right: none; }
 
-    ${media.md} {
+    .who {
+        font-size: ${type.caption};
+        font-weight: ${weight.bold};
+        letter-spacing: ${tracking.eyebrow};
+        text-transform: uppercase;
+        color: ${color.accentText};
+        margin-bottom: ${space.md};
+    }
+
+    ${media.lg} {
+        border-bottom: 1px solid ${color.primaryLine};
+        &:nth-child(2n) { border-right: none; }
+        &:nth-last-child(-n + 2) { border-bottom: none; }
+    }
+    ${media.sm} {
         border-right: none;
         border-bottom: 1px solid ${color.primaryLine};
         &:last-child { border-bottom: none; }
@@ -246,16 +181,16 @@ export const Step = styled.div`
 
 export const StepNumber = styled.span`
     font-family: ${font.display};
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: ${weight.light};
     line-height: 1;
     color: ${color.goldOnLight};
-    margin-bottom: ${space.sm};
+    margin-bottom: ${space.xs};
 `;
 
 export const StepTitle = styled.h3`
     font-family: ${font.display};
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: ${weight.medium};
     color: ${color.ink};
     margin-bottom: ${space.sm};
@@ -266,48 +201,135 @@ export const StepText = styled.p`
     line-height: ${leading.relaxed};
     color: ${color.bodyMuted};
     flex: 1;
-    margin-bottom: ${space.md};
 `;
 
-/* ── Stat band ────────────────────────────────────────────────────────── */
+/* ── What you actually hand over ──────────────────────────────────────── */
 
-export const StatGrid = styled.div`
+export const HandoverSplit = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+
+    ${media.md} { grid-template-columns: 1fr; }
+`;
+
+/**
+ * The card the buyer prints or forwards. Rendered rather than photographed, so
+ * it always matches the current brand and never needs re-shooting.
+ */
+export const GiftCard = styled.div`
+    position: relative;
+    background: ${color.primary};
+    border-radius: ${radius.xl};
+    padding: clamp(28px, 4vw, 48px);
+    box-shadow: ${shadow.lg};
+    color: ${color.onDarkMuted};
+    overflow: hidden;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset-inline: 0;
+        bottom: 0;
+        height: 8px;
+        background: linear-gradient(90deg, ${color.gold} 0%, ${color.accent} 100%);
+    }
+
+    .eyebrow {
+        font-size: ${type.caption};
+        font-weight: ${weight.bold};
+        letter-spacing: ${tracking.eyebrow};
+        text-transform: uppercase;
+        color: ${color.goldText};
+        margin-bottom: ${space.lg};
+    }
+
+    .to {
+        font-size: ${type.xs};
+        color: ${color.onDarkFaint};
+        margin-bottom: 4px;
+    }
+
+    .name {
+        font-family: ${font.display};
+        font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+        color: ${color.onDark};
+        line-height: 1.1;
+        margin-bottom: ${space.lg};
+    }
+
+    .note {
+        font-family: ${font.script};
+        font-size: clamp(1.3rem, 1rem + 1.1vw, 1.75rem);
+        line-height: 1.35;
+        color: ${color.onDark};
+        margin-bottom: ${space.xl};
+    }
+
+    .link {
+        display: inline-flex;
+        align-items: center;
+        gap: ${space.xs};
+        font-size: ${type.sm};
+        font-weight: ${weight.semibold};
+        color: ${color.primaryDeep};
+        background: ${color.gold};
+        border-radius: ${radius.pill};
+        padding: 10px 18px;
+    }
+
+    .from {
+        margin-top: ${space.lg};
+        font-size: ${type.xs};
+        color: ${color.onDarkFaint};
+    }
+`;
+
+/* ── Objections ───────────────────────────────────────────────────────── */
+
+export const ObjectionGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: ${space.xl};
+    gap: ${space.lg};
 
-    ${media.md} { grid-template-columns: 1fr; gap: ${space.lg}; }
+    ${media.lg} { grid-template-columns: 1fr 1fr; }
+    ${media.sm} { grid-template-columns: 1fr; }
 `;
 
-export const StatItem = styled.div`
-    padding-left: ${space.lg};
-    border-left: 2px solid rgba(224, 160, 63, 0.5);
+export const Objection = styled.div`
+    height: 100%;
+    padding: clamp(22px, 2.4vw, 30px);
+    background: ${color.paperPure};
+    border: 1px solid ${color.primaryLine};
+    border-radius: ${radius.lg};
 
-    .num {
+    .doubt {
         font-family: ${font.display};
-        font-size: clamp(2.5rem, 1.6rem + 3vw, 3.75rem);
-        font-weight: ${weight.light};
-        line-height: 1;
-        color: ${color.goldText};
-        letter-spacing: ${tracking.display};
+        font-size: 1.35rem;
+        font-style: italic;
+        line-height: ${leading.snug};
+        color: ${color.primary};
+        margin-bottom: ${space.sm};
     }
 
-    .text {
-        margin-top: ${space.sm};
+    p {
         font-size: ${type.sm};
         line-height: ${leading.relaxed};
-        color: ${color.onDarkMuted};
-    }
-
-    .ref {
-        margin-top: ${space.xs};
-        font-size: ${type.caption};
-        color: ${color.onDarkFaint};
-        letter-spacing: ${tracking.wide};
+        color: ${color.bodyMuted};
     }
 `;
 
-/* ── Product proof ────────────────────────────────────────────────────── */
+/* ── What everyone gets ───────────────────────────────────────────────── */
+
+export const ProofSplit = styled.div`
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+
+    ${media.lg} { grid-template-columns: 1fr; }
+`;
 
 export const ProofImage = styled.div`
     position: relative;
@@ -355,60 +377,73 @@ export const Feature = styled.div`
     }
 `;
 
-export const ProofSplit = styled.div`
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: clamp(32px, 5vw, 72px);
-    align-items: center;
+/* ── Occasions ────────────────────────────────────────────────────────── */
 
-    ${media.lg} {
-        grid-template-columns: 1fr;
+export const TagRow = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: ${space.sm};
+    flex-wrap: wrap;
+    padding-top: ${space.lg};
+`;
+
+export const Tag = styled.a`
+    font-family: ${font.body};
+    font-size: ${type.caption};
+    font-weight: ${weight.semibold};
+    letter-spacing: ${tracking.eyebrow};
+    text-transform: uppercase;
+    color: ${color.body};
+    background: ${color.paperPure};
+    border: 1px solid ${color.primaryLine};
+    border-radius: ${radius.pill};
+    padding: 10px 18px;
+    text-decoration: none;
+    transition: border-color ${motion.fast}, color ${motion.fast}, transform ${motion.fast};
+
+    &:hover {
+        border-color: ${color.accentLine};
+        color: ${color.accentText};
+        transform: translateY(-1px);
     }
 `;
 
-/* ── Organizations teaser ─────────────────────────────────────────────── */
+/* ── The window ───────────────────────────────────────────────────────── */
 
-export const OrgBand = styled.section`
-    background: ${color.primary};
-    padding: clamp(64px, 7vw, 112px) ${space.gutter};
-    color: ${color.onDarkMuted};
+export const StatGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: ${space.xl};
 
-    h1, h2, h3, h4 { color: ${color.onDark}; }
+    ${media.md} { grid-template-columns: 1fr; gap: ${space.lg}; }
 `;
 
-export const OrgInner = styled.div`
-    max-width: ${layout.maxWidth};
-    margin-inline: auto;
-    display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    gap: clamp(32px, 5vw, 72px);
-    align-items: center;
+export const StatItem = styled.div`
+    padding-left: ${space.lg};
+    border-left: 2px solid rgba(224, 160, 63, 0.5);
 
-    ${media.md} { grid-template-columns: 1fr; }
-`;
+    .num {
+        font-family: ${font.display};
+        font-size: clamp(2.5rem, 1.6rem + 3vw, 3.75rem);
+        font-weight: ${weight.light};
+        line-height: 1;
+        color: ${color.goldText};
+        letter-spacing: ${tracking.display};
+    }
 
-export const OrgPoints = styled.ul`
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: ${space.md};
-
-    li {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: ${space.sm};
-        padding: ${space.md} ${space.lg};
-        background: rgba(243, 235, 221, 0.06);
-        border: 1px solid ${color.onDarkLine};
-        border-radius: ${radius.md};
+    .text {
+        margin-top: ${space.sm};
         font-size: ${type.sm};
         line-height: ${leading.relaxed};
         color: ${color.onDarkMuted};
     }
 
-    strong { color: ${color.onDark}; font-weight: ${weight.semibold}; }
-    svg { color: ${color.gold}; margin-top: 3px; }
+    .ref {
+        margin-top: ${space.xs};
+        font-size: ${type.caption};
+        color: ${color.onDarkFaint};
+        letter-spacing: ${tracking.wide};
+    }
 `;
 
 /* ── Testimonials ─────────────────────────────────────────────────────── */
@@ -432,6 +467,7 @@ export const QuoteCard = styled.figure`
     display: flex;
     flex-direction: column;
     gap: ${space.md};
+    height: 100%;
 
     blockquote {
         margin: 0;
@@ -448,23 +484,6 @@ export const QuoteCard = styled.figure`
         letter-spacing: ${tracking.wide};
         color: ${color.faint};
     }
-`;
-
-export const QuoteHead = styled.div`
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: ${space.md};
-    margin-bottom: clamp(32px, 4vw, 48px);
-`;
-
-export const StatusFamily = styled.span`
-    display: inline-flex;
-    align-items: center;
-    gap: ${space.xs};
-    font-size: ${type.sm};
-    color: ${color.bodyMuted};
 `;
 
 /* ── Comparison table ─────────────────────────────────────────────────── */
@@ -550,7 +569,7 @@ export const PromiseCard = styled.div`
         place-items: center;
         border-radius: ${radius.md};
         background: rgba(224, 160, 63, 0.14);
-        color: ${color.gold};
+        color: ${color.goldText};
         margin-bottom: ${space.md};
     }
 
@@ -594,6 +613,69 @@ export const PullQuote = styled.section`
     }
 `;
 
+/* ── Also-for band ────────────────────────────────────────────────────── */
+
+export const AlsoBand = styled.section`
+    background: ${color.paper};
+    padding: clamp(48px, 5vw, 72px) ${space.gutter};
+    border-top: 1px solid ${color.primaryLine};
+`;
+
+export const AlsoGrid = styled.div`
+    max-width: ${layout.maxWidth};
+    margin-inline: auto;
+    display: grid;
+    gap: ${space.md};
+    grid-template-columns: 1fr 1fr;
+
+    ${media.md} { grid-template-columns: 1fr; }
+`;
+
+export const AlsoCard = styled(Link)`
+    display: flex;
+    flex-direction: column;
+    gap: ${space.xs};
+    padding: clamp(22px, 2.4vw, 28px);
+    background: ${color.paperPure};
+    border: 1px solid ${color.primaryLine};
+    border-radius: ${radius.lg};
+    text-decoration: none;
+    transition: transform ${motion.base}, box-shadow ${motion.base}, border-color ${motion.base};
+
+    h3 {
+        font-family: ${font.display};
+        font-size: 1.45rem;
+        font-weight: ${weight.medium};
+        color: ${color.ink};
+        margin: 0;
+    }
+
+    p {
+        font-size: ${type.sm};
+        line-height: ${leading.relaxed};
+        color: ${color.bodyMuted};
+        flex: 1;
+    }
+
+    .go {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: ${space.xs};
+        font-size: ${type.sm};
+        font-weight: ${weight.semibold};
+        color: ${color.primary};
+        transition: gap ${motion.fast};
+    }
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: ${shadow.md};
+        border-color: ${color.accentLine};
+        .go { gap: 12px; }
+    }
+`;
+
 /* ── FAQ preview ──────────────────────────────────────────────────────── */
 
 export const FaqList = styled.div`
@@ -620,45 +702,17 @@ export const FaqItem = styled.div`
     }
 `;
 
-/* ── Legacy exports still used by the experience page ─────────────────── */
+/* ── Shared section furniture ─────────────────────────────────────────── */
 
-export const TagRow = styled.div`
-    display: flex;
-    justify-content: center;
-    gap: ${space.sm};
-    flex-wrap: wrap;
-    padding-top: ${space.xl};
-`;
-
-export const Tag = styled.span`
-    font-family: ${font.body};
-    font-size: ${type.caption};
-    font-weight: ${weight.semibold};
-    letter-spacing: ${tracking.eyebrow};
-    text-transform: uppercase;
-    color: ${color.body};
-    background: ${color.paperPure};
-    border: 1px solid ${color.primaryLine};
-    border-radius: ${radius.pill};
-    padding: 10px 18px;
+export const SectionHead = styled.div<{ $center?: boolean }>`
+    max-width: ${({ $center }) => ($center ? '760px' : 'none')};
+    margin-inline: ${({ $center }) => ($center ? 'auto' : '0')};
+    text-align: ${({ $center }) => ($center ? 'center' : 'left')};
+    margin-bottom: clamp(36px, 4vw, 56px);
 `;
 
 export const Divider = styled.hr`
     border: none;
     border-top: 1px solid ${color.primaryLine};
     margin: clamp(36px, 5vw, 56px) 0;
-`;
-
-const pulseDot = keyframes`
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-`;
-
-export const StatusDot = styled.span`
-    width: 8px;
-    height: 8px;
-    background: ${color.live};
-    border-radius: 50%;
-    display: inline-block;
-    animation: ${pulseDot} 2s infinite;
 `;

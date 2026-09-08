@@ -15,7 +15,7 @@ const only = process.env.ROUTES?.split(',');
 
 const ROUTES = only ?? [
     '/', '/experience', '/family', '/organizations', '/institution',
-    '/pricing', '/signup', '/story', '/faq', '/privacy', '/terms', '/nope-404',
+    '/pricing', '/story', '/faq', '/privacy', '/terms', '/nope-404',
 ];
 
 const VIEWPORTS = [

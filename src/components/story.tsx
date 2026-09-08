@@ -1,7 +1,7 @@
+import { CONTACT } from '../lib/contact';
 import Seo from './ui/Seo';
 import { breadcrumbSchema, organizationSchema } from '../lib/seo';
-import {Container, ContainerDark, StoryHero, HeroTitle, HeroSub, Byline, StorySection, StoryDark, Paragraph, Emphasis, ChapterHeadline, PullQuote, PullQuoteText, StoryDivider, SigInitial, SigDetails, GhostButton, Arrow, TeamSection, Label, SectionTitle, TeamGrid, TeamCard, TeamPhoto, TeamInfo, TeamRole, TeamBio, MissionSection, MissionText, MissionSub, CtaSection, CtaTitle, CtaSub, HeroActions, PrimaryButton, OutlineButton} from './story.styles';
-import { Link } from 'react-router-dom';
+import {Container, ContainerDark, StoryHero, HeroTitle, HeroSub, Byline, StorySection, StoryDark, Paragraph, Emphasis, ChapterHeadline, PullQuote, PullQuoteText, StoryDivider, SigInitial, SigDetails, GhostButton, Arrow, TeamSection, Label, SectionTitle, TeamGrid, TeamCard, TeamPhoto, TeamInfo, TeamRole, TeamBio, MissionSection, MissionText, MissionSub, CtaSection, CtaTitle, CtaSub, HeroActions, PrimaryButtonAnchor, OutlineButtonLink} from './story.styles';
 import danielPhoto from './../assets/astoryDaniel.webp';
 import baoPhoto from './../assets/astoryBao.webp';
 
@@ -122,12 +122,8 @@ const Story = () => {
                     <CtaTitle>Someday is how the stories get lost.</CtaTitle>
                     <CtaSub>A 20-minute conversation with us &mdash; then a lifetime of stories, organized and yours forever.</CtaSub>
                     <HeroActions>
-                        <Link to="/signup">
-                            <PrimaryButton>Get early access</PrimaryButton>
-                        </Link>
-                        <Link to="/experience">
-                            <OutlineButton>See how it works</OutlineButton>
-                        </Link>
+                        <PrimaryButtonAnchor href={CONTACT.gift}>Get early access</PrimaryButtonAnchor>
+                        <OutlineButtonLink to="/experience">See how it works</OutlineButtonLink>
                     </HeroActions>
                 </Container>
             </CtaSection>

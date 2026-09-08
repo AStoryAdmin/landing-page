@@ -1,6 +1,7 @@
+import { CONTACT } from '../lib/contact';
 import Seo from './ui/Seo';
 import Reveal from './ui/Reveal';
-import { Actions, Button, Container, Eyebrow, H2, Lead, Note, Section } from './ui/primitives';
+import { Actions, ButtonAnchor, Container, Eyebrow, H2, Lead, Note, Section } from './ui/primitives';
 import { IconArrow, IconCheck } from './ui/icons';
 import { breadcrumbSchema, faqSchema, organizationSchema } from '../lib/seo';
 import { DriverTable, HonestGrid, HonestItem, Page, Plan, PlanGrid } from './pricing.styles';
@@ -13,22 +14,23 @@ import { DriverTable, HonestGrid, HonestItem, Page, Plan, PlanGrid } from './pri
  */
 const PLANS = [
     {
-        audience: 'Families',
-        name: 'Early access',
+        audience: 'The gift',
+        name: 'A Story for one person',
         price: 'Free',
-        priceNote: 'While we are in early access',
+        priceNote: 'The archive, free while we are in early access',
         blurb:
-            'Everything needed to capture one person’s life story and share it with the whole family. No card, no trial clock.',
+            'Everything needed to capture one person’s life story and hand it to the whole family. You buy once; there is no per-person charge for anyone you share it with.',
         features: [
+            'A card and a link to give, with your note on it',
             'Unlimited guided voice interviews',
             'Private archive, organized by chapter of life',
             'Photo uploads attached to the right memory',
-            'Invite the whole family to contribute',
+            'Invite as many family members as you like — free',
             'Searchable transcripts and saved audio',
-            'Personal onboarding call with our founder',
+            'A personal hand-hold from us if they get stuck',
             'Full export whenever you want it',
         ],
-        cta: { label: "Start your family's story", to: '/signup', variant: 'primary' as const },
+        cta: { label: "Start your family's story", href: CONTACT.gift, variant: 'primary' as const },
         foot: 'The hardcover keepsake is $79–$129 depending on length, plus shipping, and is always quoted before you order. The digital archive is free.',
     },
     {
@@ -47,7 +49,7 @@ const PLANS = [
             'Onboarding story library, curated by theme',
             'DPA, security documentation, named contact',
         ],
-        cta: { label: 'Book a demo', to: '/signup?for=organization', variant: 'gold' as const },
+        cta: { label: 'Book a demo', href: CONTACT.organization, variant: 'gold' as const },
         featured: true,
         flag: 'Most requested',
         foot: 'Priced by number of storytellers and whether you want a printed volume. No per-seat licensing for listeners.',
@@ -68,15 +70,15 @@ const PLANS = [
             'HIPAA-aligned handling, BAA on request',
             'Onboarding for new staff, ongoing',
         ],
-        cta: { label: 'Book a walkthrough', to: '/signup?for=organization', variant: 'outline' as const },
+        cta: { label: 'Book a walkthrough', href: CONTACT.community, variant: 'outline' as const },
         foot: 'Priced per community rather than per resident, so offering it widely never costs you more.',
     },
 ];
 
 const PRICING_FAQ = [
     {
-        q: 'Is it really free for families?',
-        a: 'Yes — no card required and no trial that quietly ends. We are early, we want the feedback, and we would rather earn the paid relationship later than extract it now.',
+        q: 'So what am I actually paying for?',
+        a: 'The hardcover book, at $79–$129 depending on length. The archive itself is free while we are in early access — no card, and no trial that quietly ends. We would rather earn the paid relationship later than extract it now.',
     },
     {
         q: 'What does the printed book cost?',
@@ -96,7 +98,7 @@ const Pricing = () => (
     <Page>
         <Seo
             title="Pricing — A Story"
-            description="Free for families during early access. Organization and care-community programs are quoted per engagement on a 30-minute call. Full export always included, no lock-in."
+            description="What it costs to give A Story: the archive is free during early access, the hardcover keepsake is $79–$129. Organization and care-community programs are quoted per engagement."
             path="/pricing"
             schema={[
                 organizationSchema(),
@@ -112,11 +114,11 @@ const Pricing = () => (
             <Container>
                 <div style={{ maxWidth: 760, marginBottom: 'clamp(40px, 5vw, 64px)' }}>
                     <Eyebrow>Pricing</Eyebrow>
-                    <H2>Priced so that asking is never the expensive part.</H2>
+                    <H2>Priced so the asking is never the expensive part.</H2>
                     <Lead>
-                        Families start free. Organizations and care communities are quoted per program, on one
-                        short call, with a fixed number and no seat-count surprises. Everyone can export
-                        everything, always.
+                        Giving it costs the price of the book. The archive is free while we are in early
+                        access, and it never costs more because more of the family joined in. Organizations
+                        and care communities are quoted per program on one short call.
                     </Lead>
                 </div>
 
@@ -135,7 +137,7 @@ const Pricing = () => (
                                         <li key={f}><IconCheck size={16} /><span>{f}</span></li>
                                     ))}
                                 </ul>
-                                <Button to={p.cta.to} $variant={p.cta.variant}>{p.cta.label}</Button>
+                                <ButtonAnchor href={p.cta.href} $variant={p.cta.variant}>{p.cta.label}</ButtonAnchor>
                                 <p className="foot">{p.foot}</p>
                             </Plan>
                         </Reveal>
@@ -236,8 +238,8 @@ const Pricing = () => (
                     ))}
                 </HonestGrid>
                 <Actions>
-                    <Button to="/signup" $variant="primary">Start free</Button>
-                    <Button to="/signup?for=organization" $variant="outline">Get a program quote <IconArrow /></Button>
+                    <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
+                    <ButtonAnchor href={CONTACT.organization} $variant="outline">Get a program quote <IconArrow /></ButtonAnchor>
                 </Actions>
             </Container>
         </Section>

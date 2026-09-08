@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 import { color, font } from '../styles/theme';
 
 const colors = {
@@ -395,7 +396,7 @@ export const HeroActions = styled.div`
     flex-wrap: wrap;
 `;
 
-export const PrimaryButton = styled.button`
+const primaryButtonCss = css`
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -416,7 +417,18 @@ export const PrimaryButton = styled.button`
     }
 `;
 
-export const OutlineButton = styled(PrimaryButton)`
+export const PrimaryButton = styled.button`
+    ${primaryButtonCss};
+`;
+
+/** The same button as an anchor, for mailto conversion links. */
+export const PrimaryButtonAnchor = styled.a`
+    ${primaryButtonCss};
+    display: inline-flex;
+`;
+
+const outlineButtonCss = css`
+    ${primaryButtonCss};
     background: transparent;
     color: ${colors.ink};
     border: 2px solid ${colors.ink15};
@@ -426,4 +438,15 @@ export const OutlineButton = styled(PrimaryButton)`
         background: ${colors.ink08};
         border-color: ${colors.ink40};
     }
+`;
+
+export const OutlineButton = styled.button`
+    ${outlineButtonCss};
+`;
+
+/** The same button as a router link. */
+export const OutlineButtonLink = styled(Link)`
+    ${outlineButtonCss};
+    display: inline-flex;
+    text-decoration: none;
 `;

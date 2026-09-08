@@ -1,16 +1,19 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Logo from './ui/Logo';
+import { CONTACT } from '../lib/contact';
 import {
-    Announce, Dropdown, DropdownItem, Hamburger, MobileActions, NavActions, NavButton, NavCta,
+    Announce, Dropdown, DropdownItem, Hamburger, MobileActions, NavActions, NavButton, NavCtaAnchor,
     NavGhost, NavGroup, NavInner, NavLink, NavLinks, NavShell, NavSpacer,
 } from './navbar.styles';
 
-/** The three audiences A Story serves, surfaced under one nav group. */
-const AUDIENCES = [
-    { to: '/family', title: 'For families', blurb: "Capture a parent's or grandparent's life story before the chance passes." },
-    { to: '/organizations', title: 'For organizations', blurb: 'Keep your founding story, your people and your institutional memory — permanently.' },
-    { to: '/institution', title: 'For care communities', blurb: 'Reminiscence at scale for senior living, memory care and hospice.' },
+/**
+ * The gift buyer is the whole point of the top-level nav, so the two other
+ * audiences sit behind one "Also for" group rather than competing for it.
+ */
+const ALSO_FOR = [
+    { to: '/organizations', title: 'Organizations', blurb: 'Founder interviews, retiring-employee knowledge and anniversary archives.' },
+    { to: '/institution', title: 'Care communities', blurb: 'Reminiscence at scale for senior living, memory care and hospice.' },
 ] as const;
 
 const Chevron = () => (
@@ -22,7 +25,7 @@ const Chevron = () => (
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
-    const [audienceOpen, setAudienceOpen] = useState(false);
+    const [alsoOpen, setAlsoOpen] = useState(false);
     const [solid, setSolid] = useState(false);
     const shellRef = useRef<HTMLElement | null>(null);
     const groupRef = useRef<HTMLDivElement | null>(null);
@@ -37,7 +40,7 @@ const Navbar = () => {
     if (pathname !== lastPath) {
         setLastPath(pathname);
         setOpen(false);
-        setAudienceOpen(false);
+        setAlsoOpen(false);
     }
 
     /* Lock the page behind the mobile drawer. */
@@ -72,28 +75,28 @@ const Navbar = () => {
 
     /* Dismiss the dropdown on outside click or Escape. */
     useEffect(() => {
-        if (!audienceOpen) return;
+        if (!alsoOpen) return;
         const onClick = (e: MouseEvent) => {
-            if (!groupRef.current?.contains(e.target as Node)) setAudienceOpen(false);
+            if (!groupRef.current?.contains(e.target as Node)) setAlsoOpen(false);
         };
-        const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setAudienceOpen(false); };
+        const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setAlsoOpen(false); };
         document.addEventListener('mousedown', onClick);
         document.addEventListener('keydown', onKey);
         return () => {
             document.removeEventListener('mousedown', onClick);
             document.removeEventListener('keydown', onKey);
         };
-    }, [audienceOpen]);
+    }, [alsoOpen]);
 
-    const isAudience = AUDIENCES.some((a) => a.to === pathname);
+    const isAlso = ALSO_FOR.some((a) => a.to === pathname);
 
     return (
         <NavShell ref={shellRef} $solid={solid}>
             <Announce>
                 <span>
-                    A Story is <strong>free for families</strong> while we are in early access.
+                    Ready to give in minutes &mdash; <strong>the book arrives in 3&ndash;4 weeks</strong>
                 </span>
-                <Link to="/signup">Start a story &rarr;</Link>
+                <a href={CONTACT.gift}>Gift a story &rarr;</a>
             </Announce>
 
             <NavInner aria-label="Primary">
@@ -102,24 +105,26 @@ const Navbar = () => {
 
                 <NavLinks $open={open} id={menuId}>
                     <NavLink to="/experience" $active={pathname === '/experience'}>How it works</NavLink>
+                    <NavLink to="/family" $active={pathname === '/family'}>Why it matters</NavLink>
+                    <NavLink to="/pricing" $active={pathname === '/pricing'}>Pricing</NavLink>
 
                     <NavGroup
                         ref={groupRef}
-                        onMouseEnter={() => window.matchMedia('(min-width: 861px)').matches && setAudienceOpen(true)}
-                        onMouseLeave={() => window.matchMedia('(min-width: 861px)').matches && setAudienceOpen(false)}
+                        onMouseEnter={() => window.matchMedia('(min-width: 861px)').matches && setAlsoOpen(true)}
+                        onMouseLeave={() => window.matchMedia('(min-width: 861px)').matches && setAlsoOpen(false)}
                     >
                         <NavButton
                             type="button"
-                            $open={audienceOpen}
-                            aria-expanded={audienceOpen}
+                            $open={alsoOpen}
+                            aria-expanded={alsoOpen}
                             aria-haspopup="true"
-                            onClick={() => setAudienceOpen((v) => !v)}
-                            style={isAudience ? { fontWeight: 600 } : undefined}
+                            onClick={() => setAlsoOpen((v) => !v)}
+                            style={isAlso ? { fontWeight: 600 } : undefined}
                         >
-                            Who it&rsquo;s for <Chevron />
+                            Also for <Chevron />
                         </NavButton>
-                        <Dropdown $open={audienceOpen} role="menu">
-                            {AUDIENCES.map((a) => (
+                        <Dropdown $open={alsoOpen} role="menu">
+                            {ALSO_FOR.map((a) => (
                                 <DropdownItem key={a.to} to={a.to} role="menuitem">
                                     <strong>{a.title}</strong>
                                     <span>{a.blurb}</span>
@@ -128,18 +133,15 @@ const Navbar = () => {
                         </Dropdown>
                     </NavGroup>
 
-                    <NavLink to="/pricing" $active={pathname === '/pricing'}>Pricing</NavLink>
-                    <NavLink to="/story" $active={pathname === '/story'}>Our story</NavLink>
-
                     <MobileActions>
-                        <NavCta to="/signup">Get early access</NavCta>
-                        <NavGhost to="/signup?for=organization">Book a demo</NavGhost>
+                        <NavCtaAnchor href={CONTACT.gift}>Gift a story</NavCtaAnchor>
+                        <NavGhost to="/story">Our story</NavGhost>
                     </MobileActions>
                 </NavLinks>
 
                 <NavActions>
-                    <NavGhost to="/signup?for=organization">Book a demo</NavGhost>
-                    <NavCta to="/signup">Get early access</NavCta>
+                    <NavGhost to="/story">Our story</NavGhost>
+                    <NavCtaAnchor href={CONTACT.gift}>Gift a story</NavCtaAnchor>
                 </NavActions>
 
                 <Hamburger

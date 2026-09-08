@@ -1,32 +1,33 @@
+import { CONTACT } from '../lib/contact';
 import Seo from './ui/Seo';
 import { breadcrumbSchema, organizationSchema } from '../lib/seo';
 import { Link } from 'react-router-dom';
-import {FamilyContainer, CardView, Label, GoldLabel, HeroLabel, SectionTitle, Paragraph, Italic, ItalicAccent, PrimaryButton, GhostButton, Arrow, HeroSection, HeroTitle, HeroSub, WhySection, WhyLayout, StatStack, StatCard, StatNum, StatCaption, WhoSection, WhoIntro, WhoCards, WhoCard, CardTitle, WhyNowSection, WhyNowTitle, WhyNowGrid, WhyNowCard, WhyNowNum, WhyNowCardTitle, WhyNowText, PrivacySection, PrivacySub, PromiseGrid, PromiseCard, PromiseIcon, PromiseTitle, PromiseText, PrivacyFooterNote, FounderSection, FounderLayout, Blockquote, FounderPhoto, CtaSection, CtaTitle, CtaSub, CtaActions, OutlineButton} from './family.styles';
+import {FamilyContainer, CardView, Label, GoldLabel, HeroLabel, SectionTitle, Paragraph, Italic, ItalicAccent, PrimaryButtonAnchor, GhostButton, Arrow, HeroSection, HeroTitle, HeroSub, WhySection, WhyLayout, StatStack, StatCard, StatNum, StatCaption, WhoSection, WhoIntro, WhoCards, WhoCard, CardTitle, WhyNowSection, WhyNowTitle, WhyNowGrid, WhyNowCard, WhyNowNum, WhyNowCardTitle, WhyNowText, PrivacySection, PrivacySub, PromiseGrid, PromiseCard, PromiseIcon, PromiseTitle, PromiseText, PrivacyFooterNote, FounderSection, FounderLayout, Blockquote, FounderPhoto, CtaSection, CtaTitle, CtaSub, CtaActions, OutlineButtonLink} from './family.styles';
 import daniel from './../assets/astoryDaniel.webp';
 
 const Families = () => {
     return (
         <FamilyContainer>
             <Seo
-                title="A Story for families — ask before the chance passes"
-                description="Capture a parent's or grandparent's life story with a guided voice conversation. A private family archive, contributions from relatives anywhere, and a printed hardcover book."
+                title="Why it matters — the case for asking now"
+                description="Why a recorded life story is the gift people remember. The evidence, the window that is closing, and the promises we make to the person telling it."
                 path="/family"
                 schema={[
                     organizationSchema(),
                     breadcrumbSchema([
                         { name: 'Home', path: '/' },
-                        { name: 'For families', path: '/family' },
+                        { name: 'Why it matters', path: '/family' },
                     ]),
                 ]}
             />
             <HeroSection>
                 <CardView>
-                    <HeroLabel>For families &amp; care</HeroLabel>
+                    <HeroLabel>Why it matters</HeroLabel>
                     <HeroTitle>
-                        For the families<br />who haven't asked <Italic>yet.</Italic>
+                        The present nobody<br />thinks to <Italic>give.</Italic>
                     </HeroTitle>
                     <HeroSub>
-                        Most stories are never told &mdash; not because there's nothing to say, but because no one ever made the time to ask. A Story makes the asking easy, and the answering even easier.
+                        Every year you buy them something they did not need. The one thing they would actually keep &mdash; the whole story of their life, in their own voice &mdash; is the one thing nobody thinks to give. Here is the case for giving it this year.
                     </HeroSub>
                 </CardView>
             </HeroSection>
@@ -39,9 +40,7 @@ const Families = () => {
                             <SectionTitle>Every day is a day closer to a story you'll never hear.</SectionTitle>
                             <Paragraph>Most families never get to ask. Life gets busy. The person who holds all the stories gets older. And then one day it's too late &mdash; and you realize you never found out what her childhood was like, what he dreamed of becoming, what the house they grew up in smelled like in summer.</Paragraph>
                             <Paragraph>A Story gives you a way to ask, while there's still time. Not as a journalist. Not as a therapist. As a warm presence that sits with the people you love and says: <ItalicAccent>I have time. Tell me everything.</ItalicAccent></Paragraph>
-                            <Link to="/signup">
-                                <PrimaryButton>Get early access</PrimaryButton>
-                            </Link>
+                            <PrimaryButtonAnchor href={CONTACT.gift}>Get early access</PrimaryButtonAnchor>
                         </div>
 
                         <StatStack>
@@ -74,20 +73,20 @@ const Families = () => {
             <WhoSection>
                 <CardView>
                     <Label>Who it's for</Label>
-                    <SectionTitle>Two kinds of families. One shared need.</SectionTitle>
-                    <WhoIntro>A Story is used by adult children capturing a parent's story, and by senior living communities that understand the whole person.</WhoIntro>
+                    <SectionTitle>One person buys it. Everybody keeps it.</SectionTitle>
+                    <WhoIntro>Almost every A Story archive starts with one person deciding to give it &mdash; and ends up belonging to a whole family.</WhoIntro>
 
                     <WhoCards>
                         <WhoCard>
-                            <Label>For families</Label>
-                            <CardTitle>The gift no one knew they needed.</CardTitle>
+                            <Label>The buyer</Label>
+                            <CardTitle>You send one link. That is the whole job.</CardTitle>
                             <Paragraph>Adult children use A Story to capture their parents' and grandparents' stories before it's too late. It's a birthday gift, a holiday project, a "just because I wanted to know" act of love.</Paragraph>
                             <Paragraph>One family member can carry the whole project &mdash; or the whole family can contribute. A grandmother in one city, a granddaughter in another, building the same archive together.</Paragraph>
                         </WhoCard>
 
                         <WhoCard>
-                            <Label>For senior living &amp; memory care</Label>
-                            <CardTitle>Dignity through story.</CardTitle>
+                            <Label>The rest of the family</Label>
+                            <CardTitle>Everyone you invite can add to it.</CardTitle>
                             <Paragraph>A Story is used in senior living communities and memory care settings as a gentle, meaningful activity &mdash; a way for residents to feel heard, for families to stay connected across distances, and for staff to understand the whole person, not just the patient.</Paragraph>
                             <Paragraph>Reminiscence has well-documented benefits for cognitive health and emotional well-being. A Story makes it beautiful.</Paragraph>
                             <Link to="/institution">
@@ -194,12 +193,8 @@ const Families = () => {
                     <CtaTitle>The most meaningful gift<br />you can give.</CtaTitle>
                     <CtaSub>We&rsquo;ll walk you through the full experience &mdash; and the first conversation can start the same day.</CtaSub>
                     <CtaActions>
-                        <Link to="/signup">
-                            <PrimaryButton>Get early access</PrimaryButton>
-                        </Link>
-                        <Link to="/experience">
-                            <OutlineButton>See the experience</OutlineButton>
-                        </Link>
+                        <PrimaryButtonAnchor href={CONTACT.gift}>Get early access</PrimaryButtonAnchor>
+                        <OutlineButtonLink to="/experience">See the experience</OutlineButtonLink>
                     </CtaActions>
                 </CardView>
             </CtaSection>

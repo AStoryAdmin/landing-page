@@ -26,7 +26,7 @@ const PORT = 4179;
 
 const ROUTES = [
     '/', '/experience', '/family', '/organizations', '/institution',
-    '/pricing', '/signup', '/story', '/faq', '/privacy', '/terms',
+    '/pricing', '/story', '/faq', '/privacy', '/terms',
 ];
 
 const MIME = {

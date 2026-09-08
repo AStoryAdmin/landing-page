@@ -22,7 +22,6 @@ const ROUTES = [
     { path: '/organizations', priority: '0.9', changefreq: 'monthly' },
     { path: '/institution', priority: '0.9', changefreq: 'monthly' },
     { path: '/pricing', priority: '0.8', changefreq: 'monthly' },
-    { path: '/signup', priority: '0.8', changefreq: 'monthly' },
     { path: '/story', priority: '0.6', changefreq: 'yearly' },
     { path: '/faq', priority: '0.6', changefreq: 'monthly' },
     { path: '/privacy', priority: '0.3', changefreq: 'yearly' },

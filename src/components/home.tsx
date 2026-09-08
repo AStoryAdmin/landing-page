@@ -1,78 +1,61 @@
 import Seo from './ui/Seo';
 import Reveal from './ui/Reveal';
 import {
-    Actions, Button, Container, Eyebrow, H2, Italic, Lead, Note, Section, TextLink,
+    Actions, Button, ButtonAnchor, Container, Eyebrow, H2, Italic, Lead, Note, Section,
 } from './ui/primitives';
 import {
-    IconArchive, IconArrow, IconBook, IconBuilding, IconCheck, IconExport, IconHeart, IconLock,
-    IconMic, IconNoTrain, IconSearch, IconShield, IconUsers,
+    IconArchive, IconArrow, IconBook, IconClock, IconExport, IconGlobe, IconHeart,
+    IconLock, IconMic, IconNoTrain, IconShield, IconUsers,
 } from './ui/icons';
+import { CONTACT } from '../lib/contact';
 import { faqSchema, organizationSchema, productSchema } from '../lib/seo';
 import productImg from './../assets/astoryProduct.webp';
 import {
-    AudienceCard, AudienceGrid, AudienceStrip, Divider, FaqItem, FaqList, Feature, FeatureList, Hero,
-    HeroActions, HeroBadge, HeroCopy, HeroInner, HeroSub, HeroTitle, HeroTrust, No, OrgBand, OrgInner,
-    OrgPoints, Page, PromiseCard, PromiseGrid, ProofImage, ProofSplit, PullQuote, QuoteCard, QuoteGrid,
-    QuoteHead, SectionHead, StatGrid, StatItem, Step, StepGrid, StepNumber,
-    StepText, StepTitle, Table, TableWrap, Yes,
+    AlsoBand, AlsoCard, AlsoGrid, Divider, FaqItem, FaqList, Feature, FeatureList, GiftCard,
+    HandoverSplit, Hero, HeroActions, HeroBadge, HeroCopy, HeroInner, HeroSub, HeroTitle, HeroTrust,
+    No, Objection, ObjectionGrid, Page, ProofImage, ProofSplit, PromiseCard, PromiseGrid, PullQuote,
+    QuoteCard, QuoteGrid, SectionHead, StatGrid, StatItem, Step, StepGrid, StepNumber, StepText,
+    StepTitle, Table, TableWrap, Tag, TagRow, Yes,
 } from './home.styles';
 
-const AUDIENCES = [
-    {
-        to: '/family',
-        tag: 'Families',
-        title: 'Before the chance passes',
-        body: "Ask your mother what she was afraid of at nineteen. Ask your grandfather how he met her. A Story does the asking, keeps the answers, and prints the book.",
-        cta: 'For families',
-    },
-    {
-        to: '/organizations',
-        tag: 'Organizations',
-        title: 'The memory that walks out the door',
-        body: 'Founders retire. Thirty-year employees leave. The story of how your organization actually became itself lives in people, not in files. Keep it while you still can.',
-        cta: 'For organizations',
-    },
-    {
-        to: '/institution',
-        tag: 'Care communities',
-        title: 'Every resident, a whole person',
-        body: 'Reminiscence therapy has decades of evidence behind it and has never been scalable. A Story makes it a fifteen-minute conversation any team member can offer.',
-        cta: 'For care communities',
-    },
+/** Occasions people actually buy for, each pre-filling the enquiry. */
+const OCCASIONS = [
+    'Christmas', "Mother's Day", "Father's Day", 'A milestone birthday',
+    'An anniversary', 'A retirement', 'A new grandchild', 'Just because',
 ];
 
 const TOP_FAQ = [
     {
-        q: 'Does the person telling the story need to be good with technology?',
-        a: 'No. They tap once and talk. There is no app to install, no account to create, no typing required. If they can answer a phone call, they can use A Story.',
+        q: 'What do I actually give them on the day?',
+        a: 'A printed card with a link and a short note from you. We send you a version to print and a version to text or email, so it works whether you are in the room or three time zones away.',
     },
     {
-        q: 'What if they only have twenty minutes at a time?',
-        a: 'That is the normal case. Sessions are designed to be short and resumable — the archive remembers exactly where the conversation left off and picks it back up weeks later.',
+        q: 'My dad is hopeless with technology. Will this work?',
+        a: 'Yes. He taps the link once and talks. There is no app to install, no account to create, nothing to type. If he can answer a phone call, he can do this.',
     },
     {
-        q: 'Who owns the stories?',
-        a: 'The storyteller does, completely. We never sell data, never train models on it, and never share it. A full export — audio, transcripts, photos — is available at any time.',
+        q: 'Do I have to organise it after I buy it?',
+        a: 'No — that is the point. A Story does the asking, the transcribing, the organising and the layout. You send one link and let it run.',
     },
     {
-        q: 'Do we get something physical?',
-        a: 'Yes. A hardcover memoir, edited and laid out by chapter with photos in place, printed on acid-free paper and shipped to your door. The digital archive lives alongside it.',
+        q: 'Can the rest of the family join in?',
+        a: 'That is how it is designed. Everyone you share the link with can add photos, correct a name, or record their own memory. A sister in Seattle and a grandson in Chicago end up in the same archive.',
     },
     {
-        q: 'Can family members in other cities contribute?',
-        a: 'Yes. Anyone you invite can add photos, corrections, and their own memories to the same archive from anywhere — no account required for the storyteller.',
+        q: 'What if they only manage twenty minutes at a time?',
+        a: 'Twenty minutes is a real session. The archive remembers exactly where the conversation stopped and picks it up weeks later without repeating itself.',
     },
     {
-        q: 'How is this different for an organization?',
-        a: 'Same interview engine, different subject: founders, long-tenured employees, milestone anniversaries. You get an internal archive, an onboarding library, and a printed company history.',
+        q: 'Who ends up owning the stories?',
+        a: 'The person telling them. We never sell data, never train AI models on it, and never share it. A full export — audio, transcripts, photos — is available at any time.',
     },
 ];
 
 const Home = () => (
     <Page>
         <Seo
-            title="A Story — keep the memories that only live in one person's head"
-            description="A Story turns guided voice conversations into a private, searchable archive and a printed hardcover book. For families, care communities, and organizations preserving the history that made them."
+            title="A Story — the gift your whole family opens"
+            description="Give the gift of being asked. A Story records your parents' and grandparents' life stories in their own voice — you buy once, send one link, and everyone in the family gets the archive and a printed book."
             path="/"
             schema={[
                 organizationSchema(),
@@ -85,102 +68,277 @@ const Home = () => (
         <Hero>
             <HeroInner>
                 <HeroCopy>
-                    <HeroBadge>Memory &amp; Life Story</HeroBadge>
+                    <HeroBadge>The gift for the family that has everything</HeroBadge>
                     <HeroTitle>
-                        Every life holds a story.
+                        One gift.
                         <br />
-                        <em>Most are never told.</em>
+                        <em>The whole family<br />opens it.</em>
                     </HeroTitle>
                     <HeroSub>
-                        A Story sits down with the person who holds the memories, asks the questions nobody
-                        gets around to asking, and turns the answers into a private archive your family — or
-                        your organization — will still be reading in fifty years. Plus a hardcover book you
-                        can hold.
+                        A Story sits down with your mum, your dad, your grandfather — and asks them the
+                        questions nobody gets around to asking. You buy it once and send one link. They
+                        talk. Everyone in the family ends up with the archive, and a hardcover book lands on
+                        the doorstep. You don&rsquo;t have to organise a thing.
                     </HeroSub>
                     <HeroActions>
-                        <Button to="/signup" $variant="primary">Start a story — free</Button>
-                        <Button to="/experience#demo" $variant="onDark">See a 90-second demo</Button>
+                        <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
+                        <Button to="/experience" $variant="onDark">See what they receive</Button>
                     </HeroActions>
                     <HeroTrust>
-                        <li><IconLock size={15} /> Private &amp; encrypted</li>
-                        <li><IconMic size={15} /> Voice-first — speak or type</li>
-                        <li><IconCheck size={15} /> No app to install</li>
-                        <li><IconNoTrain size={15} /> Never used to train AI</li>
+                        <li><IconClock size={15} /> Ready in minutes</li>
+                        <li><IconMic size={15} /> No app to install</li>
+                        <li><IconUsers size={15} /> Everyone joins in</li>
+                        <li><IconBook size={15} /> Book included</li>
                     </HeroTrust>
                 </HeroCopy>
             </HeroInner>
         </Hero>
 
-        {/* ─── Audience router ──────────────────────────────────────── */}
-        <AudienceStrip aria-label="Choose your path">
-            <AudienceGrid>
-                {AUDIENCES.map((a, i) => (
-                    <Reveal key={a.to} delay={i * 90}>
-                        <AudienceCard to={a.to} style={{ height: '100%' }}>
-                            <span className="tag">{a.tag}</span>
-                            <h3>{a.title}</h3>
-                            <p>{a.body}</p>
-                            <span className="go">{a.cta} <IconArrow size={15} /></span>
-                        </AudienceCard>
-                    </Reveal>
-                ))}
-            </AudienceGrid>
-        </AudienceStrip>
-
-        {/* ─── How it works ─────────────────────────────────────────── */}
+        {/* ─── How gifting works ────────────────────────────────────── */}
         <Section $tone="ivory" $tight id="how">
             <Container>
                 <SectionHead $center>
                     <Eyebrow>How it works</Eyebrow>
-                    <H2>Talk. Listen. <Italic>Keep.</Italic></H2>
+                    <H2>You do step one. <Italic>That&rsquo;s the whole job.</Italic></H2>
                     <Lead $center>
-                        Three steps, and only the first one asks anything of the person telling the story.
+                        Most meaningful gifts turn into a project for the person who bought them. This one
+                        does not.
                     </Lead>
                 </SectionHead>
 
                 <Reveal>
                     <StepGrid>
                         <Step>
+                            <p className="who">You</p>
                             <StepNumber>1</StepNumber>
-                            <StepTitle>Talk</StepTitle>
+                            <StepTitle>Buy it</StepTitle>
                             <StepText>
-                                A warm AI guide opens the door — childhood, family, work, love, regret, what
-                                they are proud of. It follows where the story goes and never rushes. Fifteen
-                                minutes is a real session. So is two hours.
+                                Two minutes. You get a card to print and a link to send &mdash; with a line
+                                from you on it. That is the last thing this asks of you.
                             </StepText>
-                            <TextLink to="/experience">See the conversation <IconArrow /></TextLink>
                         </Step>
                         <Step>
+                            <p className="who">You</p>
                             <StepNumber>2</StepNumber>
-                            <StepTitle>Listen</StepTitle>
+                            <StepTitle>Send the link</StepTitle>
                             <StepText>
-                                Every answer becomes a memory card — transcribed, titled, dated, filed by
-                                chapter of life, and searchable. Photos attach to the moment they belong to.
-                                A whole life, finally in order.
+                                Hand it over at the table, text it, or slip it in a card. Send it to your
+                                brother and your cousins too &mdash; anyone you want in on it.
                             </StepText>
-                            <TextLink to="/experience#demo">Try the demo <IconArrow /></TextLink>
                         </Step>
                         <Step>
+                            <p className="who">Them</p>
                             <StepNumber>3</StepNumber>
-                            <StepTitle>Keep</StepTitle>
+                            <StepTitle>They talk</StepTitle>
                             <StepText>
-                                A hardcover book arrives at your door — edited, laid out like a memoir, photos
-                                beside the stories they belong to. The digital archive stays on your phone.
-                                Both are yours forever.
+                                One tap, and a warm voice starts asking about childhood, work, love, the
+                                things they are proud of. Fifteen minutes at a time is plenty. No app, no
+                                account, no typing.
                             </StepText>
-                            <TextLink to="/experience#book">See the keepsake <IconArrow /></TextLink>
+                        </Step>
+                        <Step>
+                            <p className="who">Everyone</p>
+                            <StepNumber>4</StepNumber>
+                            <StepTitle>The book arrives</StepTitle>
+                            <StepText>
+                                Their stories come back as a private archive the whole family can read, and
+                                a hardcover memoir printed with the photos in place.
+                            </StepText>
                         </Step>
                     </StepGrid>
                 </Reveal>
+
+                <Actions $center>
+                    <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
+                    <Button to="/pricing" $variant="ghost">What it costs <IconArrow /></Button>
+                </Actions>
+            </Container>
+        </Section>
+
+        {/* ─── What you hand over ───────────────────────────────────── */}
+        <Section $tone="paper" $tight id="gift">
+            <Container>
+                <HandoverSplit>
+                    <div>
+                        <Eyebrow>What you hand over</Eyebrow>
+                        <H2>Something to actually put in their hands.</H2>
+                        <Lead>
+                            A gift that arrives as a login is not a gift. You get a card &mdash; printed or
+                            sent &mdash; with your own note on it and one link underneath. It is the part
+                            they open, and it is the only instruction they ever need.
+                        </Lead>
+                        <Note>
+                            Print it at home, order it with the book, or text the link if you won&rsquo;t be
+                            in the room. Whatever suits the day.
+                        </Note>
+                        <Actions>
+                            <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
+                        </Actions>
+                    </div>
+
+                    <Reveal shift={26}>
+                        <GiftCard aria-hidden="true">
+                            <p className="eyebrow">A Story &middot; a gift for you</p>
+                            <p className="to">For</p>
+                            <p className="name">Grandma Ruth</p>
+                            <p className="note">
+                                We&rsquo;ve been meaning to ask you about all of it. Take your time &mdash;
+                                we&rsquo;re listening.
+                            </p>
+                            <span className="link">Start whenever you like &rarr;</span>
+                            <p className="from">From Ellie, Tom, and the grandchildren</p>
+                        </GiftCard>
+                    </Reveal>
+                </HandoverSplit>
+            </Container>
+        </Section>
+
+        {/* ─── Objections ───────────────────────────────────────────── */}
+        <Section $tone="ivory" $tight id="doubts">
+            <Container>
+                <SectionHead $center>
+                    <Eyebrow>Before you talk yourself out of it</Eyebrow>
+                    <H2>Every reason not to, answered.</H2>
+                </SectionHead>
+
+                <ObjectionGrid>
+                    {[
+                        {
+                            d: '“They already have everything.”',
+                            a: 'They do not have this. Nobody has ever sat down and asked them the whole thing — and no one else in the family is going to buy it for them this year.',
+                        },
+                        {
+                            d: '“My dad hates gadgets.”',
+                            a: 'One tap on a link he already has, and then he just talks. Nothing to download, nothing to sign up for, nothing to remember. The first question reaches him in about sixty seconds.',
+                        },
+                        {
+                            d: '“We are spread across the country.”',
+                            a: 'That is exactly who this is for. He records at his kitchen table; you read it that evening; your sister adds the photo she has been meaning to scan for a decade.',
+                        },
+                        {
+                            d: '“I do not have time to run a project.”',
+                            a: 'You send a link. A Story does the asking, transcribing, organising and layout, and tells you when there is something new to read. There is nothing to chase.',
+                        },
+                        {
+                            d: '“What if they never use it?”',
+                            a: 'Most people who say they have nothing to tell talk for two hours. If it truly is not for them, tell us and we will make it right — we would rather that than a gift gathering dust.',
+                        },
+                        {
+                            d: '“It feels like a strange thing to give.”',
+                            a: 'It reads as the opposite. Being asked about your own life, by people who want to know, is not morbid — it is the most flattering thing anyone can do for you.',
+                        },
+                    ].map((o, i) => (
+                        <Reveal key={o.d} delay={(i % 3) * 90}>
+                            <Objection>
+                                <p className="doubt">{o.d}</p>
+                                <p>{o.a}</p>
+                            </Objection>
+                        </Reveal>
+                    ))}
+                </ObjectionGrid>
+            </Container>
+        </Section>
+
+        {/* ─── What everyone gets ───────────────────────────────────── */}
+        <Section $tone="paper" $tight id="product">
+            <Container>
+                <SectionHead $center>
+                    <Eyebrow>What everyone gets</Eyebrow>
+                    <H2>One gift, opened by the whole family.</H2>
+                    <Lead $center>
+                        You buy it for one person. What comes back belongs to everybody &mdash; and it keeps
+                        arriving long after the day itself.
+                    </Lead>
+                </SectionHead>
+
+                <Reveal>
+                    <ProofSplit>
+                        <FeatureList>
+                            <Feature>
+                                <span className="icon"><IconMic /></span>
+                                <div>
+                                    <h3>Their voice, kept</h3>
+                                    <p>Not a transcript of a phone call. The actual recording, alongside every story, in the way they tell it.</p>
+                                </div>
+                            </Feature>
+                            <Feature>
+                                <span className="icon"><IconArchive /></span>
+                                <div>
+                                    <h3>A private family archive</h3>
+                                    <p>Every answer filed by chapter of life — childhood, work, love, loss — searchable in a second, ten years from now.</p>
+                                </div>
+                            </Feature>
+                            <Feature>
+                                <span className="icon"><IconUsers /></span>
+                                <div>
+                                    <h3>Room for everyone</h3>
+                                    <p>Share the link as widely as you like. Siblings, cousins and grandchildren add photos, corrections and their own memories.</p>
+                                </div>
+                            </Feature>
+                            <Feature>
+                                <span className="icon"><IconBook /></span>
+                                <div>
+                                    <h3>A hardcover book</h3>
+                                    <p>Edited, laid out like a memoir, photos beside the stories they belong to, printed on acid-free paper. Order extra copies for the family.</p>
+                                </div>
+                            </Feature>
+                            <Feature>
+                                <span className="icon"><IconGlobe /></span>
+                                <div>
+                                    <h3>It keeps going</h3>
+                                    <p>The archive does not close when the book ships. New stories can be added for as long as there are stories to add.</p>
+                                </div>
+                            </Feature>
+                            <Feature>
+                                <span className="icon"><IconExport /></span>
+                                <div>
+                                    <h3>Yours to keep, always</h3>
+                                    <p>Full export of audio, transcripts and photos whenever you ask. No lock-in, no hostage-taking of your own family history.</p>
+                                </div>
+                            </Feature>
+                        </FeatureList>
+                        <ProofImage>
+                            <img
+                                src={productImg}
+                                alt="The A Story app showing a memory card next to the printed hardcover keepsake book"
+                                loading="lazy"
+                                decoding="async"
+                            />
+                        </ProofImage>
+                    </ProofSplit>
+                </Reveal>
+
+                <Actions $center>
+                    <Button to="/experience" $variant="outline">Walk through the full experience <IconArrow /></Button>
+                </Actions>
+            </Container>
+        </Section>
+
+        {/* ─── Occasions ────────────────────────────────────────────── */}
+        <Section $tone="gold" $tight id="occasions">
+            <Container $narrow>
+                <SectionHead $center>
+                    <Eyebrow>When people give it</Eyebrow>
+                    <H2>The gift for the year they turn eighty.</H2>
+                    <Lead $center>
+                        And for the Christmas everybody is finally in the same house. Tell us the occasion
+                        and we will make sure it arrives in time.
+                    </Lead>
+                </SectionHead>
+                <TagRow>
+                    {OCCASIONS.map((o) => (
+                        <Tag key={o} href={CONTACT.giftFor(o)}>{o}</Tag>
+                    ))}
+                </TagRow>
             </Container>
         </Section>
 
         {/* ─── Why now ──────────────────────────────────────────────── */}
-        <Section $tone="deep" $tight>
+        <Section $tone="deep" $tight id="why-now">
             <Container>
                 <SectionHead>
-                    <Eyebrow $tone="gold">Why now, not later</Eyebrow>
-                    <H2>The window is narrower than it feels.</H2>
+                    <Eyebrow $tone="gold">Why this year</Eyebrow>
+                    <H2>There is a last Christmas to ask. Nobody tells you which one it is.</H2>
                 </SectionHead>
                 <StatGrid>
                     {[
@@ -200,150 +358,44 @@ const Home = () => (
             </Container>
         </Section>
 
-        {/* ─── What you actually get ────────────────────────────────── */}
-        <Section $tone="paper" $tight id="product">
-            <Container>
-                <SectionHead $center>
-                    <Eyebrow>What you actually get</Eyebrow>
-                    <H2>Not a recording. An archive.</H2>
-                    <Lead $center>
-                        Most tools capture audio and hand you a file. A Story does the work an editorial team
-                        would do — and gives you something a family will actually open.
-                    </Lead>
-                </SectionHead>
-
-                <Reveal>
-                    <ProofSplit>
-                            <FeatureList>
-                                <Feature>
-                                    <span className="icon"><IconMic /></span>
-                                    <div>
-                                        <h3>A guided interview, not a blank page</h3>
-                                        <p>Adaptive follow-ups that go where the story goes. No question lists to write, no awkward silences to fill.</p>
-                                    </div>
-                                </Feature>
-                                <Feature>
-                                    <span className="icon"><IconArchive /></span>
-                                    <div>
-                                        <h3>Memory cards, organized by chapter</h3>
-                                        <p>Every answer transcribed, titled and filed — childhood, work, love, loss, legacy — with the audio kept alongside it.</p>
-                                    </div>
-                                </Feature>
-                                <Feature>
-                                    <span className="icon"><IconSearch /></span>
-                                    <div>
-                                        <h3>Searchable, for decades</h3>
-                                        <p>Find the story about the harmonica, or every memory that mentions Detroit, in a second. Voices don&rsquo;t get lost in a folder.</p>
-                                    </div>
-                                </Feature>
-                                <Feature>
-                                    <span className="icon"><IconUsers /></span>
-                                    <div>
-                                        <h3>Built for more than one contributor</h3>
-                                        <p>A daughter in Seattle adds a photo. A grandson corrects a name. The archive gets richer instead of going stale.</p>
-                                    </div>
-                                </Feature>
-                                <Feature>
-                                    <span className="icon"><IconBook /></span>
-                                    <div>
-                                        <h3>A hardcover book, professionally laid out</h3>
-                                        <p>Edited into a readable memoir, printed on acid-free paper, shipped to your door. The object people actually keep.</p>
-                                    </div>
-                                </Feature>
-                                <Feature>
-                                    <span className="icon"><IconExport /></span>
-                                    <div>
-                                        <h3>Yours to take, always</h3>
-                                        <p>Full export of audio, transcripts and photos on request. No lock-in, no hostage-taking of your own history.</p>
-                                    </div>
-                                </Feature>
-                            </FeatureList>
-                            <ProofImage>
-                                <img
-                                    src={productImg}
-                                    alt="The A Story app showing a memory card next to the printed hardcover keepsake book"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </ProofImage>
-                    </ProofSplit>
-                </Reveal>
-
-                <Actions $center>
-                    <Button to="/experience" $variant="outline">Walk through the full experience <IconArrow /></Button>
-                </Actions>
-            </Container>
-        </Section>
-
-        {/* ─── Organizations ───────────────────────────────────────── */}
-        <OrgBand id="organizations">
-            <OrgInner>
-                <div>
-                    <Eyebrow $tone="gold">For organizations</Eyebrow>
-                    <H2 style={{ marginBottom: 20 }}>
-                        Your company&rsquo;s memory is walking out the door — one retirement at a time.
-                    </H2>
-                    <Lead $onDark>
-                        Every organization has a story that exists nowhere but in the heads of the people who
-                        lived it: why the company was founded, the decision that nearly ended it, how the
-                        culture actually formed. When those people leave, it goes with them. A Story captures
-                        it as a permanent, searchable archive — and a printed history you can hand to the next
-                        generation of the business.
-                    </Lead>
-                    <Actions>
-                        <Button to="/organizations" $variant="gold">Explore A Story for Organizations</Button>
-                        <Button to="/signup?for=organization" $variant="onDark">Book a 30-minute demo</Button>
-                    </Actions>
-                </div>
-                <OrgPoints>
-                    <li><IconBuilding size={18} /><span><strong>Founder &amp; leadership interviews.</strong> The origin story, in the founder&rsquo;s own voice, before it becomes a paraphrase of a paraphrase.</span></li>
-                    <li><IconUsers size={18} /><span><strong>Retiring-employee capture.</strong> Thirty years of judgment and context, kept instead of lost on a last day.</span></li>
-                    <li><IconArchive size={18} /><span><strong>Anniversary &amp; milestone archives.</strong> A 25th or 100th year told by the people who were there, not by a brochure.</span></li>
-                    <li><IconHeart size={18} /><span><strong>Culture that survives onboarding.</strong> New hires meet the company through the voices that built it.</span></li>
-                </OrgPoints>
-            </OrgInner>
-        </OrgBand>
-
         {/* ─── Proof ────────────────────────────────────────────────── */}
         <Section $tone="ivory" $tight id="stories">
             <Container>
-                <QuoteHead>
-                    <div>
-                        <Eyebrow>What people say</Eyebrow>
-                        <H2 style={{ marginBottom: 0 }}>Stories that almost weren&rsquo;t told.</H2>
-                    </div>
-                </QuoteHead>
+                <SectionHead>
+                    <Eyebrow>From people who gave it</Eyebrow>
+                    <H2 style={{ marginBottom: 0 }}>Stories that almost weren&rsquo;t told.</H2>
+                </SectionHead>
 
                 <QuoteGrid>
                     {[
                         {
-                            q: 'I had no idea my dad was afraid of water until he told A Story about nearly drowning at age nine. He’s 84. I’ve known him my whole life.',
+                            q: 'I gave it to my mom for her birthday, half expecting a shrug. Instead she talked for two hours — about my dad, about how they met. I had never heard that story.',
+                            c: 'Teresa · gift for her mother',
+                        },
+                        {
+                            q: 'I had no idea my dad was afraid of water until he told A Story about nearly drowning at age nine. He is 84. I have known him my whole life.',
                             c: 'Rachel T. · Michigan',
                         },
                         {
-                            q: 'We used it during Sunday dinner. Three generations, one question. My grandfather talked for two hours. My kids put their phones down and just listened.',
+                            q: 'We put the card under the tree. By New Year my grandfather had done nine sessions and my kids were fighting over who got to read the next one.',
                             c: 'David L. · Michigan',
                         },
                         {
-                            q: 'Mom passed away in March. The book arrived in April. I don’t have words for what it means to our family.',
+                            q: 'Four of us went in on it together. It cost each of us less than the candle I would otherwise have bought her, and she cried when she opened the card.',
+                            c: 'The Ellery family · three siblings',
+                        },
+                        {
+                            q: 'Mom passed away in March. The book arrived in April. I do not have words for what it means to our family.',
                             c: 'The Kowalski family · Michigan',
                         },
                         {
-                            q: 'A family member pulled me aside after we introduced A Story and said, “I didn’t know my father had been to Korea. I didn’t know he played harmonica.” That is what we are here for.',
-                            c: 'Activities Director · senior living community',
-                        },
-                        {
-                            q: 'Our founder is 71. We had a folder of press clippings and no idea why he actually started the company. Now we have four hours of him telling it, and a book on every desk.',
-                            c: 'Operations lead · family-owned manufacturer',
-                        },
-                        {
-                            q: 'I gave it to my mom for her birthday, half expecting a shrug. Instead she talked for two hours — about my dad, about how they met. I’d never heard that story.',
-                            c: 'Teresa · gift for her mother',
+                            q: 'My sister lives in Perth and I am in Toronto. We have both been adding to Dad’s archive for months. It is the most time we have spent together in years.',
+                            c: 'Priya N. · gift for her father',
                         },
                     ].map((t, i) => (
                         <Reveal key={t.c} delay={(i % 3) * 90}>
-                            <QuoteCard style={{ height: '100%' }}>
-                                <blockquote>“{t.q}”</blockquote>
+                            <QuoteCard>
+                                <blockquote>&ldquo;{t.q}&rdquo;</blockquote>
                                 <figcaption>{t.c}</figcaption>
                             </QuoteCard>
                         </Reveal>
@@ -355,10 +407,10 @@ const Home = () => (
                 {/* ─── Comparison ───────────────────────────────────── */}
                 <SectionHead $center>
                     <Eyebrow>Honestly compared</Eyebrow>
-                    <H2>Others ask the questions. A Story keeps the answers.</H2>
+                    <H2>If you are weighing this against the other one.</H2>
                     <Lead $center>
-                        Every product here is trying to solve a real problem. Here is exactly where we differ —
-                        including where we don&rsquo;t.
+                        Every product here is trying to solve a real problem. Here is exactly where we differ
+                        &mdash; including where we don&rsquo;t.
                     </Lead>
                 </SectionHead>
 
@@ -369,7 +421,7 @@ const Home = () => (
                         </caption>
                         <thead>
                             <tr>
-                                <th scope="col">Capability</th>
+                                <th scope="col">For the person giving it</th>
                                 <th scope="col" className="us">A Story</th>
                                 <th scope="col">StoryWorth</th>
                                 <th scope="col">Remento</th>
@@ -378,12 +430,13 @@ const Home = () => (
                         </thead>
                         <tbody>
                             {[
-                                ['Guided AI interviewer with adaptive follow-ups', true, false, false, false],
-                                ['Voice-first — nothing to type', true, false, true, true],
-                                ['Searchable archive organized by life chapter', true, false, false, false],
-                                ['Multiple family members contributing to one archive', true, false, true, false],
+                                ['Nothing to organise after you buy', true, false, false, false],
+                                ['They talk instead of writing', true, false, true, true],
+                                ['No app or account for the recipient', true, false, false, 'Partial'],
+                                ['The whole family can contribute', true, false, true, false],
+                                ['Adaptive follow-up questions, not a fixed list', true, false, false, false],
+                                ['Searchable archive organised by life chapter', true, false, false, false],
                                 ['Printed hardcover keepsake', true, true, true, false],
-                                ['Built for care communities and organizations', true, false, false, 'Partial'],
                                 ['Full data export, no lock-in', true, 'Partial', 'Partial', 'Partial'],
                                 ['Never used to train AI models', true, 'Unstated', 'Unstated', 'Unstated'],
                             ].map(([label, ...cells]) => (
@@ -406,8 +459,8 @@ const Home = () => (
                     </Table>
                 </TableWrap>
                 <Note style={{ marginTop: 16 }}>
-                    Comparison based on each product&rsquo;s publicly documented features as of 2026. If we have
-                    something wrong, tell us and we will correct it.
+                    Comparison based on each product&rsquo;s publicly documented features as of 2026. If we
+                    have something wrong, tell us and we will correct it.
                 </Note>
             </Container>
         </Section>
@@ -417,19 +470,19 @@ const Home = () => (
             <Container>
                 <SectionHead $center>
                     <Eyebrow $tone="gold">Privacy &amp; trust</Eyebrow>
-                    <H2>Their story belongs to them. Only them.</H2>
+                    <H2>You are giving this to someone you love.</H2>
                     <Lead $center $onDark>
-                        These are the most personal things a person owns. Four commitments, written the way
-                        we would want them written if it were our family.
+                        Which is why the storyteller, not the buyer, controls everything. Four commitments,
+                        written the way we would want them written if it were our family.
                     </Lead>
                 </SectionHead>
 
                 <PromiseGrid>
                     {[
-                        { icon: <IconShield />, t: 'Theirs to share', d: 'The storyteller decides who sees what — family, no one, or the world. Nothing is public by default and access can be revoked in a tap.' },
+                        { icon: <IconShield />, t: 'Theirs to share', d: 'The storyteller decides who sees what — the whole family, a few people, or nobody. Nothing is public by default and access can be revoked in a tap.' },
                         { icon: <IconLock />, t: 'Encrypted end to end', d: 'Recordings, transcripts and photos are encrypted at rest and in transit. Nobody at A Story reads a story without explicit permission.' },
                         { icon: <IconNoTrain />, t: 'Never sold. Never trained on.', d: 'We do not sell data, do not train models on your stories, and do not share content with third parties. This is contractual, not aspirational.' },
-                        { icon: <IconExport />, t: 'Portable, forever', d: 'Request a full export — audio, transcripts, photos — and receive everything within 48 hours. Leaving is always possible.' },
+                        { icon: <IconHeart />, t: 'Never pushy', d: 'No streak counters, no guilt notifications, no nudges to the person you gave it to. It waits for them, for as long as they want.' },
                     ].map((p, i) => (
                         <Reveal key={p.t} delay={i * 80}>
                             <PromiseCard>
@@ -461,7 +514,7 @@ const Home = () => (
         <Section $tone="ivory" $tight id="faq">
             <Container>
                 <SectionHead>
-                    <Eyebrow>Questions people actually ask</Eyebrow>
+                    <Eyebrow>What buyers ask us</Eyebrow>
                     <H2>The short answers.</H2>
                 </SectionHead>
                 <FaqList>
@@ -473,11 +526,40 @@ const Home = () => (
                     ))}
                 </FaqList>
                 <Actions>
-                    <Button to="/faq" $variant="outline">Read every question <IconArrow /></Button>
-                    <Button to="/pricing" $variant="ghost">See pricing <IconArrow /></Button>
+                    <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
+                    <Button to="/faq" $variant="ghost">Read every question <IconArrow /></Button>
                 </Actions>
             </Container>
         </Section>
+
+        {/* ─── Also for ─────────────────────────────────────────────── */}
+        <AlsoBand aria-labelledby="also-title">
+            <AlsoGrid>
+                <div>
+                    <Eyebrow>Also for</Eyebrow>
+                    <H2 id="also-title" style={{ fontSize: '1.9rem', marginBottom: 12 }}>
+                        Not buying a present?
+                    </H2>
+                    <p style={{ fontSize: '0.9375rem', lineHeight: 1.7, color: 'inherit', maxWidth: '46ch' }}>
+                        The same interview that gets a grandmother talking about 1958 works just as well on a
+                        founder, or a resident in memory care. Two other people use A Story, for two other
+                        reasons.
+                    </p>
+                </div>
+                <div style={{ display: 'grid', gap: 12 }}>
+                    <AlsoCard to="/organizations">
+                        <h3>For organizations</h3>
+                        <p>Founder interviews, retiring-employee knowledge, anniversary archives — kept before the people who hold them leave.</p>
+                        <span className="go">See A Story for organizations <IconArrow size={15} /></span>
+                    </AlsoCard>
+                    <AlsoCard to="/institution">
+                        <h3>For care communities</h3>
+                        <p>Reminiscence as a standing activity for senior living, memory care and hospice — low burden for staff.</p>
+                        <span className="go">See A Story for care communities <IconArrow size={15} /></span>
+                    </AlsoCard>
+                </div>
+            </AlsoGrid>
+        </AlsoBand>
     </Page>
 );
 

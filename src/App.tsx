@@ -17,7 +17,6 @@ const Family = lazy(() => import('./components/family'));
 const Institution = lazy(() => import('./components/institution'));
 const Organizations = lazy(() => import('./components/organizations'));
 const Pricing = lazy(() => import('./components/pricing'));
-const Signup = lazy(() => import('./components/signup'));
 const Story = lazy(() => import('./components/story'));
 const Terms = lazy(() => import('./components/terms'));
 const Privacy = lazy(() => import('./components/privacy'));
@@ -77,7 +76,6 @@ function App() {
                     <Route path="/organizations" element={<Organizations />} />
                     <Route path="/institution" element={<Institution />} />
                     <Route path="/pricing" element={<Pricing />} />
-                    <Route path="/signup" element={<Signup />} />
                     <Route path="/story" element={<Story />} />
                     <Route path="/terms" element={<Terms />} />
                     <Route path="/privacy" element={<Privacy />} />

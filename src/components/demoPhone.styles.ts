@@ -474,7 +474,7 @@ export const DemoEndActions = styled.div`
     gap: 8px;
 `;
 
-export const DemoEndPrimary = styled(Link)`
+const demoEndPrimaryCss = css`
     display: inline-block;
     font-family: ${fonts.body};
     font-size: 12px;
@@ -490,6 +490,15 @@ export const DemoEndPrimary = styled(Link)`
     &:hover {
         background: #a14e22;
     }
+`;
+
+export const DemoEndPrimary = styled(Link)`
+    ${demoEndPrimaryCss};
+`;
+
+/** The same button as an anchor, for mailto conversion links. */
+export const DemoEndPrimaryAnchor = styled.a`
+    ${demoEndPrimaryCss};
 `;
 
 export const DemoEndSecondary = styled(Link)`

@@ -1,6 +1,7 @@
+import { CONTACT } from '../lib/contact';
 import Seo from './ui/Seo';
 import { breadcrumbSchema, organizationSchema } from '../lib/seo';
-import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription} from './experience.styles'
+import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, DemoButtonAnchor, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription} from './experience.styles'
 import {TagRow, Tag, Divider} from './home.styles';
 import FlipBook from './flipBook';
 import DemoPhone from './demoPhone';
@@ -10,8 +11,8 @@ const Experience = () => {
     return (
         <ExperienceContainer>
             <Seo
-                title="How A Story works — from first question to printed book"
-                description="Five steps from the first question to a hardcover memoir: a guided voice interview, memory cards organised by chapter, family contributions, and a printed keepsake shipped to your door."
+                title="What they receive — from the first question to a printed book"
+                description="What happens after you send the link: a guided voice interview, memory cards organised by chapter, contributions from the whole family, and a hardcover book shipped to the door."
                 path="/experience"
                 schema={[
                     organizationSchema(),
@@ -24,8 +25,8 @@ const Experience = () => {
             <OpeningContainer>
                 <CardView>
                     <Intro>The Experience</Intro>
-                    <Title>See how a life becomes <HighlightText>a story.</HighlightText></Title>
-                    <Description>From the first question to a printed book at your door — a gentle, unhurried process designed for anyone, regardless of age or technology experience.</Description>
+                    <Title>What happens after you <HighlightText>send the link.</HighlightText></Title>
+                    <Description>A gentle, unhurried process designed for someone who has never installed an app in their life — and nothing at all for you to run.</Description>
                     <a href="#demo" style={{textDecoration: 'none'}}>
                         <DemoButton as="span" to="#demo">Watch the conversation</DemoButton>
                     </a>
@@ -188,10 +189,10 @@ const Experience = () => {
             <AccessContainer>
                 <CardView>
                     <DarkIntro>Ready to begin?</DarkIntro>
-                    <DarkTitle>Start capturing their story today.</DarkTitle>
-                    <DarkDescription>From the first question to a printed book at your door — a gentle, unhurried process designed for anyone, regardless of age or technology experience.</DarkDescription>
-                    <DemoButton to="/signup">Get early access</DemoButton>
-                    <FamilyButton to="/family">For Family &amp; Care</FamilyButton>
+                    <DarkTitle>Give it while there is still time to ask.</DarkTitle>
+                    <DarkDescription>You buy it once and send one link. They talk when they feel like it. The archive and the book belong to the whole family.</DarkDescription>
+                    <DemoButtonAnchor href={CONTACT.gift}>Gift a story</DemoButtonAnchor>
+                    <FamilyButton to="/family">Why it matters</FamilyButton>
                 </CardView>
             </AccessContainer>
         </ExperienceContainer>

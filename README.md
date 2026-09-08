@@ -1,8 +1,13 @@
 # A Story — landing page
 
-Marketing site for A Story: guided voice conversations that become a private,
-searchable archive and a printed hardcover book — for families, care
-communities, and organizations preserving the history that made them.
+Marketing site for A Story.
+
+**The buyer is the gift giver.** Someone buys A Story as a present for a parent
+or grandparent, sends one link, and the whole family ends up with the archive
+and the printed book. Every page is written for that person — what they hand
+over, how little work it is for them, and every reason they might talk
+themselves out of it. Organizations and care communities are real but secondary
+audiences with their own pages.
 
 React 19 · TypeScript · Vite · styled-components · React Router · Supabase.
 
@@ -38,8 +43,9 @@ npm run dev
 | `VITE_SUPABASE_ANON_KEY` | Supabase anon key |
 | `VITE_SITE_URL` | Canonical origin — used for canonical tags, OG URLs and the sitemap. Defaults to `https://astoryapp.com`. |
 
-Without the Supabase variables the site still renders; the signup form shows an
-"email us" message instead of silently failing.
+Supabase now only powers the standalone `/p/:slug` and `/contribute/:slug`
+flows; the marketing pages do not touch it. Without the variables those two
+routes show their "not found" state and everything else is unaffected.
 
 ---
 
@@ -123,11 +129,24 @@ scripts/                 build and maintenance tooling (see the table above)
 ```
 
 Routes: `/`, `/experience`, `/family`, `/organizations`, `/institution`,
-`/pricing`, `/signup`, `/story`, `/faq`, `/privacy`, `/terms`, plus the
-standalone `/p/:slug` (shared archive) and `/contribute/:slug` flows and a 404.
+`/pricing`, `/story`, `/faq`, `/privacy`, `/terms`, plus the standalone
+`/p/:slug` (shared archive) and `/contribute/:slug` flows and a 404.
+
+`/family` is the "why it matters" case for the gift buyer; `/experience` is what
+the recipient receives.
 
 Only the home page ships in the initial bundle; every other route is a separate
-chunk fetched on navigation, and Supabase loads only with the signup page.
+chunk fetched on navigation.
+
+## Calls to action
+
+There is no signup form. Every conversion path on the site is a `mailto:` with
+a pre-filled subject line, defined once in **`src/lib/contact.ts`** — `gift`,
+`giftFor(occasion)`, `organization`, `community` and `general`. An incoming
+message therefore already says which page and which intent it came from.
+
+When a checkout or booking flow exists, change those five constants and every
+button on the site follows. Nothing else references a destination.
 
 ---
 
@@ -172,11 +191,9 @@ non-3D album layout below 700px.
 - Pricing shows "Free" for families during early access and "Quoted" for the two
   programme plans. When list prices exist, edit `PLANS` at the top of
   `src/components/pricing.tsx` — nothing else needs to change.
-- The waitlist form writes `segment`, `organization`, `role`, `org_type`,
-  `org_size` and `message` alongside the original four columns. If those
-  columns do not exist yet the insert retries with the original four and packs
-  the organization context into `phone`, so no lead is lost — but adding the
-  columns is worth doing.
+- The gift card shown on the home page is rendered from CSS, not a photograph,
+  so it always matches the brand. The real artefact a buyer receives does not
+  exist yet — building it is the obvious next step, and the copy promises it.
 - Testimonials are hard-coded in `src/components/home.tsx`, and the
   announcement strip above the navbar is in `src/components/navbar.tsx`.
 - The book price ($79–$129) appears on `/experience`, `/pricing` and `/faq`.

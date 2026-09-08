@@ -229,6 +229,29 @@ export const NavCta = styled(Link)`
     }
 `;
 
+/** The same pill as NavCta, for the mailto conversion links. */
+export const NavCtaAnchor = styled.a`
+    font-family: ${font.body};
+    font-size: ${type.sm};
+    font-weight: ${weight.semibold};
+    letter-spacing: 0.02em;
+    color: ${color.paperPure};
+    background: ${color.accent};
+    border: 1.5px solid ${color.accent};
+    padding: 11px 22px;
+    border-radius: ${radius.pill};
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: ${shadow.sm};
+    transition: background ${motion.base}, border-color ${motion.base}, transform ${motion.fast};
+
+    &:hover {
+        background: ${color.accentHover};
+        border-color: ${color.accentHover};
+        transform: translateY(-1px);
+    }
+`;
+
 export const MobileActions = styled.div`
     display: none;
 

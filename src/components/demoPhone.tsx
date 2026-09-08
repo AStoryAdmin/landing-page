@@ -1,3 +1,4 @@
+import { CONTACT } from '../lib/contact';
 import { useEffect, useRef, useState } from 'react';
 import {
     PhoneContainer,
@@ -36,7 +37,7 @@ import {
     DemoEndTitle,
     DemoEndSub,
     DemoEndActions,
-    DemoEndPrimary,
+    DemoEndPrimaryAnchor,
     DemoEndSecondary,
 } from './demoPhone.styles';
 import statusBarImg from './../assets/statusbar.webp';
@@ -391,7 +392,7 @@ const DemoPhone = () => {
                         <DemoEndTitle>Start your family's story.</DemoEndTitle>
                         <DemoEndSub>One conversation. A lifetime, finally in its place.</DemoEndSub>
                         <DemoEndActions>
-                            <DemoEndPrimary to="/signup">Get early access</DemoEndPrimary>
+                            <DemoEndPrimaryAnchor href={CONTACT.gift}>Gift a story</DemoEndPrimaryAnchor>
                             <DemoEndSecondary to="/family">Learn more</DemoEndSecondary>
                         </DemoEndActions>
                     </DemoEndInner>

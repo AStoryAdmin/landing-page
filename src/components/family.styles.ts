@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 import { color, font } from '../styles/theme';
 
 const colors = {
@@ -72,7 +73,7 @@ export const ItalicAccent = styled(Italic)`
     color: ${colors.orangeText};
 `;
 
-export const PrimaryButton = styled.button`
+const primaryButtonCss = css`
     margin-top: 20px;
     font-size: 14px;
     font-weight: 600;
@@ -89,6 +90,16 @@ export const PrimaryButton = styled.button`
         background: ${colors.orangeHover};
         transform: translateY(-1px);
     }
+`;
+
+export const PrimaryButton = styled.button`
+    ${primaryButtonCss};
+`;
+
+/** The same button as an anchor, for mailto conversion links. */
+export const PrimaryButtonAnchor = styled.a`
+    ${primaryButtonCss};
+    display: inline-flex;
 `;
 
 export const GhostButton = styled.button`
@@ -373,7 +384,8 @@ export const CtaActions = styled.div`
     margin-top: 40px;
 `;
 
-export const OutlineButton = styled(PrimaryButton)`
+const outlineButtonCss = css`
+    ${primaryButtonCss};
     background: none;
     color: ${colors.dark};
     border: 1px solid ${colors.dark};
@@ -381,4 +393,15 @@ export const OutlineButton = styled(PrimaryButton)`
     &:hover {
         background: ${colors.whiteGray};
     }
+`;
+
+export const OutlineButton = styled.button`
+    ${outlineButtonCss};
+`;
+
+/** The same button as a router link. */
+export const OutlineButtonLink = styled(Link)`
+    ${outlineButtonCss};
+    display: inline-flex;
+    text-decoration: none;
 `;
