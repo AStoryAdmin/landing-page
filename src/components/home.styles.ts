@@ -509,6 +509,86 @@ export const MattersCoda = styled.p`
     color: ${color.onDark};
 `;
 
+/* ── Proof, before there is social proof ──────────────────────────────────
+ * What stands in for testimonials while the set is unverified. Honesty is the
+ * conversion argument here, so it is laid out as a claim plus the evidence
+ * for it rather than as an apology.
+ */
+
+export const EarlyProof = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(28px, 4vw, 56px);
+    align-items: start;
+    padding: clamp(26px, 3vw, 40px);
+    background: ${color.paperPure};
+    border: 1px solid ${color.primaryLine};
+    border-left: 3px solid ${color.accent};
+    border-radius: ${radius.lg};
+
+    ${media.md} { grid-template-columns: 1fr; }
+
+    h3 {
+        font-family: ${font.display};
+        font-size: clamp(1.5rem, 1.2rem + 1.1vw, 1.9rem);
+        font-weight: ${weight.medium};
+        line-height: ${leading.snug};
+        color: ${color.ink};
+        margin-bottom: ${space.md};
+    }
+
+    p {
+        font-size: ${type.sm};
+        line-height: ${leading.relaxed};
+        color: ${color.bodyMuted};
+        margin-bottom: ${space.md};
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: ${space.md};
+    }
+
+    li {
+        display: grid;
+        grid-template-columns: 22px 1fr;
+        gap: ${space.sm};
+        font-size: ${type.sm};
+        line-height: ${leading.relaxed};
+        color: ${color.bodyMuted};
+    }
+
+    li svg { color: ${color.accentText}; margin-top: 3px; }
+    li strong { color: ${color.ink}; font-weight: ${weight.semibold}; }
+`;
+
+/* ── The demo, brought onto the landing page ──────────────────────────────
+ * It used to live only on /experience, one click away from the page almost
+ * everyone lands on — which meant the single most convincing thing about the
+ * product was seen by almost nobody.
+ */
+
+export const DemoSplit = styled.div`
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+
+    ${media.md} { grid-template-columns: 1fr; }
+`;
+
+/** Holds the phone's height while its chunk loads, so nothing jumps. */
+export const DemoFallback = styled.div`
+    min-height: 520px;
+    border-radius: ${radius.xl};
+    background: ${color.primaryWash};
+    border: 1px solid ${color.primaryLine};
+`;
+
 /* ── Testimonials ─────────────────────────────────────────────────────── */
 
 export const QuoteGrid = styled.div`

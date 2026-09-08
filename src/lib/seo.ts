@@ -14,7 +14,7 @@ export const SITE = {
     /** Override at build time with VITE_SITE_URL for preview deploys. */
     url: (import.meta.env?.VITE_SITE_URL as string | undefined)?.replace(/\/$/, '') ?? 'https://astoryapp.com',
     email: 'contact@astoryapp.com',
-    tagline: "Your Family's Living Memories",
+    tagline: 'Your Living Memories',
     ogImage: '/og-cover.png',
     twitter: '@astoryapp',
 } as const;

@@ -1,15 +1,17 @@
 import Seo from './ui/Seo';
+import BuyBar from './ui/BuyBar';
 import Reveal from './ui/Reveal';
 import { Actions, Button, ButtonAnchor, Container, Eyebrow, H2, Lead, Note, Section } from './ui/primitives';
 import { IconArrow, IconCheck } from './ui/icons';
 import { CONTACT } from '../lib/contact';
+import { AT_CHECKOUT, buyLabel, checkoutFor } from '../lib/checkout';
 import { FOREVER, PLANS, PRICE } from '../lib/pricing';
 import { breadcrumbSchema, faqSchema, organizationSchema } from '../lib/seo';
 import {
     BookPrice, BookPrices, BookSplit, CompareItem, CompareRow, DriverTable, ForeverBand, ForeverLead,
     ForeverList, ForeverStops, HonestGrid, HonestItem, IncludedList, Page, PlanAction, PlanBadge,
     PlanBadgeSpacer, PlanBlurb, PlanCard, PlanGrid, PlanMeter, PlanName, PlanPrice, PlanWho,
-    ProgramCard, ProgramGrid,
+    ProgramCard, ProgramGrid, Reassure,
 } from './pricing.styles';
 
 /**
@@ -124,10 +126,10 @@ const Pricing = () => (
                                 <PlanBlurb>{plan.blurb}</PlanBlurb>
                                 <PlanAction>
                                     <ButtonAnchor
-                                        href={CONTACT.giftFor(plan.name)}
+                                        href={checkoutFor(plan.id, plan.name)}
                                         $variant={plan.featured ? 'primary' : 'outline'}
                                     >
-                                        Start {plan.name.toLowerCase() === 'express' ? 'Express' : 'this one'}
+                                        {buyLabel(plan.id, `Buy ${plan.price}`, 'Ask about this one')}
                                     </ButtonAnchor>
                                 </PlanAction>
                             </PlanCard>
@@ -145,6 +147,18 @@ const Pricing = () => (
                         ))}
                     </IncludedList>
                 </div>
+
+                <Reassure>
+                    {AT_CHECKOUT.map((r) => (
+                        <div key={r.t}>
+                            <IconCheck size={16} />
+                            <div>
+                                <p className="t">{r.t}</p>
+                                <p className="d">{r.d}</p>
+                            </div>
+                        </div>
+                    ))}
+                </Reassure>
 
                 <Note style={{ marginTop: 24, textAlign: 'center' }}>
                     Nothing auto-renews. There is no free tier &mdash; the demo on{' '}
@@ -196,8 +210,11 @@ const Pricing = () => (
                             price; printing is at cost.
                         </Note>
                         <Actions>
+                            <ButtonAnchor href={checkoutFor('book', 'A hardcover book')} $variant="primary">
+                                {buyLabel('book', `Order a book — ${PRICE.book}`, 'Order a book')}
+                            </ButtonAnchor>
                             <Button to="/experience#book" $variant="outline">
-                                Look inside a finished book <IconArrow />
+                                Look inside one first <IconArrow />
                             </Button>
                         </Actions>
                     </div>
@@ -368,6 +385,7 @@ const Pricing = () => (
                 </Actions>
             </Container>
         </Section>
+        <BuyBar />
     </Page>
 );
 

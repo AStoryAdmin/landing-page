@@ -217,6 +217,40 @@ export const PlanAction = styled.div`
     a { width: 100%; justify-content: center; }
 `;
 
+/* ── What a buyer needs to know at the moment they decide ─────────────── */
+
+export const Reassure = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: ${space.lg};
+    margin-top: clamp(32px, 4vw, 48px);
+    padding-top: clamp(28px, 3vw, 40px);
+    border-top: 1px solid ${color.primaryLine};
+
+    ${media.md} { grid-template-columns: 1fr; gap: ${space.md}; }
+
+    > div {
+        display: grid;
+        grid-template-columns: 20px 1fr;
+        gap: ${space.sm};
+    }
+
+    svg { color: ${color.accentText}; margin-top: 3px; }
+
+    .t {
+        font-size: ${type.sm};
+        font-weight: ${weight.semibold};
+        color: ${color.ink};
+    }
+
+    .d {
+        margin-top: 2px;
+        font-size: ${type.xs};
+        line-height: ${leading.relaxed};
+        color: ${color.bodyMuted};
+    }
+`;
+
 /* ── Buy once, keep it forever ────────────────────────────────────────── */
 
 export const ForeverBand = styled.div`

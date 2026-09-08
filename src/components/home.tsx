@@ -1,4 +1,6 @@
+import { lazy, Suspense } from 'react';
 import Seo from './ui/Seo';
+import BuyBar from './ui/BuyBar';
 import Reveal from './ui/Reveal';
 import {
     Actions, Button, ButtonAnchor, Container, Eyebrow, H2, Italic, Lead, Note, Section,
@@ -11,8 +13,17 @@ import { CONTACT } from '../lib/contact';
 import { PRICE } from '../lib/pricing';
 import { faqSchema, organizationSchema, productSchema } from '../lib/seo';
 import productImg from './../assets/astoryProduct.webp';
+
+/*
+ * The demo is the most persuasive thing on the site and it used to sit one
+ * click away on /experience, where almost nobody found it. It is lazy so that
+ * the home page — the only route in the initial bundle — does not grow by the
+ * weight of the whole interactive phone.
+ */
+const DemoPhone = lazy(() => import('./demoPhone'));
 import {
-    AlsoBand, AlsoCard, AlsoGrid, Divider, FaqItem, FaqList, Feature, FeatureList, GiftCard,
+    AlsoBand, AlsoCard, AlsoGrid, DemoFallback, DemoSplit, Divider, EarlyProof, FaqItem, FaqList,
+    Feature, FeatureList, GiftCard,
     HandoverSplit, Hero, HeroActions, HeroBadge, HeroCopy, HeroInner, HeroSub, HeroTitle, HeroTrust,
     MatterItem, MattersCoda, MattersGrid, MattersLead,
     No, Objection, ObjectionGrid, Page, PriceStrip, ProofImage, ProofSplit, PromiseCard, PromiseGrid, PullQuote,
@@ -25,6 +36,51 @@ const OCCASIONS = [
     'Christmas', "Mother's Day", "Father's Day", 'A milestone birthday',
     'An anniversary', 'A retirement', 'A new grandchild', 'Just because',
 ];
+
+/**
+ * Testimonials.
+ *
+ * `verified` gates rendering: only quotes confirmed to come from a real
+ * customer who agreed to be quoted appear on the site. Everything here is
+ * currently false because the set was a mix of real and aspirational and
+ * nobody has yet said which is which — flip the flag on the genuine ones and
+ * they return to the page immediately. Do not flip one to publish a quote you
+ * cannot point at a person for.
+ */
+const TESTIMONIALS = [
+    {
+        q: 'I gave it to my mom for her birthday, half expecting a shrug. Instead she talked for two hours — about my dad, about how they met. I had never heard that story.',
+        c: 'Teresa · gift for her mother',
+        verified: false,
+    },
+    {
+        q: 'I had no idea my dad was afraid of water until he told A Story about nearly drowning at age nine. He is 84. I have known him my whole life.',
+        c: 'Rachel T. · Michigan',
+        verified: false,
+    },
+    {
+        q: 'We put the card under the tree. By New Year my grandfather had done nine sessions and my kids were fighting over who got to read the next one.',
+        c: 'David L. · Michigan',
+        verified: false,
+    },
+    {
+        q: 'Four of us went in on it together. It cost each of us less than the candle I would otherwise have bought her, and she cried when she opened the card.',
+        c: 'The Ellery family · three siblings',
+        verified: false,
+    },
+    {
+        q: 'Mom passed away in March. The book arrived in April. I do not have words for what it means to our family.',
+        c: 'The Kowalski family · Michigan',
+        verified: false,
+    },
+    {
+        q: 'My sister lives in Perth and I am in Toronto. We have both been adding to Dad’s archive for months. It is the most time we have spent together in years.',
+        c: 'Priya N. · gift for her father',
+        verified: false,
+    },
+];
+
+const VERIFIED_QUOTES = TESTIMONIALS.filter((t) => t.verified);
 
 const TOP_FAQ = [
     {
@@ -78,17 +134,17 @@ const Home = () => (
         <Hero>
             <HeroInner>
                 <HeroCopy>
-                    <HeroBadge>The gift for the family that has everything</HeroBadge>
+                    <HeroBadge>A Story &middot; your living memories</HeroBadge>
                     <HeroTitle>
-                        One gift.
+                        We call your parents
                         <br />
-                        <em>The whole family<br />opens it.</em>
+                        <em>and ask about<br />their life.</em>
                     </HeroTitle>
                     <HeroSub>
-                        A Story calls your mom, your dad, your grandfather &mdash; and asks them the
-                        questions nobody gets around to asking. You buy it once and send one link. They
-                        answer the phone and talk. Everyone in the family ends up with the archive &mdash;
-                        and it stays theirs for good, long after the conversations stop.
+                        Then we turn what they say into a private family archive &mdash; their voice, the
+                        full transcript, every story filed where it belongs. You buy it once and send one
+                        link. They answer the phone and talk, for as long as they feel like talking. The
+                        whole family keeps it, for good.
                     </HeroSub>
                     <HeroActions>
                         <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
@@ -103,6 +159,36 @@ const Home = () => (
                 </HeroCopy>
             </HeroInner>
         </Hero>
+
+        {/* ─── See it work, before we ask for anything ───────────────── */}
+        <Section $tone="paper" $tight id="demo">
+            <Container>
+                <DemoSplit>
+                    <div>
+                        <Eyebrow>Watch it happen</Eyebrow>
+                        <H2>This is the actual conversation.</H2>
+                        <Lead>
+                            Not a video of one. Press play and you are watching the real interview flow
+                            &mdash; A Story asks, listens to the answer, and follows it somewhere the next
+                            question could not have predicted.
+                        </Lead>
+                        <Note>
+                            At the end you get what your family gets: a memory card you can read in a
+                            minute, the full transcript underneath it, and the moment worth hearing kept as
+                            audio. Your microphone works too, if you want to try answering.
+                        </Note>
+                        <Actions>
+                            <Button to="/experience" $variant="outline">
+                                See everything they receive <IconArrow />
+                            </Button>
+                        </Actions>
+                    </div>
+                    <Suspense fallback={<DemoFallback aria-hidden="true" />}>
+                        <DemoPhone />
+                    </Suspense>
+                </DemoSplit>
+            </Container>
+        </Section>
 
         {/* ─── How gifting works ────────────────────────────────────── */}
         <Section $tone="ivory" $tight id="how">
@@ -421,45 +507,50 @@ const Home = () => (
         <Section $tone="ivory" $tight id="stories">
             <Container>
                 <SectionHead>
-                    <Eyebrow>From people who gave it</Eyebrow>
-                    <H2 style={{ marginBottom: 0 }}>Stories that almost weren&rsquo;t told.</H2>
+                    <Eyebrow>{VERIFIED_QUOTES.length > 0 ? 'From people who gave it' : 'What we can prove'}</Eyebrow>
+                    <H2 style={{ marginBottom: 0 }}>
+                        {VERIFIED_QUOTES.length > 0
+                            ? 'Stories that almost weren’t told.'
+                            : 'No testimonials we cannot stand behind.'}
+                    </H2>
                 </SectionHead>
 
-                <QuoteGrid>
-                    {[
-                        {
-                            q: 'I gave it to my mom for her birthday, half expecting a shrug. Instead she talked for two hours — about my dad, about how they met. I had never heard that story.',
-                            c: 'Teresa · gift for her mother',
-                        },
-                        {
-                            q: 'I had no idea my dad was afraid of water until he told A Story about nearly drowning at age nine. He is 84. I have known him my whole life.',
-                            c: 'Rachel T. · Michigan',
-                        },
-                        {
-                            q: 'We put the card under the tree. By New Year my grandfather had done nine sessions and my kids were fighting over who got to read the next one.',
-                            c: 'David L. · Michigan',
-                        },
-                        {
-                            q: 'Four of us went in on it together. It cost each of us less than the candle I would otherwise have bought her, and she cried when she opened the card.',
-                            c: 'The Ellery family · three siblings',
-                        },
-                        {
-                            q: 'Mom passed away in March. The book arrived in April. I do not have words for what it means to our family.',
-                            c: 'The Kowalski family · Michigan',
-                        },
-                        {
-                            q: 'My sister lives in Perth and I am in Toronto. We have both been adding to Dad’s archive for months. It is the most time we have spent together in years.',
-                            c: 'Priya N. · gift for her father',
-                        },
-                    ].map((t, i) => (
-                        <Reveal key={t.c} delay={(i % 3) * 90}>
-                            <QuoteCard>
-                                <blockquote>&ldquo;{t.q}&rdquo;</blockquote>
-                                <figcaption>{t.c}</figcaption>
-                            </QuoteCard>
-                        </Reveal>
-                    ))}
-                </QuoteGrid>
+                {VERIFIED_QUOTES.length > 0 ? (
+                    <QuoteGrid>
+                        {VERIFIED_QUOTES.map((t, i) => (
+                            <Reveal key={t.c} delay={(i % 3) * 90}>
+                                <QuoteCard>
+                                    <blockquote>&ldquo;{t.q}&rdquo;</blockquote>
+                                    <figcaption>{t.c}</figcaption>
+                                </QuoteCard>
+                            </Reveal>
+                        ))}
+                    </QuoteGrid>
+                ) : (
+                    <EarlyProof>
+                        <div>
+                            <h3>We are early, and we would rather say so.</h3>
+                            <p>
+                                Most sites like this one open with a wall of glowing quotes. We are not
+                                going to print testimonials we cannot stand behind &mdash; not on a product
+                                whose entire promise is that your family&rsquo;s stories are safe with us.
+                            </p>
+                            <p>
+                                So here is what we can actually show you instead: the product itself,
+                                running, above. The founder&rsquo;s own reason for building it. And a refund
+                                if it turns out not to be for you, with no deadline on the offer.
+                            </p>
+                            <Actions>
+                                <Button to="/story" $variant="outline">Why Daniel built this <IconArrow /></Button>
+                            </Actions>
+                        </div>
+                        <ul>
+                            <li><IconMic size={18} /><span><strong>Try the conversation yourself.</strong> The demo above is the real interview flow, not a video of one.</span></li>
+                            <li><IconBook size={18} /><span><strong>Look inside a finished book.</strong> Every page of Margaret&rsquo;s archive is on the experience page.</span></li>
+                            <li><IconShield size={18} /><span><strong>Read the terms before you pay.</strong> The refund and the forever-access promise are both written into them.</span></li>
+                        </ul>
+                    </EarlyProof>
+                )}
 
                 <Divider />
 
@@ -624,6 +715,7 @@ const Home = () => (
                 </div>
             </AlsoGrid>
         </AlsoBand>
+        <BuyBar />
     </Page>
 );
 
