@@ -94,7 +94,7 @@ const Navbar = () => {
         <NavShell ref={shellRef} $solid={solid}>
             <Announce>
                 <span>
-                    Ready to give in minutes &mdash; <strong>the book arrives in 3&ndash;4 weeks</strong>
+                    Ready to give in minutes &mdash; <strong>and the archive is theirs forever</strong>
                 </span>
                 <a href={CONTACT.gift}>Gift a story &rarr;</a>
             </Announce>

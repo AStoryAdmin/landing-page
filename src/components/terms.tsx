@@ -84,10 +84,11 @@ const sections: SectionData[] = [
     {
         num: 9,
         id: 's9',
-        title: 'Subscriptions, payments, and refunds',
+        title: 'Packages, payments, and refunds',
         content: (
             <>
-                <Paragraph>A Story is sold as a one-time purchase. There is no subscription, nothing renews, and there is no recurring charge of any kind. The price at the time of purchase covers the guided interviews, the archive, access for everyone the storyteller invites, and one printed hardcover book.</Paragraph>
+                <Paragraph>A Story is sold as one-time packages. There is no subscription, nothing renews, and there is no recurring charge of any kind. A package covers a fixed period of AI-guided conversations for a stated number of storytellers; printed books are purchased separately.</Paragraph>
+                <Paragraph><Bold>What continues after a package ends.</Bold> Once you have purchased any package, access to your archive does not expire. You keep the ability to read, search, add to and export it; everyone the storyteller has invited keeps their access; and you may go on recording, writing and uploading photos, and using the question bank, at no further charge, for as long as we operate the service. The only thing that stops when a package's period ends is the AI-guided conversation. We will not delete an archive, restrict access to material already recorded, or place any of it behind a later payment because a package has ended.</Paragraph>
                 <Paragraph><Bold>Gifts that go unused.</Bold> If the person you bought it for does not use it, write to us at <LegalLink href="mailto:contact@astoryapp.com">contact@astoryapp.com</LegalLink> and we will refund you. We would rather return the money than have a gift sit there unopened, and we do not put a deadline on this.</Paragraph>
                 <Paragraph><Bold>If you started under an earlier offer.</Bold> Where you began using A Story under different terms &mdash; including while it was free during early access &mdash; those terms continue to apply to your archive for as long as you keep it, whatever we charge afterwards. We will not move you onto new pricing, and we will not close an archive because the offer it was created under has ended. Printed books are charged at the price current when each book is ordered.</Paragraph>
                 <Paragraph>Printed books are produced to order. Once printing has begun a book order cannot be canceled, except where required by law or where a book arrives damaged or defective &mdash; in which case we replace it. Additional copies are priced separately and charged when ordered.</Paragraph>

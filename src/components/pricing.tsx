@@ -3,21 +3,31 @@ import Reveal from './ui/Reveal';
 import { Actions, Button, ButtonAnchor, Container, Eyebrow, H2, Lead, Note, Section } from './ui/primitives';
 import { IconArrow, IconCheck } from './ui/icons';
 import { CONTACT } from '../lib/contact';
-import { PRICE } from '../lib/pricing';
+import { FOREVER, PLANS, PRICE } from '../lib/pricing';
 import { breadcrumbSchema, faqSchema, organizationSchema } from '../lib/seo';
 import {
-    CompareItem, CompareRow, DriverTable, HonestGrid, HonestItem, IncludedList, Page, Price,
-    PriceActions, PriceCard, PriceNote, PriceSub, ProgramCard, ProgramGrid,
+    BookPrice, BookPrices, BookSplit, CompareItem, CompareRow, DriverTable, ForeverBand, ForeverLead,
+    ForeverList, ForeverStops, HonestGrid, HonestItem, IncludedList, Page, PlanAction, PlanBadge,
+    PlanBadgeSpacer, PlanBlurb, PlanCard, PlanGrid, PlanMeter, PlanName, PlanPrice, PlanWho,
+    ProgramCard, ProgramGrid,
 } from './pricing.styles';
 
-const INCLUDED = [
-    'A card and a link to give, with your note on it',
-    'Unlimited guided voice interviews',
-    'One hardcover book, edited and laid out',
-    'A private archive, organized by chapter of life',
-    'Photos attached to the memory they belong to',
-    'As many family members as you like — free',
-    'Searchable transcripts and the original audio',
+/**
+ * You pay to capture, never to keep.
+ *
+ * The page is built in that order on purpose: the three capture windows first,
+ * then the promise that everything else is free forever afterwards, then the
+ * book — which is priced on its own, because a chapter can be printed whenever
+ * one is worth holding rather than once at the end.
+ */
+
+/** True on every package, so it belongs above the cards rather than inside them. */
+const ON_EVERY_PACKAGE = [
+    'Unlimited family members, reading and contributing',
+    'Everyone can record and write their own memories, free',
+    'Unlimited photo uploads',
+    'Memory cards, full transcripts, and voice highlights kept as audio',
+    'A searchable archive, organized by chapter of life',
     'Full export of everything, whenever you ask',
 ];
 
@@ -34,36 +44,44 @@ const ALTERNATIVES = [
 
 const PRICING_FAQ = [
     {
-        q: 'Is that the whole price?',
-        a: `Yes. ${PRICE.gift} covers the interviews, the archive, everyone you invite, and one hardcover book, shipped. There is no subscription, no per-person charge, and nothing that renews behind your back.`,
+        q: 'What am I actually paying for?',
+        a: `The guided conversations — the part where A Story calls, asks, listens and follows up. That is the only thing that costs real money to run, so it is the only thing metered. ${PRICE.gift} buys three months of them for one storyteller.`,
     },
     {
-        q: 'What if the whole family wants a copy of the book?',
-        a: `Extra copies are ${PRICE.extraCopy} each, priced close to what printing and shipping actually cost. Most families order them once they have read the first one — there is no rush and no deadline.`,
+        q: 'What happens when the three months are up?',
+        a: 'Everything except the AI conversations keeps working, forever. The archive stays open and searchable, everyone you invited keeps their access, and the family can go on recording, writing and adding photos as long as they like — using the same question bank the AI was working from. Nothing is deleted and nothing renews behind your back.',
+    },
+    {
+        q: 'Why is Express more expensive than three months?',
+        a: 'Because it is unlimited, and because it exists for the week when there is no time left to be relaxed about this — a birthday on Saturday, a reunion, someone who has started to decline. It removes every cap at the moment that matters. If you are not in a hurry, you want the three-month package instead, and it costs less.',
+    },
+    {
+        q: 'Is the hardcover book included?',
+        a: `No, and that is deliberate: ${PRICE.book} for a book, printed whenever a chapter is worth holding, with extra copies at ${PRICE.extraCopy}. Bundling exactly one book would quietly say the story finishes when it is printed. It doesn't — you can order another volume from the same archive in five years.`,
     },
     {
         q: 'Do I pay again next year?',
-        a: 'No. You are buying a gift, not a subscription. The archive stays open and they can keep adding to it for as long as they want to, at no further cost.',
+        a: 'No. Nothing auto-renews and there is no subscription. If there is more to capture later, you buy another window then, deliberately, at whatever the price is that day. Everything you already have stays free in the meantime.',
+    },
+    {
+        q: 'Does inviting the rest of the family cost anything?',
+        a: 'Never. The packages count storytellers — the people A Story interviews — because that is what the conversations cost. Everyone else reads, corrects, adds photos and records their own version of the same afternoon for free, on every package, forever.',
     },
     {
         q: 'What if they never use it?',
-        a: 'Tell us and we will make it right. We would far rather refund a gift than have it sit there as a reproach — and it costs us nothing to be decent about this.',
+        a: 'Tell us and we will make it right. We would far rather refund a package than have it sit there as a reproach — and it costs us nothing to be decent about this.',
     },
     {
         q: 'Why is organization pricing not listed?',
         a: 'Because a four-person founder archive and a 200-person anniversary program are not the same product. We scope it on a 30-minute call and send a fixed number — no discovery marathon, no seat-count games.',
-    },
-    {
-        q: 'What happens to a program archive if we stop paying?',
-        a: 'You keep it. A full export of audio, transcripts, photos and metadata is available on request within 48 hours, in open formats, whether or not you are still a customer.',
     },
 ];
 
 const Pricing = () => (
     <Page>
         <Seo
-            title="Pricing — one price, one gift, the whole family"
-            description={`A Story costs ${PRICE.gift} — one payment, including the hardcover book, with no subscription and no charge for the family members you invite. Organization and care-community programs are quoted per engagement.`}
+            title="Pricing — pay to capture, never to keep"
+            description={`A Story starts at ${PRICE.gift} for three months of guided conversations with one storyteller. After any package the archive, the exports and everyone you invited stay free forever — only the AI conversations pause. Nothing renews.`}
             path="/pricing"
             schema={[
                 organizationSchema(),
@@ -75,44 +93,134 @@ const Pricing = () => (
             ]}
         />
 
-        {/* ─── The one number ───────────────────────────────────────── */}
+        {/* ─── The three packages ───────────────────────────────────── */}
         <Section $tone="wash" $tight>
             <Container>
                 <div style={{ maxWidth: 720, margin: '0 auto clamp(36px, 4vw, 56px)', textAlign: 'center' }}>
                     <Eyebrow>Pricing</Eyebrow>
-                    <H2>One price. One gift. The whole family.</H2>
+                    <H2>You pay to capture. You never pay to keep.</H2>
                     <Lead $center>
-                        You pay once, when you give it. Nothing renews, nothing is metered, and inviting
-                        fifteen relatives costs exactly the same as inviting none.
+                        Guided conversation is the only thing here that costs real money to run, so it is
+                        the only thing we meter. Pick the window that matches your situation. Everything
+                        else is yours afterwards, for good.
                     </Lead>
                 </div>
 
-                <Reveal>
-                    <PriceCard>
-                        <Price>{PRICE.gift}</Price>
-                        <PriceNote>{PRICE.giftNote}</PriceNote>
-                        <PriceSub>
-                            Everything below is included. There is no upgrade, no premium tier, and no part
-                            of this held back to sell you later.
-                        </PriceSub>
+                <PlanGrid>
+                    {PLANS.map((plan, i) => (
+                        <Reveal key={plan.id} delay={i * 80}>
+                            <PlanCard $featured={plan.featured}>
+                                {plan.featured ? <PlanBadge>Most people start here</PlanBadge> : <PlanBadgeSpacer />}
+                                <PlanName>{plan.name}</PlanName>
+                                <PlanWho>{plan.who}</PlanWho>
+                                <PlanPrice>
+                                    <span className="amount">{plan.price}</span>
+                                    <span className="window">for {plan.window}</span>
+                                </PlanPrice>
+                                <PlanMeter>
+                                    <p className="meter">{plan.meter}</p>
+                                    <p className="note">{plan.meterNote}</p>
+                                </PlanMeter>
+                                <PlanBlurb>{plan.blurb}</PlanBlurb>
+                                <PlanAction>
+                                    <ButtonAnchor
+                                        href={CONTACT.giftFor(plan.name)}
+                                        $variant={plan.featured ? 'primary' : 'outline'}
+                                    >
+                                        Start {plan.name.toLowerCase() === 'express' ? 'Express' : 'this one'}
+                                    </ButtonAnchor>
+                                </PlanAction>
+                            </PlanCard>
+                        </Reveal>
+                    ))}
+                </PlanGrid>
 
-                        <IncludedList>
-                            {INCLUDED.map((item) => (
-                                <li key={item}><IconCheck size={16} /><span>{item}</span></li>
-                            ))}
-                        </IncludedList>
-
-                        <PriceActions>
-                            <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
-                            <Button to="/experience" $variant="outline">See what they receive</Button>
-                        </PriceActions>
-                    </PriceCard>
-                </Reveal>
+                <div style={{ maxWidth: 860, margin: 'clamp(32px, 4vw, 48px) auto 0' }}>
+                    <Note style={{ textAlign: 'center', marginBottom: 16 }}>
+                        On every package, on all three, without exception:
+                    </Note>
+                    <IncludedList style={{ marginTop: 0 }}>
+                        {ON_EVERY_PACKAGE.map((item) => (
+                            <li key={item}><IconCheck size={16} /><span>{item}</span></li>
+                        ))}
+                    </IncludedList>
+                </div>
 
                 <Note style={{ marginTop: 24, textAlign: 'center' }}>
-                    Extra copies of the book are {PRICE.extraCopy} each, at close to printing cost. Nothing
-                    else costs anything, ever.
+                    Nothing auto-renews. There is no free tier &mdash; the demo on{' '}
+                    the experience page is the free sample, and it needs no account.
                 </Note>
+            </Container>
+        </Section>
+
+        {/* ─── Buy once, keep it forever ────────────────────────────── */}
+        <Section $tone="ivory" $tight id="forever">
+            <Container>
+                <ForeverBand>
+                    <Eyebrow $tone="gold">The part that matters later</Eyebrow>
+                    <H2 style={{ color: 'inherit' }}>{FOREVER.headline}</H2>
+                    <ForeverLead>
+                        The fear with anything that holds your family history is what happens when you stop
+                        paying. Here is the answer, and it is the same on every package: nothing happens.
+                        One payment, and the keeping is free for good.
+                    </ForeverLead>
+
+                    <ForeverList>
+                        {FOREVER.kept.map((item) => (
+                            <li key={item}><IconCheck size={16} /><span>{item}</span></li>
+                        ))}
+                    </ForeverList>
+
+                    <ForeverStops>
+                        <strong>The one thing that stops:</strong> {FOREVER.stops}
+                    </ForeverStops>
+                </ForeverBand>
+            </Container>
+        </Section>
+
+        {/* ─── The book, priced on its own ──────────────────────────── */}
+        <Section $tone="paper" $tight id="book">
+            <Container>
+                <BookSplit>
+                    <div>
+                        <Eyebrow>The hardcover</Eyebrow>
+                        <H2>Priced on its own, so it never has to be the last page.</H2>
+                        <Lead>
+                            A book is not included in any package, and that is on purpose. Bundling exactly
+                            one would say the story finishes when it is printed &mdash; and the whole
+                            argument of this site is that it doesn&rsquo;t.
+                        </Lead>
+                        <Note>
+                            Order one from any chapter, whenever a chapter is worth holding. Order another in
+                            five years from the same archive. Editing, layout and design are included in the
+                            price; printing is at cost.
+                        </Note>
+                        <Actions>
+                            <Button to="/experience#book" $variant="outline">
+                                Look inside a finished book <IconArrow />
+                            </Button>
+                        </Actions>
+                    </div>
+
+                    <BookPrices>
+                        <BookPrice>
+                            <p className="amount">{PRICE.book}</p>
+                            <p className="what">A hardcover, edited and laid out</p>
+                            <p className="detail">
+                                Sewn signatures, acid-free paper, photographs printed beside the stories they
+                                belong to. Ships three to four weeks after you approve the proof.
+                            </p>
+                        </BookPrice>
+                        <BookPrice>
+                            <p className="amount">{PRICE.extraCopy}</p>
+                            <p className="what">Each extra copy</p>
+                            <p className="detail">
+                                Close to what printing and shipping actually cost. Most families order these
+                                once they have read the first one.
+                            </p>
+                        </BookPrice>
+                    </BookPrices>
+                </BookSplit>
             </Container>
         </Section>
 
@@ -151,11 +259,11 @@ const Pricing = () => (
                 <HonestGrid>
                     <HonestItem>
                         <h3>No subscription</h3>
-                        <p>This is a gift, and gifts do not renew. You will never get an email telling you that their memories are about to lapse.</p>
+                        <p>Nothing renews and nothing lapses. You will never get an email telling you that their memories are about to expire, because they cannot.</p>
                     </HonestItem>
                     <HonestItem>
                         <h3>No charge per person</h3>
-                        <p>Invite the whole family. Every extra person makes the archive better, and none of them costs you a penny.</p>
+                        <p>Packages count storytellers, because that is what the conversations cost. Everyone else — reading, correcting, adding their own memories — is free, always.</p>
                     </HonestItem>
                     <HonestItem>
                         <h3>No selling of anything</h3>
@@ -163,13 +271,13 @@ const Pricing = () => (
                     </HonestItem>
                     <HonestItem>
                         <h3>No paywalled memories</h3>
-                        <p>Nothing is ever locked behind a later payment. A full export — audio, transcripts, photos — is available on request, always.</p>
+                        <p>Nothing you have already recorded is ever locked behind a later payment, and export is free — during a package, after one, forever.</p>
                     </HonestItem>
                 </HonestGrid>
             </Container>
         </Section>
 
-        {/* ─── Programs ───────────────────────────────────────────── */}
+        {/* ─── Programs ─────────────────────────────────────────────── */}
         <Section $tone="ivory" $tight id="programs">
             <Container>
                 <div style={{ maxWidth: 760, marginBottom: 'clamp(32px, 4vw, 48px)' }}>

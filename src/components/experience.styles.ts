@@ -298,6 +298,90 @@ export const PlayDemoButton = styled.button`
 export const InteractiveBookContainer = styled(OpeningContainer)`
 `;
 
+/* ── What is being built next ─────────────────────────────────────────────
+ * Labelled as in development everywhere it appears. Nothing on this site may
+ * describe an unshipped feature as though a buyer can use it today.
+ */
+
+export const NextContainer = styled(OpeningContainer)`
+    background: ${colors.paper};
+    text-align: left;
+`;
+
+/** Says "not yet" in words, not only in colour. */
+export const NextBadge = styled.p`
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: ${fonts.body};
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: ${colors.orangeText};
+    border: 1px solid ${colors.orangeText};
+    border-radius: 40px;
+    padding: 6px 16px;
+    margin-bottom: 24px;
+`;
+
+export const NextTitle = styled(Title)`
+    color: ${colors.dark};
+    margin: 0;
+    max-width: 18ch;
+`;
+
+export const NextLead = styled(Description)`
+    color: ${colors.darkGray};
+    max-width: 62ch;
+    margin: 24px 0 0;
+`;
+
+export const NextGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    @media (max-width: 900px) { grid-template-columns: 1fr; }
+    gap: 24px;
+    margin-top: 50px;
+`;
+
+export const NextCard = styled.div`
+    background: ${colors.cream};
+    border-radius: 20px;
+    padding: 36px;
+
+    h3 {
+        font-family: ${fonts.display};
+        font-size: 26px;
+        font-weight: 400;
+        line-height: 1.25;
+        color: ${colors.dark};
+        margin: 0;
+    }
+
+    p {
+        font-family: ${fonts.body};
+        font-size: 15px;
+        line-height: 1.65;
+        color: ${colors.darkGray};
+        margin-top: 12px;
+    }
+`;
+
+/** The honest caveat, given the same weight as the promise above it. */
+export const NextCaveat = styled.p`
+    margin: 50px 0 0;
+    padding-top: 32px;
+    border-top: 1px solid ${colors.darkGrayHover};
+    max-width: 68ch;
+    font-family: ${fonts.body};
+    font-size: 15px;
+    line-height: 1.7;
+    color: ${colors.darkGray};
+
+    strong { font-weight: 700; color: ${colors.dark}; }
+`;
+
 export const AccessContainer = styled(OpeningContainer)`
     background: ${colors.cream};
 `;

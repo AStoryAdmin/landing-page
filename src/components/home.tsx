@@ -40,6 +40,10 @@ const TOP_FAQ = [
         a: 'No — that is the point. A Story does the asking, the transcribing, the organizing and the layout. You send one link and let it run.',
     },
     {
+        q: 'What happens when the three months are up?',
+        a: 'Nothing, which is the point. The archive stays open, everyone keeps their access, and the family can go on recording and adding photos forever. Only the guided AI conversations pause — and nothing renews behind your back.',
+    },
+    {
         q: 'Can the rest of the family join in?',
         a: 'That is how it is designed. Everyone you share the link with can add photos, correct a name, or record their own memory. A sister in Seattle and a grandson in Chicago end up in the same archive.',
     },
@@ -61,7 +65,7 @@ const Home = () => (
     <Page>
         <Seo
             title="A Story — the gift your whole family opens"
-            description="Give the gift of being asked. A Story records your parents' and grandparents' life stories in their own voice — you buy once, send one link, and everyone in the family gets the archive and a printed book."
+            description="Give the gift of being asked. A Story calls your parents and grandparents and records their life stories in their own voice — you buy once, send one link, and the archive belongs to the whole family forever."
             path="/"
             schema={[
                 organizationSchema(),
@@ -83,8 +87,8 @@ const Home = () => (
                     <HeroSub>
                         A Story calls your mom, your dad, your grandfather &mdash; and asks them the
                         questions nobody gets around to asking. You buy it once and send one link. They
-                        answer the phone and talk. Everyone in the family ends up with the archive, and a
-                        hardcover book lands on the doorstep. You don&rsquo;t have to organize a thing.
+                        answer the phone and talk. Everyone in the family ends up with the archive &mdash;
+                        and it stays theirs for good, long after the conversations stop.
                     </HeroSub>
                     <HeroActions>
                         <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
@@ -94,7 +98,7 @@ const Home = () => (
                         <li><IconClock size={15} /> Ready in minutes</li>
                         <li><IconPhone size={15} /> They just answer the phone</li>
                         <li><IconUsers size={15} /> Everyone joins in</li>
-                        <li><IconBook size={15} /> Book included</li>
+                        <li><IconBook size={15} /> Yours forever after</li>
                     </HeroTrust>
                 </HeroCopy>
             </HeroInner>
@@ -145,10 +149,11 @@ const Home = () => (
                         <Step>
                             <p className="who">Everyone</p>
                             <StepNumber>4</StepNumber>
-                            <StepTitle>The book arrives</StepTitle>
+                            <StepTitle>It becomes an archive</StepTitle>
                             <StepText>
-                                Their stories come back as a private archive the whole family can read, and
-                                a hardcover memoir printed with the photos in place.
+                                Their stories come back as a private archive the whole family can read,
+                                search and add to &mdash; and any chapter of it can be printed as a
+                                hardcover memoir whenever you want one.
                             </StepText>
                         </Step>
                     </StepGrid>
@@ -159,8 +164,9 @@ const Home = () => (
                         <p className="amount">{PRICE.gift}</p>
                     </div>
                     <p className="what">
-                        <strong>One payment, and the hardcover book is in it.</strong> No subscription, and
-                        no charge for the relatives you invite &mdash; however many of them there are.
+                        <strong>{PRICE.giftNote}.</strong> Nothing renews, no charge for the relatives you
+                        invite, and when the three months are up the archive stays open and free &mdash;
+                        for good. Only the guided conversations pause.
                     </p>
                     <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
                 </PriceStrip>
@@ -308,8 +314,8 @@ const Home = () => (
                             <Feature>
                                 <span className="icon"><IconBook /></span>
                                 <div>
-                                    <h3>A hardcover book</h3>
-                                    <p>Any chapter can become something you hold: edited, laid out like a memoir, photos beside the stories they belong to. The book is the edited version &mdash; the archive keeps the rest.</p>
+                                    <h3>A hardcover book, when you want one</h3>
+                                    <p>Any chapter can become something you hold: edited, laid out like a memoir, photos beside the stories they belong to. Priced separately on purpose, so printing one never means the story is over.</p>
                                 </div>
                             </Feature>
                             <Feature>
@@ -514,8 +520,10 @@ const Home = () => (
                     </Table>
                 </TableWrap>
                 <Note style={{ marginTop: 16 }}>
-                    Comparison based on each product&rsquo;s publicly documented features as of 2026. If we
-                    have something wrong, tell us and we will correct it.
+                    Comparison based on each product&rsquo;s publicly documented features as of 2026. One
+                    thing to weigh in their favor: StoryWorth and Remento bundle a book into their price,
+                    and ours is {PRICE.book} on top &mdash; deliberately, so that printing one never means
+                    the story is finished. If we have anything else wrong, tell us and we will correct it.
                 </Note>
             </Container>
         </Section>

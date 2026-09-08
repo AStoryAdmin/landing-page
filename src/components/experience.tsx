@@ -2,7 +2,7 @@ import { CONTACT } from '../lib/contact';
 import { PRICE } from '../lib/pricing';
 import Seo from './ui/Seo';
 import { breadcrumbSchema, organizationSchema } from '../lib/seo';
-import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, DemoButtonAnchor, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription} from './experience.styles'
+import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, DemoButtonAnchor, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription, NextContainer, NextBadge, NextTitle, NextLead, NextGrid, NextCard, NextCaveat} from './experience.styles'
 import {TagRow, Tag, Divider} from './home.styles';
 import FlipBook from './flipBook';
 import DemoPhone from './demoPhone';
@@ -171,16 +171,16 @@ const Experience = () => {
                                     <Bold>The full record stays behind it.</Bold> The printed page is a summary. Open the same story in the archive and the whole transcript is there, word for word, with the voice highlights kept as audio &mdash; the laugh, the pause, the way only they say a name.
                                 </BulletItem>
                                 <BulletItem>
-                                    <Bold>And it is not the last page.</Bold> Printing a book closes nothing. The archive keeps growing, and you can print another volume whenever there is more to print.
+                                    <Bold>And it is not the last page.</Bold> The book is priced on its own rather than bundled into a package, precisely so that printing one closes nothing. The archive keeps growing, and you can order another volume from it in five years.
                                 </BulletItem>
                             </BulletList>
 
                             <PriceBox>
-                                <Price>{PRICE.gift}</Price>
+                                <Price>{PRICE.book}</Price>
                                 <PriceDivider />
                                 <PriceDetails>
-                                    <span>One payment &middot; hardcover included</span>
-                                    <span>Ships 3&ndash;4 weeks after you approve it</span>
+                                    <span>A hardcover, edited and laid out &middot; extra copies {PRICE.extraCopy}</span>
+                                    <span>Ships 3&ndash;4 weeks after you approve the proof</span>
                                 </PriceDetails>
                             </PriceBox>
                         </Summary>
@@ -191,6 +191,56 @@ const Experience = () => {
                     </Demo>
                 </CardView>
             </InteractiveBookContainer>
+
+            <NextContainer id="next">
+                <CardView>
+                    <NextBadge>In development &mdash; not available yet</NextBadge>
+                    <NextTitle>The years you already documented.</NextTitle>
+                    <NextLead>
+                        Everything above is about the life nobody wrote down. But part of the last twenty
+                        years <em>was</em> written down &mdash; on Instagram, on Facebook, in a camera roll
+                        nobody has opened since. It is sitting in places that were never built to keep
+                        anything, in an order nobody chose, belonging to companies that are not your family.
+                        We are building the part that brings it home.
+                    </NextLead>
+
+                    <NextGrid>
+                        <NextCard>
+                            <h3>Connect an account once.</h3>
+                            <p>
+                                Link Instagram, Facebook or a photo library, and A Story pulls in the posts,
+                                the pictures and the captions &mdash; the small running commentary you wrote
+                                at the time and have not read since.
+                            </p>
+                        </NextCard>
+                        <NextCard>
+                            <h3>It files itself into the timeline.</h3>
+                            <p>
+                                Imported moments land on the same timeline as the conversations, dated and
+                                connected to the people and places already in the archive. The two halves of
+                                a life stop being kept in different buildings.
+                            </p>
+                        </NextCard>
+                        <NextCard>
+                            <h3>Print it by the year, or any way you like.</h3>
+                            <p>
+                                A volume for 2019. A volume for one child, from birth to college. A volume
+                                for a single summer. The book gets built for you from what is already there,
+                                and you decide where the chapters fall.
+                            </p>
+                        </NextCard>
+                    </NextGrid>
+
+                    <NextCaveat>
+                        <strong>Where this actually stands:</strong> this is being built, and it is not
+                        something you can use today. Nothing you buy now depends on it, and no package is
+                        priced against it. When it ships it will follow the same rules as everything else
+                        here &mdash; imported posts and photos belong to the storyteller, are never sold,
+                        are never used to train models, and can be removed from the archive as easily as
+                        they were added.
+                    </NextCaveat>
+                </CardView>
+            </NextContainer>
 
             <AccessContainer>
                 <CardView>

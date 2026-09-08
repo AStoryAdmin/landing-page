@@ -220,9 +220,9 @@ const faqGroups: FaqGroupData[] = [
                 question: 'Can I give A Story as a gift?',
                 answer: (
                     <>
-                        <AnswerParagraph>Yes &mdash; and it is one of the most meaningful gifts we see people give. A Story gift subscriptions can be set up entirely by the giver and presented as a complete experience: a device ready to begin, or a gift card the recipient activates at their own pace.</AnswerParagraph>
+<AnswerParagraph>Yes &mdash; and it is one of the most meaningful gifts we see people give. There is no subscription to hand over: you buy a package once, and it can be set up entirely by the giver and presented as a complete experience &mdash; a device ready to begin, or a card the recipient opens at their own pace.</AnswerParagraph>
                         <AnswerParagraph>Many families give A Story as a birthday gift, a holiday present, or a "just because" expression of love. Some describe it as the only gift they've given where the whole family ends up in tears &mdash; in the best way.</AnswerParagraph>
-                        <AnswerParagraph>Email us at contact@astoryapp.com to set up a gift subscription or ask about our gifting options.</AnswerParagraph>
+<AnswerParagraph>Email us at contact@astoryapp.com to set one up or ask about gifting options.</AnswerParagraph>
                     </>
                 ),
             },
@@ -236,8 +236,9 @@ const faqGroups: FaqGroupData[] = [
                 question: 'What does A Story cost?',
                 answer: (
                     <>
-                        <AnswerParagraph>$149, once. That covers the guided interviews, the private archive, everyone in the family you invite, searchable transcripts, a full export whenever you want one, and one hardcover book. There is no subscription and no per-person charge.</AnswerParagraph>
-                        <AnswerParagraph>Extra copies of the book, for the rest of the family, are $59 each &mdash; close to what printing and shipping cost. Organization and care-community programs are quoted per engagement on a 30-minute call.</AnswerParagraph>
+<AnswerParagraph>You pay to capture, and never to keep. $150 buys three months of guided conversations with one storyteller; $390 covers up to three storytellers for the same three months; and Express is $250 for one storyteller with no cap at all, for the week when there is no time to be relaxed about it.</AnswerParagraph>
+                        <AnswerParagraph>Whichever one you buy, the archive, the exports, the photo uploads, the question bank and everyone you invite are free &mdash; during the window and forever afterwards. When it ends, only the AI conversations pause. Nothing renews, nothing lapses, and nothing you have already recorded is ever locked.</AnswerParagraph>
+                        <AnswerParagraph>The hardcover is $89, priced on its own so that printing one never means the story is finished, with extra copies at $59. Organization and care-community programs are quoted per engagement on a 30-minute call.</AnswerParagraph>
                         <AnswerParagraph>
                             <Bold><Link to="/pricing">See the full pricing breakdown</Link></Bold>, or{' '}
                             <LegalLink href="mailto:contact@astoryapp.com?subject=Book a Demo">book a free 20-minute demo</LegalLink>.

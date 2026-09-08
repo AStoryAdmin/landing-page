@@ -165,21 +165,66 @@ chunk fetched on navigation.
 
 ## Pricing
 
-One number, defined once in **`src/lib/pricing.ts`**, read by the home page,
-the pricing page, the experience page and the FAQ. The file also records *why*
-the pricing is shaped this way — a one-time gift price rather than a free
-archive plus a paid book — which matters more than the figure.
+**You pay to capture. You never pay to keep.** Guided AI conversation is the
+only thing that costs real money to serve, so it is the only thing metered.
+Everything else — the archive, the people you invite, your own recordings, the
+question bank, export — is free forever once any package is bought.
 
-**The figure itself is a recommendation, not a decision.** Validate it against
-your cost of goods and change the constant.
+Defined once in **`src/lib/pricing.ts`** (`PLANS`, `PRICE`, `FOREVER`), read by
+the pricing page, the home page, `/experience` and the FAQ. That file records
+the reasoning, which matters more than the figures.
 
-**Grandfathered users.** Anyone who came in under the earlier free offer keeps
-it — that promise is in the terms (section 9), not just in an email. Note the
+| Package | Price | Window | Metered |
+| --- | --- | --- | --- |
+| Express | $250 | 7 days | Unlimited guided conversations |
+| One storyteller | $150 | 3 months | 40 guided conversations |
+| Up to three storytellers | $390 | 3 months | 100 guided conversations |
+
+Four decisions worth not re-litigating by accident:
+
+- **Express costs more than three months, deliberately.** It is the buyer with
+  days rather than months — a birthday on Saturday, a decline that has started.
+  That is the highest willingness to pay in this market *and* the heaviest use
+  of voice AI. Pricing it below the three-month package (the original proposal
+  was $100) would have made the three-month package unsellable and put the
+  worst unit economics on the cheapest plan.
+- **The meter is a pool, not a rate.** A per-day cap bounds nothing: three
+  conversations a day across ninety days is 270 calls. Each package carries a
+  fixed number for the whole window.
+- **The book is not bundled**, at $89 with extra copies at $59. A hardcover has
+  $40–60 of real cost of goods, and bundling one lets a print job set the
+  ceiling on a software price. More importantly, the site argues a book is a
+  chapter rather than an ending; including exactly one quietly restores the
+  "memoir with a deadline" frame the rest of the site exists to reject.
+- **There is no free tier.** The old `$0 forever` plan (3 conversations a week,
+  no export) was not a taste of the product but a slower substitute for it, and
+  it undercut the closed grandfathered cohort below. The free sample is the
+  demo on `/experience` — no account, no card.
+
+Storytellers are metered because AI cost scales with them. Everyone else —
+reading, correcting, adding photos, recording their own version of the same
+afternoon — is free and unlimited on every package.
+
+**Validate the pools against your real cost per minute of voice AI.** They are
+sized on an estimate of roughly $0.10/min blended plus transcription. If your
+real number is materially higher, move the conversation counts, not the prices.
+
+**The forever promise is in the contract**, not just the marketing: terms
+section 9 commits to it in writing, alongside the grandfathering below. Treat
+both as promises about somebody's family history rather than as copy.
+
+**Grandfathered users.** Anyone who came in under an earlier offer keeps it —
+including the free early-access period and the app's old `$0`/`$8 a month`
+plans. That promise is in the terms (section 9), not just in an email. Note the
 distinction: that is a *closed cohort*, not a free tier. Deliberately nothing on
-the pricing page says so, because publishing it would invite everyone to ask,
-and a standing free tier would undo the reason the pricing is shaped this way.
+the pricing page says so, because publishing it would invite everyone to ask.
 Pin the cutoff date somewhere durable before the cohort starts growing by
 accident.
+
+**The app's paywall has not been updated to match.** The in-app screen still
+shows the `$0` tier, `$8`/month with a monthly/annual toggle, and `Export
+$9.99`. That last one contradicts `/privacy`, `/terms` and eight places on this
+site that promise free export; it has to go regardless of what else changes.
 
 ## Calls to action
 
@@ -258,12 +303,12 @@ first frame.
 - `src/assets/astoryDaniel.webp` and `astoryBao.webp` are generated brand
   placeholders. Replace them with real headshots (600×600) and remove the two
   names from `SKIP` in `scripts/optimize-images.mjs`.
-- **The price is still the placeholder.** `src/lib/pricing.ts` carries `$149`,
-  which was a recommendation rather than a decision, plus `extraCopy` at `$59`.
-  The real pricing has not been integrated yet — replace the constants (and
-  `giftAmount`, which feeds the `Offer` in the product schema) and read the
-  reasoning comment at the top of that file before changing the *shape* of it.
-  The two program plans stay quoted rather than listed.
+- **Social import is on the site as "in development" and must stay labelled.**
+  `/experience#next` describes linking Instagram/Facebook and building books by
+  year. Nothing on this site may describe it as something a buyer can use
+  today, and no package is priced against it. `/privacy` carries the matching
+  paragraph on imported content.
+- The two program plans stay quoted rather than listed.
 - The gift card shown on the home page is rendered from CSS, not a photograph,
   so it always matches the brand. The real artefact a buyer receives does not
   exist yet — building it is the obvious next step, and the copy promises it.
