@@ -148,6 +148,14 @@ archive plus a paid book — which matters more than the figure.
 **The figure itself is a recommendation, not a decision.** Validate it against
 your cost of goods and change the constant.
 
+**Grandfathered users.** Anyone who came in under the earlier free offer keeps
+it — that promise is in the terms (section 9), not just in an email. Note the
+distinction: that is a *closed cohort*, not a free tier. Deliberately nothing on
+the pricing page says so, because publishing it would invite everyone to ask,
+and a standing free tier would undo the reason the pricing is shaped this way.
+Pin the cutoff date somewhere durable before the cohort starts growing by
+accident.
+
 ## Calls to action
 
 There is no signup form. Every conversion path on the site is a `mailto:` with
