@@ -5,12 +5,29 @@ import {Container, ContainerDark, StoryHero, HeroTitle, HeroSub, Byline, StorySe
 import danielPhoto from './../assets/astoryDaniel.webp';
 import baoPhoto from './../assets/astoryBao.webp';
 
+/**
+ * The founder's story.
+ *
+ * Restructured to open on the rupture rather than on the résumé. The previous
+ * version spent its first two sections establishing that Daniel is a finance
+ * academic before anything happened, which is the wrong order for a page
+ * somebody clicked out of curiosity and will give thirty seconds to. The
+ * background now arrives after the strokes, as context for why the loss
+ * registered the way it did, and it earns more there than it did as setup.
+ *
+ * The ending changed too, and it is the reason the page now supports the rest
+ * of the site instead of arguing against it. The uncles lived. The deadline
+ * was never death — it was forgetting, which starts years earlier and quietly.
+ * That is the same claim /family makes about the everyday, told by the person
+ * it happened to.
+ */
+
 const Story = () => {
     return (
         <>
             <Seo
                 title="Our story — why A Story exists"
-                description="Two strokes in one year, and a grandson who had never asked how his grandparents met. The reason A Story was built, told by the person who built it."
+                description="Two of my uncles had strokes in the same year. They lived. The stories went first. Why A Story was built, told by the person who built it."
                 path="/story"
                 schema={[
                     organizationSchema(),
@@ -24,50 +41,58 @@ const Story = () => {
                 <Container>
                     <Label>A note from the founder</Label>
                     <HeroTitle>
-                        I spent years learning to measure the things that matter. <br />
-                        <Emphasis>Then I watched the thing that mattered most start to slip away.</Emphasis>
+                        They survived. <br />
+                        <Emphasis>The stories didn&rsquo;t.</Emphasis>
                     </HeroTitle>
-                    <HeroSub>Who I am, and the moment that changed everything I'm building.</HeroSub>
+                    <HeroSub>Two strokes in one year, and everything I had assumed I still had time for.</HeroSub>
                     <Byline>&mdash;Daniel Hoang Nguyen &middot; Founder, A Story &mdash;</Byline>
                 </Container>
             </StoryHero>
 
             <StorySection>
                 <Container>
-                    <Paragraph>My name is Daniel. I'm a Finance Master's student at the University of Illinois Urbana-Champaign, on a track toward a PhD and a career as a finance professor. And I'm telling you that because it explains how A Story happened &mdash; and why it almost didn't.</Paragraph>
-                    <Paragraph>I've spent my academic life studying systems. Markets, models, the way numbers carry signal about the world. I'm good at it. Good enough that the path ahead was clear: research, tenure, a quiet life of teaching. I wasn't looking for a startup idea. I wasn't looking for anything.</Paragraph>
+                    <Paragraph>Two of my uncles had strokes within months of each other. They lived &mdash; I want to say that first, because what follows is not a story about dying.</Paragraph>
+                    <Paragraph>I watched men who had carried our family&rsquo;s history, who knew the names and the reasons and the way we got here, struggle to find words that had always come easily. And it landed the way a proof lands when you finally see it: <Emphasis>the stories were leaving first.</Emphasis> Before anything else. Going quiet while the people were still in the room with me.</Paragraph>
                 </Container>
             </StorySection>
 
             <StoryDark>
                 <ContainerDark>
-                        <ChapterHeadline>Then this year, two of my uncles had strokes.</ChapterHeadline>
-                        <Paragraph>Not one. Two. Within months of each other.</Paragraph>
-                        <Paragraph>I watched it happen. I watched men who had carried our family's history &mdash; who knew the names, the reasons, the way we got here &mdash; suddenly struggle to find words that had always come easily. And it hit me the way a proof hits you when you finally see it: the stories were leaving first. Before anything else. The memories of their own lives, going quiet before the people themselves did.</Paragraph>
-                        <Paragraph>I started doing what I always do. I started doing the math. How many conversations had I assumed I'd have someday? How many questions had I been saving for a later that was, quietly, running out? I realized I didn't know how my grandparents met. I didn't know what my uncles were afraid of, what they were proudest of, what they'd do differently. I had spent years studying how to understand the world &mdash; and I had never once turned that attention to the people who shaped mine.</Paragraph>
-                        <PullQuote>
-                            <PullQuoteText>"There's no model for that loss. No regression that tells you what a story was worth. You just feel it &mdash; a door closing in a room you didn't know you needed."</PullQuoteText>
-                        </PullQuote>
+                    <ChapterHeadline>So I did what I always do. I started doing the math.</ChapterHeadline>
+                    <Paragraph>How many conversations had I assumed I would have someday? How many questions had I been saving for a later that was, quietly, running out?</Paragraph>
+                    <Paragraph>I did not know how my grandparents met. I did not know what my uncles had been afraid of, or proudest of, or what they would have done differently. I am a finance researcher &mdash; I have spent my adult life learning to read signal out of systems, on a track toward a PhD and a quiet career teaching it. I had never once turned that attention on the people who made mine.</Paragraph>
+                    <PullQuote>
+                        <PullQuoteText>&ldquo;There&rsquo;s no model for that loss. No regression that tells you what a story was worth. You just feel it &mdash; a door closing in a room you didn&rsquo;t know you needed.&rdquo;</PullQuoteText>
+                    </PullQuote>
                 </ContainerDark>
             </StoryDark>
 
             <StorySection>
                 <Container>
-                        <Paragraph>So I stopped waiting for someday. I started building A Story.</Paragraph>
-                        <Paragraph>The idea is simple because the need is simple: someone, finally, to ask. Not a journalist. Not a therapist. A warm presence that sits with the people you love and says: <Emphasis>I have time. Tell me everything.</Emphasis> And then turns what they share into something a family can keep &mdash; in their own voice, in their own words, arranged into the shape of a life.</Paragraph>
-                        <Paragraph>I'm not a lifelong engineer. What I bring is the discipline of a researcher who learned to be patient with hard problems, and a need so personal I can't put it down. I'm not building this because it's a good market. I'm building it because I almost ran out of time, and I think you might be closer to that than you realize too.</Paragraph>
+                    <ChapterHeadline>Here is the part I had wrong.</ChapterHeadline>
+                    <Paragraph>I had always assumed the deadline was death. It isn&rsquo;t. My uncles are alive. I can call them this afternoon, and I do.</Paragraph>
+                    <Paragraph>What I cannot get back is the version of them that could tell me about 1974 in their own words, unprompted, the way it used to come out at the table when nobody was trying. That version left earlier, and nobody announced it.</Paragraph>
+                    <Paragraph><Emphasis>The window does not close when someone dies. It closes quietly, years before that, in the ordinary weeks nobody thought to record.</Emphasis></Paragraph>
+                </Container>
+            </StorySection>
 
-                        <StoryDivider></StoryDivider>
+            <StorySection>
+                <Container>
+                    <Paragraph>So I stopped waiting for someday and started building A Story.</Paragraph>
+                    <Paragraph>The idea is simple because the need is simple: someone, finally, to ask. Not a journalist. Not a therapist. A warm presence that sits with the people you love and says: <Emphasis>I have time. Tell me everything.</Emphasis> And then turns what they share into something a family can keep &mdash; in their own voice, in their own words, arranged into the shape of a life.</Paragraph>
+                    <Paragraph>It calls them. They answer the phone and talk. That is the entire thing we ask of the person whose story it is, because every extra step is a place where this quietly does not happen.</Paragraph>
 
-                        <Paragraph>Here's what I know: somewhere tonight, there is a parent who carries a story no one has ever asked about. A grandparent with a whole life in their chest, waiting for someone to open the door. They won't bring it up themselves. They don't want to be a burden. They're waiting to be asked.</Paragraph>
-                        <Paragraph><Emphasis>So ask them. Not once, and not eventually &mdash; this week, and again next month, for as long as there is more to hear.</Emphasis></Paragraph>
-                        <Paragraph>I'm a real person, and I'd genuinely love to hear from you.</Paragraph>
+                    <StoryDivider></StoryDivider>
+
+                    <Paragraph>Somewhere tonight there is a parent carrying a story nobody has ever asked about. A grandparent with a whole life in their chest, waiting for someone to open the door. They will not bring it up themselves. They do not want to be a burden. They are waiting to be asked.</Paragraph>
+                    <Paragraph><Emphasis>So ask them. Not once, and not eventually &mdash; this week, and again next month, for as long as there is more to hear.</Emphasis></Paragraph>
+                    <Paragraph>I am a real person, and I would genuinely love to hear from you.</Paragraph>
 
                     <StoryDivider>
                         <SigInitial>D</SigInitial>
                         <SigDetails>
                             <strong>Daniel Hoang Nguyen</strong>
-                            <span>Founder, A Story &middot; Finance Master's, UIUC</span>
+                            <span>Founder, A Story &middot; Finance Master&rsquo;s, UIUC</span>
                             <a href="https://www.linkedin.com/in/daniel-hoang-nguyen-65bb05224/" target="_blank" rel="noopener noreferrer">
                                 <GhostButton>Connect on LinkedIn <Arrow aria-hidden="true">&rarr;</Arrow></GhostButton>
                             </a>
@@ -89,10 +114,17 @@ const Story = () => {
                             <TeamInfo>
                                 <strong>Daniel Hoang Nguyen</strong>
                                 <TeamRole>Founder &amp; CEO</TeamRole>
-                                <TeamBio>Finance Master's, University of Illinois Urbana-Champaign. <br /> Built A Story because he almost ran out of time to ask &mdash; and thinks you might be closer to that than you realize.</TeamBio>
+                                <TeamBio>Finance Master&rsquo;s, University of Illinois Urbana-Champaign. <br /> Started A Story after watching his uncles lose the words before they lost anything else.</TeamBio>
                             </TeamInfo>
                         </TeamCard>
 
+                        {/*
+                          * Bao's bio is still a résumé. One sentence about why he
+                          * personally cares — his own grandparents, a story he
+                          * nearly lost — would do more work than the credentials
+                          * do. Left factual rather than invented; Bao should
+                          * supply his own line.
+                          */}
                         <TeamCard>
                             <TeamPhoto>
                                 <img src={baoPhoto} alt="Bao Vo" loading="lazy" decoding="async" />
@@ -112,7 +144,7 @@ const Story = () => {
                     <Label>The mission</Label>
                     <MissionText>Give every family <Emphasis>someone, finally, to ask</Emphasis> &mdash; and somewhere for the answers to keep going.
                     </MissionText>
-                    <MissionSub> We measure success in stories told, not metrics. In families who have something they didn't before. In grandchildren who grow up knowing where they come from.</MissionSub>
+                    <MissionSub> We measure success in stories told, not metrics. In families who have something they didn&rsquo;t before. In grandchildren who grow up knowing where they come from.</MissionSub>
                 </Container>
             </MissionSection>
 
@@ -123,7 +155,7 @@ const Story = () => {
                     <CtaSub>A 20-minute conversation &mdash; then a lifetime of stories, organized and yours, with room left for all the ones still to come.</CtaSub>
                     <HeroActions>
                         <PrimaryButtonAnchor href={CONTACT.gift}>Gift a story</PrimaryButtonAnchor>
-                        <OutlineButtonLink to="/experience">See how it works</OutlineButtonLink>
+                        <OutlineButtonLink to="/experience">See the experience</OutlineButtonLink>
                     </HeroActions>
                 </Container>
             </CtaSection>
