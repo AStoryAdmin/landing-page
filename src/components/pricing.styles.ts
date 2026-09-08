@@ -135,7 +135,7 @@ export const HonestItem = styled.div`
     }
 `;
 
-/* ── The two programme plans, demoted ─────────────────────────────────── */
+/* ── The two program plans, demoted ─────────────────────────────────── */
 
 export const ProgramGrid = styled.div`
     display: grid;
@@ -191,7 +191,7 @@ export const ProgramCard = styled.div`
     a { width: fit-content; }
 `;
 
-/* ── What moves a programme quote ─────────────────────────────────────── */
+/* ── What moves a program quote ─────────────────────────────────────── */
 
 export const DriverTable = styled.div`
     overflow-x: auto;

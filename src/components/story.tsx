@@ -60,7 +60,7 @@ const Story = () => {
                         <StoryDivider></StoryDivider>
 
                         <Paragraph>Here's what I know: somewhere tonight, there is a parent who carries a story no one has ever asked about. A grandparent with a whole life in their chest, waiting for someone to open the door. They won't bring it up themselves. They don't want to be a burden. They're waiting to be asked.</Paragraph>
-                        <Paragraph><Emphasis>Ask them. Before someday becomes too late.</Emphasis></Paragraph>
+                        <Paragraph><Emphasis>So ask them. Not once, and not eventually &mdash; this week, and again next month, for as long as there is more to hear.</Emphasis></Paragraph>
                         <Paragraph>I'm a real person, and I'd genuinely love to hear from you.</Paragraph>
 
                     <StoryDivider>
@@ -110,7 +110,7 @@ const Story = () => {
             <MissionSection>
                 <Container>
                     <Label>The mission</Label>
-                    <MissionText>Give every family <Emphasis>someone, finally, to ask</Emphasis> before it's too late.
+                    <MissionText>Give every family <Emphasis>someone, finally, to ask</Emphasis> &mdash; and somewhere for the answers to keep going.
                     </MissionText>
                     <MissionSub> We measure success in stories told, not metrics. In families who have something they didn't before. In grandchildren who grow up knowing where they come from.</MissionSub>
                 </Container>
@@ -118,11 +118,11 @@ const Story = () => {
 
             <CtaSection>
                 <Container>
-                    <Label>Don't wait for someday.</Label>
-                    <CtaTitle>Someday is how the stories get lost.</CtaTitle>
-                    <CtaSub>A 20-minute conversation with us &mdash; then a lifetime of stories, organized and yours forever.</CtaSub>
+                    <Label>Start the record.</Label>
+                    <CtaTitle>The best day to begin is an ordinary one.</CtaTitle>
+                    <CtaSub>A 20-minute conversation &mdash; then a lifetime of stories, organized and yours, with room left for all the ones still to come.</CtaSub>
                     <HeroActions>
-                        <PrimaryButtonAnchor href={CONTACT.gift}>Get early access</PrimaryButtonAnchor>
+                        <PrimaryButtonAnchor href={CONTACT.gift}>Gift a story</PrimaryButtonAnchor>
                         <OutlineButtonLink to="/experience">See how it works</OutlineButtonLink>
                     </HeroActions>
                 </Container>

@@ -73,7 +73,7 @@ const Chevron = ({ dir }: { dir: 'left' | 'right' }) => (
 
 /**
  * A sample album spread. The pages themselves are clickable, but the real
- * controls are the buttons below — they are focusable, labelled, and work
+ * controls are the buttons below — they are focusable, labeled, and work
  * without a mouse, which the page turn alone never did.
  */
 const FlipBook = () => {

@@ -26,7 +26,7 @@ const faqGroups: FaqGroupData[] = [
                 answer: (
                     <>
                         <AnswerParagraph>A card with a short note from you and one link underneath. We send you a version to print at home and a version to text or email, so it works whether you are handing it over at the table or you are three time zones away.</AnswerParagraph>
-                        <AnswerParagraph>There is nothing for them to redeem, activate or set up. They tap the link when they feel like it &mdash; that evening, or in February. Nothing expires.</AnswerParagraph>
+                        <AnswerParagraph>Nothing expires and nothing has to happen on the day. The link installs A Story and books the first call &mdash; whenever they are ready, that evening or in February &mdash; and you can do that step for them if you would rather they never saw it.</AnswerParagraph>
                     </>
                 ),
             },
@@ -35,7 +35,8 @@ const faqGroups: FaqGroupData[] = [
                 question: 'The person I am giving it to is hopeless with technology.',
                 answer: (
                     <>
-                        <AnswerParagraph>Then they are exactly who this was built for. There is no app to install, no account to create, no password, and nothing to type. They tap the link once and talk. If they can answer a phone call, they can do this.</AnswerParagraph>
+                        <AnswerParagraph>Then they are exactly who this was built for. A Story calls them, and they answer the phone and talk &mdash; the way they would to anyone else. No tapping, no typing, no password, nothing to remember. If they can answer a phone call, they can do this, because that is all it is.</AnswerParagraph>
+                        <AnswerParagraph>There is an app, and it does get installed on their phone or tablet &mdash; but that happens once, it takes a couple of minutes, and you can do it for them. After that they never have to open it unless they want to.</AnswerParagraph>
                         <AnswerParagraph>If they do get stuck, we help them directly &mdash; you do not become their tech support.</AnswerParagraph>
                     </>
                 ),
@@ -45,7 +46,7 @@ const faqGroups: FaqGroupData[] = [
                 question: 'How much work is this for me after I buy it?',
                 answer: (
                     <>
-                        <AnswerParagraph>Sending the link. That is the whole job. A Story does the asking, the transcribing, the organising by chapter of life, and the book layout. You are told when there is something new to read.</AnswerParagraph>
+                        <AnswerParagraph>Sending the link. That is the whole job. A Story does the asking, the transcribing, the organizing by chapter of life, and the book layout. You are told when there is something new to read.</AnswerParagraph>
                         <AnswerParagraph>This is the difference between a gift and a project, and it is the thing we care most about getting right. Nobody wants to give a present that turns into homework for themselves.</AnswerParagraph>
                     </>
                 ),
@@ -111,8 +112,8 @@ const faqGroups: FaqGroupData[] = [
                 question: 'Who is A Story for?',
                 answer: (
                     <>
-                        <AnswerParagraph>A Story is designed for older adults &mdash; parents, grandparents, aunts and uncles &mdash; who have a lifetime of stories that deserve to be kept. It is especially designed for people who are not comfortable with technology. No app to download, no account to create, no learning curve. It works on any phone or tablet.</AnswerParagraph>
-                        <AnswerParagraph>It is also used by adult children and grandchildren who want to capture their family's history before it's too late &mdash; as a gift, a project, or simply an act of love.</AnswerParagraph>
+                        <AnswerParagraph>A Story is designed for older adults &mdash; parents, grandparents, aunts and uncles &mdash; who have a lifetime of stories that deserve to be kept. It is especially designed for people who are not comfortable with technology: after a one-time setup that somebody else can do, the phone rings and they talk. There is no learning curve, because there is nothing to learn.</AnswerParagraph>
+                        <AnswerParagraph>It is also used by adult children and grandchildren who want their family's history written down while it is still being made &mdash; as a gift, a project, or simply an act of love.</AnswerParagraph>
                         <AnswerParagraph>
                             Nursing homes, memory care communities, assisted living facilities, and hospice programs use A Story as part of their person-centered care approach. See our{' '}
                             <LegalLink as={Link} to="/institution">For Institutions</LegalLink>{' '}
@@ -189,8 +190,8 @@ const faqGroups: FaqGroupData[] = [
                 question: 'How long does it take to get started?',
                 answer: (
                     <>
-                        <AnswerParagraph>The first conversation can begin in about two minutes. There is no download, no account setup for the storyteller, and no tutorial to complete. Open A Story, choose a chapter of life to begin in, and the first question appears immediately.</AnswerParagraph>
-                        <AnswerParagraph>If you're setting up A Story as a gift for a parent or grandparent, you handle the initial setup (which takes about five minutes), and then hand them the device with the first question already on screen. The experience feels as simple as receiving a phone call.</AnswerParagraph>
+                        <AnswerParagraph>The first conversation can begin in about two minutes. Install A Story, choose a chapter of life to begin in, and the first question comes straight away &mdash; there is no account to build out and no tutorial to sit through.</AnswerParagraph>
+                        <AnswerParagraph>If you are setting it up as a gift for a parent or grandparent, you do that five-minute setup yourself. After that, A Story calls them and they answer. It does not just feel like receiving a phone call &mdash; it is one.</AnswerParagraph>
                     </>
                 ),
             },
@@ -199,8 +200,8 @@ const faqGroups: FaqGroupData[] = [
                 question: 'What devices does it work on?',
                 answer: (
                     <>
-                        <AnswerParagraph>A Story works in any modern web browser &mdash; on phones, tablets, and computers. No app to download. We are optimized for tablets (iPad and Android), which offer the most comfortable experience for older adults: large text, easy touch targets, and good microphone quality for voice responses.</AnswerParagraph>
-                        <AnswerParagraph>A dedicated iOS and Android app is coming soon. Subscribers will receive access automatically when it launches.</AnswerParagraph>
+                        <AnswerParagraph>The A Story app runs on iPhone, iPad and Android, and the archive can also be read in any modern web browser. Tablets give older adults the most comfortable reading experience: large text, easy touch targets, and a good microphone.</AnswerParagraph>
+                        <AnswerParagraph>For the storyteller, though, the device barely matters. The conversations happen over a phone call, so whatever they already answer the phone on is what they use.</AnswerParagraph>
                     </>
                 ),
             },
@@ -236,7 +237,7 @@ const faqGroups: FaqGroupData[] = [
                 answer: (
                     <>
                         <AnswerParagraph>$149, once. That covers the guided interviews, the private archive, everyone in the family you invite, searchable transcripts, a full export whenever you want one, and one hardcover book. There is no subscription and no per-person charge.</AnswerParagraph>
-                        <AnswerParagraph>Extra copies of the book, for the rest of the family, are $59 each &mdash; close to what printing and posting cost. Organization and care-community programmes are quoted per engagement on a 30-minute call.</AnswerParagraph>
+                        <AnswerParagraph>Extra copies of the book, for the rest of the family, are $59 each &mdash; close to what printing and shipping cost. Organization and care-community programs are quoted per engagement on a 30-minute call.</AnswerParagraph>
                         <AnswerParagraph>
                             <Bold><Link to="/pricing">See the full pricing breakdown</Link></Bold>, or{' '}
                             <LegalLink href="mailto:contact@astoryapp.com?subject=Book a Demo">book a free 20-minute demo</LegalLink>.

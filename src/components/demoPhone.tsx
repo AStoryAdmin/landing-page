@@ -31,6 +31,12 @@ import {
     McExcerpt,
     McMeta,
     McSep,
+    McLayers,
+    McLayerTab,
+    McTranscriptToggle,
+    McTranscript,
+    McClip,
+    McWave,
     DemoEndCta,
     DemoEndInner,
     DemoEndLabel,
@@ -106,6 +112,35 @@ const PlayIcon = () => (
     </svg>
 );
 
+const ChevronIcon = () => (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <polyline points="6 9 12 15 18 9" />
+    </svg>
+);
+
+const WaveIcon = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+        <line x1="4" y1="9" x2="4" y2="15" />
+        <line x1="9" y1="5" x2="9" y2="19" />
+        <line x1="14" y1="8" x2="14" y2="16" />
+        <line x1="19" y1="10" x2="19" y2="14" />
+    </svg>
+);
+
+/* Decorative bar heights for the clip's waveform. */
+const WAVE_BARS = [5, 9, 14, 8, 16, 11, 6, 13, 9, 15, 7, 12, 5, 10, 14, 8];
+
+/**
+ * The verbatim conversation behind the summary card. It is the same exchange
+ * the demo just played — the point being that the card is a layer over this,
+ * not a replacement for it.
+ */
+const TRANSCRIPT = [
+    { who: 'A Story', text: 'Do you remember a particular evening that stays with you? A night you’d want your grandchildren to know about?' },
+    { who: 'Margaret', text: 'There was one summer when he played until the fireflies came out. We all went quiet, just listening. I must have been six or seven. I’ve never forgotten it.' },
+    { who: 'A Story', text: 'Fireflies and your father’s guitar. Everyone going quiet at the same moment.' },
+];
+
 const PlayingIcon = () => (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="10" />
@@ -123,6 +158,7 @@ const DemoPhone = () => {
     const [showMemoryCard, setShowMemoryCard] = useState(false);
     const [memoryCardVisible, setMemoryCardVisible] = useState(false);
     const [showEndCta, setShowEndCta] = useState(false);
+    const [showTranscript, setShowTranscript] = useState(false);
 
     const [speechSupported] = useState(() => Boolean(getSpeechRecognitionCtor()));
     const [isRecording, setIsRecording] = useState(false);
@@ -131,7 +167,7 @@ const DemoPhone = () => {
     const [interimTranscript, setInterimTranscript] = useState('');
 
     const runningRef = useRef(false);
-    const cancelledRef = useRef(false);
+    const canceledRef = useRef(false);
     const messageIdRef = useRef(0);
     const finalTranscriptRef = useRef('');
     const isRecordingRef = useRef(false);
@@ -139,9 +175,9 @@ const DemoPhone = () => {
     const phoneBodyRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        cancelledRef.current = false;
+        canceledRef.current = false;
         return () => {
-            cancelledRef.current = true;
+            canceledRef.current = true;
         };
     }, []);
 
@@ -205,7 +241,7 @@ const DemoPhone = () => {
         setMessages((prev) => [...prev, { id, role, text, show: false }]);
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-                if (cancelledRef.current) return;
+                if (canceledRef.current) return;
                 setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, show: true } : m)));
             });
         });
@@ -221,34 +257,35 @@ const DemoPhone = () => {
         setShowMemoryCard(false);
         setMemoryCardVisible(false);
         setShowEndCta(false);
+        setShowTranscript(false);
 
         for (const turn of SCRIPT) {
             await sleep(turn.delay);
-            if (cancelledRef.current) return;
+            if (canceledRef.current) return;
             if (turn.role === 'ai') {
                 setIsTyping(true);
                 await sleep(Math.min(turn.text.length * 16, 2000));
-                if (cancelledRef.current) return;
+                if (canceledRef.current) return;
                 setIsTyping(false);
             }
             addMessage(turn.role, turn.text);
         }
 
         await sleep(600);
-        if (cancelledRef.current) return;
+        if (canceledRef.current) return;
         setShowVoicePanel(true);
 
         await sleep(700);
-        if (cancelledRef.current) return;
+        if (canceledRef.current) return;
         setShowMemoryCard(true);
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-                if (!cancelledRef.current) setMemoryCardVisible(true);
+                if (!canceledRef.current) setMemoryCardVisible(true);
             });
         });
 
         await sleep(1200);
-        if (cancelledRef.current) return;
+        if (canceledRef.current) return;
         setShowEndCta(true);
 
         setIsPlaying(false);
@@ -372,9 +409,49 @@ const DemoPhone = () => {
                                 <McSaved>Added to archive</McSaved>
                             </McHeader>
                             <McTitle>Fireflies on the Porch</McTitle>
+
+                            <McLayers aria-label="What is kept from this conversation">
+                                <McLayerTab $active>Summary</McLayerTab>
+                                <McLayerTab>Full transcript</McLayerTab>
+                                <McLayerTab>Voice highlight</McLayerTab>
+                            </McLayers>
+
                             <McExcerpt>
                                 "There was one summer when he played until the fireflies came out. We all went quiet, just listening. I must have been six or seven. I've never forgotten it."
                             </McExcerpt>
+
+                            <McTranscriptToggle
+                                type="button"
+                                onClick={() => setShowTranscript((v) => !v)}
+                                aria-expanded={showTranscript}
+                                aria-controls="mc-transcript"
+                            >
+                                {showTranscript ? 'Hide the full transcript' : 'Read the full transcript'}
+                                <ChevronIcon />
+                            </McTranscriptToggle>
+
+                            {showTranscript && (
+                                <McTranscript id="mc-transcript">
+                                    {TRANSCRIPT.map((t) => (
+                                        <p key={t.text}>
+                                            <span className="who">{t.who}</span>
+                                            {t.text}
+                                        </p>
+                                    ))}
+                                </McTranscript>
+                            )}
+
+                            <McClip>
+                                <WaveIcon />
+                                <span className="label">Voice highlight &mdash; kept as audio</span>
+                                <McWave aria-hidden="true">
+                                    {WAVE_BARS.map((h, i) => (
+                                        <i key={i} style={{ height: h }} />
+                                    ))}
+                                </McWave>
+                                <span className="dur">0:41</span>
+                            </McClip>
+
                             <McMeta>
                                 <span>Chapter: Childhood</span>
                                 <McSep>·</McSep>
@@ -390,7 +467,7 @@ const DemoPhone = () => {
                     <DemoEndInner>
                         <DemoEndLabel>That memory is now permanent.</DemoEndLabel>
                         <DemoEndTitle>Start your family's story.</DemoEndTitle>
-                        <DemoEndSub>One conversation. A lifetime, finally in its place.</DemoEndSub>
+                        <DemoEndSub>One conversation, kept three ways &mdash; and room for every one after it.</DemoEndSub>
                         <DemoEndActions>
                             <DemoEndPrimaryAnchor href={CONTACT.gift}>Gift a story</DemoEndPrimaryAnchor>
                             <DemoEndSecondary to="/family">Learn more</DemoEndSecondary>

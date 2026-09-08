@@ -5,7 +5,7 @@
  *
  * The guideline forbids compressing, distorting or restructuring the logo, so
  * these paths are the artwork itself rather than a web-font approximation.
- * Elements are split only so the approved colourways can be applied per
+ * Elements are split only so the approved colorways can be applied per
  * background; the geometry never changes.
  *
  * Two approved lockups are included. LOGO_* is the full Horizontal Logo with

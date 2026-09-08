@@ -273,7 +273,7 @@ const Organizations = () => (
                 <Timeline>
                     {[
                         { w: 'Week 1', t: 'Scope', d: 'A 30-minute call: who holds the memory, what you want to end up with, and which three people to start with. We come back with a program plan and prompt sets built for your context.' },
-                        { w: 'Week 2', t: 'First interviews', d: 'Your storytellers receive a link. They talk. Sessions run 20–40 minutes and resume wherever they left off. Nothing to install; any phone, tablet or laptop works.' },
+                        { w: 'Week 2', t: 'First interviews', d: 'Your storytellers receive a link, set A Story up once, and then simply take the call. Sessions run 20–40 minutes and resume wherever they left off — no interviewer to schedule and nothing for them to operate.' },
                         { w: 'Weeks 3–6', t: 'The archive fills', d: 'Transcripts, tags and chapters build automatically. Colleagues add photos, documents and corrections. Your archive becomes searchable as it grows, not at the end.' },
                         { w: 'Week 8+', t: 'Publish & print', d: 'We edit and lay out the printed history, clear what you want to publish externally, and hand over the onboarding library. Then the program keeps running for the next cohort.' },
                     ].map((s, i) => (
@@ -381,7 +381,7 @@ const Organizations = () => (
                         <span className="icon"><IconNoTrain /></span>
                         <div>
                             <h3>No AI weirdness</h3>
-                            <p>We do not synthesise voices, invent quotes, or dramatise. The archive contains what people actually said, attributed and timestamped.</p>
+                            <p>We do not synthesize voices, invent quotes, or dramatize. The archive contains what people actually said, attributed and timestamped.</p>
                         </div>
                     </Deliverable>
                     <Deliverable>

@@ -1,7 +1,7 @@
 /**
  * A single stroke-based icon set, drawn on a 24px grid at 1.6 weight so icons
  * sit alongside Figtree at body weight without shouting. `currentColor`
- * throughout, so colour is always the parent's decision.
+ * throughout, so color is always the parent's decision.
  */
 
 type Props = { size?: number; className?: string };
@@ -24,6 +24,34 @@ export const IconMic = ({ size = 20, className }: Props) => (
         <rect x="9" y="2" width="6" height="12" rx="3" />
         <path d="M5 11a7 7 0 0 0 14 0" />
         <line x1="12" y1="18" x2="12" y2="22" />
+    </svg>
+);
+
+/** A handset. The storyteller's whole interface: the phone rings, they answer. */
+export const IconPhone = ({ size = 20, className }: Props) => (
+    <svg {...base(size)} className={className}>
+        <path d="M6.6 2.9a1.6 1.6 0 0 1 2.2.6l1.4 2.4a1.6 1.6 0 0 1-.3 2l-1.2 1a11 11 0 0 0 4.4 4.4l1-1.2a1.6 1.6 0 0 1 2-.3l2.4 1.4a1.6 1.6 0 0 1 .6 2.2l-.9 1.5a2.6 2.6 0 0 1-2.9 1.2C11 18.5 5.5 13 4 7.1a2.6 2.6 0 0 1 1.2-2.9z" />
+    </svg>
+);
+
+/** Layered sheets — the transcript that sits underneath a memory card. */
+export const IconTranscript = ({ size = 20, className }: Props) => (
+    <svg {...base(size)} className={className}>
+        <path d="M8 3h9a2 2 0 0 1 2 2v11" />
+        <rect x="4" y="7" width="11" height="14" rx="2" />
+        <line x1="7" y1="12" x2="12" y2="12" />
+        <line x1="7" y1="16" x2="10.5" y2="16" />
+    </svg>
+);
+
+/** A waveform. Voice highlights, kept as audio rather than only as text. */
+export const IconWaveform = ({ size = 20, className }: Props) => (
+    <svg {...base(size)} className={className}>
+        <line x1="3" y1="10" x2="3" y2="14" />
+        <line x1="7" y1="6" x2="7" y2="18" />
+        <line x1="11" y1="9" x2="11" y2="15" />
+        <line x1="15" y1="4" x2="15" y2="20" />
+        <line x1="19" y1="8" x2="19" y2="16" />
     </svg>
 );
 

@@ -409,6 +409,137 @@ export const McExcerpt = styled.p`
     margin: 0 0 10px;
 `;
 
+/* ── The layers under a memory card ───────────────────────────────────────
+ * The card is only the summary. These make the other two layers visible: the
+ * verbatim transcript, and the moments kept as audio rather than as text.
+ */
+
+export const McLayers = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 0 0 10px;
+`;
+
+export const McLayerTab = styled.span<{ $active?: boolean }>`
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: ${fonts.body};
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    border-radius: 20px;
+    border: 1px solid ${colors.ink15};
+    color: ${colors.ink40};
+
+    ${({ $active }) =>
+        $active &&
+        css`
+            color: ${colors.orangeText};
+            border-color: ${colors.orangeText};
+            background: ${colors.orangeSoft};
+        `}
+`;
+
+/** Expands the verbatim transcript. A real control, not a decorative chip. */
+export const McTranscriptToggle = styled.button`
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: ${fonts.body};
+    font-size: 11px;
+    font-weight: 600;
+    color: ${colors.orangeText};
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 0;
+    min-height: 28px;
+    cursor: pointer;
+
+    svg { transition: transform 0.2s ease; }
+    &[aria-expanded='true'] svg { transform: rotate(180deg); }
+`;
+
+export const McTranscript = styled.div`
+    margin: 2px 0 10px;
+    padding: 10px 12px;
+    background: ${colors.paper};
+    border: 1px solid ${colors.ink08};
+    border-radius: 10px;
+
+    p {
+        font-family: ${fonts.body};
+        font-size: 11.5px;
+        line-height: 1.65;
+        color: ${colors.ink70};
+        margin: 0 0 8px;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    .who {
+        display: block;
+        font-size: 9.5px;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: ${colors.ink40};
+        margin-bottom: 2px;
+    }
+`;
+
+/**
+ * A voice highlight, shown as a labelled clip rather than a working player —
+ * there is no audio behind the demo, and a play button that did nothing would
+ * be a promise the page cannot keep.
+ */
+export const McClip = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 8px 10px;
+    background: ${colors.paper};
+    border: 1px solid ${colors.ink08};
+    border-radius: 10px;
+
+    svg { color: ${colors.orangeText}; flex-shrink: 0; }
+
+    .label {
+        font-family: ${fonts.body};
+        font-size: 10.5px;
+        font-weight: 600;
+        color: ${colors.ink70};
+    }
+
+    .dur {
+        margin-left: auto;
+        font-family: ${fonts.body};
+        font-size: 10px;
+        color: ${colors.ink40};
+        font-variant-numeric: tabular-nums;
+    }
+`;
+
+/** The bars are decorative; the clip's meaning is carried by its label. */
+export const McWave = styled.span`
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 16px;
+
+    i {
+        display: block;
+        width: 2px;
+        border-radius: 2px;
+        background: ${colors.orangeText};
+        opacity: 0.55;
+    }
+`;
+
 export const McMeta = styled.div`
     display: flex;
     align-items: center;

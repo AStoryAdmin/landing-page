@@ -13,7 +13,7 @@ const Experience = () => {
         <ExperienceContainer>
             <Seo
                 title="What they receive — from the first question to a printed book"
-                description="What happens after you send the link: a guided voice interview, memory cards organised by chapter, contributions from the whole family, and a hardcover book shipped to the door."
+                description="What happens after you send the link: a guided voice interview, memory cards organized by chapter, contributions from the whole family, and a hardcover book shipped to the door."
                 path="/experience"
                 schema={[
                     organizationSchema(),
@@ -27,7 +27,7 @@ const Experience = () => {
                 <CardView>
                     <Intro>The Experience</Intro>
                     <Title>What happens after you <HighlightText>send the link.</HighlightText></Title>
-                    <Description>A gentle, unhurried process designed for someone who has never installed an app in their life — and nothing at all for you to run.</Description>
+                    <Description>A gentle, unhurried process designed for someone who has never opened an app in their life. They answer the phone; A Story does the rest. There is nothing at all for you to run.</Description>
                     <a href="#demo" style={{textDecoration: 'none'}}>
                         <DemoButton as="span" to="#demo">Watch the conversation</DemoButton>
                     </a>
@@ -42,17 +42,17 @@ const Experience = () => {
                     <StepCard>
                         <Column>
                             <StepNumber>1</StepNumber>
-                            <StepTitle>Invite a loved one</StepTitle>
+                            <StepTitle>Set it up for them</StepTitle>
                             <Content>
-                                Open A Story and start a session for the person whose story you want to keep. Name them, note their birthday, choose what chapter of life to begin in. It takes sixty seconds.
+                                Open A Story and start an archive for the person whose story you want to keep. Name them, note their birthday, choose what chapter of life to begin in, and say when it is a good time to call. Sixty seconds, done once — and you can do it on their behalf.
                             </Content>
                         </Column>
 
                         <Column>
                             <StepNumber>2</StepNumber>
-                            <StepTitle>A Story listens</StepTitle>
+                            <StepTitle>The phone rings</StepTitle>
                             <Content>
-                                A warm AI guide asks open, unhurried questions — about childhood, family, work, love, and what they've learned. No two conversations are the same. The AI follows where the story leads.
+                                They answer it the way they answer any call. A warm voice asks open, unhurried questions — about childhood, family, work, love, and what they've learned — and follows wherever the story leads. No two conversations are the same, and nothing is asked of them but talking.
                             </Content>
                         </Column>
 
@@ -60,7 +60,7 @@ const Experience = () => {
                             <StepNumber>3</StepNumber>
                             <StepTitle>Memories take shape</StepTitle>
                             <Content>
-                                Every answer becomes a memory card, organized by chapter of life. Attach photos to anchor memories to faces and places. A full life timeline builds itself as you go.
+                                Every conversation becomes a memory card — the summary — with the full transcript underneath it and the moments worth hearing kept as audio. Attach photos to anchor memories to faces and places. A full life timeline builds itself as you go.
                             </Content>
                         </Column>
 
@@ -101,9 +101,9 @@ const Experience = () => {
                             </RoleColumn>
                             <RoleColumn>
                                 <StepIntro>Editor</StepIntro>
-                                <StepTitle>Turns rambling speech into clean memory cards.</StepTitle>
+                                <StepTitle>Turns rambling speech into a card you can read in a minute.</StepTitle>
                                 <Content>
-                                    Stories come out unpolished. A Story shapes them into something worth reading &mdash; in the storyteller's own voice.   
+                                    Stories come out unpolished. A Story shapes them into something worth reading &mdash; in the storyteller's own voice &mdash; without ever throwing the original away. The card is the summary; the transcript and the audio stay underneath it.
                                 </Content>
                             </RoleColumn>
                             <RoleColumn>
@@ -124,8 +124,10 @@ const Experience = () => {
                     </Card>
 
                     <TagRow>
-                        <Tag>Voice</Tag><Arrow>&rarr;</Arrow>
+                        <Tag>Phone call</Tag><Arrow>&rarr;</Arrow>
                         <Tag>Memory card</Tag><Arrow>&rarr;</Arrow>
+                        <Tag>Full transcript</Tag><Arrow>&rarr;</Arrow>
+                        <Tag>Voice highlights</Tag><Arrow>&rarr;</Arrow>
                         <Tag>Life timeline</Tag><Arrow>&rarr;</Arrow>
                         <Tag>Printed book</Tag>
                     </TagRow>
@@ -154,7 +156,7 @@ const Experience = () => {
                         <Summary>
                             <BookIntro>The keepsake</BookIntro>
                             <BookTitle>A real book. Something you can hold.</BookTitle>
-                            <BookSubtitle>In a world where everything is digital and everything disappears, A Story makes something permanent. A hardcover memoir &mdash; your family's words and photos, printed and bound, ready to live on a shelf for decades.</BookSubtitle>
+                            <BookSubtitle>Any chapter can become something permanent: a hardcover memoir of your family's words and photographs, printed and bound, ready to live on a shelf for decades. The book is the edited version &mdash; the archive keeps everything it could not fit.</BookSubtitle>
                             <BulletList>
                                 <BulletItem>
                                     <Bold>Hardcover, lay-flat binding.</Bold> Sewn signatures, acid-free paper, a cover you'll recognize on a bookshelf in fifty years.
@@ -166,7 +168,10 @@ const Experience = () => {
                                     <Bold>Photos alongside stories.</Bold> Every image printed next to the memory it belongs to, in the context that gives it meaning.
                                 </BulletItem>
                                 <BulletItem>
-                                    <Bold>A digital archive too.</Bold> Memory cards, voice notes, and the life timeline live on your phone &mdash; organized and searchable, always.
+                                    <Bold>The full record stays behind it.</Bold> The printed page is a summary. Open the same story in the archive and the whole transcript is there, word for word, with the voice highlights kept as audio &mdash; the laugh, the pause, the way only they say a name.
+                                </BulletItem>
+                                <BulletItem>
+                                    <Bold>And it is not the last page.</Bold> Printing a book closes nothing. The archive keeps growing, and you can print another volume whenever there is more to print.
                                 </BulletItem>
                             </BulletList>
 
@@ -190,8 +195,8 @@ const Experience = () => {
             <AccessContainer>
                 <CardView>
                     <DarkIntro>Ready to begin?</DarkIntro>
-                    <DarkTitle>Give it while there is still time to ask.</DarkTitle>
-                    <DarkDescription>You buy it once and send one link. They talk when they feel like it. The archive and the book belong to the whole family.</DarkDescription>
+                    <DarkTitle>Start the record. It does not have to be finished.</DarkTitle>
+                    <DarkDescription>You buy it once and send one link. They answer the phone and talk when they feel like it. The archive and the book belong to the whole family, and there is always room for the next conversation.</DarkDescription>
                     <DemoButtonAnchor href={CONTACT.gift}>Gift a story</DemoButtonAnchor>
                     <FamilyButton to="/family">Why it matters</FamilyButton>
                 </CardView>

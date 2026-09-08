@@ -26,13 +26,20 @@
  *
  * 4. Never charge per family member. Every extra person invited makes the
  *    archive better, raises the odds of a book being ordered, and costs almost
- *    nothing to serve. Charging for them would suppress the one behaviour the
+ *    nothing to serve. Charging for them would suppress the one behavior the
  *    whole product depends on.
  */
 
 export const PRICE = {
     /** One gift, one payment, one hardcover book included. */
     gift: '$149',
+    /**
+     * The same figure without formatting, for the Offer in the product schema.
+     * Keep it in step with `gift` — search results quoting a price the page
+     * does not charge is worse than quoting none.
+     */
+    giftAmount: '149',
+    currency: 'USD',
     /** Shown beneath the price so nobody wonders what is missing. */
     giftNote: 'One payment · includes the hardcover book',
     /**

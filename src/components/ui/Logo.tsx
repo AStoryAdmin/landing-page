@@ -12,8 +12,8 @@ import {
  *
  * The artwork is the guideline's own vector, traced by scripts/trace-logo.mjs —
  * not a lookalike rebuilt from a web font — because the guideline requires the
- * logo's shape and style to remain unaltered. Only colour changes here, and
- * only between the approved light and dark colourways.
+ * logo's shape and style to remain unaltered. Only color changes here, and
+ * only between the approved light and dark colorways.
  *
  * Three variants, all from approved artwork:
  *   horizontal  mark + wordmark + "Your Family's Living Memories"
@@ -26,7 +26,7 @@ import {
 type Tone = 'light' | 'dark';
 type Variant = 'horizontal' | 'simple' | 'mark';
 
-/** The approved colourways. Warm Gold on the waveform never changes. */
+/** The approved colorways. Warm Gold on the waveform never changes. */
 const PALETTE = {
     light: { letter: color.primary, name: color.ink, story: color.accent, tagline: color.body },
     dark: { letter: color.ivory, name: color.ivory, story: color.gold, tagline: color.onDarkMuted },

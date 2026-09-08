@@ -42,7 +42,7 @@ const PublicStory = () => {
     const [story, setStory] = useState<PublicStoryData | null>(null);
 
     useEffect(() => {
-        let cancelled = false;
+        let canceled = false;
         (async () => {
             const supabase = getSupabase();
             if (!slug || !supabase) {
@@ -50,7 +50,7 @@ const PublicStory = () => {
                 return;
             }
             const { data, error } = await supabase.rpc('get_public_story', { slug });
-            if (cancelled) return;
+            if (canceled) return;
             if (error || !data) {
                 setState('missing');
                 return;
@@ -59,7 +59,7 @@ const PublicStory = () => {
             setState('ready');
         })();
         return () => {
-            cancelled = true;
+            canceled = true;
         };
     }, [slug]);
 

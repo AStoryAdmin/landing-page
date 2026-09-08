@@ -11,6 +11,31 @@ audiences with their own pages.
 
 React 19 · TypeScript · Vite · styled-components · React Router · Supabase.
 
+**The frame is "the everyday goes undocumented", not "the window is closing".**
+The site used to argue urgency — 1.4B people over 60, 10K Americans turning 65
+a day, a last Christmas to ask. That is the case every product in this category
+makes, and it contradicted the product: a record that keeps growing cannot also
+be a race against a deadline, and a documentary of many voices needs everyone
+alive and contributing. What leads now is what genuinely goes missing (the
+ordinary talk, not the milestones), that A Story captures the life being lived
+as well as the one behind it, that many voices sit on the same moment, and that
+the book is a chapter rather than an ending. `/family` carries the full
+argument; every other page is written against it. Urgency is not banned — it is
+just never the reason to buy.
+
+**There is an app, and the storyteller never has to operate it.** Both the
+buyer and the storyteller install A Story, but the conversations happen over a
+*phone call*: setup is one-time and someone else can do it, after which the
+phone rings and they answer. Copy must not say "no app to install" — that was
+true once and is not now. The claim to make is "they just answer the phone",
+which is stronger anyway.
+
+**A memory card is the summary, not the whole record.** Every conversation is
+kept in three layers — the card you skim, the full verbatim transcript beneath
+it, and the voice highlights kept as audio. The printed book is the edited
+version of the first layer. Say all three; the site used to imply only the
+card existed.
+
 ---
 
 ## Getting started
@@ -84,9 +109,9 @@ out of the Illustrator source into `src/components/ui/logoPaths.ts`, and
 | `mark` | The mark alone | Favicons, icons |
 
 Each element (the mark's strokes, the gold waveform, the "A", "Story", the
-descriptor) is a separate path purely so the approved light and dark colourways
+descriptor) is a separate path purely so the approved light and dark colorways
 can be applied. **The geometry is never altered** — the guideline forbids
-compressing, distorting, restructuring or recolouring the logo's internals, and
+compressing, distorting, restructuring or recoloring the logo's internals, and
 the safe zone is carried as padding on the component. `npm run assets` derives
 the favicons, touch icons, PWA icons and social card from the same paths, so a
 favicon cannot drift out of step with the navbar.
@@ -103,11 +128,11 @@ npm run assets
 
 (The Illustrator file is PDF-compatible, so `.ai` can be passed directly.)
 
-### Colour rules worth knowing
+### Color rules worth knowing
 
 Two are enforced by the audit and easy to break by accident:
 
-- **Warm Gold is not a text colour.** At 13px it measures 4.33:1 on Deep Teal
+- **Warm Gold is not a text color.** At 13px it measures 4.33:1 on Deep Teal
   and 1.91:1 on Soft Ivory. Use `goldText` on dark, `goldOnLight` on light.
 - **Terracotta text uses `accentText` (`#9E4420`)**, not `accent`. Full
   Terracotta is 4.13:1 on ivory — fine as a fill, short of AA as small text.
@@ -195,8 +220,8 @@ touches it, so CI without browsers still works.
 the audit takes about a minute.
 
 Also in place: a skip link, one visible focus ring on every interactive
-element, `prefers-reduced-motion` honoured throughout, keyboard controls on the
-album spread, labelled scrollable regions for wide tables, and a compact
+element, `prefers-reduced-motion` honored throughout, keyboard controls on the
+album spread, labeled scrollable regions for wide tables, and a compact
 non-3D album layout below 700px.
 
 ---
@@ -208,7 +233,13 @@ it is fussier than it looks. Three things bite here, all documented in the file:
 
 - The global stylesheet needs `scroll-behavior: smooth` for in-page anchors,
   which turns a programmatic `scrollTo(0, 0)` into an animated ride back up
-  through the page you just left. The reset temporarily suspends it.
+  through the page you just left. Two things are needed to suppress it, and
+  either alone still animates: `scrollTo` must be passed `behavior: 'instant'`
+  (`'auto'` means "use the CSS value", i.e. smooth), **and** the temporary
+  inline `scroll-behavior: auto` must be followed by a computed-style read,
+  because Chrome otherwise answers `scrollTo` from the style cache it built
+  before the assignment. This was the bug that made an apparently-correct fix
+  do nothing.
 - The component must sit **outside** `<Suspense>`. Inside it, a lazy route chunk
   suspends the subtree, so it unmounted on every navigation and its effect never
   ran at all.
@@ -227,9 +258,12 @@ first frame.
 - `src/assets/astoryDaniel.webp` and `astoryBao.webp` are generated brand
   placeholders. Replace them with real headshots (600×600) and remove the two
   names from `SKIP` in `scripts/optimize-images.mjs`.
-- Pricing shows "Free" for families during early access and "Quoted" for the two
-  programme plans. When list prices exist, edit `PLANS` at the top of
-  `src/components/pricing.tsx` — nothing else needs to change.
+- **The price is still the placeholder.** `src/lib/pricing.ts` carries `$149`,
+  which was a recommendation rather than a decision, plus `extraCopy` at `$59`.
+  The real pricing has not been integrated yet — replace the constants (and
+  `giftAmount`, which feeds the `Offer` in the product schema) and read the
+  reasoning comment at the top of that file before changing the *shape* of it.
+  The two program plans stay quoted rather than listed.
 - The gift card shown on the home page is rendered from CSS, not a photograph,
   so it always matches the brand. The real artefact a buyer receives does not
   exist yet — building it is the obvious next step, and the copy promises it.

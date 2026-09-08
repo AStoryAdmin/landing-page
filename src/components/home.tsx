@@ -5,7 +5,7 @@ import {
 } from './ui/primitives';
 import {
     IconArchive, IconArrow, IconBook, IconClock, IconExport, IconGlobe, IconHeart,
-    IconLock, IconMic, IconNoTrain, IconShield, IconUsers,
+    IconLock, IconMic, IconNoTrain, IconPhone, IconShield, IconTranscript, IconUsers, IconWaveform,
 } from './ui/icons';
 import { CONTACT } from '../lib/contact';
 import { PRICE } from '../lib/pricing';
@@ -14,8 +14,9 @@ import productImg from './../assets/astoryProduct.webp';
 import {
     AlsoBand, AlsoCard, AlsoGrid, Divider, FaqItem, FaqList, Feature, FeatureList, GiftCard,
     HandoverSplit, Hero, HeroActions, HeroBadge, HeroCopy, HeroInner, HeroSub, HeroTitle, HeroTrust,
+    MatterItem, MattersCoda, MattersGrid, MattersLead,
     No, Objection, ObjectionGrid, Page, PriceStrip, ProofImage, ProofSplit, PromiseCard, PromiseGrid, PullQuote,
-    QuoteCard, QuoteGrid, SectionHead, StatGrid, StatItem, Step, StepGrid, StepNumber, StepText,
+    QuoteCard, QuoteGrid, SectionHead, Step, StepGrid, StepNumber, StepText,
     StepTitle, Table, TableWrap, Tag, TagRow, Yes,
 } from './home.styles';
 
@@ -32,11 +33,11 @@ const TOP_FAQ = [
     },
     {
         q: 'My dad is hopeless with technology. Will this work?',
-        a: 'Yes. He taps the link once and talks. There is no app to install, no account to create, nothing to type. If he can answer a phone call, he can do this.',
+        a: 'Yes, because he never has to operate anything. A Story calls him, and he answers the phone and talks — the way he would to anyone else. The app is set up once, and you can do that part for him.',
     },
     {
-        q: 'Do I have to organise it after I buy it?',
-        a: 'No — that is the point. A Story does the asking, the transcribing, the organising and the layout. You send one link and let it run.',
+        q: 'Do I have to organize it after I buy it?',
+        a: 'No — that is the point. A Story does the asking, the transcribing, the organizing and the layout. You send one link and let it run.',
     },
     {
         q: 'Can the rest of the family join in?',
@@ -45,6 +46,10 @@ const TOP_FAQ = [
     {
         q: 'What if they only manage twenty minutes at a time?',
         a: 'Twenty minutes is a real session. The archive remembers exactly where the conversation stopped and picks it up weeks later without repeating itself.',
+    },
+    {
+        q: 'Is a memory card all I get to read?',
+        a: 'No. The card is the summary. Open it and the full transcript is underneath, word for word, and the moments worth hearing are kept as audio in their own voice. The book is the edited version of all of it.',
     },
     {
         q: 'Who ends up owning the stories?',
@@ -76,10 +81,10 @@ const Home = () => (
                         <em>The whole family<br />opens it.</em>
                     </HeroTitle>
                     <HeroSub>
-                        A Story sits down with your mum, your dad, your grandfather — and asks them the
+                        A Story calls your mom, your dad, your grandfather &mdash; and asks them the
                         questions nobody gets around to asking. You buy it once and send one link. They
-                        talk. Everyone in the family ends up with the archive, and a hardcover book lands on
-                        the doorstep. You don&rsquo;t have to organise a thing.
+                        answer the phone and talk. Everyone in the family ends up with the archive, and a
+                        hardcover book lands on the doorstep. You don&rsquo;t have to organize a thing.
                     </HeroSub>
                     <HeroActions>
                         <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
@@ -87,7 +92,7 @@ const Home = () => (
                     </HeroActions>
                     <HeroTrust>
                         <li><IconClock size={15} /> Ready in minutes</li>
-                        <li><IconMic size={15} /> No app to install</li>
+                        <li><IconPhone size={15} /> They just answer the phone</li>
                         <li><IconUsers size={15} /> Everyone joins in</li>
                         <li><IconBook size={15} /> Book included</li>
                     </HeroTrust>
@@ -130,11 +135,11 @@ const Home = () => (
                         <Step>
                             <p className="who">Them</p>
                             <StepNumber>3</StepNumber>
-                            <StepTitle>They talk</StepTitle>
+                            <StepTitle>They answer the phone</StepTitle>
                             <StepText>
-                                One tap, and a warm voice starts asking about childhood, work, love, the
-                                things they are proud of. Fifteen minutes at a time is plenty. No app, no
-                                account, no typing.
+                                The link sets A Story up once &mdash; you can do that part for them. After
+                                that the phone rings, and a warm voice asks about childhood, work, love, the
+                                things they are proud of. Fifteen minutes at a time is plenty.
                             </StepText>
                         </Step>
                         <Step>
@@ -220,7 +225,7 @@ const Home = () => (
                         },
                         {
                             d: '“My dad hates gadgets.”',
-                            a: 'One tap on a link he already has, and then he just talks. Nothing to download, nothing to sign up for, nothing to remember. The first question reaches him in about sixty seconds.',
+                            a: 'Then he never has to touch one. A Story calls him; he answers and talks. There is an app, but it is set up once — by you, or by whoever is closest — and after that nothing is asked of him but picking up.',
                         },
                         {
                             d: '“We are spread across the country.”',
@@ -228,7 +233,7 @@ const Home = () => (
                         },
                         {
                             d: '“I do not have time to run a project.”',
-                            a: 'You send a link. A Story does the asking, transcribing, organising and layout, and tells you when there is something new to read. There is nothing to chase.',
+                            a: 'You send a link. A Story does the asking, transcribing, organizing and layout, and tells you when there is something new to read. There is nothing to chase.',
                         },
                         {
                             d: '“What if they never use it?”',
@@ -268,8 +273,22 @@ const Home = () => (
                             <Feature>
                                 <span className="icon"><IconMic /></span>
                                 <div>
-                                    <h3>Their voice, kept</h3>
-                                    <p>Not a transcript of a phone call. The actual recording, alongside every story, in the way they tell it.</p>
+                                    <h3>A card you can read in a minute</h3>
+                                    <p>Every conversation lands as a memory card &mdash; the summary, titled and dated and filed where it belongs. That is the layer you skim.</p>
+                                </div>
+                            </Feature>
+                            <Feature>
+                                <span className="icon"><IconTranscript /></span>
+                                <div>
+                                    <h3>The full transcript underneath</h3>
+                                    <p>Open any card and the whole conversation is there, word for word &mdash; the tangents, the second thoughts, the names of people the summary had no room for.</p>
+                                </div>
+                            </Feature>
+                            <Feature>
+                                <span className="icon"><IconWaveform /></span>
+                                <div>
+                                    <h3>Voice highlights, kept as audio</h3>
+                                    <p>The moments worth hearing rather than reading stay as sound: the laugh, the pause before the hard part, the way only they say a name.</p>
                                 </div>
                             </Feature>
                             <Feature>
@@ -282,22 +301,22 @@ const Home = () => (
                             <Feature>
                                 <span className="icon"><IconUsers /></span>
                                 <div>
-                                    <h3>Room for everyone</h3>
-                                    <p>Share the link as widely as you like. Siblings, cousins and grandchildren add photos, corrections and their own memories.</p>
+                                    <h3>Everyone who was in the room</h3>
+                                    <p>The same afternoon looks different to the person who lived it and the child who was there. Siblings, cousins and grandchildren add their own version of it, on the same moment.</p>
                                 </div>
                             </Feature>
                             <Feature>
                                 <span className="icon"><IconBook /></span>
                                 <div>
                                     <h3>A hardcover book</h3>
-                                    <p>Edited, laid out like a memoir, photos beside the stories they belong to, printed on acid-free paper. Order extra copies for the family.</p>
+                                    <p>Any chapter can become something you hold: edited, laid out like a memoir, photos beside the stories they belong to. The book is the edited version &mdash; the archive keeps the rest.</p>
                                 </div>
                             </Feature>
                             <Feature>
                                 <span className="icon"><IconGlobe /></span>
                                 <div>
-                                    <h3>It keeps going</h3>
-                                    <p>The archive does not close when the book ships. New stories can be added for as long as there are stories to add.</p>
+                                    <h3>It never assumes you are finished</h3>
+                                    <p>The story does not stop when the book is made, because neither do they. Today goes on the same timeline as 1962.</p>
                                 </div>
                             </Feature>
                             <Feature>
@@ -344,28 +363,51 @@ const Home = () => (
             </Container>
         </Section>
 
-        {/* ─── Why now ──────────────────────────────────────────────── */}
-        <Section $tone="deep" $tight id="why-now">
+        {/* ─── Why this matters ─────────────────────────────────────── */}
+        <Section $tone="deep" $tight id="why">
             <Container>
                 <SectionHead>
-                    <Eyebrow $tone="gold">Why this year</Eyebrow>
-                    <H2>There is a last Christmas to ask. Nobody tells you which one it is.</H2>
+                    <Eyebrow $tone="gold">Why this matters</Eyebrow>
+                    <H2>Most of a life goes undocumented.</H2>
                 </SectionHead>
-                <StatGrid>
+                <MattersLead>
+                    Not the milestones &mdash; those get photographed. It is the everyday: the story told at
+                    dinner and never written down, the reason everyone was laughing in that photo, the small
+                    ordinary day that turns out to matter later. Those slip away quietly.{' '}
+                    <em>A Story exists to catch them.</em>
+                </MattersLead>
+
+                <MattersGrid>
                     {[
-                        { n: '1.4B', t: 'people will be aged 60 or over worldwide by 2030 — the generation holding the stories.', r: 'WHO, 2025' },
-                        { n: '10K', t: 'Americans cross age 65 every single day, carrying memories nobody has asked about.', r: 'U.S. Census' },
-                        { n: '63M', t: 'U.S. family caregivers already feel the window closing, and most never get to the asking.', r: 'AARP / NAC, 2025' },
-                    ].map((s, i) => (
-                        <Reveal key={s.n} delay={i * 90}>
-                            <StatItem>
-                                <div className="num">{s.n}</div>
-                                <p className="text">{s.t}</p>
-                                <p className="ref">{s.r}</p>
-                            </StatItem>
+                        {
+                            t: 'Not a memoir to finish',
+                            d: 'Most tools for this look backward — they help you preserve a life already lived, before it is too late. A Story captures the life being lived now as well as the one behind it, and never assumes the story is over. Today is part of it too.',
+                        },
+                        {
+                            t: 'It works through conversation',
+                            d: 'A Story asks, listens and remembers — following up the way someone who knows you would, connecting what you share to the people, places and photos it belongs with, and laying it out on a timeline that keeps growing as your life does.',
+                        },
+                        {
+                            t: 'Not one narrator',
+                            d: 'A life is not a solo account. The same afternoon looks different to the person who lived it, the child who was there, and the one who only heard about it for years. A Story holds all of those voices on the same moment.',
+                        },
+                    ].map((m, i) => (
+                        <Reveal key={m.t} delay={i * 90}>
+                            <MatterItem>
+                                <h3>{m.t}</h3>
+                                <p>{m.d}</p>
+                            </MatterItem>
                         </Reveal>
                     ))}
-                </StatGrid>
+                </MattersGrid>
+
+                <MattersCoda>
+                    That is what makes it a documentary instead of a diary.
+                </MattersCoda>
+
+                <Actions>
+                    <Button to="/family" $variant="onDark">Read the whole case <IconArrow /></Button>
+                </Actions>
             </Container>
         </Section>
 
@@ -441,12 +483,14 @@ const Home = () => (
                         </thead>
                         <tbody>
                             {[
-                                ['Nothing to organise after you buy', true, false, false, false],
+                                ['Nothing to organize after you buy', true, false, false, false],
                                 ['They talk instead of writing', true, false, true, true],
-                                ['No app or account for the recipient', true, false, false, 'Partial'],
-                                ['The whole family can contribute', true, false, true, false],
+                                ['Nothing to operate — they answer a phone call', true, false, false, true],
+                                ['Summary, full transcript and voice kept together', true, false, false, false],
+                                ['Many voices on the same memory, not one narrator', true, false, false, false],
                                 ['Adaptive follow-up questions, not a fixed list', true, false, false, false],
-                                ['Searchable archive organised by life chapter', true, false, false, false],
+                                ['Searchable archive organized by life chapter', true, false, false, false],
+                                ['Keeps growing after the book is printed', true, false, false, 'Partial'],
                                 ['Printed hardcover keepsake', true, true, true, false],
                                 ['Full data export, no lock-in', true, 'Partial', 'Partial', 'Partial'],
                                 ['Never used to train AI models', true, 'Unstated', 'Unstated', 'Unstated'],
@@ -515,7 +559,8 @@ const Home = () => (
         <PullQuote>
             <figure style={{ margin: 0 }}>
                 <blockquote>
-                    &ldquo;Every life holds a story worth keeping. Most are never told.&rdquo;
+                    &ldquo;The moments that make up a life should still be here for the people
+                    who&rsquo;ll want them.&rdquo;
                 </blockquote>
                 <figcaption>The reason A Story exists</figcaption>
             </figure>

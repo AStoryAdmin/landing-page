@@ -38,7 +38,7 @@ const Contribute = () => {
     const [done, setDone] = useState(false);
 
     useEffect(() => {
-        let cancelled = false;
+        let canceled = false;
         (async () => {
             const supabase = getSupabase();
             if (!slug || !supabase) {
@@ -46,7 +46,7 @@ const Contribute = () => {
                 return;
             }
             const { data, error: err } = await supabase.rpc('get_contribute_info', { slug });
-            if (cancelled) return;
+            if (canceled) return;
             if (err || !data) {
                 setState('missing');
                 return;
@@ -55,7 +55,7 @@ const Contribute = () => {
             setState('ready');
         })();
         return () => {
-            cancelled = true;
+            canceled = true;
         };
     }, [slug]);
 
@@ -219,7 +219,7 @@ const Contribute = () => {
                             <Input
                                 value={relationship}
                                 onChange={(e) => setRelationship(e.target.value)}
-                                placeholder="e.g. Daughter, neighbour, colleague"
+                                placeholder="e.g. Daughter, neighbor, colleague"
                                 maxLength={120}
                             />
                         </FieldWrap>

@@ -7,6 +7,8 @@
  * duplicate title or description in the document.
  */
 
+import { PRICE } from './pricing';
+
 export const SITE = {
     name: 'A Story',
     /** Override at build time with VITE_SITE_URL for preview deploys. */
@@ -98,7 +100,7 @@ export const organizationSchema = () => ({
     email: SITE.email,
     slogan: SITE.tagline,
     description:
-        'A Story turns guided voice conversations into a permanent, searchable archive — and a printed hardcover book — for families, care communities and organisations.',
+        'A Story turns guided voice conversations into a permanent, searchable archive — and a printed hardcover book — for families, care communities and organizations.',
     logo: `${SITE.url}/logo.png`,
 });
 
@@ -112,9 +114,9 @@ export const productSchema = () => ({
         'Voice-first life-story capture. A guided AI interviewer, a private family archive, and a printed hardcover memoir.',
     offers: {
         '@type': 'Offer',
-        price: '0',
-        priceCurrency: 'USD',
-        description: 'Free for families during early access.',
+        price: PRICE.giftAmount,
+        priceCurrency: PRICE.currency,
+        description: PRICE.giftNote,
     },
 });
 

@@ -444,9 +444,28 @@ export const Tag = styled.a`
     }
 `;
 
-/* ── The window ───────────────────────────────────────────────────────── */
+/* ── Why this matters ─────────────────────────────────────────────────
+ * The stat band that used to sit here argued demographics — 1.4B people over
+ * 60, 10K Americans turning 65 a day — which is the same "the window is
+ * closing" case every product in this category makes. It now carries the
+ * argument the product actually wins on: what goes undocumented is the
+ * everyday, and the record is never finished.
+ */
 
-export const StatGrid = styled.div`
+export const MattersLead = styled.p`
+    max-width: 62ch;
+    font-size: clamp(1.0625rem, 0.98rem + 0.4vw, 1.25rem);
+    line-height: ${leading.relaxed};
+    color: ${color.onDarkMuted};
+    margin: 0 0 clamp(40px, 4.5vw, 64px);
+
+    em {
+        font-style: italic;
+        color: ${color.goldText};
+    }
+`;
+
+export const MattersGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: ${space.xl};
@@ -454,32 +473,40 @@ export const StatGrid = styled.div`
     ${media.md} { grid-template-columns: 1fr; gap: ${space.lg}; }
 `;
 
-export const StatItem = styled.div`
+export const MatterItem = styled.div`
     padding-left: ${space.lg};
     border-left: 2px solid rgba(224, 160, 63, 0.5);
 
-    .num {
+    h3 {
         font-family: ${font.display};
-        font-size: clamp(2.5rem, 1.6rem + 3vw, 3.75rem);
+        font-size: clamp(1.5rem, 1.2rem + 1.1vw, 1.9rem);
         font-weight: ${weight.light};
-        line-height: 1;
+        line-height: ${leading.snug};
         color: ${color.goldText};
         letter-spacing: ${tracking.display};
+        margin: 0;
     }
 
-    .text {
+    p {
         margin-top: ${space.sm};
         font-size: ${type.sm};
         line-height: ${leading.relaxed};
         color: ${color.onDarkMuted};
     }
+`;
 
-    .ref {
-        margin-top: ${space.xs};
-        font-size: ${type.caption};
-        color: ${color.onDarkFaint};
-        letter-spacing: ${tracking.wide};
-    }
+/** The line the whole section lands on, set apart from the three columns. */
+export const MattersCoda = styled.p`
+    margin: clamp(40px, 4.5vw, 64px) 0 0;
+    padding-top: clamp(28px, 3vw, 40px);
+    border-top: 1px solid ${color.onDarkLine};
+    max-width: 68ch;
+    font-family: ${font.display};
+    font-size: clamp(1.375rem, 1.15rem + 1vw, 1.75rem);
+    font-style: italic;
+    font-weight: ${weight.light};
+    line-height: ${leading.snug};
+    color: ${color.onDark};
 `;
 
 /* ── Testimonials ─────────────────────────────────────────────────────── */

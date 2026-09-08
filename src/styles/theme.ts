@@ -2,19 +2,19 @@
  * A Story — brand design tokens.
  *
  * Source of truth: "A Complete Guideline for Brand A Story", Version Teal (2026).
- * Every colour, type step and spacing value on this site resolves back to this
+ * Every color, type step and spacing value on this site resolves back to this
  * file. Nothing should hard-code a hex value outside of it.
  *
- * The guideline ships two approved colour versions:
+ * The guideline ships two approved color versions:
  *   • Version Teal (2026)      — Deep Teal primary, Terracotta + Warm Gold accents
  *   • Version Terracotta       — Terracotta primary, Deep Chocolate + Vintage Brass
  * Teal is the current system: it carries the institutional credibility the
- * organisation-facing side of the product needs, while Terracotta keeps the
+ * organization-facing side of the product needs, while Terracotta keeps the
  * warmth the family-facing side is built on. `palette.terracottaVersion` below
  * preserves the alternate set so a swap is a one-line change.
  */
 
-/* ── Raw brand colours, exactly as specified ───────────────────────────── */
+/* ── Raw brand colors, exactly as specified ───────────────────────────── */
 
 export const palette = {
     /* Version Teal — 2026 */
@@ -34,8 +34,8 @@ export const palette = {
     },
 } as const;
 
-/* ── Semantic colour tokens ───────────────────────────────────────────────
- * Tints and shades are derived from the five brand colours; they are never
+/* ── Semantic color tokens ───────────────────────────────────────────────
+ * Tints and shades are derived from the five brand colors; they are never
  * new hues, only lighter/darker steps of the approved set.
  */
 
@@ -63,7 +63,7 @@ export const color = {
 
     /* Highlight — Warm Gold.
      *
-     * Warm Gold is a fill and a display colour, not a small-text colour: at
+     * Warm Gold is a fill and a display color, not a small-text color: at
      * 12–14px it measures 4.33:1 on Deep Teal and 1.91:1 on Soft Ivory. Text
      * uses one of the two steps below instead, both drawn from the guideline's
      * approved set.
@@ -80,7 +80,7 @@ export const color = {
     ink: '#1F2A2E', // headings on light grounds: charcoal cooled toward teal
     body: palette.charcoal,
     /**
-     * Muted and faint are the lightest greys that still clear 4.5:1 on every
+     * Muted and faint are the lightest grays that still clear 4.5:1 on every
      * light ground in this system (Soft Ivory being the darkest of them).
      * Nothing lighter is used for text at any size.
      */

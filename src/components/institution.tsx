@@ -170,7 +170,7 @@ const Institution = () => {
                         We built A Story with care institutions in mind &mdash; but the need to preserve a person's story doesn't belong to any single setting. If you're working with people whose lives deserve to be kept, we'd love to explore what's possible together. Reach out. We respond to every message.
                     </WideIntroText>
                     <WideIntroText>
-                        Preserving the history of the organisation itself &mdash; founders, long-tenured staff, a milestone anniversary &mdash; is its own programme.{' '}
+                        Preserving the history of the organization itself &mdash; founders, long-tenured staff, a milestone anniversary &mdash; is its own program.{' '}
                         <Link to="/organizations">See A Story for Organizations &rarr;</Link>
                     </WideIntroText>
 
@@ -224,7 +224,7 @@ const Institution = () => {
                         <ImplStep>
                             <ImplStepNum>2</ImplStepNum>
                             <CardTitle>Residents begin at their own pace</CardTitle>
-                            <Paragraph>A Story works on any tablet or smartphone &mdash; no download required, no account setup for the resident. A team member introduces the app during a visit or recreation session. The first question takes sixty seconds to reach. After that, the AI handles everything.</Paragraph>
+                            <Paragraph>A team member sets A Story up once on a tablet or phone &mdash; there is nothing for the resident to install, learn or sign into. After that A Story calls, and the resident answers and talks. The first question takes sixty seconds to reach, and the AI handles everything from there.</Paragraph>
                         </ImplStep>
                         <ImplStep>
                             <ImplStepNum>3</ImplStepNum>

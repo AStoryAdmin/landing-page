@@ -14,7 +14,7 @@ const INCLUDED = [
     'A card and a link to give, with your note on it',
     'Unlimited guided voice interviews',
     'One hardcover book, edited and laid out',
-    'A private archive, organised by chapter of life',
+    'A private archive, organized by chapter of life',
     'Photos attached to the memory they belong to',
     'As many family members as you like — free',
     'Searchable transcripts and the original audio',
@@ -26,7 +26,7 @@ const INCLUDED = [
  * persuasive than defending the number in the abstract.
  */
 const ALTERNATIVES = [
-    { thing: 'A cashmere jumper', fate: 'Worn twice. In a charity bag by the spring after next.' },
+    { thing: 'A cashmere sweater', fate: 'Worn twice. In a donation bin by the spring after next.' },
     { thing: 'Dinner for four', fate: 'A lovely evening. Nobody will be able to tell you what they ate.' },
     { thing: 'Another photo frame', fate: 'One picture, on a shelf, of a day somebody else chose.' },
     { thing: 'A Story', fate: 'Their whole life, in their voice, read by people not born yet.', ours: true },
@@ -39,7 +39,7 @@ const PRICING_FAQ = [
     },
     {
         q: 'What if the whole family wants a copy of the book?',
-        a: `Extra copies are ${PRICE.extraCopy} each, priced close to what printing and posting actually cost. Most families order them once they have read the first one — there is no rush and no deadline.`,
+        a: `Extra copies are ${PRICE.extraCopy} each, priced close to what printing and shipping actually cost. Most families order them once they have read the first one — there is no rush and no deadline.`,
     },
     {
         q: 'Do I pay again next year?',
@@ -51,10 +51,10 @@ const PRICING_FAQ = [
     },
     {
         q: 'Why is organization pricing not listed?',
-        a: 'Because a four-person founder archive and a 200-person anniversary programme are not the same product. We scope it on a 30-minute call and send a fixed number — no discovery marathon, no seat-count games.',
+        a: 'Because a four-person founder archive and a 200-person anniversary program are not the same product. We scope it on a 30-minute call and send a fixed number — no discovery marathon, no seat-count games.',
     },
     {
-        q: 'What happens to a programme archive if we stop paying?',
+        q: 'What happens to a program archive if we stop paying?',
         a: 'You keep it. A full export of audio, transcripts, photos and metadata is available on request within 48 hours, in open formats, whether or not you are still a customer.',
     },
 ];
@@ -63,7 +63,7 @@ const Pricing = () => (
     <Page>
         <Seo
             title="Pricing — one price, one gift, the whole family"
-            description={`A Story costs ${PRICE.gift} — one payment, including the hardcover book, with no subscription and no charge for the family members you invite. Organization and care-community programmes are quoted per engagement.`}
+            description={`A Story costs ${PRICE.gift} — one payment, including the hardcover book, with no subscription and no charge for the family members you invite. Organization and care-community programs are quoted per engagement.`}
             path="/pricing"
             schema={[
                 organizationSchema(),
@@ -169,12 +169,12 @@ const Pricing = () => (
             </Container>
         </Section>
 
-        {/* ─── Programmes ───────────────────────────────────────────── */}
-        <Section $tone="ivory" $tight id="programmes">
+        {/* ─── Programs ───────────────────────────────────────────── */}
+        <Section $tone="ivory" $tight id="programs">
             <Container>
                 <div style={{ maxWidth: 760, marginBottom: 'clamp(32px, 4vw, 48px)' }}>
                     <Eyebrow>Not buying a present?</Eyebrow>
-                    <H2>Programmes are quoted, not listed.</H2>
+                    <H2>Programs are quoted, not listed.</H2>
                     <Lead>
                         Organizations and care communities run this at a different scale and for a different
                         reason. One short call, then a fixed number.
@@ -184,18 +184,18 @@ const Pricing = () => (
                 <ProgramGrid>
                     <ProgramCard>
                         <p className="audience">Organizations</p>
-                        <h3>Heritage programme</h3>
-                        <p className="quote">Per programme &middot; scoped on a 30-minute call</p>
+                        <h3>Heritage program</h3>
+                        <p className="quote">Per program &middot; scoped on a 30-minute call</p>
                         <p className="blurb">
                             Founder interviews, retiring-employee capture, anniversary archives and
-                            onboarding libraries &mdash; run as a programme rather than a one-off project,
+                            onboarding libraries &mdash; run as a program rather than a one-off project,
                             with role-based access, a printed company history and a named contact.
                         </p>
                         <ButtonAnchor href={CONTACT.organization} $variant="teal">Book a demo</ButtonAnchor>
                     </ProgramCard>
                     <ProgramCard>
                         <p className="audience">Care communities</p>
-                        <h3>Community programme</h3>
+                        <h3>Community program</h3>
                         <p className="quote">Per community &middot; live within a week</p>
                         <p className="blurb">
                             Reminiscence as a standing activity for senior living, memory care and hospice.
@@ -207,18 +207,18 @@ const Pricing = () => (
                 </ProgramGrid>
 
                 <div style={{ marginTop: 'clamp(32px, 4vw, 48px)' }}>
-                    <DriverTable tabIndex={0} role="region" aria-label="What moves a programme quote, scrolls horizontally">
+                    <DriverTable tabIndex={0} role="region" aria-label="What moves a program quote, scrolls horizontally">
                         <table>
                             <thead>
                                 <tr>
-                                    <th scope="col">What moves a programme quote</th>
+                                    <th scope="col">What moves a program quote</th>
                                     <th scope="col">How it works</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <th scope="row">Storytellers</th>
-                                    <td>How many people you want interviewed. Three founders is a small programme; a hundred-person anniversary project is a large one.</td>
+                                    <td>How many people you want interviewed. Three founders is a small program; a hundred-person anniversary project is a large one.</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Printed volumes</th>

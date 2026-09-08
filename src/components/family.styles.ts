@@ -201,6 +201,68 @@ export const StatCaption = styled.p`
     }
 `;
 
+/* ── What actually goes missing ───────────────────────────────────────────
+ * These cards replaced the 1.4B / 10K / 63M stat stack. Those numbers argued
+ * demographics — the same "the window is closing" case every product in this
+ * category makes — and they contradicted the claim the page now leads with,
+ * which is that the record is never finished.
+ */
+
+export const MissingCard = styled(StatCard)`
+    border-left: 3px solid ${colors.gold};
+`;
+
+export const MissingThing = styled.h3`
+    font-family: ${fonts.display};
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: ${colors.dark};
+`;
+
+export const MissingFate = styled.p`
+    font-family: ${fonts.body};
+    font-size: 15px;
+    line-height: 1.65;
+    color: ${colors.darkGray};
+    margin-top: 10px;
+`;
+
+/** The line a section lands on, set apart from the cards above it. */
+export const Coda = styled.p`
+    font-family: ${fonts.display};
+    font-size: clamp(24px, 1.4rem + 1.1vw, 32px);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.35;
+    color: ${colors.dark};
+    max-width: 30ch;
+    margin-top: 50px;
+    padding-top: 32px;
+    border-top: 1px solid ${colors.whiteGray};
+`;
+
+/** The same, on the deep ground where Soft Ivory carries the type. */
+export const DarkCoda = styled(Coda)`
+    color: ${colors.paper};
+    border-top-color: ${colors.gray};
+`;
+
+/** Three cards rather than two, for the voices on a single moment. */
+export const VoiceCards = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    @media (max-width: 900px) { grid-template-columns: 1fr; }
+    gap: 24px;
+    margin-top: 50px;
+`;
+
+export const VoiceCard = styled.div`
+    background: ${colors.paper};
+    border-radius: 20px;
+    padding: 36px;
+`;
+
 export const WhoSection = styled.div`
     background: ${colors.paper};
 `;

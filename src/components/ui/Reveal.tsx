@@ -20,7 +20,7 @@ type Props = {
     children: React.ReactNode;
     /** Stagger, in ms, for items revealed as a group. */
     delay?: number;
-    /** Distance travelled on entry. */
+    /** Distance traveled on entry. */
     shift?: number;
     className?: string;
 };
