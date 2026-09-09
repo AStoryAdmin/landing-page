@@ -10,6 +10,7 @@ import {
     IconLock, IconMic, IconNoTrain, IconPhone, IconShield, IconTranscript, IconUsers, IconWaveform,
 } from './ui/icons';
 import { CONTACT } from '../lib/contact';
+import { track } from '../lib/analytics';
 import { PRICE } from '../lib/pricing';
 import { faqSchema, organizationSchema, productSchema } from '../lib/seo';
 import productImg from './../assets/astoryProduct.webp';
@@ -184,7 +185,9 @@ const Home = () => (
                         </Actions>
                     </div>
                     <Suspense fallback={<DemoFallback aria-hidden="true" />}>
-                        <DemoPhone />
+                        <div onClickCapture={() => track('demo_played', { page: 'home' })}>
+                            <DemoPhone />
+                        </div>
                     </Suspense>
                 </DemoSplit>
             </Container>
@@ -696,12 +699,17 @@ const Home = () => (
                         Not buying a present?
                     </H2>
                     <p style={{ fontSize: '0.9375rem', lineHeight: 1.7, color: 'inherit', maxWidth: '46ch' }}>
-                        The same interview that gets a grandmother talking about 1958 works just as well on a
-                        founder, or a resident in memory care. Two other people use A Story, for two other
-                        reasons.
+                        The same interview that gets a grandmother talking about 1958 works just as well on
+                        your own life, on a founder, or on a resident in memory care. Three other people
+                        use A Story, for three other reasons.
                     </p>
                 </div>
                 <div style={{ display: 'grid', gap: 12 }}>
+                    <AlsoCard to="/your-story">
+                        <h3>For your own life</h3>
+                        <p>Nobody is going to sit you down and ask. A Story calls you instead — and the archive is yours before it is anyone else's.</p>
+                        <span className="go">Record your own story <IconArrow size={15} /></span>
+                    </AlsoCard>
                     <AlsoCard to="/organizations">
                         <h3>For organizations</h3>
                         <p>Founder interviews, retiring-employee knowledge, anniversary archives — kept before the people who hold them leave.</p>

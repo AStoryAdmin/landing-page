@@ -35,6 +35,15 @@ export const CONTACT = {
         'A Story for our community',
         'Hi — we would like a walkthrough of A Story for our community.\n\nCommunity:\nMy role:\nNumber of residents:\n'
     ),
+    /**
+     * Someone recording their own life rather than giving it to somebody else.
+     * This is who arrives from App Store search, and until now the site had
+     * nowhere to send them — every other entry here assumes a gift.
+     */
+    self: mailto(
+        'A Story for my own life',
+        "Hi — I'd like to use A Story to record my own life.\n\nWhere I'd want to start:\nAnything else:\n"
+    ),
     /** Anything else. */
     general: mailto('Hello from astoryapp.com'),
 } as const;

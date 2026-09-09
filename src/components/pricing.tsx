@@ -4,7 +4,8 @@ import Reveal from './ui/Reveal';
 import { Actions, Button, ButtonAnchor, Container, Eyebrow, H2, Lead, Note, Section } from './ui/primitives';
 import { IconArrow, IconCheck } from './ui/icons';
 import { CONTACT } from '../lib/contact';
-import { AT_CHECKOUT, buyLabel, checkoutFor } from '../lib/checkout';
+import { AT_CHECKOUT, buyLabel, checkoutFor, isCheckoutLive } from '../lib/checkout';
+import { track } from '../lib/analytics';
 import { FOREVER, KEEPS_LINE, PLANS, PRICE } from '../lib/pricing';
 import { breadcrumbSchema, faqSchema, organizationSchema } from '../lib/seo';
 import {
@@ -128,6 +129,7 @@ const Pricing = () => (
                                 <PlanAction>
                                     <ButtonAnchor
                                         href={checkoutFor(plan.id, plan.name)}
+                                        onClick={() => track(isCheckoutLive(plan.id) ? 'checkout_click' : 'contact_click', { plan: plan.id, price: plan.price })}
                                         $variant={plan.featured ? 'primary' : 'outline'}
                                     >
                                         {buyLabel(plan.id, `Buy ${plan.price}`, 'Ask about this one')}

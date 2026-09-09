@@ -6,6 +6,7 @@ import Navbar from './components/navbar';
 import Footer from './components/footer';
 import Home from './components/home';
 import RouteTransition from './components/ui/RouteTransition';
+import { initAnalytics } from './lib/analytics';
 
 /*
  * Only the home page ships in the initial bundle. Every other route is a
@@ -23,6 +24,9 @@ const Privacy = lazy(() => import('./components/privacy'));
 const FAQ = lazy(() => import('./components/faq'));
 const PublicStory = lazy(() => import('./components/publicStory'));
 const Contribute = lazy(() => import('./components/contribute'));
+const YourStory = lazy(() => import('./components/yourStory'));
+const Thanks = lazy(() => import('./components/thanks'));
+const GiftCardMaker = lazy(() => import('./components/giftCard'));
 const NotFound = lazy(() => import('./components/notFound'));
 
 /** Reserves the space taken by the fixed header (see navbar's ResizeObserver). */
@@ -62,6 +66,8 @@ function BareLayout() {
     );
 }
 
+initAnalytics();
+
 function App() {
     return (
         <BrowserRouter>
@@ -83,6 +89,10 @@ function App() {
                     <Route path="/terms" element={<Terms />} />
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="/faq" element={<FAQ />} />
+                    <Route path="/your-story" element={<YourStory />} />
+                    {/* Post-purchase. Stripe redirects here; noindex. */}
+                    <Route path="/thanks" element={<Thanks />} />
+                    <Route path="/card" element={<GiftCardMaker />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>

@@ -80,6 +80,7 @@ const Footer = () => {
                         <Column>
                             <Section>Learn more</Section>
                             <Page to="/family">Why it matters</Page>
+                            <Page to="/your-story">Record your own life</Page>
                             <Page to="/experience#demo">Live demo</Page>
                             <Page to="/faq">FAQ</Page>
                             <Page to="/story">Our story</Page>
