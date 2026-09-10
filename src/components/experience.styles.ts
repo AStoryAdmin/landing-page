@@ -120,6 +120,7 @@ export const InstructTitle = styled(Title)`
 `;
 
 export const Subtitle = styled.p`
+    margin-top: 14px;
     font-size: 18px;
     font-weight: 100;
     letter-spacing: 1px;
@@ -508,5 +509,136 @@ export const FamilyButton = styled(DemoButton)`
     &:hover {
         background: ${colors.darkGrayHover};
         transform: translateY(-1.5px);
+    }
+`;
+
+/* ── The eleven chapters ──────────────────────────────────────────────────
+ * Added when the site stopped inventing a chapter list and started quoting
+ * the app's own (src/lib/product.ts). Eleven cards is a lot of surface, so
+ * the reasoning lines are held back visually — they reward reading without
+ * demanding it.
+ */
+
+export const ChaptersContainer = styled.div`
+    background: ${colors.paper};
+    padding: clamp(64px, 8vw, 120px) 0;
+`;
+
+export const ChapterGrid = styled.ol`
+    list-style: none;
+    margin: clamp(32px, 4vw, 48px) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    counter-reset: chapter;
+
+    @media (max-width: 1024px) { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 640px) { grid-template-columns: 1fr; }
+`;
+
+export const ChapterCard = styled.li`
+    counter-increment: chapter;
+    height: 100%;
+    padding: 22px 24px;
+    background: ${color.paperPure};
+    border: 1px solid rgba(15, 74, 88, 0.14);
+    border-radius: 16px;
+
+    .num {
+        display: block;
+        font-family: ${font.body};
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        color: rgba(15, 74, 88, 0.45);
+        margin-bottom: 8px;
+    }
+
+    .num::before { content: counter(chapter, decimal-leading-zero); }
+
+    h3 {
+        font-family: ${font.display};
+        font-size: 1.4rem;
+        font-weight: 500;
+        line-height: 1.15;
+        color: ${color.ink};
+        margin-bottom: 8px;
+    }
+
+    p {
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: ${color.bodyMuted};
+    }
+
+    .why {
+        display: block;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(15, 74, 88, 0.1);
+        font-family: ${font.display};
+        font-style: italic;
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        color: ${color.primary};
+    }
+`;
+
+export const DepthLadder = styled.ol`
+    list-style: none;
+    margin: clamp(28px, 3.5vw, 40px) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+
+    @media (max-width: 1024px) { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 560px) { grid-template-columns: 1fr; }
+`;
+
+export const DepthStep = styled.li`
+    padding-top: 16px;
+    /* The bar thickens along the ladder, so the deepening is visible at a glance. */
+    border-top: ${({ style }) => style?.borderTopWidth || '2px'} solid ${color.accent};
+
+    .name {
+        font-family: ${font.body};
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: ${color.ink};
+        margin-bottom: 6px;
+    }
+
+    p {
+        font-size: 0.875rem;
+        line-height: 1.6;
+        color: ${color.bodyMuted};
+    }
+`;
+
+export const SensitiveNote = styled.p`
+    margin-top: clamp(28px, 3.5vw, 40px);
+    padding: 20px 24px;
+    background: ${color.primaryWash};
+    border-left: 3px solid ${color.primary};
+    border-radius: 0 12px 12px 0;
+    max-width: 62ch;
+
+    .quote {
+        display: block;
+        font-family: ${font.display};
+        font-style: italic;
+        font-size: 1.25rem;
+        line-height: 1.4;
+        color: ${color.primary};
+        margin-bottom: 8px;
+    }
+
+    .gloss {
+        display: block;
+        font-size: 0.9375rem;
+        line-height: 1.65;
+        color: ${color.bodyMuted};
     }
 `;

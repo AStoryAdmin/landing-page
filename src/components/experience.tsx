@@ -1,8 +1,9 @@
 import { CONTACT } from '../lib/contact';
 import { PRICE } from '../lib/pricing';
+import { CHAPTERS, DEPTHS, QUESTION_COUNT, SENSITIVE_LINE } from '../lib/product';
 import Seo from './ui/Seo';
 import { breadcrumbSchema, organizationSchema } from '../lib/seo';
-import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, DemoButtonAnchor, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription, NextContainer, NextBadge, NextTitle, NextLead, NextGrid, NextCard, NextCaveat} from './experience.styles'
+import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, DemoButtonAnchor, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription, NextContainer, NextBadge, NextTitle, NextLead, NextGrid, NextCard, NextCaveat, ChaptersContainer, ChapterGrid, ChapterCard, DepthLadder, DepthStep, SensitiveNote} from './experience.styles'
 import {TagRow, Tag, Divider} from './home.styles';
 import FlipBook from './flipBook';
 import DemoPhone from './demoPhone';
@@ -52,7 +53,7 @@ const Experience = () => {
                             <StepNumber>2</StepNumber>
                             <StepTitle>The phone rings</StepTitle>
                             <Content>
-                                They answer it the way they answer any call. A warm voice asks open, unhurried questions — about childhood, family, work, love, and what they've learned — and follows wherever the story leads. No two conversations are the same, and nothing is asked of them but talking.
+                                They answer it the way they answer any call. A warm voice asks from 504 questions across eleven chapters, follows wherever the answer goes, and never asks the same thing twice. It starts gently and gets deeper as the archive fills. No two conversations are the same, and nothing is asked of them but talking.
                             </Content>
                         </Column>
 
@@ -68,7 +69,7 @@ const Experience = () => {
                             <StepNumber>4</StepNumber>
                             <StepTitle>Family adds their voice</StepTitle>
                             <Content>
-                                Share the archive with family members anywhere. A daughter adds a photo. A grandson corrects a name. A grandchild adds their own memory. The archive grows richer with every contribution.
+                                There is a whole chapter called From the family, and it is the one that makes this a documentary rather than a diary. A daughter adds a photo. A grandson corrects a name. Someone who was in the room tells the same afternoon completely differently. Every voice sits on the same moment.
                             </Content>
                         </Column>
 
@@ -117,7 +118,7 @@ const Experience = () => {
                                 <StepIntro>Biographer</StepIntro>
                                 <StepTitle>Organizes scattered stories into chapters.</StepTitle>
                                 <Content>
-                                    Childhood, love, family, legacy &mdash; A Story arranges a lifetime of memories into the shape of a real memoir.
+                                    Eleven chapters, from the generation before them to what the grandchildren remember &mdash; A Story files every memory where it belongs.
                                 </Content>
                             </RoleColumn>
                         </Grid>
@@ -144,6 +145,57 @@ const Experience = () => {
                 </CardView>
             </AIContainer>
 
+            <ChaptersContainer id="chapters">
+                <CardView>
+                    <StepIntro>The eleven chapters</StepIntro>
+                    <InstructTitle>A life does not fit into &ldquo;childhood, career, legacy&rdquo;.</InstructTitle>
+                    <Subtitle>
+                        These are the chapters A Story actually asks in, and each one was argued over.
+                        All {QUESTION_COUNT} questions live inside them, and the archive fills them in
+                        whatever order the storyteller feels like talking.
+                    </Subtitle>
+
+                    <ChapterGrid>
+                        {CHAPTERS.map((c) => (
+                            <ChapterCard key={c.name}>
+                                <span className="num" aria-hidden="true" />
+                                <h3>{c.name}</h3>
+                                <p>{c.blurb}</p>
+                                {c.note && <span className="why">{c.note}</span>}
+                            </ChapterCard>
+                        ))}
+                    </ChapterGrid>
+
+                    <Divider />
+
+                    <StepIntro>How far it goes</StepIntro>
+                    <InstructTitle>The questions get harder as the archive earns it.</InstructTitle>
+                    <Subtitle>
+                        A brand-new archive is only asked warm-ups. The questions that cost something to
+                        answer arrive once somebody has shown they mean it &mdash; which is the difference
+                        between conducting an interview and handing over a list.
+                    </Subtitle>
+
+                    <DepthLadder>
+                        {DEPTHS.map((d) => (
+                            <DepthStep key={d.level} style={{ borderTopWidth: `${d.level + 1}px` }}>
+                                <p className="name">{d.level}. {d.name}</p>
+                                <p>{d.blurb}</p>
+                            </DepthStep>
+                        ))}
+                    </DepthLadder>
+
+                    <SensitiveNote>
+                        <span className="quote">&ldquo;{SENSITIVE_LINE}&rdquo;</span>
+                        <span className="gloss">
+                            Sixty-two of the questions touch loss, hardship, rupture or things never said
+                            out loud. They arrive with that line under them rather than a warning
+                            triangle &mdash; and skipping one costs nothing.
+                        </span>
+                    </SensitiveNote>
+                </CardView>
+            </ChaptersContainer>
+
             <InteractiveBookContainer id="book">
                 <CardView>
                     <Intro>See a real example</Intro>
@@ -162,7 +214,7 @@ const Experience = () => {
                                     <Bold>Hardcover, lay-flat binding.</Bold> Sewn signatures, acid-free paper, a cover you'll recognize on a bookshelf in fifty years.
                                 </BulletItem>
                                 <BulletItem>
-                                    <Bold>Organized by chapter of life.</Bold> Childhood, school years, career, love, family, legacy &mdash; laid out like a memoir, not a scrapbook.
+                                    <Bold>Organized into the eleven chapters.</Bold> The same ones the archive uses, from where the family came from to what the grandchildren remember &mdash; laid out like a memoir, not a scrapbook.
                                 </BulletItem>
                                 <BulletItem>
                                     <Bold>Photos alongside stories.</Bold> Every image printed next to the memory it belongs to, in the context that gives it meaning.

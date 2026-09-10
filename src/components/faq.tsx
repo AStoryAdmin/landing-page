@@ -101,7 +101,7 @@ const faqGroups: FaqGroupData[] = [
                 question: 'How does the AI conversation work?',
                 answer: (
                     <>
-                        <AnswerParagraph>A Story's AI asks warm, open questions &mdash; about childhood homes, family, relationships, work, the moments that shaped a person. It listens carefully to each answer and follows naturally wherever the story leads. It doesn't interrupt, correct, or redirect. It simply follows.</AnswerParagraph>
+                        <AnswerParagraph>A Story asks from a bank of 504 questions across eleven chapters &mdash; childhood homes, the years that bent everything, the day after which nothing was the same. It listens to each answer and follows naturally wherever the story leads. It doesn't interrupt, correct, or redirect. It simply follows.</AnswerParagraph>
                         <AnswerParagraph>The conversation feels more like talking to a thoughtful, patient listener than being interviewed. There are no right or wrong answers. There is no pressure to remember anything perfectly. The AI meets people exactly where they are.</AnswerParagraph>
                         <AnswerParagraph>You can <LegalLink as={Link} to="/experience#demo">watch a real example conversation</LegalLink> on The Experience page &mdash; and try the voice feature yourself.</AnswerParagraph>
                     </>
@@ -128,7 +128,7 @@ const faqGroups: FaqGroupData[] = [
                 answer: (
                     <>
                         <AnswerParagraph>A typical session lasts 20 to 45 minutes. The AI begins with one gentle question &mdash; about a childhood memory, a place that mattered, a person who shaped them &mdash; and the conversation unfolds from there. Answers can be spoken aloud or typed. The session can be paused and resumed at any time.</AnswerParagraph>
-                        <AnswerParagraph>After each session, the stories are organized into memory cards &mdash; searchable, grouped by chapter of life (childhood, school years, career, family, legacy), and ready to have photos attached. Each session adds to a growing archive.</AnswerParagraph>
+                        <AnswerParagraph>After each session, the stories are organized into memory cards &mdash; searchable, grouped into eleven chapters — from where the family came from, through childhood, work and the years that bent everything, to what the grandchildren remember — and ready to have photos attached. Each session adds to a growing archive.</AnswerParagraph>
                         <AnswerParagraph>There is no "right" number of sessions. Some families do one. Some do dozens, over months or years. The archive grows at whatever pace feels right.</AnswerParagraph>
                     </>
                 ),
@@ -251,7 +251,7 @@ const faqGroups: FaqGroupData[] = [
                 question: 'What does the printed book look like?',
                 answer: (
                     <>
-                        <AnswerParagraph>The A Story memoir is a hardcover book &mdash; sewn signatures, lay-flat binding, acid-free paper. Stories are organized by chapter of life (childhood, school years, career, family, legacy) and laid out like a real memoir, with photos printed alongside the stories they belong to.</AnswerParagraph>
+                        <AnswerParagraph>The A Story memoir is a hardcover book &mdash; sewn signatures, lay-flat binding, acid-free paper. Stories are organized into the same eleven chapters the archive uses and laid out like a real memoir, with photos printed alongside the stories they belong to.</AnswerParagraph>
                         <AnswerParagraph>The cover is cloth-bound with the storyteller's name and years. It is the kind of book that lives on a shelf for generations. We do not produce photo albums or scrapbooks &mdash; we produce memoirs.</AnswerParagraph>
                         <AnswerParagraph>Ordering a book is always optional. The digital archive is complete and valuable on its own. Many families order one book for the storyteller and additional copies as gifts for children and grandchildren.</AnswerParagraph>
                     </>

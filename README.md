@@ -30,6 +30,16 @@ phone rings and they answer. Copy must not say "no app to install" — that was
 true once and is not now. The claim to make is "they just answer the phone",
 which is stronger anyway.
 
+**The chapters are the app's, not ours to invent.** `src/lib/product.ts`
+mirrors `phone-app-main/src/data/eras.js` — eleven named chapters, 504
+questions, the depth ladder, and the sensitive-question line. The site used to
+say "childhood, school years, career, family, legacy", which was a
+plausible-sounding list that was nobody's actual product. The real one is both
+true and better copy: "Work & making a living" rather than "Career" because
+most of the women this exists for never had one; "From the family" because
+somebody else's account of the same afternoon is what makes it a documentary
+rather than a diary. `/experience#chapters` shows all eleven with the reasoning.
+
 **A memory card is the summary, not the whole record.** Every conversation is
 kept in three layers — the card you skim, the full verbatim transcript beneath
 it, and the voice highlights kept as audio. The printed book is the edited
@@ -165,66 +175,60 @@ chunk fetched on navigation.
 
 ## Pricing
 
-**You pay to capture. You never pay to keep.** Guided AI conversation is the
-only thing that costs real money to serve, so it is the only thing metered.
-Everything else — the archive, the people you invite, your own recordings, the
-question bank, export — is free forever once any package is bought.
+**This site quotes the app's prices, and nothing else.** Every figure lives in
+**`src/lib/pricing.ts`**, which mirrors `phone-app-main/src/screens/PricingScreen.js`
+and `src/lib/callUsage.js`. If a number changes there, change it here. The site
+is never allowed to quote a price the app does not honour.
 
-Defined once in **`src/lib/pricing.ts`** (`PLANS`, `PRICE`, `FOREVER`), read by
-the pricing page, the home page, `/experience` and the FAQ. That file records
-the reasoning, which matters more than the figures.
+| Plan | Price | Metered |
+| --- | --- | --- |
+| Free | $0 | 3 guided questions a day, no calls, unlimited writing |
+| Trial | free, 3 days | Everything, no card. Falls back to Free. |
+| Individual | $119/yr · $154 with the book | 90 min of guided calls a month |
+| Family | $229/yr · $319 with 3 books | 200 min a month, shared across 3 storytellers |
+| Express | $79 once, ~30 days | 140 min · first 40 book pages included |
+| Monthly | $19.99/mo | Same as Individual, billed worse on purpose |
+| Book | $69 for 40 color pages | then $0.75/page color, $0.35 B&W |
 
-| Package | Price | Window | Metered |
-| --- | --- | --- | --- |
-| Express | $250 | 7 days | Unlimited guided conversations |
-| One storyteller | $150 | 3 months | 40 guided conversations |
-| Up to three storytellers | $390 | 3 months | 100 guided conversations |
+The shape, and why it holds:
 
-Four decisions worth not re-litigating by accident:
+- **The meter is AI call minutes**, because that is the only thing here with a
+  real marginal cost. Writing your own memories is never metered on any plan,
+  including Free — charging for that would meter the wrong side of the product.
+- **Nobody is charged per family member.** Plans count *storytellers*, since
+  minutes scale with them. Everyone else — reading, correcting, adding photos,
+  recording their own version of the same afternoon — is free and unlimited.
+- **Express is the gift plan.** It is the only one that does not renew, which
+  is what makes it giveable without saddling the recipient with a subscription.
+- **The book is unbundled but offered as a bundle**, because some people want a
+  year of recording and to decide about the object later.
 
-- **Express costs more than three months, deliberately.** It is the buyer with
-  days rather than months — a birthday on Saturday, a decline that has started.
-  That is the highest willingness to pay in this market *and* the heaviest use
-  of voice AI. Pricing it below the three-month package (the original proposal
-  was $100) would have made the three-month package unsellable and put the
-  worst unit economics on the cheapest plan.
-- **The meter is a pool, not a rate.** A per-day cap bounds nothing: three
-  conversations a day across ninety days is 270 calls. Each package carries a
-  fixed number for the whole window.
-- **The book is not bundled**, at $89 with extra copies at $59. A hardcover has
-  $40–60 of real cost of goods, and bundling one lets a print job set the
-  ceiling on a software price. More importantly, the site argues a book is a
-  chapter rather than an ending; including exactly one quietly restores the
-  "memoir with a deadline" frame the rest of the site exists to reject.
-- **There is no free tier.** The old `$0 forever` plan (3 conversations a week,
-  no export) was not a taste of the product but a slower substitute for it, and
-  it undercut the closed grandfathered cohort below. The free sample is the
-  demo on `/experience` — no account, no card.
+**The promise is "your recordings are always yours to keep — even if you
+cancel."** Cancelling drops the account to Free; nothing is deleted or locked.
+That sentence is the app's own, which is exactly why the site can use it.
 
-Storytellers are metered because AI cost scales with them. Everyone else —
-reading, correcting, adding photos, recording their own version of the same
-afternoon — is free and unlimited on every package.
+### A warning, learned the expensive way
 
-**Validate the pools against your real cost per minute of voice AI.** They are
-sized on an estimate of roughly $0.10/min blended plus transcription. If your
-real number is materially higher, move the conversation counts, not the prices.
+An earlier version of this file argued a completely different model — one-time
+"capture windows", *pay to capture never to keep*, no free tier, a $150
+headline — and none of it existed in the product. It was well argued and it was
+fiction. A marketing site that reasons its way to pricing the product does not
+have is worse than one with no pricing page, because the first thing an
+attentive buyer discovers is that we were making it up.
 
-**The forever promise is in the contract**, not just the marketing: terms
-section 9 commits to it in writing, alongside the grandfathering below. Treat
-both as promises about somebody's family history rather than as copy.
+If the site and the app disagree again, **the app wins** — it is the thing that
+actually charges the card.
 
-**Grandfathered users.** Anyone who came in under an earlier offer keeps it —
-including the free early-access period and the app's old `$0`/`$8 a month`
-plans. That promise is in the terms (section 9), not just in an email. Note the
-distinction: that is a *closed cohort*, not a free tier. Deliberately nothing on
-the pricing page says so, because publishing it would invite everyone to ask.
-Pin the cutoff date somewhere durable before the cohort starts growing by
-accident.
+**Grandfathered users.** Anyone who came in under an earlier offer keeps it.
+That promise is in the terms (section 9), not just in an email. It is a *closed
+cohort*, not a tier, and deliberately nothing on the pricing page says so —
+publishing it would invite everyone to ask. Pin the cutoff date somewhere
+durable before the cohort starts growing by accident.
 
-**The app's paywall has not been updated to match.** The in-app screen still
-shows the `$0` tier, `$8`/month with a monthly/annual toggle, and `Export
-$9.99`. That last one contradicts `/privacy`, `/terms` and eight places on this
-site that promise free export; it has to go regardless of what else changes.
+**Still to validate:** the plans are sized against an estimate of voice-AI cost
+per minute. `api_usage` in the app already logs `audio_seconds` and `cost_usd`
+per call, so the real number is one SQL query away. Nobody has run it, and the
+annual plans' margin depends entirely on it.
 
 ## Calls to action
 

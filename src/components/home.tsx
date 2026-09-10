@@ -391,7 +391,7 @@ const Home = () => (
                                 <span className="icon"><IconArchive /></span>
                                 <div>
                                     <h3>A private family archive</h3>
-                                    <p>Every answer filed by chapter of life — childhood, work, love, loss — searchable in a second, ten years from now.</p>
+                                    <p>Every answer filed into one of eleven chapters — where the family came from, the years that bent everything, what the grandchildren remember — searchable in a second, ten years from now.</p>
                                 </div>
                             </Feature>
                             <Feature>
