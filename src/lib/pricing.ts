@@ -2,195 +2,226 @@
  * What A Story costs.
  *
  * ─────────────────────────────────────────────────────────────────────────
- * ONE IDEA HOLDS THIS TOGETHER: you pay to *capture*, never to *keep*.
- * Guided AI conversation is the only thing that costs real money to serve, so
- * it is the only thing metered. Everything else — the archive, the people you
- * invite, your own recordings, the question bank, export — is free forever
- * once any package has been bought, and never expires.
+ * THIS FILE MIRRORS THE APP. Every figure here is the one PricingScreen.js
+ * shows and the one Stripe actually charges, in
+ * phone-app-main/src/screens/PricingScreen.js and src/lib/callUsage.js.
+ * If a number changes there, change it here. Nothing on this site is
+ * allowed to quote a price the app does not honour.
  * ─────────────────────────────────────────────────────────────────────────
  *
- * The reasoning behind the shape of it, which matters more than the figures:
+ * An earlier version of this file invented a different model entirely —
+ * one-time "capture windows" with a "pay to capture, never to keep" promise
+ * and no free tier. It read well and none of it was true: the app sells
+ * annual plans metered in AI call minutes, has a free tier, and has a 3-day
+ * trial. A marketing site that argues for pricing the product does not have
+ * is worse than one with no pricing page at all, because the first thing a
+ * buyer discovers after paying attention is that we were making it up.
  *
- * 1. A gift cannot be free, and there is no free tier. What used to be a
- *    "$0 forever" plan (3 conversations a week, no export) was not a taste of
- *    the product, it was a slower substitute for it: it builds a real archive
- *    eventually, which removes the reason to pay. It also quietly undid the
- *    closed grandfathered cohort in the terms, which was closed on purpose.
- *    The free sample is now the demo on /experience — no account, no card.
+ * The shape, and why it holds together:
  *
- * 2. Charge at the moment of intent. Willingness to pay peaks when someone
- *    decides to do this — deadline-driven, emotional, comparing against other
- *    presents. Collecting later, once enough has been recorded to justify a
- *    book, is the worst possible moment: the feeling has passed and the amount
- *    is now judged against pages produced.
+ * 1. The meter is AI call minutes, because that is the only thing here with
+ *    a real marginal cost. Writing a memory yourself is never metered on any
+ *    plan — someone typing out an afternoon in 1962 is doing the thing this
+ *    product exists for, and charging for it would meter the wrong side.
  *
- * 3. The highest-intent moment is when the family is already in the room.
- *    THE GATHERING is priced and named for it — Tết, Christmas, a reunion, a
- *    funeral where everyone has finally come home. Somebody always says "we
- *    should record Grandma" that week and nobody ever does. It still covers
- *    the urgent case (a decline, a hospital bed) without naming it, which is
- *    kinder and sells to the same person.
+ * 2. There is a free tier, and it is honest rather than crippled: three
+ *    guided questions a day, unlimited writing, unlimited invited family, and
+ *    a book you can still order. What it does not include is the AI calling
+ *    you — which is exactly the thing that costs money to run.
  *
- *    It stays above the three-month package at $199, because a package that
- *    undercut the default would make the default unsellable — but $199 clears
- *    the $200 line, and multiple storytellers make the value obvious without
- *    having to argue about urgency.
+ * 3. Everyone starts with three days of everything, no card. The fallback is
+ *    Free, not a lockout, so nobody loses an archive by not deciding.
  *
- *    It is NOT unlimited, and that was a deliberate reversal. Unlimited
- *    conversations across unlimited people for a week is unbounded cost on
- *    exactly the buyer most motivated to use it: five storytellers going hard
- *    for seven days is plausibly fifty hours of voice AI, which is a loss on
- *    any price this product can charge. Forty conversations across five people
- *    is nearly six a day — generous enough that almost nobody reaches it, and
- *    bounded enough to survive the ones who do.
+ * 4. The book is unbundled by default but offered as a bundle, because some
+ *    people want a year of recording and to decide about the object later.
+ *    Express includes the first 40 pages, which is the whole book for most.
  *
- * 4. Meter a pool, not a rate. A per-day cap does not bound anything: three
- *    conversations a day across ninety days is two hundred and seventy calls.
- *    Each package carries a fixed number of guided conversations for the whole
- *    window, which bounds the cost of goods while still being more than almost
- *    anyone uses.
- *
- * 5. The book is priced separately, and that is deliberate. An earlier version
- *    of this file warned against splitting the book out — but its worry was
- *    that splitting makes the *archive* free and puts all the revenue on print,
- *    where the margin is thin. Here the archive is exactly what is being paid
- *    for, so that trap does not apply. Two reasons to unbundle:
- *
- *      · A hardcover has $40–60 of real cost of goods. Bundling one into a
- *        $150 package lets a print job set the ceiling on a software price.
- *      · The site argues that a book is a chapter rather than an ending —
- *        printed when you are ready, and another one in five years. Including
- *        exactly one book quietly restores the "memoir with a deadline" frame
- *        that the rest of the site exists to reject.
- *
- * 6. Never charge per family member. Storytellers are metered because AI cost
- *    scales with them. Everybody else — the people reading, correcting,
- *    adding photos and recording their own version of the same afternoon — is
- *    free and unlimited, on every package. Charging for them would suppress
- *    the one behavior the whole product depends on.
- *
- * ─────────────────────────────────────────────────────────────────────────
- * VALIDATE THESE AGAINST YOUR ACTUAL COST PER MINUTE OF VOICE AI before
- * launch. The packages are sized on an estimate of roughly $0.10/min blended
- * plus transcription; if your real number is materially higher, the
- * conversation pools are the thing to move, not the prices.
- * ─────────────────────────────────────────────────────────────────────────
+ * 5. Nobody is ever charged per family member. Storytellers are metered
+ *    because call minutes scale with them. Everyone else — reading,
+ *    correcting, adding photos, recording their own version of the same
+ *    afternoon — is free and unlimited on every plan including Free.
  */
 
 export type Plan = {
-    id: string;
-    /** Plan name, as it appears on the card. */
+    /** Matches the plan slug the app and Stripe use. */
+    id: 'individual' | 'family' | 'express';
     name: string;
     /** Who it is for, in one line. */
     who: string;
+    /** Price without the book. */
     price: string;
     /** The same figure unformatted, for structured data. */
     amount: string;
-    /** How long the guided conversations run for. */
-    window: string;
+    /** How the price is billed. */
+    period: string;
+    /** Roughly what it works out at monthly, where that helps. */
+    monthlyEquivalent?: string;
     /** The metered thing — the only metered thing. */
     meter: string;
     /** The plain-English version of the meter, so nobody has to do math. */
     meterNote: string;
     /** Why someone picks this one over the others. */
     blurb: string;
+    /** What the plan includes, beyond what every plan includes. */
+    features: string[];
+    /** The bundled-book option, where there is one. */
+    book?: { price: string; note: string; saving?: string };
     /** The default choice, visually. */
     featured?: boolean;
+    /** Sits apart from the annual plans — never comparable dollar for dollar. */
+    utility?: boolean;
 };
 
 export const PLANS: Plan[] = [
     {
-        id: 'express',
-        name: 'The Gathering',
-        who: 'Everyone under one roof, for one week',
-        price: '$199',
-        amount: '199',
-        window: '7 days',
-        meter: '40 conversations, up to 5 storytellers',
-        meterNote: 'Nearly six a day — more than a week can realistically hold',
+        id: 'individual',
+        name: 'Individual',
+        who: 'One storyteller, everything open',
+        price: '$119',
+        amount: '119',
+        period: 'per year',
+        monthlyEquivalent: '≈ $9.92/mo',
+        meter: '90 minutes of guided calls a month',
+        meterNote: 'About three calls a week, and they roll on all year',
         blurb:
-            'For the week the family is actually together: Tết, Christmas, a reunion, a hospital ' +
-            'bed, a funeral where everyone has finally come home. Anybody in the house can be ' +
-            'interviewed, not just the one person you bought it for.',
-    },
-    {
-        id: 'one',
-        name: 'One storyteller',
-        who: 'A parent or a grandparent, unhurried',
-        price: '$150',
-        amount: '150',
-        window: '3 months',
-        meter: '40 guided conversations',
-        meterNote: 'About three a week for three months — more than most people use',
-        blurb:
-            'The one most people want. Three months is long enough that nobody feels chased, ' +
-            'and forty conversations is a whole life told properly rather than a highlight reel.',
+            'The one most people want. A year is long enough that nobody feels chased, and ' +
+            'ninety minutes a month is a whole life told properly rather than a highlight reel.',
+        features: [
+            'All 504 questions, every chapter',
+            'Unlimited photo uploads',
+            'Invite the whole family to read and contribute, free',
+        ],
+        book: {
+            price: '$154',
+            note: 'Adds the Keepsake book — first 40 color pages included',
+            saving: 'Saves $34 against adding the book later',
+        },
         featured: true,
     },
     {
         id: 'family',
-        name: 'Up to three storytellers',
-        who: 'Both parents, or a grandmother and her sister',
-        price: '$390',
-        amount: '390',
-        window: '3 months',
-        meter: '100 guided conversations',
-        meterNote: 'Shared across all three, however they end up using it',
+        name: 'Family',
+        who: 'Up to three storytellers',
+        price: '$229',
+        amount: '229',
+        period: 'per year',
+        monthlyEquivalent: '≈ $19.08/mo',
+        meter: '200 minutes a month, shared',
+        meterNote: 'Pooled, so a quiet storyteller never wastes anyone else’s minutes',
         blurb:
-            'The same afternoon told by more than one person is the whole point, and it is ' +
-            'cheaper than buying the packages separately. The pool is shared, so a quiet ' +
-            'storyteller never wastes anybody else’s conversations.',
+            'Both parents, or a grandmother and her sister. The same afternoon told by more ' +
+            'than one person is the whole point of this, and it costs less than buying the ' +
+            'plans separately.',
+        features: [
+            'All 504 questions, every chapter',
+            'Unlimited photo uploads',
+            'One shared archive — invite anyone to read and contribute, free',
+        ],
+        book: {
+            price: '$319',
+            note: 'Adds a Keepsake book for all three — first 40 color pages each',
+            saving: 'Saves $117 against adding the books later',
+        },
+    },
+    {
+        id: 'express',
+        name: 'Express',
+        who: 'A short visit, or a moment that will not wait',
+        price: '$79',
+        amount: '79',
+        period: 'one time · about 30 days',
+        meter: '140 minutes of guided calls',
+        meterNote: 'Use them whenever you like inside the month — no daily cap',
+        blurb:
+            'For the week everyone is finally in the same house, or the month after a ' +
+            'diagnosis. Nothing renews, which also makes it the straightforward one to give ' +
+            'as a present.',
+        features: [
+            'All 504 questions, every chapter',
+            'Unlimited photo uploads',
+            'One storyteller',
+        ],
+        book: {
+            price: 'included',
+            note: 'The first 40 color pages of the Keepsake book are included — a $69 value',
+        },
+        utility: true,
     },
 ];
 
-/**
- * Shown on every plan card. The promise that the keeping is free is the single
- * strongest thing about this pricing, and it was living below the fold.
- */
-export const KEEPS_LINE =
-    'Then the app is yours free, forever — keep adding memories, export a PDF any time, order a book whenever you want one.';
+/** The two quiet options, deliberately below the plans worth choosing between. */
+export const OTHER_PLANS = [
+    {
+        id: 'monthly' as const,
+        label: 'Monthly',
+        price: '$19.99/mo',
+        sub: 'No yearly commitment · book sold separately',
+    },
+    {
+        id: 'free' as const,
+        label: 'Free',
+        price: '$0',
+        sub: 'Three questions a day, unlimited writing, no calls',
+    },
+];
 
-/** The default package, referenced by pages that quote a single figure. */
+/** Everyone starts here, including people who never pay. */
+export const TRIAL = {
+    headline: 'Start with 3 days of full access',
+    detail: 'Guided calls included, no card required. It falls back to Free afterwards — never a lockout.',
+} as const;
+
+/** What the Free tier actually is, stated plainly rather than as a tease. */
+export const FREE_TIER = {
+    headline: 'Free, for as long as you like',
+    blurb:
+        'Not a trial that runs out. Three guided questions a day, writing in your own words ' +
+        'without limit, the whole family invited free, and a printed book whenever you want ' +
+        'one. What Free does not include is A Story calling you — that is the part with a ' +
+        'real cost behind it.',
+    includes: [
+        'Three guided questions a day',
+        'Unlimited writing in your own words',
+        'Unlimited family members reading and contributing',
+        'Order a printed book any time',
+    ],
+    excludes: 'Guided AI calls, and the full 504-question bank by chapter',
+} as const;
+
+/** The headline figure, for pages that quote a single number. */
 export const PRICE = {
-    /** The headline number: one storyteller, three months. */
-    gift: '$150',
-    /** The same figure without formatting, for the Offer in the product schema. */
-    giftAmount: '150',
+    /** Individual, the default recommendation. */
+    headline: '$119',
+    headlineAmount: '119',
     currency: 'USD',
-    /** Shown beneath the price so nobody wonders what is missing. */
-    giftNote: 'One payment · three months of guided conversations',
-    /**
-     * The hardcover, printed whenever a chapter is worth holding — not bundled,
-     * for the reasons in note 5 above. Priced at print cost plus editing and
-     * layout, which is the part that actually takes work.
-     */
-    book: '$89',
-    /**
-     * Extra copies for the rest of the family: no acquisition cost, and the
-     * decision gets made when everyone is already delighted. Priced near
-     * printing cost rather than quoted, so nobody has to ask.
-     */
-    extraCopy: '$59',
+    headlineNote: 'a year for one storyteller, or $154 with the book',
+    /** The Keepsake book bought on its own. */
+    book: '$69',
+    bookPages: '40 color pages',
+    bookOverage: 'then $0.75 a page in color, or $0.35 black and white',
 } as const;
 
 /**
- * The promise that makes the rest of it work, and the one thing on this page
- * worth repeating everywhere. It is also written into the terms — see section
- * 9 — because a promise about somebody's family history should not live only
- * in marketing copy.
+ * The promise that makes the rest of it work — and unlike the version this
+ * replaced, it is one the app already makes on its own pricing screen.
  */
+export const KEEPS_LINE =
+    'Your recordings are always yours to keep — even if you cancel.';
+
 export const FOREVER = {
-    headline: 'Buy once. Keep it forever.',
-    /** What keeps working after a package's window closes. */
+    headline: 'Your recordings are yours to keep.',
+    /** True on every plan, including Free, including after a cancellation. */
     kept: [
-        'The archive stays open, searchable, and yours',
+        'Every recording, transcript and photo stays yours',
+        'The archive stays open, searchable and readable',
         'Everyone you invited keeps their access',
-        'Record, write and upload photos yourself — unlimited, always',
-        'The full question bank, so the family can keep interviewing each other',
-        'Full export of audio, transcripts and photos, whenever you ask',
-        'Download the whole archive as a PDF, free, as often as you like',
+        'Write and upload as much as you like — never metered, on any plan',
+        'Export the whole archive whenever you ask',
         'Order a printed book from any chapter, any year from now',
     ],
-    /** The single thing that stops, stated plainly rather than buried. */
-    stops: 'Only the AI-guided conversations pause when the window closes. You keep the full A Story app — adding memories, uploading photos, exporting a PDF whenever you want one, and ordering a printed book later if you decide you want to hold it. Nothing is deleted, nothing is locked, and nothing renews behind your back. When there is more to capture, you buy another window.',
+    /** What actually changes, stated plainly rather than buried. */
+    stops:
+        'Cancelling stops the guided AI calls and drops you to Free — three questions a day, ' +
+        'and everything above still working. Nothing is deleted and nothing is locked. If ' +
+        'there is more to capture later, you start the calls again then.',
 } as const;

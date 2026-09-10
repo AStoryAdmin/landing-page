@@ -97,8 +97,8 @@ const TOP_FAQ = [
         a: 'No — that is the point. A Story does the asking, the transcribing, the organizing and the layout. You send one link and let it run.',
     },
     {
-        q: 'What happens when the three months are up?',
-        a: 'Nothing, which is the point. The archive stays open, everyone keeps their access, and the family can go on recording and adding photos forever. Only the guided AI conversations pause — and nothing renews behind your back.',
+        q: 'What happens if we stop paying?',
+        a: 'You drop to the Free tier and keep everything. The archive stays open, everyone keeps their access, and the family can go on writing and adding photos without limit. Only the guided AI calls pause — your recordings are always yours to keep.',
     },
     {
         q: 'Can the rest of the family join in?',
@@ -250,14 +250,15 @@ const Home = () => (
 
                 <PriceStrip>
                     <div>
-                        <p className="amount">{PRICE.gift}</p>
+                        <p className="amount">Free</p>
                     </div>
                     <p className="what">
-                        <strong>{PRICE.giftNote}.</strong> Nothing renews, no charge for the relatives you
-                        invite, and when the three months are up the archive stays open and free &mdash;
-                        for good. Only the guided conversations pause.
+                        <strong>Three days of everything, no card &mdash; then free for as long as you
+                        like.</strong> Three questions a day, unlimited writing, and the whole family
+                        invited at no charge. Guided calls start at {PRICE.headline} {PRICE.headlineNote},
+                        and your recordings stay yours even if you stop.
                     </p>
-                    <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
+                    <ButtonAnchor href={CONTACT.gift} $variant="primary">Start free</ButtonAnchor>
                 </PriceStrip>
 
                 <Actions $center>

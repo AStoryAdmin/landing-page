@@ -43,12 +43,12 @@ export const PriceSub = styled.p`
     color: ${color.bodyMuted};
 `;
 
-export const IncludedList = styled.ul`
+export const IncludedList = styled.ul<{ $tight?: boolean }>`
     list-style: none;
-    margin: ${space.xl} 0 0;
+    margin: ${({ $tight }) => ($tight ? space.lg : space.xl)} 0 0;
     padding: 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: ${({ $tight }) => ($tight ? '1fr' : '1fr 1fr')};
     gap: ${space.sm} ${space.lg};
     text-align: left;
 
@@ -76,8 +76,8 @@ export const PriceActions = styled.div`
     ${media.xs} { flex-direction: column; }
 `;
 
-/* ── The three packages ───────────────────────────────────────────────────
- * One card per capture window. The middle one is the default, so it carries
+/* ── The three plans ───────────────────────────────────────────────────
+ * One card per plan. The middle one is the default, so it carries
  * the emphasis rather than sitting between two louder neighbours.
  */
 
@@ -90,7 +90,7 @@ export const PlanGrid = styled.div`
     ${media.lg} { grid-template-columns: 1fr; max-width: 560px; margin-inline: auto; }
 `;
 
-export const PlanCard = styled.div<{ $featured?: boolean }>`
+export const PlanCard = styled.div<{ $featured?: boolean; $utility?: boolean }>`
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -108,6 +108,13 @@ export const PlanCard = styled.div<{ $featured?: boolean }>`
         border-color: ${color.accentLine};
         border-width: 2px;
         box-shadow: ${shadow.md};
+    `}
+
+    ${({ $utility }) =>
+        $utility &&
+        `
+        background: ${color.paper};
+        border-style: dashed;
     `}
 `;
 
@@ -179,6 +186,12 @@ export const PlanPrice = styled.p`
         font-size: ${type.sm};
         font-weight: ${weight.semibold};
         color: ${color.accentText};
+    }
+
+    .equiv {
+        flex-basis: 100%;
+        font-size: ${type.caption};
+        color: ${color.faint};
     }
 `;
 
@@ -519,4 +532,101 @@ export const DriverTable = styled.div`
     tbody td { color: ${color.bodyMuted}; line-height: ${leading.relaxed}; }
 
     tbody tr:last-child th, tbody tr:last-child td { border-bottom: none; }
+`;
+
+/** The trial, above the plans, because everyone starts there. */
+export const TrialCard = styled.div`
+    max-width: 720px;
+    margin: 0 auto clamp(28px, 3.5vw, 44px);
+    padding: ${space.lg} ${space.xl};
+    text-align: center;
+    background: ${color.goldWash};
+    border: 1px solid rgba(224, 160, 63, 0.4);
+    border-radius: ${radius.lg};
+
+    .head {
+        font-family: ${font.display};
+        font-size: 1.5rem;
+        font-weight: ${weight.medium};
+        color: ${color.ink};
+        margin-bottom: 6px;
+    }
+
+    .detail {
+        font-size: ${type.sm};
+        line-height: ${leading.relaxed};
+        color: ${color.bodyMuted};
+    }
+`;
+
+/** The book bundle, folded into the plan card rather than given a card of its own. */
+export const PlanBook = styled.p`
+    margin-top: ${space.md};
+    padding: ${space.sm} ${space.md};
+    background: ${color.goldWash};
+    border-radius: ${radius.md};
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    .tag {
+        font-size: ${type.xs};
+        font-weight: ${weight.semibold};
+        color: ${color.goldOnLight};
+    }
+
+    .note, .saving {
+        font-size: ${type.caption};
+        line-height: ${leading.normal};
+        color: ${color.bodyMuted};
+    }
+`;
+
+/**
+ * Monthly and Free. Deliberately the quietest things on the page — Monthly's
+ * whole job is to make the annual plans look obviously better, and Free is the
+ * honest fallback rather than a fourth option to weigh.
+ */
+export const QuietRows = styled.div`
+    max-width: 720px;
+    margin: clamp(28px, 3.5vw, 40px) auto 0;
+    border: 1px solid ${color.primaryLine};
+    border-radius: ${radius.lg};
+    background: ${color.paperPure};
+    overflow: hidden;
+`;
+
+export const QuietRow = styled.div`
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    align-items: baseline;
+    gap: ${space.md};
+    padding: ${space.md} ${space.lg};
+    border-bottom: 1px solid ${color.primaryLine};
+
+    &:last-child { border-bottom: none; }
+
+    .label {
+        font-family: ${font.body};
+        font-size: ${type.base};
+        font-weight: ${weight.semibold};
+        color: ${color.ink};
+    }
+
+    .sub {
+        font-size: ${type.sm};
+        color: ${color.bodyMuted};
+    }
+
+    .price {
+        font-size: ${type.base};
+        font-weight: ${weight.semibold};
+        color: ${color.primary};
+        white-space: nowrap;
+    }
+
+    ${media.sm} {
+        grid-template-columns: 1fr auto;
+        .sub { grid-column: 1 / -1; }
+    }
 `;

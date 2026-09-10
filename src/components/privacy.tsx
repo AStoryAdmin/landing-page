@@ -117,7 +117,7 @@ const Privacy = () => {
                             <SectionNum>8</SectionNum>
                             <SectionTitle>How long we keep your information</SectionTitle>
                             <Paragraph>Because A Story is built to preserve memories for the long term, we retain your content for as long as your account or archive remains active. You may request deletion of your content at any time by contacting us at <LegalLink href="mailto:contact@astoryapp.com">contact@astoryapp.com</LegalLink>, and we will delete it within thirty (30) days, except where we must retain certain information to complete a transaction, resolve disputes, or comply with legal obligations, and except for residual copies that are removed from routine backups in the ordinary course.</Paragraph>
-                            <Paragraph>There is no subscription to lapse. Once any package has been purchased, your archive does not expire &mdash; when a package's period of guided conversations ends, everything else keeps working, and we will not delete an archive or restrict access to material already recorded. If a storyteller passes away, their stories remain protected under this policy, and we will work with the storyteller's family in keeping with the storyteller's wishes and applicable law.</Paragraph>
+                            <Paragraph>Your archive does not expire when you stop paying. Canceling a plan, or letting a one-time purchase lapse, returns the account to the Free tier &mdash; the guided AI conversations stop, and everything else keeps working. We will not delete an archive or restrict access to material already recorded because a plan ended.</Paragraph>
                         </Section>
 
                         <Section id="s9">

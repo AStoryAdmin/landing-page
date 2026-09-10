@@ -114,9 +114,9 @@ export const productSchema = () => ({
         'Voice-first life-story capture. A guided AI interviewer, a private family archive, and a printed hardcover memoir.',
     offers: {
         '@type': 'Offer',
-        price: PRICE.giftAmount,
+        price: PRICE.headlineAmount,
         priceCurrency: PRICE.currency,
-        description: PRICE.giftNote,
+        description: PRICE.headlineNote,
     },
 });
 

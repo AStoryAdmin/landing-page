@@ -220,7 +220,7 @@ const faqGroups: FaqGroupData[] = [
                 question: 'Can I give A Story as a gift?',
                 answer: (
                     <>
-<AnswerParagraph>Yes &mdash; and it is one of the most meaningful gifts we see people give. There is no subscription to hand over: you buy a package once, and it can be set up entirely by the giver and presented as a complete experience &mdash; a device ready to begin, or a card the recipient opens at their own pace.</AnswerParagraph>
+<AnswerParagraph>Yes &mdash; and it is one of the most meaningful gifts we see people give. Express is the one most people give, because it is a single payment that never renews on the person receiving it. It can be set up entirely by the giver and presented as a complete experience &mdash; a device ready to begin, or a card the recipient opens at their own pace.</AnswerParagraph>
                         <AnswerParagraph>Many families give A Story as a birthday gift, a holiday present, or a "just because" expression of love. Some describe it as the only gift they've given where the whole family ends up in tears &mdash; in the best way.</AnswerParagraph>
 <AnswerParagraph>Email us at contact@astoryapp.com to set one up or ask about gifting options.</AnswerParagraph>
                     </>
@@ -236,9 +236,9 @@ const faqGroups: FaqGroupData[] = [
                 question: 'What does A Story cost?',
                 answer: (
                     <>
-<AnswerParagraph>You pay to capture, and never to keep. $150 buys three months of guided conversations with one storyteller; $390 covers up to three storytellers for the same three months; and The Gathering is $199 for one week with up to five storytellers &mdash; built for Tết, Christmas, a reunion, or any week the family is finally in the same house.</AnswerParagraph>
-                        <AnswerParagraph>Whichever one you buy, the archive, the exports, the photo uploads, the question bank and everyone you invite are free &mdash; during the window and forever afterwards. When it ends, only the AI conversations pause. Nothing renews, nothing lapses, and nothing you have already recorded is ever locked.</AnswerParagraph>
-                        <AnswerParagraph>The hardcover is $89, priced on its own so that printing one never means the story is finished, with extra copies at $59. Organization and care-community programs are quoted per engagement on a 30-minute call.</AnswerParagraph>
+<AnswerParagraph>Every account starts with three days of everything, no card. After that there is a Free tier that does not run out &mdash; three guided questions a day, unlimited writing, the whole family invited &mdash; and three paid plans: Individual at $119 a year for one storyteller with 90 minutes of guided calls a month; Family at $229 a year for up to three storytellers sharing 200 minutes; and Express at $79 one time, covering about thirty days and 140 minutes, which is the one people give as a present because nothing renews on the person receiving it.</AnswerParagraph>
+                        <AnswerParagraph>On every plan, including Free, the archive, the exports, the photo uploads, writing in your own words and everyone you invite cost nothing. Only the guided AI calls are metered, because they are the only part with a real cost behind them. Cancel and you drop to Free rather than losing anything &mdash; your recordings are always yours to keep.</AnswerParagraph>
+                        <AnswerParagraph>The hardcover is $69 for the first 40 color pages, then $0.75 a page in color or $0.35 in black and white. Express includes those first 40 pages; Individual and Family can bundle a book at checkout for less than adding one later. Organization and care-community programs are quoted per engagement on a 30-minute call.</AnswerParagraph>
                         <AnswerParagraph>
                             <Bold><Link to="/pricing">See the full pricing breakdown</Link></Bold>, or{' '}
                             <LegalLink href="mailto:contact@astoryapp.com?subject=Book a Demo">book a free 20-minute demo</LegalLink>.

@@ -26,7 +26,7 @@ const Thanks = () => (
     <Page>
         <Seo
             title="Thank you — here is what happens next"
-            description="Your A Story package is confirmed. Here is what happens now, and the one thing we need from you."
+            description="Your A Story plan is confirmed. Here is what happens now, and the one thing we need from you."
             path="/thanks"
             noindex
         />
@@ -108,7 +108,7 @@ const Thanks = () => (
                         ))}
                     </ForeverList>
                     <ForeverStops>
-                        <strong>The one thing that stops:</strong> {FOREVER.stops}
+                        <strong>What actually changes:</strong> {FOREVER.stops}
                     </ForeverStops>
                 </ForeverBand>
             </Container>

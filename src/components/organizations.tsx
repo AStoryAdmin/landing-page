@@ -265,7 +265,7 @@ const Organizations = () => (
                     <Eyebrow $tone="gold">How a program runs</Eyebrow>
                     <H2>Four weeks from first call to first chapter.</H2>
                     <Lead $onDark>
-                        There is no software to install, no hardware to buy, and nothing for your IT team to
+                        There is one app to install on a phone or tablet, no hardware to buy, and nothing for your IT team to
                         deploy. The heaviest lift on your side is deciding who to record first.
                     </Lead>
                 </div>

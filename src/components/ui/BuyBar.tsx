@@ -107,8 +107,8 @@ const BuyBar = ({ planId = 'one', label = 'One storyteller' }: { planId?: string
             <Spacer aria-hidden="true" />
             <Bar>
                 <Copy>
-                    <p className="price">{PRICE.gift}</p>
-                    <p className="what">Three months · nothing renews</p>
+                    <p className="price">{PRICE.headline}<span className="per">/year</span></p>
+                    <p className="what">3 days free first · cancel any time</p>
                 </Copy>
                 <Go href={checkoutFor(planId, label)}>
                     {buyLabel(planId, 'Buy now', 'Get started')}

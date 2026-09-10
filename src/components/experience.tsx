@@ -179,7 +179,7 @@ const Experience = () => {
                                 <Price>{PRICE.book}</Price>
                                 <PriceDivider />
                                 <PriceDetails>
-                                    <span>A hardcover, edited and laid out &middot; extra copies {PRICE.extraCopy}</span>
+                                    <span>A hardcover, edited and laid out &middot; {PRICE.bookPages}, {PRICE.bookOverage}</span>
                                     <span>Ships 3&ndash;4 weeks after you approve the proof</span>
                                 </PriceDetails>
                             </PriceBox>
@@ -233,7 +233,7 @@ const Experience = () => {
 
                     <NextCaveat>
                         <strong>Where this actually stands:</strong> this is being built, and it is not
-                        something you can use today. Nothing you buy now depends on it, and no package is
+                        something you can use today. Nothing you buy now depends on it, and no plan is
                         priced against it. When it ships it will follow the same rules as everything else
                         here &mdash; imported posts and photos belong to the storyteller, are never sold,
                         are never used to train models, and can be removed from the archive as easily as

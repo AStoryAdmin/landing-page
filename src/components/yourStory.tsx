@@ -83,8 +83,8 @@ const YourStory = () => (
                     </Lead>
                 </SectionHead>
                 <Actions>
-                    <ButtonAnchor href={checkoutFor('one', 'One storyteller — my own life')} $variant="primary">
-                        {buyLabel('one', `Start — ${PRICE.gift}`, 'Start your own archive')}
+                    <ButtonAnchor href={checkoutFor('individual', 'Individual — my own life')} $variant="primary">
+                        {buyLabel('individual', 'Start free — 3 days of everything', 'Start your own archive')}
                     </ButtonAnchor>
                     <Button to="/#demo" $variant="onDark">Hear how it asks <IconArrow /></Button>
                 </Actions>
@@ -146,18 +146,19 @@ const YourStory = () => (
 
                 <PriceStrip>
                     <div>
-                        <p className="amount">{PRICE.gift}</p>
+                        <p className="amount">Free</p>
                     </div>
                     <p className="what">
-                        <strong>{PRICE.giftNote}.</strong> {KEEPS_LINE}
+                        <strong>Three days of everything, then free for as long as you like.</strong> Guided
+                        calls are {PRICE.headline} {PRICE.headlineNote}. {KEEPS_LINE}
                     </p>
-                    <ButtonAnchor href={checkoutFor('one', 'One storyteller — my own life')} $variant="primary">
-                        {buyLabel('one', 'Buy now', 'Get started')}
+                    <ButtonAnchor href={checkoutFor('individual', 'Individual — my own life')} $variant="primary">
+                        {buyLabel('individual', 'Choose Individual', 'Get started')}
                     </ButtonAnchor>
                 </PriceStrip>
 
                 <Actions $center>
-                    <Button to="/pricing" $variant="ghost">See all three packages <IconArrow /></Button>
+                    <Button to="/pricing" $variant="ghost">See every plan <IconArrow /></Button>
                 </Actions>
             </Container>
         </Section>
@@ -255,7 +256,7 @@ const YourStory = () => (
                     </div>
                     <ul>
                         <li><IconPhone size={18} /><span><strong>It calls you.</strong> You never have to remember to do this, and you never have to start.</span></li>
-                        <li><IconArchive size={18} /><span><strong>Nothing renews.</strong> One payment, then the app is yours free for good.</span></li>
+                        <li><IconArchive size={18} /><span><strong>Yours if you stop.</strong> Cancel and you drop to Free — the archive stays open and everything you recorded stays yours.</span></li>
                         <li><IconExport size={18} /><span><strong>Nothing is locked.</strong> Export everything at any time, including after the conversations stop.</span></li>
                     </ul>
                 </EarlyProof>

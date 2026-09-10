@@ -20,11 +20,11 @@ import { CONTACT } from './contact';
  *      priced in USD as a *one-off* payment, not a subscription. Nothing here
  *      recurs; the site promises that in writing on /pricing and in the terms.
  *   2. Payment Links → new link → pick the product → "Don't show quantity
- *      selector" for the packages, but *do* allow quantity on extra copies.
+ *      selector" for the plans, but *do* allow quantity on the book.
  *   3. Under "After payment", redirect to https://astoryapp.com/thanks so the
  *      buyer lands somewhere that tells them what happens next.
  *   4. Collect the buyer's name, email and — for anything printed — a shipping
- *      address. For the packages, add a custom field asking who the
+ *      address. For the plans, add a custom field asking who the
  *      storyteller is and their phone number, because that is what the first
  *      call needs. That question is the whole onboarding.
  *   5. Copy the link (https://buy.stripe.com/…) into the matching row.
@@ -35,20 +35,24 @@ import { CONTACT } from './contact';
  */
 
 /**
- * Stripe Payment Link per purchasable thing. The package keys match `PLANS[].id`
- * in ./pricing, so a new package needs a row here and nothing else.
+ * Stripe Payment Link per purchasable thing. The plan keys match `PLANS[].id`
+ * in ./pricing — and the app's own Stripe slugs — so a new plan needs a row here
+ * and nothing else.
  *
  * Leave a value as an empty string until its link exists.
  */
 const LINKS: Record<string, string> = {
-    /* Packages — see PLANS in ./pricing */
-    express: '',
-    one: '',
+    /* Plans — keys match PLANS[].id in ./pricing, and the app's own slugs */
+    individual: '',
     family: '',
+    express: '',
 
-    /* The hardcover, and additional copies of one already made */
+    /* The same plans with the Keepsake book bundled in */
+    'individual+book': '',
+    'family+book': '',
+
+    /* The hardcover bought on its own */
     book: '',
-    extraCopy: '',
 };
 
 /** True once a given item can actually be bought on the site. */
@@ -81,15 +85,15 @@ export const buyLabel = (id: string, live: string, fallback: string): string =>
  */
 export const AT_CHECKOUT = [
     {
+        t: 'Three days of everything, free',
+        d: 'Every account opens with full access and guided calls, no card. It falls back to Free afterwards rather than locking you out, so nothing is lost by taking your time.',
+    },
+    {
+        t: 'Your recordings stay yours',
+        d: 'Cancel whenever you like. The archive, the transcripts, the photos and everyone you invited all keep working — cancelling stops the AI calls, not the memories.',
+    },
+    {
         t: 'Refunded if it goes unused',
         d: 'If the person you bought it for never gets going, write to us and we will refund you. No deadline on that, and no argument.',
-    },
-    {
-        t: 'Nothing renews, ever',
-        d: 'A package is a one-off payment. There is no subscription to cancel and nothing that quietly bills you next year.',
-    },
-    {
-        t: 'You can give it on a date',
-        d: 'Tell us when it is for and we will hold the first call until then, so it is still a surprise on the day.',
     },
 ] as const;
