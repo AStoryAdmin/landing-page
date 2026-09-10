@@ -38,8 +38,10 @@
  *
  * 5. Nobody is ever charged per family member. Storytellers are metered
  *    because call minutes scale with them. Everyone else — reading,
- *    correcting, adding photos, recording their own version of the same
- *    afternoon — is free and unlimited on every plan including Free.
+ *    correcting, recording their own version of the same afternoon — is free
+ *    and unlimited on every plan including Free. Photos are the one other
+ *    thing with a bill attached: unlimited on the paid plans, five a week on
+ *    Free (FREE_WEEKLY_PHOTOS in the app).
  */
 
 export type Plan = {
@@ -183,9 +185,10 @@ export const FREE_TIER = {
         'Three guided questions a day',
         'Unlimited writing in your own words',
         'Unlimited family members reading and contributing',
+        'Five photo uploads a week',
         'Order a printed book any time',
     ],
-    excludes: 'Guided AI calls, and the full 504-question bank by chapter',
+    excludes: 'Guided AI calls, unlimited photos, and the full 504-question bank open by chapter',
 } as const;
 
 /** The headline figure, for pages that quote a single number. */

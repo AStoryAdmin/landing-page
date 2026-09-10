@@ -246,50 +246,49 @@ const Experience = () => {
 
             <NextContainer id="next">
                 <CardView>
-                    <NextBadge>In development &mdash; not available yet</NextBadge>
+                    <NextBadge>Working today</NextBadge>
                     <NextTitle>The years you already documented.</NextTitle>
                     <NextLead>
                         Everything above is about the life nobody wrote down. But part of the last twenty
-                        years <em>was</em> written down &mdash; on Instagram, on Facebook, in a camera roll
-                        nobody has opened since. It is sitting in places that were never built to keep
-                        anything, in an order nobody chose, belonging to companies that are not your family.
-                        We are building the part that brings it home.
+                        years <em>was</em> written down &mdash; a decade of Facebook posts, a journal app,
+                        notes on a phone. Making somebody retype all that is the fastest way to lose them,
+                        so A Story reads it instead. Export the file from wherever it lives, hand it over,
+                        and the memories come out of it.
                     </NextLead>
 
                     <NextGrid>
                         <NextCard>
-                            <h3>Connect an account once.</h3>
+                            <h3>Hand it the export file.</h3>
                             <p>
-                                Link Instagram, Facebook or a photo library, and A Story pulls in the posts,
-                                the pictures and the captions &mdash; the small running commentary you wrote
-                                at the time and have not read since.
+                                Facebook, Instagram, Day One and other journal apps, Apple Notes, Google
+                                Keep, or a plain CSV. Every platform worth importing from offers an export
+                                &mdash; that is what GDPR bought us &mdash; and an export is just a file.
                             </p>
                         </NextCard>
                         <NextCard>
-                            <h3>It files itself into the timeline.</h3>
+                            <h3>It dates and files itself.</h3>
                             <p>
-                                Imported moments land on the same timeline as the conversations, dated and
-                                connected to the people and places already in the archive. The two halves of
-                                a life stop being kept in different buildings.
+                                A Story reads a year out of each entry, gives it a title, and puts it in the
+                                chapter it belongs to &mdash; landing on the same timeline as the
+                                conversations. Duplicates are flagged rather than piled up.
                             </p>
                         </NextCard>
                         <NextCard>
-                            <h3>Print it by the year, or any way you like.</h3>
+                            <h3>Nothing is saved until you say so.</h3>
                             <p>
-                                A volume for 2019. A volume for one child, from birth to college. A volume
-                                for a single summer. The book gets built for you from what is already there,
-                                and you decide where the chapters fall.
+                                Everything it finds arrives as a list to review. Keep what belongs in the
+                                story, drop the rest. The two halves of a life stop being kept in different
+                                buildings, without a decade of noise coming with them.
                             </p>
                         </NextCard>
                     </NextGrid>
 
                     <NextCaveat>
-                        <strong>Where this actually stands:</strong> this is being built, and it is not
-                        something you can use today. Nothing you buy now depends on it, and no plan is
-                        priced against it. When it ships it will follow the same rules as everything else
-                        here &mdash; imported posts and photos belong to the storyteller, are never sold,
-                        are never used to train models, and can be removed from the archive as easily as
-                        they were added.
+                        <strong>What is not built yet:</strong> connecting an account directly, so the
+                        posts arrive without you exporting anything first. That is coming; the file import
+                        above works now. Either way the rules are the same &mdash; imported posts and
+                        photos belong to the storyteller, are never sold, are never used to train models,
+                        and can be removed from the archive as easily as they were added.
                     </NextCaveat>
                 </CardView>
             </NextContainer>
