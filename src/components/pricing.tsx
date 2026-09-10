@@ -18,8 +18,9 @@ import {
 /**
  * Every figure on this page comes from ../lib/pricing, which mirrors the app's
  * own PricingScreen. The order is deliberate: the free trial first, because
- * everyone starts there whatever they end up on; then the plans; then what
- * happens if you stop paying, which is the question people are really asking.
+ * everyone starts there whatever they end up on; then the plans; then what a
+ * plan actually buys — which is not the app, because the app is theirs to keep.
+ * This page never centres an ending. A Story is not a memoir to finish.
  */
 
 /** True on every plan including Free, so it belongs above the cards. */
@@ -199,12 +200,13 @@ const Pricing = () => (
             <Container>
                 <BookSplit>
                     <div>
-                        <Eyebrow>No card, no clock</Eyebrow>
+                        <Eyebrow>Where everybody lives</Eyebrow>
                         <H2>{FREE_TIER.headline}</H2>
                         <Lead>{FREE_TIER.blurb}</Lead>
                         <Note>
-                            We would rather someone kept a small archive free for ten years than lost it
-                            because a trial lapsed while they were busy.
+                            This is not the consolation prize for not buying. It is where most archives
+                            live most of the time &mdash; a journal you keep for years, with the guided
+                            calls switched on for the stretches when you want somebody doing the asking.
                         </Note>
                         <Actions>
                             <ButtonAnchor
@@ -234,16 +236,17 @@ const Pricing = () => (
             </Container>
         </Section>
 
-        {/* ─── What happens if you stop paying ──────────────────────── */}
+        {/* ─── What a plan buys, and what is kept regardless ────────── */}
         <Section $tone="ivory" $tight id="forever">
             <Container>
                 <ForeverBand>
-                    <Eyebrow $tone="gold">The part that matters later</Eyebrow>
+                    <Eyebrow $tone="gold">Not a memoir to finish</Eyebrow>
                     <H2 style={{ color: 'inherit' }}>{FOREVER.headline}</H2>
                     <ForeverLead>
-                        The real fear with anything holding your family history is what happens the day you
-                        stop paying for it. Here is the answer, and it is the same whichever plan you were
-                        on: you keep all of it.
+                        Every other product in this category is a project with an end: get it written down
+                        before it is too late, print the book, done. We do not think a life works like
+                        that, and we did not price it like that. The app is the part you keep &mdash; for
+                        good, on any plan, including none.
                     </ForeverLead>
 
                     <ForeverList>
@@ -253,7 +256,7 @@ const Pricing = () => (
                     </ForeverList>
 
                     <ForeverStops>
-                        <strong>What actually changes:</strong> {FOREVER.stops}
+                        <strong>What a plan actually buys:</strong> {FOREVER.stops}
                     </ForeverStops>
                 </ForeverBand>
             </Container>
@@ -347,7 +350,7 @@ const Pricing = () => (
                 <HonestGrid>
                     <HonestItem>
                         <h3>No hostage-taking</h3>
-                        <p>Cancelling drops you to Free and leaves everything you recorded exactly where it is. Nothing is deleted, nothing is locked, and export is always free.</p>
+                        <p>A plan is a service you switch on and off, not a lease on your own archive. Everything you recorded stays exactly where it is, still open and still growing. Nothing is deleted, nothing is locked, and export is always free.</p>
                     </HonestItem>
                     <HonestItem>
                         <h3>No charge per person</h3>

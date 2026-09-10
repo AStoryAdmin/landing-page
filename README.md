@@ -230,6 +230,39 @@ per minute. `api_usage` in the app already logs `audio_seconds` and `cost_usd`
 per call, so the real number is one SQL query away. Nobody has run it, and the
 annual plans' margin depends entirely on it.
 
+## How the product is allowed to be described
+
+**A Story is not a memoir to finish. It is a story to keep and carry on.** That
+is the company's own line, and it is a constraint on copy rather than a slogan
+to quote. Every other product in this category is a project with a deadline,
+and the deadline is a person: get it written down before it is too late, print
+the book, done — which means the moment the book is printed the work is over
+and everything after it has nowhere to go. This one is a journal, an
+autobiography and a memoir at once, and none of the three ever closes.
+
+Practically, that rules out a shape of sentence that is very easy to write:
+
+- Never head a section, a FAQ or a commitment with cancellation, expiry, a
+  deadline, or what is lost. `FOREVER` in `src/lib/pricing.ts` used to open on
+  *"what happens the day you stop paying"* and the pricing page had a band
+  headed *"What happens if you stop paying"*. Every sentence in them was true,
+  and the frame was still wrong: it centred an ending on a product whose entire
+  argument is that there isn't one.
+- Say what a plan **buys** instead — A Story doing the asking: calling,
+  listening, following up. A plan is a service you switch on and off, never a
+  lease on your own archive. Switching it off pauses the asking and nothing
+  else.
+- Keep the kept things in the present tense: the app is yours, the archive is
+  still growing, the family is still adding, you can print another book in five
+  years from the same archive.
+- **Legal pages are the exception.** `terms.tsx` and `privacy.tsx` state plainly
+  that cancelling returns the account to Free and that nothing is deleted,
+  because in those two files accuracy outranks framing.
+
+The home page section `#what-it-is` and the pricing band `#forever` are where
+this argument is made explicitly; `family.tsx` carries the contrast card that
+names the usual approach and rejects it.
+
 ## Calls to action
 
 There is no signup form. Every conversion path on the site is a `mailto:` with

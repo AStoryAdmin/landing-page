@@ -28,7 +28,7 @@ import {
     HandoverSplit, Hero, HeroActions, HeroBadge, HeroCopy, HeroInner, HeroSub, HeroTitle, HeroTrust,
     MatterItem, MattersCoda, MattersGrid, MattersLead,
     No, Objection, ObjectionGrid, Page, PriceStrip, ProofImage, ProofSplit, PromiseCard, PromiseGrid, PullQuote,
-    QuoteCard, QuoteGrid, SectionHead, Step, StepGrid, StepNumber, StepText,
+    QuoteCard, QuoteGrid, RoleCard, RolesCoda, RolesGrid, SectionHead, Step, StepGrid, StepNumber, StepText,
     StepTitle, Table, TableWrap, Tag, TagRow, Yes,
 } from './home.styles';
 
@@ -97,8 +97,8 @@ const TOP_FAQ = [
         a: 'No — that is the point. A Story does the asking, the transcribing, the organizing and the layout. You send one link and let it run.',
     },
     {
-        q: 'What happens if we stop paying?',
-        a: 'You drop to the Free tier and keep everything. The archive stays open, everyone keeps their access, and the family can go on writing and adding photos without limit. Only the guided AI calls pause — your recordings are always yours to keep.',
+        q: 'What are we actually paying for?',
+        a: 'A Story doing the asking — calling, listening, following up. The app itself is yours to keep either way: switch a plan off and the archive stays open, everyone keeps their access, and the family goes on writing and adding photos without limit, free, for as long as you like. Switch it back on whenever there is more you want drawn out of somebody.',
     },
     {
         q: 'Can the rest of the family join in?',
@@ -121,8 +121,8 @@ const TOP_FAQ = [
 const Home = () => (
     <Page>
         <Seo
-            title="A Story — the gift your whole family opens"
-            description="Give the gift of being asked. A Story calls your parents and grandparents and records their life stories in their own voice — you buy once, send one link, and the archive belongs to the whole family forever."
+            title="A Story — the life-story app you keep: journal, autobiography, memoir"
+            description="A journal, an autobiography and a memoir at once — and none of them ever finishes. A Story calls, asks about a life, and files every answer onto a timeline the whole family keeps. Free to keep forever; print a book whenever a chapter is worth holding."
             path="/"
             schema={[
                 organizationSchema(),
@@ -504,6 +504,59 @@ const Home = () => (
                 <Actions>
                     <Button to="/family" $variant="onDark">Read the whole case <IconArrow /></Button>
                 </Actions>
+            </Container>
+        </Section>
+
+        {/* ─── What it actually is ──────────────────────────────────── */}
+        <Section $tone="paper" $tight id="what-it-is">
+            <Container>
+                <SectionHead>
+                    <Eyebrow>What it actually is</Eyebrow>
+                    <H2>A journal, an autobiography and a memoir &mdash; all three, permanently.</H2>
+                    <Lead>
+                        Every product in this category is one of the three, and each of them ends. A journal
+                        you abandon in March. An autobiography you never sit down to write. A memoir that is
+                        finished the day it is printed. A Story is all three at once, and none of them ever
+                        closes, because you have not finished either.
+                    </Lead>
+                </SectionHead>
+
+                <RolesGrid>
+                    {[
+                        {
+                            when: 'Today',
+                            t: 'A journal you actually keep',
+                            d: 'Write down what happened this week — the argument at dinner, the thing your daughter said, the ordinary Tuesday. Unlimited and free on every plan, including no plan at all, because the writing is the part that should never be metered.',
+                            never: 'It does not need you every day to stay worth having.',
+                        },
+                        {
+                            when: 'As you go',
+                            t: 'An autobiography assembling itself',
+                            d: 'Every entry and every answered question lands on the same timeline, dated, filed into its chapter, and connected to the people and places already there. You are not sitting down to write a book. You are living, and the book keeps up.',
+                            never: 'Nobody has to face a blank first page.',
+                        },
+                        {
+                            when: 'Whenever',
+                            t: 'A memoir you can hold',
+                            d: 'When a chapter is worth holding, print it — edited, laid out, photographs beside the stories they belong to. Then carry on, and print another volume in five years from the same archive.',
+                            never: 'Printing it closes nothing.',
+                        },
+                    ].map((r, i) => (
+                        <Reveal key={r.t} delay={i * 90}>
+                            <RoleCard>
+                                <p className="when">{r.when}</p>
+                                <h3>{r.t}</h3>
+                                <p>{r.d}</p>
+                                <span className="never">{r.never}</span>
+                            </RoleCard>
+                        </Reveal>
+                    ))}
+                </RolesGrid>
+
+                <RolesCoda>
+                    A Story is not a memoir to finish. It is a story to keep and carry on &mdash; and the
+                    app stays yours for as long as there is more of it.
+                </RolesCoda>
             </Container>
         </Section>
 

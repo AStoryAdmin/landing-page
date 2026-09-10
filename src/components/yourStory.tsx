@@ -54,8 +54,8 @@ const DOUBTS = [
 const YourStory = () => (
     <Page>
         <Seo
-            title="Record your own life — A Story"
-            description="Use A Story for your own life rather than someone else's. It calls you, asks, and turns what you say into a private archive your family keeps — in your voice, for good."
+            title="Record your own life — the journal that becomes your autobiography"
+            description="The journal that interviews you. A Story calls, asks about your life, and assembles an autobiography as you go — free to keep for good, printable as a memoir whenever you want to hold one."
             path="/your-story"
             schema={[
                 organizationSchema(),

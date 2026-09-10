@@ -209,22 +209,33 @@ export const PRICE = {
  * replaced, it is one the app already makes on its own pricing screen.
  */
 export const KEEPS_LINE =
-    'Your recordings are always yours to keep — even if you cancel.';
+    'The app stays yours either way — keep writing new chapters, free, for life.';
 
+/**
+ * The promise, framed the way the company actually thinks about it.
+ *
+ * An earlier version of this led with "what happens the day you stop paying"
+ * and described cancelling as dropping to Free. Both were true and both were
+ * the wrong way round: it centred an ending on a product whose entire argument
+ * is that there isn't one. A Story is not a memoir to finish. The app is the
+ * thing you keep; a plan is a service you switch on when you want the asking
+ * done for you, and switching it off takes nothing away.
+ */
 export const FOREVER = {
-    headline: 'Your recordings are yours to keep.',
+    headline: 'The app is yours. It does not stop being yours.',
     /** True on every plan, including Free, including after a cancellation. */
     kept: [
+        'Keep writing new chapters for as long as you live — unlimited, free, always',
+        'The archive stays open, searchable, and still growing',
+        'Everyone you invited keeps their access and keeps contributing',
         'Every recording, transcript and photo stays yours',
-        'The archive stays open, searchable and readable',
-        'Everyone you invited keeps their access',
-        'Write and upload as much as you like — never metered, on any plan',
-        'Export the whole archive whenever you ask',
-        'Order a printed book from any chapter, any year from now',
+        'Export the whole thing whenever you ask',
+        'Print another book in five years, from the same archive',
     ],
-    /** What actually changes, stated plainly rather than buried. */
+    /** What a plan actually buys, rather than what stopping costs. */
     stops:
-        'Cancelling stops the guided AI calls and drops you to Free — three questions a day, ' +
-        'and everything above still working. Nothing is deleted and nothing is locked. If ' +
-        'there is more to capture later, you start the calls again then.',
+        'A plan buys one thing: A Story doing the asking — calling, listening, following up. ' +
+        'Switch it off and that is all that pauses. You carry on writing, the family carries ' +
+        'on adding, the story carries on. Switch it back on whenever there is more you want ' +
+        'drawn out of somebody.',
 } as const;

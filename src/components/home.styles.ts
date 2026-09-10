@@ -859,3 +859,79 @@ export const Divider = styled.hr`
     border-top: 1px solid ${color.primaryLine};
     margin: clamp(36px, 5vw, 56px) 0;
 `;
+
+/* ── What it actually is ──────────────────────────────────────────────────
+ * Journal, autobiography, memoir — the three things A Story is at once, and
+ * the reason it is none of them in the usual, finishable sense. Added when
+ * the site was found to be arguing "not a memoir to finish" without ever
+ * saying what it is instead.
+ */
+
+export const RolesGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: ${space.lg};
+
+    ${media.lg} { grid-template-columns: 1fr; }
+`;
+
+export const RoleCard = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(24px, 2.8vw, 34px);
+    background: ${color.paperPure};
+    border: 1px solid ${color.primaryLine};
+    border-radius: ${radius.lg};
+
+    .when {
+        font-size: ${type.caption};
+        font-weight: ${weight.bold};
+        letter-spacing: ${tracking.eyebrow};
+        text-transform: uppercase;
+        color: ${color.accentText};
+        margin-bottom: ${space.md};
+        /* It is a <p>, so the "p { flex: 1 }" below would otherwise let the
+           eyebrow absorb slack and push each title to a different height. */
+        flex: none;
+    }
+
+    h3 {
+        font-family: ${font.display};
+        font-size: 1.7rem;
+        font-weight: ${weight.medium};
+        line-height: ${leading.snug};
+        color: ${color.ink};
+        margin-bottom: ${space.sm};
+    }
+
+    p {
+        font-size: ${type.sm};
+        line-height: ${leading.relaxed};
+        color: ${color.bodyMuted};
+        flex: 1;
+    }
+
+    .never {
+        display: block;
+        margin-top: ${space.md};
+        padding-top: ${space.md};
+        border-top: 1px solid ${color.primaryLine};
+        font-family: ${font.display};
+        font-style: italic;
+        font-size: 1.0625rem;
+        line-height: 1.45;
+        color: ${color.primary};
+    }
+`;
+
+export const RolesCoda = styled.p`
+    margin-top: clamp(28px, 3.5vw, 40px);
+    max-width: 68ch;
+    font-family: ${font.display};
+    font-size: clamp(1.35rem, 1.05rem + 1.1vw, 1.85rem);
+    font-style: italic;
+    font-weight: ${weight.light};
+    line-height: ${leading.snug};
+    color: ${color.primary};
+`;

@@ -13,7 +13,7 @@ const Experience = () => {
     return (
         <ExperienceContainer>
             <Seo
-                title="What they receive — from the first question to a printed book"
+                title="How it works — from the first question to a printed memoir"
                 description="What happens after you send the link: a guided voice interview, memory cards organized by chapter, contributions from the whole family, and a hardcover book shipped to the door."
                 path="/experience"
                 schema={[

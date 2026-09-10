@@ -119,10 +119,10 @@ const ogSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"
   <rect x="0" y="612" width="1200" height="18" fill="${BRAND.terracotta}"/>
   <rect x="0" y="612" width="420" height="18" fill="${BRAND.gold}"/>
   ${lockup(88, 70, 92, 'dark')}
-  <text x="88" y="330" font-family="${serif}" font-size="76" fill="${BRAND.ivory}">One gift.</text>
-  <text x="88" y="416" font-family="${serif}" font-size="76" font-style="italic" fill="${BRAND.gold}">Your whole family opens it.</text>
-  <text x="88" y="492" font-family="${sans}" font-size="26" fill="${BRAND.ivoryMuted}">You buy once and send one link. They talk. Everyone gets</text>
-  <text x="88" y="530" font-family="${sans}" font-size="26" fill="${BRAND.ivoryMuted}">the archive — and a hardcover book.</text>
+  <text x="88" y="330" font-family="${serif}" font-size="76" fill="${BRAND.ivory}">Not a memoir to finish.</text>
+  <text x="88" y="416" font-family="${serif}" font-size="76" font-style="italic" fill="${BRAND.gold}">A story to keep and carry on.</text>
+  <text x="88" y="492" font-family="${sans}" font-size="26" fill="${BRAND.ivoryMuted}">A journal, an autobiography and a memoir at once. A Story asks,</text>
+  <text x="88" y="530" font-family="${sans}" font-size="26" fill="${BRAND.ivoryMuted}">listens, and files today onto the same timeline as 1962.</text>
 </svg>`;
 
 await sharp(Buffer.from(ogSvg)).png().toFile(join(publicDir, 'og-cover.png'));
