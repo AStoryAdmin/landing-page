@@ -17,7 +17,10 @@ const TEAM = [
         initials: 'DN',
         name: 'Daniel Hoang Nguyen',
         role: 'Co-Founder & CEO',
-        bio: 'Finance Master’s, University of Illinois Urbana-Champaign. Started A Story after watching his uncles lose the words before they lost anything else.',
+        /* Two lines, and the second one is the only line that matters: the
+           credential explains how he thinks, the uncles explain why he is
+           here. A longer bio made the first crowd out the second. */
+        bio: 'Finance researcher at Illinois. Built A Story after two strokes in one year took his uncles’ stories before they took anything else.',
         href: 'https://www.linkedin.com/in/daniel-hoang-nguyen-65bb05224/',
         go: 'Connect on LinkedIn',
     },
@@ -26,14 +29,14 @@ const TEAM = [
         name: 'Bao Vo',
         role: 'Co-Founder & COO',
         /*
-         * Still a résumé. One sentence about why Bao personally cares — his own
-         * grandparents, a story he nearly lost — would do more work than the
-         * credentials do. Left factual rather than invented; Bao supplies his
-         * own line, and his LinkedIn URL, when he has them.
+         * Still credentials rather than a reason. One sentence about why Bao
+         * personally cares — his own grandparents, a story he nearly lost —
+         * would do more work than any of this. Left factual rather than
+         * invented; Bao supplies that line himself.
          */
-        bio: 'Electrical & Computer Engineering, University of Michigan. Background in semiconductor research, healthcare commercialization and engineering operations. Leads pilots, product strategy and go-to-market.',
-        href: '',
-        go: 'Get in touch',
+        bio: 'Engineer out of Michigan, by way of semiconductor research and healthcare. Runs how A Story actually gets built, tested and into people’s hands.',
+        href: 'https://www.linkedin.com/in/gbaovo/',
+        go: 'Connect on LinkedIn',
     },
 ] as const;
 
