@@ -1,9 +1,41 @@
 import { CONTACT } from '../lib/contact';
 import Seo from './ui/Seo';
 import { breadcrumbSchema, organizationSchema } from '../lib/seo';
-import {Container, ContainerDark, StoryHero, HeroTitle, HeroSub, Byline, StorySection, StoryDark, Paragraph, Emphasis, ChapterHeadline, PullQuote, PullQuoteText, StoryDivider, SigInitial, SigDetails, GhostButton, Arrow, TeamSection, Label, SectionTitle, TeamGrid, TeamCard, TeamPhoto, TeamInfo, TeamRole, TeamBio, MissionSection, MissionText, MissionSub, CtaSection, CtaTitle, CtaSub, HeroActions, PrimaryButtonAnchor, OutlineButtonLink} from './story.styles';
-import danielPhoto from './../assets/astoryDaniel.webp';
-import baoPhoto from './../assets/astoryBao.webp';
+import {Container, ContainerDark, StoryHero, HeroTitle, HeroSub, Byline, StorySection, StoryDark, Paragraph, Emphasis, ChapterHeadline, PullQuote, PullQuoteText, StoryDivider, SigInitial, SigDetails, GhostButton, Arrow, TeamSection, Label, SectionTitle, TeamGrid, TeamCard, TeamMonogram, TeamGo, TeamInfo, TeamRole, TeamBio, MissionSection, MissionText, MissionSub, CtaSection, CtaTitle, CtaSub, HeroActions, PrimaryButtonAnchor, OutlineButtonLink} from './story.styles';
+
+/**
+ * The two of us, and where to go to check.
+ *
+ * There are no portraits here on purpose. The images that used to sit in these
+ * cards were generated placeholders reading "drop a real headshot here", which
+ * is a worse thing to ship than a monogram on a page that asks to be believed.
+ * The whole card is a link instead, so a visitor who wants to know who is
+ * behind this can click straight through and find out.
+ */
+const TEAM = [
+    {
+        initials: 'DN',
+        name: 'Daniel Hoang Nguyen',
+        role: 'Co-Founder & CEO',
+        bio: 'Finance Master’s, University of Illinois Urbana-Champaign. Started A Story after watching his uncles lose the words before they lost anything else.',
+        href: 'https://www.linkedin.com/in/daniel-hoang-nguyen-65bb05224/',
+        go: 'Connect on LinkedIn',
+    },
+    {
+        initials: 'BV',
+        name: 'Bao Vo',
+        role: 'Co-Founder & COO',
+        /*
+         * Still a résumé. One sentence about why Bao personally cares — his own
+         * grandparents, a story he nearly lost — would do more work than the
+         * credentials do. Left factual rather than invented; Bao supplies his
+         * own line, and his LinkedIn URL, when he has them.
+         */
+        bio: 'Electrical & Computer Engineering, University of Michigan. Background in semiconductor research, healthcare commercialization and engineering operations. Leads pilots, product strategy and go-to-market.',
+        href: '',
+        go: 'Get in touch',
+    },
+] as const;
 
 /**
  * The founder's story.
@@ -27,7 +59,7 @@ const Story = () => {
         <>
             <Seo
                 title="Our story — why A Story exists"
-                description="Two of my uncles had strokes in the same year. They lived. The stories went first. Why A Story was built, told by the person who built it."
+                description="Two of my uncles had strokes in the same year. They lived. The stories went first. Why A Story was built, told by one of the two people who built it."
                 path="/story"
                 schema={[
                     organizationSchema(),
@@ -39,13 +71,13 @@ const Story = () => {
             />
             <StoryHero>
                 <Container>
-                    <Label>A note from the founder</Label>
+                    <Label>A note from one of the founders</Label>
                     <HeroTitle>
                         They survived. <br />
                         <Emphasis>The stories didn&rsquo;t.</Emphasis>
                     </HeroTitle>
                     <HeroSub>Two strokes in one year, and everything I had assumed I still had time for.</HeroSub>
-                    <Byline>&mdash;Daniel Hoang Nguyen &middot; Founder, A Story &mdash;</Byline>
+                    <Byline>&mdash;Daniel Hoang Nguyen &middot; Co-founder, A Story &mdash;</Byline>
                 </Container>
             </StoryHero>
 
@@ -92,7 +124,7 @@ const Story = () => {
                         <SigInitial>D</SigInitial>
                         <SigDetails>
                             <strong>Daniel Hoang Nguyen</strong>
-                            <span>Founder, A Story &middot; Finance Master&rsquo;s, UIUC</span>
+                            <span>Co-founder, A Story &middot; Finance Master&rsquo;s, UIUC</span>
                             <a href="https://www.linkedin.com/in/daniel-hoang-nguyen-65bb05224/" target="_blank" rel="noopener noreferrer">
                                 <GhostButton>Connect on LinkedIn <Arrow aria-hidden="true">&rarr;</Arrow></GhostButton>
                             </a>
@@ -104,37 +136,26 @@ const Story = () => {
             <TeamSection>
                 <Container>
                     <Label>The team</Label>
-                    <SectionTitle>Two people who think this matters.</SectionTitle>
+                    <SectionTitle>Two co-founders who think this matters.</SectionTitle>
 
                     <TeamGrid>
-                        <TeamCard>
-                            <TeamPhoto>
-                                <img src={danielPhoto} alt="Daniel Hoang Nguyen" loading="lazy" decoding="async" />
-                            </TeamPhoto>
-                            <TeamInfo>
-                                <strong>Daniel Hoang Nguyen</strong>
-                                <TeamRole>Founder &amp; CEO</TeamRole>
-                                <TeamBio>Finance Master&rsquo;s, University of Illinois Urbana-Champaign. <br /> Started A Story after watching his uncles lose the words before they lost anything else.</TeamBio>
-                            </TeamInfo>
-                        </TeamCard>
-
-                        {/*
-                          * Bao's bio is still a résumé. One sentence about why he
-                          * personally cares — his own grandparents, a story he
-                          * nearly lost — would do more work than the credentials
-                          * do. Left factual rather than invented; Bao should
-                          * supply his own line.
-                          */}
-                        <TeamCard>
-                            <TeamPhoto>
-                                <img src={baoPhoto} alt="Bao Vo" loading="lazy" decoding="async" />
-                            </TeamPhoto>
-                            <TeamInfo>
-                                <strong>Bao Vo</strong>
-                                <TeamRole>Co-Founder &amp; COO</TeamRole>
-                                <TeamBio>Electrical &amp; Computer Engineering, University of Michigan. <br /> Background in semiconductor research, healthcare commercialization, and engineering operations. Leads pilots, product strategy, and go-to-market.</TeamBio>
-                            </TeamInfo>
-                        </TeamCard>
+                        {TEAM.map((m) => (
+                            <TeamCard
+                                key={m.name}
+                                href={m.href || CONTACT.general}
+                                {...(m.href ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                            >
+                                <TeamMonogram aria-hidden="true">{m.initials}</TeamMonogram>
+                                <TeamInfo>
+                                    <strong>{m.name}</strong>
+                                    <TeamRole>{m.role}</TeamRole>
+                                    <TeamBio>{m.bio}</TeamBio>
+                                    <TeamGo className="team-go">
+                                        {m.go} <Arrow aria-hidden="true">&rarr;</Arrow>
+                                    </TeamGo>
+                                </TeamInfo>
+                            </TeamCard>
+                        ))}
                     </TeamGrid>
                 </Container>
             </TeamSection>

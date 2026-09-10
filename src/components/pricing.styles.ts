@@ -630,3 +630,39 @@ export const QuietRow = styled.div`
         .sub { grid-column: 1 / -1; }
     }
 `;
+
+/**
+ * The one instruction on /thanks that has to survive being skimmed.
+ *
+ * Web checkout produces a Stripe event with no user_id (see ../lib/checkout),
+ * so the purchase is matched to an account by email address and nothing else.
+ * A buyer who pays with one address and then signs up with another has to be
+ * reconciled by hand, and until they write in they simply appear not to have
+ * bought anything. That makes this the highest-stakes sentence on the page,
+ * which is why it is not a footnote.
+ */
+export const SameEmail = styled.div`
+    max-width: 720px;
+    margin: 0 auto clamp(28px, 3.5vw, 44px);
+    padding: clamp(18px, 2vw, 26px) clamp(20px, 2.2vw, 28px);
+    background: ${color.accentWash};
+    border: 1px solid ${color.accentLine};
+    border-radius: ${radius.lg};
+
+    strong {
+        display: block;
+        font-family: ${font.display};
+        font-size: clamp(1.15rem, 1rem + 0.6vw, 1.45rem);
+        font-weight: ${weight.medium};
+        color: ${color.accentText};
+        margin-bottom: 8px;
+        line-height: ${leading.snug};
+    }
+
+    p {
+        font-size: ${type.sm};
+        line-height: ${leading.relaxed};
+        color: ${color.body};
+        margin: 0;
+    }
+`;

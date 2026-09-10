@@ -422,7 +422,7 @@ export const McLayers = styled.div`
     margin: 0 0 10px;
 `;
 
-export const McLayerTab = styled.span<{ $active?: boolean }>`
+export const McLayerTab = styled.button<{ $active?: boolean }>`
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -430,10 +430,16 @@ export const McLayerTab = styled.span<{ $active?: boolean }>`
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.04em;
-    padding: 3px 8px;
+    padding: 4px 9px;
+    min-height: 26px;
     border-radius: 20px;
     border: 1px solid ${colors.ink15};
-    color: ${colors.ink40};
+    background: transparent;
+    color: ${colors.ink70};
+    cursor: pointer;
+    transition: color 140ms ease, border-color 140ms ease, background 140ms ease;
+
+    &:hover { border-color: ${colors.orangeText}; color: ${colors.orangeText}; }
 
     ${({ $active }) =>
         $active &&
@@ -442,26 +448,8 @@ export const McLayerTab = styled.span<{ $active?: boolean }>`
             border-color: ${colors.orangeText};
             background: ${colors.orangeSoft};
         `}
-`;
 
-/** Expands the verbatim transcript. A real control, not a decorative chip. */
-export const McTranscriptToggle = styled.button`
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-family: ${fonts.body};
-    font-size: 11px;
-    font-weight: 600;
-    color: ${colors.orangeText};
-    background: transparent;
-    border: none;
-    border-radius: 6px;
-    padding: 4px 0;
-    min-height: 28px;
-    cursor: pointer;
-
-    svg { transition: transform 0.2s ease; }
-    &[aria-expanded='true'] svg { transform: rotate(180deg); }
+    @media (prefers-reduced-motion: reduce) { transition: none; }
 `;
 
 export const McTranscript = styled.div`
@@ -707,4 +695,172 @@ export const DemoEndSecondary = styled(Link)`
     &:hover {
         background: rgba(246,239,226,0.1);
     }
+`;
+
+/* ── The depth ladder ─────────────────────────────────────────────────────
+ * The single most misread thing about this product is that it is a list of
+ * questions. It is not: the interview climbs, and each rung is only asked once
+ * the one below it has been answered. The demo used to hide that — it looked
+ * like the AI was hopping from grandfather to porch to fireflies, when in fact
+ * it was refusing to leave one evening and pushing further into it each time.
+ * This band makes the climb visible while it happens. The five names are the
+ * app's own, from src/data/interview.js via ../lib/product.
+ */
+export const DepthBand = styled.div<{ $show: boolean }>`
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    display: ${({ $show }) => ($show ? 'block' : 'none')};
+    padding: 8px 14px 9px;
+    background: ${colors.dark};
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+`;
+
+export const DepthHead = styled.p`
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 0 0 6px;
+    font-family: ${fonts.body};
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: ${colors.fire60};
+
+    b {
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: none;
+        font-size: 11px;
+        color: ${colors.gold};
+    }
+`;
+
+export const DepthRungs = styled.div`
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+`;
+
+/* The bar thickens as the interview earns the next rung — the same signal the
+   ladder uses on /experience, so the two pages describe one mechanism. */
+export const DepthRung = styled.span<{ $level: number; $on: boolean }>`
+    height: ${({ $level }) => 2 + $level}px;
+    border-radius: 2px;
+    background: ${({ $on }) => ($on ? colors.gold : 'rgba(255, 255, 255, 0.16)')};
+    transition: background 420ms ease;
+    align-self: end;
+
+    @media (prefers-reduced-motion: reduce) { transition: none; }
+`;
+
+/* The line the AI is holding to, shown as a system note rather than a bubble:
+   it is the interview's reasoning, not something anyone said out loud. */
+/* Lives inside the sticky band, and keeps its height when empty so the chat
+   underneath doesn't jump every time the reasoning changes. */
+export const StayNote = styled.p<{ $show: boolean }>`
+    margin: 7px 0 0;
+    padding-left: 8px;
+    border-left: 2px solid ${colors.gold};
+    min-height: 30px;
+    /* Block, not flex: as a flex item the "Why this question:" label became its
+       own column and wrapped away from the sentence it introduces. */
+    display: block;
+    font-family: ${fonts.body};
+    font-size: 10.5px;
+    line-height: 1.45;
+    color: ${colors.fire60};
+    opacity: ${({ $show }) => ($show ? 1 : 0)};
+    transition: opacity 320ms ease;
+
+    b { color: ${colors.gold}; font-weight: 600; margin-right: 4px; }
+
+    @media (prefers-reduced-motion: reduce) { transition: none; }
+`;
+
+/* ── Memory-card panels ───────────────────────────────────────────────── */
+
+export const McPanel = styled.div`
+    margin: 0 0 10px;
+`;
+
+/* The readable summary — the layer the family actually meets first. The card
+   used to open on a pull quote, which read well and told nobody what the
+   conversation had been about. */
+export const McSummary = styled.p`
+    font-family: ${fonts.body};
+    font-size: 11.5px;
+    line-height: 1.65;
+    color: ${colors.ink70};
+    margin: 0 0 8px;
+`;
+
+export const McVoiceNote = styled.p`
+    margin: 8px 0 0;
+    font-family: ${fonts.body};
+    font-size: 10.5px;
+    line-height: 1.55;
+    color: ${colors.ink70};
+`;
+
+/* Who else is in this archive, and what they are allowed to do to it. The app
+   has three real tiers — owner, manager (invited family, read + edit), and
+   anyone with the contribute link (submits, pending approval). The card is
+   where that becomes concrete rather than a claim on a marketing page. */
+export const McFamily = styled.div`
+    margin: 0 0 10px;
+    padding: 9px 10px;
+    background: ${colors.paper};
+    border: 1px solid ${colors.ink08};
+    border-radius: 10px;
+
+    .row {
+        display: flex;
+        align-items: flex-start;
+        gap: 7px;
+        font-family: ${fonts.body};
+        font-size: 10.5px;
+        line-height: 1.5;
+        color: ${colors.ink70};
+    }
+
+    .row + .row { margin-top: 7px; }
+
+    b { color: ${colors.dark}; font-weight: 600; }
+
+    svg { flex-shrink: 0; margin-top: 1px; color: ${colors.orangeText}; }
+`;
+
+export const McPending = styled.span`
+    display: inline-block;
+    margin-left: 4px;
+    padding: 1px 6px;
+    border-radius: 20px;
+    border: 1px solid ${colors.ink15};
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: ${colors.ink40};
+`;
+
+/* The demo's one editorial line — that this evening belongs to a man who died
+   in 2009, and the archive exists anyway. Everything else on the card is
+   mechanism; this is the argument. */
+export const McAbout = styled.p`
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 10px;
+    padding: 7px 10px;
+    background: ${colors.orangeSoft};
+    border-radius: 8px;
+    font-family: ${fonts.body};
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: ${colors.ink70};
+
+    b { color: ${colors.orangeText}; font-weight: 600; }
+    svg { flex-shrink: 0; color: ${colors.orangeText}; }
 `;

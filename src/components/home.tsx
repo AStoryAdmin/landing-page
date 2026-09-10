@@ -30,6 +30,9 @@ import {
     No, Objection, ObjectionGrid, Page, PriceStrip, ProofImage, ProofSplit, PromiseCard, PromiseGrid, PullQuote,
     QuoteCard, QuoteGrid, RoleCard, RolesCoda, RolesGrid, SectionHead, Step, StepGrid, StepNumber, StepText,
     StepTitle, Table, TableWrap, Tag, TagRow, Yes,
+    AccessList,
+    AccessRow,
+    AboutSomeoneElse,
 } from './home.styles';
 
 /** Occasions people actually buy for, each pre-filling the enquiry. */
@@ -167,16 +170,20 @@ const Home = () => (
                 <DemoSplit>
                     <div>
                         <Eyebrow>Watch it happen</Eyebrow>
-                        <H2>This is the actual conversation.</H2>
+                        <H2>Eleven questions. One porch.</H2>
                         <Lead>
-                            Not a video of one. Press play and you are watching the real interview flow
-                            &mdash; A Story asks, listens to the answer, and follows it somewhere the next
-                            question could not have predicted.
+                            Not a video &mdash; press play and you are watching the real interview flow.
+                            Margaret mentions her father in the fourth line, and A Story does not move
+                            off him again: the sound before he played, what his hands were doing, the
+                            one night she kept, and finally the thing she never told him.
                         </Lead>
                         <Note>
-                            At the end you get what your family gets: a memory card you can read in a
-                            minute, the full transcript underneath it, and the moment worth hearing kept as
-                            audio. Your microphone works too, if you want to try answering.
+                            Watch the bar at the top. The interview climbs a rung only once the one
+                            below it has been answered &mdash; warm-up, scene, portrait, stakes,
+                            reckoning &mdash; which is why the last question lands and would have been
+                            unaskable at the start. At the end you get what the family gets: a summary
+                            to read in a minute, the verbatim transcript, and the forty seconds worth
+                            hearing in her own voice. Your microphone works too, if you want a turn.
                         </Note>
                         <Actions>
                             <Button to="/experience" $variant="outline">
@@ -437,6 +444,85 @@ const Home = () => (
                 <Actions $center>
                     <Button to="/experience" $variant="outline">Walk through the full experience <IconArrow /></Button>
                 </Actions>
+            </Container>
+        </Section>
+
+        {/* ─── Who else can write in it ─────────────────────────────── */}
+        <Section $tone="ivory" $tight id="together">
+            <Container>
+                <SectionHead>
+                    <Eyebrow>Nobody does this alone</Eyebrow>
+                    <H2>You are not the only one who can write in it.</H2>
+                    <Lead>
+                        An archive with one author is a diary, and it stops the day that author does.
+                        This one has three kinds of people in it, and they are allowed to do different
+                        things &mdash; which is the part that makes handing it round safe.
+                    </Lead>
+                </SectionHead>
+
+                <Reveal>
+                    <AccessList>
+                        <AccessRow>
+                            <span className="who">
+                                <span className="name">The storyteller</span>
+                                <span className="can">Owns it</span>
+                            </span>
+                            <p>
+                                Whoever the story belongs to decides who is invited, what stays private,
+                                and what is shared. Nothing leaves the archive without them.
+                            </p>
+                        </AccessRow>
+                        <AccessRow>
+                            <span className="who">
+                                <span className="name">Invited family</span>
+                                <span className="can">Reads and edits</span>
+                            </span>
+                            <p>
+                                A daughter, a brother, a grandson &mdash; invited properly, they can go
+                                into the archive and work on it. Fix the year. Correct a spelling of a
+                                village nobody has written down in fifty years. Add the afternoon from
+                                where they were sitting. It is one shared story, not a broadcast.
+                            </p>
+                        </AccessRow>
+                        <AccessRow>
+                            <span className="who">
+                                <span className="name">Everyone else</span>
+                                <span className="can">Sends things in</span>
+                            </span>
+                            <p>
+                                Send a link and a cousin who will never download an app can still add a
+                                photograph or the version of the story they grew up hearing. It waits for
+                                approval before it appears &mdash; so the archive stays open without ever
+                                being open to being quietly rewritten.
+                            </p>
+                        </AccessRow>
+                    </AccessList>
+
+                    <AboutSomeoneElse>
+                        <h3>And it does not have to be your own life.</h3>
+                        <div className="body">
+                        <p>
+                            You can start a story about somebody else and write it yourself &mdash; your
+                            mother, your brother, the friend you have known since you were nine. You do
+                            not need their phone, their email or their permission to remember them.
+                        </p>
+                        <p>
+                            <em>Including someone who has already died.</em> This is the part people
+                            assume is closed to them, and it is not. Everything you carry about a person
+                            who is gone is still recoverable while you are here to carry it: what their
+                            kitchen smelled like, the thing they always said, the argument nobody has
+                            repeated since. A Story will ask you about them the same way it would have
+                            asked them, and file it under their name.
+                        </p>
+                        <p>
+                            That archive keeps working afterwards, too. Invite your sister and she can
+                            manage it with you; the family keeps adding to it long after both of you have
+                            stopped being the only ones who remember. It is late for them. It is not too
+                            late for what you know about them.
+                        </p>
+                        </div>
+                    </AboutSomeoneElse>
+                </Reveal>
             </Container>
         </Section>
 

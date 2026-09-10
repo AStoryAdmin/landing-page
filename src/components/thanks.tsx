@@ -4,7 +4,7 @@ import { IconArrow, IconCheck } from './ui/icons';
 import { CONTACT } from '../lib/contact';
 import { FOREVER } from '../lib/pricing';
 import { Page, Step, StepGrid, StepNumber, StepText, StepTitle } from './home.styles';
-import { ForeverBand, ForeverList, ForeverStops } from './pricing.styles';
+import { ForeverBand, ForeverList, ForeverStops, SameEmail } from './pricing.styles';
 
 /**
  * Where Stripe sends someone after they pay.
@@ -42,6 +42,17 @@ const Thanks = () => (
                         make the first call.
                     </Lead>
                 </div>
+
+                <SameEmail>
+                    <strong>Sign up with the email address you just paid with.</strong>
+                    <p>
+                        That address is how your purchase finds your account &mdash; it is the only
+                        thing linking the two. Use a different one and the app will look as though you
+                        never bought anything, and we will have to put it right by hand. If you have
+                        already signed up with another address, write to us now rather than later and
+                        we will move it across.
+                    </p>
+                </SameEmail>
 
                 <StepGrid>
                     <Step>

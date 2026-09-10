@@ -935,3 +935,111 @@ export const RolesCoda = styled.p`
     line-height: ${leading.snug};
     color: ${color.primary};
 `;
+
+/* ── Who else can write in it ─────────────────────────────────────────────
+ * Three access tiers, and they are the app's real ones (supabase/collaborators
+ * .sql and contributions.sql): the owner, an invited manager who can read and
+ * edit the shared story, and anyone holding the contribute link, whose
+ * submissions queue until a manager approves them. Written as a ladder rather
+ * than a grid of equals, because the interesting part is that the rights
+ * differ — "the whole family can add to it" is only reassuring once you can
+ * see that nobody can quietly rewrite you.
+ */
+export const AccessList = styled.ol`
+    display: grid;
+    gap: ${space.md};
+    counter-reset: tier;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+`;
+
+export const AccessRow = styled.li`
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: clamp(14px, 1.6vw, 22px);
+    padding: clamp(18px, 2vw, 26px);
+    background: ${color.paperPure};
+    border: 1px solid ${color.primaryLine};
+    border-radius: ${radius.lg};
+
+    .who {
+        display: grid;
+        gap: 2px;
+        min-width: clamp(96px, 11vw, 132px);
+    }
+
+    .name {
+        font-family: ${font.display};
+        font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
+        font-weight: ${weight.medium};
+        color: ${color.ink};
+        line-height: ${leading.snug};
+    }
+
+    .can {
+        font-size: ${type.caption};
+        font-weight: ${weight.bold};
+        letter-spacing: ${tracking.eyebrow};
+        text-transform: uppercase;
+        color: ${color.accentText};
+    }
+
+    p {
+        font-size: ${type.sm};
+        line-height: ${leading.relaxed};
+        color: ${color.bodyMuted};
+        margin: 0;
+    }
+
+    ${media.md} {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+`;
+
+/* The argument that a life does not need its owner present to be recorded.
+   Deliberately a single dark band rather than a card in a grid — it is the one
+   claim on this page that changes who the product is for. */
+export const AboutSomeoneElse = styled.div`
+    margin-top: clamp(32px, 4vw, 48px);
+    padding: clamp(28px, 3.4vw, 48px);
+    background: ${color.primaryDeep};
+    border-radius: ${radius.lg};
+    color: ${color.onDark};
+
+    /* Two columns on wide screens: at one column the measure caps around 62ch
+       and the right half of a full-bleed band sits empty. */
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(20px, 3vw, 56px);
+    align-items: start;
+
+    ${media.lg} { grid-template-columns: 1fr; }
+
+    h3 {
+        font-family: ${font.display};
+        font-weight: ${weight.light};
+        font-size: clamp(1.5rem, 1.1rem + 1.5vw, 2.25rem);
+        line-height: ${leading.snug};
+        color: ${color.onDark};
+        margin: 0 0 14px;
+        max-width: 22ch;
+    }
+
+    .body { display: grid; gap: 12px; }
+
+    p {
+        font-size: ${type.base};
+        line-height: ${leading.relaxed};
+        color: ${color.onDarkMuted};
+        max-width: 62ch;
+        margin: 0;
+    }
+
+    em {
+        font-style: normal;
+        color: ${color.goldText};
+    }
+`;

@@ -29,11 +29,21 @@ import {
     McSaved,
     McTitle,
     McExcerpt,
+    McSummary,
+    McPanel,
+    McVoiceNote,
+    McFamily,
+    McPending,
+    McAbout,
+    DepthBand,
+    DepthHead,
+    DepthRungs,
+    DepthRung,
+    StayNote,
     McMeta,
     McSep,
     McLayers,
     McLayerTab,
-    McTranscriptToggle,
     McTranscript,
     McClip,
     McWave,
@@ -58,6 +68,10 @@ type ScriptTurn = {
     role: Role;
     text: string;
     delay: number;
+    /** Rung 1-5 on the interview's depth ladder. AI turns only. */
+    depth?: number;
+    /** Why this question and not a new subject — shown beside the transcript. */
+    stay?: string;
 };
 
 type Message = {
@@ -98,17 +112,47 @@ function getSpeechRecognitionCtor(): SpeechRecognitionConstructor | undefined {
     return w.SpeechRecognition || w.webkitSpeechRecognition;
 }
 
+/**
+ * One evening, and the interview refusing to leave it.
+ *
+ * The previous script covered a grandfather, a porch, a particular night and a
+ * closing line in nine turns, and the effect was of something skimming: each
+ * question changed the subject, which is exactly what a question list does and
+ * exactly what this is not. This version commits to Walter by the fourth turn
+ * and then spends the whole call on a single porch — sound, then hands, then
+ * the one night, then what she would say to him now.
+ *
+ * `depth` is the rung on the app's own ladder (Warm-up, Scene, Portrait,
+ * Stakes, Reckoning — see ../lib/product), and `stay` is the reasoning shown
+ * beside the transcript. Together they make the digging legible: without them
+ * a viewer reads persistence as repetition.
+ */
 const SCRIPT: ScriptTurn[] = [
-    { role: 'ai', text: "Hello — is that Margaret? This is A Story. Your daughter Ellie set this up for you and asked me to call. There's nothing you need to do, and we can stop whenever you like.", delay: 500 },
-    { role: 'user', text: "Oh — yes. She did say something about it. I'm not sure I'm any good at this sort of thing.", delay: 2400 },
-    { role: 'ai', text: "Almost everyone says that, and then they talk for an hour. There's no right way to do it. Can I ask — is there anything you already know you'd want the grandchildren to have?", delay: 2900 },
-    { role: 'user', text: "I suppose I'd want them to know their grandfather. Walter. He passed in '09 and they were very small.", delay: 2700 },
-    { role: 'ai', text: "Then let's start with him. Not his whole life — just one ordinary evening with Walter that you can still see. Where are you?", delay: 2900 },
-    { role: 'user', text: "The porch. Summer evenings after supper — he'd sit out there in the rocking chair with his guitar, and the neighbors would wander over.", delay: 2700 },
-    { role: 'ai', text: "Is there one particular night on that porch? One you'd want them to have?", delay: 2500 },
-    { role: 'user', text: "There was one summer when he played until the fireflies came out. We all went quiet, just listening. I must have been six or seven. I've never forgotten it.", delay: 2800 },
-    { role: 'ai', text: "Fireflies, and everyone going quiet at the same moment. That is exactly the kind of evening nobody ever writes down. It's written down now, Margaret.", delay: 2700 },
+    { role: 'ai', depth: 1, text: "Hello — is that Margaret? This is A Story. Your daughter Ellie set this up and asked me to call. There's nothing you need to do, and we can stop whenever you like.", delay: 500 },
+    { role: 'user', text: "Oh — yes. She did say something about it. I'm not sure I'm any good at this sort of thing.", delay: 2200 },
+    { role: 'ai', depth: 1, text: "Almost everyone says that, and then they talk for an hour. Is there anything you already know you'd want the grandchildren to have?", delay: 2400 },
+    { role: 'user', text: "I suppose I'd want them to know their grandfather. Walter. He passed in '09 and they were very small.", delay: 2400 },
+
+    { role: 'ai', depth: 2, stay: "Committing to one subject. Walter's whole life is not this call — one evening of it is.", text: "Then we'll spend this call on Walter, and we won't try to cover all of him. One evening you can still see. Where are you?", delay: 2500 },
+    { role: 'user', text: "The porch. Summer evenings after supper — he'd sit out there in the rocking chair with his guitar, and the neighbours would wander over.", delay: 2400 },
+
+    { role: 'ai', depth: 2, stay: "Not moving on. A scene isn't a scene until it has sound in it.", text: "Stay on that porch a moment. It's after supper, before he starts playing — what can you hear?", delay: 2300 },
+    { role: 'user', text: "Crickets. And the screen door — it had a spring on it, banged every time somebody came out. Mother was forever telling them to mind it.", delay: 2500 },
+
+    { role: 'ai', depth: 3, stay: "Same evening, closer in. This is the rung where a person starts to exist rather than be described.", text: "And Walter, before the first chord. What was he doing with his hands?", delay: 2300 },
+    { role: 'user', text: "Tuning. Longer than he needed to, I always thought. He was shy about it — he'd only really play once it got dark enough that nobody was looking at him.", delay: 2600 },
+
+    { role: 'ai', depth: 4, stay: "Ten questions in, one location. The night that costs something to tell is the one that was never going to arrive first.", text: "He waited for the dark. Was there one night on that porch you've kept longer than the others?", delay: 2400 },
+    { role: 'user', text: "There was one summer he played until the fireflies came out. We all went quiet — nobody decided to, we just stopped talking. I was six, maybe seven. I've never forgotten it.", delay: 2700 },
+
+    { role: 'ai', depth: 5, stay: "The last rung, and it's only asked because every rung under it was answered.", text: "If Walter were out there tonight and you could say one thing to him about that night — what would it be?", delay: 2400 },
+    { role: 'user', text: "That I was listening. He never knew that. He thought we were only being polite.", delay: 2600 },
+
+    { role: 'ai', depth: 5, text: "Then that's the thing we'll keep, Margaret — in your voice, in your words. Walter has been gone sixteen years and his grandchildren now know what he sounded like on that porch.", delay: 2500 },
 ];
+
+/** The rungs, named as the app names them. */
+const DEPTHS = ['Warm-up', 'Scene', 'Portrait', 'Stakes', 'Reckoning'] as const;
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -118,11 +162,32 @@ const PlayIcon = () => (
     </svg>
 );
 
-const ChevronIcon = () => (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <polyline points="6 9 12 15 18 9" />
+const PencilIcon = () => (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M12 20h9" />
+        <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" />
     </svg>
 );
+
+const PlusIcon = () => (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+);
+
+const HeartIcon = () => (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8z" />
+    </svg>
+);
+
+/** The three layers, in the order the family meets them. */
+const LAYERS = [
+    { id: 'summary' as const, label: 'Summary' },
+    { id: 'transcript' as const, label: 'Full transcript' },
+    { id: 'voice' as const, label: 'Voice highlight' },
+];
 
 const EyeIcon = () => (
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -149,11 +214,19 @@ const WAVE_BARS = [5, 9, 14, 8, 16, 11, 6, 13, 9, 15, 7, 12, 5, 10, 14, 8];
  * not a replacement for it.
  */
 const TRANSCRIPT = [
-    { who: 'A Story', at: '04:12', text: 'Then let’s start with him. Not his whole life — just one ordinary evening with Walter that you can still see. Where are you?' },
-    { who: 'Margaret', at: '04:21', text: 'The porch. Summer evenings after supper — he’d sit out there in the rocking chair with his guitar, and the neighbors would wander over.' },
-    { who: 'A Story', at: '04:39', text: 'Is there one particular night on that porch? One you’d want them to have?' },
-    { who: 'Margaret', at: '04:44', text: 'There was one summer when he played until the fireflies came out. We all went quiet, just listening. I must have been six or seven. I’ve never forgotten it.' },
+    { who: 'A Story', at: '04:12', text: 'Stay on that porch a moment. It’s after supper, before he starts playing — what can you hear?' },
+    { who: 'Margaret', at: '04:19', text: 'Crickets. And the screen door — it had a spring on it, banged every time somebody came out. Mother was forever telling them to mind it.' },
+    { who: 'A Story', at: '04:38', text: 'And Walter, before the first chord. What was he doing with his hands?' },
+    { who: 'Margaret', at: '04:44', text: 'Tuning. Longer than he needed to, I always thought. He was shy about it — he’d only really play once it got dark enough that nobody was looking at him.' },
+    { who: 'A Story', at: '05:06', text: 'He waited for the dark. Was there one night on that porch you’ve kept longer than the others?' },
+    { who: 'Margaret', at: '05:14', text: 'There was one summer he played until the fireflies came out. We all went quiet — nobody decided to, we just stopped talking. I was six, maybe seven. I’ve never forgotten it.' },
+    { who: 'A Story', at: '05:41', text: 'If Walter were out there tonight and you could say one thing to him about that night — what would it be?' },
+    { who: 'Margaret', at: '05:52', text: 'That I was listening. He never knew that. He thought we were only being polite.' },
 ];
+
+/** The summary layer — what the family reads first, over a cup of tea. */
+const SUMMARY =
+    'Margaret describes the summer evenings on her parents’ porch in Kentucky, where her father Walter played guitar after supper while the neighbours drifted over. She remembers the screen door with the spring on it, and that Walter tuned far longer than he needed to — he was shy, and would only really play once it was dark enough that nobody was watching him. One summer he played until the fireflies came out and the whole porch went quiet without anyone deciding to.';
 
 const PlayingIcon = () => (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -172,7 +245,11 @@ const DemoPhone = () => {
     const [showMemoryCard, setShowMemoryCard] = useState(false);
     const [memoryCardVisible, setMemoryCardVisible] = useState(false);
     const [showEndCta, setShowEndCta] = useState(false);
-    const [showTranscript, setShowTranscript] = useState(false);
+    /** Which layer of the memory the card is showing. All three are real. */
+    const [layer, setLayer] = useState<'summary' | 'transcript' | 'voice'>('summary');
+    /** How far up the ladder the interview has climbed, live. */
+    const [depth, setDepth] = useState(0);
+    const [stay, setStay] = useState<string | null>(null);
 
     const [speechSupported] = useState(() => Boolean(getSpeechRecognitionCtor()));
     const [isRecording, setIsRecording] = useState(false);
@@ -187,6 +264,7 @@ const DemoPhone = () => {
     const isRecordingRef = useRef(false);
     const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
     const phoneBodyRef = useRef<HTMLDivElement>(null);
+    const memoryCardRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         canceledRef.current = false;
@@ -195,10 +273,25 @@ const DemoPhone = () => {
         };
     }, []);
 
+    /*
+     * Follow the conversation to the bottom while it runs — but the memory card
+     * is taller than the phone, so scrolling to the bottom of it lands the
+     * viewer on the metadata footer, past the title, the tabs and everything
+     * the card is for. When the card appears, go to its top instead.
+     */
     useEffect(() => {
-        if (phoneBodyRef.current) {
-            phoneBodyRef.current.scrollTop = phoneBodyRef.current.scrollHeight;
+        const body = phoneBodyRef.current;
+        if (!body) return;
+        if (showMemoryCard && memoryCardRef.current) {
+            /* Measured, not offsetTop: PhoneBody is not the offset parent, so
+               offsetTop is relative to something else and lands short. */
+            const delta =
+                memoryCardRef.current.getBoundingClientRect().top -
+                body.getBoundingClientRect().top;
+            body.scrollTop += delta - 6;
+            return;
         }
+        body.scrollTop = body.scrollHeight;
     }, [messages, isTyping, showVoicePanel, showMemoryCard, showEndCta]);
 
     useEffect(() => {
@@ -271,12 +364,18 @@ const DemoPhone = () => {
         setShowMemoryCard(false);
         setMemoryCardVisible(false);
         setShowEndCta(false);
-        setShowTranscript(false);
+        setLayer('summary');
+        setDepth(0);
+        setStay(null);
 
         for (const turn of SCRIPT) {
             await sleep(turn.delay);
             if (canceledRef.current) return;
             if (turn.role === 'ai') {
+                /* The rung is claimed before the question is asked, so the bar
+                   moves and then the question that earned it arrives. */
+                if (turn.depth) setDepth(turn.depth);
+                setStay(turn.stay ?? null);
                 setIsTyping(true);
                 await sleep(Math.min(turn.text.length * 16, 2000));
                 if (canceledRef.current) return;
@@ -352,6 +451,27 @@ const DemoPhone = () => {
                     <ChatBarLabel>A Story · calling Margaret</ChatBarLabel>
                 </ChatBar>
 
+                {/* Sticky, because the reasoning has to stay on screen while
+                    the conversation scrolls under it — that is the whole point
+                    of showing it. */}
+                {/* Retired once the memory card lands: the ladder has done
+                    its work by then, and left sticky it simply covers the card
+                    it was building towards. */}
+                <DepthBand $show={depth > 0 && !showMemoryCard} aria-hidden="true">
+                    <DepthHead>
+                        <span>One evening · Walter</span>
+                        <b>{DEPTHS[depth - 1] ?? DEPTHS[0]}</b>
+                    </DepthHead>
+                    <DepthRungs>
+                        {DEPTHS.map((name, i) => (
+                            <DepthRung key={name} $level={i + 1} $on={depth >= i + 1} />
+                        ))}
+                    </DepthRungs>
+                    <StayNote $show={Boolean(stay)}>
+                        {stay ? <><b>Why this question:</b> {stay}</> : null}
+                    </StayNote>
+                </DepthBand>
+
                 <ChatMsgs role="log" aria-live="polite" aria-label="Conversation demo">
                     {messages.map((m) => (
                         <Bubble key={m.id} $role={m.role} $show={m.show}>
@@ -415,7 +535,7 @@ const DemoPhone = () => {
                 )}
 
                 {showMemoryCard && (
-                    <MemoryCardReveal $show={memoryCardVisible} aria-label="Memory saved from this conversation">
+                    <MemoryCardReveal ref={memoryCardRef} $show={memoryCardVisible} aria-label="Memory saved from this conversation">
                         <McIntro>Memory saved</McIntro>
                         <MemoryCard>
                             <McHeader>
@@ -424,35 +544,82 @@ const DemoPhone = () => {
                             </McHeader>
                             <McTitle>Fireflies on the Porch</McTitle>
 
-                            <McLayers aria-label="What is kept from this conversation">
-                                <McLayerTab $active>Summary</McLayerTab>
-                                <McLayerTab>Full transcript</McLayerTab>
-                                <McLayerTab>Voice highlight</McLayerTab>
+                            <McAbout>
+                                <HeartIcon />
+                                <span>
+                                    This evening belongs to <b>Walter, who died in 2009</b>. Margaret is
+                                    the one telling it. The person a story is about does not have to be
+                                    here for it to be kept.
+                                </span>
+                            </McAbout>
+
+                            {/* Three layers, three panels. These used to be
+                                decorative chips over a fixed summary, which
+                                promised a transcript and a recording the card
+                                never actually showed. */}
+                            <McLayers role="tablist" aria-label="What is kept from this conversation">
+                                {LAYERS.map((l) => (
+                                    <McLayerTab
+                                        key={l.id}
+                                        type="button"
+                                        role="tab"
+                                        id={`mc-tab-${l.id}`}
+                                        aria-selected={layer === l.id}
+                                        aria-controls={`mc-panel-${l.id}`}
+                                        $active={layer === l.id}
+                                        onClick={() => setLayer(l.id)}
+                                    >
+                                        {l.label}
+                                    </McLayerTab>
+                                ))}
                             </McLayers>
 
-                            <McExcerpt>
-                                "There was one summer when he played until the fireflies came out. We all went quiet, just listening. I must have been six or seven. I've never forgotten it."
-                            </McExcerpt>
+                            {layer === 'summary' && (
+                                <McPanel role="tabpanel" id="mc-panel-summary" aria-labelledby="mc-tab-summary">
+                                    <McSummary>{SUMMARY}</McSummary>
+                                    <McExcerpt>
+                                        &ldquo;That I was listening. He never knew that. He thought we
+                                        were only being polite.&rdquo;
+                                    </McExcerpt>
+                                </McPanel>
+                            )}
 
-                            <McTranscriptToggle
-                                type="button"
-                                onClick={() => setShowTranscript((v) => !v)}
-                                aria-expanded={showTranscript}
-                                aria-controls="mc-transcript"
-                            >
-                                {showTranscript ? 'Hide the full transcript' : 'Read the full transcript'}
-                                <ChevronIcon />
-                            </McTranscriptToggle>
+                            {layer === 'transcript' && (
+                                <McPanel role="tabpanel" id="mc-panel-transcript" aria-labelledby="mc-tab-transcript">
+                                    <McTranscript>
+                                        {TRANSCRIPT.map((t) => (
+                                            <p key={t.at}>
+                                                <span className="who">{t.who}<McAt>{t.at}</McAt></span>
+                                                {t.text}
+                                            </p>
+                                        ))}
+                                    </McTranscript>
+                                    <McVoiceNote>
+                                        Word for word, nothing edited out, and searchable &mdash; the
+                                        summary above is a layer over this, never a replacement for it.
+                                    </McVoiceNote>
+                                </McPanel>
+                            )}
 
-                            {showTranscript && (
-                                <McTranscript id="mc-transcript">
-                                    {TRANSCRIPT.map((t) => (
-                                        <p key={t.text}>
-                                            <span className="who">{t.who}<McAt>{t.at}</McAt></span>
-                                            {t.text}
-                                        </p>
-                                    ))}
-                                </McTranscript>
+                            {layer === 'voice' && (
+                                <McPanel role="tabpanel" id="mc-panel-voice" aria-labelledby="mc-tab-voice">
+                                    <McClip>
+                                        <WaveIcon />
+                                        <span className="label">In Margaret&rsquo;s voice</span>
+                                        <McWave aria-hidden="true">
+                                            {WAVE_BARS.map((h, i) => (
+                                                <i key={i} style={{ height: h }} />
+                                            ))}
+                                        </McWave>
+                                        <span className="dur">0:41</span>
+                                    </McClip>
+                                    <McVoiceNote>
+                                        Forty-one seconds, chosen from an hour: the pause before she
+                                        answers, and the way her voice goes when she says <em>he thought
+                                        we were only being polite</em>. A transcript cannot hold that,
+                                        so it is kept as audio.
+                                    </McVoiceNote>
+                                </McPanel>
                             )}
 
                             <McLinked>
@@ -460,24 +627,34 @@ const DemoPhone = () => {
                                 <McChip>Walter, her father</McChip>
                                 <McChip>The porch</McChip>
                                 <McChip>Kentucky</McChip>
-                                <McChip>c. 1952</McChip>
+                                <McChip>c. 1953</McChip>
                             </McLinked>
+
+                            {/* The three access tiers the app really has:
+                                owner, invited manager (read + edit), and anyone
+                                with the contribute link (submits, pending). */}
+                            <McFamily>
+                                <p className="row">
+                                    <PencilIcon />
+                                    <span>
+                                        <b>Ellie</b> was invited and can edit this archive. She corrected
+                                        the year &mdash; 1953, not 1952.
+                                    </span>
+                                </p>
+                                <p className="row">
+                                    <PlusIcon />
+                                    <span>
+                                        <b>Tom</b> added a photograph of the porch from the link Margaret
+                                        sent him. No account needed.
+                                        <McPending>Waiting for Margaret</McPending>
+                                    </span>
+                                </p>
+                            </McFamily>
 
                             <McShared>
                                 <EyeIcon />
                                 <span><b>Margaret decides who sees this.</b> Right now: Ellie, Tom and 4 others.</span>
                             </McShared>
-
-                            <McClip>
-                                <WaveIcon />
-                                <span className="label">Voice highlight &mdash; kept as audio</span>
-                                <McWave aria-hidden="true">
-                                    {WAVE_BARS.map((h, i) => (
-                                        <i key={i} style={{ height: h }} />
-                                    ))}
-                                </McWave>
-                                <span className="dur">0:41</span>
-                            </McClip>
 
                             <McMeta>
                                 <span>Chapter: Childhood</span>

@@ -4,54 +4,99 @@ import { CONTACT } from './contact';
  * Where the money is taken.
  *
  * ─────────────────────────────────────────────────────────────────────────
- * TO GO LIVE: create one Stripe Payment Link per row below, paste the URLs
- * in, and every buy button on the site starts taking money. Nothing else
- * needs to change, and no backend is involved.
+ * NOT LIVE, AND DELIBERATELY SO. Every row in LINKS is empty, and filling
+ * them in is NOT the last step — see "The gap" below. A Payment Link pasted
+ * in today would take somebody's money and grant them nothing.
  * ─────────────────────────────────────────────────────────────────────────
  *
  * This site is a static build with no server, so Stripe Payment Links are the
- * right mechanism: Stripe hosts the checkout page, handles cards, wallets,
- * receipts, tax and SCA, and hands the customer back to a URL you choose.
- * There is no secret key in this repo and nothing to deploy.
+ * right mechanism for it: Stripe hosts the checkout page and handles cards,
+ * wallets, receipts, tax and SCA. There is no secret key in this repo and
+ * nothing to deploy.
  *
- * How to create each one (about ten minutes for all five):
+ * ── What the app actually charges ────────────────────────────────────────
+ * An earlier version of this file said to price everything as "a *one-off*
+ * payment, not a subscription. Nothing here recurs." That was wrong, and it
+ * contradicted the product: supabase/functions/create-plan-checkout in the
+ * app reads six STRIPE_PRICE_* secrets, and SUBSCRIPTION_PLANS covers
+ * individual, family and monthly. The real shape is:
  *
- *   1. Stripe Dashboard → Product catalogue → add a product per row below,
- *      priced in USD as a *one-off* payment, not a subscription. Nothing here
- *      recurs; the site promises that in writing on /pricing and in the terms.
- *   2. Payment Links → new link → pick the product → "Don't show quantity
- *      selector" for the plans, but *do* allow quantity on the book.
- *   3. Under "After payment", redirect to https://astoryapp.com/thanks so the
- *      buyer lands somewhere that tells them what happens next.
- *   4. Collect the buyer's name, email and — for anything printed — a shipping
- *      address. For the plans, add a custom field asking who the
- *      storyteller is and their phone number, because that is what the first
- *      call needs. That question is the whole onboarding.
- *   5. Copy the link (https://buy.stripe.com/…) into the matching row.
+ *   individual        annual subscription      STRIPE_PRICE_INDIVIDUAL_BASE
+ *   individual+book   annual subscription      STRIPE_PRICE_INDIVIDUAL_BOOK
+ *   family            annual subscription      STRIPE_PRICE_FAMILY_BASE
+ *   family+book       annual subscription      STRIPE_PRICE_FAMILY_BOOK
+ *   monthly           monthly subscription     STRIPE_PRICE_MONTHLY
+ *   express           one-time                 STRIPE_PRICE_EXPRESS
+ *   book              one-time, ad hoc         (built by create-book-checkout)
  *
- * Until a link is filled in, that button quietly falls back to the mailto
- * flow that has always been here, so the site never shows a broken or
- * dead-end purchase path. `isCheckoutLive` reports which mode is in effect.
+ * Those six Price objects already exist in the Stripe account. A Payment Link
+ * should be built ON one of them rather than on a new product, so the site and
+ * the app charge the identical price and the app's own webhook can recognise
+ * what was bought from the price id alone.
+ *
+ * ── The gap, which is the actual next step ───────────────────────────────
+ * The app grants a plan in supabase/functions/stripe-webhook by reading
+ * metadata.user_id (or client_reference_id) off the Stripe event and writing
+ * profiles.plan for that user. create-plan-checkout can set that because the
+ * buyer is already signed in when they check out.
+ *
+ * A buyer on this website is not signed in and has no account yet, so a
+ * Payment Link produces an event with no user_id — and the webhook, correctly,
+ * refuses to guess: subscription events log "subscription event with no
+ * metadata.user_id" and return, express logs "no linked user", the book logs
+ * "no order_id". All three skip. The charge succeeds and nothing is granted.
+ *
+ * So web checkout needs one more piece, app-side, before any link goes in:
+ *
+ *   1. Payment Link collects the buyer's email (Stripe does this by default)
+ *      and redirects to https://astoryapp.com/thanks.
+ *   2. stripe-webhook, on an event with no user_id, looks up profiles by that
+ *      email. If a profile exists, grant as normal.
+ *   3. If it does not — the usual case, because they have not signed up yet —
+ *      write a pending-entitlement row keyed by the lowercased email, holding
+ *      the plan and the Stripe customer/subscription ids.
+ *   4. The app claims that row at first sign-up, applies the plan, and marks
+ *      it claimed. Same email in, same plan out.
+ *
+ * Until that exists, /thanks must be the thing that carries the promise, and
+ * the buyer must be told plainly to sign up with the email they paid with.
+ *
+ * ── Creating the links, once the above is built ──────────────────────────
+ *   1. Stripe Dashboard → Payment Links → new link → "Find a price" and pick
+ *      the existing price for that row, NOT a new product.
+ *   2. Under "After payment", redirect to https://astoryapp.com/thanks.
+ *   3. Collect name and email always; a shipping address on anything printed.
+ *      Add a custom field for the storyteller's name and phone number on the
+ *      plans — that question is the whole of onboarding.
+ *   4. Copy the https://buy.stripe.com/… URL into the matching row below.
+ *
+ * Until a link is filled in, that button quietly falls back to the mailto flow
+ * that has always been here, so the site never shows a dead-end purchase path.
+ * `isCheckoutLive` reports which mode is in effect.
  */
 
 /**
  * Stripe Payment Link per purchasable thing. The plan keys match `PLANS[].id`
- * in ./pricing — and the app's own Stripe slugs — so a new plan needs a row here
- * and nothing else.
+ * in ./pricing — and the app's own Stripe slugs — so a new plan needs a row
+ * here and nothing else.
  *
- * Leave a value as an empty string until its link exists.
+ * Leave a value as an empty string until its link exists AND the webhook can
+ * grant what it sells.
  */
 const LINKS: Record<string, string> = {
-    /* Plans — keys match PLANS[].id in ./pricing, and the app's own slugs */
+    /* Annual subscriptions — keys match PLANS[].id in ./pricing */
     individual: '',
     family: '',
-    express: '',
 
-    /* The same plans with the Keepsake book bundled in */
+    /* The same two with the Keepsake book bundled in */
     'individual+book': '',
     'family+book': '',
 
-    /* The hardcover bought on its own */
+    /* Monthly subscription — the quiet option on /pricing */
+    monthly: '',
+
+    /* One-time: a 30-day window, and the hardcover on its own */
+    express: '',
     book: '',
 };
 

@@ -16,6 +16,8 @@ const colors = {
     ink70: color.body,
     ink40: color.faint,
     ink15: color.primaryLine,
+    ink20: color.primaryLineStrong,
+    green: color.primary,
     ink08: 'rgba(15, 74, 88, 0.08)',
     fireBg: color.primaryDeep,
     white: color.paper,
@@ -279,12 +281,23 @@ export const TeamGrid = styled.div`
     @media (max-width: 860px) { grid-template-columns: 1fr; }
     gap: 20px;
     margin-top: 40px;
-    max-width: 660px;
+    /* 660px was sized for a 52px portrait plus two short lines of résumé. With
+       a real bio and a call to action in each card it wrapped every third
+       word. */
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
 `;
 
-export const TeamCard = styled.div`
+/*
+ * The card is the link. There used to be a headshot here and it was a
+ * generated placeholder reading "drop a real headshot here" — a stand-in that
+ * shipped, which is worse than no portrait at all on a page whose whole claim
+ * is that real people built this. Until there are photographs, the monogram
+ * carries the identity and the whole card is clickable, so anyone who wants to
+ * check who we are can go and check.
+ */
+export const TeamCard = styled.a`
     background: ${colors.cream};
     border: 1px solid ${colors.ink08};
     border-radius: 20px;
@@ -292,23 +305,57 @@ export const TeamCard = styled.div`
     display: flex;
     align-items: flex-start;
     gap: 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+
+    &:hover,
+    &:focus-visible {
+        border-color: ${colors.ink20};
+        background: #fff;
+        transform: translateY(-2px);
+    }
+
+    &:hover .team-go,
+    &:focus-visible .team-go {
+        color: ${colors.orangeText};
+        gap: 8px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+        &:hover, &:focus-visible { transform: none; }
+    }
 `;
 
-export const TeamPhoto = styled.div`
+export const TeamMonogram = styled.span`
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    overflow: hidden;
     flex-shrink: 0;
-    border: 2px solid ${colors.ink08};
+    display: grid;
+    place-items: center;
+    background: ${colors.green};
+    color: ${colors.cream};
+    font-family: ${fonts.display};
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+`;
 
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center top;
-        display: block;
-    }
+export const TeamGo = styled.span`
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: ${colors.ink70};
+    transition: color 160ms ease, gap 160ms ease;
+
+    @media (prefers-reduced-motion: reduce) { transition: none; }
 `;
 
 export const TeamInfo = styled.div`
