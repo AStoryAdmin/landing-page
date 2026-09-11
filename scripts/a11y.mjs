@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url);
 const axeSource = readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 
 const base = (process.argv[2] ?? 'http://localhost:4173').replace(/\/$/, '');
-const ROUTES = ['/', '/experience', '/family', '/organizations', '/institution', '/pricing', '/your-story', '/thanks', '/card',
+const ROUTES = ['/', '/experience', '/family', '/organizations', '/institution', '/pricing', '/your-story', '/thanks',
     '/story', '/faq', '/privacy', '/terms', '/nope-404'];
 
 const browser = await chromium.launch();

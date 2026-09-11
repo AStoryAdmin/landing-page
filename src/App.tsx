@@ -26,7 +26,6 @@ const PublicStory = lazy(() => import('./components/publicStory'));
 const Contribute = lazy(() => import('./components/contribute'));
 const YourStory = lazy(() => import('./components/yourStory'));
 const Thanks = lazy(() => import('./components/thanks'));
-const GiftCardMaker = lazy(() => import('./components/giftCard'));
 const NotFound = lazy(() => import('./components/notFound'));
 
 /** Reserves the space taken by the fixed header (see navbar's ResizeObserver). */
@@ -92,7 +91,6 @@ function App() {
                     <Route path="/your-story" element={<YourStory />} />
                     {/* Post-purchase. Stripe redirects here; noindex. */}
                     <Route path="/thanks" element={<Thanks />} />
-                    <Route path="/card" element={<GiftCardMaker />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>

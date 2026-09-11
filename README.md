@@ -346,9 +346,12 @@ first frame.
   today, and no package is priced against it. `/privacy` carries the matching
   paragraph on imported content.
 - The two program plans stay quoted rather than listed.
-- The gift card shown on the home page is rendered from CSS, not a photograph,
-  so it always matches the brand. The real artefact a buyer receives does not
-  exist yet — building it is the obvious next step, and the copy promises it.
+- **There is no gift card, and the site must not invent one.** The app has no
+  gift infrastructure at all: no code, nothing to redeem, nothing that arrives
+  in an envelope. The site used to promise a printed card in eight places and
+  ship a `/card` page that generated one; the page is deleted and the copy now
+  says what a buyer actually hands over, which is an archive somebody else has
+  already set up with the first call already booked.
 - The terms now promise a refund for a gift that goes unused, and the privacy
   policy describes the buyer/storyteller split. Both need a lawyer's eye before
   launch; they are written to be honest, not to be authoritative.

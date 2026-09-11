@@ -13,9 +13,14 @@ import { ForeverBand, ForeverList, ForeverStops, SameEmail } from './pricing.sty
  * redirect in checkout.ts points here, and without it a paying customer's
  * very first experience of A Story is a 404.
  *
- * Its job is narrow: tell them what happens now, hand them the card, and make
- * the one thing we need from them obvious. Everything on this page assumes
- * fulfilment is manual, because at this volume it is.
+ * Its job is narrow: tell them what happens now, and make the one thing we
+ * need from them obvious. Everything on this page assumes fulfilment is
+ * manual, because at this volume it is.
+ *
+ * There used to be a first step here called "Make the card", pointing at a
+ * /card page that generated a printable gift card. There is no gift card in
+ * the product — no code, nothing to redeem, nothing that arrives in an
+ * envelope — so the step and the page it linked to are both gone.
  *
  * TIMINGS BELOW ARE PLACEHOLDERS — replace "within a few hours" and "the next
  * working day" with what you can actually commit to before this goes live. A
@@ -56,18 +61,8 @@ const Thanks = () => (
 
                 <StepGrid>
                     <Step>
-                        <p className="who">Now</p>
-                        <StepNumber>1</StepNumber>
-                        <StepTitle>Make the card</StepTitle>
-                        <StepText>
-                            Write your note, add their name, and print it for an envelope &mdash; or send
-                            it as a link if you won&rsquo;t be in the room. It takes two minutes and it is
-                            the part they open.
-                        </StepText>
-                    </Step>
-                    <Step>
                         <p className="who">Us</p>
-                        <StepNumber>2</StepNumber>
+                        <StepNumber>1</StepNumber>
                         <StepTitle>We set up their archive</StepTitle>
                         <StepText>
                             We create the storyteller&rsquo;s archive from the details you gave at
@@ -77,16 +72,16 @@ const Thanks = () => (
                     </Step>
                     <Step>
                         <p className="who">You</p>
-                        <StepNumber>3</StepNumber>
-                        <StepTitle>Give it whenever suits</StepTitle>
+                        <StepNumber>2</StepNumber>
+                        <StepTitle>Tell them whenever suits</StepTitle>
                         <StepText>
-                            Hand over the card on the day. Tell us the date and we will hold the first
-                            call until then, so nothing spoils the surprise.
+                            Tell us the date you want to say something and we will hold the first call
+                            until then, so nothing rings early and spoils it.
                         </StepText>
                     </Step>
                     <Step>
                         <p className="who">Them</p>
-                        <StepNumber>4</StepNumber>
+                        <StepNumber>3</StepNumber>
                         <StepTitle>The phone rings</StepTitle>
                         <StepText>
                             A Story calls, introduces itself by naming you, and asks. They answer and
@@ -96,7 +91,7 @@ const Thanks = () => (
                 </StepGrid>
 
                 <Actions $center>
-                    <Button to="/card" $variant="primary">Make their card now <IconArrow /></Button>
+                    <Button to="/experience" $variant="primary">See what happens on the call <IconArrow /></Button>
                     <ButtonAnchor href={CONTACT.general} $variant="outline">Something looks wrong</ButtonAnchor>
                 </Actions>
 

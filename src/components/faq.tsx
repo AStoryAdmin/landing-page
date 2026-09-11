@@ -25,8 +25,8 @@ const faqGroups: FaqGroupData[] = [
                 question: 'What do I actually hand them on the day?',
                 answer: (
                     <>
-                        <AnswerParagraph>A card with a short note from you and one link underneath. We send you a version to print at home and a version to text or email, so it works whether you are handing it over at the table or you are three time zones away.</AnswerParagraph>
-                        <AnswerParagraph>Nothing expires and nothing has to happen on the day. The link installs A Story and books the first call &mdash; whenever they are ready, that evening or in February &mdash; and you can do that step for them if you would rather they never saw it.</AnswerParagraph>
+                        <AnswerParagraph>An archive that is already theirs. You set it up beforehand &mdash; their name, their birthday, the hour of day A Story should ring &mdash; so what you hand over on the day is a thing that already works rather than instructions for making one work.</AnswerParagraph>
+                        <AnswerParagraph>There is no card, no code and nothing to redeem, and nothing has to happen on the day at all. The first call can be that evening or in February, and moving it is one tap. If you would rather they never saw the setting-up, you can do every bit of it without them in the room.</AnswerParagraph>
                     </>
                 ),
             },
@@ -76,7 +76,7 @@ const faqGroups: FaqGroupData[] = [
                 question: 'Will it arrive in time for Christmas or a birthday?',
                 answer: (
                     <>
-                        <AnswerParagraph>The card and the link are ready within minutes, so the gift itself is never the thing that runs late. Tell us the date and we will make sure you have everything to hand over on the day.</AnswerParagraph>
+                        <AnswerParagraph>Setting the archive up takes a couple of minutes, so the gift itself is never the thing that runs late &mdash; you can do it the night before. Tell us the date and we will hold the first call until then.</AnswerParagraph>
                         <AnswerParagraph>The printed book comes later, once there are stories to print &mdash; three to four weeks from the moment you approve the layout. Most families treat the book as a second gift that arrives months after the first.</AnswerParagraph>
                     </>
                 ),
@@ -220,7 +220,7 @@ const faqGroups: FaqGroupData[] = [
                 question: 'Can I give A Story as a gift?',
                 answer: (
                     <>
-<AnswerParagraph>Yes &mdash; and it is one of the most meaningful gifts we see people give. Express is the one most people give, because it is a single payment that never renews on the person receiving it. It can be set up entirely by the giver and presented as a complete experience &mdash; a device ready to begin, or a card the recipient opens at their own pace.</AnswerParagraph>
+<AnswerParagraph>Yes &mdash; and it is one of the most meaningful gifts we see people give. Express is the one most people give, because it is a single payment that never renews on the person receiving it. It can be set up entirely by the giver and handed over as a thing that already works: their archive, their app, their first call already booked for whenever suits.</AnswerParagraph>
                         <AnswerParagraph>Many families give A Story as a birthday gift, a holiday present, or a "just because" expression of love. Some describe it as the only gift they've given where the whole family ends up in tears &mdash; in the best way.</AnswerParagraph>
 <AnswerParagraph>Email us at contact@astoryapp.com to set one up or ask about gifting options.</AnswerParagraph>
                     </>
