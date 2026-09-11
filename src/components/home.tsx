@@ -12,10 +12,10 @@ import {
 import { CONTACT } from '../lib/contact';
 import { track } from '../lib/analytics';
 import { PRICE } from '../lib/pricing';
-import { CHAPTER_COUNT, QUESTION_COUNT, SENSITIVE_COUNT } from '../lib/product';
+import { CHAPTERS, CHAPTER_COUNT, QUESTION_COUNT, SENSITIVE_COUNT } from '../lib/product';
 import { SCENARIOS } from '../lib/demoScripts';
 import {
-    ReelGrid, ReelItem, ReelHead, ReelChapter, ReelTitle, ReelWatch,
+    ReelGrid, ReelItem, ReelHead, ReelSlot, ReelChapter, ReelTitle, ReelWatch,
 } from './demoPhone.styles';
 import { faqSchema, organizationSchema, productSchema } from '../lib/seo';
 import productImg from './../assets/astoryProduct.webp';
@@ -29,7 +29,10 @@ import productImg from './../assets/astoryProduct.webp';
 const DemoPhone = lazy(() => import('./demoPhone'));
 import {
     AlsoBand, AlsoCard, AlsoGrid, DemoFallback, Divider, EarlyProof, FaqItem, FaqList,
-    DemoCoda, Feature, FeatureList, HandoverSteps,
+    ArchiveBody, ArchiveFeed, ArchiveFoot, ArchiveHead, ArchivePanel, ArchiveStats,
+    ChapterPip, ChapterRail, ClipCard, ClipNote, ClipPanel, ClipWave, ClipWords, RailLabel, RailNote,
+    DemoCoda, EasyCard, EasyGrid, EasyNote, Feature, FeatureList, FeedItem, FeedLabel, FeedTier,
+    HandoverSteps,
     HandoverSplit, Hero, HeroActions, HeroBadge, HeroCopy, HeroInner, HeroSub, HeroTitle, HeroTrust,
     MatterItem, MattersCoda, MattersGrid, MattersLead,
     No, Objection, ObjectionGrid, Page, PriceStrip, ProofImage, ProofSplit, PromiseCard, PromiseGrid, PullQuote,
@@ -39,6 +42,24 @@ import {
     AccessRow,
     AboutSomeoneElse,
 } from './home.styles';
+
+/** The six chapters Joan's archive has something in after six weeks. */
+const JOAN_CHAPTERS = [
+    'Where we come from', 'Childhood', 'Love & family',
+    'The world we lived through', 'When everything changed', 'From the family',
+];
+
+/**
+ * The shape of the example voice highlight, as percentages of the track's
+ * height. Hand-set rather than random so it stays put between renders — a
+ * waveform that reshuffles reads as a thing that is playing, and nothing here
+ * is playing.
+ */
+const CLIP_WAVE = [
+    18, 34, 52, 41, 63, 78, 55, 44, 30, 22, 14, 9, 7, 6, 9, 16, 28, 47, 66, 81,
+    72, 58, 69, 84, 61, 43, 52, 38, 25, 17, 12, 8, 6, 5, 8, 13, 24, 39, 57, 71,
+    88, 74, 62, 49, 35, 27, 19, 13, 9, 6,
+];
 
 /** Occasions people actually buy for, each pre-filling the enquiry. */
 const OCCASIONS = [
@@ -182,25 +203,27 @@ const Home = () => {
                     <Eyebrow>Watch it happen</Eyebrow>
                     <H2>Three calls. <Italic>Nobody changes the subject.</Italic></H2>
                     <Lead $center>
-                        Not videos. Press play on any of them and you are watching the real interview
-                        flow, with the questions taken from the same bank the app asks from. In each
-                        one the same thing happens: somebody lets something slip on their way to
-                        answering a different question, and A Story drops its own question and goes
-                        after what they let slip.
+                        Three real interviews, and none of them starts until you open it. In each one
+                        the same thing happens: somebody lets something slip on their way to answering
+                        a different question &mdash; eight words, three words, half a sentence &mdash;
+                        and A Story drops its own question and goes after what they let slip. That is
+                        the entire product, and it is the one thing a list of questions can never do.
                     </Lead>
                     <Note>
-                        Watch the bar at the top of each phone. The interview climbs a rung only once
-                        the one below it has been answered &mdash; warm-up, scene, portrait, stakes,
-                        reckoning &mdash; which is why the last question in every call lands, and
-                        would have been unaskable at the start. {SENSITIVE_COUNT} of the{' '}
+                        As each call runs, the band at the top of the phone names the move being made:
+                        <em> follow the aside, not the answer</em>; <em>take the no at face value</em>;
+                        <em> come back when you said you would</em>. The interview climbs a rung only
+                        once the one below it has been answered &mdash; warm-up, scene, portrait,
+                        stakes, reckoning &mdash; which is why the last question in every call lands,
+                        and would have been unaskable at the start. {SENSITIVE_COUNT} of the{' '}
                         {QUESTION_COUNT} questions are marked sensitive and arrive with a line
-                        offering to leave them for another day; you will see two of those, and in the
+                        offering to leave them for another day. You will see two of those, and in the
                         middle call you will see somebody take the offer.
                     </Note>
                 </SectionHead>
 
                 <ReelGrid>
-                    {SCENARIOS.map((scenario, i) => (
+                    {SCENARIOS.map((scenario) => (
                         <ReelItem key={scenario.id}>
                             <ReelHead>
                                 <ReelChapter>{scenario.chapter}</ReelChapter>
@@ -208,7 +231,7 @@ const Home = () => {
                                 <ReelWatch>{scenario.watch}</ReelWatch>
                             </ReelHead>
                             <Suspense fallback={<DemoFallback aria-hidden="true" />}>
-                                <div
+                                <ReelSlot
                                     onClickCapture={() =>
                                         track('demo_played', { page: 'home', scenario: scenario.id })
                                     }
@@ -223,10 +246,8 @@ const Home = () => {
                                         onFinish={() =>
                                             setPlaying((p) => (p === scenario.id ? null : p))
                                         }
-                                        /* One live microphone on the page, not three. */
-                                        showMic={i === 0}
                                     />
-                                </div>
+                                </ReelSlot>
                             </Suspense>
                         </ReelItem>
                     ))}
@@ -246,6 +267,209 @@ const Home = () => {
                         </Button>
                     </Actions>
                 </DemoCoda>
+            </Container>
+        </Section>
+
+        {/* ─── The same call, six weeks later ───────────────────────── */}
+        {/*
+            The page used to go from the demo into a list of capabilities.
+            This is the same list with a name on it: Joan's archive, six weeks
+            after the third demo call, with the voice highlight, the two people
+            who added to it and the state of the book. Specific beats abstract,
+            and everybody in it is invented — which the footnote says out loud,
+            because a page that shows an archive is a page that could be
+            mistaken for showing a customer's.
+        */}
+        <Section $tone="ivory" $tight id="kept">
+            <Container>
+                <SectionHead $center>
+                    <Eyebrow>An example archive</Eyebrow>
+                    <H2>Six weeks after that call, <Italic>this is what her family has.</Italic></H2>
+                    <Lead $center>
+                        One conversation is a memory. What makes it an archive is everything that
+                        arrives afterwards &mdash; the son who fills in the dates, the niece who has
+                        been keeping letters since 1998, and the forty-seven seconds nobody in the
+                        family can listen to without stopping what they are doing.
+                    </Lead>
+                </SectionHead>
+
+                <Reveal>
+                    <ArchivePanel>
+                        <ArchiveHead>
+                            <div>
+                                <p className="who">Joan Merrick</p>
+                                <p className="sub">Kept by her son Paul &middot; 7 people invited &middot; started six weeks ago</p>
+                            </div>
+                            <ArchiveStats>
+                                <div><dt>14</dt><dd>Memories</dd></div>
+                                <div><dt>6</dt><dd>Chapters begun</dd></div>
+                                <div><dt>23</dt><dd>Photographs</dd></div>
+                                <div><dt>4</dt><dd>Voices</dd></div>
+                            </ArchiveStats>
+                        </ArchiveHead>
+
+                        <ArchiveBody>
+                            <ArchiveFeed>
+                                <FeedLabel>What arrived this month</FeedLabel>
+
+                                <FeedItem>
+                                    <span className="icon"><IconPhone size={15} /></span>
+                                    <div>
+                                        <p className="who">Joan<FeedTier>The storyteller</FeedTier></p>
+                                        <p className="what">Answered nine questions across three calls. The longest ran fifty-one minutes; she had told Paul she would manage five.</p>
+                                        <p className="when">Tuesdays, 10am &mdash; the hour she chose</p>
+                                    </div>
+                                </FeedItem>
+
+                                <FeedItem>
+                                    <span className="icon"><IconTranscript size={15} /></span>
+                                    <div>
+                                        <p className="who">Paul, her son<FeedTier>Invited &middot; can edit</FeedTier></p>
+                                        <p className="what">Added Susan&rsquo;s two dates, and photographed the back of a picture so the handwriting is in the book rather than described in it.</p>
+                                        <p className="when">Added four days ago</p>
+                                    </div>
+                                </FeedItem>
+
+                                <FeedItem>
+                                    <span className="icon"><IconArchive size={15} /></span>
+                                    <div>
+                                        <p className="who">Christine, her niece<FeedTier>Contribute link &middot; no account</FeedTier></p>
+                                        <p className="what">Sent three of Ray&rsquo;s letters from Aden, scanned on a library photocopier. She had been keeping them since 1998 and had never found the right moment to mention it.</p>
+                                        <p className="said">&ldquo;I always thought I was the only one who still had these. I didn&rsquo;t know who to give them to.&rdquo;</p>
+                                        <p className="when">Waiting for Joan to approve &middot; nothing appears until she does</p>
+                                    </div>
+                                </FeedItem>
+
+                                <FeedItem>
+                                    <span className="icon"><IconUsers size={15} /></span>
+                                    <div>
+                                        <p className="who">Amy, her granddaughter, 19<FeedTier>Invited &middot; can edit</FeedTier></p>
+                                        <p className="what">Recorded her own two minutes on the chapter called <em>From the family</em> &mdash; the same kitchen, thirty years later, from the person who was four feet lower down.</p>
+                                        <p className="said">&ldquo;Nan says Grandad was quiet. He wasn&rsquo;t quiet with me. He used to do the voices.&rdquo;</p>
+                                        <p className="when">Added last Sunday</p>
+                                    </div>
+                                </FeedItem>
+
+                                <FeedItem>
+                                    <span className="icon"><IconBook size={15} /></span>
+                                    <div>
+                                        <p className="who">The book<FeedTier>Optional, always</FeedTier></p>
+                                        <p className="what">Forty-one pages ready to print whenever they want one &mdash; and the archive carries on filling either way. Nothing about making a book means the story is finished.</p>
+                                        <p className="when">Not ordered. No hurry.</p>
+                                    </div>
+                                </FeedItem>
+                            </ArchiveFeed>
+
+                            <ClipPanel>
+                                <FeedLabel>The part you would not read</FeedLabel>
+                                <ClipCard>
+                                    <p className="head">
+                                        <IconWaveform size={14} /> In Joan&rsquo;s voice
+                                        <span className="dur">0:47</span>
+                                    </p>
+                                    <ClipWave aria-hidden="true">
+                                        {CLIP_WAVE.map((h, i) => (
+                                            <i key={i} style={{ height: `${h}%` }} />
+                                        ))}
+                                    </ClipWave>
+                                    <ClipWords>
+                                        &ldquo;He&rsquo;d been writing it down where I wouldn&rsquo;t see. All those years.
+                                        <span className="beat">— four seconds of nothing —</span>
+                                        Because he couldn&rsquo;t get it out of his mouth. He couldn&rsquo;t say mine
+                                        either. I&rsquo;d had that wrong for fifty-one years as well.&rdquo;
+                                    </ClipWords>
+                                    <ClipNote>
+                                        Then she laughs. Once, and not happily, and that laugh is the whole
+                                        marriage. It is why a transcript is not enough on its own: her son has
+                                        read these words perhaps twice, and played the eight seconds they sit
+                                        in more times than he would admit to.
+                                    </ClipNote>
+                                </ClipCard>
+
+                                <RailLabel>Where she has got to</RailLabel>
+                                <ChapterRail>
+                                    {CHAPTERS.map((c) => (
+                                        <ChapterPip key={c.name} $on={JOAN_CHAPTERS.includes(c.name)}>
+                                            {c.name}
+                                        </ChapterPip>
+                                    ))}
+                                </ChapterRail>
+                                <RailNote>
+                                    Six of eleven, in six weeks, and nobody is behind. There is no
+                                    finish line here &mdash; a chapter with nothing in it is a
+                                    conversation that has not happened yet, not a gap in a form.
+                                </RailNote>
+                            </ClipPanel>
+                        </ArchiveBody>
+
+                        <ArchiveFoot>
+                            An illustration of a real archive&rsquo;s shape and contents. Joan, Ray, Paul,
+                            Christine and Amy are invented, and so is every word quoted above &mdash; we
+                            would rather show you an honest example than a real family&rsquo;s worst year.
+                        </ArchiveFoot>
+                    </ArchivePanel>
+                </Reveal>
+            </Container>
+        </Section>
+
+        {/* ─── For the person who "isn't good with these things" ─────── */}
+        {/*
+            The commonest reason a gift like this never gets used is that the
+            person receiving it rules themselves out before trying. Everything
+            here is deliberately concrete, and honest about the one install:
+            the app goes on once, somebody else can do it, and from then on the
+            phone rings by itself.
+        */}
+        <Section $tone="paper" $tight id="easy">
+            <Container>
+                <SectionHead $center>
+                    <Eyebrow>Built for the person, not the phone</Eyebrow>
+                    <H2>&ldquo;She&rsquo;s not good with these things.&rdquo; <Italic>Good. Neither is this.</Italic></H2>
+                    <Lead $center>
+                        There is no dashboard, no typing, no password to remember and nothing to keep
+                        up with. The app is installed once &mdash; by you, if you like, before you even
+                        tell them &mdash; and after that A Story rings them through it at the hour they
+                        chose. They press the green button, the way they press it for anybody.
+                    </Lead>
+                </SectionHead>
+
+                <EasyGrid>
+                    <EasyCard>
+                        <p className="num">1</p>
+                        <h3>One install, done by somebody else</h3>
+                        <p>
+                            A couple of minutes on their phone or tablet. You can do the whole thing
+                            while they are in the next room, and they never see a setup screen.
+                        </p>
+                    </EasyCard>
+                    <EasyCard>
+                        <p className="num">2</p>
+                        <h3>Then it calls them</h3>
+                        <p>
+                            At the hour they picked, their phone rings and A Story is on the other end.
+                            Big buttons, large type, a warm voice with no hurry in it. Answer or don&rsquo;t
+                            &mdash; nothing is broken either way, and it will ask again tomorrow.
+                        </p>
+                    </EasyCard>
+                    <EasyCard>
+                        <p className="num">3</p>
+                        <h3>Talking is the whole job</h3>
+                        <p>
+                            No app to open, nothing to save, nothing to file. Twenty minutes is a real
+                            session, and the next call picks up exactly where the last one stopped
+                            without repeating a single question.
+                        </p>
+                    </EasyCard>
+                </EasyGrid>
+
+                <EasyNote>
+                    <p>
+                        <strong>And if they do get stuck, they ring us, not you.</strong> The point of a
+                        gift is that it is not a project for the person who gave it &mdash; so support
+                        for the storyteller comes to us directly, by phone, from a person. You never
+                        become your parent&rsquo;s tech support.
+                    </p>
+                </EasyNote>
             </Container>
         </Section>
 

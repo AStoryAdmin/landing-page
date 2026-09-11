@@ -232,108 +232,6 @@ export const ChatPlayButton = styled.button`
     }
 `;
 
-export const VoicePanel = styled.div`
-    flex-shrink: 0;
-    padding: 20px;
-    background: ${colors.paper3};
-    border-top: 1px solid ${colors.ink08};
-`;
-
-export const VoiceLabel = styled.div`
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: ${colors.ink40};
-    margin-bottom: 8px;
-`;
-
-export const VoiceText = styled.div`
-    font-family: ${fonts.display};
-    font-size: 15px;
-    font-style: italic;
-    color: ${colors.dark};
-    min-height: 40px;
-    line-height: 1.5;
-    margin-bottom: 12px;
-
-    .ph {
-        font-style: normal;
-        font-family: ${fonts.body};
-        font-size: 12px;
-        color: ${colors.ink40};
-    }
-`;
-
-export const VoiceRow = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-`;
-
-export const VoiceMicButton = styled.button<{ $on: boolean }>`
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 9px 16px;
-    border-radius: 20px;
-    font-family: ${fonts.body};
-    font-size: 12px;
-    font-weight: 500;
-    min-height: 38px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: 1.5px solid ${colors.ink15};
-    background: ${colors.cream};
-    color: ${colors.dark};
-
-    &:hover:not(:disabled) {
-        background: ${colors.ink08};
-    }
-    &:disabled {
-        opacity: 0.5;
-        cursor: default;
-    }
-
-    ${({ $on }) =>
-        $on &&
-        css`
-            background: ${colors.orange};
-            color: ${colors.onAccent};
-            border-color: ${colors.orange};
-            box-shadow: 0 0 0 4px ${colors.orangeSoft};
-        `}
-`;
-
-export const MicPulse = styled.span<{ $on: boolean }>`
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: currentColor;
-    ${({ $on }) =>
-        $on &&
-        css`
-            animation: ${pulseDot} 1s ease infinite;
-        `}
-`;
-
-export const VoiceClearButton = styled.button`
-    font-family: ${fonts.body};
-    font-size: 12px;
-    color: ${colors.ink70};
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-decoration: underline;
-`;
-
-export const VoiceHint = styled.span`
-    font-family: ${fonts.body};
-    font-size: 11px;
-    color: ${colors.ink40};
-`;
-
 export const MemoryCardReveal = styled.div<{ $show: boolean }>`
     flex-shrink: 0;
     padding: 0 20px 20px;
@@ -884,6 +782,22 @@ export const ReelHead = styled.div`
     width: 100%;
 `;
 
+/*
+ * The slot the phone sits in.
+ *
+ * There used to be a bare <div> here, carrying the analytics click handler and
+ * no styles. As a flex item of ReelItem it shrink-wrapped to its content — and
+ * since the cover is absolutely positioned it contributes no intrinsic width,
+ * so the phone's `width: 100%` had nothing to resolve against and its
+ * aspect-ratio ran backwards, deriving a 185px width from whatever height the
+ * near-empty body happened to have. A wrapper with no styles is still a box.
+ */
+export const ReelSlot = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 100%;
+`;
+
 export const ReelChapter = styled.p`
     margin: 0 0 5px;
     font-family: ${fonts.body};
@@ -909,4 +823,180 @@ export const ReelWatch = styled.p`
     font-size: 0.875rem;
     line-height: 1.55;
     color: ${colors.ink70};
+`;
+
+/* ── The closed state ─────────────────────────────────────────────────────
+ * Nothing plays until somebody asks for it.
+ *
+ * Three conversations running unasked, side by side, is a wall of noise, and
+ * more to the point it is the wrong posture for the material: these calls are
+ * a stranger's worst year, and the page should make a viewer choose to open
+ * one. The cover has to do the work a thumbnail does — carry the line that
+ * makes somebody want it, say whose it is, and say how long it takes.
+ */
+export const Cover = styled.div<{ $gone: boolean }>`
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    /* Centred, not bottom-aligned: flex-end overflows upward and silently
+       crops the quote, which is the one thing on the cover that has to be
+       read. The scroll is a floor for very short phones, not a design. */
+    justify-content: center;
+    overflow-y: auto;
+    gap: 12px;
+    padding: 26px 22px 22px;
+    background: ${colors.dark};
+    color: ${colors.fireText};
+    opacity: ${({ $gone }) => ($gone ? 0 : 1)};
+    pointer-events: ${({ $gone }) => ($gone ? 'none' : 'auto')};
+    transition: opacity 420ms ease;
+
+    @media (prefers-reduced-motion: reduce) { transition: none; }
+`;
+
+export const CoverChapter = styled.p`
+    margin: 0;
+    font-family: ${fonts.body};
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: ${colors.gold};
+`;
+
+export const CoverQuote = styled.blockquote`
+    margin: 0;
+    font-family: ${fonts.display};
+    font-size: 21px;
+    font-style: italic;
+    line-height: 1.32;
+    color: ${colors.fireText};
+`;
+
+export const CoverAttribution = styled.p`
+    margin: 0;
+    font-family: ${fonts.body};
+    font-size: 11px;
+    font-weight: 600;
+    color: ${colors.gold};
+`;
+
+export const CoverLead = styled.p`
+    margin: 0;
+    font-family: ${fonts.body};
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: ${colors.fire60};
+`;
+
+export const CoverOpen = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 48px;
+    margin-top: 4px;
+    padding: 0 16px;
+    font-family: ${fonts.body};
+    font-size: 13.5px;
+    font-weight: 600;
+    color: ${colors.onAccent};
+    background: ${colors.orange};
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: filter 160ms ease;
+
+    &:hover { filter: brightness(1.08); }
+    @media (prefers-reduced-motion: reduce) { transition: none; }
+`;
+
+export const CoverLength = styled.p`
+    margin: 0;
+    text-align: center;
+    font-family: ${fonts.body};
+    font-size: 10px;
+    color: ${colors.fire60};
+`;
+
+/* The phone needs to be the positioning context for the cover that covers it. */
+export const PhoneStage = styled.div`
+    position: relative;
+    display: flex;
+    flex: 1;
+    min-height: 0;
+`;
+
+/* ── The move being made ──────────────────────────────────────────────────
+ * Naming the technique above the reasoning is what turns the band from a
+ * progress bar into the argument. "Follow the aside, not the answer" is a
+ * thing an interviewer does on purpose; without the label a viewer sees the
+ * same AI asking another question.
+ */
+export const MethodTag = styled.span`
+    display: inline-block;
+    margin-bottom: 3px;
+    padding: 2px 7px;
+    border-radius: 20px;
+    background: rgba(224, 160, 63, 0.16);
+    font-family: ${fonts.body};
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: ${colors.gold};
+`;
+
+/* ── After the card ───────────────────────────────────────────────────────
+ * The demo used to end by handing the viewer a microphone and inviting them
+ * to speak a memory into the page. That is a free turn with nowhere to go:
+ * whatever they said was thrown away on reload, and the one thing the page
+ * needed them to do — start an archive — was not what it asked for.
+ */
+export const DemoClose = styled.div`
+    flex-shrink: 0;
+    padding: 4px 20px 22px;
+`;
+
+export const DemoCloseInner = styled.div`
+    padding: 16px;
+    border-radius: 14px;
+    background: ${colors.dark};
+    text-align: center;
+`;
+
+export const DemoCloseTitle = styled.p`
+    margin: 0 0 4px;
+    font-family: ${fonts.display};
+    font-size: 17px;
+    line-height: 1.25;
+    color: ${colors.fireText};
+`;
+
+export const DemoCloseSub = styled.p`
+    margin: 0 0 12px;
+    font-family: ${fonts.body};
+    font-size: 11px;
+    line-height: 1.55;
+    color: ${colors.fire60};
+`;
+
+export const DemoCloseAnchor = styled.a`
+    display: block;
+    min-height: 42px;
+    line-height: 42px;
+    border-radius: 10px;
+    background: ${colors.gold};
+    font-family: ${fonts.body};
+    font-size: 13px;
+    font-weight: 600;
+    color: ${colors.dark};
+    text-decoration: none;
+    transition: filter 160ms ease;
+
+    &:hover { filter: brightness(1.06); }
+    @media (prefers-reduced-motion: reduce) { transition: none; }
 `;

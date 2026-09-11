@@ -1050,3 +1050,353 @@ export const AboutSomeoneElse = styled.div`
         color: ${color.goldText};
     }
 `;
+
+/* ── One archive, six weeks in ────────────────────────────────────────────
+ * The page used to go from the demo straight into a feature list: "a card you
+ * can read in a minute", "voice highlights, kept as audio", "everyone who was
+ * in the room". All true, all abstract, and a visitor scrolling past learns
+ * nothing they could not have guessed from the name of the product.
+ *
+ * This is that list made specific. It is Joan's archive — the third demo call
+ * — six weeks after the first conversation, with the actual voice highlight,
+ * the actual contributions from her son and her niece, and the actual state of
+ * the book. Everyone in it is invented, and the section says so.
+ */
+export const ArchivePanel = styled.div`
+    background: ${color.paperPure};
+    border: 1px solid ${color.primaryLine};
+    border-radius: ${radius.xl};
+    overflow: hidden;
+    box-shadow: ${shadow.lg};
+`;
+
+export const ArchiveHead = styled.div`
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: ${space.lg};
+    flex-wrap: wrap;
+    padding: clamp(20px, 2.4vw, 28px) clamp(20px, 2.6vw, 32px);
+    background: ${color.primaryDeep};
+    color: ${color.onDark};
+
+    .who {
+        margin: 0;
+        font-family: ${font.display};
+        font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem);
+        line-height: 1.15;
+    }
+
+    .sub {
+        margin: 4px 0 0;
+        font-size: ${type.xs};
+        color: ${color.onDarkMuted};
+    }
+`;
+
+export const ArchiveStats = styled.dl`
+    display: flex;
+    gap: clamp(16px, 2.4vw, 34px);
+    margin: 0;
+    flex-wrap: wrap;
+
+    dt {
+        font-family: ${font.display};
+        font-size: clamp(1.3rem, 1.1rem + 0.7vw, 1.7rem);
+        line-height: 1;
+        color: ${color.goldText};
+    }
+
+    dd {
+        margin: 5px 0 0;
+        font-size: ${type.caption};
+        letter-spacing: ${tracking.wide};
+        text-transform: uppercase;
+        color: ${color.onDarkMuted};
+    }
+`;
+
+export const ArchiveBody = styled.div`
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+
+    ${media.md} { grid-template-columns: 1fr; }
+`;
+
+export const ArchiveFeed = styled.div`
+    padding: clamp(20px, 2.4vw, 30px);
+    border-right: 1px solid ${color.primaryLine};
+
+    ${media.md} { border-right: none; border-bottom: 1px solid ${color.primaryLine}; }
+`;
+
+export const FeedLabel = styled.p`
+    margin: 0 0 ${space.md};
+    font-size: ${type.caption};
+    font-weight: ${weight.bold};
+    letter-spacing: ${tracking.eyebrow};
+    text-transform: uppercase;
+    color: ${color.accentText};
+`;
+
+export const FeedItem = styled.div`
+    display: flex;
+    gap: ${space.sm};
+    padding: ${space.md} 0;
+
+    & + & { border-top: 1px solid ${color.primaryLine}; }
+
+    .icon {
+        flex-shrink: 0;
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: ${radius.pill};
+        background: ${color.primaryWash};
+        color: ${color.primary};
+    }
+
+    .who {
+        margin: 0 0 2px;
+        font-size: ${type.sm};
+        font-weight: ${weight.semibold};
+        color: ${color.ink};
+    }
+
+    .what {
+        margin: 0;
+        font-size: ${type.sm};
+        line-height: ${leading.normal};
+        color: ${color.body};
+    }
+
+    .said {
+        margin: 7px 0 0;
+        padding-left: 10px;
+        border-left: 2px solid ${color.accentLine};
+        font-family: ${font.display};
+        font-size: 1rem;
+        font-style: italic;
+        line-height: 1.5;
+        color: ${color.ink};
+    }
+
+    .when {
+        margin: 6px 0 0;
+        font-size: ${type.caption};
+        color: ${color.bodyMuted};
+    }
+`;
+
+export const FeedTier = styled.span`
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 7px;
+    border-radius: ${radius.pill};
+    border: 1px solid ${color.primaryLine};
+    font-size: 0.6875rem;
+    font-weight: ${weight.semibold};
+    color: ${color.bodyMuted};
+    vertical-align: 1px;
+`;
+
+/* ── The voice highlight, shown rather than played ────────────────────────
+ * There is no play button here on purpose. A control that looks like audio
+ * and makes no sound is a bug to everybody who presses it, and the clip that
+ * would matter belongs to a family rather than to a marketing page. So the
+ * card shows what a highlight is — its length, its shape and the words in it,
+ * with the pause marked where the pause is the point — and says plainly where
+ * the sound itself lives.
+ */
+export const ClipPanel = styled.div`
+    padding: clamp(20px, 2.4vw, 30px);
+    background: ${color.ivory};
+`;
+
+export const ClipCard = styled.figure`
+    margin: 0;
+    padding: clamp(16px, 2vw, 22px);
+    background: ${color.primaryDeep};
+    border-radius: ${radius.lg};
+    color: ${color.onDark};
+
+    .head {
+        display: flex;
+        align-items: center;
+        gap: ${space.xs};
+        margin-bottom: ${space.md};
+        font-size: ${type.caption};
+        font-weight: ${weight.bold};
+        letter-spacing: ${tracking.wide};
+        text-transform: uppercase;
+        color: ${color.goldText};
+    }
+
+    .dur {
+        margin-left: auto;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0;
+        color: ${color.onDarkMuted};
+    }
+`;
+
+export const ClipWave = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 46px;
+    margin-bottom: ${space.md};
+
+    i {
+        flex: 1;
+        min-width: 2px;
+        border-radius: 2px;
+        background: ${color.gold};
+        opacity: 0.72;
+    }
+`;
+
+export const ClipWords = styled.blockquote`
+    margin: 0;
+    font-family: ${font.display};
+    font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.25rem);
+    font-style: italic;
+    line-height: 1.5;
+    color: ${color.onDark};
+
+    .beat {
+        display: block;
+        margin: 8px 0;
+        font-family: ${font.body};
+        font-size: ${type.caption};
+        font-style: normal;
+        letter-spacing: ${tracking.wide};
+        text-transform: uppercase;
+        color: ${color.goldText};
+    }
+`;
+
+export const ClipNote = styled.figcaption`
+    margin-top: ${space.md};
+    padding-top: ${space.md};
+    border-top: 1px solid ${color.onDarkLine};
+    font-size: ${type.xs};
+    line-height: ${leading.normal};
+    color: ${color.onDarkMuted};
+`;
+
+export const ArchiveFoot = styled.p`
+    margin: 0;
+    padding: ${space.md} clamp(20px, 2.6vw, 32px);
+    border-top: 1px solid ${color.primaryLine};
+    background: ${color.ivory};
+    font-size: ${type.caption};
+    line-height: ${leading.normal};
+    color: ${color.bodyMuted};
+`;
+
+/* ── Nothing to learn ─────────────────────────────────────────────────────
+ * The commonest way a gift like this dies is that the person receiving it
+ * decides, before trying, that it is not for them. So the answer has to be
+ * concrete about how little there is to do — and honest that there is an app.
+ * It is installed once, by somebody else, and after that the phone rings on
+ * its own and they answer it.
+ */
+export const EasyGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: ${space.lg};
+
+    ${media.md} { grid-template-columns: 1fr; }
+`;
+
+export const EasyCard = styled.div`
+    padding: clamp(22px, 2.4vw, 30px);
+    background: ${color.paperPure};
+    border: 1px solid ${color.primaryLine};
+    border-radius: ${radius.lg};
+
+    h3 {
+        margin: 0 0 ${space.xs};
+        font-family: ${font.display};
+        font-size: 1.3rem;
+        font-weight: ${weight.medium};
+        color: ${color.ink};
+    }
+
+    p {
+        margin: 0;
+        font-size: ${type.sm};
+        line-height: ${leading.normal};
+        color: ${color.body};
+    }
+
+    .num {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        margin-bottom: ${space.sm};
+        border-radius: ${radius.pill};
+        background: ${color.primaryWash};
+        font-family: ${font.display};
+        font-size: 1.05rem;
+        color: ${color.primary};
+    }
+`;
+
+export const EasyNote = styled.div`
+    max-width: 70ch;
+    margin: clamp(28px, 3vw, 40px) auto 0;
+    padding: clamp(18px, 2vw, 24px);
+    border: 1px solid ${color.accentLine};
+    border-radius: ${radius.lg};
+    background: ${color.accentWash};
+    text-align: center;
+
+    p {
+        margin: 0;
+        font-size: ${type.sm};
+        line-height: ${leading.relaxed};
+        color: ${color.body};
+    }
+
+    strong { color: ${color.accentText}; font-weight: ${weight.semibold}; }
+`;
+
+/* The eleven chapters, with the six Joan has begun marked. It sits under the
+   voice clip because the clip alone left the column half empty, and because
+   "six of eleven, and nobody is behind" is the honest shape of an archive in
+   its second month — this is a thing you keep, not a form you complete. */
+export const ChapterRail = styled.ul`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: ${space.md} 0 0;
+    padding: 0;
+    list-style: none;
+`;
+
+export const ChapterPip = styled.li<{ $on?: boolean }>`
+    padding: 4px 10px;
+    border-radius: ${radius.pill};
+    font-size: ${type.caption};
+    font-weight: ${weight.medium};
+    border: 1px solid ${({ $on }) => ($on ? 'transparent' : color.primaryLine)};
+    background: ${({ $on }) => ($on ? color.primaryWash : 'transparent')};
+    color: ${({ $on }) => ($on ? color.primary : color.bodyMuted)};
+`;
+
+/** The line under the chapter rail. On the light panel, not the dark clip. */
+export const RailNote = styled.p`
+    margin: ${space.sm} 0 0;
+    font-size: ${type.caption};
+    line-height: ${leading.normal};
+    color: ${color.bodyMuted};
+`;
+
+/** Same as FeedLabel, with the gap the second block in a column needs. */
+export const RailLabel = styled(FeedLabel)`
+    margin-top: clamp(24px, 2.6vw, 32px);
+`;

@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import {
     PhoneContainer,
+    PhoneStage,
     StatusBar,
     PhoneBody,
     ChatBar,
@@ -12,14 +13,13 @@ import {
     TypingIndicator,
     ChatAction,
     ChatPlayButton,
-    VoicePanel,
-    VoiceLabel,
-    VoiceText,
-    VoiceRow,
-    VoiceMicButton,
-    MicPulse,
-    VoiceClearButton,
-    VoiceHint,
+    Cover,
+    CoverChapter,
+    CoverQuote,
+    CoverAttribution,
+    CoverLead,
+    CoverOpen,
+    CoverLength,
     MemoryCardReveal,
     McIntro,
     MemoryCard,
@@ -40,6 +40,7 @@ import {
     DepthRungs,
     DepthRung,
     StayNote,
+    MethodTag,
     SensitiveNote,
     McMeta,
     McSep,
@@ -53,7 +54,13 @@ import {
     McChip,
     McShared,
     McAt,
+    DemoClose,
+    DemoCloseInner,
+    DemoCloseTitle,
+    DemoCloseSub,
+    DemoCloseAnchor,
 } from './demoPhone.styles';
+import { CONTACT } from '../lib/contact';
 import { DEPTHS, sensitiveNote, type Scenario } from '../lib/demoScripts';
 import statusBarImg from './../assets/statusbar.webp';
 
@@ -67,37 +74,6 @@ type Message = {
     /** The permission line that precedes a sensitive question, if any. */
     note?: string | null;
 };
-
-interface SpeechRecognitionResultLike {
-    isFinal: boolean;
-    0: { transcript: string };
-}
-interface SpeechRecognitionEventLike {
-    resultIndex: number;
-    results: ArrayLike<SpeechRecognitionResultLike>;
-}
-interface SpeechRecognitionErrorEventLike {
-    error: string;
-}
-interface SpeechRecognitionLike {
-    continuous: boolean;
-    interimResults: boolean;
-    lang: string;
-    onresult: ((e: SpeechRecognitionEventLike) => void) | null;
-    onerror: ((e: SpeechRecognitionErrorEventLike) => void) | null;
-    onend: (() => void) | null;
-    start: () => void;
-    stop: () => void;
-}
-type SpeechRecognitionConstructor = new () => SpeechRecognitionLike;
-
-function getSpeechRecognitionCtor(): SpeechRecognitionConstructor | undefined {
-    const w = window as unknown as {
-        SpeechRecognition?: SpeechRecognitionConstructor;
-        webkitSpeechRecognition?: SpeechRecognitionConstructor;
-    };
-    return w.SpeechRecognition || w.webkitSpeechRecognition;
-}
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -174,50 +150,27 @@ type DemoPhoneProps = {
     stopped?: boolean;
     onStart?: () => void;
     onFinish?: () => void;
-    /** The live microphone panel. One per page is a feature; three is clutter. */
-    showMic?: boolean;
 };
 
-/**
- * The first exchange, already on screen before anyone presses anything.
- *
- * Three phones showing nothing but a status bar is three blank slabs, and a
- * viewer who does not press play learns not one thing about the product. This
- * way the resting state is already the pitch — A Story introducing itself and
- * naming the relative who set the call up — and Play is an invitation rather
- * than a precondition.
- */
-const opening = (scenario: Scenario): Message[] =>
-    scenario.script.slice(0, 2).map((t, i) => ({
-        id: i,
-        role: t.role,
-        text: t.text,
-        show: true,
-    }));
-
-const DemoPhone = ({ scenario, stopped = false, onStart, onFinish, showMic = false }: DemoPhoneProps) => {
-    const [messages, setMessages] = useState<Message[]>(() => opening(scenario));
+const DemoPhone = ({ scenario, stopped = false, onStart, onFinish }: DemoPhoneProps) => {
+    const [messages, setMessages] = useState<Message[]>([]);
     const [isTyping, setIsTyping] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
+    /** Set the first time somebody opens this call. The cover never returns. */
+    const [opened, setOpened] = useState(false);
     const [hasPlayed, setHasPlayed] = useState(false);
-    const [showVoicePanel, setShowVoicePanel] = useState(false);
     const [showMemoryCard, setShowMemoryCard] = useState(false);
     const [memoryCardVisible, setMemoryCardVisible] = useState(false);
+    const [showClose, setShowClose] = useState(false);
     /** Which layer of the memory the card is showing. All three are real. */
     const [layer, setLayer] = useState<LayerId>('summary');
     /** On while the demo walks the three tabs itself, so the hint has a reason. */
     const [tabTour, setTabTour] = useState(false);
     /** How far up the ladder the interview has climbed, live. */
     const [depth, setDepth] = useState(0);
-    const [stay, setStay] = useState<string | null>(null);
+    const [stay, setStay] = useState<{ method?: string; why: string } | null>(null);
     /** The permission line for the question currently being typed. */
     const [pendingNote, setPendingNote] = useState<string | null>(null);
-
-    const [speechSupported] = useState(() => (showMic ? Boolean(getSpeechRecognitionCtor()) : false));
-    const [isRecording, setIsRecording] = useState(false);
-    const [micError, setMicError] = useState(false);
-    const [transcript, setTranscript] = useState('');
-    const [interimTranscript, setInterimTranscript] = useState('');
 
     const runningRef = useRef(false);
     /* Bumped by every fresh run, so an older loop still sitting in a sleep can
@@ -229,11 +182,7 @@ const DemoPhone = ({ scenario, stopped = false, onStart, onFinish, showMic = fal
        its own tidying up, and an effect that called setState here would spend
        a cascading render on something the loop is about to handle anyway. */
     const stoppedRef = useRef(stopped);
-    /* Starts past the two seeded opening messages so their keys stay unique. */
-    const messageIdRef = useRef(2);
-    const finalTranscriptRef = useRef('');
-    const isRecordingRef = useRef(false);
-    const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+    const messageIdRef = useRef(0);
     const phoneBodyRef = useRef<HTMLDivElement>(null);
     const memoryCardRef = useRef<HTMLDivElement>(null);
 
@@ -269,57 +218,7 @@ const DemoPhone = ({ scenario, stopped = false, onStart, onFinish, showMic = fal
             return;
         }
         body.scrollTop = body.scrollHeight;
-    }, [messages, isTyping, showVoicePanel, showMemoryCard]);
-
-    useEffect(() => {
-        if (!showMic) return;
-        const SR = getSpeechRecognitionCtor();
-        if (!SR) return;
-
-        const recognition = new SR();
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        recognition.lang = 'en-US';
-
-        recognition.onresult = (e) => {
-            let interim = '';
-            let final = '';
-            for (let i = e.resultIndex; i < e.results.length; i++) {
-                const chunk = e.results[i][0].transcript;
-                if (e.results[i].isFinal) final += chunk;
-                else interim += chunk;
-            }
-            if (final) finalTranscriptRef.current += final;
-            setTranscript(finalTranscriptRef.current);
-            setInterimTranscript(interim);
-        };
-
-        recognition.onerror = (e) => {
-            if (e.error === 'not-allowed') setMicError(true);
-            isRecordingRef.current = false;
-            setIsRecording(false);
-        };
-
-        recognition.onend = () => {
-            if (isRecordingRef.current) {
-                try {
-                    recognition.start();
-                } catch {
-                    /* recognition was already running — nothing to recover. */
-                }
-            }
-        };
-
-        recognitionRef.current = recognition;
-
-        return () => {
-            try {
-                recognition.stop();
-            } catch {
-                /* recognition was already stopped — nothing to recover. */
-            }
-        };
-    }, [showMic]);
+    }, [messages, isTyping, showMemoryCard, showClose]);
 
     function addMessage(role: Role, text: string, note?: string | null) {
         const id = messageIdRef.current++;
@@ -357,13 +256,14 @@ const DemoPhone = ({ scenario, stopped = false, onStart, onFinish, showMic = fal
         };
 
         stoppedRef.current = false;
+        setOpened(true);
         onStart?.();
         setIsPlaying(true);
         setMessages([]);
         setIsTyping(false);
-        setShowVoicePanel(false);
         setShowMemoryCard(false);
         setMemoryCardVisible(false);
+        setShowClose(false);
         setLayer('summary');
         setTabTour(false);
         setDepth(0);
@@ -377,7 +277,7 @@ const DemoPhone = ({ scenario, stopped = false, onStart, onFinish, showMic = fal
                 /* The rung is claimed before the question is asked, so the bar
                    moves and then the question that earned it arrives. */
                 if (turn.depth) setDepth(turn.depth);
-                setStay(turn.stay ?? null);
+                setStay(turn.stay ? { method: turn.method, why: turn.stay } : null);
                 /* And the permission line lands before the question too — which
                    is the order the app uses, and the only order that makes it
                    an offer rather than an apology. */
@@ -396,12 +296,6 @@ const DemoPhone = ({ scenario, stopped = false, onStart, onFinish, showMic = fal
                 continue;
             }
             addMessage(turn.role, turn.text);
-        }
-
-        if (showMic) {
-            await sleep(600);
-            if (dead()) return standDown();
-            setShowVoicePanel(true);
         }
 
         await sleep(700);
@@ -428,6 +322,10 @@ const DemoPhone = ({ scenario, stopped = false, onStart, onFinish, showMic = fal
         setLayer('summary');
         setTabTour(false);
 
+        await sleep(400);
+        if (dead()) return standDown();
+        setShowClose(true);
+
         setIsPlaying(false);
         setHasPlayed(true);
         runningRef.current = false;
@@ -440,35 +338,7 @@ const DemoPhone = ({ scenario, stopped = false, onStart, onFinish, showMic = fal
         setLayer(id);
     }
 
-    function startRecording() {
-        setMicError(false);
-        isRecordingRef.current = true;
-        setIsRecording(true);
-        try {
-            recognitionRef.current?.start();
-        } catch {
-            /* the browser refused the start/stop — the UI state already reflects it. */
-        }
-    }
-
-    function stopRecording() {
-        isRecordingRef.current = false;
-        setIsRecording(false);
-        try {
-            recognitionRef.current?.stop();
-        } catch {
-            /* the browser refused the start/stop — the UI state already reflects it. */
-        }
-    }
-
-    function clearTranscript() {
-        finalTranscriptRef.current = '';
-        setTranscript('');
-        setInterimTranscript('');
-        stopRecording();
-    }
-
-    const playLabel = isPlaying ? 'Playing…' : hasPlayed ? 'Replay this call' : 'Play this call';
+    const playLabel = isPlaying ? 'Playing…' : hasPlayed ? 'Play it again' : 'Play this call';
 
     return (
         <PhoneContainer>
@@ -477,234 +347,237 @@ const DemoPhone = ({ scenario, stopped = false, onStart, onFinish, showMic = fal
                 <img src={statusBarImg} alt="" aria-hidden="true" width={80} height={20} loading="lazy" decoding="async" />
             </StatusBar>
 
-            <PhoneBody ref={phoneBodyRef}>
-                <ChatBar aria-hidden="true">
-                    <ChatDot $accent />
-                    <ChatDot />
-                    <ChatDot />
-                    <ChatBarLabel>{scenario.callLabel}</ChatBarLabel>
-                </ChatBar>
+            <PhoneStage>
+                {/* Stays mounted after it fades so the fade has something to
+                    fade, and inert once gone so it cannot be tabbed into. */}
+                <Cover $gone={opened} aria-hidden={opened}>
+                    <CoverChapter>{scenario.chapter}</CoverChapter>
+                    <CoverQuote>&ldquo;{scenario.cover.quote}&rdquo;</CoverQuote>
+                    <CoverAttribution>{scenario.cover.attribution}</CoverAttribution>
+                    <CoverLead>{scenario.cover.lead}</CoverLead>
+                    <CoverOpen
+                        type="button"
+                        onClick={runDemo}
+                        tabIndex={opened ? -1 : 0}
+                        aria-label={`Open the conversation: ${scenario.label}`}
+                    >
+                        <PlayIcon />
+                        Open this conversation
+                    </CoverOpen>
+                    <CoverLength>{scenario.cover.length}</CoverLength>
+                </Cover>
 
-                {/* Sticky, because the reasoning has to stay on screen while
-                    the conversation scrolls under it — that is the whole point
-                    of showing it. */}
-                {/* Retired once the memory card lands: the ladder has done
-                    its work by then, and left sticky it simply covers the card
-                    it was building towards. */}
-                <DepthBand $show={depth > 0 && !showMemoryCard} aria-hidden="true">
-                    <DepthHead>
-                        <span>{scenario.subject}</span>
-                        <b>{DEPTHS[depth - 1] ?? DEPTHS[0]}</b>
-                    </DepthHead>
-                    <DepthRungs>
-                        {DEPTHS.map((name, i) => (
-                            <DepthRung key={name} $level={i + 1} $on={depth >= i + 1} />
-                        ))}
-                    </DepthRungs>
-                    <StayNote $show={Boolean(stay)}>
-                        {stay ? <><b>Why this question:</b> {stay}</> : null}
-                    </StayNote>
-                </DepthBand>
+                <PhoneBody ref={phoneBodyRef}>
+                    <ChatBar aria-hidden="true">
+                        <ChatDot $accent />
+                        <ChatDot />
+                        <ChatDot />
+                        <ChatBarLabel>{scenario.callLabel}</ChatBarLabel>
+                    </ChatBar>
 
-                <ChatMsgs role="log" aria-live="polite" aria-label={`Conversation demo: ${scenario.label}`}>
-                    {messages.map((m) => (
-                        <div key={m.id}>
-                            {m.note && (
-                                <SensitiveNote $show>
-                                    <b>Before this one</b>
-                                    {m.note}
-                                </SensitiveNote>
-                            )}
-                            <Bubble $role={m.role} $show={m.show}>
-                                <BubbleWho $role={m.role}>{m.role === 'ai' ? 'A Story' : scenario.teller}</BubbleWho>
-                                {m.text}
-                            </Bubble>
-                        </div>
-                    ))}
-                    {/* The line arrives while A Story is still typing, so the
-                        offer to skip is on screen before the question is. */}
-                    {isTyping && pendingNote && (
-                        <SensitiveNote $show>
-                            <b>Before this one</b>
-                            {pendingNote}
-                        </SensitiveNote>
-                    )}
-                    {isTyping && (
-                        <TypingIndicator>
-                            <span />
-                            <span />
-                            <span />
-                        </TypingIndicator>
-                    )}
-                </ChatMsgs>
-
-                <ChatAction>
-                    <ChatPlayButton onClick={runDemo} disabled={isPlaying} aria-label={`Play the ${scenario.label} conversation`}>
-                        {isPlaying ? <PlayingIcon /> : <PlayIcon />}
-                        {playLabel}
-                    </ChatPlayButton>
-                </ChatAction>
-
-                {showVoicePanel && (
-                    <VoicePanel aria-labelledby="voice-lbl">
-                        <VoiceLabel id="voice-lbl">Your turn — speak a memory</VoiceLabel>
-                        <VoiceText aria-live="polite">
-                            {transcript || interimTranscript ? (
+                    {/* Sticky, because the reasoning has to stay on screen while
+                        the conversation scrolls under it — that is the whole point
+                        of showing it. Retired once the memory card lands: the
+                        ladder has done its work by then, and left sticky it simply
+                        covers the card it was building towards. */}
+                    <DepthBand $show={depth > 0 && !showMemoryCard} aria-hidden="true">
+                        <DepthHead>
+                            <span>{scenario.subject}</span>
+                            <b>{DEPTHS[depth - 1] ?? DEPTHS[0]}</b>
+                        </DepthHead>
+                        <DepthRungs>
+                            {DEPTHS.map((name, i) => (
+                                <DepthRung key={name} $level={i + 1} $on={depth >= i + 1} />
+                            ))}
+                        </DepthRungs>
+                        <StayNote $show={Boolean(stay)}>
+                            {stay ? (
                                 <>
-                                    {transcript}
-                                    {interimTranscript && <span style={{ opacity: 0.45 }}>{interimTranscript}</span>}
+                                    {stay.method && <MethodTag>{stay.method}</MethodTag>}
+                                    {stay.why}
                                 </>
-                            ) : micError ? (
-                                <span>Microphone access denied. Allow mic in your browser settings and try again.</span>
-                            ) : (
-                                <span className="ph">Your words will appear here…</span>
-                            )}
-                        </VoiceText>
-                        <VoiceRow>
-                            <VoiceMicButton
-                                $on={isRecording}
-                                disabled={!speechSupported}
-                                onClick={() => (isRecording ? stopRecording() : startRecording())}
-                                aria-label={isRecording ? 'Stop recording' : 'Start recording your voice'}
-                            >
-                                <MicPulse $on={isRecording} aria-hidden="true" />
-                                {speechSupported ? (isRecording ? 'Stop speaking' : 'Start speaking') : 'Voice not supported in this browser'}
-                            </VoiceMicButton>
-                            {(transcript || interimTranscript) && (
-                                <VoiceClearButton onClick={clearTranscript} aria-label="Clear voice transcript">
-                                    Clear
-                                </VoiceClearButton>
-                            )}
-                            <VoiceHint>
-                                {speechSupported ? 'Works best on a phone or tablet' : 'Try Chrome or Safari on a phone or tablet.'}
-                            </VoiceHint>
-                        </VoiceRow>
-                    </VoicePanel>
-                )}
+                            ) : null}
+                        </StayNote>
+                    </DepthBand>
 
-                {showMemoryCard && (
-                    <MemoryCardReveal ref={memoryCardRef} $show={memoryCardVisible} aria-label="Memory saved from this conversation">
-                        <McIntro>Memory saved</McIntro>
-                        <MemoryCard>
-                            {/* Chapter, then the one badge lib/memoryCard.js
-                                picks: who told it beats how it was rated, and
-                                both beat a nag about a missing date. */}
-                            <McHeader>
-                                <McEra>{scenario.chapter}</McEra>
-                                <McSaved>{scenario.badge}</McSaved>
-                            </McHeader>
-                            {/* Memories keep the question as their title — which
-                                is also how the app knows not to ask it again
-                                (lib/nextQuestion.js matches on exactly this). */}
-                            <McTitle>{scenario.title}</McTitle>
-                            <McDate>{scenario.dateLine}</McDate>
+                    <ChatMsgs role="log" aria-live="polite" aria-label={`Conversation demo: ${scenario.label}`}>
+                        {messages.map((m) => (
+                            <Fragment key={m.id}>
+                                {m.note && (
+                                    <SensitiveNote $show>
+                                        <b>Before this one</b>
+                                        {m.note}
+                                    </SensitiveNote>
+                                )}
+                                <Bubble $role={m.role} $show={m.show}>
+                                    <BubbleWho $role={m.role}>{m.role === 'ai' ? 'A Story' : scenario.teller}</BubbleWho>
+                                    {m.text}
+                                </Bubble>
+                            </Fragment>
+                        ))}
+                        {/* The line arrives while A Story is still typing, so the
+                            offer to skip is on screen before the question is. */}
+                        {isTyping && pendingNote && (
+                            <SensitiveNote $show>
+                                <b>Before this one</b>
+                                {pendingNote}
+                            </SensitiveNote>
+                        )}
+                        {isTyping && (
+                            <TypingIndicator>
+                                <span />
+                                <span />
+                                <span />
+                            </TypingIndicator>
+                        )}
+                    </ChatMsgs>
 
-                            {scenario.about && (
-                                <McAbout>
-                                    <HeartIcon />
-                                    <span>{scenario.about}</span>
-                                </McAbout>
-                            )}
+                    {opened && (
+                        <ChatAction>
+                            <ChatPlayButton onClick={runDemo} disabled={isPlaying} aria-label={`Replay the ${scenario.label} conversation`}>
+                                {isPlaying ? <PlayingIcon /> : <PlayIcon />}
+                                {playLabel}
+                            </ChatPlayButton>
+                        </ChatAction>
+                    )}
 
-                            <McLayers role="tablist" aria-label="What is kept from this conversation">
-                                {LAYERS.map((l) => (
-                                    <McLayerTab
-                                        key={l.id}
-                                        type="button"
-                                        role="tab"
-                                        id={`mc-tab-${scenario.id}-${l.id}`}
-                                        aria-selected={layer === l.id}
-                                        aria-controls={`mc-panel-${scenario.id}-${l.id}`}
-                                        $active={layer === l.id}
-                                        onClick={() => pickLayer(l.id)}
-                                    >
-                                        {l.label}
-                                    </McLayerTab>
-                                ))}
-                            </McLayers>
-                            <McLayersHint $show={tabTour} aria-hidden={!tabTour}>
-                                One conversation, kept three ways. Tap any of the three.
-                            </McLayersHint>
+                    {showMemoryCard && (
+                        <MemoryCardReveal ref={memoryCardRef} $show={memoryCardVisible} aria-label="Memory saved from this conversation">
+                            <McIntro>Memory saved</McIntro>
+                            <MemoryCard>
+                                {/* Chapter, then the one badge lib/memoryCard.js
+                                    picks: who told it beats how it was rated, and
+                                    both beat a nag about a missing date. */}
+                                <McHeader>
+                                    <McEra>{scenario.chapter}</McEra>
+                                    <McSaved>{scenario.badge}</McSaved>
+                                </McHeader>
+                                {/* Memories keep the question as their title — which
+                                    is also how the app knows not to ask it again
+                                    (lib/nextQuestion.js matches on exactly this). */}
+                                <McTitle>{scenario.title}</McTitle>
+                                <McDate>{scenario.dateLine}</McDate>
 
-                            {layer === 'summary' && (
-                                <McPanel role="tabpanel" id={`mc-panel-${scenario.id}-summary`} aria-labelledby={`mc-tab-${scenario.id}-summary`}>
-                                    <McSummary>{scenario.summary}</McSummary>
-                                    <McExcerpt>&ldquo;{scenario.excerpt}&rdquo;</McExcerpt>
-                                </McPanel>
-                            )}
+                                {scenario.about && (
+                                    <McAbout>
+                                        <HeartIcon />
+                                        <span>{scenario.about}</span>
+                                    </McAbout>
+                                )}
 
-                            {layer === 'transcript' && (
-                                <McPanel role="tabpanel" id={`mc-panel-${scenario.id}-transcript`} aria-labelledby={`mc-tab-${scenario.id}-transcript`}>
-                                    <McTranscript>
-                                        {scenario.transcript.map((t) => (
-                                            <p key={t.at}>
-                                                <span className="who">{t.who}<McAt>{t.at}</McAt></span>
-                                                {t.text}
-                                            </p>
-                                        ))}
-                                    </McTranscript>
-                                    <McVoiceNote>
-                                        Word for word, nothing edited out, and searchable &mdash; the
-                                        summary above is a layer over this, never a replacement for it.
-                                    </McVoiceNote>
-                                </McPanel>
-                            )}
+                                <McLayers role="tablist" aria-label="What is kept from this conversation">
+                                    {LAYERS.map((l) => (
+                                        <McLayerTab
+                                            key={l.id}
+                                            type="button"
+                                            role="tab"
+                                            id={`mc-tab-${scenario.id}-${l.id}`}
+                                            aria-selected={layer === l.id}
+                                            aria-controls={`mc-panel-${scenario.id}-${l.id}`}
+                                            $active={layer === l.id}
+                                            onClick={() => pickLayer(l.id)}
+                                        >
+                                            {l.label}
+                                        </McLayerTab>
+                                    ))}
+                                </McLayers>
+                                <McLayersHint $show={tabTour} aria-hidden={!tabTour}>
+                                    One conversation, kept three ways. Tap any of the three.
+                                </McLayersHint>
 
-                            {layer === 'voice' && (
-                                <McPanel role="tabpanel" id={`mc-panel-${scenario.id}-voice`} aria-labelledby={`mc-tab-${scenario.id}-voice`}>
-                                    <McClip>
-                                        <WaveIcon />
-                                        <span className="label">{scenario.clip.label}</span>
-                                        <McWave aria-hidden="true">
-                                            {WAVE_BARS.map((h, i) => (
-                                                <i key={i} style={{ height: h }} />
+                                {layer === 'summary' && (
+                                    <McPanel role="tabpanel" id={`mc-panel-${scenario.id}-summary`} aria-labelledby={`mc-tab-${scenario.id}-summary`}>
+                                        <McSummary>{scenario.summary}</McSummary>
+                                        <McExcerpt>&ldquo;{scenario.excerpt}&rdquo;</McExcerpt>
+                                    </McPanel>
+                                )}
+
+                                {layer === 'transcript' && (
+                                    <McPanel role="tabpanel" id={`mc-panel-${scenario.id}-transcript`} aria-labelledby={`mc-tab-${scenario.id}-transcript`}>
+                                        <McTranscript>
+                                            {scenario.transcript.map((t) => (
+                                                <p key={t.at}>
+                                                    <span className="who">{t.who}<McAt>{t.at}</McAt></span>
+                                                    {t.text}
+                                                </p>
                                             ))}
-                                        </McWave>
-                                        <span className="dur">{scenario.clip.duration}</span>
-                                    </McClip>
-                                    <McVoiceNote>{scenario.clip.note}</McVoiceNote>
-                                </McPanel>
-                            )}
+                                        </McTranscript>
+                                        <McVoiceNote>
+                                            Word for word, nothing edited out, and searchable &mdash; the
+                                            summary above is a layer over this, never a replacement for it.
+                                        </McVoiceNote>
+                                    </McPanel>
+                                )}
 
-                            <McLinked>
-                                <span className="lbl">Linked</span>
-                                {scenario.linked.map((chip) => (
-                                    <McChip key={chip}>{chip}</McChip>
-                                ))}
-                            </McLinked>
+                                {layer === 'voice' && (
+                                    <McPanel role="tabpanel" id={`mc-panel-${scenario.id}-voice`} aria-labelledby={`mc-tab-${scenario.id}-voice`}>
+                                        <McClip>
+                                            <WaveIcon />
+                                            <span className="label">{scenario.clip.label}</span>
+                                            <McWave aria-hidden="true">
+                                                {WAVE_BARS.map((h, i) => (
+                                                    <i key={i} style={{ height: h }} />
+                                                ))}
+                                            </McWave>
+                                            <span className="dur">{scenario.clip.duration}</span>
+                                        </McClip>
+                                        <McVoiceNote>{scenario.clip.note}</McVoiceNote>
+                                    </McPanel>
+                                )}
 
-                            {/* The three access tiers the app really has:
-                                owner, invited manager (read + edit), and anyone
-                                with the contribute link (submits, pending). */}
-                            <McFamily>
-                                {scenario.family.map((f) => (
-                                    <p className="row" key={f.name}>
-                                        {f.kind === 'edit' ? <PencilIcon /> : <PlusIcon />}
-                                        <span>
-                                            <b>{f.name}</b> {f.text}
-                                            {f.pending && <McPending>{f.pending}</McPending>}
-                                        </span>
-                                    </p>
-                                ))}
-                            </McFamily>
+                                <McLinked>
+                                    <span className="lbl">Linked</span>
+                                    {scenario.linked.map((chip) => (
+                                        <McChip key={chip}>{chip}</McChip>
+                                    ))}
+                                </McLinked>
 
-                            <McShared>
-                                <EyeIcon />
-                                <span>{scenario.shared}</span>
-                            </McShared>
+                                {/* The three access tiers the app really has:
+                                    owner, invited manager (read + edit), and anyone
+                                    with the contribute link (submits, pending). */}
+                                <McFamily>
+                                    {scenario.family.map((f) => (
+                                        <p className="row" key={f.name}>
+                                            {f.kind === 'edit' ? <PencilIcon /> : <PlusIcon />}
+                                            <span>
+                                                <b>{f.name}</b> {f.text}
+                                                {f.pending && <McPending>{f.pending}</McPending>}
+                                            </span>
+                                        </p>
+                                    ))}
+                                </McFamily>
 
-                            <McMeta>
-                                {scenario.meta.map((m, i) => (
-                                    <Fragment key={m}>
-                                        {i > 0 && <McSep>·</McSep>}
-                                        <span>{m}</span>
-                                    </Fragment>
-                                ))}
-                            </McMeta>
-                        </MemoryCard>
-                    </MemoryCardReveal>
-                )}
-            </PhoneBody>
+                                <McShared>
+                                    <EyeIcon />
+                                    <span>{scenario.shared}</span>
+                                </McShared>
+
+                                <McMeta>
+                                    {scenario.meta.map((m, i) => (
+                                        <Fragment key={m}>
+                                            {i > 0 && <McSep>·</McSep>}
+                                            <span>{m}</span>
+                                        </Fragment>
+                                    ))}
+                                </McMeta>
+                            </MemoryCard>
+                        </MemoryCardReveal>
+                    )}
+
+                    {showClose && (
+                        <DemoClose>
+                            <DemoCloseInner>
+                                <DemoCloseTitle>Nobody has asked {scenario.teller} that before.</DemoCloseTitle>
+                                <DemoCloseSub>
+                                    There is somebody in your family with an answer like that one, and
+                                    no particular reason to ever say it out loud.
+                                </DemoCloseSub>
+                                <DemoCloseAnchor href={CONTACT.gift}>Start their archive</DemoCloseAnchor>
+                            </DemoCloseInner>
+                        </DemoClose>
+                    )}
+                </PhoneBody>
+            </PhoneStage>
         </PhoneContainer>
     );
 };

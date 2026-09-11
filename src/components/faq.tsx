@@ -35,7 +35,8 @@ const faqGroups: FaqGroupData[] = [
                 question: 'The person I am giving it to is hopeless with technology.',
                 answer: (
                     <>
-                        <AnswerParagraph>Then they are exactly who this was built for. A Story calls them, and they answer the phone and talk &mdash; the way they would to anyone else. No tapping, no typing, no password, nothing to remember. If they can answer a phone call, they can do this, because that is all it is.</AnswerParagraph>
+                        <AnswerParagraph>Then they are exactly who this was built for. There is one install &mdash; the A Story app, on their phone or tablet, which takes a couple of minutes and which you can do for them before you have even mentioned it. After that they never open it again unless they want to.</AnswerParagraph>
+                        <AnswerParagraph>At the hour they chose, their phone rings and A Story is on the other end. They press the green button and talk, the way they would to anybody. No typing, no password, nothing to remember, nothing to save at the end. Big buttons and large type, because the people this is for are eighty and their eyes are eighty too.</AnswerParagraph>
                         <AnswerParagraph>There is an app, and it does get installed on their phone or tablet &mdash; but that happens once, it takes a couple of minutes, and you can do it for them. After that they never have to open it unless they want to.</AnswerParagraph>
                         <AnswerParagraph>If they do get stuck, we help them directly &mdash; you do not become their tech support.</AnswerParagraph>
                     </>
@@ -201,7 +202,7 @@ const faqGroups: FaqGroupData[] = [
                 answer: (
                     <>
                         <AnswerParagraph>The A Story app runs on iPhone, iPad and Android, and the archive can also be read in any modern web browser. Tablets give older adults the most comfortable reading experience: large text, easy touch targets, and a good microphone.</AnswerParagraph>
-                        <AnswerParagraph>For the storyteller, though, the device barely matters. The conversations happen over a phone call, so whatever they already answer the phone on is what they use.</AnswerParagraph>
+                        <AnswerParagraph>For the storyteller the conversation arrives as a call through the app, so the one thing that matters is that the app is on the device they keep near them &mdash; usually the phone already in their pocket. Somebody else can put it there; after that it rings on its own and they answer it.</AnswerParagraph>
                     </>
                 ),
             },

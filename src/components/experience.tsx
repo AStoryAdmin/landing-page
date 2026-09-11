@@ -145,7 +145,7 @@ const Experience = () => {
                         {/* The one where somebody declines a question: the /experience
                             page is read by people who are already convinced this is a
                             nice idea and are now worried it will push a relative. */}
-                        <DemoPhone scenario={SCENARIOS[1]} showMic />
+                        <DemoPhone scenario={SCENARIOS[1]} />
                     </Demo>
                 </CardView>
             </AIContainer>
