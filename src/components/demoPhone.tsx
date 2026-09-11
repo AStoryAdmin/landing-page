@@ -1,5 +1,4 @@
-import { CONTACT } from '../lib/contact';
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import {
     PhoneContainer,
     StatusBar,
@@ -28,6 +27,7 @@ import {
     McEra,
     McSaved,
     McTitle,
+    McDate,
     McExcerpt,
     McSummary,
     McPanel,
@@ -40,10 +40,12 @@ import {
     DepthRungs,
     DepthRung,
     StayNote,
+    SensitiveNote,
     McMeta,
     McSep,
     McLayers,
     McLayerTab,
+    McLayersHint,
     McTranscript,
     McClip,
     McWave,
@@ -51,34 +53,19 @@ import {
     McChip,
     McShared,
     McAt,
-    DemoEndCta,
-    DemoEndInner,
-    DemoEndLabel,
-    DemoEndTitle,
-    DemoEndSub,
-    DemoEndActions,
-    DemoEndPrimaryAnchor,
-    DemoEndSecondary,
 } from './demoPhone.styles';
+import { DEPTHS, sensitiveNote, type Scenario } from '../lib/demoScripts';
 import statusBarImg from './../assets/statusbar.webp';
 
 type Role = 'ai' | 'user';
-
-type ScriptTurn = {
-    role: Role;
-    text: string;
-    delay: number;
-    /** Rung 1-5 on the interview's depth ladder. AI turns only. */
-    depth?: number;
-    /** Why this question and not a new subject — shown beside the transcript. */
-    stay?: string;
-};
 
 type Message = {
     id: number;
     role: Role;
     text: string;
     show: boolean;
+    /** The permission line that precedes a sensitive question, if any. */
+    note?: string | null;
 };
 
 interface SpeechRecognitionResultLike {
@@ -112,48 +99,6 @@ function getSpeechRecognitionCtor(): SpeechRecognitionConstructor | undefined {
     return w.SpeechRecognition || w.webkitSpeechRecognition;
 }
 
-/**
- * One evening, and the interview refusing to leave it.
- *
- * The previous script covered a grandfather, a porch, a particular night and a
- * closing line in nine turns, and the effect was of something skimming: each
- * question changed the subject, which is exactly what a question list does and
- * exactly what this is not. This version commits to Walter by the fourth turn
- * and then spends the whole call on a single porch — sound, then hands, then
- * the one night, then what she would say to him now.
- *
- * `depth` is the rung on the app's own ladder (Warm-up, Scene, Portrait,
- * Stakes, Reckoning — see ../lib/product), and `stay` is the reasoning shown
- * beside the transcript. Together they make the digging legible: without them
- * a viewer reads persistence as repetition.
- */
-const SCRIPT: ScriptTurn[] = [
-    { role: 'ai', depth: 1, text: "Hello — is that Margaret? This is A Story. Your daughter Ellie set this up and asked me to call. There's nothing you need to do, and we can stop whenever you like.", delay: 500 },
-    { role: 'user', text: "Oh — yes. She did say something about it. I'm not sure I'm any good at this sort of thing.", delay: 2200 },
-    { role: 'ai', depth: 1, text: "Almost everyone says that, and then they talk for an hour. Is there anything you already know you'd want the grandchildren to have?", delay: 2400 },
-    { role: 'user', text: "I suppose I'd want them to know their grandfather. Walter. He passed in '09 and they were very small.", delay: 2400 },
-
-    { role: 'ai', depth: 2, stay: "Committing to one subject. Walter's whole life is not this call — one evening of it is.", text: "Then we'll spend this call on Walter, and we won't try to cover all of him. One evening you can still see. Where are you?", delay: 2500 },
-    { role: 'user', text: "The porch. Summer evenings after supper — he'd sit out there in the rocking chair with his guitar, and the neighbours would wander over.", delay: 2400 },
-
-    { role: 'ai', depth: 2, stay: "Not moving on. A scene isn't a scene until it has sound in it.", text: "Stay on that porch a moment. It's after supper, before he starts playing — what can you hear?", delay: 2300 },
-    { role: 'user', text: "Crickets. And the screen door — it had a spring on it, banged every time somebody came out. Mother was forever telling them to mind it.", delay: 2500 },
-
-    { role: 'ai', depth: 3, stay: "Same evening, closer in. This is the rung where a person starts to exist rather than be described.", text: "And Walter, before the first chord. What was he doing with his hands?", delay: 2300 },
-    { role: 'user', text: "Tuning. Longer than he needed to, I always thought. He was shy about it — he'd only really play once it got dark enough that nobody was looking at him.", delay: 2600 },
-
-    { role: 'ai', depth: 4, stay: "Ten questions in, one location. The night that costs something to tell is the one that was never going to arrive first.", text: "He waited for the dark. Was there one night on that porch you've kept longer than the others?", delay: 2400 },
-    { role: 'user', text: "There was one summer he played until the fireflies came out. We all went quiet — nobody decided to, we just stopped talking. I was six, maybe seven. I've never forgotten it.", delay: 2700 },
-
-    { role: 'ai', depth: 5, stay: "The last rung, and it's only asked because every rung under it was answered.", text: "If Walter were out there tonight and you could say one thing to him about that night — what would it be?", delay: 2400 },
-    { role: 'user', text: "That I was listening. He never knew that. He thought we were only being polite.", delay: 2600 },
-
-    { role: 'ai', depth: 5, text: "Then that's the thing we'll keep, Margaret — in your voice, in your words. Walter has been gone sixteen years and his grandchildren now know what he sounded like on that porch.", delay: 2500 },
-];
-
-/** The rungs, named as the app names them. */
-const DEPTHS = ['Warm-up', 'Scene', 'Portrait', 'Stakes', 'Reckoning'] as const;
-
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 const PlayIcon = () => (
@@ -182,13 +127,6 @@ const HeartIcon = () => (
     </svg>
 );
 
-/** The three layers, in the order the family meets them. */
-const LAYERS = [
-    { id: 'summary' as const, label: 'Summary' },
-    { id: 'transcript' as const, label: 'Full transcript' },
-    { id: 'voice' as const, label: 'Voice highlight' },
-];
-
 const EyeIcon = () => (
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
@@ -205,29 +143,6 @@ const WaveIcon = () => (
     </svg>
 );
 
-/* Decorative bar heights for the clip's waveform. */
-const WAVE_BARS = [5, 9, 14, 8, 16, 11, 6, 13, 9, 15, 7, 12, 5, 10, 14, 8];
-
-/**
- * The verbatim conversation behind the summary card. It is the same exchange
- * the demo just played — the point being that the card is a layer over this,
- * not a replacement for it.
- */
-const TRANSCRIPT = [
-    { who: 'A Story', at: '04:12', text: 'Stay on that porch a moment. It’s after supper, before he starts playing — what can you hear?' },
-    { who: 'Margaret', at: '04:19', text: 'Crickets. And the screen door — it had a spring on it, banged every time somebody came out. Mother was forever telling them to mind it.' },
-    { who: 'A Story', at: '04:38', text: 'And Walter, before the first chord. What was he doing with his hands?' },
-    { who: 'Margaret', at: '04:44', text: 'Tuning. Longer than he needed to, I always thought. He was shy about it — he’d only really play once it got dark enough that nobody was looking at him.' },
-    { who: 'A Story', at: '05:06', text: 'He waited for the dark. Was there one night on that porch you’ve kept longer than the others?' },
-    { who: 'Margaret', at: '05:14', text: 'There was one summer he played until the fireflies came out. We all went quiet — nobody decided to, we just stopped talking. I was six, maybe seven. I’ve never forgotten it.' },
-    { who: 'A Story', at: '05:41', text: 'If Walter were out there tonight and you could say one thing to him about that night — what would it be?' },
-    { who: 'Margaret', at: '05:52', text: 'That I was listening. He never knew that. He thought we were only being polite.' },
-];
-
-/** The summary layer — what the family reads first, over a cup of tea. */
-const SUMMARY =
-    'Margaret describes the summer evenings on her parents’ porch in Kentucky, where her father Walter played guitar after supper while the neighbours drifted over. She remembers the screen door with the spring on it, and that Walter tuned far longer than he needed to — he was shy, and would only really play once it was dark enough that nobody was watching him. One summer he played until the fireflies came out and the whole porch went quiet without anyone deciding to.';
-
 const PlayingIcon = () => (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="10" />
@@ -236,30 +151,86 @@ const PlayingIcon = () => (
     </svg>
 );
 
-const DemoPhone = () => {
-    const [messages, setMessages] = useState<Message[]>([]);
+/* Decorative bar heights for the clip's waveform. */
+const WAVE_BARS = [5, 9, 14, 8, 16, 11, 6, 13, 9, 15, 7, 12, 5, 10, 14, 8];
+
+/** The three layers, in the order the family meets them. */
+const LAYERS = [
+    { id: 'summary' as const, label: 'Summary' },
+    { id: 'transcript' as const, label: 'Full transcript' },
+    { id: 'voice' as const, label: 'Voice highlight' },
+];
+
+type LayerId = (typeof LAYERS)[number]['id'];
+
+type DemoPhoneProps = {
+    /** Which conversation this phone plays. See ../lib/demoScripts. */
+    scenario: Scenario;
+    /**
+     * True when a different phone in the reel is playing. Three scripts running
+     * at once is unreadable, so whoever presses play wins and the others stop
+     * where they are rather than racing underneath.
+     */
+    stopped?: boolean;
+    onStart?: () => void;
+    onFinish?: () => void;
+    /** The live microphone panel. One per page is a feature; three is clutter. */
+    showMic?: boolean;
+};
+
+/**
+ * The first exchange, already on screen before anyone presses anything.
+ *
+ * Three phones showing nothing but a status bar is three blank slabs, and a
+ * viewer who does not press play learns not one thing about the product. This
+ * way the resting state is already the pitch — A Story introducing itself and
+ * naming the relative who set the call up — and Play is an invitation rather
+ * than a precondition.
+ */
+const opening = (scenario: Scenario): Message[] =>
+    scenario.script.slice(0, 2).map((t, i) => ({
+        id: i,
+        role: t.role,
+        text: t.text,
+        show: true,
+    }));
+
+const DemoPhone = ({ scenario, stopped = false, onStart, onFinish, showMic = false }: DemoPhoneProps) => {
+    const [messages, setMessages] = useState<Message[]>(() => opening(scenario));
     const [isTyping, setIsTyping] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [hasPlayed, setHasPlayed] = useState(false);
     const [showVoicePanel, setShowVoicePanel] = useState(false);
     const [showMemoryCard, setShowMemoryCard] = useState(false);
     const [memoryCardVisible, setMemoryCardVisible] = useState(false);
-    const [showEndCta, setShowEndCta] = useState(false);
     /** Which layer of the memory the card is showing. All three are real. */
-    const [layer, setLayer] = useState<'summary' | 'transcript' | 'voice'>('summary');
+    const [layer, setLayer] = useState<LayerId>('summary');
+    /** On while the demo walks the three tabs itself, so the hint has a reason. */
+    const [tabTour, setTabTour] = useState(false);
     /** How far up the ladder the interview has climbed, live. */
     const [depth, setDepth] = useState(0);
     const [stay, setStay] = useState<string | null>(null);
+    /** The permission line for the question currently being typed. */
+    const [pendingNote, setPendingNote] = useState<string | null>(null);
 
-    const [speechSupported] = useState(() => Boolean(getSpeechRecognitionCtor()));
+    const [speechSupported] = useState(() => (showMic ? Boolean(getSpeechRecognitionCtor()) : false));
     const [isRecording, setIsRecording] = useState(false);
     const [micError, setMicError] = useState(false);
     const [transcript, setTranscript] = useState('');
     const [interimTranscript, setInterimTranscript] = useState('');
 
     const runningRef = useRef(false);
-    const canceledRef = useRef(false);
-    const messageIdRef = useRef(0);
+    /* Bumped by every fresh run, so an older loop still sitting in a sleep can
+       tell that it has been superseded and return without touching state. */
+    const runIdRef = useRef(0);
+    const unmountedRef = useRef(false);
+    /* Mirrors the `stopped` prop for the running loop to read. Kept in a ref
+       rather than acted on in an effect: the loop is a callback, so it can do
+       its own tidying up, and an effect that called setState here would spend
+       a cascading render on something the loop is about to handle anyway. */
+    const stoppedRef = useRef(stopped);
+    /* Starts past the two seeded opening messages so their keys stay unique. */
+    const messageIdRef = useRef(2);
     const finalTranscriptRef = useRef('');
     const isRecordingRef = useRef(false);
     const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
@@ -267,11 +238,17 @@ const DemoPhone = () => {
     const memoryCardRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        canceledRef.current = false;
+        unmountedRef.current = false;
         return () => {
-            canceledRef.current = true;
+            unmountedRef.current = true;
         };
     }, []);
+
+    /* Somebody pressed play on another phone. The loop reads this on its next
+       breath and stands down; pressing play here again starts it over. */
+    useEffect(() => {
+        stoppedRef.current = stopped;
+    }, [stopped]);
 
     /*
      * Follow the conversation to the bottom while it runs — but the memory card
@@ -292,9 +269,10 @@ const DemoPhone = () => {
             return;
         }
         body.scrollTop = body.scrollHeight;
-    }, [messages, isTyping, showVoicePanel, showMemoryCard, showEndCta]);
+    }, [messages, isTyping, showVoicePanel, showMemoryCard]);
 
     useEffect(() => {
+        if (!showMic) return;
         const SR = getSpeechRecognitionCtor();
         if (!SR) return;
 
@@ -341,14 +319,14 @@ const DemoPhone = () => {
                 /* recognition was already stopped — nothing to recover. */
             }
         };
-    }, []);
+    }, [showMic]);
 
-    function addMessage(role: Role, text: string) {
+    function addMessage(role: Role, text: string, note?: string | null) {
         const id = messageIdRef.current++;
-        setMessages((prev) => [...prev, { id, role, text, show: false }]);
+        setMessages((prev) => [...prev, { id, role, text, show: false, note }]);
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-                if (canceledRef.current) return;
+                if (unmountedRef.current) return;
                 setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, show: true } : m)));
             });
         });
@@ -357,53 +335,109 @@ const DemoPhone = () => {
     async function runDemo() {
         if (runningRef.current) return;
         runningRef.current = true;
+        const run = ++runIdRef.current;
+
+        /*
+         * True once this particular run has no business touching state again:
+         * the component went away, another phone in the reel took over, or
+         * somebody pressed play a second time and a newer loop is in charge.
+         * Checked after every sleep, because a script is mostly sleeping.
+         */
+        const dead = () =>
+            unmountedRef.current || stoppedRef.current || runIdRef.current !== run;
+
+        /* Hand the button back and stop the typing dots. Only the newest run
+           does this, so a superseded loop cannot clear the one that replaced it. */
+        const standDown = () => {
+            if (runIdRef.current !== run) return;
+            runningRef.current = false;
+            if (unmountedRef.current) return;
+            setIsTyping(false);
+            setIsPlaying(false);
+        };
+
+        stoppedRef.current = false;
+        onStart?.();
         setIsPlaying(true);
         setMessages([]);
         setIsTyping(false);
         setShowVoicePanel(false);
         setShowMemoryCard(false);
         setMemoryCardVisible(false);
-        setShowEndCta(false);
         setLayer('summary');
+        setTabTour(false);
         setDepth(0);
         setStay(null);
+        setPendingNote(null);
 
-        for (const turn of SCRIPT) {
+        for (const turn of scenario.script) {
             await sleep(turn.delay);
-            if (canceledRef.current) return;
+            if (dead()) return standDown();
             if (turn.role === 'ai') {
                 /* The rung is claimed before the question is asked, so the bar
                    moves and then the question that earned it arrives. */
                 if (turn.depth) setDepth(turn.depth);
                 setStay(turn.stay ?? null);
+                /* And the permission line lands before the question too — which
+                   is the order the app uses, and the only order that makes it
+                   an offer rather than an apology. */
+                const note = sensitiveNote(turn.sensitiveKind);
+                setPendingNote(note);
+                if (note) {
+                    await sleep(900);
+                    if (dead()) return standDown();
+                }
                 setIsTyping(true);
                 await sleep(Math.min(turn.text.length * 16, 2000));
-                if (canceledRef.current) return;
+                if (dead()) return standDown();
                 setIsTyping(false);
+                addMessage(turn.role, turn.text, note);
+                setPendingNote(null);
+                continue;
             }
             addMessage(turn.role, turn.text);
         }
 
-        await sleep(600);
-        if (canceledRef.current) return;
-        setShowVoicePanel(true);
+        if (showMic) {
+            await sleep(600);
+            if (dead()) return standDown();
+            setShowVoicePanel(true);
+        }
 
         await sleep(700);
-        if (canceledRef.current) return;
+        if (dead()) return standDown();
         setShowMemoryCard(true);
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-                if (!canceledRef.current) setMemoryCardVisible(true);
+                if (!dead()) setMemoryCardVisible(true);
             });
         });
 
-        await sleep(1200);
-        if (canceledRef.current) return;
-        setShowEndCta(true);
+        /* Walk the three tabs once, so a viewer learns they are buttons. It
+           finishes back on Summary and leaves them alone after that — the card
+           is theirs to poke at from here. */
+        setTabTour(true);
+        await sleep(1700);
+        if (dead()) return standDown();
+        setLayer('transcript');
+        await sleep(2600);
+        if (dead()) return standDown();
+        setLayer('voice');
+        await sleep(2600);
+        if (dead()) return standDown();
+        setLayer('summary');
+        setTabTour(false);
 
         setIsPlaying(false);
         setHasPlayed(true);
         runningRef.current = false;
+        onFinish?.();
+    }
+
+    /* A viewer who taps a tab mid-tour has understood the point; stop steering. */
+    function pickLayer(id: LayerId) {
+        setTabTour(false);
+        setLayer(id);
     }
 
     function startRecording() {
@@ -434,7 +468,7 @@ const DemoPhone = () => {
         stopRecording();
     }
 
-    const playLabel = isPlaying ? 'Playing…' : hasPlayed ? 'Replay conversation' : 'Watch the conversation';
+    const playLabel = isPlaying ? 'Playing…' : hasPlayed ? 'Replay this call' : 'Play this call';
 
     return (
         <PhoneContainer>
@@ -448,7 +482,7 @@ const DemoPhone = () => {
                     <ChatDot $accent />
                     <ChatDot />
                     <ChatDot />
-                    <ChatBarLabel>A Story · calling Margaret</ChatBarLabel>
+                    <ChatBarLabel>{scenario.callLabel}</ChatBarLabel>
                 </ChatBar>
 
                 {/* Sticky, because the reasoning has to stay on screen while
@@ -459,7 +493,7 @@ const DemoPhone = () => {
                     it was building towards. */}
                 <DepthBand $show={depth > 0 && !showMemoryCard} aria-hidden="true">
                     <DepthHead>
-                        <span>One evening · Walter</span>
+                        <span>{scenario.subject}</span>
                         <b>{DEPTHS[depth - 1] ?? DEPTHS[0]}</b>
                     </DepthHead>
                     <DepthRungs>
@@ -472,13 +506,29 @@ const DemoPhone = () => {
                     </StayNote>
                 </DepthBand>
 
-                <ChatMsgs role="log" aria-live="polite" aria-label="Conversation demo">
+                <ChatMsgs role="log" aria-live="polite" aria-label={`Conversation demo: ${scenario.label}`}>
                     {messages.map((m) => (
-                        <Bubble key={m.id} $role={m.role} $show={m.show}>
-                            <BubbleWho $role={m.role}>{m.role === 'ai' ? 'A Story' : 'You'}</BubbleWho>
-                            {m.text}
-                        </Bubble>
+                        <div key={m.id}>
+                            {m.note && (
+                                <SensitiveNote $show>
+                                    <b>Before this one</b>
+                                    {m.note}
+                                </SensitiveNote>
+                            )}
+                            <Bubble $role={m.role} $show={m.show}>
+                                <BubbleWho $role={m.role}>{m.role === 'ai' ? 'A Story' : scenario.teller}</BubbleWho>
+                                {m.text}
+                            </Bubble>
+                        </div>
                     ))}
+                    {/* The line arrives while A Story is still typing, so the
+                        offer to skip is on screen before the question is. */}
+                    {isTyping && pendingNote && (
+                        <SensitiveNote $show>
+                            <b>Before this one</b>
+                            {pendingNote}
+                        </SensitiveNote>
+                    )}
                     {isTyping && (
                         <TypingIndicator>
                             <span />
@@ -489,7 +539,7 @@ const DemoPhone = () => {
                 </ChatMsgs>
 
                 <ChatAction>
-                    <ChatPlayButton onClick={runDemo} disabled={isPlaying} aria-label="Play the scripted conversation demo">
+                    <ChatPlayButton onClick={runDemo} disabled={isPlaying} aria-label={`Play the ${scenario.label} conversation`}>
                         {isPlaying ? <PlayingIcon /> : <PlayIcon />}
                         {playLabel}
                     </ChatPlayButton>
@@ -505,9 +555,7 @@ const DemoPhone = () => {
                                     {interimTranscript && <span style={{ opacity: 0.45 }}>{interimTranscript}</span>}
                                 </>
                             ) : micError ? (
-                                <span style={{ color: '#B45A2B' }}>
-                                    Microphone access denied. Allow mic in your browser settings and try again.
-                                </span>
+                                <span>Microphone access denied. Allow mic in your browser settings and try again.</span>
                             ) : (
                                 <span className="ph">Your words will appear here…</span>
                             )}
@@ -538,56 +586,57 @@ const DemoPhone = () => {
                     <MemoryCardReveal ref={memoryCardRef} $show={memoryCardVisible} aria-label="Memory saved from this conversation">
                         <McIntro>Memory saved</McIntro>
                         <MemoryCard>
+                            {/* Chapter, then the one badge lib/memoryCard.js
+                                picks: who told it beats how it was rated, and
+                                both beat a nag about a missing date. */}
                             <McHeader>
-                                <McEra>Childhood</McEra>
-                                <McSaved>Added to archive</McSaved>
+                                <McEra>{scenario.chapter}</McEra>
+                                <McSaved>{scenario.badge}</McSaved>
                             </McHeader>
-                            <McTitle>Fireflies on the Porch</McTitle>
+                            {/* Memories keep the question as their title — which
+                                is also how the app knows not to ask it again
+                                (lib/nextQuestion.js matches on exactly this). */}
+                            <McTitle>{scenario.title}</McTitle>
+                            <McDate>{scenario.dateLine}</McDate>
 
-                            <McAbout>
-                                <HeartIcon />
-                                <span>
-                                    This evening belongs to <b>Walter, who died in 2009</b>. Margaret is
-                                    the one telling it. The person a story is about does not have to be
-                                    here for it to be kept.
-                                </span>
-                            </McAbout>
+                            {scenario.about && (
+                                <McAbout>
+                                    <HeartIcon />
+                                    <span>{scenario.about}</span>
+                                </McAbout>
+                            )}
 
-                            {/* Three layers, three panels. These used to be
-                                decorative chips over a fixed summary, which
-                                promised a transcript and a recording the card
-                                never actually showed. */}
                             <McLayers role="tablist" aria-label="What is kept from this conversation">
                                 {LAYERS.map((l) => (
                                     <McLayerTab
                                         key={l.id}
                                         type="button"
                                         role="tab"
-                                        id={`mc-tab-${l.id}`}
+                                        id={`mc-tab-${scenario.id}-${l.id}`}
                                         aria-selected={layer === l.id}
-                                        aria-controls={`mc-panel-${l.id}`}
+                                        aria-controls={`mc-panel-${scenario.id}-${l.id}`}
                                         $active={layer === l.id}
-                                        onClick={() => setLayer(l.id)}
+                                        onClick={() => pickLayer(l.id)}
                                     >
                                         {l.label}
                                     </McLayerTab>
                                 ))}
                             </McLayers>
+                            <McLayersHint $show={tabTour} aria-hidden={!tabTour}>
+                                One conversation, kept three ways. Tap any of the three.
+                            </McLayersHint>
 
                             {layer === 'summary' && (
-                                <McPanel role="tabpanel" id="mc-panel-summary" aria-labelledby="mc-tab-summary">
-                                    <McSummary>{SUMMARY}</McSummary>
-                                    <McExcerpt>
-                                        &ldquo;That I was listening. He never knew that. He thought we
-                                        were only being polite.&rdquo;
-                                    </McExcerpt>
+                                <McPanel role="tabpanel" id={`mc-panel-${scenario.id}-summary`} aria-labelledby={`mc-tab-${scenario.id}-summary`}>
+                                    <McSummary>{scenario.summary}</McSummary>
+                                    <McExcerpt>&ldquo;{scenario.excerpt}&rdquo;</McExcerpt>
                                 </McPanel>
                             )}
 
                             {layer === 'transcript' && (
-                                <McPanel role="tabpanel" id="mc-panel-transcript" aria-labelledby="mc-tab-transcript">
+                                <McPanel role="tabpanel" id={`mc-panel-${scenario.id}-transcript`} aria-labelledby={`mc-tab-${scenario.id}-transcript`}>
                                     <McTranscript>
-                                        {TRANSCRIPT.map((t) => (
+                                        {scenario.transcript.map((t) => (
                                             <p key={t.at}>
                                                 <span className="who">{t.who}<McAt>{t.at}</McAt></span>
                                                 {t.text}
@@ -602,82 +651,59 @@ const DemoPhone = () => {
                             )}
 
                             {layer === 'voice' && (
-                                <McPanel role="tabpanel" id="mc-panel-voice" aria-labelledby="mc-tab-voice">
+                                <McPanel role="tabpanel" id={`mc-panel-${scenario.id}-voice`} aria-labelledby={`mc-tab-${scenario.id}-voice`}>
                                     <McClip>
                                         <WaveIcon />
-                                        <span className="label">In Margaret&rsquo;s voice</span>
+                                        <span className="label">{scenario.clip.label}</span>
                                         <McWave aria-hidden="true">
                                             {WAVE_BARS.map((h, i) => (
                                                 <i key={i} style={{ height: h }} />
                                             ))}
                                         </McWave>
-                                        <span className="dur">0:41</span>
+                                        <span className="dur">{scenario.clip.duration}</span>
                                     </McClip>
-                                    <McVoiceNote>
-                                        Forty-one seconds, chosen from an hour: the pause before she
-                                        answers, and the way her voice goes when she says <em>he thought
-                                        we were only being polite</em>. A transcript cannot hold that,
-                                        so it is kept as audio.
-                                    </McVoiceNote>
+                                    <McVoiceNote>{scenario.clip.note}</McVoiceNote>
                                 </McPanel>
                             )}
 
                             <McLinked>
                                 <span className="lbl">Linked</span>
-                                <McChip>Walter, her father</McChip>
-                                <McChip>The porch</McChip>
-                                <McChip>Kentucky</McChip>
-                                <McChip>c. 1953</McChip>
+                                {scenario.linked.map((chip) => (
+                                    <McChip key={chip}>{chip}</McChip>
+                                ))}
                             </McLinked>
 
                             {/* The three access tiers the app really has:
                                 owner, invited manager (read + edit), and anyone
                                 with the contribute link (submits, pending). */}
                             <McFamily>
-                                <p className="row">
-                                    <PencilIcon />
-                                    <span>
-                                        <b>Ellie</b> was invited and can edit this archive. She corrected
-                                        the year &mdash; 1953, not 1952.
-                                    </span>
-                                </p>
-                                <p className="row">
-                                    <PlusIcon />
-                                    <span>
-                                        <b>Tom</b> added a photograph of the porch from the link Margaret
-                                        sent him. No account needed.
-                                        <McPending>Waiting for Margaret</McPending>
-                                    </span>
-                                </p>
+                                {scenario.family.map((f) => (
+                                    <p className="row" key={f.name}>
+                                        {f.kind === 'edit' ? <PencilIcon /> : <PlusIcon />}
+                                        <span>
+                                            <b>{f.name}</b> {f.text}
+                                            {f.pending && <McPending>{f.pending}</McPending>}
+                                        </span>
+                                    </p>
+                                ))}
                             </McFamily>
 
                             <McShared>
                                 <EyeIcon />
-                                <span><b>Margaret decides who sees this.</b> Right now: Ellie, Tom and 4 others.</span>
+                                <span>{scenario.shared}</span>
                             </McShared>
 
                             <McMeta>
-                                <span>Chapter: Childhood</span>
-                                <McSep>·</McSep>
-                                <span>Kentucky, 1950s</span>
-                                <McSep>·</McSep>
-                                <span>Added today</span>
+                                {scenario.meta.map((m, i) => (
+                                    <Fragment key={m}>
+                                        {i > 0 && <McSep>·</McSep>}
+                                        <span>{m}</span>
+                                    </Fragment>
+                                ))}
                             </McMeta>
                         </MemoryCard>
                     </MemoryCardReveal>
                 )}
-
-                <DemoEndCta $show={showEndCta} aria-live="polite">
-                    <DemoEndInner>
-                        <DemoEndLabel>That memory is now permanent.</DemoEndLabel>
-                        <DemoEndTitle>Start your family's story.</DemoEndTitle>
-                        <DemoEndSub>One conversation, kept three ways &mdash; and room for every one after it.</DemoEndSub>
-                        <DemoEndActions>
-                            <DemoEndPrimaryAnchor href={CONTACT.gift}>Gift a story</DemoEndPrimaryAnchor>
-                            <DemoEndSecondary to="/family">Learn more</DemoEndSecondary>
-                        </DemoEndActions>
-                    </DemoEndInner>
-                </DemoEndCta>
             </PhoneBody>
         </PhoneContainer>
     );

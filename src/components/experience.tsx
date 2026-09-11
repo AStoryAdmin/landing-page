@@ -1,11 +1,13 @@
 import { CONTACT } from '../lib/contact';
 import { PRICE } from '../lib/pricing';
-import { CHAPTERS, DEPTHS, QUESTION_COUNT, SENSITIVE_LINE } from '../lib/product';
+import { CHAPTERS, DEPTHS, QUESTION_COUNT, SENSITIVE_COUNT, SENSITIVE_LINE } from '../lib/product';
 import Seo from './ui/Seo';
 import { breadcrumbSchema, organizationSchema } from '../lib/seo';
 import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, DemoButtonAnchor, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription, NextContainer, NextBadge, NextTitle, NextLead, NextGrid, NextCard, NextCaveat, ChaptersContainer, ChapterGrid, ChapterCard, DepthLadder, DepthStep, SensitiveNote} from './experience.styles'
 import {TagRow, Tag, Divider} from './home.styles';
 import FlipBook from './flipBook';
+import { Link } from 'react-router-dom';
+import { SCENARIOS } from '../lib/demoScripts';
 import DemoPhone from './demoPhone';
 import bookImg from './../assets/astoryHardcoverBook.webp';
 
@@ -138,9 +140,12 @@ const Experience = () => {
                         <Summary>
                             <DemoIntro>Try it</DemoIntro>
                             <InstructTitle>A conversation unlike any other.</InstructTitle>
-                            <Subtitle>A Story's AI doesn't interrogate &mdash; it listens. It asks one warm question, hears the answer, then follows naturally wherever the story leads. Below is a real example.</Subtitle>
+                            <Subtitle>A Story's AI doesn't interrogate &mdash; it listens. It asks one warm question, hears the answer, then follows whatever the person let slip on the way to answering it. Here Errol mentions a sanatorium in the middle of a sentence about bread, and then refuses to say more &mdash; watch what a no does to the rest of the call. <Link to="/#demo">Two more conversations are on the home page.</Link></Subtitle>
                         </Summary>
-                        <DemoPhone />
+                        {/* The one where somebody declines a question: the /experience
+                            page is read by people who are already convinced this is a
+                            nice idea and are now worried it will push a relative. */}
+                        <DemoPhone scenario={SCENARIOS[1]} showMic />
                     </Demo>
                 </CardView>
             </AIContainer>
@@ -188,9 +193,9 @@ const Experience = () => {
                     <SensitiveNote>
                         <span className="quote">&ldquo;{SENSITIVE_LINE}&rdquo;</span>
                         <span className="gloss">
-                            Sixty-two of the questions touch loss, hardship, rupture or things never said
-                            out loud. They arrive with that line under them rather than a warning
-                            triangle &mdash; and skipping one costs nothing.
+                            {SENSITIVE_COUNT} of the {QUESTION_COUNT} questions touch loss, hardship,
+                            rupture or things never said out loud. They arrive with that line under them
+                            rather than a warning triangle &mdash; and skipping one costs nothing.
                         </span>
                     </SensitiveNote>
                 </CardView>

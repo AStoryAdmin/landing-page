@@ -30,3 +30,6 @@ dist-ssr
 
 # Screenshot output from scripts/shoot.mjs
 shots/
+
+# The session handoff prompt, not project documentation.
+HANDOFF.md

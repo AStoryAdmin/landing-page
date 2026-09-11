@@ -1,6 +1,5 @@
 import styled, { keyframes, css } from 'styled-components';
 import { color, font } from '../styles/theme';
-import { Link } from 'react-router-dom';
 
 const colors = {
     dark: color.primaryDeep,
@@ -45,6 +44,13 @@ export const PhoneContainer = styled.div`
     width: 100%;
     max-width: 330px;
     aspect-ratio: 330 / 660;
+    /* Both of these are load-bearing now that three phones sit in a row. As a
+       flex item, this box's automatic minimum size is its content height, and a
+       running conversation is far taller than 660px — so without min-height the
+       aspect ratio loses and the phone playing grows to twice the height of the
+       two beside it. flex-shrink: 0 then stops the same column squeezing it. */
+    min-height: 0;
+    flex-shrink: 0;
     border-radius: 42px;
     overflow: hidden;
     background: ${colors.cream};
@@ -146,13 +152,24 @@ export const Bubble = styled.div<{ $role: 'ai' | 'user'; $show: boolean }>`
               `}
 `;
 
+/*
+ * The speaker's name above each bubble.
+ *
+ * The storyteller's side used to be rgba(239,230,212,0.6), which over the
+ * terracotta bubble resolves to about 2.4:1 — a contrast failure that went
+ * unnoticed while the demo started empty and the axe run had no bubbles to
+ * look at. Seeding the opening exchange put them on the page at rest and the
+ * gate caught it immediately. Even the full ivory only reaches 4.87:1 here, so
+ * there is no opacity to spend: the label earns its hierarchy from size, case
+ * and tracking instead, which is where it should have come from anyway.
+ */
 export const BubbleWho = styled.div<{ $role: 'ai' | 'user' }>`
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     margin-bottom: 4px;
-    color: ${({ $role }) => ($role === 'user' ? 'rgba(239,230,212,0.6)' : colors.ink40)};
+    color: ${({ $role }) => ($role === 'user' ? colors.onAccent : colors.ink40)};
 `;
 
 export const TypingIndicator = styled.div`
@@ -600,103 +617,6 @@ export const McSep = styled.span`
     opacity: 0.4;
 `;
 
-export const DemoEndCta = styled.div<{ $show: boolean }>`
-    flex-shrink: 0;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: opacity 700ms ease, max-height 700ms ease;
-
-    ${({ $show }) =>
-        $show &&
-        css`
-            max-height: 420px;
-            opacity: 1;
-        `}
-`;
-
-export const DemoEndInner = styled.div`
-    padding: 20px 18px 18px;
-    text-align: center;
-    border-top: 1px solid ${colors.ink08};
-    background: ${colors.fireBg};
-`;
-
-export const DemoEndLabel = styled.p`
-    font-family: ${fonts.display};
-    font-size: 13px;
-    font-style: italic;
-    color: ${colors.fire60};
-    margin: 0 0 8px;
-`;
-
-export const DemoEndTitle = styled.h3`
-    font-family: ${fonts.display};
-    font-size: 19px;
-    font-weight: 500;
-    color: ${colors.fireText};
-    margin: 0 0 8px;
-`;
-
-export const DemoEndSub = styled.p`
-    font-family: ${fonts.body};
-    font-size: 12px;
-    color: ${colors.fire60};
-    margin: 0 0 16px;
-`;
-
-export const DemoEndActions = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-`;
-
-const demoEndPrimaryCss = css`
-    display: inline-block;
-    font-family: ${fonts.body};
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    color: ${colors.onAccent};
-    background: ${colors.orange};
-    border-radius: 30px;
-    padding: 11px 20px;
-    text-decoration: none;
-    transition: background 0.2s ease;
-
-    &:hover {
-        background: #a14e22;
-    }
-`;
-
-export const DemoEndPrimary = styled(Link)`
-    ${demoEndPrimaryCss};
-`;
-
-/** The same button as an anchor, for mailto conversion links. */
-export const DemoEndPrimaryAnchor = styled.a`
-    ${demoEndPrimaryCss};
-`;
-
-export const DemoEndSecondary = styled(Link)`
-    display: inline-block;
-    font-family: ${fonts.body};
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    color: ${colors.fireText};
-    background: none;
-    border: 1px solid rgba(246,239,226,0.3);
-    border-radius: 30px;
-    padding: 10px 20px;
-    text-decoration: none;
-    transition: background 0.2s ease;
-
-    &:hover {
-        background: rgba(246,239,226,0.1);
-    }
-`;
-
 /* ── The depth ladder ─────────────────────────────────────────────────────
  * The single most misread thing about this product is that it is a list of
  * questions. It is not: the interview climbs, and each rung is only asked once
@@ -863,4 +783,130 @@ export const McAbout = styled.p`
 
     b { color: ${colors.orangeText}; font-weight: 600; }
     svg { flex-shrink: 0; color: ${colors.orangeText}; }
+`;
+
+/* ── The permission line ──────────────────────────────────────────────────
+ * 64 of the app's 504 questions are marked sensitive — loss, hardship,
+ * rupture, private — and they arrive with a sentence rather than a warning
+ * triangle (phone-app-main/src/lib/sensitivity.js). It is the clearest single
+ * signal in the product that this was built by somebody who has sat with an
+ * eighty-year-old, so the demo shows the line itself, above the question it
+ * belongs to, rendered as a system note rather than as speech: A Story does
+ * not read it out, it is what the app puts on the screen.
+ */
+export const SensitiveNote = styled.p<{ $show: boolean }>`
+    align-self: flex-start;
+    max-width: 92%;
+    margin: 2px 0 -2px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    border: 1px dashed ${colors.ink15};
+    background: ${colors.paper};
+    font-family: ${fonts.body};
+    font-size: 10px;
+    line-height: 1.5;
+    color: ${colors.ink70};
+    opacity: ${({ $show }) => ($show ? 1 : 0)};
+    transform: translateY(${({ $show }) => ($show ? '0' : '4px')});
+    transition: opacity 320ms ease, transform 320ms ease;
+
+    b {
+        display: block;
+        font-weight: 700;
+        font-size: 9px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: ${colors.orangeText};
+        margin-bottom: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) { transition: none; transform: none; }
+`;
+
+/* The terracotta line under the title: when it happened and how old they were.
+   lib/memoryCard.js's dateLine(), which every card in the app draws. */
+export const McDate = styled.p`
+    margin: -4px 0 9px;
+    font-family: ${fonts.body};
+    font-size: 10.5px;
+    font-weight: 600;
+    color: ${colors.orangeText};
+`;
+
+/* Said once, under the tabs, while the demo cycles them — otherwise three
+   pills read as decoration and nobody presses one. */
+export const McLayersHint = styled.p<{ $show: boolean }>`
+    margin: -4px 0 10px;
+    font-family: ${fonts.body};
+    font-size: 9.5px;
+    line-height: 1.5;
+    color: ${colors.ink40};
+    opacity: ${({ $show }) => ($show ? 1 : 0)};
+    transition: opacity 300ms ease;
+
+    @media (prefers-reduced-motion: reduce) { transition: none; }
+`;
+
+/* ── The reel ─────────────────────────────────────────────────────────────
+ * Three conversations rather than one, because no single call can show the
+ * whole mechanism: one has a sensitive question arriving with permission, one
+ * has a storyteller refusing a question, one has a memory about somebody who
+ * has died. Three across on a desk, one column on a phone — never two, which
+ * leaves an orphan.
+ */
+export const ReelGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(20px, 2.6vw, 36px);
+    align-items: start;
+
+    @media (max-width: 1080px) {
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: center;
+        gap: 56px;
+    }
+`;
+
+export const ReelItem = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    /* The same 330px the phone is capped at, so the heading's left edge and the
+       phone's left edge are one line rather than two. */
+    max-width: 330px;
+
+    @media (max-width: 1080px) { margin: 0 auto; }
+`;
+
+export const ReelHead = styled.div`
+    width: 100%;
+`;
+
+export const ReelChapter = styled.p`
+    margin: 0 0 5px;
+    font-family: ${fonts.body};
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: ${colors.orangeText};
+`;
+
+export const ReelTitle = styled.h3`
+    margin: 0 0 6px;
+    font-family: ${fonts.display};
+    font-size: 1.35rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: ${colors.dark};
+`;
+
+export const ReelWatch = styled.p`
+    margin: 0;
+    font-family: ${fonts.body};
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: ${colors.ink70};
 `;

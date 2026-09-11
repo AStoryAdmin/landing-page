@@ -70,7 +70,20 @@ for (const route of ROUTES) {
     await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'networkidle' });
     await page.waitForTimeout(150);
 
-    const html = await page.evaluate(() => '<!doctype html>\n' + document.documentElement.outerHTML);
+    const raw = await page.evaluate(() => '<!doctype html>\n' + document.documentElement.outerHTML);
+
+    /*
+     * Rewrite this script's own origin out of the captured markup.
+     *
+     * Vite's lazy-chunk preloader resolves import() against document.baseURI
+     * and injects <link rel="modulepreload" href="http://localhost:PORT/...">.
+     * Captured verbatim, that absolute URL ships to production, where the
+     * browser spends a failed request on a host that is not there — the chunk
+     * itself still loads, by a relative path, so the page works and nothing in
+     * the console explains itself. Any route with a lazy component above the
+     * fold picks this up; today that is the home page and its demo phones.
+     */
+    const html = raw.replaceAll(`http://localhost:${PORT}/`, '/');
 
     const dir = route === '/' ? dist : join(dist, route);
     mkdirSync(dir, { recursive: true });

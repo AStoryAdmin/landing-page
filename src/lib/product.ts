@@ -99,10 +99,21 @@ export const DEPTHS = [
 ];
 
 /**
- * The 62 questions marked sensitive — loss, hardship, rupture, private —
- * arrive with a line rather than a warning triangle. Quoted on the site
- * because it is the single clearest signal that this was built by someone who
- * has sat with an eighty-year-old rather than shipped a prompt list.
+ * How many questions are marked sensitive — loss (14), hardship (19), rupture
+ * (12), private (19). Counted straight off the app's bank:
+ *
+ *   grep -c 'sensitive: "' phone-app-main/src/data/interview.js
+ *
+ * This said 62 for a while, which was true of an older CSV. If the bank grows,
+ * re-run the grep rather than guessing.
+ */
+export const SENSITIVE_COUNT = 64;
+
+/**
+ * The line those questions arrive with, instead of a warning triangle. Quoted
+ * on the site because it is the single clearest signal that this was built by
+ * someone who has sat with an eighty-year-old rather than shipped a prompt
+ * list. Verbatim from the app's src/lib/sensitivity.js.
  */
 export const SENSITIVE_LINE = 'Leave it for another day if today isn’t the day.';
 

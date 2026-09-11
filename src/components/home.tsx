@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import Seo from './ui/Seo';
 import BuyBar from './ui/BuyBar';
 import Reveal from './ui/Reveal';
@@ -12,6 +12,11 @@ import {
 import { CONTACT } from '../lib/contact';
 import { track } from '../lib/analytics';
 import { PRICE } from '../lib/pricing';
+import { CHAPTER_COUNT, QUESTION_COUNT, SENSITIVE_COUNT } from '../lib/product';
+import { SCENARIOS } from '../lib/demoScripts';
+import {
+    ReelGrid, ReelItem, ReelHead, ReelChapter, ReelTitle, ReelWatch,
+} from './demoPhone.styles';
 import { faqSchema, organizationSchema, productSchema } from '../lib/seo';
 import productImg from './../assets/astoryProduct.webp';
 
@@ -23,8 +28,8 @@ import productImg from './../assets/astoryProduct.webp';
  */
 const DemoPhone = lazy(() => import('./demoPhone'));
 import {
-    AlsoBand, AlsoCard, AlsoGrid, DemoFallback, DemoSplit, Divider, EarlyProof, FaqItem, FaqList,
-    Feature, FeatureList, GiftCard,
+    AlsoBand, AlsoCard, AlsoGrid, DemoFallback, Divider, EarlyProof, FaqItem, FaqList,
+    DemoCoda, Feature, FeatureList, HandoverSteps,
     HandoverSplit, Hero, HeroActions, HeroBadge, HeroCopy, HeroInner, HeroSub, HeroTitle, HeroTrust,
     MatterItem, MattersCoda, MattersGrid, MattersLead,
     No, Objection, ObjectionGrid, Page, PriceStrip, ProofImage, ProofSplit, PromiseCard, PromiseGrid, PullQuote,
@@ -63,12 +68,12 @@ const TESTIMONIALS = [
         verified: false,
     },
     {
-        q: 'We put the card under the tree. By New Year my grandfather had done nine sessions and my kids were fighting over who got to read the next one.',
+        q: 'We set it up on Christmas Eve and told him at the table. By New Year my grandfather had done nine sessions and my kids were fighting over who got to read the next one.',
         c: 'David L. · Michigan',
         verified: false,
     },
     {
-        q: 'Four of us went in on it together. It cost each of us less than the candle I would otherwise have bought her, and she cried when she opened the card.',
+        q: 'Four of us went in on it together. It cost each of us less than the candle I would otherwise have bought her, and she cried when the first call came through.',
         c: 'The Ellery family · three siblings',
         verified: false,
     },
@@ -89,7 +94,7 @@ const VERIFIED_QUOTES = TESTIMONIALS.filter((t) => t.verified);
 const TOP_FAQ = [
     {
         q: 'What do I actually give them on the day?',
-        a: 'A printed card with a link and a short note from you. We send you a version to print and a version to text or email, so it works whether you are in the room or three time zones away.',
+        a: 'An archive already set up in their name, the app already on their phone or tablet, and a first call already booked for whenever suits. You do that part; it takes a couple of minutes and you can do all of it without them in the room.',
     },
     {
         q: 'My dad is hopeless with technology. Will this work?',
@@ -121,7 +126,13 @@ const TOP_FAQ = [
     },
 ];
 
-const Home = () => (
+const Home = () => {
+    /* Which of the three demo calls is currently running, if any. The reel
+       needs one owner of that fact: pressing play on the second phone has to
+       stop the first, and nothing inside a phone can know about its siblings. */
+    const [playing, setPlaying] = useState<string | null>(null);
+
+    return (
     <Page>
         <Seo
             title="A Story — the life-story app you keep: journal, autobiography, memoir"
@@ -167,36 +178,74 @@ const Home = () => (
         {/* ─── See it work, before we ask for anything ───────────────── */}
         <Section $tone="paper" $tight id="demo">
             <Container>
-                <DemoSplit>
-                    <div>
-                        <Eyebrow>Watch it happen</Eyebrow>
-                        <H2>Eleven questions. One porch.</H2>
-                        <Lead>
-                            Not a video &mdash; press play and you are watching the real interview flow.
-                            Margaret mentions her father in the fourth line, and A Story does not move
-                            off him again: the sound before he played, what his hands were doing, the
-                            one night she kept, and finally the thing she never told him.
-                        </Lead>
-                        <Note>
-                            Watch the bar at the top. The interview climbs a rung only once the one
-                            below it has been answered &mdash; warm-up, scene, portrait, stakes,
-                            reckoning &mdash; which is why the last question lands and would have been
-                            unaskable at the start. At the end you get what the family gets: a summary
-                            to read in a minute, the verbatim transcript, and the forty seconds worth
-                            hearing in her own voice. Your microphone works too, if you want a turn.
-                        </Note>
-                        <Actions>
-                            <Button to="/experience" $variant="outline">
-                                See everything they receive <IconArrow />
-                            </Button>
-                        </Actions>
-                    </div>
-                    <Suspense fallback={<DemoFallback aria-hidden="true" />}>
-                        <div onClickCapture={() => track('demo_played', { page: 'home' })}>
-                            <DemoPhone />
-                        </div>
-                    </Suspense>
-                </DemoSplit>
+                <SectionHead $center>
+                    <Eyebrow>Watch it happen</Eyebrow>
+                    <H2>Three calls. <Italic>Nobody changes the subject.</Italic></H2>
+                    <Lead $center>
+                        Not videos. Press play on any of them and you are watching the real interview
+                        flow, with the questions taken from the same bank the app asks from. In each
+                        one the same thing happens: somebody lets something slip on their way to
+                        answering a different question, and A Story drops its own question and goes
+                        after what they let slip.
+                    </Lead>
+                    <Note>
+                        Watch the bar at the top of each phone. The interview climbs a rung only once
+                        the one below it has been answered &mdash; warm-up, scene, portrait, stakes,
+                        reckoning &mdash; which is why the last question in every call lands, and
+                        would have been unaskable at the start. {SENSITIVE_COUNT} of the{' '}
+                        {QUESTION_COUNT} questions are marked sensitive and arrive with a line
+                        offering to leave them for another day; you will see two of those, and in the
+                        middle call you will see somebody take the offer.
+                    </Note>
+                </SectionHead>
+
+                <ReelGrid>
+                    {SCENARIOS.map((scenario, i) => (
+                        <ReelItem key={scenario.id}>
+                            <ReelHead>
+                                <ReelChapter>{scenario.chapter}</ReelChapter>
+                                <ReelTitle>{scenario.label}</ReelTitle>
+                                <ReelWatch>{scenario.watch}</ReelWatch>
+                            </ReelHead>
+                            <Suspense fallback={<DemoFallback aria-hidden="true" />}>
+                                <div
+                                    onClickCapture={() =>
+                                        track('demo_played', { page: 'home', scenario: scenario.id })
+                                    }
+                                >
+                                    <DemoPhone
+                                        scenario={scenario}
+                                        /* Whoever presses play wins; the other two
+                                           stop where they are rather than three
+                                           conversations talking over each other. */
+                                        stopped={playing !== null && playing !== scenario.id}
+                                        onStart={() => setPlaying(scenario.id)}
+                                        onFinish={() =>
+                                            setPlaying((p) => (p === scenario.id ? null : p))
+                                        }
+                                        /* One live microphone on the page, not three. */
+                                        showMic={i === 0}
+                                    />
+                                </div>
+                            </Suspense>
+                        </ReelItem>
+                    ))}
+                </ReelGrid>
+
+                <DemoCoda>
+                    <p>
+                        Every question in all three came out of the app&rsquo;s own bank &mdash;{' '}
+                        {QUESTION_COUNT} of them across {CHAPTER_COUNT} chapters, none written for a
+                        landing page. At the end of each call you get what a family gets: a summary to
+                        read in a minute, the transcript underneath it word for word, and the part
+                        worth hearing in their own voice.
+                    </p>
+                    <Actions>
+                        <Button to="/experience" $variant="outline">
+                            See everything they receive <IconArrow />
+                        </Button>
+                    </Actions>
+                </DemoCoda>
             </Container>
         </Section>
 
@@ -219,8 +268,8 @@ const Home = () => (
                             <StepNumber>1</StepNumber>
                             <StepTitle>Buy it</StepTitle>
                             <StepText>
-                                Two minutes. You get a card to print and a link to send &mdash; with a line
-                                from you on it. That is the last thing this asks of you.
+                                Two minutes, and you are done. Start the archive in their name, note
+                                their birthday, and pick the hour of day A Story should ring.
                             </StepText>
                         </Step>
                         <Step>
@@ -228,8 +277,8 @@ const Home = () => (
                             <StepNumber>2</StepNumber>
                             <StepTitle>Send the link</StepTitle>
                             <StepText>
-                                Hand it over at the table, text it, or slip it in a card. Send it to your
-                                brother and your cousins too &mdash; anyone you want in on it.
+                                One link, to whoever should be in on it &mdash; your brother, the cousins,
+                                the grandchildren. Inviting fifteen costs the same as inviting nobody.
                             </StepText>
                         </Step>
                         <Step>
@@ -280,15 +329,18 @@ const Home = () => (
                 <HandoverSplit>
                     <div>
                         <Eyebrow>What you hand over</Eyebrow>
-                        <H2>Something to actually put in their hands.</H2>
+                        <H2>Not a login. <Italic>The first conversation.</Italic></H2>
                         <Lead>
-                            A gift that arrives as a login is not a gift. You get a card &mdash; printed or
-                            sent &mdash; with your own note on it and one link underneath. It is the part
-                            they open, and it is the only instruction they ever need.
+                            You do the setting up &mdash; the archive, the app on their phone or tablet,
+                            the time of day A Story should ring. What they get handed is a thing that
+                            already works: at the hour you chose, their phone rings, they answer it, and
+                            somebody asks them about 1962.
                         </Lead>
                         <Note>
-                            Print it at home, order it with the book, or text the link if you won&rsquo;t be
-                            in the room. Whatever suits the day.
+                            It takes a couple of minutes and you can do all of it without them in the
+                            room. Nothing has to happen on any particular day &mdash; the first call can
+                            be that evening or in February, and moving it is one tap. If they get stuck
+                            we help them directly, so you never become their tech support.
                         </Note>
                         <Actions>
                             <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
@@ -296,17 +348,23 @@ const Home = () => (
                     </div>
 
                     <Reveal shift={26}>
-                        <GiftCard aria-hidden="true">
-                            <p className="eyebrow">A Story &middot; a gift for you</p>
-                            <p className="to">For</p>
-                            <p className="name">Grandma Ruth</p>
-                            <p className="note">
-                                We&rsquo;ve been meaning to ask you about all of it. Take your time &mdash;
-                                we&rsquo;re listening.
-                            </p>
-                            <span className="link">Start whenever you like &rarr;</span>
-                            <p className="from">From Ellie, Tom, and the grandchildren</p>
-                        </GiftCard>
+                        <HandoverSteps>
+                            <li>
+                                <b>You</b>
+                                <span>Set the archive up and choose the hour. Two minutes, once.</span>
+                            </li>
+                            <li>
+                                <b>Them</b>
+                                <span>Answer the phone and talk. That is the entire ask, every time.</span>
+                            </li>
+                            <li>
+                                <b>Everyone else</b>
+                                <span>
+                                    Read it, add the photographs, correct a name. Inviting fifteen
+                                    cousins costs the same as inviting nobody.
+                                </span>
+                            </li>
+                        </HandoverSteps>
                     </Reveal>
                 </HandoverSplit>
             </Container>
@@ -865,6 +923,7 @@ const Home = () => (
         </AlsoBand>
         <BuyBar />
     </Page>
-);
+    );
+};
 
 export default Home;

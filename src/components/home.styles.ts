@@ -251,74 +251,82 @@ export const HandoverSplit = styled.div`
 `;
 
 /**
- * The card the buyer prints or forwards. Rendered rather than photographed, so
- * it always matches the current brand and never needs re-shooting.
+ * What the three parties actually do.
+ *
+ * This replaced a rendered gift card — a dark slab with a handwritten note and
+ * a gold "Start whenever you like" pill on it. It was the best-looking thing on
+ * the page and it was describing an artefact that does not exist: there is no
+ * gift-card anything in the app, no code to redeem, nothing to print and
+ * nothing that arrives in an envelope. What a buyer really hands over is an
+ * archive somebody else already set up, so that is what this says instead.
  */
-export const GiftCard = styled.div`
-    position: relative;
-    background: ${color.primary};
-    border-radius: ${radius.xl};
-    padding: clamp(28px, 4vw, 48px);
-    box-shadow: ${shadow.lg};
-    color: ${color.onDarkMuted};
-    overflow: hidden;
+export const HandoverSteps = styled.ol`
+    display: grid;
+    gap: ${space.sm};
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: handover;
 
-    &::after {
-        content: '';
-        position: absolute;
-        inset-inline: 0;
-        bottom: 0;
-        height: 8px;
-        background: linear-gradient(90deg, ${color.gold} 0%, ${color.accent} 100%);
+    li {
+        counter-increment: handover;
+        position: relative;
+        padding: clamp(18px, 2vw, 24px) clamp(20px, 2.2vw, 28px) clamp(18px, 2vw, 24px) 68px;
+        background: ${color.paperPure};
+        border: 1px solid ${color.primaryLine};
+        border-radius: ${radius.lg};
     }
 
-    .eyebrow {
+    li::before {
+        content: counter(handover);
+        position: absolute;
+        left: clamp(20px, 2.2vw, 28px);
+        top: clamp(18px, 2vw, 24px);
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: ${radius.pill};
+        background: ${color.primaryWash};
+        font-family: ${font.display};
+        font-size: 1rem;
+        color: ${color.primary};
+    }
+
+    b {
+        display: block;
+        margin-bottom: 4px;
         font-size: ${type.caption};
         font-weight: ${weight.bold};
         letter-spacing: ${tracking.eyebrow};
         text-transform: uppercase;
-        color: ${color.goldText};
-        margin-bottom: ${space.lg};
+        color: ${color.accentText};
     }
 
-    .to {
-        font-size: ${type.xs};
-        color: ${color.onDarkFaint};
-        margin-bottom: 4px;
-    }
-
-    .name {
-        font-family: ${font.display};
-        font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
-        color: ${color.onDark};
-        line-height: 1.1;
-        margin-bottom: ${space.lg};
-    }
-
-    .note {
-        font-family: ${font.script};
-        font-size: clamp(1.3rem, 1rem + 1.1vw, 1.75rem);
-        line-height: 1.35;
-        color: ${color.onDark};
-        margin-bottom: ${space.xl};
-    }
-
-    .link {
-        display: inline-flex;
-        align-items: center;
-        gap: ${space.xs};
+    span {
+        display: block;
         font-size: ${type.sm};
-        font-weight: ${weight.semibold};
-        color: ${color.primaryDeep};
-        background: ${color.gold};
-        border-radius: ${radius.pill};
-        padding: 10px 18px;
+        line-height: ${leading.normal};
+        color: ${color.body};
     }
+`;
 
-    .from {
-        margin-top: ${space.lg};
-        font-size: ${type.xs};
-        color: ${color.onDarkFaint};
+/**
+ * The line under the three demo phones. It carries the two numbers that make
+ * the reel checkable — the size of the question bank and the number of
+ * chapters, both read from ../lib/product rather than typed here — and the
+ * one-line promise of what a call leaves behind.
+ */
+export const DemoCoda = styled.div`
+    max-width: 62ch;
+    margin: clamp(36px, 4vw, 56px) auto 0;
+    text-align: center;
+
+    p {
+        margin: 0 0 ${space.lg};
+        font-size: ${type.sm};
+        line-height: ${leading.relaxed};
+        color: ${color.bodyMuted};
     }
 `;
 
@@ -570,21 +578,20 @@ export const EarlyProof = styled.div`
  * It used to live only on /experience, one click away from the page almost
  * everyone lands on — which meant the single most convincing thing about the
  * product was seen by almost nobody.
+ *
+ * There were a copy column and one phone side by side here (DemoSplit). There
+ * are now three phones in a row under centred copy, and the grid that arranges
+ * them lives beside the phone it arranges — see ReelGrid in demoPhone.styles.
  */
 
-export const DemoSplit = styled.div`
-    display: grid;
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: clamp(32px, 5vw, 72px);
-    align-items: center;
-
-    ${media.md} { grid-template-columns: 1fr; }
-`;
-
-/** Holds the phone's height while its chunk loads, so nothing jumps. */
+/** Holds a phone's height while its chunk loads, so nothing jumps. */
 export const DemoFallback = styled.div`
-    min-height: 520px;
-    border-radius: ${radius.xl};
+    width: 100%;
+    max-width: 330px;
+    /* Matches PhoneContainer exactly, or the three-across row reflows the
+       moment the real phones arrive. */
+    aspect-ratio: 330 / 660;
+    border-radius: 42px;
     background: ${color.primaryWash};
     border: 1px solid ${color.primaryLine};
 `;
