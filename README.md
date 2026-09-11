@@ -346,6 +346,17 @@ first frame.
   today, and no package is priced against it. `/privacy` carries the matching
   paragraph on imported content.
 - The two program plans stay quoted rather than listed.
+- **Every buy button goes to `/start`, and none of them is a mailto.** The
+  primary call to action used to open the visitor's email client — 42 buttons
+  across 8 pages, all asking somebody who had just decided to buy to go and
+  compose a message. `/start` is a form-first conversion page that also
+  serves as the landing page for paid traffic. It writes to Supabase's
+  `waitlist_signups` (created by the app's `supabase/waitlist.sql`), and
+  `supabase/lead-fields.sql` here adds the four columns manual fulfilment
+  needs. The site works whether or not that migration has been run —
+  `src/lib/leads.ts` retries with the original four columns and folds the
+  rest into free text. Stripe, when it exists, still wins: `checkoutFor`
+  returns a Payment Link if one is configured and `/start?plan=…` otherwise.
 - **There is no gift card, and the site must not invent one.** The app has no
   gift infrastructure at all: no code, nothing to redeem, nothing that arrives
   in an envelope. The site used to promise a printed card in eight places and

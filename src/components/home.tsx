@@ -9,7 +9,6 @@ import {
     IconArchive, IconArrow, IconBook, IconClock, IconExport, IconGlobe, IconHeart,
     IconLock, IconMic, IconNoTrain, IconPhone, IconShield, IconTranscript, IconUsers, IconWaveform,
 } from './ui/icons';
-import { CONTACT } from '../lib/contact';
 import { track } from '../lib/analytics';
 import { PRICE } from '../lib/pricing';
 import { CHAPTERS, CHAPTER_COUNT, QUESTION_COUNT, SENSITIVE_COUNT } from '../lib/product';
@@ -37,7 +36,7 @@ import {
     MatterItem, MattersCoda, MattersGrid, MattersLead,
     No, Objection, ObjectionGrid, Page, PriceStrip, ProofImage, ProofSplit, PromiseCard, PromiseGrid, PullQuote,
     QuoteCard, QuoteGrid, RoleCard, RolesCoda, RolesGrid, SectionHead, Step, StepGrid, StepNumber, StepText,
-    StepTitle, Table, TableWrap, Tag, TagRow, Yes,
+    StepTitle, Table, TableWrap, TagRow, TagLink, Yes,
     AccessList,
     AccessRow,
     AboutSomeoneElse,
@@ -170,7 +169,11 @@ const Home = () => {
         <Hero>
             <HeroInner>
                 <HeroCopy>
-                    <HeroBadge>A Story &middot; your living memories</HeroBadge>
+{/* The badge used to say "your living memories", which is a category, not
+      a claim. This is the claim — and it is the founder's own, from /story:
+      the window does not close when somebody dies, it closes years earlier
+      and quietly. Note what it does not say: nothing here is a deadline. */}
+                    <HeroBadge>The stories go quiet first</HeroBadge>
                     <HeroTitle>
                         We call your parents
                         <br />
@@ -183,8 +186,10 @@ const Home = () => {
                         whole family keeps it, for good.
                     </HeroSub>
                     <HeroActions>
-                        <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
-                        <Button to="/experience" $variant="onDark">See what they receive</Button>
+                        <Button to="/start" $variant="primary">Gift a story</Button>
+                        {/* The demo is the best thing on this site and it was a
+                            scroll away with nothing pointing at it. */}
+                        <ButtonAnchor href="#demo" $variant="onDark">Watch a real call</ButtonAnchor>
                     </HeroActions>
                     <HeroTrust>
                         <li><IconClock size={15} /> Ready in minutes</li>
@@ -535,10 +540,11 @@ const Home = () => {
                     <p className="what">
                         <strong>Three days of everything, no card &mdash; then free for as long as you
                         like.</strong> Three questions a day, unlimited writing, and the whole family
-                        invited at no charge. Guided calls start at {PRICE.headline} {PRICE.headlineNote},
-                        and your recordings stay yours even if you stop.
+                        invited at no charge. Guided calls start at {PRICE.headline} a year &mdash;
+                        ten dollars a month for ninety minutes of somebody doing the asking, which is
+                        four or five real conversations. Your recordings stay yours either way.
                     </p>
-                    <ButtonAnchor href={CONTACT.gift} $variant="primary">Start free</ButtonAnchor>
+                    <Button to="/start" $variant="primary">Start free</Button>
                 </PriceStrip>
 
                 <Actions $center>
@@ -567,7 +573,7 @@ const Home = () => {
                             we help them directly, so you never become their tech support.
                         </Note>
                         <Actions>
-                            <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
+                            <Button to="/start" $variant="primary">Gift a story</Button>
                         </Actions>
                     </div>
 
@@ -821,7 +827,7 @@ const Home = () => {
                 </SectionHead>
                 <TagRow>
                     {OCCASIONS.map((o) => (
-                        <Tag key={o} href={CONTACT.giftFor(o)}>{o}</Tag>
+                        <TagLink key={o} to={`/start?for=${encodeURIComponent(o)}`}>{o}</TagLink>
                     ))}
                 </TagRow>
             </Container>
@@ -961,17 +967,19 @@ const Home = () => {
                                 whose entire promise is that your family&rsquo;s stories are safe with us.
                             </p>
                             <p>
-                                So here is what we can actually show you instead: the product itself,
-                                running, above. The founder&rsquo;s own reason for building it. And a refund
-                                if it turns out not to be for you, with no deadline on the offer.
+                                So here is what we can show you instead. The product itself, running,
+                                above. Two strokes in one year that took Daniel&rsquo;s uncles&rsquo; stories
+                                before they took anything else &mdash; which is the entire reason this
+                                exists, and is not a marketing line. And a refund if it turns out not to
+                                be for you, with no deadline on the offer.
                             </p>
                             <Actions>
                                 <Button to="/story" $variant="outline">Why Daniel built this <IconArrow /></Button>
                             </Actions>
                         </div>
                         <ul>
-                            <li><IconMic size={18} /><span><strong>Try the conversation yourself.</strong> The demo above is the real interview flow, not a video of one.</span></li>
-                            <li><IconBook size={18} /><span><strong>Look inside a finished book.</strong> Every page of Margaret&rsquo;s archive is on the experience page.</span></li>
+                            <li><IconMic size={18} /><span><strong>Open a real call.</strong> The three above are the interview flow itself, not videos of it &mdash; every question in them comes out of the app&rsquo;s own bank.</span></li>
+                            <li><IconBook size={18} /><span><strong>Look inside a finished book.</strong> Every page of an archive like Joan&rsquo;s is on the experience page.</span></li>
                             <li><IconShield size={18} /><span><strong>Read the terms before you pay.</strong> The refund and the forever-access promise are both written into them.</span></li>
                         </ul>
                     </EarlyProof>
@@ -1106,7 +1114,7 @@ const Home = () => {
                     ))}
                 </FaqList>
                 <Actions>
-                    <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
+                    <Button to="/start" $variant="primary">Gift a story</Button>
                     <Button to="/faq" $variant="ghost">Read every question <IconArrow /></Button>
                 </Actions>
             </Container>

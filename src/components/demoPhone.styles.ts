@@ -1,4 +1,5 @@
 import styled, { keyframes, css } from 'styled-components';
+import { Link } from 'react-router-dom';
 import { color, font } from '../styles/theme';
 
 const colors = {
@@ -984,7 +985,7 @@ export const DemoCloseSub = styled.p`
     color: ${colors.fire60};
 `;
 
-export const DemoCloseAnchor = styled.a`
+export const DemoCloseLink = styled(Link)`
     display: block;
     min-height: 42px;
     line-height: 42px;

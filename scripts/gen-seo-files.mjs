@@ -17,6 +17,9 @@ const SITE = (process.env.VITE_SITE_URL ?? 'https://astoryapp.com').replace(/\/$
 
 const ROUTES = [
     { path: '/', priority: '1.0', changefreq: 'weekly' },
+    /* The conversion page. High priority on purpose: it is where every CTA on
+       the site lands, and it is the page paid traffic is pointed at. */
+    { path: '/start', priority: '0.9', changefreq: 'monthly' },
     { path: '/experience', priority: '0.9', changefreq: 'monthly' },
     { path: '/family', priority: '0.9', changefreq: 'monthly' },
     { path: '/organizations', priority: '0.9', changefreq: 'monthly' },

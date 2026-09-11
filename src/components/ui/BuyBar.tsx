@@ -89,7 +89,9 @@ const Spacer = styled.div`
     ${media.md} { display: block; height: 76px; }
 `;
 
-const BuyBar = ({ planId = 'one', label = 'One storyteller' }: { planId?: string; label?: string }) => {
+/* There was a `label` prop here, which named the plan in the mailto subject.
+   The bar now goes to /start, which carries the plan in its query string. */
+const BuyBar = ({ planId = 'one' }: { planId?: string }) => {
     const [shown, setShown] = useState(false);
 
     useEffect(() => {
@@ -110,7 +112,7 @@ const BuyBar = ({ planId = 'one', label = 'One storyteller' }: { planId?: string
                     <p className="price">{PRICE.headline}<span className="per">/year</span></p>
                     <p className="what">3 days free first · cancel any time</p>
                 </Copy>
-                <Go href={checkoutFor(planId, label)}>
+                <Go href={checkoutFor(planId)}>
                     {buyLabel(planId, 'Buy now', 'Get started')}
                 </Go>
             </Bar>

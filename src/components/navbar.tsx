@@ -1,9 +1,8 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Logo from './ui/Logo';
-import { CONTACT } from '../lib/contact';
 import {
-    Announce, Dropdown, DropdownItem, Hamburger, MobileActions, NavActions, NavButton, NavCtaAnchor,
+    Announce, Dropdown, DropdownItem, Hamburger, MobileActions, NavActions, NavButton, NavCta,
     NavGhost, NavGroup, NavInner, NavLink, NavLinks, NavShell, NavSpacer,
 } from './navbar.styles';
 
@@ -96,7 +95,7 @@ const Navbar = () => {
                 <span>
                     Ready to give in minutes &mdash; <strong>and the archive is theirs forever</strong>
                 </span>
-                <a href={CONTACT.gift}>Gift a story &rarr;</a>
+                <Link to="/start">Gift a story &rarr;</Link>
             </Announce>
 
             <NavInner aria-label="Primary">
@@ -134,14 +133,14 @@ const Navbar = () => {
                     </NavGroup>
 
                     <MobileActions>
-                        <NavCtaAnchor href={CONTACT.gift}>Gift a story</NavCtaAnchor>
+                        <NavCta to="/start">Gift a story</NavCta>
                         <NavGhost to="/story">Our story</NavGhost>
                     </MobileActions>
                 </NavLinks>
 
                 <NavActions>
                     <NavGhost to="/story">Our story</NavGhost>
-                    <NavCtaAnchor href={CONTACT.gift}>Gift a story</NavCtaAnchor>
+                    <NavCta to="/start">Gift a story</NavCta>
                 </NavActions>
 
                 <Hamburger

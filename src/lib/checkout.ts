@@ -1,4 +1,3 @@
-import { CONTACT } from './contact';
 
 /**
  * Where the money is taken.
@@ -107,12 +106,18 @@ export const isCheckoutLive = (id: string): boolean => Boolean(LINKS[id]);
 export const anyCheckoutLive = (): boolean => Object.values(LINKS).some(Boolean);
 
 /**
- * Where a buy button points. A real Stripe checkout when one is configured,
- * and otherwise the mailto that names what they were trying to buy — so an
- * enquiry still arrives with the intent attached rather than being lost.
+ * Where a buy button points.
+ *
+ * A real Stripe checkout when one is configured; otherwise /start, carrying
+ * the plan that was clicked so the reply can open on the right thing.
+ *
+ * This used to fall back to a mailto that named the plan. The intent did
+ * survive, but almost nobody arrived with it: asking somebody to compose an
+ * email is the most expensive thing a page can do at the moment they have
+ * decided to buy. See src/lib/leads.ts for what replaced it.
  */
-export const checkoutFor = (id: string, label: string): string =>
-    LINKS[id] || CONTACT.giftFor(label);
+export const checkoutFor = (id: string): string =>
+    LINKS[id] || `/start?plan=${encodeURIComponent(id)}`;
 
 /**
  * What the button should say. Before checkout exists, promising "Buy" and

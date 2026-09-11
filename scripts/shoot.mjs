@@ -14,7 +14,7 @@ const base = (process.argv[3] ?? 'http://localhost:4173').replace(/\/$/, '');
 const only = process.env.ROUTES?.split(',');
 
 const ROUTES = only ?? [
-    '/', '/experience', '/family', '/organizations', '/institution',
+    '/', '/start', '/experience', '/family', '/organizations', '/institution',
     '/pricing', '/your-story', '/thanks', '/story', '/faq', '/privacy', '/terms', '/nope-404',
 ];
 

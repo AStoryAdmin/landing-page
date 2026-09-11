@@ -25,7 +25,7 @@ const dist = join(root, 'dist');
 const PORT = 4179;
 
 const ROUTES = [
-    '/', '/experience', '/family', '/organizations', '/institution',
+    '/', '/start', '/experience', '/family', '/organizations', '/institution',
     '/pricing', '/story', '/faq', '/privacy', '/terms',
 ];
 

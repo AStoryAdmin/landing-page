@@ -148,7 +148,7 @@ const Pricing = () => (
                                 <PlanKeeps>{KEEPS_LINE}</PlanKeeps>
                                 <PlanAction>
                                     <ButtonAnchor
-                                        href={checkoutFor(plan.id, plan.name)}
+                                        href={checkoutFor(plan.id)}
                                         onClick={() => track(isCheckoutLive(plan.id) ? 'checkout_click' : 'contact_click', { plan: plan.id, price: plan.price })}
                                         $variant={plan.featured ? 'primary' : 'outline'}
                                     >
@@ -209,15 +209,15 @@ const Pricing = () => (
                             calls switched on for the stretches when you want somebody doing the asking.
                         </Note>
                         <Actions>
-                            <ButtonAnchor
-                                href={CONTACT.gift}
+                            <Button
+                                to="/start"
                                 onClick={() => track('contact_click', { plan: 'free' })}
                                 $variant="primary"
                             >
                                 Start free
-                            </ButtonAnchor>
-                            <Button to="/experience#demo" $variant="outline">
-                                Try it with no account first <IconArrow />
+                            </Button>
+                            <Button to="/#demo" $variant="outline">
+                                Watch a real call first <IconArrow />
                             </Button>
                         </Actions>
                     </div>
@@ -281,7 +281,7 @@ const Pricing = () => (
                         </Note>
                         <Actions>
                             <ButtonAnchor
-                                href={checkoutFor('book', 'A hardcover book')}
+                                href={checkoutFor('book')}
                                 onClick={() => track(isCheckoutLive('book') ? 'checkout_click' : 'contact_click', { plan: 'book' })}
                                 $variant="primary"
                             >
@@ -454,7 +454,7 @@ const Pricing = () => (
                     ))}
                 </HonestGrid>
                 <Actions>
-                    <ButtonAnchor href={CONTACT.gift} $variant="primary">Gift a story</ButtonAnchor>
+                    <Button to="/start" $variant="primary">Gift a story</Button>
                     <Button to="/faq" $variant="ghost">Read every question <IconArrow /></Button>
                 </Actions>
             </Container>

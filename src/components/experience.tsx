@@ -1,9 +1,8 @@
-import { CONTACT } from '../lib/contact';
 import { PRICE } from '../lib/pricing';
 import { CHAPTERS, DEPTHS, QUESTION_COUNT, SENSITIVE_COUNT, SENSITIVE_LINE } from '../lib/product';
 import Seo from './ui/Seo';
 import { breadcrumbSchema, organizationSchema } from '../lib/seo';
-import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, DemoButtonAnchor, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription, NextContainer, NextBadge, NextTitle, NextLead, NextGrid, NextCard, NextCaveat, ChaptersContainer, ChapterGrid, ChapterCard, DepthLadder, DepthStep, SensitiveNote} from './experience.styles'
+import {ExperienceContainer, OpeningContainer, CardView, Intro, Title, Description, HighlightText, DemoButton, FamilyButton, InstructionContainer, InstructTitle, StepIntro, Card, Grid, StepCard, Subtitle, Column, OddColumn, StepNumber, StepTitle, Content, RoleColumn, Arrow, AIContainer, Demo, Summary, DemoIntro, InteractiveBookContainer, AccessContainer, Note, BookIntro, BookTitle, BookSubtitle, BulletList, BulletItem, Bold, PriceBox, Price, PriceDivider, PriceDetails, BookImg, DarkIntro, DarkTitle, DarkDescription, NextContainer, NextBadge, NextTitle, NextLead, NextGrid, NextCard, NextCaveat, ChaptersContainer, ChapterGrid, ChapterCard, DepthLadder, DepthStep, SensitiveNote} from './experience.styles'
 import {TagRow, Tag, Divider} from './home.styles';
 import FlipBook from './flipBook';
 import { Link } from 'react-router-dom';
@@ -303,7 +302,7 @@ const Experience = () => {
                     <DarkIntro>Ready to begin?</DarkIntro>
                     <DarkTitle>Start the record. It does not have to be finished.</DarkTitle>
                     <DarkDescription>You buy it once and send one link. They answer the phone and talk when they feel like it. The archive and the book belong to the whole family, and there is always room for the next conversation.</DarkDescription>
-                    <DemoButtonAnchor href={CONTACT.gift}>Gift a story</DemoButtonAnchor>
+                    <DemoButton to="/start">Gift a story</DemoButton>
                     <FamilyButton to="/family">Why it matters</FamilyButton>
                 </CardView>
             </AccessContainer>

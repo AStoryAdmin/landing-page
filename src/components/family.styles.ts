@@ -102,6 +102,15 @@ export const PrimaryButtonAnchor = styled.a`
     display: inline-flex;
 `;
 
+/* The same button, for an internal route. The gift CTAs used to be mailto:
+   anchors; they now go to /start, and a react-router Link keeps that a
+   client-side navigation rather than a full page load. The anchor stays for
+   the mailto CTAs that are still genuinely mailto. */
+export const PrimaryButtonLink = styled(Link)`
+    ${primaryButtonCss};
+    display: inline-flex;
+`;
+
 export const GhostButton = styled.button`
     display: inline-flex;
     align-items: center;

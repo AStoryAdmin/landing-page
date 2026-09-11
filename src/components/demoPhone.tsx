@@ -58,9 +58,8 @@ import {
     DemoCloseInner,
     DemoCloseTitle,
     DemoCloseSub,
-    DemoCloseAnchor,
+    DemoCloseLink,
 } from './demoPhone.styles';
-import { CONTACT } from '../lib/contact';
 import { DEPTHS, sensitiveNote, type Scenario } from '../lib/demoScripts';
 import statusBarImg from './../assets/statusbar.webp';
 
@@ -572,7 +571,7 @@ const DemoPhone = ({ scenario, stopped = false, onStart, onFinish }: DemoPhonePr
                                     There is somebody in your family with an answer like that one, and
                                     no particular reason to ever say it out loud.
                                 </DemoCloseSub>
-                                <DemoCloseAnchor href={CONTACT.gift}>Start their archive</DemoCloseAnchor>
+                                <DemoCloseLink to="/start">Start their archive</DemoCloseLink>
                             </DemoCloseInner>
                         </DemoClose>
                     )}

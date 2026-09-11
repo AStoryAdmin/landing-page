@@ -50,7 +50,7 @@ const Footer = () => {
                                 tell them. You send one link. We do the rest.
                             </CtaSub>
                             <CtaActions>
-                                <ButtonAnchor href={CONTACT.gift} $variant="gold">Gift a story</ButtonAnchor>
+                                <Button to="/start" $variant="gold">Gift a story</Button>
                                 <Button to="/experience" $variant="onDark">See what they receive</Button>
                             </CtaActions>
                         </>

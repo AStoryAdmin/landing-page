@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import heroImg from './../assets/heroFamilyYard.webp';
 import {
@@ -431,7 +431,7 @@ export const TagRow = styled.div`
     padding-top: ${space.lg};
 `;
 
-export const Tag = styled.a`
+const tagCss = css`
     font-family: ${font.body};
     font-size: ${type.caption};
     font-weight: ${weight.semibold};
@@ -444,12 +444,35 @@ export const Tag = styled.a`
     padding: 10px 18px;
     text-decoration: none;
     transition: border-color ${motion.fast}, color ${motion.fast}, transform ${motion.fast};
+`;
 
+const tagHoverCss = css`
     &:hover {
         border-color: ${color.accentLine};
         color: ${color.accentText};
         transform: translateY(-1px);
     }
+`;
+
+/**
+ * The pill. Two of them, because it is two different things.
+ *
+ * /experience uses <Tag> as a label in a flow diagram — "Phone call → Memory
+ * card → Full transcript" — where nothing is clickable. The home page's
+ * occasions row used the same component as an anchor wrapping a mailto per
+ * occasion. Making the one component a Link to fix the second broke the first,
+ * since a Link with no destination is not a thing. So: a plain pill, and a pill
+ * that goes somewhere.
+ */
+export const Tag = styled.span`
+    ${tagCss};
+    display: inline-block;
+`;
+
+export const TagLink = styled(Link)`
+    ${tagCss};
+    ${tagHoverCss};
+    display: inline-block;
 `;
 
 /* ── Why this matters ─────────────────────────────────────────────────

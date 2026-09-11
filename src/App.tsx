@@ -26,6 +26,9 @@ const PublicStory = lazy(() => import('./components/publicStory'));
 const Contribute = lazy(() => import('./components/contribute'));
 const YourStory = lazy(() => import('./components/yourStory'));
 const Thanks = lazy(() => import('./components/thanks'));
+/* The conversion page. Every "Gift a story" button on the site ends here —
+   it used to end in the visitor's email client. See components/start.tsx. */
+const Start = lazy(() => import('./components/start'));
 const NotFound = lazy(() => import('./components/notFound'));
 
 /** Reserves the space taken by the fixed header (see navbar's ResizeObserver). */
@@ -79,6 +82,7 @@ function App() {
                 </Route>
                 <Route element={<MarketingLayout />}>
                     <Route path="/" element={<Home />} />
+                    <Route path="/start" element={<Start />} />
                     <Route path="/experience" element={<Experience />} />
                     <Route path="/family" element={<Family />} />
                     <Route path="/organizations" element={<Organizations />} />

@@ -83,7 +83,7 @@ const YourStory = () => (
                     </Lead>
                 </SectionHead>
                 <Actions>
-                    <ButtonAnchor href={checkoutFor('individual', 'Individual — my own life')} $variant="primary">
+                    <ButtonAnchor href={checkoutFor('individual')} $variant="primary">
                         {buyLabel('individual', 'Start free — 3 days of everything', 'Start your own archive')}
                     </ButtonAnchor>
                     <Button to="/#demo" $variant="onDark">Hear how it asks <IconArrow /></Button>
@@ -152,7 +152,7 @@ const YourStory = () => (
                         <strong>Three days of everything, then free for as long as you like.</strong> Guided
                         calls are {PRICE.headline} {PRICE.headlineNote}. {KEEPS_LINE}
                     </p>
-                    <ButtonAnchor href={checkoutFor('individual', 'Individual — my own life')} $variant="primary">
+                    <ButtonAnchor href={checkoutFor('individual')} $variant="primary">
                         {buyLabel('individual', 'Choose Individual', 'Get started')}
                     </ButtonAnchor>
                 </PriceStrip>
@@ -267,7 +267,7 @@ const YourStory = () => (
             </Container>
         </Section>
 
-        <BuyBar planId="one" label="One storyteller — my own life" />
+        <BuyBar planId="one" />
     </Page>
 );
 
