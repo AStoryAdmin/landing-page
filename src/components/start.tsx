@@ -60,12 +60,14 @@ const Start = () => {
     const plan = params.get('plan') ?? '';
     const planLabel = PLAN_LABEL[plan];
     const heroSource = planLabel ? `start:plan:${plan}` : 'start:hero';
+    /* "Book a demo" lands here too — same two fields, a different promise. */
+    const intent = params.get('intent') === 'demo' ? 'demo' : 'start';
 
     return (
     <Page>
         <Seo
             title="Start their story — A Story"
-            description="Tell us who it is for. We set the archive up in their name, send you one link, and hold the first call until the day you choose. No payment now."
+            description="Leave a name and a number. We call you back, show you how it works, and set nothing up until you say so. No payment now."
             path="/start"
             schema={[
                 organizationSchema(),
@@ -128,14 +130,16 @@ const Start = () => {
 
                 <FormCard>
                     <FormHead>
-                        <h2>Tell us who it is for.</h2>
+                        <h2>{intent === 'demo' ? 'Let us show you.' : 'Leave us a number.'}</h2>
                         <p>
-                            {planLabel
-                                ? `You were looking at ${planLabel}. We will open on that — two fields are all we really need.`
-                                : 'Two fields are all we really need. Everything else can wait for the reply.'}
+                            {intent === 'demo'
+                                ? 'Twenty minutes on a call and you will have seen the whole thing working. Two fields and we will ring you to agree a time.'
+                                : planLabel
+                                    ? `You were looking at ${planLabel}. Leave a name and a number and we will call you about it — everything else can wait.`
+                                    : 'A name and a number is all we need. We will call you, which is rather the point of the product.'}
                         </p>
                     </FormHead>
-                    <LeadForm source={heroSource} onDark />
+                    <LeadForm source={heroSource} onDark intent={intent} />
                 </FormCard>
             </TopInner>
         </Top>
@@ -232,7 +236,7 @@ const Start = () => {
                     <LeadForm
                         source="start:closer"
                         onDark
-                        submitLabel="Start their story"
+                        intent={intent}
                         reassure="Nothing is charged today, and nothing reaches them until you say so."
                     />
                 </FormCard>

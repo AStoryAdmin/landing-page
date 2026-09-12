@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from './ui/Logo';
+import { DEMO_HREF } from '../lib/checkout';
 import {
     Announce, Dropdown, DropdownItem, Hamburger, MobileActions, NavActions, NavButton, NavCta,
     NavGhost, NavGroup, NavInner, NavLink, NavLinks, NavShell, NavSpacer,
@@ -134,12 +135,13 @@ const Navbar = () => {
 
                     <MobileActions>
                         <NavCta to="/start">Gift a story</NavCta>
+                        <NavGhost to={DEMO_HREF}>Book a demo</NavGhost>
                         <NavGhost to="/story">Our story</NavGhost>
                     </MobileActions>
                 </NavLinks>
 
                 <NavActions>
-                    <NavGhost to="/story">Our story</NavGhost>
+                    <NavGhost to={DEMO_HREF}>Book a demo</NavGhost>
                     <NavCta to="/start">Gift a story</NavCta>
                 </NavActions>
 

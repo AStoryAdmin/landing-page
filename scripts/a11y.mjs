@@ -21,7 +21,8 @@ for (const [label, width, height] of [['desktop', 1440, 1000], ['mobile', 390, 8
     const page = await context.newPage();
 
     for (const route of ROUTES) {
-        await page.goto(base + route, { waitUntil: 'networkidle' });
+        await page.goto(base + route, { waitUntil: 'load' });
+        await page.waitForTimeout(500);
         await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
         await page.waitForTimeout(300);
         await page.addScriptTag({ content: axeSource });

@@ -120,6 +120,16 @@ export const checkoutFor = (id: string): string =>
     LINKS[id] || `/start?plan=${encodeURIComponent(id)}`;
 
 /**
+ * Where "Book a demo" goes — the same two-field form, asking for the same
+ * name and number, promising a call rather than a setup.
+ *
+ * It is a separate entry point rather than a separate page because the thing
+ * being collected is identical, and a second form is a second thing to keep
+ * true. `/start` reads the intent and changes what it promises.
+ */
+export const DEMO_HREF = '/start?intent=demo';
+
+/**
  * What the button should say. Before checkout exists, promising "Buy" and
  * opening an email client is a small lie that costs more trust than the click
  * is worth.

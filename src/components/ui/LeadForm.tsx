@@ -1,47 +1,69 @@
 import { useId, useState } from 'react';
-import { submitLead, looksLikeEmail } from '../../lib/leads';
+import { submitLead, looksLikePhone } from '../../lib/leads';
 import { track } from '../../lib/analytics';
 import { SITE } from '../../lib/seo';
 import {
-    Done, ErrorNote, Field, Form, Reassure, Row, Submit,
+    Done, ErrorNote, Field, Form, Reassure, Submit,
 } from './leadForm.styles';
 
 /**
- * "Gift a story", as a thing somebody can actually do.
+ * Two boxes: a name and a phone number.
  *
- * The button used to be a `mailto:` — the visitor's own email client, opened
- * at the exact moment they had decided to buy, with a blank message to write.
- * That is where the site was losing almost everybody, and no amount of better
- * copy above it would have helped.
+ * It asked for five things before this — first name, last name, email, who it
+ * was for, and a date. Every one of those is a place somebody stops, and the
+ * site is not selling yet: nothing is being fulfilled from this form, so
+ * nothing on it needs to be complete. It needs to be answerable in ten
+ * seconds by someone holding a phone.
  *
- * Deliberately short. Five fields, two of them optional, and only one of them
- * — who it is for — that a fulfiller could not work out on their own. Every
- * extra box here costs conversions at the worst possible moment, so anything
- * that can be asked later by email is asked later by email.
+ * A phone number rather than an email is the right trade for this product
+ * specifically. The thing we are asking them to believe is that A Story rings
+ * a person and has a conversation with them — so the first thing we do should
+ * be to ring them and have one. An email reply is a worse demonstration of
+ * the product than a call is.
+ *
+ * Email is kept as an optional third box rather than dropped, because some
+ * people would simply rather be written to, and refusing them a way to say so
+ * costs more than one optional field does.
  */
+
+type Intent = 'start' | 'demo';
 
 type LeadFormProps = {
     /** Which page and button this came from; stored with the lead. */
     source: string;
     /** Teal panels and the /start hero need the dark palette. */
     onDark?: boolean;
-    /** Wording above the button, for pages that need a different promise. */
+    /** Booking a demo asks for the same details and promises something else. */
+    intent?: Intent;
+    /** Overrides, for pages that need a different promise. */
     reassure?: string;
     submitLabel?: string;
 };
 
-const LeadForm = ({
-    source,
-    onDark = false,
-    reassure = 'No payment now, and nothing charged until we have spoken. We answer every message ourselves, usually the same day.',
-    submitLabel = 'Start their story',
-}: LeadFormProps) => {
+const COPY: Record<Intent, { submit: string; reassure: string; heading: string; body: string }> = {
+    start: {
+        submit: 'Start their story',
+        reassure:
+            'No payment, and nothing charged until we have spoken. We call once — if it is not for you, say so and that is the end of it.',
+        heading: 'That’s the hard part done.',
+        body: 'We have your number. Nothing has been charged and nothing happens to anybody until you say so.',
+    },
+    demo: {
+        submit: 'Book a demo',
+        reassure:
+            'Twenty minutes, whenever suits you. No payment, no obligation, and no slide deck — we just show you the thing working.',
+        heading: 'Booked — near enough.',
+        body: 'We have your number and we will call to agree a time that actually suits you. Twenty minutes, and you will have seen the whole thing.',
+    },
+};
+
+const LeadForm = ({ source, onDark = false, intent = 'start', reassure, submitLabel }: LeadFormProps) => {
     const uid = useId();
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const copy = COPY[intent];
+
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
-    const [giftFor, setGiftFor] = useState('');
-    const [neededBy, setNeededBy] = useState('');
     const [sending, setSending] = useState(false);
     const [done, setDone] = useState(false);
     const [alreadyKnown, setAlreadyKnown] = useState(false);
@@ -54,19 +76,34 @@ const LeadForm = ({
         if (sending) return;
         setError(null);
 
-        if (!firstName.trim()) return setInvalid('first');
-        if (!lastName.trim()) return setInvalid('last');
-        if (!looksLikeEmail(email)) return setInvalid('email');
+        if (!name.trim()) return setInvalid('name');
+        if (!looksLikePhone(phone)) return setInvalid('phone');
         setInvalid(null);
+
+        /*
+         * The table wants a first and last name separately. Rather than make
+         * somebody fill two boxes for it, split on the last space — and send
+         * the name they actually typed along as the note, so nothing a
+         * heuristic gets wrong is lost.
+         */
+        const trimmed = name.trim().replace(/\s+/g, ' ');
+        const cut = trimmed.lastIndexOf(' ');
+        const firstName = cut === -1 ? trimmed : trimmed.slice(0, cut);
+        const lastName = cut === -1 ? '' : trimmed.slice(cut + 1);
 
         setSending(true);
         const result = await submitLead({
-            firstName, lastName, email, giftFor, neededBy, source,
+            firstName,
+            lastName,
+            phone,
+            email,
+            note: `Name as given: ${trimmed}${intent === 'demo' ? ' · wants a demo' : ''}`,
+            source: intent === 'demo' ? `${source}:demo` : source,
         });
         setSending(false);
 
         if (result.ok) {
-            track('lead_submitted', { source });
+            track('lead_submitted', { source, intent });
             setAlreadyKnown(result.alreadyKnown);
             setDone(true);
             return;
@@ -74,23 +111,23 @@ const LeadForm = ({
 
         /* The form could not save. Rather than swallow it, hand them the old
            path — losing the lead is worse than an ugly sentence. */
-        track('lead_failed', { source, reason: result.reason });
+        track('lead_failed', { source, intent, reason: result.reason });
         setError(result.fallbackMailto);
     };
 
     if (done) {
         return (
             <Done $onDark={onDark} role="status">
-                <h3>{alreadyKnown ? 'You’re already on the list.' : 'That’s the hard part done.'}</h3>
+                <h3>{alreadyKnown ? 'You’re already on the list.' : copy.heading}</h3>
                 <p>
                     {alreadyKnown
-                        ? 'We had your details already, so nothing is lost — and we have noted that you came back.'
-                        : `We have your details. Nothing has been charged, and nothing happens to ${giftFor.trim() || 'them'} until you say so.`}
+                        ? 'We had your number already, so nothing is lost — and we have noted that you came back.'
+                        : copy.body}
                 </p>
                 <ol>
-                    <li><strong>We write back</strong> — usually the same day, from a person, not a system.</li>
-                    <li><strong>We set the archive up</strong> in their name, and send you the one link.</li>
-                    <li><strong>You choose the day.</strong> Tell us when, and we hold the first call until then.</li>
+                    <li><strong>We call you</strong> — a person, not a system, usually within a day.</li>
+                    <li><strong>We show you how it works</strong> and answer whatever you want to ask.</li>
+                    <li><strong>You decide then.</strong> Nothing is set up, and nobody is called, until you say so.</li>
                 </ol>
             </Done>
         );
@@ -98,54 +135,36 @@ const LeadForm = ({
 
     return (
         <Form onSubmit={onSubmit} $onDark={onDark} noValidate>
-            <Row>
-                <Field $onDark={onDark} htmlFor={`${uid}-first`} data-invalid={invalid === 'first'}>
-                    <span>First name</span>
-                    <input
-                        id={`${uid}-first`} name="given-name" autoComplete="given-name"
-                        value={firstName} onChange={(e) => setFirstName(e.target.value)}
-                        aria-invalid={invalid === 'first'} required
-                    />
-                </Field>
-                <Field $onDark={onDark} htmlFor={`${uid}-last`} data-invalid={invalid === 'last'}>
-                    <span>Last name</span>
-                    <input
-                        id={`${uid}-last`} name="family-name" autoComplete="family-name"
-                        value={lastName} onChange={(e) => setLastName(e.target.value)}
-                        aria-invalid={invalid === 'last'} required
-                    />
-                </Field>
-            </Row>
-
-            <Field $onDark={onDark} htmlFor={`${uid}-email`} data-invalid={invalid === 'email'}>
-                <span>Your email</span>
+            <Field $onDark={onDark} htmlFor={`${uid}-name`} data-invalid={invalid === 'name'}>
+                <span>Your name</span>
                 <input
-                    id={`${uid}-email`} type="email" name="email" autoComplete="email" inputMode="email"
-                    value={email} onChange={(e) => setEmail(e.target.value)}
-                    aria-invalid={invalid === 'email'}
-                    aria-describedby={invalid === 'email' ? `${uid}-email-err` : undefined}
+                    id={`${uid}-name`} name="name" autoComplete="name"
+                    value={name} onChange={(e) => setName(e.target.value)}
+                    aria-invalid={invalid === 'name'} required
+                />
+            </Field>
+
+            <Field $onDark={onDark} htmlFor={`${uid}-phone`} data-invalid={invalid === 'phone'}>
+                <span>Phone number</span>
+                <input
+                    id={`${uid}-phone`} type="tel" name="tel" autoComplete="tel" inputMode="tel"
+                    value={phone} onChange={(e) => setPhone(e.target.value)}
+                    aria-invalid={invalid === 'phone'}
+                    aria-describedby={invalid === 'phone' ? `${uid}-phone-err` : undefined}
                     required
                 />
-                {invalid === 'email' && (
-                    <Reassure $onDark={onDark} id={`${uid}-email-err`}>
-                        That address does not look right &mdash; have another look at it.
+                {invalid === 'phone' && (
+                    <Reassure $onDark={onDark} id={`${uid}-phone-err`}>
+                        That does not look like a number we could reach you on &mdash; have another look.
                     </Reassure>
                 )}
             </Field>
 
-            <Field $onDark={onDark} htmlFor={`${uid}-for`}>
-                <span>Who is it for? <span className="opt">&mdash; optional</span></span>
+            <Field $onDark={onDark} htmlFor={`${uid}-email`}>
+                <span>Email <span className="opt">&mdash; optional, if you would rather we wrote</span></span>
                 <input
-                    id={`${uid}-for`} value={giftFor} onChange={(e) => setGiftFor(e.target.value)}
-                    placeholder="My mum, Ruth. She’s 84 and swears she has nothing to tell."
-                />
-            </Field>
-
-            <Field $onDark={onDark} htmlFor={`${uid}-by`}>
-                <span>Any date it needs to be ready by? <span className="opt">&mdash; optional</span></span>
-                <input
-                    id={`${uid}-by`} value={neededBy} onChange={(e) => setNeededBy(e.target.value)}
-                    placeholder="Before Christmas · her birthday, the 14th · no rush"
+                    id={`${uid}-email`} type="email" name="email" autoComplete="email" inputMode="email"
+                    value={email} onChange={(e) => setEmail(e.target.value)}
                 />
             </Field>
 
@@ -157,10 +176,10 @@ const LeadForm = ({
             )}
 
             <Submit type="submit" $onDark={onDark} disabled={sending}>
-                {sending ? 'Sending…' : submitLabel}
+                {sending ? 'Sending…' : submitLabel ?? copy.submit}
             </Submit>
 
-            <Reassure $onDark={onDark}>{reassure}</Reassure>
+            <Reassure $onDark={onDark}>{reassure ?? copy.reassure}</Reassure>
         </Form>
     );
 };

@@ -40,8 +40,9 @@ import { CONTACT } from './contact';
 export type Lead = {
     firstName: string;
     lastName: string;
-    email: string;
-    phone?: string;
+    /** Optional now — the form asks for a phone number instead. */
+    email?: string;
+    phone: string;
     /** Who the archive is for, in their words. */
     giftFor?: string;
     /** A date it has to be ready by, if there is one. */
@@ -57,6 +58,34 @@ export type LeadResult =
 
 /** Postgres unique_violation — the same person, asking again. */
 const UNIQUE_VIOLATION = '23505';
+
+/**
+ * Strips a phone number down to something two submissions of the same number
+ * agree on. "+1 (555) 123-4567" and "+1 555 123 4567" are one person, and the
+ * unique constraint has to see them that way.
+ */
+export const normalizePhone = (value: string): string => {
+    const trimmed = value.trim();
+    const digits = trimmed.replace(/\D/g, '');
+    return trimmed.startsWith('+') ? `+${digits}` : digits;
+};
+
+/** Loose on purpose: international formats vary more than any regex allows. */
+export const looksLikePhone = (value: string) => value.replace(/\D/g, '').length >= 7;
+
+/**
+ * The form no longer asks for an email, but `waitlist_signups.email` is NOT
+ * NULL and UNIQUE — that is the app's table and this site does not get to
+ * redefine it.
+ *
+ * So a lead with no email gets a synthetic one derived from the phone number.
+ * It uses the reserved `.invalid` TLD, which can never resolve to a real
+ * mailbox, so nobody can mistake it for an address to write to. Two useful
+ * things fall out of that: the insert satisfies NOT NULL without a migration,
+ * and the UNIQUE constraint now dedupes on the phone number, which is exactly
+ * what we want it to do.
+ */
+const syntheticEmail = (phone: string) => `no-email+${phone.replace(/\D/g, '')}@astoryapp.invalid`;
 
 /**
  * PostgREST's codes for "that column isn't there".
@@ -86,11 +115,12 @@ export async function submitLead(lead: Lead): Promise<LeadResult> {
     /* Lowercased so the UNIQUE constraint behaves case-insensitively — the
        app's own client does the same, and the two have to agree or the same
        person lands twice. */
+    const givenEmail = (lead.email ?? '').trim().toLowerCase();
     const core = {
         first_name: lead.firstName.trim(),
         last_name: lead.lastName.trim(),
-        email: lead.email.trim().toLowerCase(),
-        phone: (lead.phone ?? '').trim(),
+        email: givenEmail || syntheticEmail(lead.phone),
+        phone: normalizePhone(lead.phone),
     };
 
     const full = {

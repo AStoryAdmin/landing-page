@@ -38,7 +38,8 @@ for (const vp of VIEWPORTS) {
     page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
 
     for (const route of ROUTES) {
-        await page.goto(base + route, { waitUntil: 'networkidle' });
+        await page.goto(base + route, { waitUntil: 'load' });
+        await page.waitForTimeout(500);
         // Let reveal-on-scroll animations settle before capturing.
         await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
         await page.waitForTimeout(400);
