@@ -1,12 +1,12 @@
-import { CONTACT } from '../lib/contact';
 import Seo from './ui/Seo';
 import Reveal from './ui/Reveal';
-import { Actions, Button, ButtonAnchor, Container, Eyebrow, H2, Lead, Note, Section } from './ui/primitives';
+import { Actions, Button, Container, Eyebrow, H2, Lead, Note, Section } from './ui/primitives';
 import {
     IconArchive, IconArrow, IconBook, IconBuilding, IconCheck, IconExport, IconGlobe, IconHeart,
     IconLock, IconMic, IconNoTrain, IconSearch, IconShield, IconSpark, IconUsers,
 } from './ui/icons';
 import { breadcrumbSchema, faqSchema, organizationSchema } from '../lib/seo';
+import { DEMO_HREF } from '../lib/checkout';
 import {
     Deliverable, DeliverGrid, Evidence, EvidenceRow, FaqGrid, FaqItem, Hero, HeroCopy, HeroInner,
     HeroSub, HeroTitle, LossCard, LossGrid, Page, QuoteBlock, SecurityGrid, SecurityItem, Timeline,
@@ -82,8 +82,8 @@ const ORG_FAQ = [
 const Organizations = () => (
     <Page>
         <Seo
-            title="A Story for Organizations — keep your institutional memory permanently"
-            description="Founder interviews, retiring-employee knowledge, anniversary archives and culture onboarding. A Story turns the history that lives in your people into a permanent, searchable archive and a printed company history."
+            title="A Story for organizations — keep what your people know"
+            description="Founder interviews, retiring-employee knowledge and anniversary archives, turned into a searchable archive and a printed company history."
             path="/organizations"
             schema={[
                 organizationSchema(),
@@ -114,7 +114,7 @@ const Organizations = () => (
                         place in fifty years.
                     </HeroSub>
                     <Actions>
-                        <ButtonAnchor href={CONTACT.organization} $variant="gold">Book a 30-minute demo</ButtonAnchor>
+                        <Button to={DEMO_HREF} $variant="gold">Book a 30-minute demo</Button>
                         <Button to="/pricing" $variant="onDark">See how pricing works</Button>
                     </Actions>
                 </HeroCopy>
@@ -288,7 +288,7 @@ const Organizations = () => (
                 </Timeline>
 
                 <Actions>
-                    <ButtonAnchor href={CONTACT.organization} $variant="gold">Start with a 30-minute call <IconArrow /></ButtonAnchor>
+                    <Button to={DEMO_HREF} $variant="gold">Start with a 30-minute call <IconArrow /></Button>
                 </Actions>
             </Container>
         </Section>
@@ -411,7 +411,7 @@ const Organizations = () => (
                     ))}
                 </FaqGrid>
                 <Actions>
-                    <ButtonAnchor href={CONTACT.organization} $variant="primary">Book a 30-minute demo</ButtonAnchor>
+                    <Button to={DEMO_HREF} $variant="primary">Book a 30-minute demo</Button>
                     <Button to="/faq" $variant="ghost">Read every question <IconArrow /></Button>
                 </Actions>
             </Container>

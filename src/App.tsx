@@ -26,7 +26,7 @@ const PublicStory = lazy(() => import('./components/publicStory'));
 const Contribute = lazy(() => import('./components/contribute'));
 const YourStory = lazy(() => import('./components/yourStory'));
 const Thanks = lazy(() => import('./components/thanks'));
-/* The conversion page. Every "Gift a story" button on the site ends here —
+/* The conversion page. Every call to action on the site ends here —
    it used to end in the visitor's email client. See components/start.tsx. */
 const Start = lazy(() => import('./components/start'));
 const NotFound = lazy(() => import('./components/notFound'));

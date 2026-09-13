@@ -2,6 +2,7 @@ import { CONTACT } from '../lib/contact';
 import Seo from './ui/Seo';
 import { breadcrumbSchema, organizationSchema } from '../lib/seo';
 import {Container, ContainerDark, StoryHero, HeroTitle, HeroSub, Byline, StorySection, StoryDark, Paragraph, Emphasis, ChapterHeadline, PullQuote, PullQuoteText, StoryDivider, SigInitial, SigDetails, GhostButton, Arrow, TeamSection, Label, SectionTitle, TeamGrid, TeamCard, TeamMonogram, TeamGo, TeamInfo, TeamRole, TeamBio, MissionSection, MissionText, MissionSub, CtaSection, CtaTitle, CtaSub, HeroActions, PrimaryButtonLink, OutlineButtonLink} from './story.styles';
+import { WAITLIST_HREF, WAITLIST_LABEL } from '../lib/checkout';
 
 /**
  * The two of us, and where to go to check.
@@ -178,7 +179,7 @@ const Story = () => {
                     <CtaTitle>The best day to begin is an ordinary one.</CtaTitle>
                     <CtaSub>A 20-minute conversation &mdash; then a lifetime of stories, organized and yours, with room left for all the ones still to come.</CtaSub>
                     <HeroActions>
-                        <PrimaryButtonLink to="/start">Gift a story</PrimaryButtonLink>
+                        <PrimaryButtonLink to={WAITLIST_HREF}>{WAITLIST_LABEL}</PrimaryButtonLink>
                         <OutlineButtonLink to="/experience">See the experience</OutlineButtonLink>
                     </HeroActions>
                 </Container>

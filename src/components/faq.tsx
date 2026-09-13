@@ -4,6 +4,7 @@ import { nodeToText } from '../lib/nodeText';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {Container, NarrowContainer, Label, LegalLink, FaqHero, HeroTitle, HeroSub, FaqSection, FaqGroup, FaqGroupLabel, FaqItem, FaqQuestion, FaqQuestionIcon, FaqAnswer, FaqAnswerInner, AnswerParagraph, Bold, CtaSection, CtaTitle, CtaSub, CtaActions, PrimaryButton, OutlineButton} from './faq.styles';
+import { DEMO_HREF } from '../lib/checkout';
 
 type FaqQuestionData = {
     id: string;
@@ -242,7 +243,7 @@ const faqGroups: FaqGroupData[] = [
                         <AnswerParagraph>The hardcover is $69 for the first 40 color pages, then $0.75 a page in color or $0.35 in black and white. Express includes those first 40 pages; Individual and Family can bundle a book at checkout for less than adding one later. Organization and care-community programs are quoted per engagement on a 30-minute call.</AnswerParagraph>
                         <AnswerParagraph>
                             <Bold><Link to="/pricing">See the full pricing breakdown</Link></Bold>, or{' '}
-                            <LegalLink href="mailto:contact@astoryapp.com?subject=Book a Demo">book a free 20-minute demo</LegalLink>.
+                            <LegalLink as={Link} to={DEMO_HREF}>book a free 20-minute demo</LegalLink>.
                         </AnswerParagraph>
                     </>
                 ),
@@ -344,7 +345,7 @@ const Faq = () => {
         <>
             <Seo
                 title="Frequently asked questions — A Story"
-                description="What you hand over on the day, whether it works for someone who hates technology, what it costs, who owns the stories, and what organizations and care communities can expect."
+                description="What it costs, whether it works for someone who hates technology, who owns the stories, and what organizations and care communities can expect."
                 path="/faq"
                 schema={[
                     organizationSchema(),

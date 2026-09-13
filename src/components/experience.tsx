@@ -9,13 +9,14 @@ import { Link } from 'react-router-dom';
 import { SCENARIOS } from '../lib/demoScripts';
 import DemoPhone from './demoPhone';
 import bookImg from './../assets/astoryHardcoverBook.webp';
+import { WAITLIST_HREF, WAITLIST_LABEL } from '../lib/checkout';
 
 const Experience = () => {
     return (
         <ExperienceContainer>
             <Seo
-                title="How it works — from the first question to a printed memoir"
-                description="What happens after you send the link: a guided voice interview, memory cards organized by chapter, contributions from the whole family, and a hardcover book shipped to the door."
+                title="How it works — first question to printed memoir"
+                description="A guided phone conversation, memory cards filed by chapter of life, the whole family adding to it, and a hardcover book whenever you want one."
                 path="/experience"
                 schema={[
                     organizationSchema(),
@@ -302,7 +303,7 @@ const Experience = () => {
                     <DarkIntro>Ready to begin?</DarkIntro>
                     <DarkTitle>Start the record. It does not have to be finished.</DarkTitle>
                     <DarkDescription>You buy it once and send one link. They answer the phone and talk when they feel like it. The archive and the book belong to the whole family, and there is always room for the next conversation.</DarkDescription>
-                    <DemoButton to="/start">Gift a story</DemoButton>
+                    <DemoButton to={WAITLIST_HREF}>{WAITLIST_LABEL}</DemoButton>
                     <FamilyButton to="/family">Why it matters</FamilyButton>
                 </CardView>
             </AccessContainer>

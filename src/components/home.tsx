@@ -18,6 +18,7 @@ import {
 } from './demoPhone.styles';
 import { faqSchema, organizationSchema, productSchema } from '../lib/seo';
 import productImg from './../assets/astoryProduct.webp';
+import { WAITLIST_HREF, WAITLIST_LABEL } from '../lib/checkout';
 
 /*
  * The demo is the most persuasive thing on the site and it used to sit one
@@ -155,8 +156,8 @@ const Home = () => {
     return (
     <Page>
         <Seo
-            title="A Story — the life-story app you keep: journal, autobiography, memoir"
-            description="A journal, an autobiography and a memoir at once — and none of them ever finishes. A Story calls, asks about a life, and files every answer onto a timeline the whole family keeps. Free to keep forever; print a book whenever a chapter is worth holding."
+            title="A Story — the life story that never finishes"
+            description="A Story calls, asks about a life, and files every answer onto a timeline your whole family keeps. Free to keep forever; print a book when one is worth holding."
             path="/"
             schema={[
                 organizationSchema(),
@@ -186,7 +187,7 @@ const Home = () => {
                         whole family keeps it, for good.
                     </HeroSub>
                     <HeroActions>
-                        <Button to="/start" $variant="primary">Gift a story</Button>
+                        <Button to={WAITLIST_HREF} $variant="primary">{WAITLIST_LABEL}</Button>
                         {/* The demo is the best thing on this site and it was a
                             scroll away with nothing pointing at it. */}
                         <ButtonAnchor href="#demo" $variant="onDark">Watch a real call</ButtonAnchor>
@@ -544,7 +545,7 @@ const Home = () => {
                         ten dollars a month for ninety minutes of somebody doing the asking, which is
                         four or five real conversations. Your recordings stay yours either way.
                     </p>
-                    <Button to="/start" $variant="primary">Start free</Button>
+                    <Button to={WAITLIST_HREF} $variant="primary">{WAITLIST_LABEL}</Button>
                 </PriceStrip>
 
                 <Actions $center>
@@ -573,7 +574,7 @@ const Home = () => {
                             we help them directly, so you never become their tech support.
                         </Note>
                         <Actions>
-                            <Button to="/start" $variant="primary">Gift a story</Button>
+                            <Button to={WAITLIST_HREF} $variant="primary">{WAITLIST_LABEL}</Button>
                         </Actions>
                     </div>
 
@@ -1114,7 +1115,7 @@ const Home = () => {
                     ))}
                 </FaqList>
                 <Actions>
-                    <Button to="/start" $variant="primary">Gift a story</Button>
+                    <Button to={WAITLIST_HREF} $variant="primary">{WAITLIST_LABEL}</Button>
                     <Button to="/faq" $variant="ghost">Read every question <IconArrow /></Button>
                 </Actions>
             </Container>

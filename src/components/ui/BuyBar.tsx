@@ -113,7 +113,7 @@ const BuyBar = ({ planId = 'one' }: { planId?: string }) => {
                     <p className="what">3 days free first · cancel any time</p>
                 </Copy>
                 <Go href={checkoutFor(planId)}>
-                    {buyLabel(planId, 'Buy now', 'Get started')}
+                    {buyLabel(planId, 'Buy now')}
                 </Go>
             </Bar>
         </>

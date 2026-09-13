@@ -265,13 +265,35 @@ names the usual approach and rejects it.
 
 ## Calls to action
 
-There is no signup form. Every conversion path on the site is a `mailto:` with
-a pre-filled subject line, defined once in **`src/lib/contact.ts`** — `gift`,
-`giftFor(occasion)`, `organization`, `community` and `general`. An incoming
-message therefore already says which page and which intent it came from.
+**Nothing is on sale, and every button says so.** Checkout does not work yet —
+every row in `LINKS` is empty, and the app's webhook cannot grant a plan to a
+buyer who has no account (the reasoning is at the top of
+`src/lib/checkout.ts`). So a button reading "Buy" or "Choose Individual" would
+promise a transaction that cannot happen. Until a Payment Link goes in, the
+site asks for a place on the waitlist, which is a thing we can honour.
 
-When a checkout or booking flow exists, change those five constants and every
-button on the site follows. Nothing else references a destination.
+Two constants in **`src/lib/checkout.ts`** carry every conversion path:
+
+| Constant | Where it goes | Used by |
+| --- | --- | --- |
+| `WAITLIST_LABEL` / `WAITLIST_HREF` | `/start` | Every primary call to action, ~70 of them |
+| `DEMO_HREF` | `/start?intent=demo` | "Book a demo", including the organization and care-community pages |
+
+`buyLabel(id, live)` falls back to `WAITLIST_LABEL` whenever that plan has no
+Payment Link, so **switching the site from waitlist to selling is editing one
+file**: paste the links into `LINKS` and every button changes wording and
+destination together.
+
+`/start` is the only form. It asks for a name and a phone number, with email
+optional — see **`src/components/ui/LeadForm.tsx`** for why a number rather
+than an address — and writes to `waitlist_signups` through
+**`src/lib/leads.ts`**.
+
+`src/lib/contact.ts` still defines the `mailto:` constants, but they are no
+longer calls to action: they are the fallback `leads.ts` hands back if the form
+cannot save, and the footer's "Talk to us". An earlier version of this site
+made every conversion path a `mailto:`, which is the most expensive thing a
+page can do at the moment somebody decides to act.
 
 ---
 

@@ -62,6 +62,7 @@ import {
 } from './demoPhone.styles';
 import { DEPTHS, sensitiveNote, type Scenario } from '../lib/demoScripts';
 import statusBarImg from './../assets/statusbar.webp';
+import { WAITLIST_HREF, WAITLIST_LABEL } from '../lib/checkout';
 
 type Role = 'ai' | 'user';
 
@@ -571,7 +572,7 @@ const DemoPhone = ({ scenario, stopped = false, onStart, onFinish }: DemoPhonePr
                                     There is somebody in your family with an answer like that one, and
                                     no particular reason to ever say it out loud.
                                 </DemoCloseSub>
-                                <DemoCloseLink to="/start">Start their archive</DemoCloseLink>
+                                <DemoCloseLink to={WAITLIST_HREF}>{WAITLIST_LABEL}</DemoCloseLink>
                             </DemoCloseInner>
                         </DemoClose>
                     )}

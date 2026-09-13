@@ -3,6 +3,7 @@ import { breadcrumbSchema, organizationSchema } from '../lib/seo';
 import { Link } from 'react-router-dom';
 import {FamilyContainer, CardView, Label, GoldLabel, HeroLabel, SectionTitle, Paragraph, Italic, ItalicAccent, PrimaryButtonLink, GhostButton, Arrow, HeroSection, HeroTitle, HeroSub, WhySection, WhyLayout, StatStack, MissingCard, MissingThing, MissingFate, Coda, DarkCoda, VoiceCards, VoiceCard, WhoSection, WhoIntro, WhoCards, WhoCard, CardTitle, WhyNowSection, WhyNowTitle, WhyNowGrid, WhyNowCard, WhyNowNum, WhyNowCardTitle, WhyNowText, PrivacySection, PrivacySub, PromiseGrid, PromiseCard, PromiseIcon, PromiseTitle, PromiseText, PrivacyFooterNote, FounderSection, FounderLayout, Blockquote, FounderPhoto, CtaSection, CtaTitle, CtaSub, CtaActions, OutlineButtonLink} from './family.styles';
 import daniel from './../assets/astoryDaniel.webp';
+import { WAITLIST_HREF, WAITLIST_LABEL } from '../lib/checkout';
 
 /**
  * The case for A Story, and the spine the rest of the site is written against.
@@ -36,7 +37,7 @@ const Families = () => {
         <FamilyContainer>
             <Seo
                 title="Why it matters — the everyday is what goes missing"
-                description="Most of a life goes undocumented — not the milestones, the everyday. Why A Story captures the life being lived as well as the one behind it, holds every voice on the same moment, and never assumes the story is finished."
+                description="Most of a life goes undocumented — not the milestones, the everyday. Why A Story catches the ordinary, and never assumes the story is finished."
                 path="/family"
                 schema={[
                     organizationSchema(),
@@ -66,7 +67,7 @@ const Families = () => {
                             <SectionTitle>Nobody loses the wedding photos. They lose everything around them.</SectionTitle>
                             <Paragraph>The milestones are the part a family already keeps. There are pictures of the graduation, the wedding, the day the house was bought. What nobody keeps is the ordinary talk that gave those days their meaning &mdash; and it is the ordinary talk that turns out to be irreplaceable.</Paragraph>
                             <Paragraph>It does not disappear all at once. It goes the way most things go: <ItalicAccent>quietly, and only in hindsight.</ItalicAccent></Paragraph>
-                            <PrimaryButtonLink to="/start">Gift a story</PrimaryButtonLink>
+                            <PrimaryButtonLink to={WAITLIST_HREF}>{WAITLIST_LABEL}</PrimaryButtonLink>
                         </div>
 
                         <StatStack>
@@ -262,7 +263,7 @@ const Families = () => {
                     <CtaTitle>The moments that make up a life,<br />kept for the people who&rsquo;ll want them.</CtaTitle>
                     <CtaSub>You buy it once and send one link. They answer the phone and talk. The archive belongs to the whole family, and it keeps going.</CtaSub>
                     <CtaActions>
-                        <PrimaryButtonLink to="/start">Gift a story</PrimaryButtonLink>
+                        <PrimaryButtonLink to={WAITLIST_HREF}>{WAITLIST_LABEL}</PrimaryButtonLink>
                         <OutlineButtonLink to="/experience">See the experience</OutlineButtonLink>
                     </CtaActions>
                 </CardView>

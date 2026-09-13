@@ -22,9 +22,10 @@ import { ForeverBand, ForeverList, ForeverStops, SameEmail } from './pricing.sty
  * the product — no code, nothing to redeem, nothing that arrives in an
  * envelope — so the step and the page it linked to are both gone.
  *
- * TIMINGS BELOW ARE PLACEHOLDERS — replace "within a few hours" and "the next
- * working day" with what you can actually commit to before this goes live. A
- * promise made on this page is made to someone who has already paid.
+ * It promises one working day rather than "a few hours", because fulfilment
+ * is a person doing it by hand and a person has evenings. A promise made on
+ * this page is made to somebody who has already paid, so it is set to the
+ * slowest we would ever be rather than the fastest we have ever been.
  */
 
 const Thanks = () => (
@@ -66,8 +67,7 @@ const Thanks = () => (
                         <StepTitle>We set up their archive</StepTitle>
                         <StepText>
                             We create the storyteller&rsquo;s archive from the details you gave at
-                            checkout and email you their personal link, usually within a few hours and
-                            always by the next working day.
+                            checkout and email you their personal link, within one working day.
                         </StepText>
                     </Step>
                     <Step>

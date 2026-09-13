@@ -12,7 +12,7 @@ import {
 } from './start.styles';
 
 /**
- * The page every "Gift a story" button now goes to.
+ * The page every call to action now goes to.
  *
  * ─────────────────────────────────────────────────────────────────────────
  * BEFORE THIS, THE PRIMARY CALL TO ACTION WAS A `mailto:`. Sixteen buttons
@@ -53,7 +53,7 @@ const PLAN_LABEL: Record<string, string> = {
 
 const Start = () => {
     /* Set when somebody arrived by pressing a plan button rather than a general
-       "Gift a story" — see lib/checkout.ts. It changes nothing about the form
+       the general waitlist link — see lib/checkout.ts. It changes nothing about the form
        except the source recorded with the lead, so the reply can open on the
        thing they were actually looking at. */
     const [params] = useSearchParams();
@@ -66,14 +66,14 @@ const Start = () => {
     return (
     <Page>
         <Seo
-            title="Start their story — A Story"
-            description="Leave a name and a number. We call you back, show you how it works, and set nothing up until you say so. No payment now."
+            title="Join the waitlist — A Story"
+            description="We are opening to a few families at a time. Leave a name and a number and we will call you when it is your turn — no payment, and nothing set up until you say so."
             path="/start"
             schema={[
                 organizationSchema(),
                 breadcrumbSchema([
                     { name: 'Home', path: '/' },
-                    { name: 'Start their story', path: '/start' },
+                    { name: 'Join the waitlist', path: '/start' },
                 ]),
             ]}
         />
@@ -81,14 +81,15 @@ const Start = () => {
         <Top>
             <TopInner>
                 <Pitch>
-                    <Kicker>Start their story</Kicker>
+                    <Kicker>Join the waitlist</Kicker>
                     <Headline>
                         The stories go quiet <em>a long time before anybody does.</em>
                     </Headline>
                     <Sub>
                         A Story rings the person whose life it is, asks them about it properly, and
-                        turns what they say into an archive their whole family keeps. You set it up
-                        once. They answer the phone and talk.
+                        turns what they say into an archive their whole family keeps. We are opening
+                        to a few families at a time, so that every first call is one we can stand
+                        behind. Leave a number and we will ring you when it is your turn.
                     </Sub>
 
                     <ProofQuote>
@@ -122,7 +123,7 @@ const Start = () => {
                             <IconCheck size={16} />
                             <span>
                                 <strong>It is theirs for good.</strong> Every recording, transcript and
-                                photograph, exportable whenever you ask.
+                                photograph stays exportable, including after a plan ends.
                             </span>
                         </li>
                     </Points>

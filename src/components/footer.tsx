@@ -3,6 +3,7 @@ import Logo from './ui/Logo';
 import { ButtonAnchor, Button } from './ui/primitives';
 import { CONTACT } from '../lib/contact';
 import { SITE } from '../lib/seo';
+import { WAITLIST_HREF, WAITLIST_LABEL } from '../lib/checkout';
 import {
     BottomLinks, BottomRow, BrandColumn, BrandLine, Column, CtaActions, CtaBand, CtaInner, CtaSub,
     CtaTitle, Divider, External, FooterContainer, Inner, Page, Platform, Section, Top,
@@ -50,7 +51,7 @@ const Footer = () => {
                                 tell them. You send one link. We do the rest.
                             </CtaSub>
                             <CtaActions>
-                                <Button to="/start" $variant="gold">Gift a story</Button>
+                                <Button to={WAITLIST_HREF} $variant="gold">{WAITLIST_LABEL}</Button>
                                 <Button to="/experience" $variant="onDark">See what they receive</Button>
                             </CtaActions>
                         </>

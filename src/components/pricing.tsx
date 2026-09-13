@@ -3,8 +3,7 @@ import BuyBar from './ui/BuyBar';
 import Reveal from './ui/Reveal';
 import { Actions, Button, ButtonAnchor, Container, Eyebrow, H2, Lead, Note, Section } from './ui/primitives';
 import { IconArrow, IconCheck } from './ui/icons';
-import { CONTACT } from '../lib/contact';
-import { AT_CHECKOUT, buyLabel, checkoutFor, isCheckoutLive } from '../lib/checkout';
+import { DEMO_HREF, WAITLIST_HREF, AT_CHECKOUT, buyLabel, checkoutFor, isCheckoutLive, WAITLIST_LABEL } from '../lib/checkout';
 import { track } from '../lib/analytics';
 import { FOREVER, FREE_TIER, KEEPS_LINE, OTHER_PLANS, PLANS, PRICE, TRIAL } from '../lib/pricing';
 import { breadcrumbSchema, faqSchema, organizationSchema } from '../lib/seo';
@@ -82,7 +81,7 @@ const Pricing = () => (
     <Page>
         <Seo
             title="Pricing — three days free, then from $119 a year"
-            description={`A Story starts with three days of full access, no card. After that: Free forever at three questions a day, or ${PRICE.headline} ${PRICE.headlineNote}. Your recordings are always yours to keep, even if you cancel.`}
+            description={`Three days of full access, no card. Then Free forever at three questions a day, or ${PRICE.headline} ${PRICE.headlineNote}. Recordings stay yours.`}
             path="/pricing"
             schema={[
                 organizationSchema(),
@@ -152,7 +151,7 @@ const Pricing = () => (
                                         onClick={() => track(isCheckoutLive(plan.id) ? 'checkout_click' : 'contact_click', { plan: plan.id, price: plan.price })}
                                         $variant={plan.featured ? 'primary' : 'outline'}
                                     >
-                                        {buyLabel(plan.id, `Choose ${plan.name}`, `Ask about ${plan.name}`)}
+                                        {buyLabel(plan.id, `Choose ${plan.name}`)}
                                     </ButtonAnchor>
                                 </PlanAction>
                             </PlanCard>
@@ -210,11 +209,11 @@ const Pricing = () => (
                         </Note>
                         <Actions>
                             <Button
-                                to="/start"
+                                to={WAITLIST_HREF}
                                 onClick={() => track('contact_click', { plan: 'free' })}
                                 $variant="primary"
                             >
-                                Start free
+                                {WAITLIST_LABEL}
                             </Button>
                             <Button to="/#demo" $variant="outline">
                                 Watch a real call first <IconArrow />
@@ -285,7 +284,7 @@ const Pricing = () => (
                                 onClick={() => track(isCheckoutLive('book') ? 'checkout_click' : 'contact_click', { plan: 'book' })}
                                 $variant="primary"
                             >
-                                {buyLabel('book', `Order a book — ${PRICE.book}`, 'Order a book')}
+                                {buyLabel('book', `Order a book — ${PRICE.book}`)}
                             </ButtonAnchor>
                             <Button to="/experience#book" $variant="outline">
                                 Look inside one first <IconArrow />
@@ -390,7 +389,7 @@ const Pricing = () => (
                             onboarding libraries &mdash; run as a program rather than a one-off project,
                             with role-based access, a printed company history and a named contact.
                         </p>
-                        <ButtonAnchor href={CONTACT.organization} $variant="teal">Book a demo</ButtonAnchor>
+                        <Button to={DEMO_HREF} $variant="teal">Book a demo</Button>
                     </ProgramCard>
                     <ProgramCard>
                         <p className="audience">Care communities</p>
@@ -401,7 +400,7 @@ const Pricing = () => (
                             Priced per community rather than per resident, so offering it widely never costs
                             you more. HIPAA-aligned handling, BAA on request.
                         </p>
-                        <ButtonAnchor href={CONTACT.community} $variant="outline">Book a walkthrough</ButtonAnchor>
+                        <Button to={DEMO_HREF} $variant="outline">Book a walkthrough</Button>
                     </ProgramCard>
                 </ProgramGrid>
 
@@ -454,7 +453,7 @@ const Pricing = () => (
                     ))}
                 </HonestGrid>
                 <Actions>
-                    <Button to="/start" $variant="primary">Gift a story</Button>
+                    <Button to={WAITLIST_HREF} $variant="primary">{WAITLIST_LABEL}</Button>
                     <Button to="/faq" $variant="ghost">Read every question <IconArrow /></Button>
                 </Actions>
             </Container>

@@ -54,8 +54,8 @@ const DOUBTS = [
 const YourStory = () => (
     <Page>
         <Seo
-            title="Record your own life — the journal that becomes your autobiography"
-            description="The journal that interviews you. A Story calls, asks about your life, and assembles an autobiography as you go — free to keep for good, printable as a memoir whenever you want to hold one."
+            title="The journal that interviews you — A Story"
+            description="A Story calls, asks about your life, and assembles an autobiography as you go — free to keep for good, printable as a memoir when you want one."
             path="/your-story"
             schema={[
                 organizationSchema(),
@@ -84,7 +84,7 @@ const YourStory = () => (
                 </SectionHead>
                 <Actions>
                     <ButtonAnchor href={checkoutFor('individual')} $variant="primary">
-                        {buyLabel('individual', 'Start free — 3 days of everything', 'Start your own archive')}
+                        {buyLabel('individual', 'Start free — 3 days of everything')}
                     </ButtonAnchor>
                     <Button to="/#demo" $variant="onDark">Hear how it asks <IconArrow /></Button>
                 </Actions>
@@ -153,7 +153,7 @@ const YourStory = () => (
                         calls are {PRICE.headline} {PRICE.headlineNote}. {KEEPS_LINE}
                     </p>
                     <ButtonAnchor href={checkoutFor('individual')} $variant="primary">
-                        {buyLabel('individual', 'Choose Individual', 'Get started')}
+                        {buyLabel('individual', 'Choose Individual')}
                     </ButtonAnchor>
                 </PriceStrip>
 

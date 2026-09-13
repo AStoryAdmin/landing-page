@@ -130,11 +130,31 @@ export const checkoutFor = (id: string): string =>
 export const DEMO_HREF = '/start?intent=demo';
 
 /**
+ * What every call to action says until payment works.
+ *
+ * ─────────────────────────────────────────────────────────────────────────
+ * NOTHING IS ON SALE. Every row in LINKS above is empty, the webhook cannot
+ * yet grant a plan to a buyer with no account (see "The gap"), and so a
+ * button reading "Gift a story" or "Choose Individual" promises a
+ * transaction that cannot happen. Until a link goes in, the site asks for a
+ * place on the waitlist instead, which is a thing we can actually honour.
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * One constant rather than the wording repeated at thirty call sites, so
+ * switching the site from "waitlist" to "buy" on the day checkout works is a
+ * change to this file and nothing else.
+ */
+export const WAITLIST_LABEL = 'Join the waitlist';
+
+/** Where that button goes. Same form, whichever plan they were looking at. */
+export const WAITLIST_HREF = '/start';
+
+/**
  * What the button should say. Before checkout exists, promising "Buy" and
  * opening an email client is a small lie that costs more trust than the click
  * is worth.
  */
-export const buyLabel = (id: string, live: string, fallback: string): string =>
+export const buyLabel = (id: string, live: string, fallback: string = WAITLIST_LABEL): string =>
     isCheckoutLive(id) ? live : fallback;
 
 /**

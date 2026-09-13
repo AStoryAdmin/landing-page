@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from './ui/Logo';
-import { DEMO_HREF } from '../lib/checkout';
+import { DEMO_HREF, WAITLIST_HREF, WAITLIST_LABEL } from '../lib/checkout';
 import {
     Announce, Dropdown, DropdownItem, Hamburger, MobileActions, NavActions, NavButton, NavCta,
     NavGhost, NavGroup, NavInner, NavLink, NavLinks, NavShell, NavSpacer,
@@ -94,9 +94,10 @@ const Navbar = () => {
         <NavShell ref={shellRef} $solid={solid}>
             <Announce>
                 <span>
-                    Ready to give in minutes &mdash; <strong>and the archive is theirs forever</strong>
+                    Opening to a few families at a time &mdash;{' '}
+                    <strong>so every first call is one we can stand behind</strong>
                 </span>
-                <Link to="/start">Gift a story &rarr;</Link>
+                <Link to={WAITLIST_HREF}>{WAITLIST_LABEL} &rarr;</Link>
             </Announce>
 
             <NavInner aria-label="Primary">
@@ -134,7 +135,7 @@ const Navbar = () => {
                     </NavGroup>
 
                     <MobileActions>
-                        <NavCta to="/start">Gift a story</NavCta>
+                        <NavCta to={WAITLIST_HREF}>{WAITLIST_LABEL}</NavCta>
                         <NavGhost to={DEMO_HREF}>Book a demo</NavGhost>
                         <NavGhost to="/story">Our story</NavGhost>
                     </MobileActions>
@@ -142,7 +143,7 @@ const Navbar = () => {
 
                 <NavActions>
                     <NavGhost to={DEMO_HREF}>Book a demo</NavGhost>
-                    <NavCta to="/start">Gift a story</NavCta>
+                    <NavCta to={WAITLIST_HREF}>{WAITLIST_LABEL}</NavCta>
                 </NavActions>
 
                 <Hamburger

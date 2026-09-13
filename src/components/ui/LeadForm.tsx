@@ -42,11 +42,11 @@ type LeadFormProps = {
 
 const COPY: Record<Intent, { submit: string; reassure: string; heading: string; body: string }> = {
     start: {
-        submit: 'Start their story',
+        submit: 'Join the waitlist',
         reassure:
-            'No payment, and nothing charged until we have spoken. We call once — if it is not for you, say so and that is the end of it.',
-        heading: 'That’s the hard part done.',
-        body: 'We have your number. Nothing has been charged and nothing happens to anybody until you say so.',
+            'No payment, and nothing charged. We call once — if it is not for you, say so and that is the end of it.',
+        heading: 'You’re on the list.',
+        body: 'We have your number. Nothing has been charged, nobody is called, and nothing is set up until we have spoken.',
     },
     demo: {
         submit: 'Book a demo',
@@ -125,7 +125,7 @@ const LeadForm = ({ source, onDark = false, intent = 'start', reassure, submitLa
                         : copy.body}
                 </p>
                 <ol>
-                    <li><strong>We call you</strong> — a person, not a system, usually within a day.</li>
+                    <li><strong>We call you</strong> when your turn comes round — a person, not a system.</li>
                     <li><strong>We show you how it works</strong> and answer whatever you want to ask.</li>
                     <li><strong>You decide then.</strong> Nothing is set up, and nobody is called, until you say so.</li>
                 </ol>
