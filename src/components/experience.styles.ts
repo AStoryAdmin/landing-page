@@ -1,24 +1,28 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { color, font } from '../styles/theme';
 import { Link } from 'react-router-dom';
 
 const colors = {
-    bgCream: 'rgba(239, 230, 212, 0.85)',
-    cream: '#EFE6D4',
-    paper: '#F6EFE2',
-    orange: '#B45A2B',
-    orangeHover: '#a14e22',
-    gold: '#C7A24E',
-    softYellow: '#E6D8BF',
-    dark: '#120E08',
-    mutedBrown: 'rgba(43, 33, 23, 0.3)',
-    gray: 'rgba(254, 252, 248, 0.5)',
-    darkGray: 'rgba(43, 33, 23, 0.7)',
-    darkGrayHover: 'rgba(43, 33, 23, 0.2)',
+    bgCream: 'rgba(243, 235, 221, 0.9)',
+    cream: color.ivory,
+    paper: color.paper,
+    orange: color.accent,
+    onAccent: color.paperPure,
+    orangeText: color.accentText,
+    orangeHover: color.accentHover,
+    gold: color.gold,
+    softYellow: color.goldWash,
+    dark: color.primaryDeep,
+    mutedBrown: color.faint,
+    gray: color.onDarkMuted,
+    darkGray: color.body,
+    darkGrayHover: color.primaryLine,
 };
 
 const fonts = {
-    body: "'Figtree', sans-serif",
-    display: "'Cormorant Garamond', serif",
+    body: font.body,
+    display: font.display,
+    script: font.script,
 };
 
 export const ExperienceContainer = styled.div`
@@ -32,7 +36,7 @@ export const OpeningContainer = styled.div`
 `;
 
 export const CardView = styled.div`
-    padding: 150px 80px;
+    padding: clamp(72px, 9vw, 150px) clamp(20px, 5vw, 80px);
     max-width: 1300px;
     margin: 0 auto;
 `;
@@ -74,12 +78,12 @@ export const Description = styled.p`
     color: ${colors.gray};
 `;
 
-export const DemoButton = styled(Link)`
+const demoButtonCss = css`
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 2px;
     background: ${colors.orange};
-    color: ${colors.cream};
+    color: ${colors.onAccent};
     border: none;
     padding: 24px 32px;
     margin-top: 20px;
@@ -94,11 +98,20 @@ export const DemoButton = styled(Link)`
     }
 `;
 
+export const DemoButton = styled(Link)`
+    ${demoButtonCss};
+`;
+
+/** The same button as an anchor, for mailto conversion links. */
+export const DemoButtonAnchor = styled.a`
+    ${demoButtonCss};
+`;
+
 export const InstructionContainer = styled.div`
 `;
 
 export const StepIntro = styled(Intro)`
-    color: ${colors.orange};
+    color: ${colors.orangeText};
 `;
 
 export const InstructTitle = styled(Title)`
@@ -107,6 +120,7 @@ export const InstructTitle = styled(Title)`
 `;
 
 export const Subtitle = styled.p`
+    margin-top: 14px;
     font-size: 18px;
     font-weight: 100;
     letter-spacing: 1px;
@@ -119,6 +133,7 @@ export const Subtitle = styled.p`
 export const StepCard= styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    @media (max-width: 860px) { grid-template-columns: 1fr; }
     margin-top: 50px;
     gap: 50px;
 `;
@@ -134,6 +149,8 @@ export const Column= styled.div`
 export const OddColumn= styled(Column)`
     grid-column: 1 / -1;
     flex-direction: row;
+
+    @media (max-width: 640px) { flex-direction: column; }
     align-items: baseline;
     gap: 30px;
 `;
@@ -177,6 +194,8 @@ export const Grid = styled.div`
 
     //creates 4 columns of exactly equal width (1 fraction unit)
     grid-template-columns: repeat(4, 1fr);
+    @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 640px) { grid-template-columns: 1fr; }
 `;
 
 export const RoleColumn = styled.div`
@@ -221,8 +240,8 @@ export const Summary = styled.div`
 export const PhoneDemo = styled.div`
     display: flex;
     flex-direction: column;
-    max-width: 50%;
-    width: 330px;
+    max-width: 100%;
+    width: min(330px, 86vw);
     height: 660px;
     border-radius: 42px;
     //content outside frame dont get cut off
@@ -265,7 +284,7 @@ export const PlayDemo = styled.div`
 
 export const PlayDemoButton = styled.button`
     background: ${colors.cream};
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     border: none;
     margin-top: 1px;
     padding: 15px 20px;
@@ -278,6 +297,90 @@ export const PlayDemoButton = styled.button`
 `;
 
 export const InteractiveBookContainer = styled(OpeningContainer)`
+`;
+
+/* ── What is being built next ─────────────────────────────────────────────
+ * Labelled as in development everywhere it appears. Nothing on this site may
+ * describe an unshipped feature as though a buyer can use it today.
+ */
+
+export const NextContainer = styled(OpeningContainer)`
+    background: ${colors.paper};
+    text-align: left;
+`;
+
+/** Says "not yet" in words, not only in colour. */
+export const NextBadge = styled.p`
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: ${fonts.body};
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: ${colors.orangeText};
+    border: 1px solid ${colors.orangeText};
+    border-radius: 40px;
+    padding: 6px 16px;
+    margin-bottom: 24px;
+`;
+
+export const NextTitle = styled(Title)`
+    color: ${colors.dark};
+    margin: 0;
+    max-width: 18ch;
+`;
+
+export const NextLead = styled(Description)`
+    color: ${colors.darkGray};
+    max-width: 62ch;
+    margin: 24px 0 0;
+`;
+
+export const NextGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    @media (max-width: 900px) { grid-template-columns: 1fr; }
+    gap: 24px;
+    margin-top: 50px;
+`;
+
+export const NextCard = styled.div`
+    background: ${colors.cream};
+    border-radius: 20px;
+    padding: 36px;
+
+    h3 {
+        font-family: ${fonts.display};
+        font-size: 26px;
+        font-weight: 400;
+        line-height: 1.25;
+        color: ${colors.dark};
+        margin: 0;
+    }
+
+    p {
+        font-family: ${fonts.body};
+        font-size: 15px;
+        line-height: 1.65;
+        color: ${colors.darkGray};
+        margin-top: 12px;
+    }
+`;
+
+/** The honest caveat, given the same weight as the promise above it. */
+export const NextCaveat = styled.p`
+    margin: 50px 0 0;
+    padding-top: 32px;
+    border-top: 1px solid ${colors.darkGrayHover};
+    max-width: 68ch;
+    font-family: ${fonts.body};
+    font-size: 15px;
+    line-height: 1.7;
+    color: ${colors.darkGray};
+
+    strong { font-weight: 700; color: ${colors.dark}; }
 `;
 
 export const AccessContainer = styled(OpeningContainer)`
@@ -386,7 +489,7 @@ export const BookImg = styled.div`
 `;
 
 export const DarkIntro = styled(Intro)`
-    color: ${colors.orange};
+    color: ${colors.orangeText};
 `;
 
 export const DarkTitle = styled(Title)`
@@ -406,5 +509,136 @@ export const FamilyButton = styled(DemoButton)`
     &:hover {
         background: ${colors.darkGrayHover};
         transform: translateY(-1.5px);
+    }
+`;
+
+/* ── The eleven chapters ──────────────────────────────────────────────────
+ * Added when the site stopped inventing a chapter list and started quoting
+ * the app's own (src/lib/product.ts). Eleven cards is a lot of surface, so
+ * the reasoning lines are held back visually — they reward reading without
+ * demanding it.
+ */
+
+export const ChaptersContainer = styled.div`
+    background: ${colors.paper};
+    padding: clamp(64px, 8vw, 120px) 0;
+`;
+
+export const ChapterGrid = styled.ol`
+    list-style: none;
+    margin: clamp(32px, 4vw, 48px) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    counter-reset: chapter;
+
+    @media (max-width: 1024px) { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 640px) { grid-template-columns: 1fr; }
+`;
+
+export const ChapterCard = styled.li`
+    counter-increment: chapter;
+    height: 100%;
+    padding: 22px 24px;
+    background: ${color.paperPure};
+    border: 1px solid rgba(15, 74, 88, 0.14);
+    border-radius: 16px;
+
+    .num {
+        display: block;
+        font-family: ${font.body};
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        color: rgba(15, 74, 88, 0.45);
+        margin-bottom: 8px;
+    }
+
+    .num::before { content: counter(chapter, decimal-leading-zero); }
+
+    h3 {
+        font-family: ${font.display};
+        font-size: 1.4rem;
+        font-weight: 500;
+        line-height: 1.15;
+        color: ${color.ink};
+        margin-bottom: 8px;
+    }
+
+    p {
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: ${color.bodyMuted};
+    }
+
+    .why {
+        display: block;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(15, 74, 88, 0.1);
+        font-family: ${font.display};
+        font-style: italic;
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        color: ${color.primary};
+    }
+`;
+
+export const DepthLadder = styled.ol`
+    list-style: none;
+    margin: clamp(28px, 3.5vw, 40px) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+
+    @media (max-width: 1024px) { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 560px) { grid-template-columns: 1fr; }
+`;
+
+export const DepthStep = styled.li`
+    padding-top: 16px;
+    /* The bar thickens along the ladder, so the deepening is visible at a glance. */
+    border-top: ${({ style }) => style?.borderTopWidth || '2px'} solid ${color.accent};
+
+    .name {
+        font-family: ${font.body};
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: ${color.ink};
+        margin-bottom: 6px;
+    }
+
+    p {
+        font-size: 0.875rem;
+        line-height: 1.6;
+        color: ${color.bodyMuted};
+    }
+`;
+
+export const SensitiveNote = styled.p`
+    margin-top: clamp(28px, 3.5vw, 40px);
+    padding: 20px 24px;
+    background: ${color.primaryWash};
+    border-left: 3px solid ${color.primary};
+    border-radius: 0 12px 12px 0;
+    max-width: 62ch;
+
+    .quote {
+        display: block;
+        font-family: ${font.display};
+        font-style: italic;
+        font-size: 1.25rem;
+        line-height: 1.4;
+        color: ${color.primary};
+        margin-bottom: 8px;
+    }
+
+    .gloss {
+        display: block;
+        font-size: 0.9375rem;
+        line-height: 1.65;
+        color: ${color.bodyMuted};
     }
 `;

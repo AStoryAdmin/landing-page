@@ -1,23 +1,27 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { color, font } from '../styles/theme';
+import styled, { css } from 'styled-components';
 
 const colors = {
-    cream: '#EFE6D4',
-    paper: '#F6EFE2',
-    orange: '#B45A2B',
-    orangeHover: '#a14e22',
-    gold: '#C7A24E',
-    dark: '#120E08',
-    mutedBrown: 'rgba(43, 33, 23, 0.3)',
-    gray: 'rgba(254, 252, 248, 0.5)',
-    darkGray: 'rgba(43, 33, 23, 0.7)',
-    ink40: 'rgba(43, 33, 23, 0.4)',
-    whiteGray: 'rgba(43, 33, 23, 0.2)',
+    cream: color.ivory,
+    paper: color.paper,
+    orange: color.accent,
+    onAccent: color.paperPure,
+    orangeText: color.accentText,
+    orangeHover: color.accentHover,
+    gold: color.gold,
+    dark: color.primaryDeep,
+    mutedBrown: color.faint,
+    gray: color.onDarkMuted,
+    darkGray: color.body,
+    ink40: color.faint,
+    whiteGray: color.primaryLine,
 };
 
 const fonts = {
-    body: "'Figtree', sans-serif",
-    display: "'Cormorant Garamond', serif",
+    body: font.body,
+    display: font.display,
+    script: font.script,
 };
 
 export const InstitutionContainer = styled.div`
@@ -26,12 +30,12 @@ export const InstitutionContainer = styled.div`
 export const CardView = styled.div`
     max-width: 1300px;
     margin: 0 auto;
-    padding: 150px 80px;
+    padding: clamp(72px, 9vw, 150px) clamp(20px, 5vw, 80px);
 `;
 
 export const Label = styled.p`
     text-transform: uppercase;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     font-family: ${fonts.body};
     font-size: 15px;
     font-weight: 700;
@@ -72,7 +76,12 @@ export const Italic = styled.span`
     color: ${colors.gold};
 `;
 
-export const PrimaryButton = styled(Link)`
+/** The same emphasis on a light ground, where Warm Gold cannot carry text. */
+export const ItalicAccent = styled(Italic)`
+    color: ${colors.orangeText};
+`;
+
+const primaryButtonCss = css`
     text-decoration: none;
     font-family: ${fonts.body};
     margin-top: 20px;
@@ -80,7 +89,7 @@ export const PrimaryButton = styled(Link)`
     font-weight: 600;
     letter-spacing: 2px;
     background: ${colors.orange};
-    color: ${colors.cream};
+    color: ${colors.onAccent};
     border: none;
     padding: 22px 32px;
     border-radius: 40px;
@@ -93,6 +102,15 @@ export const PrimaryButton = styled(Link)`
     }
 `;
 
+export const PrimaryButton = styled(Link)`
+    ${primaryButtonCss};
+`;
+
+/** The same button as an anchor, for mailto conversion links. */
+export const PrimaryButtonAnchor = styled.a`
+    ${primaryButtonCss};
+`;
+
 export const GhostButton = styled.button`
     display: inline-flex;
     align-items: center;
@@ -102,7 +120,7 @@ export const GhostButton = styled.button`
     font-family: ${fonts.body};
     font-size: 14px;
     font-weight: 600;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     cursor: pointer;
     padding: 0;
 
@@ -178,6 +196,7 @@ export const EvidenceSection = styled.div`
 export const EvidenceLayout = styled.div`
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
+    @media (max-width: 1024px) { grid-template-columns: 1fr; }
     gap: 80px;
     align-items: start;
 `;
@@ -197,7 +216,7 @@ export const EvidenceStat = styled.div`
 export const StatNum = styled.div`
     font-family: ${fonts.display};
     font-size: 44px;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     line-height: 1;
     margin-bottom: 10px;
 `;
@@ -245,6 +264,7 @@ export const IntroText = styled(Paragraph)`
 export const UseCasesGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    @media (max-width: 860px) { grid-template-columns: 1fr; }
     gap: 30px;
     margin-top: 50px;
 `;
@@ -256,7 +276,7 @@ export const UseCaseCard = styled.div`
 `;
 
 export const UseCaseIcon = styled.div`
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     margin-bottom: 20px;
 `;
 
@@ -274,6 +294,8 @@ export const OpenAllSection = styled.div`
 export const OpenAllGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 640px) { grid-template-columns: 1fr; }
     gap: 40px;
     margin-top: 60px;
 `;
@@ -310,6 +332,8 @@ export const ImplementationSection = styled.div`
 export const ImplGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 640px) { grid-template-columns: 1fr; }
     gap: 40px;
     margin-top: 50px;
 `;
@@ -323,7 +347,7 @@ export const ImplStep = styled.div`
 export const ImplStepNum = styled.div`
     font-family: ${fonts.display};
     font-size: 40px;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     margin-bottom: 16px;
 `;
 
@@ -349,6 +373,8 @@ export const ComplianceSub = styled.p`
 export const ComplianceGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 640px) { grid-template-columns: 1fr; }
     gap: 30px;
     margin-top: 60px;
 `;
@@ -400,11 +426,11 @@ export const CtaActions = styled.div`
 `;
 
 export const TrustBarInner = styled(CardView)`
-    padding: 0 80px;
+    padding: 0 clamp(20px, 5vw, 80px);
 `;
 
 export const QuoteCardView = styled(CardView)`
-    padding: 120px 80px;
+    padding: clamp(64px, 8vw, 120px) clamp(20px, 5vw, 80px);
 `;
 
 export const DarkQuoteText = styled(QuoteText)`
@@ -433,6 +459,14 @@ export const NarrowSectionTitle = styled(SectionTitle)`
 
 export const WideIntroText = styled(IntroText)`
     max-width: 620px;
+
+    a {
+        color: ${colors.orangeText};
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+        &:hover { text-decoration: underline; text-underline-offset: 4px; }
+    }
 `;
 
 export const ImplGridSpaced = styled(ImplGrid)`

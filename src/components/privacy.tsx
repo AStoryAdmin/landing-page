@@ -1,4 +1,7 @@
-import {CardView, Label, HeroSection, HeroTitle, HeroSub, LegalMeta, BodySection, LegalContent, Toc, TocLabel, TocList, TocItem, TocLink, Section, SectionNum, SectionTitle, Paragraph, List, ListItem, LegalLink, Bold} from './privacy.styles';
+import Seo from './ui/Seo';
+import { LegalLayout, PlainSummary, TableOfContents } from './ui/legal';
+import { breadcrumbSchema, organizationSchema } from '../lib/seo';
+import {CardView, Label, HeroSection, HeroTitle, HeroSub, LegalMeta, BodySection, LegalContent, Section, SectionNum, SectionTitle, Paragraph, List, ListItem, LegalLink, Bold} from './privacy.styles';
 
 const sections = [
     { id: 's1', title: 'Who we are' },
@@ -13,7 +16,7 @@ const sections = [
     { id: 's10', title: 'Your privacy rights' },
     { id: 's11', title: 'Children' },
     { id: 's12', title: 'Where your information is stored' },
-    { id: 's13', title: 'Marketing and waitlist' },
+    { id: 's13', title: 'If someone gave this to you as a gift' },
     { id: 's14', title: 'Changes to this policy' },
     { id: 's15', title: 'Contact us' },
 ];
@@ -21,6 +24,18 @@ const sections = [
 const Privacy = () => {
     return (
         <>
+            <Seo
+                title="Privacy policy — A Story"
+                description="What we collect, what we never do with it, and how a storyteller stays in control. We do not sell data and we do not train AI models on your stories."
+                path="/privacy"
+                schema={[
+                    organizationSchema(),
+                    breadcrumbSchema([
+                        { name: 'Home', path: '/' },
+                        { name: 'Privacy policy', path: '/privacy' },
+                    ]),
+                ]}
+            />
             <HeroSection>
                 <CardView>
                     <Label>Legal</Label>
@@ -33,16 +48,22 @@ const Privacy = () => {
             <BodySection>
                 <CardView>
                     <LegalContent>
-                        <Toc>
-                            <TocLabel>Contents</TocLabel>
-                            <TocList>
-                                {sections.map((s) => (
-                                    <TocItem key={s.id}>
-                                        <TocLink href={`#${s.id}`}>{s.title}</TocLink>
-                                    </TocItem>
-                                ))}
-                            </TocList>
-                        </Toc>
+                        <PlainSummary
+                            intro="The people in these recordings are trusting somebody with the most personal thing they own. Here is what that means in practice, before the formal version below."
+                            points={[
+                                { label: 'The storyteller owns it.', text: 'Not the person who paid for the gift. They decide who can see, hear or download anything.' },
+                                { label: 'We never sell data.', text: 'Not to advertisers, data brokers, insurers, or anyone else. There is no version of this where we do.' },
+                                { label: 'We never train AI on your stories.', text: 'Your recordings are used to build your archive, and for nothing else.' },
+                                { label: 'Everyone recorded is asked first.', text: 'Consent is captured from the person speaking, not assumed from the person who bought the gift.' },
+                                { label: 'You can take it all with you.', text: 'A full export of audio, transcripts and photos, in open formats, whenever you ask.' },
+                                { label: 'You can delete it all.', text: 'Deletion means deletion, including backups, within 30 days.' },
+                            ]}
+                            caveat="This summary is here to be read, not to be relied on. Where it and the policy below differ, the policy governs."
+                        />
+
+                        <LegalLayout>
+                            <TableOfContents sections={sections} />
+                            <div>
 
                         <Section id="s1">
                             <SectionNum>1</SectionNum>
@@ -55,7 +76,7 @@ const Privacy = () => {
                             <SectionTitle>Information we collect</SectionTitle>
                             <Paragraph>We collect the following categories of information:</Paragraph>
                             <List>
-                                <ListItem><Bold>Account and waitlist information,</Bold> including your name, phone number, and email address.</ListItem>
+                                <ListItem><Bold>Contact and purchase information,</Bold> including your name, email address, phone number if you give us one, and the payment details needed to take a payment.</ListItem>
                                 <ListItem><Bold>The memories themselves</Bold> &mdash; the audio recordings, transcripts, photographs, and stories that you and your storyteller share. This is the heart of what we hold, and we treat it as highly sensitive personal information.</ListItem>
                                 <ListItem><Bold>Payment information,</Bold> which is processed by our third-party payment providers. We do not collect or store full payment card numbers.</ListItem>
                                 <ListItem><Bold>Usage information,</Bold> such as device details and app activity, collected through standard analytics in order to operate, secure, and improve the service.</ListItem>
@@ -96,7 +117,7 @@ const Privacy = () => {
                             <SectionNum>8</SectionNum>
                             <SectionTitle>How long we keep your information</SectionTitle>
                             <Paragraph>Because A Story is built to preserve memories for the long term, we retain your content for as long as your account or archive remains active. You may request deletion of your content at any time by contacting us at <LegalLink href="mailto:contact@astoryapp.com">contact@astoryapp.com</LegalLink>, and we will delete it within thirty (30) days, except where we must retain certain information to complete a transaction, resolve disputes, or comply with legal obligations, and except for residual copies that are removed from routine backups in the ordinary course.</Paragraph>
-                            <Paragraph>If your subscription lapses, we will retain your archive for a grace period and will notify you before taking any action that would affect access to your stories. If a storyteller passes away, their stories remain protected under this policy, and we will work with the storyteller's family in keeping with the storyteller's wishes and applicable law.</Paragraph>
+                            <Paragraph>Your archive does not expire when you stop paying. Canceling a plan, or letting a one-time purchase lapse, returns the account to the Free tier &mdash; the guided AI conversations stop, and everything else keeps working. We will not delete an archive or restrict access to material already recorded because a plan ended.</Paragraph>
                         </Section>
 
                         <Section id="s9">
@@ -127,8 +148,12 @@ const Privacy = () => {
 
                         <Section id="s13">
                             <SectionNum>13</SectionNum>
-                            <SectionTitle>Marketing and waitlist</SectionTitle>
-                            <Paragraph>If you join our waitlist or sign up for updates, we will send you occasional messages about A Story &mdash; no spam, just a gentle note when there is something worth telling you. You can opt out of these messages at any time using the unsubscribe link or by contacting us.</Paragraph>
+                            <SectionTitle>If someone gave this to you as a gift</SectionTitle>
+                            <Paragraph>Most A Story archives are paid for by one person and filled by another. When that happens, the two of you are treated as separate people with separate rights, and the money does not decide who gets what.</Paragraph>
+                            <Paragraph>The person who bought the gift gives us their name, email and payment details, which we use to take the payment, send them the card and the link, and keep them updated on the book. That is all we hold about them, and none of it gives them access to anything you record.</Paragraph>
+                            <Paragraph><Bold>Content imported from other services.</Bold> If you ever choose to connect another account &mdash; a social profile or a photo library &mdash; anything brought across is treated exactly like anything else in your archive: it belongs to the storyteller, it is never sold, it is never used to train models, and it can be removed at any time. We import only what you point us at, we do not post anything anywhere on your behalf, and disconnecting an account stops any further import. This capability is in development and is not available today.</Paragraph>
+                            <Paragraph><Bold>You control your archive.</Bold> You decide whether the person who gave you the gift can read, hear or download any of it, and you can change your mind at any time. We will tell them the gift was opened and, if you order one, that the book is on its way &mdash; nothing about what you said.</Paragraph>
+                            <Paragraph>We may send either of you occasional messages about A Story &mdash; no spam, just a note when there is something worth telling you. You can opt out at any time using the unsubscribe link or by writing to us.</Paragraph>
                         </Section>
 
                         <Section id="s14">
@@ -142,6 +167,8 @@ const Privacy = () => {
                             <SectionTitle>Contact us</SectionTitle>
                             <Paragraph>If you have any questions about this policy or your privacy, please email us at <LegalLink href="mailto:contact@astoryapp.com">contact@astoryapp.com</LegalLink>. We respond to every message.</Paragraph>
                         </Section>
+                            </div>
+                        </LegalLayout>
                     </LegalContent>
                 </CardView>
             </BodySection>

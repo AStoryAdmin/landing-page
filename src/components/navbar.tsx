@@ -1,64 +1,166 @@
-import { useEffect, useState } from 'react';
-import { NavContainer, NavLogo, NavLinks, NavLink, NavCta, NavMobileCtaItem, NavMobileCta, NavHamburger } from './navbar.styles';
+import { useEffect, useId, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import Logo from './ui/Logo';
+import { DEMO_HREF, WAITLIST_HREF, WAITLIST_LABEL } from '../lib/checkout';
+import {
+    Announce, Dropdown, DropdownItem, Hamburger, MobileActions, NavActions, NavButton, NavCta,
+    NavGhost, NavGroup, NavInner, NavLink, NavLinks, NavShell, NavSpacer,
+} from './navbar.styles';
 
-import logoImg from './../assets/lightLogo.png'
+/**
+ * The gift buyer is the whole point of the top-level nav, so the two other
+ * audiences sit behind one "Also for" group rather than competing for it.
+ */
+const ALSO_FOR = [
+    { to: '/organizations', title: 'Organizations', blurb: 'Founder interviews, retiring-employee knowledge and anniversary archives.' },
+    { to: '/institution', title: 'Care communities', blurb: 'Reminiscence at scale for senior living, memory care and hospice.' },
+] as const;
+
+const Chevron = () => (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+        strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <polyline points="6 9 12 15 18 9" />
+    </svg>
+);
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [alsoOpen, setAlsoOpen] = useState(false);
+    const [solid, setSolid] = useState(false);
+    const shellRef = useRef<HTMLElement | null>(null);
+    const groupRef = useRef<HTMLDivElement | null>(null);
+    const menuId = useId();
+    const { pathname } = useLocation();
 
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [open]);
+    /*
+     * Close everything on navigation. Adjusting state during render (rather
+     * than in an effect) means the menu is never painted open on the new page.
+     */
+    const [lastPath, setLastPath] = useState(pathname);
+    if (pathname !== lastPath) {
+        setLastPath(pathname);
+        setOpen(false);
+        setAlsoOpen(false);
+    }
 
-  const closeMenu = () => setOpen(false);
+    /* Lock the page behind the mobile drawer. */
+    useEffect(() => {
+        document.body.style.overflow = open ? 'hidden' : '';
+        return () => { document.body.style.overflow = ''; };
+    }, [open]);
 
-  return (
-    <NavContainer>
-      <NavLogo to="/" onClick={closeMenu}>
-        <img src={logoImg} alt="Light-mode Story Logo" />
-        Story
-      </NavLogo>
+    /* Shadow appears only once the page has moved. */
+    useEffect(() => {
+        const onScroll = () => setSolid(window.scrollY > 8);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
 
-      <NavLinks $open={open}>
-        <NavLink to="/" onClick={closeMenu}>
-          Home
-        </NavLink>
-        <NavLink to="/experience" onClick={closeMenu}>
-          The Experience
-        </NavLink>
-        <NavLink to="/family" onClick={closeMenu}>
-          For Families
-        </NavLink>
-        <NavLink to="/institution" onClick={closeMenu}>
-          For Institutions
-        </NavLink>
-        <NavMobileCtaItem>
-          <NavMobileCta to="/signup" onClick={closeMenu}>
-            Get early access
-          </NavMobileCta>
-        </NavMobileCtaItem>
-      </NavLinks>
+    /*
+     * The header is fixed, and its height changes with the announcement strip
+     * and with wrapping on small screens. Publish the measured height so the
+     * layout below can reserve exactly the right amount of space.
+     */
+    useEffect(() => {
+        const el = shellRef.current;
+        if (!el) return;
+        const publish = () => document.documentElement.style.setProperty('--nav-total', `${el.offsetHeight}px`);
+        publish();
+        if (typeof ResizeObserver === 'undefined') return;
+        const ro = new ResizeObserver(publish);
+        ro.observe(el);
+        return () => ro.disconnect();
+    }, []);
 
-      <NavCta to="/signup">
-        Get early access
-      </NavCta>
+    /* Dismiss the dropdown on outside click or Escape. */
+    useEffect(() => {
+        if (!alsoOpen) return;
+        const onClick = (e: MouseEvent) => {
+            if (!groupRef.current?.contains(e.target as Node)) setAlsoOpen(false);
+        };
+        const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setAlsoOpen(false); };
+        document.addEventListener('mousedown', onClick);
+        document.addEventListener('keydown', onKey);
+        return () => {
+            document.removeEventListener('mousedown', onClick);
+            document.removeEventListener('keydown', onKey);
+        };
+    }, [alsoOpen]);
 
-      <NavHamburger
-        type="button"
-        $open={open}
-        aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
-        aria-expanded={open}
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span aria-hidden="true" />
-        <span aria-hidden="true" />
-        <span aria-hidden="true" />
-      </NavHamburger>
-    </NavContainer>
-  );
+    const isAlso = ALSO_FOR.some((a) => a.to === pathname);
+
+    return (
+        <NavShell ref={shellRef} $solid={solid}>
+            <Announce>
+                <span>
+                    Opening to a few families at a time &mdash;{' '}
+                    <strong>so every first call is one we can stand behind</strong>
+                </span>
+                <Link to={WAITLIST_HREF}>{WAITLIST_LABEL} &rarr;</Link>
+            </Announce>
+
+            <NavInner aria-label="Primary">
+                <Logo height={40} tone="light" variant="simple" />
+                <NavSpacer />
+
+                <NavLinks $open={open} id={menuId}>
+                    <NavLink to="/experience" $active={pathname === '/experience'}>How it works</NavLink>
+                    <NavLink to="/family" $active={pathname === '/family'}>Why it matters</NavLink>
+                    <NavLink to="/pricing" $active={pathname === '/pricing'}>Pricing</NavLink>
+
+                    <NavGroup
+                        ref={groupRef}
+                        onMouseEnter={() => window.matchMedia('(min-width: 861px)').matches && setAlsoOpen(true)}
+                        onMouseLeave={() => window.matchMedia('(min-width: 861px)').matches && setAlsoOpen(false)}
+                    >
+                        <NavButton
+                            type="button"
+                            $open={alsoOpen}
+                            aria-expanded={alsoOpen}
+                            aria-haspopup="true"
+                            onClick={() => setAlsoOpen((v) => !v)}
+                            style={isAlso ? { fontWeight: 600 } : undefined}
+                        >
+                            Also for <Chevron />
+                        </NavButton>
+                        <Dropdown $open={alsoOpen} role="menu">
+                            {ALSO_FOR.map((a) => (
+                                <DropdownItem key={a.to} to={a.to} role="menuitem">
+                                    <strong>{a.title}</strong>
+                                    <span>{a.blurb}</span>
+                                </DropdownItem>
+                            ))}
+                        </Dropdown>
+                    </NavGroup>
+
+                    <MobileActions>
+                        <NavCta to={WAITLIST_HREF}>{WAITLIST_LABEL}</NavCta>
+                        <NavGhost to={DEMO_HREF}>Book a demo</NavGhost>
+                        <NavGhost to="/story">Our story</NavGhost>
+                    </MobileActions>
+                </NavLinks>
+
+                <NavActions>
+                    <NavGhost to={DEMO_HREF}>Book a demo</NavGhost>
+                    <NavCta to={WAITLIST_HREF}>{WAITLIST_LABEL}</NavCta>
+                </NavActions>
+
+                <Hamburger
+                    type="button"
+                    $open={open}
+                    aria-label={open ? 'Close menu' : 'Open menu'}
+                    aria-expanded={open}
+                    aria-controls={menuId}
+                    onClick={() => setOpen((v) => !v)}
+                >
+                    <span aria-hidden="true" />
+                    <span aria-hidden="true" />
+                    <span aria-hidden="true" />
+                </Hamburger>
+            </NavInner>
+        </NavShell>
+    );
 };
 
 export default Navbar;

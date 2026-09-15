@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
+import { getSupabase } from '../lib/supabase';
 import {
     Page, Inner, Brand, Hero, Avatar, Title, Sub, Form, FieldWrap, Label, Input,
     Textarea, KindRow, KindBtn, PhotoRow, Thumb, FileLabel, Submit, ErrorMsg,
@@ -38,14 +38,15 @@ const Contribute = () => {
     const [done, setDone] = useState(false);
 
     useEffect(() => {
-        let cancelled = false;
+        let canceled = false;
         (async () => {
-            if (!slug) {
+            const supabase = getSupabase();
+            if (!slug || !supabase) {
                 setState('missing');
                 return;
             }
             const { data, error: err } = await supabase.rpc('get_contribute_info', { slug });
-            if (cancelled) return;
+            if (canceled) return;
             if (err || !data) {
                 setState('missing');
                 return;
@@ -54,7 +55,7 @@ const Contribute = () => {
             setState('ready');
         })();
         return () => {
-            cancelled = true;
+            canceled = true;
         };
     }, [slug]);
 
@@ -66,6 +67,12 @@ const Contribute = () => {
         const room = MAX_PHOTOS - photos.length;
         if (room <= 0) {
             setError(`You can attach up to ${MAX_PHOTOS} photos.`);
+            return;
+        }
+
+        const supabase = getSupabase();
+        if (!supabase) {
+            setError('Uploads are unavailable right now. Please email contact@astoryapp.com.');
             return;
         }
 
@@ -109,6 +116,12 @@ const Contribute = () => {
         }
 
         setSending(true);
+        const supabase = getSupabase();
+        if (!supabase) {
+            setError('We could not reach the server. Please email contact@astoryapp.com.');
+            return;
+        }
+
         const { data, error: rpcErr } = await supabase.rpc('submit_contribution', {
             slug,
             contributor_name: name.trim(),
@@ -206,7 +219,7 @@ const Contribute = () => {
                             <Input
                                 value={relationship}
                                 onChange={(e) => setRelationship(e.target.value)}
-                                placeholder="e.g. Daughter, neighbour, colleague"
+                                placeholder="e.g. Daughter, neighbor, colleague"
                                 maxLength={120}
                             />
                         </FieldWrap>

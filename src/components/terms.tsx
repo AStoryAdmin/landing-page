@@ -1,4 +1,7 @@
-import {CardView, Label, HeroSection, HeroTitle, HeroSub, LegalMeta, BodySection, LegalContent, Notice, Toc, TocLabel, TocList, TocItem, TocLink, Section, SectionNum, SectionTitle, Paragraph, LegalLink} from './terms.styles';
+import Seo from './ui/Seo';
+import { LegalLayout, PlainSummary, TableOfContents } from './ui/legal';
+import { breadcrumbSchema, organizationSchema } from '../lib/seo';
+import {CardView, Label, HeroSection, HeroTitle, HeroSub, LegalMeta, BodySection, LegalContent, Notice, Section, SectionNum, SectionTitle, Paragraph, LegalLink, Bold} from './terms.styles';
 
 type SectionData = {
     num: number;
@@ -13,7 +16,7 @@ const sections: SectionData[] = [
         id: 's1',
         title: 'Agreement to these terms',
         content: (
-            <Paragraph>These Terms of Service ("Terms") govern your access to and use of our website, our waitlist, and the A Story app and related services (together, the "service"). By accessing or using the service, you agree to these Terms. If you do not agree, please do not use the service.</Paragraph>
+            <Paragraph>These Terms of Service ("Terms") govern your access to and use of our website and the A Story app and related services (together, the "service"). By accessing or using the service, you agree to these Terms. If you do not agree, please do not use the service.</Paragraph>
         ),
     },
     {
@@ -45,7 +48,10 @@ const sections: SectionData[] = [
         id: 's5',
         title: 'Your account',
         content: (
-            <Paragraph>You are responsible for the accuracy of the information you provide and for keeping your account credentials secure. You are responsible for activity that occurs under your account. Please notify us promptly at <LegalLink href="mailto:contact@astoryapp.com">contact@astoryapp.com</LegalLink> if you believe your account has been used without your authorization.</Paragraph>
+            <>
+                <Paragraph>Most people who tell their story to A Story never create an account &mdash; they open the link they were given and talk. Where an account does exist, you are responsible for the accuracy of the information you provide and for keeping your credentials secure, and for activity that occurs under it.</Paragraph>
+                <Paragraph>Please notify us promptly at <LegalLink href="mailto:contact@astoryapp.com">contact@astoryapp.com</LegalLink> if you believe your account or a sharing link has been used without your authorization. We can revoke any link at any time.</Paragraph>
+            </>
         ),
     },
     {
@@ -53,7 +59,7 @@ const sections: SectionData[] = [
         id: 's6',
         title: 'Your content and ownership',
         content: (
-            <Paragraph>You and your family own your memories, recordings, transcripts, photographs, and stories ("Your Content"). You grant A Story a limited, non-exclusive license to use Your Content solely to provide the service &mdash; to conduct interviews, build and host your archive, produce your book, and support you. We will not sell Your Content, show it to advertisers, or use it to train outside artificial-intelligence models. The storyteller controls with whom Your Content is shared.</Paragraph>
+            <Paragraph>The storyteller and their family own their memories, recordings, transcripts, photographs, and stories ("Your Content"). <Bold>Paying for A Story does not give the buyer ownership of, or a right of access to, the content another person records.</Bold> Access is granted by the storyteller and can be withdrawn by them at any time, including from the person who gave them the gift. You grant A Story a limited, non-exclusive license to use Your Content solely to provide the service &mdash; to conduct interviews, build and host your archive, produce your book, and support you. We will not sell Your Content, show it to advertisers, or use it to train outside artificial-intelligence models. The storyteller controls with whom Your Content is shared.</Paragraph>
         ),
     },
     {
@@ -61,25 +67,31 @@ const sections: SectionData[] = [
         id: 's7',
         title: 'Consent and accuracy',
         content: (
-            <Paragraph>You confirm that the person being recorded has consented to being recorded and to having their stories produced into an archive and book, and that you have the right to share the photographs and information you provide. A Story shapes stories as they are told and does not independently verify the factual accuracy of personal recollections.</Paragraph>
+            <>
+                <Paragraph>Consent comes from the person speaking. Before recording begins, the storyteller is shown what is being captured, who will be able to see it, and how to stop &mdash; and nothing is recorded until they agree. Buying the gift does not consent on their behalf, and neither does handing them the link.</Paragraph>
+                <Paragraph>You confirm that you have the right to share any photographs and information you upload, and that anyone else audible in a recording you contribute has agreed to it. A Story shapes stories as they are told and does not independently verify the factual accuracy of personal recollections.</Paragraph>
+            </>
         ),
     },
     {
         num: 8,
         id: 's8',
-        title: 'Promotions and founding families',
+        title: 'Promotions',
         content: (
-            <Paragraph>From time to time we offer promotions, such as the founding-families offer of three months free and a raffle for lifetime memberships. Each promotion is subject to its own official rules, which are made available at the time of the promotion and which control in the event of any conflict with these Terms. Promotions may be modified or withdrawn where permitted by law.</Paragraph>
+            <Paragraph>From time to time we offer promotions, trials or introductory pricing. Each promotion is subject to its own official rules, which are made available at the time of the promotion and which control in the event of any conflict with these Terms. Promotions may be modified or withdrawn where permitted by law.</Paragraph>
         ),
     },
     {
         num: 9,
         id: 's9',
-        title: 'Subscriptions, payments, and refunds',
+        title: 'Plans, payments, and refunds',
         content: (
             <>
-                <Paragraph>A Story may be offered on a subscription basis. Subscriptions purchased through the Apple App Store or Google Play are billed through your store account and renew automatically unless cancelled at least 24 hours before the end of the current period. You can manage or cancel a subscription in your store account settings.</Paragraph>
-                <Paragraph>Except where required by law, payments are non-refundable, and we do not provide refunds or credits for partial periods. Printed memory books are produced to order; once production has begun, an order cannot be cancelled or refunded, except where required by law or where a product arrives damaged or defective.</Paragraph>
+                <Paragraph>A Story is free to use at its Free tier, and offers paid plans that lift the limit on AI-guided conversations. Individual and Family are annual subscriptions that renew until canceled; Express is a one-time purchase covering roughly thirty days and does not renew. Every account begins with three days of full access at no charge and without a card. Printed books are purchased separately unless bundled at checkout.</Paragraph>
+                <Paragraph><Bold>What continues if you cancel or stop paying.</Bold> Your account returns to the Free tier and your archive does not expire. You keep the ability to read, search, add to and export it; everyone the storyteller has invited keeps their access; and you may go on recording, writing and uploading photos, and using the question bank, at no further charge, for as long as we operate the service. The only thing that stops when a package's period ends is the AI-guided conversation. We will not delete an archive, restrict access to material already recorded, or place any of it behind a later payment because a package has ended.</Paragraph>
+                <Paragraph><Bold>Gifts that go unused.</Bold> If the person you bought it for does not use it, write to us at <LegalLink href="mailto:contact@astoryapp.com">contact@astoryapp.com</LegalLink> and we will refund you. We would rather return the money than have a gift sit there unopened, and we do not put a deadline on this.</Paragraph>
+                <Paragraph><Bold>If you started under an earlier offer.</Bold> Where you began using A Story under different terms &mdash; including while it was free during early access &mdash; those terms continue to apply to your archive for as long as you keep it, whatever we charge afterwards. We will not move you onto new pricing, and we will not close an archive because the offer it was created under has ended. Printed books are charged at the price current when each book is ordered.</Paragraph>
+                <Paragraph>Printed books are produced to order. Once printing has begun a book order cannot be canceled, except where required by law or where a book arrives damaged or defective &mdash; in which case we replace it. Additional copies are priced separately and charged when ordered.</Paragraph>
             </>
         ),
     },
@@ -184,6 +196,18 @@ const sections: SectionData[] = [
 const Terms = () => {
     return (
         <>
+            <Seo
+                title="Terms of service — A Story"
+                description="The terms that govern use of A Story, written to be read rather than skipped."
+                path="/terms"
+                schema={[
+                    organizationSchema(),
+                    breadcrumbSchema([
+                        { name: 'Home', path: '/' },
+                        { name: 'Terms of service', path: '/terms' },
+                    ]),
+                ]}
+            />
             <HeroSection>
                 <CardView>
                     <Label>Legal</Label>
@@ -198,24 +222,31 @@ const Terms = () => {
                     <LegalContent>
                         <Notice>Please read these Terms carefully before using A Story. By accessing or using the service, you agree to be bound by them. If you do not agree, please do not use the service.</Notice>
 
-                        <Toc>
-                            <TocLabel>Contents</TocLabel>
-                            <TocList>
-                                {sections.map((s) => (
-                                    <TocItem key={s.id}>
-                                        <TocLink href={`#${s.id}`}>{s.title}</TocLink>
-                                    </TocItem>
-                                ))}
-                            </TocList>
-                        </Toc>
+                        <PlainSummary
+                            intro="Most of A Story is bought by one person as a gift and used by another. That split is the reason several of these clauses exist, so here is the plain version first."
+                            points={[
+                                { label: 'Buying it does not make it yours.', text: 'The person telling the stories owns them and controls access — including whether the buyer ever sees them.' },
+                                { label: 'Cancel and you keep it all.', text: 'Stopping ends the AI calls and drops you to Free. Nothing is deleted or locked.' },
+                                { label: 'If the gift misses, tell us.', text: 'We would rather refund a gift that went unused than argue about it.' },
+                                { label: 'Everybody recorded gets a say.', text: 'We need consent from the person speaking, not just from whoever set it up.' },
+                                { label: 'Use it for your own family.', text: 'Do not record people who have not agreed, and do not use A Story to break the law.' },
+                                { label: 'Disputes go to arbitration.', text: 'In Michigan, individually — with a small-claims and an opt-out route, both spelled out below.' },
+                            ]}
+                            caveat="This summary is here to be read, not to be relied on. Where it and the terms below differ, the terms govern."
+                        />
 
-                        {sections.map((s) => (
-                            <Section key={s.id} id={s.id}>
-                                <SectionNum>{s.num}</SectionNum>
-                                <SectionTitle>{s.title}</SectionTitle>
-                                {s.content}
-                            </Section>
-                        ))}
+                        <LegalLayout>
+                            <TableOfContents sections={sections} />
+                            <div>
+                                {sections.map((s) => (
+                                    <Section key={s.id} id={s.id}>
+                                        <SectionNum>{s.num}</SectionNum>
+                                        <SectionTitle>{s.title}</SectionTitle>
+                                        {s.content}
+                                    </Section>
+                                ))}
+                            </div>
+                        </LegalLayout>
                     </LegalContent>
                 </CardView>
             </BodySection>

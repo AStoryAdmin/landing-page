@@ -1,33 +1,37 @@
 import styled from 'styled-components';
+import { color, font } from '../styles/theme';
 
 const colors = {
-    cream: '#EFE6D4',
-    paper: '#F6EFE2',
-    paper2: '#F1E9DA',
-    orange: '#B45A2B',
-    orangeHover: 'rgba(180, 90, 43, 0.08)',
-    dark: '#120E08',
-    gray: 'rgba(254, 252, 248, 0.5)',
-    darkGray: 'rgba(43, 33, 23, 0.7)',
-    ink08: 'rgba(43, 33, 23, 0.08)',
+    cream: color.ivory,
+    paper: color.paper,
+    paper2: color.paper,
+    orange: color.accent,
+    onAccent: color.paperPure,
+    orangeText: color.accentText,
+    orangeHover: color.accentWash,
+    dark: color.primaryDeep,
+    gray: color.onDarkMuted,
+    darkGray: color.body,
+    ink08: 'rgba(15, 74, 88, 0.08)',
 };
 
 const fonts = {
-    body: "'Figtree', sans-serif",
-    display: "'Cormorant Garamond', serif",
+    body: font.body,
+    display: font.display,
+    script: font.script,
 };
 
 
 export const CardView = styled.div`
     max-width: 1300px;
     margin: 0 auto;
-    padding: 0 80px;
+    padding: 0 clamp(20px, 5vw, 80px);
 `;
 
 export const Label = styled.span`
     display: block;
     text-transform: uppercase;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     font-family: ${fonts.body};
     font-size: 15px;
     font-weight: 700;
@@ -37,7 +41,7 @@ export const Label = styled.span`
 
 export const HeroSection = styled.div`
     background: ${colors.paper2};
-    padding: 180px 0 90px;
+    padding: clamp(64px, 8vw, 120px) 0 clamp(48px, 6vw, 90px);
     border-bottom: 1px solid ${colors.ink08};
 `;
 
@@ -67,11 +71,11 @@ export const LegalMeta = styled.p`
 
 export const BodySection = styled.div`
     background: ${colors.cream};
-    padding: 100px 0 140px;
+    padding: clamp(56px, 7vw, 100px) 0 clamp(72px, 9vw, 140px);
 `;
 
 export const LegalContent = styled.div`
-    max-width: 720px;
+    max-width: 1080px;
 `;
 
 export const Notice = styled.div`
@@ -124,7 +128,7 @@ export const TocLink = styled.a`
     transition: color 0.2s ease;
 
     &:hover {
-        color: ${colors.orange};
+        color: ${colors.orangeText};
     }
 `;
 
@@ -148,7 +152,7 @@ export const SectionNum = styled.span`
     font-weight: 600;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     margin-bottom: 8px;
 `;
 
@@ -169,7 +173,7 @@ export const Paragraph = styled.p`
 `;
 
 export const LegalLink = styled.a`
-    color: ${colors.orange};
+    color: ${colors.orangeText};
     text-decoration: underline;
 `;
 

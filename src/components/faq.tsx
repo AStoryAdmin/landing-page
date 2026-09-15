@@ -1,6 +1,10 @@
+import Seo from './ui/Seo';
+import { breadcrumbSchema, faqSchema, organizationSchema } from '../lib/seo';
+import { nodeToText } from '../lib/nodeText';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {Container, NarrowContainer, Label, LegalLink, FaqHero, HeroTitle, HeroSub, FaqSection, FaqGroup, FaqGroupLabel, FaqItem, FaqQuestion, FaqQuestionIcon, FaqAnswer, FaqAnswerInner, AnswerParagraph, Bold, CtaSection, CtaTitle, CtaSub, CtaActions, PrimaryButton, OutlineButton} from './faq.styles';
+import { DEMO_HREF } from '../lib/checkout';
 
 type FaqQuestionData = {
     id: string;
@@ -14,6 +18,73 @@ type FaqGroupData = {
 };
 
 const faqGroups: FaqGroupData[] = [
+    {
+        label: 'Giving it as a gift',
+        items: [
+            {
+                id: 'gift-day',
+                question: 'What do I actually hand them on the day?',
+                answer: (
+                    <>
+                        <AnswerParagraph>An archive that is already theirs. You set it up beforehand &mdash; their name, their birthday, the hour of day A Story should ring &mdash; so what you hand over on the day is a thing that already works rather than instructions for making one work.</AnswerParagraph>
+                        <AnswerParagraph>There is no card, no code and nothing to redeem, and nothing has to happen on the day at all. The first call can be that evening or in February, and moving it is one tap. If you would rather they never saw the setting-up, you can do every bit of it without them in the room.</AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'gift-tech',
+                question: 'The person I am giving it to is hopeless with technology.',
+                answer: (
+                    <>
+                        <AnswerParagraph>Then they are exactly who this was built for. There is one install &mdash; the A Story app, on their phone or tablet, which takes a couple of minutes and which you can do for them before you have even mentioned it. After that they never open it again unless they want to.</AnswerParagraph>
+                        <AnswerParagraph>At the hour they chose, their phone rings and A Story is on the other end. They press the green button and talk, the way they would to anybody. No typing, no password, nothing to remember, nothing to save at the end. Big buttons and large type, because the people this is for are eighty and their eyes are eighty too.</AnswerParagraph>
+                        <AnswerParagraph>There is an app, and it does get installed on their phone or tablet &mdash; but that happens once, it takes a couple of minutes, and you can do it for them. After that they never have to open it unless they want to.</AnswerParagraph>
+                        <AnswerParagraph>If they do get stuck, we help them directly &mdash; you do not become their tech support.</AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'gift-work',
+                question: 'How much work is this for me after I buy it?',
+                answer: (
+                    <>
+                        <AnswerParagraph>Sending the link. That is the whole job. A Story does the asking, the transcribing, the organizing by chapter of life, and the book layout. You are told when there is something new to read.</AnswerParagraph>
+                        <AnswerParagraph>This is the difference between a gift and a project, and it is the thing we care most about getting right. Nobody wants to give a present that turns into homework for themselves.</AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'gift-family',
+                question: 'Can my brothers and sisters go in on it with me?',
+                answer: (
+                    <>
+                        <AnswerParagraph>Yes, and many families do &mdash; four siblings splitting one gift is a common way this gets bought. There is one purchase and one archive; everybody you invite can read it, add photos, correct a name, or record their own memory.</AnswerParagraph>
+                        <AnswerParagraph>We never charge per family member. Inviting fifteen cousins costs exactly the same as inviting nobody. <Bold>See <Link to="/pricing">pricing</Link>.</Bold></AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'gift-unused',
+                question: 'What if they never get round to using it?',
+                answer: (
+                    <>
+                        <AnswerParagraph>Most people who insist they have nothing worth telling end up talking for hours &mdash; being asked properly is unusual enough that it tends to land. But it does not always, and there is no clock: the link stays open, and the first question is waiting whenever they are.</AnswerParagraph>
+                        <AnswerParagraph>If it genuinely is not for them, tell us and we will make it right. We would rather refund a gift than have it sit there as a reproach.</AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'gift-timing',
+                question: 'Will it arrive in time for Christmas or a birthday?',
+                answer: (
+                    <>
+                        <AnswerParagraph>Setting the archive up takes a couple of minutes, so the gift itself is never the thing that runs late &mdash; you can do it the night before. Tell us the date and we will hold the first call until then.</AnswerParagraph>
+                        <AnswerParagraph>The printed book comes later, once there are stories to print &mdash; three to four weeks from the moment you approve the layout. Most families treat the book as a second gift that arrives months after the first.</AnswerParagraph>
+                    </>
+                ),
+            }
+        ]
+    },
     {
         label: 'About A Story',
         items: [
@@ -32,7 +103,7 @@ const faqGroups: FaqGroupData[] = [
                 question: 'How does the AI conversation work?',
                 answer: (
                     <>
-                        <AnswerParagraph>A Story's AI asks warm, open questions &mdash; about childhood homes, family, relationships, work, the moments that shaped a person. It listens carefully to each answer and follows naturally wherever the story leads. It doesn't interrupt, correct, or redirect. It simply follows.</AnswerParagraph>
+                        <AnswerParagraph>A Story asks from a bank of 504 questions across eleven chapters &mdash; childhood homes, the years that bent everything, the day after which nothing was the same. It listens to each answer and follows naturally wherever the story leads. It doesn't interrupt, correct, or redirect. It simply follows.</AnswerParagraph>
                         <AnswerParagraph>The conversation feels more like talking to a thoughtful, patient listener than being interviewed. There are no right or wrong answers. There is no pressure to remember anything perfectly. The AI meets people exactly where they are.</AnswerParagraph>
                         <AnswerParagraph>You can <LegalLink as={Link} to="/experience#demo">watch a real example conversation</LegalLink> on The Experience page &mdash; and try the voice feature yourself.</AnswerParagraph>
                     </>
@@ -43,8 +114,8 @@ const faqGroups: FaqGroupData[] = [
                 question: 'Who is A Story for?',
                 answer: (
                     <>
-                        <AnswerParagraph>A Story is designed for older adults &mdash; parents, grandparents, aunts and uncles &mdash; who have a lifetime of stories that deserve to be kept. It is especially designed for people who are not comfortable with technology. No app to download, no account to create, no learning curve. It works on any phone or tablet.</AnswerParagraph>
-                        <AnswerParagraph>It is also used by adult children and grandchildren who want to capture their family's history before it's too late &mdash; as a gift, a project, or simply an act of love.</AnswerParagraph>
+                        <AnswerParagraph>A Story is designed for older adults &mdash; parents, grandparents, aunts and uncles &mdash; who have a lifetime of stories that deserve to be kept. It is especially designed for people who are not comfortable with technology: after a one-time setup that somebody else can do, the phone rings and they talk. There is no learning curve, because there is nothing to learn.</AnswerParagraph>
+                        <AnswerParagraph>It is also used by adult children and grandchildren who want their family's history written down while it is still being made &mdash; as a gift, a project, or simply an act of love.</AnswerParagraph>
                         <AnswerParagraph>
                             Nursing homes, memory care communities, assisted living facilities, and hospice programs use A Story as part of their person-centered care approach. See our{' '}
                             <LegalLink as={Link} to="/institution">For Institutions</LegalLink>{' '}
@@ -59,7 +130,7 @@ const faqGroups: FaqGroupData[] = [
                 answer: (
                     <>
                         <AnswerParagraph>A typical session lasts 20 to 45 minutes. The AI begins with one gentle question &mdash; about a childhood memory, a place that mattered, a person who shaped them &mdash; and the conversation unfolds from there. Answers can be spoken aloud or typed. The session can be paused and resumed at any time.</AnswerParagraph>
-                        <AnswerParagraph>After each session, the stories are organized into memory cards &mdash; searchable, grouped by chapter of life (childhood, school years, career, family, legacy), and ready to have photos attached. Each session adds to a growing archive.</AnswerParagraph>
+                        <AnswerParagraph>After each session, the stories are organized into memory cards &mdash; searchable, grouped into eleven chapters — from where the family came from, through childhood, work and the years that bent everything, to what the grandchildren remember — and ready to have photos attached. Each session adds to a growing archive.</AnswerParagraph>
                         <AnswerParagraph>There is no "right" number of sessions. Some families do one. Some do dozens, over months or years. The archive grows at whatever pace feels right.</AnswerParagraph>
                     </>
                 ),
@@ -121,8 +192,8 @@ const faqGroups: FaqGroupData[] = [
                 question: 'How long does it take to get started?',
                 answer: (
                     <>
-                        <AnswerParagraph>The first conversation can begin in about two minutes. There is no download, no account setup for the storyteller, and no tutorial to complete. Open A Story, choose a chapter of life to begin in, and the first question appears immediately.</AnswerParagraph>
-                        <AnswerParagraph>If you're setting up A Story as a gift for a parent or grandparent, you handle the initial setup (which takes about five minutes), and then hand them the device with the first question already on screen. The experience feels as simple as receiving a phone call.</AnswerParagraph>
+                        <AnswerParagraph>The first conversation can begin in about two minutes. Install A Story, choose a chapter of life to begin in, and the first question comes straight away &mdash; there is no account to build out and no tutorial to sit through.</AnswerParagraph>
+                        <AnswerParagraph>If you are setting it up as a gift for a parent or grandparent, you do that five-minute setup yourself. After that, A Story calls them and they answer. It does not just feel like receiving a phone call &mdash; it is one.</AnswerParagraph>
                     </>
                 ),
             },
@@ -131,8 +202,8 @@ const faqGroups: FaqGroupData[] = [
                 question: 'What devices does it work on?',
                 answer: (
                     <>
-                        <AnswerParagraph>A Story works in any modern web browser &mdash; on phones, tablets, and computers. No app to download. We are optimized for tablets (iPad and Android), which offer the most comfortable experience for older adults: large text, easy touch targets, and good microphone quality for voice responses.</AnswerParagraph>
-                        <AnswerParagraph>A dedicated iOS and Android app is coming soon. Subscribers will receive access automatically when it launches.</AnswerParagraph>
+                        <AnswerParagraph>The A Story app runs on iPhone, iPad and Android, and the archive can also be read in any modern web browser. Tablets give older adults the most comfortable reading experience: large text, easy touch targets, and a good microphone.</AnswerParagraph>
+                        <AnswerParagraph>For the storyteller the conversation arrives as a call through the app, so the one thing that matters is that the app is on the device they keep near them &mdash; usually the phone already in their pocket. Somebody else can put it there; after that it rings on its own and they answer it.</AnswerParagraph>
                     </>
                 ),
             },
@@ -151,9 +222,9 @@ const faqGroups: FaqGroupData[] = [
                 question: 'Can I give A Story as a gift?',
                 answer: (
                     <>
-                        <AnswerParagraph>Yes &mdash; and it is one of the most meaningful gifts we see people give. A Story gift subscriptions can be set up entirely by the giver and presented as a complete experience: a device ready to begin, or a gift card the recipient activates at their own pace.</AnswerParagraph>
+<AnswerParagraph>Yes &mdash; and it is one of the most meaningful gifts we see people give. Express is the one most people give, because it is a single payment that never renews on the person receiving it. It can be set up entirely by the giver and handed over as a thing that already works: their archive, their app, their first call already booked for whenever suits.</AnswerParagraph>
                         <AnswerParagraph>Many families give A Story as a birthday gift, a holiday present, or a "just because" expression of love. Some describe it as the only gift they've given where the whole family ends up in tears &mdash; in the best way.</AnswerParagraph>
-                        <AnswerParagraph>Email us at contact@astoryapp.com to set up a gift subscription or ask about our gifting options.</AnswerParagraph>
+<AnswerParagraph>Email us at contact@astoryapp.com to set one up or ask about gifting options.</AnswerParagraph>
                     </>
                 ),
             },
@@ -167,11 +238,12 @@ const faqGroups: FaqGroupData[] = [
                 question: 'What does A Story cost?',
                 answer: (
                     <>
-                        <AnswerParagraph>A Story is currently in early access. We are onboarding founding families and institutional partners through personal demos &mdash; pricing is shared during those conversations and is designed to be accessible for individual families.</AnswerParagraph>
+<AnswerParagraph>Every account starts with three days of everything, no card. After that there is a Free tier that does not run out &mdash; three guided questions a day, unlimited writing, the whole family invited &mdash; and three paid plans: Individual at $119 a year for one storyteller with 90 minutes of guided calls a month; Family at $229 a year for up to three storytellers sharing 200 minutes; and Express at $79 one time, covering about thirty days and 140 minutes, which is the one people give as a present because nothing renews on the person receiving it.</AnswerParagraph>
+                        <AnswerParagraph>On every plan, including Free, the archive, the exports, writing in your own words and everyone you invite cost nothing. Photo uploads are unlimited on the paid plans and capped at five a week on Free, because storage is the one other thing with a bill attached. Only the guided AI calls are metered, because they are the only part with a real cost behind them. Cancel and you drop to Free rather than losing anything &mdash; your recordings are always yours to keep.</AnswerParagraph>
+                        <AnswerParagraph>The hardcover is $69 for the first 40 color pages, then $0.75 a page in color or $0.35 in black and white. Express includes those first 40 pages; Individual and Family can bundle a book at checkout for less than adding one later. Organization and care-community programs are quoted per engagement on a 30-minute call.</AnswerParagraph>
                         <AnswerParagraph>
-                            Founding families who book a demo now will receive preferred pricing when we launch publicly.{' '}
-                            <LegalLink href="mailto:contact@astoryapp.com?subject=Book a Demo">Book a free 20-minute demo</LegalLink>{' '}
-                            to learn more.
+                            <Bold><Link to="/pricing">See the full pricing breakdown</Link></Bold>, or{' '}
+                            <LegalLink as={Link} to={DEMO_HREF}>book a free 20-minute demo</LegalLink>.
                         </AnswerParagraph>
                     </>
                 ),
@@ -181,7 +253,7 @@ const faqGroups: FaqGroupData[] = [
                 question: 'What does the printed book look like?',
                 answer: (
                     <>
-                        <AnswerParagraph>The A Story memoir is a hardcover book &mdash; sewn signatures, lay-flat binding, acid-free paper. Stories are organized by chapter of life (childhood, school years, career, family, legacy) and laid out like a real memoir, with photos printed alongside the stories they belong to.</AnswerParagraph>
+                        <AnswerParagraph>The A Story memoir is a hardcover book &mdash; sewn signatures, lay-flat binding, acid-free paper. Stories are organized into the same eleven chapters the archive uses and laid out like a real memoir, with photos printed alongside the stories they belong to.</AnswerParagraph>
                         <AnswerParagraph>The cover is cloth-bound with the storyteller's name and years. It is the kind of book that lives on a shelf for generations. We do not produce photo albums or scrapbooks &mdash; we produce memoirs.</AnswerParagraph>
                         <AnswerParagraph>Ordering a book is always optional. The digital archive is complete and valuable on its own. Many families order one book for the storyteller and additional copies as gifts for children and grandchildren.</AnswerParagraph>
                     </>
@@ -198,8 +270,68 @@ const faqGroups: FaqGroupData[] = [
                 ),
             }
         ]
+    },
+    {
+        label: 'For organizations',
+        items: [
+            {
+                id: 'org-what',
+                question: 'What does A Story do for a company or organization?',
+                answer: (
+                    <>
+                        <AnswerParagraph>The same guided interview that gets a grandmother talking about 1958 gets a founder talking about 1997. Organizations use A Story to capture founder and leadership interviews, the judgment of long-tenured employees before they retire, milestone and anniversary histories, and the culture stories that new hires never otherwise hear.</AnswerParagraph>
+                        <AnswerParagraph>You end up with a searchable internal archive, an onboarding story library, and a printed hardcover history of the organization &mdash; the thing that gets handed to whoever runs the place in fifty years. <Bold>See <Link to="/organizations">A Story for Organizations</Link> for the full picture.</Bold></AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'org-time',
+                question: 'How much time does it take from our people?',
+                answer: (
+                    <>
+                        <AnswerParagraph>A useful archive comes from three to five sessions of twenty to forty minutes per storyteller. Nobody blocks out a day, and sessions resume exactly where they left off &mdash; a founder can do fifteen minutes between meetings and pick it up the following week.</AnswerParagraph>
+                        <AnswerParagraph>On your side, the coordinating effort is a few hours a month: deciding who to record and making the introductions. There is no interviewer to train, no transcription queue, and no editing backlog.</AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'org-security',
+                question: 'Will this pass our security and legal review?',
+                answer: (
+                    <>
+                        <AnswerParagraph>Content is encrypted at rest and in transit, access is scoped per person and revocable, and every participant consents to what is recorded and who can see it. We never train AI models on your content and never share it with third parties &mdash; contractually, not just as a policy statement.</AnswerParagraph>
+                        <AnswerParagraph>We provide a data processing agreement, a subprocessor list, data-flow documentation and encryption standards for review, and we answer security questionnaires within 24 hours. In clinical settings we also provide a business associate agreement.</AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'org-pricing',
+                question: 'How is an organization program priced?',
+                answer: (
+                    <>
+                        <AnswerParagraph>Per program, quoted after a 30-minute call. Three things move the number: how many people you want interviewed, whether you want printed volumes and how many, and whether we facilitate the flagship sessions ourselves.</AnswerParagraph>
+                        <AnswerParagraph>What does not move the number: how many colleagues read the archive, how much you record, or how long you keep it. There is no per-viewer licensing and no storage metering. <Bold>See <Link to="/pricing">pricing</Link>.</Bold></AnswerParagraph>
+                    </>
+                ),
+            },
+            {
+                id: 'org-ownership',
+                question: 'What happens to the archive if we stop working with you?',
+                answer: (
+                    <>
+                        <AnswerParagraph>You keep everything. A full export of audio, transcripts, media and metadata is available on request within 48 hours, in open formats, whether or not you are still a customer.</AnswerParagraph>
+                        <AnswerParagraph>We do not delete archives on lapse and we do not hold anyone's history hostage to a renewal. That is a deliberate design decision, not a concession.</AnswerParagraph>
+                    </>
+                ),
+            }
+        ]
     }
 ];
+
+/* Every question on the page, flattened for the FAQPage rich result. */
+const schemaEntries = faqGroups.flatMap((group) =>
+    group.items.map((item) => ({ q: item.question, a: nodeToText(item.answer) }))
+);
 
 const Faq = () => {
     const [openId, setOpenId] = useState<string | null>(null);
@@ -211,10 +343,23 @@ const Faq = () => {
 
     return (
         <>
+            <Seo
+                title="Frequently asked questions — A Story"
+                description="What it costs, whether it works for someone who hates technology, who owns the stories, and what organizations and care communities can expect."
+                path="/faq"
+                schema={[
+                    organizationSchema(),
+                    breadcrumbSchema([
+                        { name: 'Home', path: '/' },
+                        { name: 'FAQ', path: '/faq' },
+                    ]),
+                    faqSchema(schemaEntries),
+                ]}
+            />
             <FaqHero>
                 <Container>
                     <Label>Questions &amp; answers</Label>
-                    <HeroTitle>Everything you want to know about A Story.</HeroTitle>
+                    <HeroTitle>Everything you want to know before you give it.</HeroTitle>
                     <HeroSub>
                         Can't find your answer here? Email us at <br />
                         <LegalLink href="mailto:contact@astoryapp.com">contact@astoryapp.com</LegalLink> &mdash; we respond to every message.

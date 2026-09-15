@@ -1,15 +1,31 @@
-import {InstitutionContainer, CardView, Label, GoldLabel, SectionTitle, WideSectionTitle, NarrowSectionTitle, Paragraph, SmallNote, Italic, PrimaryButton, HeroSection, HeroTitle, HeroSub, HeroLabel, HeroButtons, TrustBarSection, TrustBarInner, TrustList, TrustItem, EvidenceSection, EvidenceLayout, EvidenceStats, EvidenceStat, StatNum, StatText, QuoteSection, QuoteCardView, DarkQuoteText, DarkQuoteCite, LightQuoteText, LightQuoteCite, UseCasesSection, IntroText, WideIntroText, UseCasesGrid, UseCaseCard, UseCaseIcon, CardTitle, OpenAllSection, OpenAllGrid, OpenAllItem, OpenAllTitle, OpenAllText, CenteredCta, ImplementationSection, ImplGrid, ImplGridSpaced, ImplStep, ImplStepNum, ComplianceSection, ComplianceTitle, ComplianceSub, ComplianceGrid, ComplianceItem, ComplianceItemTitle, ComplianceItemText, TestimonialSection, CtaSection, CtaTitle, CtaSub, CtaActions, PrivacyButton} from './institution.styles';
+import { Link } from 'react-router-dom';
+import Seo from './ui/Seo';
+import { breadcrumbSchema, organizationSchema } from '../lib/seo';
+import {InstitutionContainer, CardView, Label, GoldLabel, SectionTitle, WideSectionTitle, NarrowSectionTitle, Paragraph, SmallNote, Italic, ItalicAccent, PrimaryButton, HeroSection, HeroTitle, HeroSub, HeroLabel, HeroButtons, TrustBarSection, TrustBarInner, TrustList, TrustItem, EvidenceSection, EvidenceLayout, EvidenceStats, EvidenceStat, StatNum, StatText, QuoteSection, QuoteCardView, DarkQuoteText, DarkQuoteCite, LightQuoteText, LightQuoteCite, UseCasesSection, IntroText, WideIntroText, UseCasesGrid, UseCaseCard, UseCaseIcon, CardTitle, OpenAllSection, OpenAllGrid, OpenAllItem, OpenAllTitle, OpenAllText, CenteredCta, ImplementationSection, ImplGrid, ImplGridSpaced, ImplStep, ImplStepNum, ComplianceSection, ComplianceTitle, ComplianceSub, ComplianceGrid, ComplianceItem, ComplianceItemTitle, ComplianceItemText, TestimonialSection, CtaSection, CtaTitle, CtaSub, CtaActions, PrivacyButton} from './institution.styles';
+import { DEMO_HREF } from '../lib/checkout';
 
 const Institution = () => {
     return (
         <InstitutionContainer>
+            <Seo
+                title="A Story for care communities — reminiscence at scale"
+                description="Life review for senior living, memory care and hospice. Low burden for staff, HIPAA-aligned handling, and live in your community within a week."
+                path="/institution"
+                schema={[
+                    organizationSchema(),
+                    breadcrumbSchema([
+                        { name: 'Home', path: '/' },
+                        { name: 'For care communities', path: '/institution' },
+                    ]),
+                ]}
+            />
             <HeroSection>
                 <CardView>
                     <HeroLabel>For care institutions</HeroLabel>
                     <HeroTitle>Every resident has a life worth knowing.<br /><Italic>A Story helps you learn it.</Italic></HeroTitle>
                     <HeroSub>For nursing homes, assisted living communities, memory care units, and hospitals that believe great care starts with knowing the whole person &mdash; not just the diagnosis.</HeroSub>
                     <HeroButtons>
-                        <PrimaryButton to="/signup">Book an institutional demo</PrimaryButton>
+                        <PrimaryButton to={DEMO_HREF}>Book an institutional demo</PrimaryButton>
                     </HeroButtons>
                 </CardView>
             </HeroSection>
@@ -30,7 +46,7 @@ const Institution = () => {
                     <EvidenceLayout>
                         <div>
                             <Label>The research is clear</Label>
-                            <SectionTitle>Reminiscence therapy works.<br /><Italic>A Story makes it beautiful.</Italic></SectionTitle>
+                            <SectionTitle>Reminiscence therapy works.<br /><ItalicAccent>A Story makes it beautiful.</ItalicAccent></SectionTitle>
                             <Paragraph>For decades, care researchers have documented the power of structured life review &mdash; sessions that invite older adults to revisit and share their personal histories. The benefits are measurable, well-replicated, and profound.</Paragraph>
                             <Paragraph>Reminiscence therapy reduces depression and anxiety, strengthens sense of identity and self-worth, improves engagement in care settings, and &mdash; particularly in memory care &mdash; activates autobiographical memory networks that are often preserved even in late-stage cognitive decline.</Paragraph>
                             <Paragraph>The challenge has always been scale. Life-review programs take trained staff, dedicated time, and careful facilitation. Most facilities can offer them to a fraction of the people who would benefit.</Paragraph>
@@ -153,6 +169,10 @@ const Institution = () => {
                     <WideIntroText>
                         We built A Story with care institutions in mind &mdash; but the need to preserve a person's story doesn't belong to any single setting. If you're working with people whose lives deserve to be kept, we'd love to explore what's possible together. Reach out. We respond to every message.
                     </WideIntroText>
+                    <WideIntroText>
+                        Preserving the history of the organization itself &mdash; founders, long-tenured staff, a milestone anniversary &mdash; is its own program.{' '}
+                        <Link to="/organizations">See A Story for Organizations &rarr;</Link>
+                    </WideIntroText>
 
                     <OpenAllGrid>
                         <OpenAllItem>
@@ -182,7 +202,7 @@ const Institution = () => {
                     </OpenAllGrid>
 
                     <CenteredCta>
-                        <PrimaryButton to="/experience">Start a conversation</PrimaryButton>
+                        <PrimaryButton to={DEMO_HREF}>Start a conversation</PrimaryButton>
                     </CenteredCta>
                 </CardView>
             </OpenAllSection>
@@ -204,7 +224,7 @@ const Institution = () => {
                         <ImplStep>
                             <ImplStepNum>2</ImplStepNum>
                             <CardTitle>Residents begin at their own pace</CardTitle>
-                            <Paragraph>A Story works on any tablet or smartphone &mdash; no download required, no account setup for the resident. A team member introduces the app during a visit or recreation session. The first question takes sixty seconds to reach. After that, the AI handles everything.</Paragraph>
+                            <Paragraph>A team member sets A Story up once on a tablet or phone &mdash; there is nothing for the resident to install, learn or sign into. After that A Story calls, and the resident answers and talks. The first question takes sixty seconds to reach, and the AI handles everything from there.</Paragraph>
                         </ImplStep>
                         <ImplStep>
                             <ImplStepNum>3</ImplStepNum>
@@ -291,7 +311,7 @@ const Institution = () => {
                         A 30-minute walk-through with your care team &mdash; no commitment required. We'll show you the resident and family experience end to end, and answer every question you have. Most programs are live within a week.
                     </CtaSub>
                     <CtaActions>
-                        <PrimaryButton to="/signup">Book an institutional demo</PrimaryButton>
+                        <PrimaryButton to={DEMO_HREF}>Book an institutional demo</PrimaryButton>
                         <PrivacyButton to="/privacy">Our privacy commitments</PrivacyButton>
                     </CtaActions>
                 </CardView>

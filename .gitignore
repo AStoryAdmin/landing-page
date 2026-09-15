@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local environment — never commit real keys
+.env
+.env.*
+!.env.example
+
+# Screenshot output from scripts/shoot.mjs
+shots/
+
+# The session handoff prompt, not project documentation.
+HANDOFF.md

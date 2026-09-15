@@ -1,207 +1,341 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { color, font, layout, media, motion, radius, shadow, space, tracking, type, weight } from '../styles/theme';
 
-const colors = {
-  darkBrown: '#2B2117',
-  orange: '#b45a2b',
-  cream: '#EFE6D4',
-  whiteGray: '#5e544a',
-};
+export const NavShell = styled.header<{ $solid: boolean }>`
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 100;
+    transition: background ${motion.base}, box-shadow ${motion.base}, backdrop-filter ${motion.base};
 
-const fonts = {
-    body: "'Figtree', sans-serif",
-    display: "'Cormorant Garamond', serif",
-};
-
-const breakpoint = '860px';
-
-export const NavContainer = styled.nav`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  box-sizing: border-box;
-  z-index: 99;
-  padding: 21px 48px;
-  display: flex;
-  align-items: center;
-  transition: all 0.4s ease-in-out;
-  background-color: ${colors.cream};
-  box-shadow: 0px 1px 10px 1px ${colors.whiteGray};
-  user-select: none;
-
-  @media (max-width: ${breakpoint}) {
-    padding: 16px 24px;
-  }
+    ${({ $solid }) =>
+        $solid
+            ? css`
+                  background: rgba(250, 245, 236, 0.92);
+                  backdrop-filter: saturate(160%) blur(14px);
+                  box-shadow: ${shadow.nav};
+              `
+            : css`
+                  background: transparent;
+                  box-shadow: none;
+              `}
 `;
 
-export const NavLogo = styled(Link)`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-right: auto;
-  font-family: ${fonts.display};
-  font-size: 25px;
-  font-weight: 600;
-  color: ${colors.darkBrown};
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-  text-decoration: none;
-
-  img {
-    width: 34px;
-    height: 34px;
-    object-fit: contain;
-  }
+export const NavInner = styled.nav`
+    max-width: ${layout.maxWidthWide};
+    margin-inline: auto;
+    min-height: ${layout.navHeight};
+    padding: 12px ${space.gutter};
+    display: flex;
+    align-items: center;
+    gap: ${space.lg};
 `;
+
+export const NavSpacer = styled.div`
+    margin-left: auto;
+`;
+
+/* ── Desktop links ────────────────────────────────────────────────────── */
 
 export const NavLinks = styled.div<{ $open: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 
-  @media (max-width: ${breakpoint}) {
-    display: ${({ $open }) => ($open ? 'flex' : 'none')};
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    box-sizing: border-box;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    margin-right: 0;
-    padding: 8px 0 20px;
-    background: ${colors.cream};
-    border-bottom: 1px solid rgba(43, 33, 23, 0.1);
-    box-shadow: 0px 8px 16px rgba(43, 33, 23, 0.08);
-  }
+    ${media.md} {
+        display: ${({ $open }) => ($open ? 'flex' : 'none')};
+        position: fixed;
+        top: var(--nav-total, ${layout.navHeight});
+        left: 0;
+        right: 0;
+        bottom: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: ${space.md} ${space.gutter} 40px;
+        background: ${color.paper};
+        border-top: 1px solid ${color.primaryLine};
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
 `;
 
-export const NavLink = styled(Link)`
-  font-family: ${fonts.body};
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 2px;
-  color: ${colors.whiteGray};
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.3s ease;
-  text-decoration: none;
+const navItem = css`
+    font-family: ${font.body};
+    font-size: ${type.sm};
+    font-weight: ${weight.medium};
+    letter-spacing: 0.01em;
+    color: ${color.body};
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: ${radius.pill};
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color ${motion.fast}, background ${motion.fast};
+    white-space: nowrap;
 
-  &:hover {
-    color: ${colors.orange};
-  }
+    &:hover { color: ${color.primary}; background: rgba(15, 74, 88, 0.06); }
 
-  &:focus {
-    text-underline-offset: 8px;
-    text-decoration: underline ${colors.orange} 1.5px;
-  }
+    ${media.md} {
+        width: 100%;
+        justify-content: space-between;
+        padding: 16px 4px;
+        font-size: 1.0625rem;
+        border-radius: 0;
+        border-bottom: 1px solid ${color.primaryLine};
+        &:hover { background: none; }
+    }
+`;
 
-  @media (max-width: ${breakpoint}) {
-    display: block;
-    padding: 14px 24px;
-    font-size: 16px;
-  }
+export const NavLink = styled(Link)<{ $active?: boolean }>`
+    ${navItem};
+    color: ${({ $active }) => ($active ? color.primary : color.body)};
+    font-weight: ${({ $active }) => ($active ? weight.semibold : weight.medium)};
+`;
+
+export const NavButton = styled.button<{ $open?: boolean }>`
+    ${navItem};
+
+    svg {
+        transition: transform ${motion.fast};
+        transform: rotate(${({ $open }) => ($open ? '180deg' : '0deg')});
+    }
+`;
+
+/* ── Dropdown ─────────────────────────────────────────────────────────── */
+
+export const NavGroup = styled.div`
+    position: relative;
+
+    ${media.md} {
+        width: 100%;
+    }
+`;
+
+export const Dropdown = styled.div<{ $open: boolean }>`
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(${({ $open }) => ($open ? '0' : '-6px')});
+    width: 340px;
+    padding: 10px;
+    background: ${color.paperPure};
+    border: 1px solid ${color.primaryLine};
+    border-radius: ${radius.lg};
+    box-shadow: ${shadow.lg};
+    opacity: ${({ $open }) => ($open ? 1 : 0)};
+    visibility: ${({ $open }) => ($open ? 'visible' : 'hidden')};
+    transition: opacity ${motion.fast}, transform ${motion.fast}, visibility ${motion.fast};
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    ${media.md} {
+        position: static;
+        transform: none;
+        width: 100%;
+        opacity: 1;
+        visibility: visible;
+        display: ${({ $open }) => ($open ? 'flex' : 'none')};
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        padding: 4px 0 12px;
+        border-bottom: 1px solid ${color.primaryLine};
+    }
+`;
+
+export const DropdownItem = styled(Link)`
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 12px 14px;
+    border-radius: ${radius.md};
+    text-decoration: none;
+    transition: background ${motion.fast};
+
+    strong {
+        font-family: ${font.body};
+        font-size: ${type.sm};
+        font-weight: ${weight.semibold};
+        color: ${color.ink};
+    }
+
+    span {
+        font-size: ${type.caption};
+        line-height: 1.45;
+        color: ${color.faint};
+    }
+
+    &:hover {
+        background: ${color.primaryWash};
+        strong { color: ${color.primary}; }
+    }
+`;
+
+/* ── Actions ──────────────────────────────────────────────────────────── */
+
+export const NavActions = styled.div`
+    display: flex;
+    align-items: center;
+    gap: ${space.xs};
+    margin-left: ${space.sm};
+
+    ${media.md} {
+        display: none;
+    }
+`;
+
+export const NavGhost = styled(Link)`
+    font-family: ${font.body};
+    font-size: ${type.sm};
+    font-weight: ${weight.semibold};
+    color: ${color.primary};
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: ${radius.pill};
+    white-space: nowrap;
+    transition: background ${motion.fast};
+    &:hover { background: rgba(15, 74, 88, 0.08); }
+
+    ${media.lg} {
+        display: none;
+    }
 `;
 
 export const NavCta = styled(Link)`
-  font-family: ${fonts.body};
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  color: ${colors.cream};
-  border: 1px solid ${colors.darkBrown};
-  padding: 8px 20px;
-  border-radius: 25px;
-  cursor: pointer;
-  background: ${colors.darkBrown};
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
+    font-family: ${font.body};
+    font-size: ${type.sm};
+    font-weight: ${weight.semibold};
+    letter-spacing: 0.02em;
+    color: ${color.paperPure};
+    background: ${color.accent};
+    border: 1.5px solid ${color.accent};
+    padding: 11px 22px;
+    border-radius: ${radius.pill};
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: ${shadow.sm};
+    transition: background ${motion.base}, border-color ${motion.base}, transform ${motion.fast};
 
-  &:hover {
-    background: ${colors.orange};
-    border-color: ${colors.orange};
-  }
+    &:hover {
+        background: ${color.accentHover};
+        border-color: ${color.accentHover};
+        transform: translateY(-1px);
+    }
+`;
 
-  @media (max-width: ${breakpoint}) {
+/** The same pill as NavCta, for the mailto conversion links. */
+export const NavCtaAnchor = styled.a`
+    font-family: ${font.body};
+    font-size: ${type.sm};
+    font-weight: ${weight.semibold};
+    letter-spacing: 0.02em;
+    color: ${color.paperPure};
+    background: ${color.accent};
+    border: 1.5px solid ${color.accent};
+    padding: 11px 22px;
+    border-radius: ${radius.pill};
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: ${shadow.sm};
+    transition: background ${motion.base}, border-color ${motion.base}, transform ${motion.fast};
+
+    &:hover {
+        background: ${color.accentHover};
+        border-color: ${color.accentHover};
+        transform: translateY(-1px);
+    }
+`;
+
+export const MobileActions = styled.div`
     display: none;
-  }
+
+    ${media.md} {
+        display: flex;
+        flex-direction: column;
+        gap: ${space.sm};
+        padding-top: ${space.lg};
+
+        a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 52px;
+        }
+    }
 `;
 
-export const NavMobileCtaItem = styled.div`
-  display: none;
+export const Hamburger = styled.button<{ $open: boolean }>`
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    margin-left: ${space.xs};
+    border: none;
+    background: none;
+    border-radius: ${radius.md};
+    cursor: pointer;
+    flex-shrink: 0;
 
-  @media (max-width: ${breakpoint}) {
-    display: block;
-    padding: 8px 24px 4px;
-  }
+    &:hover { background: rgba(15, 74, 88, 0.08); }
+
+    span {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: ${color.primary};
+        border-radius: 2px;
+        transition: transform ${motion.fast}, opacity ${motion.fast};
+    }
+
+    span:nth-child(1) { transform: ${({ $open }) => ($open ? 'translateY(7px) rotate(45deg)' : 'none')}; }
+    span:nth-child(2) { opacity: ${({ $open }) => ($open ? 0 : 1)}; }
+    span:nth-child(3) { transform: ${({ $open }) => ($open ? 'translateY(-7px) rotate(-45deg)' : 'none')}; }
+
+    ${media.md} {
+        display: flex;
+    }
 `;
 
-export const NavMobileCta = styled(Link)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: ${fonts.body};
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  color: ${colors.cream};
-  background: ${colors.darkBrown};
-  border-radius: 25px;
-  padding: 14px 20px;
-  min-height: 48px;
-  text-decoration: none;
-  transition: background 0.3s ease;
+/* ── Announcement strip ───────────────────────────────────────────────── */
 
-  &:hover {
-    background: ${colors.orange};
-  }
-`;
-
-export const NavHamburger = styled.button<{ $open: boolean }>`
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  padding: 8px;
-  margin-left: 12px;
-  border: none;
-  background: none;
-  border-radius: 6px;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: background 0.3s ease;
-
-  &:hover {
-    background: rgba(43, 33, 23, 0.08);
-  }
-
-  span {
-    display: block;
-    width: 20px;
-    height: 2px;
-    background: ${colors.darkBrown};
-    border-radius: 1px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-  }
-
-  span:nth-child(1) {
-    transform: ${({ $open }) => ($open ? 'translateY(7px) rotate(45deg)' : 'none')};
-  }
-  span:nth-child(2) {
-    opacity: ${({ $open }) => ($open ? 0 : 1)};
-  }
-  span:nth-child(3) {
-    transform: ${({ $open }) => ($open ? 'translateY(-7px) rotate(-45deg)' : 'none')};
-  }
-
-  @media (max-width: ${breakpoint}) {
+export const Announce = styled.div`
+    background: ${color.primaryDeep};
+    color: ${color.onDarkMuted};
+    font-family: ${font.body};
+    font-size: ${type.caption};
+    letter-spacing: ${tracking.wide};
+    padding: 9px ${space.gutter};
     display: flex;
-  }
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 4px 10px;
+
+    /* Keeps the count from breaking mid-phrase on a narrow screen. */
+    strong { font-weight: ${weight.semibold}; white-space: nowrap; }
+
+    a {
+        color: ${color.goldText};
+        text-decoration: none;
+        font-weight: ${weight.semibold};
+        border-bottom: 1px solid rgba(224, 160, 63, 0.4);
+        white-space: nowrap;
+        &:hover { border-color: ${color.gold}; }
+    }
+
+    ${media.sm} {
+        font-size: 0.6875rem;
+        padding: 8px 16px;
+        letter-spacing: 0.02em;
+    }
 `;
