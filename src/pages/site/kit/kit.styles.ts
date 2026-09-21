@@ -27,12 +27,57 @@ export type Ground = "ivory" | "paper" | "night" | "teal" | "sand";
  * size). `label` colours small text — eyebrows, tags — and must reach 4.5:1,
  * which the exact terracotta and warm gold do not on these grounds.
  */
-export const grounds: Record<Ground, { bg: string; ink: string; muted: string; line: string; mark: string; label: string }> = {
-  ivory: { bg: color.ivory, ink: color.primary, muted: color.bodyMuted, line: color.primaryLineStrong, mark: color.accent, label: color.accentText },
-  paper: { bg: color.paperPure, ink: color.primary, muted: color.bodyMuted, line: color.primaryLineStrong, mark: color.accent, label: color.accentText },
-  sand: { bg: color.ivoryDeep, ink: color.primary, muted: color.bodyMuted, line: color.primaryLineStrong, mark: color.accentText, label: color.accentText },
-  night: { bg: color.night, ink: color.ivory, muted: color.onDarkMuted, line: color.nightLine, mark: color.gold, label: color.gold },
-  teal: { bg: color.teal, ink: color.ivory, muted: color.onDarkMuted, line: color.onDarkLine, mark: color.warmGold, label: color.gold },
+export const grounds: Record<
+  Ground,
+  {
+    bg: string;
+    ink: string;
+    muted: string;
+    line: string;
+    mark: string;
+    label: string;
+  }
+> = {
+  ivory: {
+    bg: color.ivory,
+    ink: color.primary,
+    muted: color.bodyMuted,
+    line: color.primaryLineStrong,
+    mark: color.accent,
+    label: color.accentText,
+  },
+  paper: {
+    bg: color.paperPure,
+    ink: color.primary,
+    muted: color.bodyMuted,
+    line: color.primaryLineStrong,
+    mark: color.accent,
+    label: color.accentText,
+  },
+  sand: {
+    bg: color.ivoryDeep,
+    ink: color.primary,
+    muted: color.bodyMuted,
+    line: color.primaryLineStrong,
+    mark: color.accentText,
+    label: color.accentText,
+  },
+  night: {
+    bg: color.night,
+    ink: color.ivory,
+    muted: color.onDarkMuted,
+    line: color.nightLine,
+    mark: color.gold,
+    label: color.gold,
+  },
+  teal: {
+    bg: color.teal,
+    ink: color.ivory,
+    muted: color.onDarkMuted,
+    line: color.onDarkLine,
+    mark: color.warmGold,
+    label: color.gold,
+  },
 };
 
 /** Wide enough for large type to be large; the reading measure is set per block. */
@@ -98,8 +143,10 @@ const serif = css`
   color: var(--ink, ${color.primary});
   letter-spacing: -0.022em;
   text-wrap: balance;
+  /* The keyword, set like the app's mission screens: upright, a weight heavier. */
   em {
     font-style: normal;
+    font-weight: 500;
     color: var(--mark, ${color.accent});
   }
   i {
@@ -184,7 +231,9 @@ const actionBase = css`
   letter-spacing: 0.01em;
   text-decoration: none;
   cursor: pointer;
-  transition: color ${motion.reveal}, border-color ${motion.reveal};
+  transition:
+    color ${motion.reveal},
+    border-color ${motion.reveal};
   &::before {
     content: "";
     position: absolute;

@@ -7,18 +7,19 @@ import Hero from "./home/Hero";
 import WhatGetsLost from "./home/WhatGetsLost";
 import ThreeCalls from "./home/ThreeCalls";
 import EveryVoice from "./home/EveryVoice";
-import StillHappening from "./home/StillHappening";
-import TheBook from "./home/TheBook";
+import FamilyBook from "./home/FamilyBook";
 import StepOne from "./home/StepOne";
+import WhereWeSit from "./home/WhereWeSit";
 
 /**
  * Pass 11. The homepage carries the whole idea once, in the order a visitor
- * needs it: the loss (what gets lost), the proof (three calls — good
- * listening changes the next question), the claim nobody else can copy
- * (everyone who was in the room), the difference (today is part of it), the
- * object that is not an ending (the book), and the one practical answer a
- * buyer needs (you do step one). Mechanics in depth belong to How it works;
- * the FAQ belongs to Questions.
+ * needs it: the loss (what gets lost), the proof (three calls in the app —
+ * good listening changes the next question), the claim nobody else can copy
+ * (one memory, everyone's version), the difference and the object together
+ * (one family's archive as a book you can turn, with a page left for today),
+ * the one practical answer a buyer needs (you do step one), and where A
+ * Story sits among the products a family might compare it with. Mechanics
+ * in depth belong to How it works; the FAQ belongs to Questions.
  */
 export default function Home() {
   // Pinned scenes measure the page; re-measure once fonts and images land.
@@ -35,9 +36,9 @@ export default function Home() {
       <WhatGetsLost />
       <ThreeCalls />
       <EveryVoice />
-      <StillHappening />
-      <TheBook />
+      <FamilyBook />
       <StepOne />
+      <WhereWeSit />
       <Invitation />
     </>
   );

@@ -61,9 +61,20 @@ const Rows = styled(Chapter)`
 
 const ROMAN = ["I", "II", "III", "IV", "V"];
 
-export type Situation = { eyebrow: string; title: ReactNode; body: ReactNode; id?: string };
+export type Situation = {
+  eyebrow: string;
+  title: ReactNode;
+  body: ReactNode;
+  id?: string;
+};
 
-export function Situations({ items, ground = "ivory" }: { items: Situation[]; ground?: Ground }) {
+export function Situations({
+  items,
+  ground = "ivory",
+}: {
+  items: Situation[];
+  ground?: Ground;
+}) {
   const ref = useReveals<HTMLElement>();
   return (
     <Rows ref={ref} $ground={ground} $tight aria-label="Situations">

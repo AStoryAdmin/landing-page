@@ -28,4 +28,3 @@ export function useReveals<T extends HTMLElement>() {
     );
   });
 }
-

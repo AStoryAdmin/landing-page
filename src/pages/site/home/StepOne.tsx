@@ -7,13 +7,25 @@
  * child deciding whether this becomes a project for them; three steps and
  * the price answer that faster than an accordion.
  *
- * Roman numerals in the serif are the page's one bookish flourish outside the
- * gold plate. Prices and the trial come from `pricing.ts`.
+ * Each step is shown in the app itself — the founder's real Figma screens
+ * (public/app): Home with the question of the day, the call arriving, and
+ * The Archive. The phones are large and run off the card ("zoomed in"), and
+ * the tall screens scroll slowly inside them. Roman numerals in the serif carry the bookish thread.
+ * Prices and the trial come from `pricing.ts`.
  */
 import styled from "styled-components";
 import { PLANS, TRIAL } from "../../../lib/pricing";
 import { ArrowIcon } from "../kit/kit";
-import { Actions, Eyebrow, Frame, PrimaryLink, SecondaryLink, Statement } from "../kit/kit.styles";
+import { AppShot, Phone } from "../app/Phone";
+import { IncomingScreen } from "../app/screens";
+import {
+  Actions,
+  Eyebrow,
+  Frame,
+  PrimaryLink,
+  SecondaryLink,
+  Statement,
+} from "../kit/kit.styles";
 import { gsap, riseLines, useScene } from "../../../lib/scrollMotion";
 import { color, display, font, media } from "../../../styles/theme";
 
@@ -63,7 +75,28 @@ const Scene = styled.section`
     border-top: 1px solid ${color.primaryLineStrong};
   }
   li {
-    padding: 32px clamp(20px, 3vw, 48px) 0 0;
+    padding: 40px clamp(20px, 3vw, 48px) 0 0;
+  }
+  /* Each step shown in the app itself, on a soft card, set down at a slight angle. */
+  .shot {
+    display: grid;
+    place-items: center;
+    margin-bottom: 36px;
+    padding: 36px 0 0;
+    border-radius: 6px;
+    background: radial-gradient(
+      ellipse at 50% 100%,
+      color-mix(in srgb, ${color.gold} 26%, ${color.ivory}),
+      transparent 70%
+    );
+    overflow: hidden;
+    height: clamp(420px, 40vw, 580px);
+    padding-inline: 4%;
+    /* Zoomed in: the phone runs off the bottom of the card, so the screen reads large. */
+    mask-image: linear-gradient(#000 82%, transparent);
+  }
+  .shot > * {
+    align-self: start;
   }
   li + li {
     padding-left: clamp(20px, 3vw, 48px);
@@ -88,7 +121,7 @@ const Scene = styled.section`
     color: ${color.primary};
     margin-bottom: 12px;
   }
-  li p {
+  li > p {
     font: 400 17px/1.6 ${font.body};
     color: ${color.body};
     max-width: 34ch;
@@ -154,6 +187,18 @@ export default function StepOne() {
         <ol>
           {STEPS.map((s) => (
             <li key={s.n}>
+              <div className="shot">
+                <Phone width="min(380px, 100%)" lightStatus={s.n !== "III"}>
+                  {s.n === "I" && <AppShot name="home" />}
+                  {s.n === "II" && (
+                    <IncomingScreen
+                      when="Tuesday, 10:00"
+                      question="What did the garage smell like when you were fixing things?"
+                    />
+                  )}
+                  {s.n === "III" && <AppShot name="archive" scroll />}
+                </Phone>
+              </div>
               <p className="n">
                 <span aria-hidden="true">{s.n}</span>
                 <small>{s.who}</small>
@@ -166,7 +211,8 @@ export default function StepOne() {
         <div className="terms">
           <p>
             {TRIAL.headline}, then free for as long as you like. Guided calls
-            from <em>{individual.price}</em> {individual.period.replace("per ", "a ")}.
+            from <em>{individual.price}</em>{" "}
+            {individual.period.replace("per ", "a ")}.
           </p>
           <Actions>
             <PrimaryLink to="/start">

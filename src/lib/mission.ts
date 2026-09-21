@@ -1,5 +1,15 @@
 // Dimensions derive from the immutable canonical masters.
 export const mission: Record<string, { width: number; height: number }> = {
+    H01: { width: 1122, height: 1402 },
+    H02: { width: 1536, height: 1024 },
+    H03: { width: 1536, height: 1024 },
+    H04: { width: 1448, height: 1086 },
+    F01: { width: 1536, height: 1024 },
+    F02: { width: 1122, height: 1402 },
+    F03: { width: 1122, height: 1402 },
+    F04: { width: 1122, height: 1402 },
+    F05: { width: 1122, height: 1402 },
+    F06: { width: 1122, height: 1402 },
     '10': {
         width: 1122,
         height: 1402,

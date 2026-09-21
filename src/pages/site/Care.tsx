@@ -35,11 +35,19 @@ export default function Care() {
             <PrimaryLink to="/start?intent=demo">
               Request a demonstration <ArrowIcon />
             </PrimaryLink>
-            <TextLink to="/guides/care-community-participation">Planning participation</TextLink>
+            <TextLink to="/guides/care-community-participation">
+              Planning participation
+            </TextLink>
           </>
         }
         media={
-          <Print id="31" alt="A portrait of a woman, 1958" tilt={-1} sizes="(max-width: 860px) 80vw, 36vw" priority />
+          <Print
+            id="31"
+            alt="A portrait of a woman, 1958"
+            tilt={-1}
+            sizes="(max-width: 860px) 80vw, 36vw"
+            priority
+          />
         }
       />
 
@@ -68,9 +76,9 @@ export default function Care() {
             body: (
               <p>
                 Relatives recognise faces, remember names and bring their own
-                accounts. Their perspectives sit beside the resident’s words, each
-                person clearly attributed — so staff can know the life around the
-                record.
+                accounts. Their perspectives sit beside the resident’s words,
+                each person clearly attributed — so staff can know the life
+                around the record.
               </p>
             ),
           },
@@ -95,7 +103,14 @@ export default function Care() {
             “Who taught you to make it <em>that way?”</em>
           </>
         }
-        art={<Print id="05" alt="Hands working dough on a floured counter, 1960" tilt={1.2} sizes="(max-width: 860px) 80vw, 40vw" />}
+        art={
+          <Print
+            id="05"
+            alt="Hands working dough on a floured counter, 1960"
+            tilt={1.2}
+            sizes="(max-width: 860px) 80vw, 40vw"
+          />
+        }
       >
         <p>
           A familiar detail can be enough. Begin with a small program shaped

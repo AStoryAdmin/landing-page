@@ -30,6 +30,7 @@ export default function Footer() {
               <Link to="/how-it-works">How it works</Link>
               <Link to="/for-families">For families</Link>
               <Link to="/pricing">Pricing</Link>
+              <Link to="/compare">Compare</Link>
               <Link to="/start">Join the waitlist</Link>
             </div>
             <div>
@@ -52,7 +53,10 @@ export default function Footer() {
           </div>
         </div>
         <div className="gf-footer-bottom">
-          <p>© {new Date().getFullYear()} A Story · A story of you, by you, and yours</p>
+          <p>
+            © {new Date().getFullYear()} A Story · A story of you, by you, and
+            yours
+          </p>
           <details className="footer-about">
             <summary>About the examples</summary>
             <p>

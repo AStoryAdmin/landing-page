@@ -25,6 +25,10 @@
       "destination": "/pricing/index.html"
     },
     {
+      "source": "/compare",
+      "destination": "/compare/index.html"
+    },
+    {
       "source": "/our-story",
       "destination": "/our-story/index.html"
     },

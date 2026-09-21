@@ -15,10 +15,22 @@ import styled from "styled-components";
 import Seo from "../../components/ui/Seo";
 import NotFound from "./NotFound";
 import guides from "../../lib/guides.json";
-import { SITE, breadcrumbSchema, organizationSchema, websiteSchema } from "../../lib/seo";
+import {
+  SITE,
+  breadcrumbSchema,
+  organizationSchema,
+  websiteSchema,
+} from "../../lib/seo";
 import { ArrowIcon, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
-import { Chapter, Eyebrow, Frame, Plate, PrimaryLink, Title } from "./kit/kit.styles";
+import {
+  Chapter,
+  Eyebrow,
+  Frame,
+  Plate,
+  PrimaryLink,
+  Title,
+} from "./kit/kit.styles";
 import { color, display, font, media } from "../../styles/theme";
 
 /** Guides whose photograph carries the subject; the others read better without one. */
@@ -209,7 +221,12 @@ export default function Guide() {
     }
   };
   return (
-    <Article ref={ref} $ground="ivory" as="article" aria-labelledby="guide-title">
+    <Article
+      ref={ref}
+      $ground="ivory"
+      as="article"
+      aria-labelledby="guide-title"
+    >
       <Seo
         title={g.title + " | A Story"}
         path={path}
@@ -230,7 +247,11 @@ export default function Guide() {
             description: g.description,
             datePublished: g.date,
             dateModified: g.date,
-            author: { "@type": "Organization", name: g.author, url: SITE.url + "/our-story" },
+            author: {
+              "@type": "Organization",
+              name: g.author,
+              url: SITE.url + "/our-story",
+            },
             publisher: { "@id": SITE.url + "/#organization" },
             image: SITE.url + "/og/" + g.slug + ".jpg",
             mainEntityOfPage: url,
@@ -252,16 +273,27 @@ export default function Guide() {
           <span>
             By {g.author} ·{" "}
             <time dateTime={g.date}>
-              {new Date(g.date + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+              {new Date(g.date + "T12:00:00").toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
             </time>
           </span>
           <button onClick={copy}>Copy link</button>
-          {typeof navigator.share === "function" && <button onClick={share}>Share</button>}
+          {typeof navigator.share === "function" && (
+            <button onClick={share}>Share</button>
+          )}
           <span role="status">{notice}</span>
         </div>
         {PICTURED.includes(g.image) && (
           <div className="lead-image" data-rise>
-            <Print id={g.image} alt={g.alt} priority sizes="(max-width: 860px) 100vw, 980px" />
+            <Print
+              id={g.image}
+              alt={g.alt}
+              priority
+              sizes="(max-width: 860px) 100vw, 980px"
+            />
           </div>
         )}
 

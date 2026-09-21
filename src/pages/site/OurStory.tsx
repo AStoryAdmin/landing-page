@@ -22,7 +22,15 @@ import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { ArrowIcon, Invitation } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
-import { Chapter, Eyebrow, Frame, Plate, PrimaryLink, Title, onDarkActions } from "./kit/kit.styles";
+import {
+  Chapter,
+  Eyebrow,
+  Frame,
+  Plate,
+  PrimaryLink,
+  Title,
+  onDarkActions,
+} from "./kit/kit.styles";
 import { gsap, SplitText, useScene } from "../../lib/scrollMotion";
 import { color, display, font, media } from "../../styles/theme";
 
@@ -301,7 +309,12 @@ export default function OurStory() {
             color: color.ivory,
             ease: "none",
             stagger: 0.1,
-            scrollTrigger: { trigger: ".turn-body", start: "top 80%", end: "bottom 50%", scrub: true },
+            scrollTrigger: {
+              trigger: ".turn-body",
+              start: "top 80%",
+              end: "bottom 50%",
+              scrub: true,
+            },
           },
         ),
     });
@@ -376,18 +389,18 @@ export default function OurStory() {
                 <p>
                   I did not know how my grandparents met. I did not know what my
                   uncles had been afraid of, or proudest of, or what they would
-                  have done differently. I am a finance researcher — I have spent
-                  my adult life learning to read signal out of systems, on a
-                  track toward a PhD and a quiet career teaching it. I had never
-                  once turned that attention on the people who made mine.
+                  have done differently. I am a finance researcher — I have
+                  spent my adult life learning to read signal out of systems, on
+                  a track toward a PhD and a quiet career teaching it. I had
+                  never once turned that attention on the people who made mine.
                 </p>
               </details>
             </div>
           </div>
           <Plate className="reflection" data-rise>
             <p>
-              There’s no model for that loss. No regression that tells you what a
-              story was worth. You just feel it — a door closing in a room you
+              There’s no model for that loss. No regression that tells you what
+              a story was worth. You just feel it — a door closing in a room you
               didn’t know you needed.
             </p>
           </Plate>
@@ -396,15 +409,17 @@ export default function OurStory() {
 
       <Turn ref={turn} $ground="night" aria-labelledby="turn-title">
         <Frame>
-          <Eyebrow style={{ justifyContent: "center" }}>Here is the part I had wrong</Eyebrow>
+          <Eyebrow style={{ justifyContent: "center" }}>
+            Here is the part I had wrong
+          </Eyebrow>
           <h2 id="turn-title">
             I had always assumed the deadline was death.
             <span className="isnt">It isn’t.</span>
           </h2>
           <p className="turn-body">
-            What I cannot get back is the version of them that could tell me about
-            1974 in their own words, unprompted, the way it used to come out at
-            the table when nobody was trying.
+            What I cannot get back is the version of them that could tell me
+            about 1974 in their own words, unprompted, the way it used to come
+            out at the table when nobody was trying.
           </p>
           <details>
             <summary>What changed the way I saw it</summary>
@@ -417,9 +432,15 @@ export default function OurStory() {
         </Frame>
       </Turn>
 
-      <Afternoon ref={afternoon} $ground="ivory" aria-labelledby="afternoon-title">
+      <Afternoon
+        ref={afternoon}
+        $ground="ivory"
+        aria-labelledby="afternoon-title"
+      >
         <Frame>
-          <Eyebrow style={{ justifyContent: "center" }}>My uncles are alive</Eyebrow>
+          <Eyebrow style={{ justifyContent: "center" }}>
+            My uncles are alive
+          </Eyebrow>
           <blockquote id="afternoon-title" data-lines>
             “I can call them this afternoon, <em>and I do.</em>”
           </blockquote>
@@ -430,28 +451,34 @@ export default function OurStory() {
         </Frame>
       </Afternoon>
 
-      <Resolution ref={resolution} $ground="teal" aria-labelledby="resolve-title">
+      <Resolution
+        ref={resolution}
+        $ground="teal"
+        aria-labelledby="resolve-title"
+      >
         <Frame className="resolve">
           <div>
             <Eyebrow>That is why A Story exists</Eyebrow>
             <h2 id="resolve-title" data-lines>
               Someone, finally, <em>to ask.</em>
             </h2>
-            <p data-rise>So I stopped waiting for someday and started building A Story.</p>
+            <p data-rise>
+              So I stopped waiting for someday and started building A Story.
+            </p>
             <details data-rise>
               <summary>From that realization to A Story</summary>
               <p>
                 The idea is simple because the need is simple: someone, finally,
                 to ask. Not a journalist. Not a therapist. A warm presence that
                 sits with the people you love and says: I have time. Tell me
-                everything. And then turns what they share into something a family
-                can keep — in their own voice, in their own words, arranged into
-                the shape of a life.
+                everything. And then turns what they share into something a
+                family can keep — in their own voice, in their own words,
+                arranged into the shape of a life.
               </p>
               <p>
-                It calls them. They answer the phone and talk. That is the entire
-                thing we ask of the person whose story it is, because every extra
-                step is a place where this quietly does not happen.
+                It calls them. They answer the phone and talk. That is the
+                entire thing we ask of the person whose story it is, because
+                every extra step is a place where this quietly does not happen.
               </p>
             </details>
             <PrimaryLink to="/how-it-works" data-rise>
@@ -460,7 +487,9 @@ export default function OurStory() {
           </div>
           <div className="card" data-rise>
             <small>One question. Room for an answer.</small>
-            <blockquote>“What is one thing you remember about home?”</blockquote>
+            <blockquote>
+              “What is one thing you remember about home?”
+            </blockquote>
             <p>
               The conversation begins here. The family archive keeps it going.
             </p>
@@ -480,15 +509,17 @@ export default function OurStory() {
               Finance researcher at Illinois. Built A Story after two strokes in
               one year took his uncles’ stories before they took anything else.
             </p>
-            <a href="https://www.linkedin.com/in/daniel-hoang-nguyen-65bb05224/">Daniel on LinkedIn ↗</a>
+            <a href="https://www.linkedin.com/in/daniel-hoang-nguyen-65bb05224/">
+              Daniel on LinkedIn ↗
+            </a>
           </article>
           <article data-rise>
             <h3>Bao Vo</h3>
             <p className="role">Co-founder &amp; COO</p>
             <p>
-              Engineer out of Michigan, with experience in semiconductor research
-              and healthcare. Leads how A Story is built, tested and brought into
-              people’s hands.
+              Engineer out of Michigan, with experience in semiconductor
+              research and healthcare. Leads how A Story is built, tested and
+              brought into people’s hands.
             </p>
             <a href="https://www.linkedin.com/in/gbaovo/">Bao on LinkedIn ↗</a>
           </article>

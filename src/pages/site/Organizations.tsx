@@ -34,7 +34,9 @@ export default function Organizations() {
             <PrimaryLink to="/start?intent=demo">
               Discuss a program <ArrowIcon />
             </PrimaryLink>
-            <TextLink to="/guides/knowledge-before-retirement">Questions worth asking</TextLink>
+            <TextLink to="/guides/knowledge-before-retirement">
+              Questions worth asking
+            </TextLink>
           </>
         }
       />
@@ -46,9 +48,9 @@ export default function Organizations() {
             title: "The decisions behind the official record.",
             body: (
               <p>
-                Put firsthand accounts beside documents and photographs. Keep who
-                said what, and when, so a future colleague can understand how the
-                institution became what it is.
+                Put firsthand accounts beside documents and photographs. Keep
+                who said what, and when, so a future colleague can understand
+                how the institution became what it is.
               </p>
             ),
           },
@@ -58,8 +60,8 @@ export default function Organizations() {
             body: (
               <p>
                 Make time for the stories behind the procedures. A thoughtful
-                conversation keeps the judgment, relationships and experience that
-                a list of responsibilities leaves out.
+                conversation keeps the judgment, relationships and experience
+                that a list of responsibilities leaves out.
               </p>
             ),
           },
@@ -69,8 +71,8 @@ export default function Organizations() {
             body: (
               <p>
                 Invite people from different years and roles. Their accounts sit
-                together, with names and dates attached. An anniversary volume can
-                draw from the archive without becoming the end of it.
+                together, with names and dates attached. An anniversary volume
+                can draw from the archive without becoming the end of it.
               </p>
             ),
           },

@@ -6,7 +6,12 @@ import { PrimaryLink, TextLink } from "./kit/kit.styles";
 export default function NotFound() {
   return (
     <>
-      <Seo title="Page not found — A Story" path="/404" description="This page could not be found." noindex />
+      <Seo
+        title="Page not found — A Story"
+        path="/404"
+        description="This page could not be found."
+        noindex
+      />
       <PageOpening
         eyebrow="Page not found"
         title={

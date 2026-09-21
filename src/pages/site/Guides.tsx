@@ -39,7 +39,9 @@ const Starters = styled(Chapter)`
     min-height: 260px;
     padding: clamp(24px, 2.4vw, 34px);
     background: ${color.paperPure};
-    box-shadow: 0 1px 1px rgba(42, 31, 24, 0.06), 0 18px 36px -26px rgba(42, 31, 24, 0.45);
+    box-shadow:
+      0 1px 1px rgba(42, 31, 24, 0.06),
+      0 18px 36px -26px rgba(42, 31, 24, 0.45);
   }
   .card small {
     font: 600 12px/1.3 ${font.body};
@@ -185,13 +187,18 @@ export default function Guides() {
         eyebrow="Conversation guides"
         title={
           <>
-            You don’t need a script for a life. You need a place to <em>begin.</em>
+            You don’t need a script for a life. You need a place to{" "}
+            <em>begin.</em>
           </>
         }
         lead="Four questions you could ask tonight, and short guides for the conversations that take more care."
       />
 
-      <Starters ref={starters} $ground="ivory" aria-label="Questions to begin with">
+      <Starters
+        ref={starters}
+        $ground="ivory"
+        aria-label="Questions to begin with"
+      >
         <Frame className="cards">
           {STARTERS.map(([topic, question]) => (
             <article className="card" key={topic} data-rise>
@@ -212,7 +219,12 @@ export default function Guides() {
             </Statement>
           </div>
           {guides.map((g) => (
-            <Link className="entry" key={g.slug} to={"/guides/" + g.slug} data-rise>
+            <Link
+              className="entry"
+              key={g.slug}
+              to={"/guides/" + g.slug}
+              data-rise
+            >
               <span className="cat">{g.category}</span>
               <div>
                 <h3>{g.title}</h3>

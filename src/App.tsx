@@ -43,6 +43,10 @@ const Pricing = lazyRoute(
   "/pricing",
   () => import("./pages/site/Pricing"),
 );
+const Compare = lazyRoute(
+  "/compare",
+  () => import("./pages/site/Compare"),
+);
 const Story = lazyRoute(
   "/our-story",
   () => import("./pages/site/OurStory"),
@@ -180,6 +184,7 @@ function App() {
           <Route path="/organizations" element={<Organizations />} />
           <Route path="/care-communities" element={<Institution />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/compare" element={<Compare />} />
           <Route path="/our-story" element={<Story />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />

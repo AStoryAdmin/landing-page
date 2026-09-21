@@ -60,6 +60,16 @@
     ]
   },
   {
+    "path": "/compare",
+    "name": "How A Story is different",
+    "og": "compare",
+    "photo": "S01",
+    "phrase": [
+      "Not a diary.",
+      "A documentary."
+    ]
+  },
+  {
     "path": "/our-story",
     "name": "Our story",
     "og": "our-story",

@@ -17,7 +17,12 @@ import styled from "styled-components";
 import { introReleased } from "./introSignal";
 import { ArrowIcon, Picture } from "../kit/kit";
 import { Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
-import { gsap, SplitText, useScene } from "../../../lib/scrollMotion";
+import {
+  gsap,
+  openMasks,
+  SplitText,
+  useScene,
+} from "../../../lib/scrollMotion";
 import { color, display, font, media } from "../../../styles/theme";
 
 const Scene = styled.section`
@@ -58,7 +63,11 @@ const Scene = styled.section`
         color-mix(in srgb, ${color.primary} 55%, transparent) 38%,
         transparent 68%
       ),
-      linear-gradient(to bottom, color-mix(in srgb, ${color.black} 50%, transparent), transparent 22%);
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, ${color.black} 50%, transparent),
+        transparent 22%
+      );
   }
 
   .hero-body {
@@ -96,52 +105,6 @@ const Scene = styled.section`
     margin-top: 30px;
   }
 
-  /* A slowly turning seal: the only thing on the first screen that moves on its own. */
-  .hero-seal {
-    width: 124px;
-    height: 124px;
-    position: relative;
-    display: grid;
-    place-items: center;
-    color: ${color.gold};
-    text-decoration: none;
-  }
-  .hero-seal svg {
-    position: absolute;
-    inset: 0;
-    animation: seal-turn 24s linear infinite;
-  }
-  .hero-seal text {
-    font: 500 10.5px ${font.body};
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    fill: currentColor;
-  }
-  .hero-seal i {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: 1px solid color-mix(in srgb, ${color.gold} 60%, transparent);
-    display: grid;
-    place-items: center;
-    font-style: normal;
-    transition: background 400ms, color 400ms;
-  }
-  .hero-seal:hover i {
-    background: ${color.gold};
-    color: ${color.primary};
-  }
-  @keyframes seal-turn {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  ${media.motion} {
-    .hero-seal svg {
-      animation: none;
-    }
-  }
-
   ${media.md} {
     min-height: max(100svh, 620px);
     .hero-photo img {
@@ -149,9 +112,6 @@ const Scene = styled.section`
     }
     .hero-row {
       grid-template-columns: minmax(0, 1fr);
-    }
-    .hero-seal {
-      display: none;
     }
     .hero-actions a:first-child {
       flex: 1 1 100%;
@@ -176,14 +136,16 @@ export default function Hero() {
       type: "lines",
       mask: "lines",
       autoSplit: true,
-      onSplit: (split) =>
-        (rise = gsap.from(split.lines, {
+      onSplit: (split) => {
+        openMasks(split.masks);
+        return (rise = gsap.from(split.lines, {
           yPercent: 110,
           duration: 1.3,
           ease: "expo.out",
           stagger: 0.1,
           paused: !released,
-        })),
+        }));
+      },
     });
     introReleased.then(() => {
       if (disposed) return;
@@ -191,20 +153,37 @@ export default function Hero() {
       rise?.play();
       entrance = gsap.context(() => {
         gsap.to(photo, { scale: 1, duration: 2.4, ease: "expo.out" });
-        gsap.to(rest, { opacity: 1, y: 0, duration: 1.2, ease: "expo.out", stagger: 0.08, delay: 0.45 });
+        gsap.to(rest, {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: "expo.out",
+          stagger: 0.08,
+          delay: 0.45,
+        });
       }, root);
     });
     // Leaving: the photograph drifts slower than the page, the words go first.
     gsap.to(".hero-photo img", {
       yPercent: 12,
       ease: "none",
-      scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: true },
+      scrollTrigger: {
+        trigger: root,
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+      },
     });
     gsap.to(".hero-body", {
       yPercent: -18,
       opacity: 0.2,
       ease: "none",
-      scrollTrigger: { trigger: root, start: "35% top", end: "bottom top", scrub: true },
+      scrollTrigger: {
+        trigger: root,
+        start: "35% top",
+        end: "bottom top",
+        scrub: true,
+      },
     });
     // Navigation can unmount the hero before the intro promise resolves.
     return () => {
@@ -241,19 +220,6 @@ export default function Hero() {
               <TextLink to="/#listen">Hear a conversation</TextLink>
             </div>
           </div>
-          <a className="hero-seal" href="#why-a-story" aria-label="Read on">
-            <svg viewBox="0 0 124 124" aria-hidden="true">
-              <defs>
-                <path id="seal-path" d="M62 62m-50 0a50 50 0 1 1 100 0a50 50 0 1 1-100 0" />
-              </defs>
-              <text>
-                <textPath href="#seal-path">
-                  Someone to ask · Somewhere to keep it ·
-                </textPath>
-              </text>
-            </svg>
-            <i aria-hidden="true">↓</i>
-          </a>
         </div>
       </Frame>
     </Scene>

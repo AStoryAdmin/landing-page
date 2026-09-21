@@ -2642,5 +2642,370 @@
       "Home / living volume"
     ],
     "cropMode": "Contain complete object. No recolor, new art, or fake 3D."
+  },
+  "H01": {
+    "id": "H01",
+    "canonicalName": "H01.png",
+    "source": "assets/mission-originals/H01.png",
+    "sourceStatus": "generated-master",
+    "sha256": "2e4319945841b9ea7fc43494bb8d070c83c49a7fd5861623a2b551250f796d6e",
+    "width": 1122,
+    "height": 1402,
+    "derivatives": [
+      {
+        "file": "/mission/H01-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "file": "/mission/H01-1200.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "file": "/mission/H01-1800.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "Natural proportions for prints; controlled object-fit crop for page openings and occasion cards.",
+    "focalRequirements": "Keep people and their interaction visible.",
+    "placement": [
+      "Home / What gets lost",
+      "Home / book 2019"
+    ],
+    "caption": "Mia and Sarah at the moonlit window",
+    "alt": "Mia and Sarah at the moonlit window",
+    "year": 2019,
+    "generationPrompt": "See docs/image-prompts.md and docs/image-generation.md for the scene brief and timeline adjustments.",
+    "provenance": "AI-generated fictional family illustration, created September 2026; not a customer photograph."
+  },
+  "H02": {
+    "id": "H02",
+    "canonicalName": "H02.png",
+    "source": "assets/mission-originals/H02.png",
+    "sourceStatus": "generated-master",
+    "sha256": "290c969a2bda19ff0961cf6e291af4710ecf4d656189a3d5d48cc1744f49d70b",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/H02-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/H02-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/H02-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for prints; controlled object-fit crop for page openings and occasion cards.",
+    "focalRequirements": "Keep people and their interaction visible.",
+    "placement": [
+      "Home / What gets lost",
+      "Home / book 1984"
+    ],
+    "caption": "Walt and Dan at the workbench",
+    "alt": "Walt and Dan at the workbench",
+    "year": 1984,
+    "generationPrompt": "See docs/image-prompts.md and docs/image-generation.md for the scene brief and timeline adjustments.",
+    "provenance": "AI-generated fictional family illustration, created September 2026; not a customer photograph."
+  },
+  "H03": {
+    "id": "H03",
+    "canonicalName": "H03.png",
+    "source": "assets/mission-originals/H03.png",
+    "sourceStatus": "generated-master",
+    "sha256": "707a481f6992836018927de7b448f519082222cfde09862dcf035df780c36b16",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/H03-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/H03-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/H03-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for prints; controlled object-fit crop for page openings and occasion cards.",
+    "focalRequirements": "Keep people and their interaction visible.",
+    "placement": [
+      "Home / What gets lost",
+      "Home / book 1998"
+    ],
+    "caption": "Dan and Sam after the canoe trip",
+    "alt": "Dan and Sam after the canoe trip",
+    "year": 1998,
+    "generationPrompt": "See docs/image-prompts.md and docs/image-generation.md for the scene brief and timeline adjustments.",
+    "provenance": "AI-generated fictional family illustration, created September 2026; not a customer photograph."
+  },
+  "H04": {
+    "id": "H04",
+    "canonicalName": "H04.png",
+    "source": "assets/mission-originals/H04.png",
+    "sourceStatus": "generated-master",
+    "sha256": "5040f09c46086e5d4f7c57690be6398c77ac95144f398f8f16f214159fdb9c78",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/H04-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/H04-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/H04-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for prints; controlled object-fit crop for page openings and occasion cards.",
+    "focalRequirements": "Keep people and their interaction visible.",
+    "placement": [
+      "Home / Every voice",
+      "Home / book 2024",
+      "How it works"
+    ],
+    "caption": "Walt telling the lake monster story",
+    "alt": "Walt telling the lake monster story",
+    "year": 2024,
+    "generationPrompt": "See docs/image-prompts.md and docs/image-generation.md for the scene brief and timeline adjustments.",
+    "provenance": "AI-generated fictional family illustration, created September 2026; not a customer photograph."
+  },
+  "F01": {
+    "id": "F01",
+    "canonicalName": "F01.png",
+    "source": "assets/mission-originals/F01.png",
+    "sourceStatus": "generated-master",
+    "sha256": "d4eb75d1f14b2d11c9edc62c1017fda3d92e3d28f7cabae351c3135ebe9413e5",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/F01-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/F01-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/F01-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for prints; controlled object-fit crop for page openings and occasion cards.",
+    "focalRequirements": "Keep people and their interaction visible.",
+    "placement": [
+      "For families / opening"
+    ],
+    "caption": "A grandmother unwrapping an A Story book beside her granddaughter",
+    "alt": "A grandmother unwrapping an A Story book beside her granddaughter",
+    "year": 2026,
+    "generationPrompt": "Precise correction to this photograph. The grandmother currently has THREE hands. Remove the entire raised hand and extra forearm covering her mouth. Reveal her natural delighted smiling mouth. Her ONLY TWO arms and ONLY TWO hands must be the ones holding the teal book: one hand gripping the viewer-left edge, one supporting the viewer-right lower edge. Each hand must connect to its own single forearm and shoulder, with no duplicated limbs. Preserve the grandfather and granddaughter, book, room, framing and light. On the book replace the placeholder words 'Family name' with 'Our family' and make the small brand 'A Story' visible near the bottom. Keep book photographs printed flat on the cover. No floating objects. This is a landscape 3:2 photo; change only this anatomy correction and those cover words.",
+    "provenance": "AI-generated present-day fictional family illustration, revised September 2026 using A Story product references; not a customer photograph."
+  },
+  "F02": {
+    "id": "F02",
+    "canonicalName": "F02.png",
+    "source": "assets/mission-originals/F02.png",
+    "sourceStatus": "generated-master",
+    "sha256": "aee48024d7d67958552b8816f8a3e26ae7cec13fcaa8b285328194307bd6970d",
+    "width": 1122,
+    "height": 1402,
+    "derivatives": [
+      {
+        "file": "/mission/F02-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "file": "/mission/F02-1200.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "file": "/mission/F02-1800.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "Natural proportions for prints; controlled object-fit crop for page openings and occasion cards.",
+    "focalRequirements": "Keep people and their interaction visible.",
+    "placement": [
+      "For families / birthday"
+    ],
+    "caption": "A grandson talking with his grandfather beside an A Story birthday gift",
+    "alt": "A grandson talking with his grandfather beside an A Story birthday gift",
+    "year": 2026,
+    "generationPrompt": "Use case: compositing. Edit image 1, the present-day 80th birthday kitchen photograph. Preserve both people, expressions, all existing hands and arms, the boy's phone, cake, warm light and vertical 4:5 frame. Place the A Story hardcover from reference image 2 lying flat on the table immediately to the left of the birthday cake, replacing the used plate there and shifting the mug if necessary. It is the grandfather's newly unwrapped birthday gift; put a small strip of tissue under it. The complete dark teal cloth cover and spine must be physically plausible, A5 to small A4 size, in correct perspective with contact shadows. Keep the recognizable cover title 'MOMENTS & MEMORIES', printed family-photo collage, and small 'A Story' branding. Change the placeholder 'Family name' to 'Our family'. The book should be clearly recognizable without dominating the candid conversation. Do not add any hands, people, floating cards or other books.",
+    "provenance": "AI-generated present-day fictional family illustration, revised September 2026 using A Story product references; not a customer photograph."
+  },
+  "F03": {
+    "id": "F03",
+    "canonicalName": "F03.png",
+    "source": "assets/mission-originals/F03.png",
+    "sourceStatus": "generated-master",
+    "sha256": "d33bfe2cdf544fad586ffdcfb3b50ac144af58a041c2611518cd9a88cb2edae6",
+    "width": 1122,
+    "height": 1402,
+    "derivatives": [
+      {
+        "file": "/mission/F03-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "file": "/mission/F03-1200.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "file": "/mission/F03-1800.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "Natural proportions for prints; controlled object-fit crop for page openings and occasion cards.",
+    "focalRequirements": "Keep people and their interaction visible.",
+    "placement": [
+      "For families / Parents Day"
+    ],
+    "caption": "A daughter capturing her mother’s story with the A Story app",
+    "alt": "A daughter capturing her mother’s story with the A Story app",
+    "year": 2026,
+    "generationPrompt": "Use case: precise-object-edit. Edit the first image, present-day mother and adult daughter talking on a park bench, vertical 4:5. Preserve identities, mother's two gesturing hands, daughter's hand supporting her chin, background and lighting. Change ONLY the daughter's other hand resting near her knee: make that existing hand gently hold ONE smartphone, screen facing diagonally upward and partly visible to camera, recording the conversation while she pays attention to her mother. Reference image 2 shows the A Story conversation interface to reproduce on that screen: warm ivory background, brown live-call pill with small gold dot, cream and yellow conversation bubbles and deep teal follow-up bubble, small A Story label. Keep the same visual layout in correct screen perspective; text is naturally tiny. The phone should look like an ordinary 6-inch device, lightly tilted, not a giant display or floating overlay. Both women have EXACTLY TWO arms and TWO hands each; replace the resting hand's pose, do not add a new limb. Faces and conversation remain primary.",
+    "provenance": "AI-generated present-day fictional family illustration, revised September 2026 using A Story product references; not a customer photograph."
+  },
+  "F04": {
+    "id": "F04",
+    "canonicalName": "F04.png",
+    "source": "assets/mission-originals/F04.png",
+    "sourceStatus": "generated-master",
+    "sha256": "b5b1637c06418c5eb2884803cd70989b2085602d9e632bd105314e496ee63085",
+    "width": 1122,
+    "height": 1402,
+    "derivatives": [
+      {
+        "file": "/mission/F04-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "file": "/mission/F04-1200.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "file": "/mission/F04-1800.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "Natural proportions for prints; controlled object-fit crop for page openings and occasion cards.",
+    "focalRequirements": "Keep people and their interaction visible.",
+    "placement": [
+      "For families / Grandparents Day"
+    ],
+    "caption": "A grandmother telling her grandchildren a story while A Story records on her phone",
+    "alt": "A grandmother telling her grandchildren a story while A Story records on her phone",
+    "year": 2026,
+    "generationPrompt": "Use case: precise-object-edit. In image 1, a present-day grandmother tells her two grandchildren a story on the sofa. Preserve the three people, identities, clothes, every existing arm and hand, gestures, expressions, room, daylight, and vertical 4:5 framing. Change ONLY the black face-down phone on grandmother's lap. Turn it face-up, screen awake, resting securely on her thigh at a slight natural tilt, with the A Story live conversation screen from reference image 2 visible at realistic small size: ivory background, brown live-call pill, gold indicator, cream/yellow conversation bubbles and teal follow-up bubble. Keep the screen layout faithful to the reference and fit within the phone's actual glass with perspective, soft reflections and restrained brightness. This phone is capturing the story hands-free while grandma gestures. No new hand holding it, no extra limbs, no floating UI, no second device.",
+    "provenance": "AI-generated present-day fictional family illustration, revised September 2026 using A Story product references; not a customer photograph."
+  },
+  "F05": {
+    "id": "F05",
+    "canonicalName": "F05.png",
+    "source": "assets/mission-originals/F05.png",
+    "sourceStatus": "generated-master",
+    "sha256": "3c4fded1f880640816efd0b53301d16a1a2e44f443bfd977df05fa91d55b444b",
+    "width": 1122,
+    "height": 1402,
+    "derivatives": [
+      {
+        "file": "/mission/F05-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "file": "/mission/F05-1200.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "file": "/mission/F05-1800.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "Natural proportions for prints; controlled object-fit crop for page openings and occasion cards.",
+    "focalRequirements": "Keep people and their interaction visible.",
+    "placement": [
+      "For families / holidays"
+    ],
+    "caption": "Three generations listening to a story after holiday dinner",
+    "alt": "Three generations listening to a story after holiday dinner",
+    "year": 2026,
+    "generationPrompt": "Original holiday dinner brief in docs/image-prompts.md. Keep this scene free of phones and product placement per the founder’s direction.",
+    "provenance": "AI-generated fictional family illustration. Original dinner scene retained without a phone per founder direction."
+  },
+  "F06": {
+    "id": "F06",
+    "canonicalName": "F06.png",
+    "source": "assets/mission-originals/F06.png",
+    "sourceStatus": "generated-master",
+    "sha256": "342037718a56c193b3caec02600f1295850c5aaefa8c95a9d0bee3eadee51460",
+    "width": 1122,
+    "height": 1402,
+    "derivatives": [
+      {
+        "file": "/mission/F06-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "file": "/mission/F06-1200.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "file": "/mission/F06-1800.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "Natural proportions for prints; controlled object-fit crop for page openings and occasion cards.",
+    "focalRequirements": "Keep people and their interaction visible.",
+    "placement": [
+      "For families / anniversary"
+    ],
+    "caption": "An older couple laughing over their wedding photograph on an A Story book",
+    "alt": "An older couple laughing over their wedding photograph on an A Story book",
+    "year": 2026,
+    "generationPrompt": "Use case: precise-object-edit. Edit image 1, the older couple laughing on their porch today. Replace ONLY the framed wedding photograph between them with a solid closed A Story hardcover book, matching reference image 2: dark teal textured cloth, thick cream page block, title 'MOMENTS & MEMORIES', family-photo collage printed flat on the cover, small 'A Story' branding. Personalize the cover with the couple's old wedding portrait from image 1 as the prominent cover photo, and the words 'Our family' instead of the placeholder 'Family name'. Keep the couple's two arms and two hands EACH, faces, clothes, gestures, porch and warm golden light. The woman's existing hands support the lower edge and side of the book, and the man's existing pointing hand points at the printed wedding photo. Physically plausible book weight, fingers, grip, perspective and shadows, about the same size as the old frame or slightly larger. The two are reminiscing over their anniversary gift. Vertical 4:5 photo, no added limbs, no separate floating photographs, no extra book, no overlays.",
+    "provenance": "AI-generated present-day fictional family illustration, revised September 2026 using A Story product references; not a customer photograph."
   }
 }

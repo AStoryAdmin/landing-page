@@ -41,6 +41,11 @@ export const color = {
   error: "#AC3023",
   white: "#FFFFFF",
   black: "#231910",
+  /**
+   * Sand — the soft yellow of the app's mission screens (design-brief palette
+   * #F0DDA8). The panel colour for closings; brass is for keylines only.
+   */
+  sand: "#F0DDA8",
   /** The namecard's front: the deepest ground, for the intro, openings and footer. */
   night: "#2A1F18",
   nightLine: "rgba(243, 235, 221, 0.14)",

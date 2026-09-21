@@ -34,7 +34,8 @@ const FIRST_YEAR = 1952;
 const THIS_YEAR = 2026;
 /** Marks along the rule; each lights as the running year passes it. */
 const DECADES = [1960, 1970, 1980, 1990, 2000, 2010, 2020];
-const at = (year: number) => ((year - FIRST_YEAR) / (THIS_YEAR - FIRST_YEAR)) * 100;
+const at = (year: number) =>
+  ((year - FIRST_YEAR) / (THIS_YEAR - FIRST_YEAR)) * 100;
 
 const Cover = styled.div`
   position: fixed;
@@ -163,7 +164,9 @@ const Cover = styled.div`
     height: 7px;
     background: ${color.teal};
     border: 1px solid color-mix(in srgb, ${color.warmGold} 55%, transparent);
-    transition: background 350ms, border-color 350ms;
+    transition:
+      background 350ms,
+      border-color 350ms;
   }
   .lozenge span {
     position: absolute;
@@ -187,7 +190,8 @@ const Cover = styled.div`
     width: 13px;
     height: 13px;
     background: ${color.warmGold};
-    box-shadow: 0 0 0 4px color-mix(in srgb, ${color.warmGold} 22%, transparent),
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, ${color.warmGold} 22%, transparent),
       0 0 22px 4px color-mix(in srgb, ${color.warmGold} 45%, transparent);
   }
   ${media.sm} {
@@ -240,10 +244,27 @@ export default function Intro() {
             setActive(false);
           },
         })
-        .from(q(".centre svg"), { y: 24, opacity: 0, duration: 1.1, ease: "expo.out" })
-        .from(q(".tagline"), { y: 12, opacity: 0, duration: 0.9, ease: "expo.out" }, 0.2)
-        .from(q(".keyline"), { scaleX: 0, duration: 0.9, ease: "expo.inOut" }, 0.35)
-        .from(q(".motto"), { y: 16, opacity: 0, duration: 1, ease: "expo.out" }, 0.5)
+        .from(q(".centre svg"), {
+          y: 24,
+          opacity: 0,
+          duration: 1.1,
+          ease: "expo.out",
+        })
+        .from(
+          q(".tagline"),
+          { y: 12, opacity: 0, duration: 0.9, ease: "expo.out" },
+          0.2,
+        )
+        .from(
+          q(".keyline"),
+          { scaleX: 0, duration: 0.9, ease: "expo.inOut" },
+          0.35,
+        )
+        .from(
+          q(".motto"),
+          { y: 16, opacity: 0, duration: 1, ease: "expo.out" },
+          0.5,
+        )
         .from(q(".foot"), { opacity: 0, duration: 0.7 }, 0.5)
         .to(
           counter,
@@ -254,18 +275,29 @@ export default function Intro() {
             onUpdate: () => {
               const y = Math.round(counter.value);
               if (year.current) year.current.textContent = String(y);
-              ticks.forEach((t) => t.classList.toggle("passed", Number(t.dataset.year) <= y));
+              ticks.forEach((t) =>
+                t.classList.toggle("passed", Number(t.dataset.year) <= y),
+              );
             },
           },
           0.8,
         )
         .to(q(".fill"), { scaleX: 1, duration: 2, ease: "power2.inOut" }, 0.8)
-        .fromTo(q(".bead"), { left: "0%" }, { left: "100%", duration: 2, ease: "power2.inOut" }, 0.8)
+        .fromTo(
+          q(".bead"),
+          { left: "0%" },
+          { left: "100%", duration: 2, ease: "power2.inOut" },
+          0.8,
+        )
         .add(() => {
           if (year.current) year.current.textContent = "Today";
         })
         .add(() => release(), "+=0.6")
-        .to(el, { clipPath: "inset(0 0 100% 0)", duration: 1.2, ease: "expo.inOut" }, "<");
+        .to(
+          el,
+          { clipPath: "inset(0 0 100% 0)", duration: 1.2, ease: "expo.inOut" },
+          "<",
+        );
     }, el);
 
     // No release() in cleanup: StrictMode's rehearsal unmount would start the
@@ -302,7 +334,12 @@ export default function Intro() {
           <span className="cap start" />
           <span className="cap end" />
           {DECADES.map((d) => (
-            <span key={d} className="lozenge" data-year={d} style={{ left: `${at(d)}%` }}>
+            <span
+              key={d}
+              className="lozenge"
+              data-year={d}
+              style={{ left: `${at(d)}%` }}
+            >
               <i />
               <span>{d}</span>
             </span>

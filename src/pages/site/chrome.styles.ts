@@ -174,7 +174,9 @@ export const HeaderShell = styled.header`
     color: ${color.ivory};
     font: 600 14px/1 ${font.body};
     text-decoration: none;
-    transition: background 300ms, color 300ms;
+    transition:
+      background 300ms,
+      color 300ms;
   }
   .gf-button:hover {
     background: ${color.accent};
@@ -388,7 +390,8 @@ export const FooterShell = styled.footer`
     font: 400 15px/1.3 ${font.body};
     color: ${color.ivory};
     text-decoration: none;
-    background: linear-gradient(currentColor, currentColor) 0 80% / 0 1px no-repeat;
+    background: linear-gradient(currentColor, currentColor) 0 80% / 0 1px
+      no-repeat;
     transition: background-size ${motion.reveal};
   }
   .gf-footer-links a:hover {

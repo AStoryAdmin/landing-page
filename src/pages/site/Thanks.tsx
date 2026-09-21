@@ -68,9 +68,18 @@ const Steps = styled(Chapter)`
 `;
 
 const STEPS = [
-  ["We help set it up.", "For a completed purchase, we use your checkout details to connect your account and arrange what comes next."],
-  ["You choose the moment.", "Tell us when you want the first call. If this is a gift, we’ll agree the timing with you."],
-  ["They answer and talk.", "Once the app is installed, the storyteller answers the scheduled call, and the archive begins."],
+  [
+    "We help set it up.",
+    "For a completed purchase, we use your checkout details to connect your account and arrange what comes next.",
+  ],
+  [
+    "You choose the moment.",
+    "Tell us when you want the first call. If this is a gift, we’ll agree the timing with you.",
+  ],
+  [
+    "They answer and talk.",
+    "Once the app is installed, the storyteller answers the scheduled call, and the archive begins.",
+  ],
 ];
 
 export default function Thanks() {
@@ -110,7 +119,10 @@ export default function Thanks() {
               Get help with your purchase
             </TextAnchor>
           </div>
-          <p className="note">This page does not verify a payment. Your checkout receipt is your confirmation.</p>
+          <p className="note">
+            This page does not verify a payment. Your checkout receipt is your
+            confirmation.
+          </p>
         </Frame>
       </Steps>
     </>

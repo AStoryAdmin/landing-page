@@ -10,7 +10,12 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Seo from "../../components/ui/Seo";
-import { breadcrumbSchema, faqSchema, organizationSchema, websiteSchema } from "../../lib/seo";
+import {
+  breadcrumbSchema,
+  faqSchema,
+  organizationSchema,
+  websiteSchema,
+} from "../../lib/seo";
 import { CONTACT } from "../../lib/contact";
 import { groups } from "./faqData";
 import { PageOpening } from "./kit/kit";
@@ -114,7 +119,10 @@ export default function Questions() {
   const [search, setSearch] = useState("");
   const q = search.toLowerCase();
   const filtered = groups
-    .map((g) => ({ ...g, items: g.items.filter((x) => (x.q + " " + x.a).toLowerCase().includes(q)) }))
+    .map((g) => ({
+      ...g,
+      items: g.items.filter((x) => (x.q + " " + x.a).toLowerCase().includes(q)),
+    }))
     .filter((g) => g.items.length);
   return (
     <>

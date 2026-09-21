@@ -90,7 +90,14 @@ export default function Start() {
   const base = plan.replace("+book", "");
   const planLabel =
     PLANS.find((x) => x.id === base)?.name ??
-    ({ monthly: "Monthly", book: "the hardcover book", one: "Individual", free: "Free" } as Record<string, string>)[base] ??
+    (
+      {
+        monthly: "Monthly",
+        book: "the hardcover book",
+        one: "Individual",
+        free: "Free",
+      } as Record<string, string>
+    )[base] ??
     "";
   const intent = params.get("intent") === "demo" ? "demo" : "start";
   const source = planLabel ? `start:plan:${plan}` : "start:hero";
@@ -99,13 +106,21 @@ export default function Start() {
   return (
     <Page ref={ref} $ground="ivory" aria-labelledby="start-title">
       <EditorialSeo
-        title={intent === "demo" ? "Request a demonstration" : "Join the A Story waitlist"}
+        title={
+          intent === "demo"
+            ? "Request a demonstration"
+            : "Join the A Story waitlist"
+        }
         path="/start"
         description="Leave your name and phone number. We’ll speak with you about getting started with A Story. No payment is taken."
       />
       <Frame className="start">
         <div>
-          <Eyebrow>{intent === "demo" ? "For your community or organization" : "A place to begin"}</Eyebrow>
+          <Eyebrow>
+            {intent === "demo"
+              ? "For your community or organization"
+              : "A place to begin"}
+          </Eyebrow>
           <Title id="start-title" data-lines>
             {intent === "demo" ? (
               <>
@@ -137,8 +152,12 @@ export default function Start() {
           {planLabel && (
             <p className="selection">
               Selected: {planLabel}
-              {plan.includes("+book") ? (base === "family" ? " with three books" : " with the book") : ""}.{" "}
-              <Link to="/pricing">Change plan</Link>
+              {plan.includes("+book")
+                ? base === "family"
+                  ? " with three books"
+                  : " with the book"
+                : ""}
+              . <Link to="/pricing">Change plan</Link>
             </p>
           )}
           <LeadForm

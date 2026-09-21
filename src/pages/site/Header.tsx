@@ -12,6 +12,11 @@ const groups = [
   {
     label: "Explore",
     items: [
+      [
+        "How A Story is different",
+        "/compare",
+        "Memoir products, family archives, and us.",
+      ],
       ["Questions & answers", "/questions", "The practical things, explained."],
       ["Conversation guides", "/guides", "A good place to begin."],
       ["Privacy", "/privacy", "Their story belongs to them."],
@@ -62,7 +67,12 @@ export default function Header() {
     const check = () => {
       const y = window.scrollY;
       const hero = document.querySelector('[aria-labelledby="hero-title"]');
-      setOverDark(home && !!hero && hero.getBoundingClientRect().bottom > (header.current?.offsetHeight ?? 90));
+      setOverDark(
+        home &&
+          !!hero &&
+          hero.getBoundingClientRect().bottom >
+            (header.current?.offsetHeight ?? 90),
+      );
       if (Math.abs(y - last) > 6) {
         setTucked(y > last && y > 240);
         last = y;

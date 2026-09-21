@@ -75,8 +75,9 @@ export function riseLines(
     type: "lines",
     mask: "lines",
     autoSplit: true,
-    onSplit: (split) =>
-      gsap.from(split.lines, {
+    onSplit: (split) => {
+      openMasks(split.masks);
+      return gsap.from(split.lines, {
         yPercent: 110,
         duration: 1.2,
         ease: "expo.out",
@@ -86,7 +87,21 @@ export function riseLines(
           trigger === false
             ? undefined
             : { trigger: trigger ?? target, start: "top 88%", once: true },
-      }),
+      });
+    },
+  });
+}
+
+/**
+ * A line mask clips at the line box, which cuts the descenders of y, g and p
+ * in tightly set serif headlines. Give each mask room below the baseline and
+ * take the same room back, so the layout does not move.
+ */
+export function openMasks(masks: Element[] | undefined) {
+  masks?.forEach((m) => {
+    const el = m as HTMLElement;
+    el.style.paddingBottom = "0.16em";
+    el.style.marginBottom = "-0.16em";
   });
 }
 

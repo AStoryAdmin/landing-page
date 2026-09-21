@@ -1,24 +1,32 @@
 /**
- * Movement 4 — the distinctive claim (mission.md). A life is not a solo
- * account; the same afternoon looks different to everyone who was there, and
- * A Story holds all of those voices on one moment. "That is what makes it a
- * documentary instead of a diary."
+ * Movement 4 — the distinctive claim: a life isn't a solo account.
  *
- * The brief names this the movement no competitor can copy cheaply, so it
- * gets the page's largest print and its slowest scene. Photograph 30 (the
- * lake, 1975) is ambiguous on purpose — adults and a child at a distance,
- * nothing resolved — which is why it can hold three memories that disagree.
- * The payoff line is set inside the gold keyline plate: the site's single
- * ornament, spent on its most important sentence.
+ * Pass 11 argued this with a 1975 lake photograph and three quotations beside
+ * it. It was correct and not memorable: the reader saw a photo and some
+ * captions, not a family doing anything. This scene shows the collaboration
+ * itself, in the app: Grandpa tells "The lake monster" on a call; then, as
+ * the reader scrolls, the family's additions arrive from around the phone —
+ * Sarah's photos, Lily's voice note, Uncle Ben's confession — and settle into
+ * the memory as versions beside his, each in its teller's name. Finally the
+ * banner the app really shows: additions wait for the storyteller to approve.
  *
- * Voices come from `sampleMemory.ts`, the site's one continuous fictional
- * example. `id="kept"` is kept for old links to "See the archive".
+ * The copy is the onboarding's own (mission P02, M14): "Every memory has
+ * more than one witness", and in the gold plate, "One life. Many witnesses.
+ * Not a diary. A documentary." Content: `homeExamples.ts`.
+ * `id="kept"` is kept for old links to "See the archive".
  */
 import styled from "styled-components";
-import { sampleMemory } from "../../../lib/sampleMemory";
-import { Print } from "../kit/kit";
-import { Eyebrow, Frame, Plate, SplitHead, Statement } from "../kit/kit.styles";
-import { gsap, riseLines, useScene } from "../../../lib/scrollMotion";
+import { LAKE_MONSTER as M } from "../../../lib/homeExamples";
+import { Phone } from "../app/Phone";
+import { MemoryScreen } from "../app/screens";
+import { avatarTints } from "../app/tokens";
+import { Eyebrow, Frame, SplitHead, Statement } from "../kit/kit.styles";
+import {
+  gsap,
+  riseLines,
+  ScrollTrigger,
+  useScene,
+} from "../../../lib/scrollMotion";
 import { color, display, font, media } from "../../../styles/theme";
 
 const Scene = styled.section`
@@ -27,143 +35,346 @@ const Scene = styled.section`
   --mark: ${color.accent};
   --label: ${color.accentText};
   background: ${color.ivory};
-  padding: clamp(96px, 11vw, 176px) 0;
+  padding: clamp(96px, 11vw, 176px) 0 0;
+  overflow: hidden;
 
-  .voices-lead {
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.55 ${font.body};
+  .lead {
+    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.body};
     color: var(--muted);
-    max-width: 42ch;
+    max-width: 44ch;
   }
-  .moment {
-    display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
-    gap: clamp(32px, 5vw, 88px);
-    align-items: center;
-  }
-  .question {
-    font: italic 400 ${display.sm} / 1.35 ${font.display};
-    color: ${color.primary};
-    padding-bottom: 22px;
-    margin-bottom: 6px;
-    border-bottom: 1px solid ${color.primaryLineStrong};
-  }
-  .question small {
-    display: block;
-    margin-bottom: 10px;
-    font: 600 12px/1.4 ${font.body};
-    font-style: normal;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: ${color.teal};
-  }
-  .voice {
-    display: grid;
-    grid-template-columns: 48px minmax(0, 1fr);
-    gap: 16px;
-    padding: 22px 0;
-    border-bottom: 1px solid ${color.primaryLine};
-  }
-  .voice-initial {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
+  .stage {
+    position: relative;
     display: grid;
     place-items: center;
-    font: 400 20px/1 ${font.display};
+    min-height: min(92vh, 860px);
+  }
+  /* A pool of warm light under the phone, so it sits on the table with the notes. */
+  .stage::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(900px, 90vw);
+    aspect-ratio: 1.3;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, ${color.sand} 75%, transparent),
+      transparent
+    );
+    pointer-events: none;
+  }
+  .stage > * {
+    position: relative;
+  }
+  /* The additions, waiting around the phone like notes passed across a table. */
+  .note {
+    position: absolute;
+    z-index: 2;
+    width: min(360px, 27vw);
+    padding: 20px 22px 18px;
+    background: ${color.paperPure};
+    border-top: 3px solid var(--tint);
+    box-shadow:
+      0 1px 1px rgba(42, 31, 24, 0.06),
+      0 28px 50px -26px rgba(42, 31, 24, 0.5);
+    border-radius: 2px 2px 6px 6px;
+  }
+  .note:nth-of-type(1) {
+    left: 0;
+    top: 10%;
+    transform: rotate(-2.5deg);
+  }
+  .note:nth-of-type(2) {
+    right: 0;
+    top: 30%;
+    transform: rotate(2deg);
+  }
+  .note:nth-of-type(3) {
+    left: 6%;
+    bottom: 8%;
+    transform: rotate(1.5deg);
+  }
+  .note header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .note i {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font: 600 15px/1 ${font.body};
+    font-style: normal;
     color: ${color.ivory};
     background: var(--tint);
-    box-shadow: 0 0 0 3px ${color.ivory}, 0 0 0 4px var(--tint);
   }
-  .voice blockquote {
-    margin: 0 0 8px;
-    font: 400 ${display.sm} / 1.25 ${font.display};
+  .note b {
+    display: block;
+    font: 600 15px/1.2 ${font.body};
     color: ${color.primary};
   }
-  .voice p {
-    font: 400 15px/1.45 ${font.body};
+  .note small {
+    font: 500 13px/1.3 ${font.body};
     color: ${color.bodyMuted};
   }
-  .voice p b {
-    color: ${color.primary};
-    font-weight: 600;
-  }
-
-  .payoff {
-    margin: clamp(88px, 10vw, 160px) auto 0;
-    max-width: 980px;
-    text-align: center;
-  }
-  .payoff h3 {
-    font: 400 ${display.lg} / 1.1 ${font.display};
-    letter-spacing: -0.02em;
+  .note p {
+    font: italic 400 20px/1.4 ${font.display};
     color: ${color.primary};
   }
-  .payoff h3 em {
-    font-style: normal;
-    color: ${color.accent};
-  }
-  .payoff p {
-    margin-top: 22px;
-    font: italic 400 ${display.sm} / 1.35 ${font.display};
-    color: ${color.primaryMid};
+  .note span {
+    display: inline-block;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid ${color.primaryLine};
+    font: 600 12px/1 ${font.body};
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: ${color.accentText};
   }
 
-  ${media.md} {
-    .moment {
-      grid-template-columns: minmax(0, 1fr);
+  ${media.lg} {
+    .stage {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-height: 0;
+    }
+    .note {
+      position: static;
+      width: min(440px, 100%);
+      transform: none !important;
     }
   }
 `;
 
-const tints = [color.teal, color.accent, color.primaryMid];
+/*
+ * The takeaway — "One life. Many witnesses." — set as the page's one
+ * namecard moment: a chocolate field, a double gold keyline, the four people
+ * from the lake story gathered on one gold thread, and the mission's line
+ * "Not a diary. A documentary." between rules. It arrives once, as a whole.
+ */
+const Takeaway = styled.div`
+  position: relative;
+  margin-top: clamp(80px, 10vw, 150px);
+  padding: clamp(80px, 10vw, 150px) 0;
+  background:
+    radial-gradient(
+      ellipse 60% 70% at 50% 45%,
+      color-mix(in srgb, ${color.warmGold} 12%, ${color.primary}),
+      transparent 70%
+    ),
+    ${color.primary};
+  color: ${color.ivory};
+  text-align: center;
+
+  .keyline {
+    position: absolute;
+    inset: clamp(16px, 2vw, 28px);
+    border: 1px solid color-mix(in srgb, ${color.gold} 55%, transparent);
+    pointer-events: none;
+  }
+  .keyline::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid color-mix(in srgb, ${color.gold} 25%, transparent);
+  }
+  h3 {
+    font: 400 ${display.hero} / 0.98 ${font.display};
+    letter-spacing: -0.03em;
+    color: ${color.ivory};
+  }
+  h3 span {
+    display: block;
+  }
+  h3 em {
+    display: block;
+    margin-top: 0.08em;
+    font-style: italic;
+    color: ${color.gold};
+  }
+  /* The witnesses, gathered on one thread. */
+  .thread {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: clamp(28px, 5vw, 80px);
+    margin: clamp(36px, 4vw, 56px) auto;
+    width: fit-content;
+  }
+  .thread::before {
+    content: "";
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    top: 24px;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      ${color.gold} 15%,
+      ${color.gold} 85%,
+      transparent
+    );
+    transform-origin: center;
+  }
+  .who {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+  }
+  .who i {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--tint);
+    box-shadow:
+      0 0 0 3px ${color.primary},
+      0 0 0 4px color-mix(in srgb, ${color.gold} 70%, transparent);
+    font: 600 17px/1 ${font.body};
+    font-style: normal;
+    color: ${color.ivory};
+  }
+  .who small {
+    font: 600 11px/1.2 ${font.body};
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: ${color.onDarkMuted};
+  }
+  .motto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    font: 600 13px/1 ${font.body};
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: ${color.gold};
+  }
+  .motto::before,
+  .motto::after {
+    content: "";
+    width: clamp(40px, 8vw, 120px);
+    height: 1px;
+    background: color-mix(in srgb, ${color.gold} 60%, transparent);
+  }
+  .motto b {
+    font-weight: 600;
+    color: ${color.ivory};
+  }
+  ${media.sm} {
+    .thread {
+      gap: 18px;
+    }
+    .motto {
+      letter-spacing: 0.18em;
+      font-size: 11px;
+    }
+  }
+`;
 
 export default function EveryVoice() {
-  const m = sampleMemory;
   const ref = useScene<HTMLElement>((root, { wide }) => {
     riseLines(root.querySelector("h2")!);
-    riseLines(root.querySelector(".payoff h3")!);
-    gsap.from(".voices-lead, .payoff p", {
+    gsap.from(".lead", {
       y: 24,
       opacity: 0,
       duration: 1.1,
       ease: "expo.out",
-      stagger: 0.1,
-      scrollTrigger: { trigger: ".voices-lead", start: "top 85%", once: true },
+      scrollTrigger: { trigger: ".lead", start: "top 85%", once: true },
     });
-
-    const voices = gsap.utils.toArray<HTMLElement>(".voice", root);
-    if (!wide) {
-      gsap.from(".moment figure", {
-        y: 40,
-        opacity: 0,
-        duration: 1.3,
-        ease: "expo.out",
-        scrollTrigger: { trigger: ".moment", start: "top 85%", once: true },
-      });
-      voices.forEach((v) =>
-        gsap.from(v, {
-          y: 24,
-          opacity: 0,
-          duration: 1,
-          ease: "expo.out",
-          scrollTrigger: { trigger: v, start: "top 90%", once: true },
-        }),
-      );
-      return;
-    }
-
-    // Wide: the moment pins; the print settles, then each voice joins it.
-    gsap.set(".question", { opacity: 0, y: 16 });
-    gsap.set(voices, { opacity: 0, x: 40 });
+    // The takeaway arrives once, whole: the lines, then the thread draws and
+    // the four witnesses take their places on it.
     gsap
       .timeline({
-        defaults: { ease: "power2.out" },
-        scrollTrigger: { trigger: ".moment", start: "center center", end: "+=170%", pin: true, scrub: 0.6 },
+        scrollTrigger: { trigger: ".takeaway", start: "top 70%", once: true },
       })
-      .from(".moment figure", { rotate: -4, scale: 0.9, duration: 1.1, ease: "power2.inOut" })
-      .to(".question", { opacity: 1, y: 0, duration: 0.6 }, 0.7)
-      .to(voices, { opacity: 1, x: 0, duration: 0.8, stagger: 0.9 }, 1.1)
-      .to({}, { duration: 0.5 });
+      .from(".takeaway h3 > *", {
+        yPercent: 40,
+        opacity: 0,
+        duration: 1.1,
+        ease: "expo.out",
+        stagger: 0.15,
+      })
+      .from(
+        ".takeaway .who",
+        {
+          y: 16,
+          scale: 0.6,
+          opacity: 0,
+          duration: 0.6,
+          ease: "back.out(2)",
+          stagger: 0.12,
+        },
+        0.5,
+      )
+      .from(
+        ".takeaway .motto",
+        { opacity: 0, letterSpacing: "0.6em", duration: 1.1, ease: "expo.out" },
+        0.9,
+      );
+    const notes = gsap.utils.toArray<HTMLElement>(".note", root);
+    const voices = gsap.utils.toArray<HTMLElement>("[data-voice]", root);
+    const review = root.querySelector("[data-review]");
+
+    // Below the wide layout the notes sit in a column beside a complete memory.
+    if (!wide || window.innerWidth <= 1024) return;
+
+    // Wide: when the stage arrives, the whole exchange plays once, start to
+    // finish — each note flies into the phone and becomes a version. (Pass 11d
+    // scrubbed this against a pinned scroll, which asked for too much
+    // scrolling.) Scrolling back above it resets, so it plays again next time.
+    const phone = root.querySelector<HTMLElement>(".stage [role='img']")!;
+    const toPhone = (el: HTMLElement, axis: "x" | "y") => () => {
+      const a = el.getBoundingClientRect();
+      const b = phone.getBoundingClientRect();
+      return axis === "x"
+        ? b.left + b.width / 2 - (a.left + a.width / 2)
+        : b.top + b.height * 0.62 - (a.top + a.height / 2);
+    };
+    gsap.set(voices, { autoAlpha: 0, y: 12 });
+    gsap.set(review, { autoAlpha: 0, y: 12 });
+    const tl = gsap.timeline({
+      paused: true,
+      defaults: { ease: "power3.inOut" },
+    });
+    notes.forEach((n, i) => {
+      tl.to(
+        n,
+        {
+          x: toPhone(n, "x"),
+          y: toPhone(n, "y"),
+          scale: 0.3,
+          autoAlpha: 0,
+          rotate: 0,
+          duration: 0.8,
+        },
+        0.4 + i * 0.55,
+      ).to(
+        voices[i],
+        { autoAlpha: 1, y: 0, duration: 0.45, ease: "power2.out" },
+        0.4 + i * 0.55 + 0.6,
+      );
+    });
+    tl.to(
+      review,
+      { autoAlpha: 1, y: 0, duration: 0.45, ease: "power2.out" },
+      0.4 + notes.length * 0.55 + 0.4,
+    );
+    ScrollTrigger.create({
+      trigger: ".stage",
+      start: "top 45%",
+      onEnter: () => tl.restart(),
+      onLeaveBack: () => tl.pause(0),
+    });
   });
 
   return (
@@ -173,52 +384,80 @@ export default function EveryVoice() {
           <div>
             <Eyebrow>Everyone who was there</Eyebrow>
             <Statement id="voices-title" $size="xl">
-              A life isn’t a solo <em>account.</em>
+              Every memory has more than one <em>witness.</em>
             </Statement>
           </div>
-          <p className="voices-lead">
-            The same afternoon looks different to the person who lived it, the
-            child who was there, and the one who only heard about it for years.
-            A Story keeps all of them on the same moment — nobody has to be
-            corrected.
+          <p className="lead">
+            Invite the people who were there. Their photos, voices and versions
+            become part of the same story — through one link, no account needed.
+            Nothing replaces anything else, and nothing appears until the
+            storyteller says yes.
           </p>
         </SplitHead>
 
-        <div className="moment">
-          <Print
-            id={m.photo}
-            alt="People at the edge of a lake on a summer afternoon, around 1975"
-            sizes="(max-width: 860px) 92vw, 58vw"
-            tilt={-1}
-            caption={`${m.title} · ${m.date.replace(" · approximate", "")}`}
-          />
-          <div>
-            <p className="question">
-              <small>A Story asked</small>“{m.question}”
-            </p>
-            {m.voices.map((v, i) => (
-              <div className="voice" key={v.name} style={{ ["--tint" as string]: tints[i] }}>
-                <span className="voice-initial" aria-hidden="true">
-                  {v.name[0]}
-                </span>
+        <div className="stage">
+          {M.added.map((a, i) => (
+            <article
+              className="note"
+              key={a.name}
+              style={{ ["--tint" as string]: avatarTints[i] }}
+            >
+              <header>
+                <i aria-hidden="true">{a.initial}</i>
                 <div>
-                  <blockquote>“{v.quote}”</blockquote>
-                  <p>
-                    <b>{v.name}</b> · {v.relationship}
-                  </p>
+                  <b>{a.name}</b>
+                  <small>{a.role}</small>
                 </div>
-              </div>
-            ))}
-          </div>
+              </header>
+              <p>“{a.quote}”</p>
+              <span>+ {a.kind}</span>
+            </article>
+          ))}
+          <Phone
+            width="min(400px, 86vw, calc((100vh - 100px) * 0.4756))"
+            label={`“${M.title}” in the A Story app, with the family’s versions`}
+          >
+            <MemoryScreen
+              photo={M.photo}
+              date={M.date}
+              tags={M.tags}
+              title={M.title}
+              teller={M.teller}
+              told={M.told}
+              voices={M.added}
+              pending={M.added.length}
+            />
+          </Phone>
         </div>
-
-        <Plate className="payoff">
-          <h3>
-            Not one narrator, but <em>everyone who was in the room.</em>
-          </h3>
-          <p>That’s what makes it a documentary instead of a diary.</p>
-        </Plate>
       </Frame>
+
+      <Takeaway className="takeaway">
+        <span className="keyline" aria-hidden="true" />
+        <h3>
+          <span>One life.</span>
+          <em>Many witnesses.</em>
+        </h3>
+        <div className="thread" aria-hidden="true">
+          {[M.teller, ...M.added].map((p, i) => (
+            <span
+              className="who"
+              key={p.name}
+              style={{
+                ["--tint" as string]:
+                  i === 0
+                    ? color.teal
+                    : avatarTints[(i - 1) % avatarTints.length],
+              }}
+            >
+              <i>{p.initial}</i>
+              <small>{p.name.split(",")[0]}</small>
+            </span>
+          ))}
+        </div>
+        <p className="motto">
+          Not a diary. <b>A documentary.</b>
+        </p>
+      </Takeaway>
     </Scene>
   );
 }

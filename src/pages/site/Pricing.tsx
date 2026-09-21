@@ -10,6 +10,7 @@
  *
  * Composition: the three annual/one-time plans side by side with the default
  * (Individual) set inside the gold plate; the two quiet options beneath; the
+ * full side-by-side comparison table under them (Pass 11e); the
  * promise that the app stays yours given a section of its own, because it is
  * the argument that makes the price make sense; the book staged last.
  * Motion is limited to selection feedback — this is a page for deciding.
@@ -17,12 +18,27 @@
 import { useState } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
-import { FOREVER, FREE_TIER, OTHER_PLANS, PLANS, PRICE, TRIAL } from "../../lib/pricing";
+import {
+  FOREVER,
+  FREE_TIER,
+  OTHER_PLANS,
+  PLANS,
+  PRICE,
+  TRIAL,
+} from "../../lib/pricing";
 import { anyCheckoutLive, buyLabel, checkoutFor } from "../../lib/checkout";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
-import { Chapter, Eyebrow, Frame, PrimaryAnchor, SplitHead, Statement, TextLink } from "./kit/kit.styles";
+import {
+  Chapter,
+  Eyebrow,
+  Frame,
+  PrimaryAnchor,
+  SplitHead,
+  Statement,
+  TextLink,
+} from "./kit/kit.styles";
 import { color, display, font, media, motion } from "../../styles/theme";
 
 const Plans = styled(Chapter)`
@@ -41,7 +57,10 @@ const Plans = styled(Chapter)`
     background: ${color.paperPure};
     border: 1px solid ${color.primaryLine};
     cursor: pointer;
-    transition: border-color ${motion.base}, box-shadow ${motion.slow}, transform ${motion.slow};
+    transition:
+      border-color ${motion.base},
+      box-shadow ${motion.slow},
+      transform ${motion.slow};
   }
   .plan:hover {
     transform: translateY(-3px);
@@ -236,6 +255,117 @@ const Plans = styled(Chapter)`
   }
 `;
 
+/*
+ * Compare every plan — the founder asked for a layout that makes the plans
+ * comparable at a glance. One table, one row per question a buyer actually
+ * asks, every cell from pricing.ts (nothing invented: Monthly is left out of
+ * the grid because its allowances aren't itemised there). Clicking a column
+ * head selects that plan, the same as the cards above.
+ */
+const Compare = styled.div`
+  margin-top: clamp(56px, 7vw, 104px);
+  h2 {
+    font: 400 ${display.md} / 1.2 ${font.display};
+    color: ${color.primary};
+  }
+  h2 + p {
+    margin: 10px 0 28px;
+    font: 400 16px/1.6 ${font.body};
+    color: ${color.bodyMuted};
+  }
+  .grid {
+    border-radius: 20px;
+    background: ${color.paperPure};
+    box-shadow:
+      inset 0 0 0 1px ${color.primaryLine},
+      0 40px 80px -60px rgba(42, 31, 24, 0.45);
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    min-width: 860px;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  th,
+  td {
+    padding: 16px 18px;
+    border-bottom: 1px solid ${color.primaryLine};
+    text-align: left;
+    vertical-align: top;
+    font: 400 15px/1.5 ${font.body};
+    color: ${color.body};
+  }
+  tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+  tbody th {
+    width: 20%;
+    font: 600 13px/1.4 ${font.body};
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: ${color.bodyMuted};
+  }
+  thead th {
+    padding: 22px 18px 18px;
+    vertical-align: bottom;
+  }
+  thead button {
+    all: unset;
+    box-sizing: border-box;
+    display: grid;
+    gap: 6px;
+    width: 100%;
+    cursor: pointer;
+  }
+  thead button b {
+    font: 400 24px/1.1 ${font.display};
+    color: ${color.primary};
+  }
+  thead button span {
+    font: 400 28px/1 ${font.display};
+    color: ${color.primary};
+  }
+  thead button small {
+    font: 500 13px/1.3 ${font.body};
+    color: ${color.bodyMuted};
+  }
+  thead button:focus-visible {
+    outline: 3px solid ${color.accent};
+    outline-offset: 4px;
+  }
+  .sel {
+    background: color-mix(in srgb, ${color.gold} 14%, ${color.paperPure});
+  }
+  thead .sel {
+    border-radius: 14px 14px 0 0;
+    box-shadow: inset 0 3px 0 ${color.accent};
+  }
+  td strong {
+    display: block;
+    font: 600 15px/1.4 ${font.body};
+    color: ${color.primary};
+  }
+  .yes::before {
+    content: "✓ ";
+    color: ${color.teal};
+    font-weight: 700;
+  }
+  .note {
+    margin-top: 12px;
+    font: 400 14px/1.5 ${font.body};
+    color: ${color.bodyMuted};
+  }
+  ${media.md} {
+    tbody th {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: ${color.paperPure};
+    }
+  }
+`;
+
 const Forever = styled(Chapter)`
   .kept {
     list-style: none;
@@ -291,8 +421,15 @@ const Forever = styled(Chapter)`
   }
 `;
 
+/* The teal volume on sand, lit from behind — teal on chocolate was muddy. */
 const Book = styled(Chapter)`
-  background: radial-gradient(ellipse 50% 60% at 30% 50%, color-mix(in srgb, ${color.gold} 14%, ${color.night}) 0%, ${color.night} 70%);
+  background:
+    radial-gradient(
+      ellipse 45% 60% at 28% 55%,
+      ${color.paperPure} 0%,
+      transparent 70%
+    ),
+    ${color.sand};
   .book {
     display: grid;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -303,7 +440,7 @@ const Book = styled(Chapter)`
     width: min(100%, 420px);
     height: auto;
     justify-self: center;
-    filter: drop-shadow(0 50px 40px rgba(0, 0, 0, 0.55));
+    filter: drop-shadow(0 40px 36px rgba(42, 31, 24, 0.35));
   }
   .book-price {
     display: flex;
@@ -311,15 +448,15 @@ const Book = styled(Chapter)`
     gap: 16px;
     margin: 28px 0 10px;
     font: 400 ${display.lg} / 1 ${font.display};
-    color: ${color.ivory};
+    color: ${color.primary};
   }
   .book-price span {
     font: 400 17px/1.4 ${font.body};
-    color: ${color.onDarkMuted};
+    color: ${color.bodyMuted};
   }
   .book p {
     font: 400 18px/1.65 ${font.body};
-    color: ${color.onDarkMuted};
+    color: ${color.body};
     max-width: 44ch;
   }
   .book p + p {
@@ -332,10 +469,117 @@ const Book = styled(Chapter)`
   }
 `;
 
+const individual = PLANS.find((p) => p.id === "individual")!;
+const family = PLANS.find((p) => p.id === "family")!;
+const express = PLANS.find((p) => p.id === "express")!;
+const free = OTHER_PLANS.find((p) => p.id === "free")!;
+
+/** Columns of the comparison, in reading order: from nothing paid to the most shared. */
+const COLS = [
+  {
+    id: "free",
+    name: "Free",
+    price: free.price,
+    period: "for as long as you like",
+  },
+  {
+    id: "express",
+    name: express.name,
+    price: express.price,
+    period: express.period,
+  },
+  {
+    id: "individual",
+    name: individual.name,
+    price: individual.price,
+    period: `${individual.period} · ${individual.monthlyEquivalent}`,
+  },
+  {
+    id: "family",
+    name: family.name,
+    price: family.price,
+    period: `${family.period} · ${family.monthlyEquivalent}`,
+  },
+];
+
+/** Rows: each cell is [strong line, detail]; "✓" rows use the yes mark. */
+const ROWS: { label: string; cells: [string, string?][]; yes?: boolean }[] = [
+  {
+    label: "Who it’s for",
+    cells: [
+      ["Writing in your own words"],
+      [express.who],
+      [individual.who],
+      [family.who],
+    ],
+  },
+  {
+    label: "Guided calls",
+    cells: [
+      ["No calls", FREE_TIER.includes[0]],
+      [express.meter, express.meterNote],
+      [individual.meter, individual.meterNote],
+      [family.meter, family.meterNote],
+    ],
+  },
+  {
+    label: "Questions",
+    cells: [
+      [FREE_TIER.includes[0]],
+      [`All ${QUESTION_COUNT}, every chapter`],
+      [`All ${QUESTION_COUNT}, every chapter`],
+      [`All ${QUESTION_COUNT}, every chapter`],
+    ],
+  },
+  {
+    label: "Writing",
+    cells: [["Unlimited"], ["Unlimited"], ["Unlimited"], ["Unlimited"]],
+    yes: true,
+  },
+  {
+    label: "Family reading & adding",
+    cells: [
+      ["Unlimited, free"],
+      ["Unlimited, free"],
+      ["Unlimited, free"],
+      ["Unlimited, free"],
+    ],
+    yes: true,
+  },
+  {
+    label: "Photos",
+    cells: [
+      [FREE_TIER.includes[3]],
+      ["Unlimited"],
+      ["Unlimited"],
+      ["Unlimited"],
+    ],
+  },
+  {
+    label: "The Keepsake book",
+    cells: [
+      [`${PRICE.book} any time`, PRICE.bookPages],
+      ["First 40 pages included", "A $69 value"],
+      [`${individual.book?.price} with the book`, individual.book?.saving],
+      [`${family.book?.price} with three books`, family.book?.saving],
+    ],
+  },
+  {
+    label: "Renews",
+    cells: [
+      ["Never — it’s free"],
+      ["Never — one time"],
+      ["Yearly"],
+      ["Yearly"],
+    ],
+  },
+];
+
 export default function Pricing() {
   const [selected, setSelected] = useState("individual");
   const [bundles, setBundles] = useState<Record<string, boolean>>({});
-  const bundled = bundles[selected] && (selected === "individual" || selected === "family");
+  const bundled =
+    bundles[selected] && (selected === "individual" || selected === "family");
   const selectedId = selected + (bundled ? "+book" : "");
   const name =
     PLANS.find((x) => x.id === selected)?.name ??
@@ -364,7 +608,11 @@ export default function Pricing() {
 
       <Plans ref={plans} $ground="ivory" aria-label="Plans">
         <Frame>
-          <div className="plans" role="radiogroup" aria-label="Choose your preferred plan">
+          <div
+            className="plans"
+            role="radiogroup"
+            aria-label="Choose your preferred plan"
+          >
             {PLANS.map((p) => (
               <article
                 key={p.id}
@@ -385,7 +633,11 @@ export default function Pricing() {
                   {p.featured && <span className="tag">Most families</span>}
                 </div>
                 <p className="who">{p.who}</p>
-                <p className="price">{bundles[p.id] && p.id !== "express" ? p.book?.price : p.price}</p>
+                <p className="price">
+                  {bundles[p.id] && p.id !== "express"
+                    ? p.book?.price
+                    : p.price}
+                </p>
                 <p className="period">
                   {p.period}
                   {p.monthlyEquivalent && ` · ${p.monthlyEquivalent}`}
@@ -411,7 +663,10 @@ export default function Pricing() {
                         }}
                       />
                       <span>
-                        {p.id === "family" ? "Include three books" : "Include the book"} — {p.book?.price}
+                        {p.id === "family"
+                          ? "Include three books"
+                          : "Include the book"}{" "}
+                        — {p.book?.price}
                         <small>
                           {p.book?.note}. {p.book?.saving}.
                         </small>
@@ -445,22 +700,93 @@ export default function Pricing() {
                 </b>
                 <span>
                   {p.sub}.{" "}
-                  {p.id === "free" ? `${FREE_TIER.includes[3]}.` : "Billed monthly."}
+                  {p.id === "free"
+                    ? `${FREE_TIER.includes[3]}.`
+                    : "Billed monthly."}
                 </span>
               </div>
             ))}
           </div>
 
           <p className="all-plans">
-            Every paid plan includes all {QUESTION_COUNT} questions across {CHAPTER_COUNT} chapters,
-            unlimited writing and unlimited photographs.
+            Every paid plan includes all {QUESTION_COUNT} questions across{" "}
+            {CHAPTER_COUNT} chapters, unlimited writing and unlimited
+            photographs.
           </p>
+
+          <Compare aria-labelledby="compare-title">
+            <h2 id="compare-title">Compare every plan</h2>
+            <p>
+              Monthly is {OTHER_PLANS[0].price} with no yearly commitment.
+              Everything else is side by side below.
+            </p>
+            <div
+              className="grid"
+              tabIndex={0}
+              role="region"
+              aria-label="Plan comparison, scrollable"
+            >
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      <span className="sr-only">Plan</span>
+                    </th>
+                    {COLS.map((c) => (
+                      <th
+                        key={c.id}
+                        scope="col"
+                        className={selected === c.id ? "sel" : undefined}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setSelected(c.id)}
+                          aria-pressed={selected === c.id}
+                        >
+                          <b>{c.name}</b>
+                          <span>{c.price}</span>
+                          <small>{c.period}</small>
+                        </button>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {ROWS.map((r) => (
+                    <tr key={r.label}>
+                      <th scope="row">{r.label}</th>
+                      {r.cells.map(([main, sub], i) => (
+                        <td
+                          key={i}
+                          className={
+                            selected === COLS[i].id ? "sel" : undefined
+                          }
+                        >
+                          <strong className={r.yes ? "yes" : undefined}>
+                            {main}
+                          </strong>
+                          {sub && <span>{sub}</span>}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="note">
+              {TRIAL.headline}. {TRIAL.detail}
+            </p>
+          </Compare>
 
           <div className="decide" aria-live="polite">
             <div>
               <strong>
                 {name}
-                {bundled ? (selected === "family" ? " with three books" : " with the book") : ""}
+                {bundled
+                  ? selected === "family"
+                    ? " with three books"
+                    : " with the book"
+                  : ""}
               </strong>
               <small>
                 {anyCheckoutLive()
@@ -470,7 +796,11 @@ export default function Pricing() {
             </div>
             <PrimaryAnchor
               href={checkoutFor(selectedId)}
-              aria-label={buyLabel(selectedId, `Choose ${name}`, `Join the waitlist for ${name}`)}
+              aria-label={buyLabel(
+                selectedId,
+                `Choose ${name}`,
+                `Join the waitlist for ${name}`,
+              )}
             >
               {buyLabel(selectedId, `Choose ${name}`)} <ArrowIcon />
             </PrimaryAnchor>
@@ -502,18 +832,23 @@ export default function Pricing() {
           <div className="questions">
             <details>
               <summary>{TRIAL.headline}</summary>
-              <p>{TRIAL.detail} Joining the website waitlist does not start a trial.</p>
+              <p>
+                {TRIAL.detail} Joining the website waitlist does not start a
+                trial.
+              </p>
             </details>
             <details>
               <summary>What is included in Free?</summary>
               <p>
-                {FREE_TIER.includes.join(". ")}. {FREE_TIER.excludes} are not included.
+                {FREE_TIER.includes.join(". ")}. {FREE_TIER.excludes} are not
+                included.
               </p>
             </details>
             <details>
               <summary>Care communities and organizations</summary>
               <p>
-                Program pricing is quoted individually. <TextLink to="/start?intent=demo">Talk with us</TextLink> about
+                Program pricing is quoted individually.{" "}
+                <TextLink to="/start?intent=demo">Talk with us</TextLink> about
                 participants, consent and access.
               </p>
             </details>
@@ -521,7 +856,7 @@ export default function Pricing() {
         </Frame>
       </Forever>
 
-      <Book ref={book} $ground="night" id="book" aria-labelledby="book-title">
+      <Book ref={book} $ground="sand" id="book" aria-labelledby="book-title">
         <Frame className="book">
           <img
             data-rise
@@ -541,7 +876,9 @@ export default function Pricing() {
             <p className="book-price" data-rise>
               {PRICE.book} <span>{PRICE.bookPages}</span>
             </p>
-            <p data-rise>{PRICE.bookOverage[0].toUpperCase() + PRICE.bookOverage.slice(1)}.</p>
+            <p data-rise>
+              {PRICE.bookOverage[0].toUpperCase() + PRICE.bookOverage.slice(1)}.
+            </p>
             <p data-rise>
               Choose the stories and photographs whenever you’re ready. The
               archive keeps growing afterwards.

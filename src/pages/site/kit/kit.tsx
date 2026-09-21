@@ -67,8 +67,9 @@ export function Picture({
   );
 }
 
-/** 01–19 and 27–32 are the archival set (film, prints); everything else is contemporary. */
+/** 01–19, 27–32, H02 and H03 are the archival set (film, prints). */
 const isArchival = (id: string) => {
+  if (id === "H02" || id === "H03") return true;
   const n = Number(id);
   return n < 20 || (n >= 27 && n <= 32);
 };
@@ -160,7 +161,12 @@ export function PageOpening({
 }) {
   const ref = useReveals<HTMLElement>();
   return (
-    <Opening ref={ref} $ground={ground} data-ground={ground} aria-labelledby={labelledBy}>
+    <Opening
+      ref={ref}
+      $ground={ground}
+      data-ground={ground}
+      aria-labelledby={labelledBy}
+    >
       <Frame className={`opening-grid ${art ? "" : "solo"}`}>
         <div>
           <Eyebrow>{eyebrow}</Eyebrow>
@@ -180,42 +186,56 @@ export function PageOpening({
   );
 }
 
-
-
 const Band = styled.section`
-  background: ${color.accentHover};
-  color: ${color.ivory};
-  padding: clamp(72px, 8vw, 128px) 0 clamp(56px, 6vw, 96px);
-  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  background: ${color.sand};
+  color: ${color.primary};
+  padding: clamp(40px, 5vw, 88px) 0 clamp(56px, 6vw, 96px);
+  /* The app's sand panel rises with a curved top, as on its closing screen. */
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: clamp(40px, 6vw, 96px);
+    transform: translateY(-99%);
+    background: ${color.sand};
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  }
+  .marquee-clip {
+    overflow: hidden;
+    padding-bottom: 0.12em;
+  }
   .marquee {
     display: flex;
     width: max-content;
-    font: 400 ${display.xl} / 1.05 ${font.display};
-    letter-spacing: -0.025em;
+    font: 400 ${display.md} / 1.15 ${font.display};
+    letter-spacing: -0.01em;
     white-space: nowrap;
   }
   .marquee span {
-    padding-right: 0.45em;
+    padding-right: 0.4em;
   }
-  .marquee i {
-    font-style: italic;
-    color: ${color.gold};
-    padding-right: 0.45em;
+  .marquee b {
+    font-weight: 500;
+    color: ${color.accent};
+    padding-right: 0.4em;
   }
   .band-row {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 32px;
     align-items: end;
-    margin-top: clamp(40px, 5vw, 80px);
+    margin-top: clamp(36px, 4.5vw, 72px);
     padding-top: 24px;
-    border-top: 1px solid color-mix(in srgb, ${color.ivory} 30%, transparent);
+    border-top: 1px solid ${color.primaryLineStrong};
   }
   .band-row p {
-    font: 400 19px/1.55 ${font.body};
-    max-width: 44ch;
+    font: 400 ${display.sm} / 1.35 ${font.display};
+    max-width: 34ch;
   }
-  ${onDarkActions};
   ${media.md} {
     .band-row {
       grid-template-columns: 1fr;
@@ -223,47 +243,53 @@ const Band = styled.section`
   }
 `;
 
+/** From the app's closing mission screen (CM09). */
 const LINE = (
   <>
-    <span>The best day to begin</span>
-    <i>is an ordinary one.</i>
+    <span>The story</span>
+    <b>keeps going.</b>
+    <span>Because so do you.</span>
+    <span aria-hidden="true">·</span>
   </>
 );
 
 /**
- * The one closing invitation, used at the foot of every narrative route so
- * the last thing on any page is the same next step. The deep terracotta is
- * the brand terracotta's derived tone: ivory body text on the exact swatch
- * falls just under 4.5:1.
+ * The one closing invitation, at the foot of every narrative route: the app's
+ * own closing screen (mission CM09) — a sand panel rising on a curve,
+ * chocolate type, one word in terracotta. Sand sits softly against the
+ * chocolate footer; the saturated brass band of Pass 11b did not.
  */
 export function Invitation({
-  line = "One conversation to begin. Then a record the whole family can keep adding to.",
+  line = "One conversation to begin. The whole family keeps adding to it.",
 }: {
   line?: string;
 }) {
+  // A slow, steady drift — no scroll-linked speed-up (it made the founder dizzy).
   const ref = useScene<HTMLElement>(() => {
-    const drift = gsap.to(".marquee", { xPercent: -50, ease: "none", duration: 40, repeat: -1 });
-    gsap.to(drift, {
-      timeScale: 3,
+    gsap.to(".marquee", {
+      xPercent: -50,
       ease: "none",
-      scrollTrigger: { trigger: ".marquee", start: "top bottom", end: "bottom top", scrub: true },
+      duration: 110,
+      repeat: -1,
     });
   });
   return (
     <Band ref={ref} aria-labelledby="invitation-title">
       <h2 id="invitation-title" className="sr-only">
-        The best day to begin is an ordinary one.
+        The story keeps going. Because so do you.
       </h2>
-      <div className="marquee" aria-hidden="true">
-        {LINE}
-        {LINE}
-        {LINE}
-        {LINE}
+      <div className="marquee-clip" aria-hidden="true">
+        <div className="marquee">
+          {LINE}
+          {LINE}
+          {LINE}
+          {LINE}
+        </div>
       </div>
       <Frame className="band-row">
         <p>{line}</p>
         <PrimaryLink to="/start">
-          Join the waitlist <ArrowIcon />
+          Begin your story <ArrowIcon />
         </PrimaryLink>
       </Frame>
     </Band>
