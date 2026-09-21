@@ -1,0 +1,120 @@
+[
+  {
+    "path": "/",
+    "name": "Home",
+    "og": "home",
+    "photo": "34",
+    "phrase": [
+      "Every family has",
+      "more to tell."
+    ]
+  },
+  {
+    "path": "/how-it-works",
+    "name": "How it works",
+    "og": "how-it-works",
+    "photo": "33",
+    "phrase": [
+      "What happens after you",
+      "send the link."
+    ]
+  },
+  {
+    "path": "/for-families",
+    "name": "For families",
+    "og": "for-families",
+    "photo": "34",
+    "phrase": [
+      "Most of a life",
+      "goes undocumented."
+    ]
+  },
+  {
+    "path": "/care-communities",
+    "name": "Care communities",
+    "og": "care-communities",
+    "photo": "34",
+    "phrase": [
+      "Every resident has a life worth knowing.",
+      "A Story helps you learn it."
+    ]
+  },
+  {
+    "path": "/organizations",
+    "name": "Organizations",
+    "og": "organizations",
+    "photo": "08",
+    "phrase": [
+      "The knowledge people carry",
+      "should not leave with them."
+    ]
+  },
+  {
+    "path": "/pricing",
+    "name": "Pricing",
+    "og": "pricing",
+    "photo": "38",
+    "phrase": [
+      "Everyone starts free.",
+      "Only the calls are metered."
+    ]
+  },
+  {
+    "path": "/our-story",
+    "name": "Our story",
+    "og": "our-story",
+    "photo": "27",
+    "phrase": [
+      "They survived.",
+      "The stories didn’t."
+    ]
+  },
+  {
+    "path": "/questions",
+    "name": "Questions & answers",
+    "og": "questions",
+    "photo": "23",
+    "phrase": [
+      "Worth asking."
+    ]
+  },
+  {
+    "path": "/start",
+    "name": "Join the waitlist",
+    "og": "start",
+    "photo": "05",
+    "phrase": [
+      "Start with",
+      "a conversation."
+    ]
+  },
+  {
+    "path": "/guides",
+    "name": "Guides",
+    "og": "guides",
+    "photo": "21",
+    "phrase": [
+      "A good question",
+      "opens a door."
+    ]
+  },
+  {
+    "path": "/privacy",
+    "name": "Privacy",
+    "og": "privacy",
+    "photo": "23",
+    "phrase": [
+      "Your story.",
+      "Your choices."
+    ]
+  },
+  {
+    "path": "/terms",
+    "name": "Terms of service",
+    "og": "terms",
+    "photo": "38",
+    "phrase": [
+      "A clear beginning."
+    ]
+  }
+]

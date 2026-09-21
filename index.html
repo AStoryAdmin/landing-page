@@ -3,13 +3,80 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="logo.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
-    <link href="/index.css" rel="stylesheet" /> 
-    <title>A Story — Keep their story forever.</title>
+
+    <!-- Brand: A Story editorial web identity (2026). Matches the ground painted by the app shell
+         so there is no flash of white before React mounts. -->
+    <meta name="theme-color" content="#4A3327" />
+    <meta name="color-scheme" content="light" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <title>A Story | A private family archive built through conversation</title>
+    <meta
+      name="description"
+      content="Preserve family stories through guided conversation, photographs, original words, voice, and multiple perspectives. Keep a private living archive and print a chapter when you choose."
+    />
+    <link rel="canonical" href="https://astoryapp.com/" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="A Story" />
+    <meta property="og:title" content="A Story | A private family archive built through conversation" />
+    <meta
+      property="og:description"
+      content="Preserve family stories through guided conversation, photographs, original words, voice, and multiple perspectives. Keep a private living archive and print a chapter when you choose."
+    />
+    <meta property="og:url" content="https://astoryapp.com/" />
+    <meta property="og:image" content="https://astoryapp.com/og/home.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A Story — Your Family's Living Memories" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="A Story | A private family archive built through conversation" />
+    <meta
+      name="twitter:description"
+      content="A private family archive built through conversation."
+    />
+    <meta name="twitter:image" content="https://astoryapp.com/og/home.jpg" />
+
+    <!-- Figtree leads product communication; Source Serif 4 supplies editorial emphasis. -->
+    <link rel="preload" href="/fonts/4ba7d3d096695818.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/882b7c150c29f29d.woff2" as="font" type="font/woff2" crossorigin />
+    <link href="/fonts/fonts.css" rel="stylesheet" />
+
+    <!-- First home visit per session: paint the intro's teal ground before React boots, so the
+         prerendered page never flashes beneath it. src/pages/site/home/Intro.tsx takes it over. -->
+    <style>html.intro body{overflow:hidden}html.intro body::before{content:"";position:fixed;inset:0;z-index:2147483000;background:#0F4A58}</style>
+    <script>
+      (function () {
+        try {
+          var d = document.documentElement;
+          if (location.pathname === "/" && !sessionStorage.getItem("astory-intro-seen") &&
+              matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+            d.classList.add("intro");
+            setTimeout(function () { d.classList.remove("intro"); }, 5000);
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <div style="max-width: 42rem; margin: 4rem auto; padding: 0 1.5rem; font-family: system-ui, sans-serif; color: #514235;">
+        <h1 style="font-size: 1.75rem; color: #4A3327;">A Story</h1>
+        <p>
+          A Story helps families build a living archive through guided conversations, photographs, and shared memories. Join the waitlist to learn more.
+        </p>
+        <p>This site needs JavaScript enabled. In the meantime, reach us at
+          <a href="mailto:contact@astoryapp.com" style="color: #B85126;">contact@astoryapp.com</a>.</p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

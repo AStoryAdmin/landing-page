@@ -1,0 +1,153 @@
+{
+  "rewrites": [
+    {
+      "source": "/__design/a-story-home-vnext",
+      "destination": "/__design/a-story-home-vnext/index.html"
+    },
+    {
+      "source": "/how-it-works",
+      "destination": "/how-it-works/index.html"
+    },
+    {
+      "source": "/for-families",
+      "destination": "/for-families/index.html"
+    },
+    {
+      "source": "/care-communities",
+      "destination": "/care-communities/index.html"
+    },
+    {
+      "source": "/organizations",
+      "destination": "/organizations/index.html"
+    },
+    {
+      "source": "/pricing",
+      "destination": "/pricing/index.html"
+    },
+    {
+      "source": "/our-story",
+      "destination": "/our-story/index.html"
+    },
+    {
+      "source": "/questions",
+      "destination": "/questions/index.html"
+    },
+    {
+      "source": "/start",
+      "destination": "/start/index.html"
+    },
+    {
+      "source": "/guides",
+      "destination": "/guides/index.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy/index.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms/index.html"
+    },
+    {
+      "source": "/guides/interview-a-parent",
+      "destination": "/guides/interview-a-parent/index.html"
+    },
+    {
+      "source": "/guides/unlabeled-family-photographs",
+      "destination": "/guides/unlabeled-family-photographs/index.html"
+    },
+    {
+      "source": "/guides/different-versions",
+      "destination": "/guides/different-versions/index.html"
+    },
+    {
+      "source": "/guides/ordinary-life-questions",
+      "destination": "/guides/ordinary-life-questions/index.html"
+    },
+    {
+      "source": "/guides/sensitive-family-stories",
+      "destination": "/guides/sensitive-family-stories/index.html"
+    },
+    {
+      "source": "/guides/care-community-participation",
+      "destination": "/guides/care-community-participation/index.html"
+    },
+    {
+      "source": "/guides/knowledge-before-retirement",
+      "destination": "/guides/knowledge-before-retirement/index.html"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "geolocation=(), camera=(), payment=()"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/experience",
+      "destination": "/how-it-works",
+      "permanent": true
+    },
+    {
+      "source": "/family",
+      "destination": "/for-families",
+      "permanent": true
+    },
+    {
+      "source": "/your-story",
+      "destination": "/for-families#your-own-story",
+      "permanent": true
+    },
+    {
+      "source": "/institution",
+      "destination": "/care-communities",
+      "permanent": true
+    },
+    {
+      "source": "/story",
+      "destination": "/our-story",
+      "permanent": true
+    },
+    {
+      "source": "/faq",
+      "destination": "/questions",
+      "permanent": true
+    },
+    {
+      "source": "/why-it-matters",
+      "destination": "/#why-a-story",
+      "permanent": true
+    }
+  ]
+}

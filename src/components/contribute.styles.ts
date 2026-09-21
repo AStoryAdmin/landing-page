@@ -1,28 +1,11 @@
 import styled from 'styled-components';
+import { color, font } from '../styles/theme';
 
-const colors = {
-    dark: '#120E08',
-    ink: '#2B2117',
-    softInk: '#5C4A38',
-    cream: '#EFE6D4',
-    paper: '#F6EFE2',
-    orange: '#b45a2b',
-    orangeHover: '#8C3E18',
-    green: '#5A9E6F',
-    red: '#c0392b',
-    line: 'rgba(43, 33, 23, 0.14)',
-};
-
-const fonts = {
-    body: "'Figtree', sans-serif",
-    display: "'Cormorant Garamond', serif",
-};
-
-export const Page = styled.div`
+export const Page = styled.main`
     min-height: 100vh;
-    background: ${colors.cream};
-    color: ${colors.ink};
-    font-family: ${fonts.body};
+    background: ${color.ivory};
+    color: ${color.ink};
+    font-family: ${font.body};
 `;
 
 export const Inner = styled.div`
@@ -32,13 +15,19 @@ export const Inner = styled.div`
 `;
 
 export const Brand = styled.div`
+    display: flex;
+    justify-content: center;
     text-align: center;
     letter-spacing: 2px;
-    color: ${colors.softInk};
+    color: ${color.bodyMuted};
     font-size: 14px;
     margin-bottom: 28px;
 
-    b { color: ${colors.orange}; font-family: ${fonts.display}; font-weight: 700; }
+    b {
+        color: ${color.accent};
+        font-family: ${font.display};
+        font-weight: 700;
+    }
 `;
 
 export const Hero = styled.div`
@@ -56,24 +45,24 @@ export const Avatar = styled.div<{ $img?: string }>`
     display: flex;
     align-items: center;
     justify-content: center;
-    color: ${colors.orange};
-    font-family: ${fonts.display};
+    color: ${color.accentText};
+    font-family: ${font.display};
     font-size: 34px;
 `;
 
 export const Title = styled.h1`
-    font-family: ${fonts.display};
+    font-family: ${font.display};
     font-weight: 500;
     font-size: 38px;
     line-height: 1.1;
     margin: 0;
-    color: ${colors.dark};
+    color: ${color.primaryDeep};
 `;
 
 export const Sub = styled.p`
     font-size: 17px;
     line-height: 1.6;
-    color: ${colors.softInk};
+    color: ${color.bodyMuted};
     margin: 12px auto 0;
     max-width: 440px;
 `;
@@ -92,30 +81,32 @@ export const FieldWrap = styled.div`
 
 export const Label = styled.label`
     text-transform: uppercase;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     letter-spacing: 1.6px;
-    color: ${colors.softInk};
+    color: ${color.bodyMuted};
 `;
 
 const inputStyles = `
     padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid rgba(43, 33, 23, 0.18);
-    background: #FBF7EF;
-    font-size: 16px;
-    font-family: 'Figtree', sans-serif;
-    color: #2B2117;
-    outline: none;
+    border-radius: 2px;
+    border: 1px solid ${color.controlBorder};
+    background: ${color.paper};
+    font-size: 17px;
+    font-family: ${font.body};
+    color: ${color.ink};
+    min-height: 54px;
     transition: border-color 0.2s ease;
     width: 100%;
     box-sizing: border-box;
 
-    &:focus { border-color: #b45a2b; }
-    &::placeholder { color: rgba(43, 33, 23, 0.4); }
+    &:focus { border-color: ${color.accent}; }
+    &::placeholder { color: ${color.faint}; }
 `;
 
-export const Input = styled.input`${inputStyles}`;
+export const Input = styled.input`
+    ${inputStyles}
+`;
 
 export const Textarea = styled.textarea`
     ${inputStyles}
@@ -132,15 +123,16 @@ export const KindRow = styled.div`
 export const KindBtn = styled.button<{ $on: boolean }>`
     flex: 1;
     padding: 13px 12px;
-    border-radius: 999px;
+    border-radius: 2px;
     cursor: pointer;
-    font-family: ${fonts.body};
-    font-size: 15px;
+    font-family: ${font.body};
+    font-size: 17px;
     font-weight: 600;
     transition: all 0.2s ease;
-    border: 1px solid ${({ $on }) => ($on ? colors.orange : 'rgba(43,33,23,0.18)')};
-    background: ${({ $on }) => ($on ? colors.orange : 'transparent')};
-    color: ${({ $on }) => ($on ? colors.cream : colors.softInk)};
+    border: 1px solid
+        ${({ $on }) => ($on ? color.primary : color.controlBorder)};
+    background: ${({ $on }) => ($on ? color.primary : 'transparent')};
+    color: ${({ $on }) => ($on ? color.paperPure : color.bodyMuted)};
 `;
 
 export const PhotoRow = styled.div`
@@ -149,12 +141,12 @@ export const PhotoRow = styled.div`
     gap: 10px;
 `;
 
-export const Thumb = styled.div<{ $img: string }>`
+export const Thumb = styled.button<{ $img: string }>`
     width: 84px;
     height: 84px;
     border-radius: 10px;
     background: center/cover no-repeat url(${({ $img }) => $img});
-    border: 1px solid ${colors.line};
+    border: 1px solid ${color.primaryLine};
 `;
 
 export const FileLabel = styled.label`
@@ -162,53 +154,74 @@ export const FileLabel = styled.label`
     align-items: center;
     justify-content: center;
     padding: 13px 20px;
-    border-radius: 999px;
+    border-radius: 2px;
     border: 1px dashed rgba(43, 33, 23, 0.3);
-    color: ${colors.softInk};
-    font-size: 15px;
+    color: ${color.bodyMuted};
+    font-size: 17px;
     cursor: pointer;
     transition: border-color 0.2s ease;
 
-    &:hover { border-color: ${colors.orange}; color: ${colors.orange}; }
+    &:hover {
+        border-color: ${color.accent};
+        color: ${color.accent};
+    }
 
-    input { display: none; }
+    position: relative;
+    &:focus-within {
+        outline: 2px solid currentColor;
+        outline-offset: 3px;
+    }
+    input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
 `;
 
 export const Submit = styled.button`
     width: 100%;
     padding: 18px 28px;
-    border-radius: 999px;
+    border-radius: 2px;
     border: none;
-    background: ${colors.orange};
-    color: ${colors.cream};
-    font-family: ${fonts.body};
-    font-size: 16px;
+    background: ${color.primary};
+    color: ${color.paperPure};
+    font-family: ${font.body};
+    font-size: 17px;
     font-weight: 600;
     letter-spacing: 0.6px;
     cursor: pointer;
+    box-shadow: none;
     transition: background 0.2s ease;
     margin-top: 4px;
 
-    &:hover:not(:disabled) { background: ${colors.orangeHover}; }
-    &:disabled { opacity: 0.6; cursor: not-allowed; }
+    &:hover:not(:disabled) {
+        background: ${color.primaryHover};
+    }
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
 `;
 
 export const ErrorMsg = styled.p`
-    color: ${colors.red};
-    font-size: 15px;
+    color: ${color.error};
+    font-size: 17px;
     font-weight: 600;
     margin: 0;
 `;
 
 export const Note = styled.p`
     font-size: 14px;
-    color: ${colors.softInk};
+    color: ${color.bodyMuted};
     text-align: center;
     margin: 0;
     line-height: 1.5;
 `;
 
-export const Centered = styled.div`
+export const Centered = styled.main`
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -216,37 +229,44 @@ export const Centered = styled.div`
     justify-content: center;
     text-align: center;
     padding: 24px;
-    background: ${colors.cream};
-    color: ${colors.softInk};
-    font-family: ${fonts.body};
+    background: ${color.ivory};
+    color: ${color.bodyMuted};
+    font-family: ${font.body};
     gap: 10px;
+    h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.15; max-width: 22ch; color: ${color.primary}; }
+    p { font-size: 18px; max-width: 45ch; line-height: 1.6; }
 `;
 
 export const ThankYou = styled.div`
-    background: ${colors.paper};
-    border: 1px solid ${colors.line};
-    border-left: 3px solid ${colors.green};
-    border-radius: 18px;
+    background: ${color.paper};
+    border: 1px solid ${color.primaryLine};
+    border-left: 3px solid ${color.live};
+    border-radius: 2px;
     padding: 28px 26px;
     text-align: center;
 
     h2 {
-        font-family: ${fonts.display};
+        font-family: ${font.display};
         font-weight: 600;
         font-size: 30px;
         margin: 0 0 10px;
-        color: ${colors.dark};
+        color: ${color.primaryDeep};
     }
-    p { margin: 0; color: ${colors.softInk}; line-height: 1.6; }
+    p {
+        margin: 0;
+        color: ${color.bodyMuted};
+        line-height: 1.6;
+    }
 `;
 
 export const Again = styled.button`
+    min-height: 44px;
     margin-top: 18px;
     background: none;
     border: none;
-    color: ${colors.orange};
-    font-family: ${fonts.body};
-    font-size: 15px;
+    color: ${color.accentText};
+    font-family: ${font.body};
+    font-size: 17px;
     font-weight: 600;
     cursor: pointer;
     text-decoration: underline;

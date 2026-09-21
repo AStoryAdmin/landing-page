@@ -1,0 +1,42 @@
+import fs from 'node:fs';
+const root='src/pages/site/pass7/';
+function edit(file,fn){const s=fs.readFileSync(root+file,'utf8');fs.writeFileSync(root+file,fn(s));}
+edit('ArchiveBloom.tsx',s=>{
+ s='import ExampleNote from "./ExampleNote";\n'+s;
+ s=s.replace('stroke-width: 1;\n    opacity: 0.45;','stroke-width: 2.5;\n    opacity: 1;\n    stroke-linecap: round;\n    .spine-track { stroke-width: 22; stroke: ${color.gold}; opacity: .22; }\n    circle { fill: ${color.ivory}; stroke: ${color.accent}; stroke-width: 2.5; }');
+ s=s.replace('d="M210 145 C350 80 310 310 590 320 S850 60 1000 180 M210 480 C360 570 330 400 590 350 S870 540 1020 480"','className="spine-track"\n              d="M590 40 C580 180 750 250 735 370 S655 555 690 630"');
+ s=s.replace('pathLength="1"\n            />','pathLength="1"\n            />\n            <path d="M590 40 C580 180 750 250 735 370 S655 555 690 630 M615 150H260 M716 280H975 M714 455H270 M675 550H1010" />\n            <circle cx="615" cy="150" r="7"/><circle cx="716" cy="280" r="7"/><circle cx="714" cy="455" r="7"/><circle cx="675" cy="550" r="7"/>');
+ s=s.replace('border-radius: 100px 100px 5px 5px;','border-radius: 4px;');
+ s=s.replace('left: 50%;\n    top: 150px;','left: 48%;\n    top: 150px;');
+ s=s.replace('font-size: 15px;','font-size: 17px;').replace('font-size: 12px;','font-size: 13px;').replace('font: 600 12px','font: 600 13px').replace('font-size: 16px;','font-size: 18px;');
+ s=s.replace('top: 48px;','top: 55px;').replace('top: 58px;','top: 65px;');
+ s=s.replace('bottom: 5px;','bottom: 0;').replace('left: 38%;','left: 31%;').replace('max-width: 300px;','max-width: 450px;').replace('font: italic 29px/1.2','font: italic 34px/1.2');
+ s=s.replace('A documentary.\n            <br />\n            Not a diary.','A documentary. Not a diary.\n            <span>Different memories. Room for every voice.</span>');
+ s=s.replace('  .bloom-control {','  .bloom-caption span { display: block; font: 400 16px/1.5 ${font.body}; color: ${color.bodyMuted}; margin-top: 10px; }\n  .bloom-control {');
+ s=s.replace('gap: 7px;\n    flex-wrap: wrap;\n    margin: 20px 0 24px;','gap: 8px;\n    flex-wrap: wrap;\n    margin: 35px auto 24px;\n    padding: 8px;\n    border: 1px solid ${color.primaryLine};\n    border-radius: 14px;\n    background: ${cream.warm};\n    width: fit-content;');
+ s=s.replace('font: 500 15px','font: 600 16px').replace('min-height: 48px;','min-height: 54px;');
+ s=s.replace('  .bloom-control button[aria-pressed','  .bloom-control button { transition: background 180ms, box-shadow 180ms, transform 180ms; }\n  .bloom-control button:hover { background: ${cream.deep}; }\n  .bloom-control button:active { transform: translateY(1px); }\n  .bloom-control button[aria-pressed');
+ s=s.replace('font-size: 13px;\n      padding: 10px;','font-size: 16px;\n      padding: 12px;');
+ s=s.replace('    .constellation {\n      display: none;\n    }','    .constellation { display: none; }\n    .bloom-stage { border-left: 9px solid ${color.goldWash}; padding-left: 25px; margin-left: 6px; }\n    .artifact:after { content: ""; position: absolute; width: 30px; border-top: 2px solid ${color.accent}; top: 35px; left: -30px; }');
+ s=s.replace('<p>Illustrative archive. Names, photographs and memories are examples.</p>','<ExampleNote>{archive.disclosure} Voice highlights are visual examples; no audio plays.</ExampleNote>');
+ s=s.replace('<p className="archive-disclosure">{archive.disclosure}</p>','');
+ return s;
+});
+edit('LifeActs.tsx',s=>{
+ s=s.replace('stroke-width: 1.5;','stroke-width: 2.5;').replace('opacity: 0.6;','opacity: 1;\n    stroke-linecap: round;\n    .chronology-track { stroke: ${color.gold}; stroke-width: 24; opacity: .25; }\n    circle { fill: ${color.ivory}; stroke-width: 3; }');
+ const old='M30 60 C350 -60 800 10 775 165 C750 345 490 260 450 385 C415 490 720 555 520 647 S680 730 1120 704 Q1205 695 1245 755';
+ const path='M110 80 C240 0 600 20 625 130 C650 240 1110 180 1090 340 S460 350 460 470 S205 505 210 610 Q210 705 700 705 H1210';
+ s=s.replace('pathLength="1"\n                d="'+old+'"','className="chronology-track"\n                d="'+path+'"');
+ s=s.replace('              />\n            </svg>\n            <Frame className="time-past arrive">','              />\n              <path pathLength="1" d="'+path+'" />\n              <circle cx="150" cy="62" r="8"/><circle cx="625" cy="130" r="8"/><circle cx="1090" cy="340" r="8"/><circle cx="460" cy="470" r="8"/><circle cx="210" cy="610" r="8"/><circle cx="1095" cy="705" r="8"/>\n            </svg>\n            <Frame className="time-past arrive">');
+ s=s.replace('border-radius: 170px 170px 5px 5px;','border-radius: 4px;').replace('border-radius: 150px 150px 0 0;','border-radius: 0;');
+ s=s.replace('  .time-label {','  .time-label {\n    padding: 17px 20px;\n    background: ${cream.warm};\n    border: 1px solid ${color.primaryLine};\n    border-radius: 10px;\n    box-shadow: 0 8px 20px -16px ${color.primary};');
+ s=s.replace('font-size: 12px;','font-size: 13px;').replace('left: 46%;\n    top: 95px;','left: 46%;\n    top: 80px;').replace('top: 600px;','top: 565px;');
+ s=s.replace('[data-entered="true"] .time-path {','[data-entered="true"] .time-path path:not(.chronology-track) {');
+ s=s.replace('      opacity: 0.3;','      opacity: 0;');
+ s=s.replace('      padding: 15px 15px 70px;','      padding: 15px 10px 50px 35px;\n      border-left: 12px solid ${color.goldWash};');
+ s=s.replace('      margin-left: 20%;','      margin-left: 0;').replace('      margin-left: 8%;','      margin-left: 0;').replace('      margin-left: 26%;','      margin-left: 0;');
+ s=s.replace('      width: 75%;','      width: 90%;').replace('      width: 85%;','      width: 100%;');
+ s=s.replace('    .time-label:before {','    .time-scene > *:not(svg):before {');
+ s=s.replace('      width: 8px;\n      height: 8px;','      position: absolute; left: -46px; top: 30px;\n      width: 10px;\n      height: 10px;');
+ return s;
+});

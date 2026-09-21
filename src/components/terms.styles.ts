@@ -1,34 +1,17 @@
 import styled from 'styled-components';
-
-const colors = {
-    cream: '#EFE6D4',
-    paper: '#F6EFE2',
-    paper2: '#F1E9DA',
-    orange: '#B45A2B',
-    orangeHover: 'rgba(180, 90, 43, 0.08)',
-    dark: '#120E08',
-    gray: 'rgba(254, 252, 248, 0.5)',
-    darkGray: 'rgba(43, 33, 23, 0.7)',
-    ink08: 'rgba(43, 33, 23, 0.08)',
-};
-
-const fonts = {
-    body: "'Figtree', sans-serif",
-    display: "'Cormorant Garamond', serif",
-};
-
+import { color, font } from '../styles/theme';
 
 export const CardView = styled.div`
     max-width: 1300px;
     margin: 0 auto;
-    padding: 0 80px;
+    padding: 0 clamp(20px, 5vw, 80px);
 `;
 
 export const Label = styled.span`
     display: block;
     text-transform: uppercase;
-    color: ${colors.orange};
-    font-family: ${fonts.body};
+    color: ${color.accentText};
+    font-family: ${font.body};
     font-size: 15px;
     font-weight: 700;
     letter-spacing: 4px;
@@ -36,69 +19,69 @@ export const Label = styled.span`
 `;
 
 export const HeroSection = styled.div`
-    background: ${colors.paper2};
-    padding: 180px 0 90px;
-    border-bottom: 1px solid ${colors.ink08};
+    background: ${color.paper};
+    padding: clamp(64px, 8vw, 120px) 0 clamp(48px, 6vw, 90px);
+    border-bottom: 1px solid ${color.primaryLine};
 `;
 
 export const HeroTitle = styled.h1`
-    font-family: ${fonts.display};
-    font-size: 50px;
+    font-family: ${font.display};
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
     font-weight: 100;
     line-height: 1.1;
     letter-spacing: -1px;
-    color: ${colors.dark};
+    color: ${color.primaryDeep};
     max-width: 700px;
     margin-bottom: 20px;
 `;
 
 export const HeroSub = styled.p`
-    font-family: ${fonts.body};
+    font-family: ${font.body};
     font-size: 18px;
-    color: ${colors.darkGray};
+    color: ${color.body};
 `;
 
 export const LegalMeta = styled.p`
-    font-family: ${fonts.body};
+    font-family: ${font.body};
     font-size: 14px;
-    color: ${colors.darkGray};
+    color: ${color.body};
     margin-top: 12px;
 `;
 
 export const BodySection = styled.div`
-    background: ${colors.cream};
-    padding: 100px 0 140px;
+    background: ${color.ivory};
+    padding: clamp(56px, 7vw, 100px) 0 clamp(72px, 9vw, 140px);
 `;
 
 export const LegalContent = styled.div`
-    max-width: 720px;
+    max-width: 1080px;
 `;
 
 export const Notice = styled.div`
-    background: ${colors.orangeHover};
-    border: 1px solid ${colors.orange};
-    border-radius: 12px;
+    background: ${color.accentWash};
+    border: 1px solid ${color.accent};
+    border-radius: 4px;
     padding: 20px 24px;
     margin-bottom: 40px;
-    font-family: ${fonts.body};
+    font-family: ${font.body};
     font-size: 15px;
-    color: ${colors.darkGray};
+    color: ${color.body};
     line-height: 1.65;
 `;
 
 export const Toc = styled.nav`
-    background: ${colors.paper2};
-    border: 1px solid ${colors.ink08};
-    border-radius: 16px;
+    background: ${color.paper};
+    border: 1px solid ${color.primaryLine};
+    border-radius: 4px;
     padding: 32px;
     margin-bottom: 50px;
 `;
 
 export const TocLabel = styled.p`
-    font-family: ${fonts.body};
+    font-family: ${font.body};
     font-size: 14px;
     font-weight: 600;
-    color: ${colors.dark};
+    color: ${color.primaryDeep};
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 16px;
@@ -113,18 +96,18 @@ export const TocList = styled.ol`
 `;
 
 export const TocItem = styled.li`
-    font-family: ${fonts.body};
+    font-family: ${font.body};
     font-size: 14px;
-    color: ${colors.darkGray};
+    color: ${color.body};
 `;
 
 export const TocLink = styled.a`
-    color: ${colors.darkGray};
+    color: ${color.body};
     text-decoration: none;
     transition: color 0.2s ease;
 
     &:hover {
-        color: ${colors.orange};
+        color: ${color.accentText};
     }
 `;
 
@@ -132,7 +115,7 @@ export const Section = styled.section`
     scroll-margin-top: 120px;
     padding-top: 40px;
     margin-top: 48px;
-    border-top: 1px solid ${colors.ink08};
+    border-top: 1px solid ${color.primaryLine};
 
     &:first-of-type {
         padding-top: 0;
@@ -143,37 +126,37 @@ export const Section = styled.section`
 
 export const SectionNum = styled.span`
     display: block;
-    font-family: ${fonts.body};
+    font-family: ${font.body};
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    color: ${colors.orange};
+    color: ${color.accentText};
     margin-bottom: 8px;
 `;
 
 export const SectionTitle = styled.h2`
-    font-family: ${fonts.display};
+    font-family: ${font.display};
     font-size: 26px;
     font-weight: 500;
-    color: ${colors.dark};
+    color: ${color.primaryDeep};
     margin-bottom: 16px;
 `;
 
 export const Paragraph = styled.p`
-    font-family: ${fonts.body};
-    font-size: 16px;
+    font-family: ${font.body};
+    font-size: 18px;
     line-height: 1.8;
-    color: ${colors.darkGray};
+    color: ${color.body};
     margin-bottom: 20px;
 `;
 
 export const LegalLink = styled.a`
-    color: ${colors.orange};
+    color: ${color.accentText};
     text-decoration: underline;
 `;
 
 export const Bold = styled.strong`
-    color: ${colors.dark};
+    color: ${color.primaryDeep};
     font-weight: 600;
 `;

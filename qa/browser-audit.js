@@ -1,0 +1,6 @@
+// Local fixture only. This panel never enters the production build.
+const panel=document.createElement('aside');panel.setAttribute('aria-label','Local accessibility audit');panel.style.cssText='position:fixed;bottom:0;right:0;z-index:10000;max-width:100%;max-height:35vh;overflow:auto;padding:8px;background:white;color:#222;font:12px/1.5 system-ui;border:1px solid #999';
+const button=document.createElement('button');button.textContent='Run local accessibility audit';button.style.cssText='padding:12px;border:1px solid #555;background:white;color:#222;border-radius:5px';
+const output=document.createElement('pre');output.setAttribute('aria-label','Accessibility results');output.style.cssText='white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.5 monospace';
+panel.append(button,output);document.body.append(panel);
+button.onclick=async()=>{button.disabled=true;output.textContent='Running';try{const r=await window.axe.run(document.getElementById('root'),{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}});output.textContent=JSON.stringify(r.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})));}catch(e){output.textContent=JSON.stringify({error:e.message});}finally{button.disabled=false;}};

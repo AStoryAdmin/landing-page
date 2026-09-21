@@ -1,0 +1,14 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+const b=await chromium.launch({channel:'msedge',headless:true});
+const p=await b.newPage({viewport:{width:1440,height:900}});
+await p.goto('http://127.0.0.1:5174');await p.waitForTimeout(4000);
+await p.emulateMedia({reducedMotion:'reduce'});await p.waitForTimeout(200);
+assert.equal(await p.locator('.hero-row').evaluate(e=>[...e.children].every(c=>getComputedStyle(c).opacity==='1')),true);
+assert.equal(await p.locator('.pin-spacer').count(),0);
+await p.emulateMedia({reducedMotion:'no-preference'});
+await p.setViewportSize({width:1024,height:650});await p.waitForTimeout(300);
+assert.equal(await p.locator('.pin-spacer').count(),0);
+await p.emulateMedia({reducedMotion:'reduce'});
+await p.setViewportSize({width:393,height:852});await p.screenshot({path:'qa/refinement/mobile-opening-final.png'});
+await b.close();console.log('PASS: live reduced-motion switch restores content; short laptop has no pinned scenes.');

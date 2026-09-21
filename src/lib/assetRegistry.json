@@ -1,0 +1,2646 @@
+{
+  "10": {
+    "id": "10",
+    "canonicalName": "10_ARCHIVE_HALLWAY_CHILD_1972.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\10_ARCHIVE_HALLWAY_CHILD_1972.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "2c6d8b0b302241ad7112814b3aefbd44592bd1bd37471198035745366c1605bd",
+    "width": 1122,
+    "height": 1402,
+    "derivatives": [
+      {
+        "file": "/mission/10-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "file": "/mission/10-1200.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "file": "/mission/10-1800.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Keep coats, umbrella, school bag and shoes; door edge optional.",
+    "placement": [
+      "Home / chronology"
+    ],
+    "caption": "A child in a hallway · intended era 1972",
+    "alt": "A child in a hallway",
+    "year": 1972,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "11": {
+    "id": "11",
+    "canonicalName": "11_ARCHIVE_CARD_GAME_1962.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\11_ARCHIVE_CARD_GAME_1962.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "fc6bee0c73c3a9eaf66b39ec716381f85e7dac5c873c75f275cf07e281200eea",
+    "width": 1254,
+    "height": 1254,
+    "derivatives": [
+      {
+        "file": "/mission/11-640.webp",
+        "width": 640,
+        "height": 640
+      },
+      {
+        "file": "/mission/11-1200.webp",
+        "width": 1200,
+        "height": 1200
+      },
+      {
+        "file": "/mission/11-1800.webp",
+        "width": 1254,
+        "height": 1254
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Keep multiple hands and cards; glasses may naturally crop.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "card game · intended era 1962",
+    "alt": "card game · intended era 1962",
+    "year": 1962,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "12": {
+    "id": "12",
+    "canonicalName": "12_ARCHIVE_PHONE_CALL_1981.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\12_ARCHIVE_PHONE_CALL_1981.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "faca347c94de3b7b3abc3a71f2b0b5f630d9fa7719dc06db98a650634b97cd78",
+    "width": 1122,
+    "height": 1402,
+    "derivatives": [
+      {
+        "file": "/mission/12-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "file": "/mission/12-1200.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "file": "/mission/12-1800.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Keep receiver, wall base and cord relationship; right doorway may crop.",
+    "placement": [
+      "Home / everyday field",
+      "/guides/sensitive-family-stories"
+    ],
+    "caption": "A person using a wall telephone · intended era 1981",
+    "alt": "A person using a wall telephone",
+    "year": 1981,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "13": {
+    "id": "13",
+    "canonicalName": "13_ARCHIVE_AFTER_CANDLES_1991.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\13_ARCHIVE_AFTER_CANDLES_1991.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "736d80bdc13274589cfe36eb12f98cf672a3d4d4be555aade1d93ce332ccfbe9",
+    "width": 1254,
+    "height": 1254,
+    "derivatives": [
+      {
+        "file": "/mission/13-640.webp",
+        "width": 640,
+        "height": 640
+      },
+      {
+        "file": "/mission/13-1200.webp",
+        "width": 1200,
+        "height": 1200
+      },
+      {
+        "file": "/mission/13-1800.webp",
+        "width": 1254,
+        "height": 1254
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "after candles · intended era 1991",
+    "alt": "after candles · intended era 1991",
+    "year": 1991,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "14": {
+    "id": "14",
+    "canonicalName": "14_ARCHIVE_LAUNDRY_LINE_1956.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\14_ARCHIVE_LAUNDRY_LINE_1956.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "f0ed486c9947e949b5bc3483a15c0012a746eed4af39102c231800a6bea0785d",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/14-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/14-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/14-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "laundry line · intended era 1956",
+    "alt": "laundry line · intended era 1956",
+    "year": 1956,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "15": {
+    "id": "15",
+    "canonicalName": "15_ARCHIVE_TELEVISION_EVENING_1986.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\15_ARCHIVE_TELEVISION_EVENING_1986.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "636939d36620c335bc7d6f08fd7ebe6501325294f1377990001785b3e8bfa6f7",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/15-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/15-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/15-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "television evening · intended era 1986",
+    "alt": "television evening · intended era 1986",
+    "year": 1986,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "16": {
+    "id": "16",
+    "canonicalName": "16_ARCHIVE_ROAD_1978.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\16_ARCHIVE_ROAD_1978.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "fe916e23bf8eb970dbf87a843252628fa9ca7fcf3078139512ab74ad1af3a81e",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/16-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/16-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/16-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "road · intended era 1978",
+    "alt": "road · intended era 1978",
+    "year": 1978,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "17": {
+    "id": "17",
+    "canonicalName": "17_ARCHIVE_BREAKFAST_AFTERMATH_1996.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\17_ARCHIVE_BREAKFAST_AFTERMATH_1996.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "d590688f6033151b01d357ada7eb6c63a36afbf5a2dd437057941dd71c15ce03",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/17-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/17-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/17-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "breakfast aftermath · intended era 1996",
+    "alt": "breakfast aftermath · intended era 1996",
+    "year": 1996,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "18": {
+    "id": "18",
+    "canonicalName": "18_ARCHIVE_PORCH_RAIN_1960.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\18_ARCHIVE_PORCH_RAIN_1960.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "3a86bd611929cf9f7941a21f4f4339b576a480038dfbecceb512bb33e8ef64b0",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/18-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/18-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/18-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "porch rain · intended era 1960",
+    "alt": "porch rain · intended era 1960",
+    "year": 1960,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "19": {
+    "id": "19",
+    "canonicalName": "19_ARCHIVE_AFTER_SNOW_2003.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\19_ARCHIVE_AFTER_SNOW_2003.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "08d7a4f514150d06cd5b89e9cd7b5f756c5d70061f1e5de7346cbcf273f097dd",
+    "width": 1254,
+    "height": 1254,
+    "derivatives": [
+      {
+        "file": "/mission/19-640.webp",
+        "width": 640,
+        "height": 640
+      },
+      {
+        "file": "/mission/19-1200.webp",
+        "width": 1200,
+        "height": 1200
+      },
+      {
+        "file": "/mission/19-1800.webp",
+        "width": 1254,
+        "height": 1254
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "after snow · intended era 2003",
+    "alt": "after snow · intended era 2003",
+    "year": 2003,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "20": {
+    "id": "20",
+    "canonicalName": "20_ARCHIVE_ASLEEP_BACKSEAT_2007.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\20_ARCHIVE_ASLEEP_BACKSEAT_2007.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "b637e0fb42bd3573c76cf044a2618cdf84022eefd4968952615712f02181d3f3",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/20-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/20-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/20-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "asleep backseat · intended era 2007",
+    "alt": "asleep backseat · intended era 2007",
+    "year": 2007,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "21": {
+    "id": "21",
+    "canonicalName": "21_MODERN_LUNCH_2018.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\21_MODERN_LUNCH_2018.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "abea8e9388ed86349352793773821e519c2aa363d750572e85ec4c3275690992",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/21-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/21-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/21-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Home / everyday field and chronology",
+      "Book reader",
+      "/guides/ordinary-life-questions",
+      "/guides social card"
+    ],
+    "caption": "Hands preparing a lunchbox at a kitchen counter · intended era 2018",
+    "alt": "Hands preparing a lunchbox at a kitchen counter",
+    "year": 2018,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "22": {
+    "id": "22",
+    "canonicalName": "22_MODERN_CHILD_PROJECT_2020.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\22_MODERN_CHILD_PROJECT_2020.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "49f557c390bc1992f5cc04f6bb2722b8c6d0ab5df81a21f96a6179316ebcd55f",
+    "width": 1086,
+    "height": 1448,
+    "derivatives": [
+      {
+        "file": "/mission/22-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      {
+        "file": "/mission/22-1200.webp",
+        "width": 1086,
+        "height": 1448
+      },
+      {
+        "file": "/mission/22-1800.webp",
+        "width": 1086,
+        "height": 1448
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Home / everyday field",
+      "How it works / archive",
+      "Book reader"
+    ],
+    "caption": "A child and adult working on a project · intended era 2020",
+    "alt": "A child and adult working on a project",
+    "year": 2020,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "23": {
+    "id": "23",
+    "canonicalName": "23_MODERN_LOOKING_AT_OLD_PHOTOS_2022.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\23_MODERN_LOOKING_AT_OLD_PHOTOS_2022.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "b21cfdf6b5fe6495b6bba0ef64e771d302d5a2c034aff5d9244d4c38e8323d0c",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/23-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/23-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/23-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Home / family door",
+      "Families / help someone",
+      "/guides/unlabeled-family-photographs",
+      "/for-families social card",
+      "/questions social card",
+      "/privacy social card"
+    ],
+    "caption": "looking at old photos · intended era 2022",
+    "alt": "looking at old photos · intended era 2022",
+    "year": 2022,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "24": {
+    "id": "24",
+    "canonicalName": "24_MODERN_SLEEPING_CHILD_BACKSEAT_2024.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\24_MODERN_SLEEPING_CHILD_BACKSEAT_2024.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "56751cc3f4b38e242a22c1f45464372ab1bdbb76be2476f8d719915e3a9925f9",
+    "width": 1086,
+    "height": 1448,
+    "derivatives": [
+      {
+        "file": "/mission/24-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      {
+        "file": "/mission/24-1200.webp",
+        "width": 1086,
+        "height": 1448
+      },
+      {
+        "file": "/mission/24-1800.webp",
+        "width": 1086,
+        "height": 1448
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Home / everyday field"
+    ],
+    "caption": "A child sleeping in the backseat of a car · intended era 2024",
+    "alt": "A child sleeping in the backseat of a car",
+    "year": 2024,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "25": {
+    "id": "25",
+    "canonicalName": "25_MODERN_PARENT_CHILD_COOKING_2026.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\25_MODERN_PARENT_CHILD_COOKING_2026.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "bdd1bb7ec26b4c03a3dc4eba4f06bc6d0a8fabab8f83d3ad0863c44b19942975",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/25-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/25-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/25-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Home / final invitation",
+      "How it works / archive"
+    ],
+    "caption": "An adult and child cooking together · intended era 2026",
+    "alt": "An adult and child cooking together",
+    "year": 2026,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "26": {
+    "id": "26",
+    "canonicalName": "26_MODERN_CHILD_IMAGINARY_PLAY_2026.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\26_MODERN_CHILD_IMAGINARY_PLAY_2026.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "461792403c6354f51f4c8488d8aed3512ee4d287562b55b4d3e1a44a41aa4e32",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/26-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/26-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/26-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Home / chronology"
+    ],
+    "caption": "A child absorbed in imaginary play · intended era 2026",
+    "alt": "A child absorbed in imaginary play",
+    "year": 2026,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "27": {
+    "id": "27",
+    "canonicalName": "27_STORY_DINNER_1980.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\27_STORY_DINNER_1980.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "040fae2175b77b3993eddc1c162f044a4bb98f2a5d95eea56bf2b2b269d8fd25",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/27-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/27-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/27-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "A person telling a story while people at the dinner table listen · intended era 1980",
+    "alt": "A person telling a story while people at the dinner table listen",
+    "year": 1980,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "28": {
+    "id": "28",
+    "canonicalName": "28_STORY_LAUGHTER_1986.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\28_STORY_LAUGHTER_1986.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "93a4acd54a180e6c576a9fa7dbb70819549a91101b65c5bb47df0c1f80bae033",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/28-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/28-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/28-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Home / laughter photograph and attached product question",
+      "/ social card"
+    ],
+    "caption": "People sharing a laugh · intended era 1986",
+    "alt": "People sharing a laugh",
+    "year": 1986,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "29": {
+    "id": "29",
+    "canonicalName": "29_STORY_TUESDAY_1982.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\29_STORY_TUESDAY_1982.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "d061c015e0cf414a6962a661015acc07179a429d1614f349116ee3fb25b38f09",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/29-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/29-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/29-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "An ordinary day at home · intended era 1982",
+    "alt": "An ordinary day at home",
+    "year": 1982,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "30": {
+    "id": "30",
+    "canonicalName": "30_MULTINARRATOR_LAKE_1975.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\30_MULTINARRATOR_LAKE_1975.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "3a7738a21d3ca1317a2ef0e4e04cee57feed731a1bb7cbb00243078555141263",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/30-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/30-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/30-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved lake C source; one master only. Preserve ambiguity between joy and fear. M13 DO_NOT_SUBSTITUTE.",
+    "placement": [
+      "Home / conversation, perspectives and archive",
+      "How it works / same memory record",
+      "Book reader",
+      "/guides/different-versions"
+    ],
+    "caption": "People at the edge of a lake during a summer afternoon · intended era 1975",
+    "alt": "People at the edge of a lake during a summer afternoon",
+    "year": 1975,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "31": {
+    "id": "31",
+    "canonicalName": "31_CONTEXT_FACE_1958.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\31_CONTEXT_FACE_1958.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "410addcd28fb4a2948bc5e3871dbca7076d64a37245869aac70f295c686a6c8d",
+    "width": 1254,
+    "height": 1254,
+    "derivatives": [
+      {
+        "file": "/mission/31-640.webp",
+        "width": 640,
+        "height": 640
+      },
+      {
+        "file": "/mission/31-1200.webp",
+        "width": 1200,
+        "height": 1200
+      },
+      {
+        "file": "/mission/31-1800.webp",
+        "width": 1254,
+        "height": 1254
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Home / archive context and own-story door",
+      "Families / own-story portrait"
+    ],
+    "caption": "face · intended era 1958",
+    "alt": "face · intended era 1958",
+    "year": 1958,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "32": {
+    "id": "32",
+    "canonicalName": "32_CONTEXT_PLACE_1970.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\32_CONTEXT_PLACE_1970.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "8534d8a74464449d98db2e9027e5488f1b3e73ab1cfd52a804ea8e4bd084be7a",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/32-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/32-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/32-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Home / archive context",
+      "Families / own-story place"
+    ],
+    "caption": "place · intended era 1970",
+    "alt": "place · intended era 1970",
+    "year": 1970,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "33": {
+    "id": "33",
+    "canonicalName": "33_PRESENT_CONVERSATION_2026.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\33_PRESENT_CONVERSATION_2026.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "0252cac9ac1246a49bf31555e29398e253eae6343a495859b24797da2d9210a8",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/33-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/33-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/33-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Home / conversation",
+      "How it works / setup",
+      "/guides/interview-a-parent",
+      "/how-it-works social card",
+      "/start social card"
+    ],
+    "caption": "Two adults talking across a kitchen table · intended era 2026",
+    "alt": "Two adults talking across a kitchen table",
+    "year": 2026,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "34": {
+    "id": "34",
+    "canonicalName": "34_PRESENT_COLLABORATIVE_MEMORY_2026.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\34_PRESENT_COLLABORATIVE_MEMORY_2026.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "c5e1e013cd8b7ac43c1b4191fc0ed81aed732cc1fe642104cea60abc8044aece",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/34-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/34-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/34-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "How it works / family contribution",
+      "/guides/care-community-participation"
+    ],
+    "caption": "People comparing photographs and recollections · intended era 2026",
+    "alt": "People comparing photographs and recollections",
+    "year": 2026,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "35": {
+    "id": "35",
+    "canonicalName": "35_PRESENT_STORY_CONTINUES_2026.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\35_PRESENT_STORY_CONTINUES_2026.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "46cbd320b5f32b0a199da21702c1dc8db5e74292809dcd004bed8639bbc58a40",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/35-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/35-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/35-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Home / everyday field, chronology and continuation",
+      "How it works / archive",
+      "Our Story / continuing life",
+      "Book reader",
+      "/our-story social card"
+    ],
+    "caption": "An adult carrying laundry through a contemporary home · intended era 2026",
+    "alt": "An adult carrying laundry through a contemporary home",
+    "year": 2026,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "36": {
+    "id": "36",
+    "canonicalName": "36_BOOK_CONVENTIONAL_MEMOIR.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\36_BOOK_CONVENTIONAL_MEMOIR.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "05f77c308f1b6346c9977d68a72cd437c65d53bce351787db19f5467ff468563",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/36-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/36-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/36-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Conventional memoir contrast only. Earlier source manifest status is superseded by current explicit instruction to use the approved existing contrast object. No exact current screen assignment was supplied; do not silently add it to a screen. No exact current screen assignment was supplied; do not silently add it to a screen. No exact current screen assignment was supplied; do not silently add it to a screen.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "Conventional memoir reference object, not the A Story product",
+    "alt": "Conventional memoir reference object, not the A Story product",
+    "year": "",
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "37": {
+    "id": "37",
+    "canonicalName": "37_BOOK_ASTORY_OPEN_VOLUME.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\37_BOOK_ASTORY_OPEN_VOLUME.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "f2e087c25bd4c32c8935ea6c24dbfd36f5ff345309359f9cbf70c2e105251d55",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/37-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/37-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/37-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Latest approved open volume; native transparent canvas; representative interior locked.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "The approved open A Story volume with its representative interior",
+    "alt": "The approved open A Story volume with its representative interior",
+    "year": "",
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "38": {
+    "id": "38",
+    "canonicalName": "38_BOOK_ASTORY_CLOSED_VOLUME.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\38_BOOK_ASTORY_CLOSED_VOLUME.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "546d818ff1a72240ca0f2fb925111c0bef9052bc7f984e452ceafa9e4042d403",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/38-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/38-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/38-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Latest micro-polished teal closed book; native transparent master, not enlarged delivery export.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "The approved teal A Story closed volume",
+    "alt": "The approved teal A Story closed volume",
+    "year": "",
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "40": {
+    "id": "40",
+    "canonicalName": "40_BOOK_ASTORY_INTERIOR_DETAIL.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\40_BOOK_ASTORY_INTERIOR_DETAIL.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "91b71957fc09aab457cb158e03e7b64939e3ec6cd5ce9033bf8bd1ec2ec126da",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/40-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/40-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/40-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved page/binding close-up: teal textile edge, sewn gutter, paper and printed photo. Full cloth hero is also in book derivatives.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "A detail of the approved A Story interior pages and binding",
+    "alt": "A detail of the approved A Story interior pages and binding",
+    "year": "",
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "41": {
+    "id": "41",
+    "canonicalName": "41_MODERN_PARENT_TODDLER_2025.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\41_MODERN_PARENT_TODDLER_2025.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "af4f5a392c0a80a2c0cdd0a97dede9f96be002af16803886e0636fde876eb1ad",
+    "width": 1086,
+    "height": 1448,
+    "derivatives": [
+      {
+        "file": "/mission/41-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      {
+        "file": "/mission/41-1200.webp",
+        "width": 1086,
+        "height": 1448
+      },
+      {
+        "file": "/mission/41-1800.webp",
+        "width": 1086,
+        "height": 1448
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Corrected source verified against locked SHA-256 and visually inspected; pre-correction source excluded. Parent catches absorbed block-loading play.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "parent toddler · intended era 2025",
+    "alt": "parent toddler · intended era 2025",
+    "year": 2025,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "42": {
+    "id": "42",
+    "canonicalName": "42_MODERN_PRIVATE_SNAPSHOT_2026.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\42_MODERN_PRIVATE_SNAPSHOT_2026.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "cd337fcf58b4ffc27b8f20a7f199a5478d73bd8585be56d78a58dcb2848a4306",
+    "width": 1086,
+    "height": 1448,
+    "derivatives": [
+      {
+        "file": "/mission/42-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      {
+        "file": "/mission/42-1200.webp",
+        "width": 1086,
+        "height": 1448
+      },
+      {
+        "file": "/mission/42-1800.webp",
+        "width": 1086,
+        "height": 1448
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Sisters share a small private moment.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "private snapshot · intended era 2026",
+    "alt": "private snapshot · intended era 2026",
+    "year": 2026,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "43": {
+    "id": "43",
+    "canonicalName": "43_MODERN_SCHOOL_FRIENDS_2025.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\43_MODERN_SCHOOL_FRIENDS_2025.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "f793b18520b1f8b6178031742cd0a3c89858fe94f0630cbc204b306df8848a7d",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/43-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/43-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/43-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Teen photographs friends waiting for ride.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "school friends · intended era 2025",
+    "alt": "school friends · intended era 2025",
+    "year": 2025,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "44": {
+    "id": "44",
+    "canonicalName": "44_MODERN_FIRST_APARTMENT_2024.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\44_MODERN_FIRST_APARTMENT_2024.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "619fa6d51e1ff87ba6385057232c98215c1de88113624e9424e6fb23d2443298",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/44-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/44-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/44-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Partner photographs furniture assembly interruption.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "Life in a first apartment · intended era 2024",
+    "alt": "Life in a first apartment",
+    "year": 2024,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "45": {
+    "id": "45",
+    "canonicalName": "45_MODERN_LATE_NIGHT_FRIENDS_2023.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\45_MODERN_LATE_NIGHT_FRIENDS_2023.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "9d5e4778b1041a954b4e7ad01064be6316fde175ac8c3cc73530a18f1e03f424",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/45-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/45-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/45-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Friend records end of game night.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "late night friends · intended era 2023",
+    "alt": "late night friends · intended era 2023",
+    "year": 2023,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "46": {
+    "id": "46",
+    "canonicalName": "46_MODERN_COLLEGE_ROOMMATES_2019.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\46_MODERN_COLLEGE_ROOMMATES_2019.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "e82eb428d8e632c6c4fc6d4125c886615c13571ee11a01d34d3266dbdbb1e51b",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/46-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/46-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/46-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Corrected source verified against locked SHA-256 and visually inspected; pre-correction source excluded. Roommate catches laundry sorting and conversation.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "college roommates · intended era 2019",
+    "alt": "college roommates · intended era 2019",
+    "year": 2019,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "47": {
+    "id": "47",
+    "canonicalName": "47_ARCHIVE_SCHOOL_FRIENDS_1998.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\47_ARCHIVE_SCHOOL_FRIENDS_1998.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "1dd26fabf1979692d822e2d9a9a0283d10b2e0d4bfb1f9563c0279d512bfc74c",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/47-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/47-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/47-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Teen photographs friends after school.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "school friends · intended era 1998",
+    "alt": "school friends · intended era 1998",
+    "year": 1998,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "48": {
+    "id": "48",
+    "canonicalName": "48_EARLY_DIGITAL_FIRST_APARTMENT_2006.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\48_EARLY_DIGITAL_FIRST_APARTMENT_2006.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "d576afc40875baae9722018799c4f265b52ed54fc4c8c3ddec0fd55560865050",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/48-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/48-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/48-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Partner catches improvised table repair.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "digital first apartment · intended era 2006",
+    "alt": "digital first apartment · intended era 2006",
+    "year": 2006,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "49": {
+    "id": "49",
+    "canonicalName": "49_MODERN_GRADUATION_FRIENDS_2025.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\49_MODERN_GRADUATION_FRIENDS_2025.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "afcd99c95b355f2c57b3b98aedbad100f85a8369ba90abd2c9316bcfcb40ebc4",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/49-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/49-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/49-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Friends intentionally keep graduation together.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "graduation friends · intended era 2025",
+    "alt": "graduation friends · intended era 2025",
+    "year": 2025,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "50": {
+    "id": "50",
+    "canonicalName": "50_MODERN_ANNUAL_CHILD_PORTRAIT_2024.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\50_MODERN_ANNUAL_CHILD_PORTRAIT_2024.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "40e5c71fcb20a7433392fd780d64d8cb72469638245deccac70c3655d098a4aa",
+    "width": 1086,
+    "height": 1448,
+    "derivatives": [
+      {
+        "file": "/mission/50-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      {
+        "file": "/mission/50-1200.webp",
+        "width": 1086,
+        "height": 1448
+      },
+      {
+        "file": "/mission/50-1800.webp",
+        "width": 1086,
+        "height": 1448
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Parent records child and current handmade interest.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "annual child portrait · intended era 2024",
+    "alt": "annual child portrait · intended era 2024",
+    "year": 2024,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "51": {
+    "id": "51",
+    "canonicalName": "51_MODERN_INTENTIONAL_COUPLE_2023.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\51_MODERN_INTENTIONAL_COUPLE_2023.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "c6ab2879db0059d00b5d7a2fc38fd207ca1e9ead829b70b4eca8dc53a923ba6e",
+    "width": 1086,
+    "height": 1448,
+    "derivatives": [
+      {
+        "file": "/mission/51-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      {
+        "file": "/mission/51-1200.webp",
+        "width": 1086,
+        "height": 1448
+      },
+      {
+        "file": "/mission/51-1800.webp",
+        "width": 1086,
+        "height": 1448
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Couple wants photograph dressed up at wedding.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "intentional couple · intended era 2023",
+    "alt": "intentional couple · intended era 2023",
+    "year": 2023,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "52": {
+    "id": "52",
+    "canonicalName": "52_MODERN_INTENTIONAL_GROUP_2026.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\52_MODERN_INTENTIONAL_GROUP_2026.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "26b03bd272cd642dddb5a9b3477f0b165761388bae7b2e5d27a99116251dbd18",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/52-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/52-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/52-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Relatives intentionally keep backyard gathering.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "intentional group · intended era 2026",
+    "alt": "intentional group · intended era 2026",
+    "year": 2026,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "01": {
+    "id": "01",
+    "canonicalName": "01_ARCHIVE_ANCHOR_PORCH_1952.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\01_ARCHIVE_ANCHOR_PORCH_1952.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "1140704a31a5c2b4b5ca2b441bf73ea01464df9c9f08ec98426e2c5e00f05155",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/01-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/01-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/01-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Approved selected image; preserve native photographic authorship.",
+    "placement": [
+      "Home / living timeline",
+      "Book reader"
+    ],
+    "caption": "Two people on the porch steps of a home · intended era 1952",
+    "alt": "Two people on the porch steps of a home",
+    "year": 1952,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "02": {
+    "id": "02",
+    "canonicalName": "02_MILESTONE_WEDDING_1961.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\02_MILESTONE_WEDDING_1961.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "b0c232368af6166631cc232303bbb714d894ba00ea5eb184e9b18cf019e165fa",
+    "width": 1122,
+    "height": 1402,
+    "derivatives": [
+      {
+        "file": "/mission/02-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "file": "/mission/02-1200.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "file": "/mission/02-1800.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Keep couple, cake and hands; avoid tight lower crop if tea-length dress must read.",
+    "placement": [
+      "Home / milestones"
+    ],
+    "caption": "wedding · intended era 1961",
+    "alt": "wedding · intended era 1961",
+    "year": 1961,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "03": {
+    "id": "03",
+    "canonicalName": "03_MILESTONE_FIRST_HOUSE_1973.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\03_MILESTONE_FIRST_HOUSE_1973.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "4e39c4dded02d6f86cbb14bdce8211b672ad9aa8b3d28bb4f24849a556bee168",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/03-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/03-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/03-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Keep adult with box, child/entrance and enough house. Extreme left wagon and some driveway can crop; tight portrait crop loses house context.",
+    "placement": [
+      "Home / milestones"
+    ],
+    "caption": "first house · intended era 1973",
+    "alt": "first house · intended era 1973",
+    "year": 1973,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "04": {
+    "id": "04",
+    "canonicalName": "04_MILESTONE_GRADUATION_1994.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\04_MILESTONE_GRADUATION_1994.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "39a66d8b8168cf54b82727a86239acf6adb76b5facda0547bd397820d59e2d40",
+    "width": 1122,
+    "height": 1402,
+    "derivatives": [
+      {
+        "file": "/mission/04-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "file": "/mission/04-1200.webp",
+        "width": 1122,
+        "height": 1402
+      },
+      {
+        "file": "/mission/04-1800.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Retain cap, face and visible diploma edge. Diploma and hand already partly cropped at bottom; avoid additional lower loss.",
+    "placement": [
+      "Home / milestones"
+    ],
+    "caption": "graduation · intended era 1994",
+    "alt": "graduation · intended era 1994",
+    "year": 1994,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "05": {
+    "id": "05",
+    "canonicalName": "05_ARCHIVE_KITCHEN_FLOUR_1960.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\05_ARCHIVE_KITCHEN_FLOUR_1960.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "cb6d5624be1f6b924a484ffddae3888de86aa3537d2352127509ea245c6d4211",
+    "width": 1254,
+    "height": 1254,
+    "derivatives": [
+      {
+        "file": "/mission/05-640.webp",
+        "width": 640,
+        "height": 640
+      },
+      {
+        "file": "/mission/05-1200.webp",
+        "width": 1200,
+        "height": 1200
+      },
+      {
+        "file": "/mission/05-1800.webp",
+        "width": 1254,
+        "height": 1254
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Hands, dough and counter; preserve horizontal work surface for rhyme.",
+    "placement": [
+      "Home / everyday field and chronology",
+      "Care / familiar things",
+      "Book reader"
+    ],
+    "caption": "Hands kneading dough on a flour-covered counter · intended era 1960",
+    "alt": "Hands kneading dough on a flour-covered counter",
+    "year": 1960,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "06": {
+    "id": "06",
+    "canonicalName": "06_ARCHIVE_DOG_AT_WINDOW_1974.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\06_ARCHIVE_DOG_AT_WINDOW_1974.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "d8eda8dbff3254c3664e2da91025ddfd3aa376aeb32e64298986c7d5c1ad12f4",
+    "width": 1254,
+    "height": 1254,
+    "derivatives": [
+      {
+        "file": "/mission/06-640.webp",
+        "width": 640,
+        "height": 640
+      },
+      {
+        "file": "/mission/06-1200.webp",
+        "width": 1200,
+        "height": 1200
+      },
+      {
+        "file": "/mission/06-1800.webp",
+        "width": 1254,
+        "height": 1254
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Keep curled dog and nearby shoe; window can partly crop.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "dog at window · intended era 1974",
+    "alt": "dog at window · intended era 1974",
+    "year": 1974,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "07": {
+    "id": "07",
+    "canonicalName": "07_ARCHIVE_CHILD_CAR_WINDOW_1977.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\07_ARCHIVE_CHILD_CAR_WINDOW_1977.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "6f2b7e0836975cb2883b97cfb4291f0d1d81e3e3bb2e922fe630f588c9ad58f7",
+    "width": 1254,
+    "height": 1254,
+    "derivatives": [
+      {
+        "file": "/mission/07-640.webp",
+        "width": 640,
+        "height": 640
+      },
+      {
+        "file": "/mission/07-1200.webp",
+        "width": 1200,
+        "height": 1200
+      },
+      {
+        "file": "/mission/07-1800.webp",
+        "width": 1254,
+        "height": 1254
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Keep back of head, window and environmental reflection; seat edge optional.",
+    "placement": [
+      "Home / everyday field and chronology"
+    ],
+    "caption": "A child looking out of a car window · intended era 1977",
+    "alt": "A child looking out of a car window",
+    "year": 1977,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "08": {
+    "id": "08",
+    "canonicalName": "08_ARCHIVE_WORKBENCH_REPAIR_1984.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\08_ARCHIVE_WORKBENCH_REPAIR_1984.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "3246132a67abab0d2e396a3bdd404f34068193d1c857c62c34c0b31246999466",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/08-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/08-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/08-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Keep half-repaired fan and removed grille; marginal tools can crop.",
+    "placement": [
+      "Home / organization door",
+      "Organizations / opening and institutional record",
+      "/guides/knowledge-before-retirement",
+      "/organizations social card"
+    ],
+    "caption": "A person repairing a fan at a workbench · intended era 1984",
+    "alt": "A person repairing a fan at a workbench",
+    "year": 1984,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "09": {
+    "id": "09",
+    "canonicalName": "09_ARCHIVE_AFTER_PICNIC_1964.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\01_PRIMARY_MASTERS_01-52\\09_ARCHIVE_AFTER_PICNIC_1964.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "52d34999ce486f47e972cdc4604de53e67381a8748863ebc79f3983a32d62894",
+    "width": 1536,
+    "height": 1024,
+    "derivatives": [
+      {
+        "file": "/mission/09-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "/mission/09-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "/mission/09-1800.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Keep leaning relatives and meal remnants; tight crop loses third relative.",
+    "placement": [
+      "Home / everyday field and chronology"
+    ],
+    "caption": "The ordinary aftermath of a picnic · intended era 1964",
+    "alt": "The ordinary aftermath of a picnic",
+    "year": 1964,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "S01": {
+    "id": "S01",
+    "canonicalName": "S01_ACTIVITY_FAMILY_CAMPFIRE_2024.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\02_ACTIVITY_SUPPLEMENT_S01-S08\\S01_ACTIVITY_FAMILY_CAMPFIRE_2024.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "75613a6e58a74328f0520b3ac4287ffeea6d8c2c1e71506498d13e424f9f2a93",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/S01-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/S01-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/S01-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Separate hands and bodies; chair supports and marshmallow-stick/fire spacing physically plausible.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "family campfire · intended era 2024",
+    "alt": "family campfire · intended era 2024",
+    "year": 2024,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "S02": {
+    "id": "S02",
+    "canonicalName": "S02_ACTIVITY_HIKING_FRIENDS_2025.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\02_ACTIVITY_SUPPLEMENT_S01-S08\\S02_ACTIVITY_HIKING_FRIENDS_2025.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "4b3d4ffadf979ce0a9d313a6beea6ca1e1af607fc79fb10edb63a1678be4a5f7",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/S02-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/S02-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/S02-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Shoes contact rock/soil; pack straps and leg/hand ownership coherent. Incidental hat badge retained.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "hiking friends · intended era 2025",
+    "alt": "hiking friends · intended era 2025",
+    "year": 2025,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "S03": {
+    "id": "S03",
+    "canonicalName": "S03_ACTIVITY_BASEBALL_CHEERING_2024.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\02_ACTIVITY_SUPPLEMENT_S01-S08\\S03_ACTIVITY_BASEBALL_CHEERING_2024.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "5927ceefcd177ba2440d96d1d8759381df38f79f484a827c1cf355e3d24e91da",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/S03-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/S03-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/S03-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Clapping palms, raised arm, seated legs and bleachers coherent; no obvious duplicated background people.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "baseball cheering · intended era 2024",
+    "alt": "baseball cheering · intended era 2024",
+    "year": 2024,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "S04": {
+    "id": "S04",
+    "canonicalName": "S04_ACTIVITY_PARENT_CHILD_CATCH_2025.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\02_ACTIVITY_SUPPLEMENT_S01-S08\\S04_ACTIVITY_PARENT_CHILD_CATCH_2025.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "2f55e6d8c7cfadf29423de19aae1fc592dc61c7330b31a3457f9c114201cf12e",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/S04-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/S04-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/S04-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Ball remains in child’s bare right hand; left glove and receiver glove orientation coherent; stance plausible.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "parent child catch · intended era 2025",
+    "alt": "parent child catch · intended era 2025",
+    "year": 2025,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "S05": {
+    "id": "S05",
+    "canonicalName": "S05_ACTIVITY_FAMILY_LAKE_DAY_2024.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\02_ACTIVITY_SUPPLEMENT_S01-S08\\S05_ACTIVITY_FAMILY_LAKE_DAY_2024.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "9c6aaf09744d40888d3b72ca6004d2059174134875cfdd8e6ffeac8c1d51d200",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/S05-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/S05-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/S05-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Crouching parent and kneeling children have plausible supports; bucket, wet sand and shoreline consistent.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "family lake day · intended era 2024",
+    "alt": "family lake day · intended era 2024",
+    "year": 2024,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "S06": {
+    "id": "S06",
+    "canonicalName": "S06_ACTIVITY_PARENT_CHILD_BAKING_2026.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\02_ACTIVITY_SUPPLEMENT_S01-S08\\S06_ACTIVITY_PARENT_CHILD_BAKING_2026.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "bda691739e0289f5e3d0dc7b880d7a8e04a088205667c137612d2a5c37d554fc",
+    "width": 1086,
+    "height": 1448,
+    "derivatives": [
+      {
+        "file": "/mission/S06-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      {
+        "file": "/mission/S06-1200.webp",
+        "width": 1086,
+        "height": 1448
+      },
+      {
+        "file": "/mission/S06-1800.webp",
+        "width": 1086,
+        "height": 1448
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Child grips spoon and bowl rim; parent supports bowl separately; utensil enters batter; feet supported by stool.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "parent child baking · intended era 2026",
+    "alt": "parent child baking · intended era 2026",
+    "year": 2026,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "S07": {
+    "id": "S07",
+    "canonicalName": "S07_ACTIVITY_COASTAL_FERRY_FRIENDS_2023.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\02_ACTIVITY_SUPPLEMENT_S01-S08\\S07_ACTIVITY_COASTAL_FERRY_FRIENDS_2023.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "bce0fc5379a97a9e2cf3151bfa199b5f77d6d1eee3ea465b1adca49c94820b05",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/S07-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/S07-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/S07-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Hands meet rails; railing/deck joins and body/foot contacts coherent; no obvious duplicated limbs.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "coastal ferry friends · intended era 2023",
+    "alt": "coastal ferry friends · intended era 2023",
+    "year": 2023,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "S08": {
+    "id": "S08",
+    "canonicalName": "S08_ACTIVITY_SKI_DAY_2025.png",
+    "source": "C:\\Users\\vngia\\OneDrive - Umich\\Desktop\\My startups\\A Story - W Daniel\\Web App Ver Daniel\\09142026\\qa\\locked-library\\AStory_Master_Visual_Library_UIUX_LOCKED\\02_ACTIVITY_SUPPLEMENT_S01-S08\\S08_ACTIVITY_SKI_DAY_2025.png",
+    "sourceStatus": "recovered-locked-master",
+    "sha256": "f82863c1e22d8bf2b3fbdc467402ab908e45a5ac67b481915287ce8ce4d2fdda",
+    "width": 1448,
+    "height": 1086,
+    "derivatives": [
+      {
+        "file": "/mission/S08-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "file": "/mission/S08-1200.webp",
+        "width": 1200,
+        "height": 900
+      },
+      {
+        "file": "/mission/S08-1800.webp",
+        "width": 1448,
+        "height": 1086
+      }
+    ],
+    "cropMode": "Natural proportions for mission prints and timeline. Controlled responsive crops for page introductions and small product thumbnails; book objects always contain.",
+    "focalRequirements": "Boots seated in bindings; separate paired skis and poles plausible; standing weight distribution coherent. Incidental gear lettering retained.",
+    "placement": [
+      "Approved reserve"
+    ],
+    "caption": "ski day · intended era 2025",
+    "alt": "ski day · intended era 2025",
+    "year": 2025,
+    "generationPrompt": null,
+    "provenance": "Approved synthetic illustration; not a customer photograph or a documented family."
+  },
+  "g01desktop": {
+    "id": "g01desktop",
+    "canonicalName": "ASTORY_WEB_G01_PHONE_IN_HAND_PLATE_DESKTOP.png",
+    "resolvedSourcePath": "qa/generated/ASTORY_WEB_G01_PHONE_IN_HAND_PLATE_DESKTOP.png",
+    "sourceStatus": "new generated plate; final app composite pending required boards",
+    "sourceSha256": "0b9de0cd447c744c01909a492b87309e86be01b6a6f6c3f26bcaf99db24e640e",
+    "nativeDimensions": {
+      "width": 1448,
+      "height": 1086
+    },
+    "deliveryDerivatives": [
+      {
+        "path": "public/supplements/g01desktop-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "path": "public/supplements/g01desktop-1200.webp",
+        "width": 1200,
+        "height": 900
+      }
+    ],
+    "cropMode": "natural proportions",
+    "focalRequirements": "Keep head, phone, hands and gesture intact.",
+    "intendedPlacement": [
+      "Unused optional phone-scene source; no finished composite is published."
+    ],
+    "altText": "A phone held over a kitchen table with its screen left blank for a product composite",
+    "caption": "Illustrative scene, not a customer photograph.",
+    "generationPrompt": "Generate a photorealistic 4:3 desktop photograph for ASTORY_WEB_G01_PHONE_IN_HAND_PLATE_DESKTOP. Contemporary quietly observed close photograph of an adult family organizer seated at ordinary kitchen table, holding a modern smartphone in portrait orientation. Near shoulder height looking slightly down. Phone nearly front-facing, mild 5–10 degree lean, screen completely visible with no fingers over it; display occupies 55–65% image height. Anatomically believable hand, thumb on edge, fingers supporting back, natural skin, ordinary neutral clothing. Thin graphite unbranded dark case. Uniform pale ivory BLANK display for later deterministic compositing, absolutely no text/logo/icons/UI. Phone slightly right of center, non-busy domestic context on left; entire hand/device visible. Muted wood table, partly used mug, perhaps corner of two prints. Ordinary side daylight, credible contact shadows, moderate depth of field, screen and hand in focus. No face posing for camera, jewelry focus, luxurious props, marble, flowers, candles, gold pen, cinematic bokeh, orange grading, fake app or typography. New fictional illustrative scene. 2400x1800 if supported, otherwise native highest suitable resolution."
+  },
+  "g01mobile": {
+    "id": "g01mobile",
+    "canonicalName": "ASTORY_WEB_G01_PHONE_IN_HAND_PLATE_MOBILE.png",
+    "resolvedSourcePath": "qa/generated/ASTORY_WEB_G01_PHONE_IN_HAND_PLATE_MOBILE.png",
+    "sourceStatus": "new generated plate; final app composite pending required boards",
+    "sourceSha256": "646977c4ee2f6e4a22ecdfa7c4ce5aba93df5064750e8ea242fe2d0e3c21e3e5",
+    "nativeDimensions": {
+      "width": 1122,
+      "height": 1402
+    },
+    "deliveryDerivatives": [
+      {
+        "path": "public/supplements/g01mobile-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "path": "public/supplements/g01mobile-1200.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "natural proportions",
+    "focalRequirements": "Keep head, phone, hands and gesture intact.",
+    "intendedPlacement": [
+      "Unused optional phone-scene source; no finished composite is published."
+    ],
+    "altText": "A phone held over a kitchen table with its screen left blank for a product composite",
+    "caption": "Illustrative scene, not a customer photograph.",
+    "generationPrompt": "Create a separately composed portrait 4:5 photograph named ASTORY_WEB_G01_PHONE_IN_HAND_PLATE_MOBILE. A quietly observed contemporary family organizer seated at an ordinary muted wood kitchen table holding an unbranded graphite smartphone nearly straight toward their own gaze, slight 5 degree lean. Shoulder-height slightly downward viewpoint. Complete device and supporting hand centered, no fingers cover screen. Display about 60% of image height and UNIFORM BLANK PALE IVORY, no words, logos, icons or invented interface; will be composited later. Correct natural anatomy, thumb on edge, other fingers support back, ordinary skin texture, neutral sleeve, no jewelry focus. Half-used mug and edge of two photo prints, subdued lived-in domestic context. Side daylight, moderate depth of field, hand and screen sharp, believable shadows. No luxury interior, staged presentation to camera, flowers, candles, fake UI, orange grade, cinematic blur. This is a NEW fictional illustrative photo. Do not crop a desktop composition. Target 1920x2400 if supported, otherwise native available resolution."
+  },
+  "g02desktop": {
+    "id": "g02desktop",
+    "canonicalName": "ASTORY_WEB_G02_EVERYDAY_CALL_DESKTOP.png",
+    "resolvedSourcePath": "qa/generated/ASTORY_WEB_G02_EVERYDAY_CALL_DESKTOP.png",
+    "sourceStatus": "new generated supplemental illustration",
+    "sourceSha256": "82d76ab8ae50b2a49b6477bf793f8d868b7366a4de91869d8d3fd0ac74648356",
+    "nativeDimensions": {
+      "width": 1536,
+      "height": 1024
+    },
+    "deliveryDerivatives": [
+      {
+        "path": "public/supplements/g02desktop-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "path": "public/supplements/g02desktop-1200.webp",
+        "width": 1200,
+        "height": 800
+      }
+    ],
+    "cropMode": "natural proportions",
+    "focalRequirements": "Keep head, phone, hands and gesture intact.",
+    "intendedPlacement": [
+      "Unused supplemental illustration"
+    ],
+    "altText": "A woman talking on her phone at the kitchen table, gesturing with her free hand",
+    "caption": "Illustrative scene, not a customer photograph.",
+    "generationPrompt": "Generate ASTORY_WEB_G02_EVERYDAY_CALL_DESKTOP, a natural 3:2 present-day domestic photograph. Fictional older adult woman in her early seventies sits at modest kitchen table holding a smartphone naturally to ear. Mid-thought listening, gaze slightly away, small unperformed free-hand gesture, never smiling at camera. Subject in right two thirds with ordinary room context left, no giant blank wall; preserve head, phone hand, free-hand gesture. Folded mail and half-used tea mug nearby, lived-in but undramatic home, ordinary individual clothing, unstyled hair, honest skin. Soft slightly flat daylight, natural photographic imperfection, physically credible anatomy/phone-to-ear contact/furniture/shadows. No deliberate sadness, advertising grin, therapy or nursing-home setting, luxury props, sepia, heavy grain, orange grade, dramatic rim light, brand-coordinated clothes, medical props, headset, lapel mic, waveform, visible text or logos. Immediately communicates an ordinary conversation at home. New synthetic scene, not a real customer or relative. Target long edge at least2400 if supported, otherwise preserve native generation resolution."
+  },
+  "g02mobile": {
+    "id": "g02mobile",
+    "canonicalName": "ASTORY_WEB_G02_EVERYDAY_CALL_MOBILE.png",
+    "resolvedSourcePath": "qa/generated/ASTORY_WEB_G02_EVERYDAY_CALL_MOBILE.png",
+    "sourceStatus": "new generated supplemental illustration",
+    "sourceSha256": "798bae1a519cef63887c6c46954420ef5fa952c2e78de7187b78c2ff07635cd2",
+    "nativeDimensions": {
+      "width": 1122,
+      "height": 1402
+    },
+    "deliveryDerivatives": [
+      {
+        "path": "public/supplements/g02mobile-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "path": "public/supplements/g02mobile-1200.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "natural proportions",
+    "focalRequirements": "Keep head, phone, hands and gesture intact.",
+    "intendedPlacement": [
+      "Unused supplemental illustration"
+    ],
+    "altText": "A woman talking on her phone at the kitchen table, gesturing with her free hand",
+    "caption": "Illustrative scene, not a customer photograph.",
+    "generationPrompt": "Create a separately composed 4:5 mobile variant of the NEW fictional older adult having a smartphone conversation in this reference scene. Preserve her plausible age, neutral mid-thought expression, ordinary blue cardigan, natural kitchen/home environment, smartphone at ear, full phone hand and free-hand gesture and enough table with mail/mug. Reframe deliberately for portrait, do not simply crop away gesture or phone. Quietly observed photograph, ordinary soft daylight, honest skin texture and believable anatomy, looking slightly away, no smile for camera, no advertising staging. No text, overlays, fake interface, microphone, medical props or logos. Target 1920x2400 if supported, otherwise native available resolution. Output role ASTORY_WEB_G02_EVERYDAY_CALL_MOBILE. This is an illustrative family scene, not a customer."
+  },
+  "ASTORY_WEB_UI_HOME": {
+    "id": "ASTORY_WEB_UI_HOME",
+    "sourceStatus": "responsive HTML adaptation informed by recovered and user-supplied app boards",
+    "requiredSourceFiles": [
+      "42d9c3bb-f8b9-4581-a40b-3d14731e95ee.png",
+      "489d8386-06e0-4854-b072-ed4b1d81f934.png",
+      "c7a36e91-3794-48dc-9934-0c1203f3b924.png"
+    ],
+    "resolvedSourcePath": [
+      "qa/mission/sources/original-app-board.png",
+      "qa/mission/sources/archive-recording-board.png",
+      "qa/mission/sources/home-memory-board.png"
+    ],
+    "nativeDimensions": [
+      {
+        "width": 1054,
+        "height": 829
+      },
+      {
+        "width": 1326,
+        "height": 1723
+      },
+      {
+        "width": 1674,
+        "height": 1825
+      }
+    ],
+    "deliveryDerivatives": [],
+    "cropMode": "responsive HTML",
+    "focalRequirements": "Brown masthead, curved cream transition, greeting and week strip, question, paired talk/write actions, horizontal memory rows, source-attributed details. Website controls use fictional content.",
+    "intendedPlacement": [
+      "How it works / Talk or write entry"
+    ],
+    "caption": "Illustrative product preview",
+    "altText": null,
+    "generationPrompt": null,
+    "referenceLimit": "Adapted HTML, not a claim of pixel-identical production app screens. No source emails, QR destinations, account data, or audio copied."
+  },
+  "ASTORY_WEB_UI_COLLECTION": {
+    "id": "ASTORY_WEB_UI_COLLECTION",
+    "sourceStatus": "responsive HTML adaptation informed by recovered and user-supplied app boards",
+    "requiredSourceFiles": [
+      "42d9c3bb-f8b9-4581-a40b-3d14731e95ee.png",
+      "489d8386-06e0-4854-b072-ed4b1d81f934.png",
+      "c7a36e91-3794-48dc-9934-0c1203f3b924.png"
+    ],
+    "resolvedSourcePath": [
+      "qa/mission/sources/original-app-board.png",
+      "qa/mission/sources/archive-recording-board.png",
+      "qa/mission/sources/home-memory-board.png"
+    ],
+    "nativeDimensions": [
+      {
+        "width": 1054,
+        "height": 829
+      },
+      {
+        "width": 1326,
+        "height": 1723
+      },
+      {
+        "width": 1674,
+        "height": 1825
+      }
+    ],
+    "deliveryDerivatives": [],
+    "cropMode": "responsive HTML",
+    "focalRequirements": "Brown masthead, curved cream transition, greeting and week strip, question, paired talk/write actions, horizontal memory rows, source-attributed details. Website controls use fictional content.",
+    "intendedPlacement": [
+      "How it works / illustrative record",
+      "Home / archive layers"
+    ],
+    "caption": "Illustrative product preview",
+    "altText": null,
+    "generationPrompt": null,
+    "referenceLimit": "Adapted HTML, not a claim of pixel-identical production app screens. No source emails, QR destinations, account data, or audio copied."
+  },
+  "ASTORY_WEB_UI_ARCHIVE": {
+    "id": "ASTORY_WEB_UI_ARCHIVE",
+    "sourceStatus": "responsive HTML adaptation informed by recovered and user-supplied app boards",
+    "requiredSourceFiles": [
+      "42d9c3bb-f8b9-4581-a40b-3d14731e95ee.png",
+      "489d8386-06e0-4854-b072-ed4b1d81f934.png",
+      "c7a36e91-3794-48dc-9934-0c1203f3b924.png"
+    ],
+    "resolvedSourcePath": [
+      "qa/mission/sources/original-app-board.png",
+      "qa/mission/sources/archive-recording-board.png",
+      "qa/mission/sources/home-memory-board.png"
+    ],
+    "nativeDimensions": [
+      {
+        "width": 1054,
+        "height": 829
+      },
+      {
+        "width": 1326,
+        "height": 1723
+      },
+      {
+        "width": 1674,
+        "height": 1825
+      }
+    ],
+    "deliveryDerivatives": [],
+    "cropMode": "responsive HTML",
+    "focalRequirements": "Brown masthead, curved cream transition, greeting and week strip, question, paired talk/write actions, horizontal memory rows, source-attributed details. Website controls use fictional content.",
+    "intendedPlacement": [
+      "How it works / illustrative record",
+      "Home / archive layers"
+    ],
+    "caption": "Illustrative product preview",
+    "altText": null,
+    "generationPrompt": null,
+    "referenceLimit": "Adapted HTML, not a claim of pixel-identical production app screens. No source emails, QR destinations, account data, or audio copied."
+  },
+  "ASTORY_WEB_UI_MEMORY_DETAIL": {
+    "id": "ASTORY_WEB_UI_MEMORY_DETAIL",
+    "sourceStatus": "responsive HTML adaptation informed by recovered and user-supplied app boards",
+    "requiredSourceFiles": [
+      "42d9c3bb-f8b9-4581-a40b-3d14731e95ee.png",
+      "489d8386-06e0-4854-b072-ed4b1d81f934.png",
+      "c7a36e91-3794-48dc-9934-0c1203f3b924.png"
+    ],
+    "resolvedSourcePath": [
+      "qa/mission/sources/original-app-board.png",
+      "qa/mission/sources/archive-recording-board.png",
+      "qa/mission/sources/home-memory-board.png"
+    ],
+    "nativeDimensions": [
+      {
+        "width": 1054,
+        "height": 829
+      },
+      {
+        "width": 1326,
+        "height": 1723
+      },
+      {
+        "width": 1674,
+        "height": 1825
+      }
+    ],
+    "deliveryDerivatives": [],
+    "cropMode": "responsive HTML",
+    "focalRequirements": "Brown masthead, curved cream transition, greeting and week strip, question, paired talk/write actions, horizontal memory rows, source-attributed details. Website controls use fictional content.",
+    "intendedPlacement": [
+      "How it works / illustrative record",
+      "Home / archive layers"
+    ],
+    "caption": "Illustrative product preview",
+    "altText": null,
+    "generationPrompt": null,
+    "referenceLimit": "Adapted HTML, not a claim of pixel-identical production app screens. No source emails, QR destinations, account data, or audio copied."
+  },
+  "ASTORY_WEB_UI_AUDIO_DETAIL": {
+    "id": "ASTORY_WEB_UI_AUDIO_DETAIL",
+    "sourceStatus": "responsive HTML adaptation informed by recovered and user-supplied app boards",
+    "requiredSourceFiles": [
+      "42d9c3bb-f8b9-4581-a40b-3d14731e95ee.png",
+      "489d8386-06e0-4854-b072-ed4b1d81f934.png",
+      "c7a36e91-3794-48dc-9934-0c1203f3b924.png"
+    ],
+    "resolvedSourcePath": [
+      "qa/mission/sources/original-app-board.png",
+      "qa/mission/sources/archive-recording-board.png",
+      "qa/mission/sources/home-memory-board.png"
+    ],
+    "nativeDimensions": [
+      {
+        "width": 1054,
+        "height": 829
+      },
+      {
+        "width": 1326,
+        "height": 1723
+      },
+      {
+        "width": 1674,
+        "height": 1825
+      }
+    ],
+    "deliveryDerivatives": [],
+    "cropMode": "responsive HTML",
+    "focalRequirements": "Brown masthead, curved cream transition, greeting and week strip, question, paired talk/write actions, horizontal memory rows, source-attributed details. Website controls use fictional content.",
+    "intendedPlacement": [
+      "How it works / illustrative record",
+      "Home / archive layers"
+    ],
+    "caption": "Illustrative product preview",
+    "altText": null,
+    "generationPrompt": null,
+    "referenceLimit": "Adapted HTML, not a claim of pixel-identical production app screens. No source emails, QR destinations, account data, or audio copied."
+  },
+  "ASTORY_WEB_UI_SHARED_MEMORY": {
+    "id": "ASTORY_WEB_UI_SHARED_MEMORY",
+    "sourceStatus": "responsive HTML adaptation informed by recovered and user-supplied app boards",
+    "requiredSourceFiles": [
+      "42d9c3bb-f8b9-4581-a40b-3d14731e95ee.png",
+      "489d8386-06e0-4854-b072-ed4b1d81f934.png",
+      "c7a36e91-3794-48dc-9934-0c1203f3b924.png"
+    ],
+    "resolvedSourcePath": [
+      "qa/mission/sources/original-app-board.png",
+      "qa/mission/sources/archive-recording-board.png",
+      "qa/mission/sources/home-memory-board.png"
+    ],
+    "nativeDimensions": [
+      {
+        "width": 1054,
+        "height": 829
+      },
+      {
+        "width": 1326,
+        "height": 1723
+      },
+      {
+        "width": 1674,
+        "height": 1825
+      }
+    ],
+    "deliveryDerivatives": [],
+    "cropMode": "responsive HTML",
+    "focalRequirements": "Brown masthead, curved cream transition, greeting and week strip, question, paired talk/write actions, horizontal memory rows, source-attributed details. Website controls use fictional content.",
+    "intendedPlacement": [
+      "Home / interactive perspectives and shared record",
+      "How it works / another voice"
+    ],
+    "caption": "Illustrative product preview",
+    "altText": null,
+    "generationPrompt": null,
+    "referenceLimit": "Adapted HTML, not a claim of pixel-identical production app screens. No source emails, QR destinations, account data, or audio copied."
+  },
+  "care-desktop": {
+    "id": "care-desktop",
+    "source": "qa/generated/ASTORY_CARE_DESKTOP.png",
+    "sha256": "a22699045393772dc17963a0bf0141831de8a546f24dfa902b550e37d68e605d",
+    "width": 1536,
+    "height": 1024,
+    "prompt": "Use case: photorealistic editorial documentary. Asset type: illustrative A Story care-community webpage photo, 3:2 landscape. An older woman late 70s/early 80s is the active storyteller at a small table in an ordinary senior-living community lounge. She holds an ordinary family print toward an adult daughter 45–55 who listens attentively; a life-enrichment staff member in everyday clothing sits slightly behind, listening rather than leading. Small group of loose prints on table. Natural window light, slightly mixed ambient lighting, believable lived-in furniture. 35mm slightly off-axis documentary framing. Quiet engaged thoughtful expressions, anatomically correct visible hands. Keep people close enough together that a later 4:5 mobile composition can retain all three. Some negative space on one side. No text, logos, hospital, scrubs, stethoscope, wheelchairs as age-signals, forced touching, fake laughter, camera-facing smiles, coordinated clothing, symmetry, luxury resort styling, sentimental hug, prominent clipboard, stock advertising polish. The scene should feel observed.",
+    "derivatives": [
+      {
+        "file": "public/supplements/care-desktop-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "file": "public/supplements/care-desktop-1200.webp",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "file": "public/supplements/care-desktop-1536.webp",
+        "width": 1536,
+        "height": 1024
+      }
+    ],
+    "status": "generated illustrative scene",
+    "placement": [
+      "Home / Care audience selector",
+      "/care-communities / opening",
+      "/care-communities / social card"
+    ],
+    "alt": "An older woman shares a family photograph with her daughter and a community staff member",
+    "caption": "Archive photographs and demonstration memories are illustrative.",
+    "sourceStatus": "new generated supplemental illustration",
+    "generationPrompt": "Use case: photorealistic editorial documentary. Asset type: illustrative A Story care-community webpage photo, 3:2 landscape. An older woman late 70s/early 80s is the active storyteller at a small table in an ordinary senior-living community lounge. She holds an ordinary family print toward an adult daughter 45–55 who listens attentively; a life-enrichment staff member in everyday clothing sits slightly behind, listening rather than leading. Small group of loose prints on table. Natural window light, slightly mixed ambient lighting, believable lived-in furniture. 35mm slightly off-axis documentary framing. Quiet engaged thoughtful expressions, anatomically correct visible hands. Keep people close enough together that a later 4:5 mobile composition can retain all three. Some negative space on one side. No text, logos, hospital, scrubs, stethoscope, wheelchairs as age-signals, forced touching, fake laughter, camera-facing smiles, coordinated clothing, symmetry, luxury resort styling, sentimental hug, prominent clipboard, stock advertising polish. The scene should feel observed.",
+    "cropMode": "Responsive care-scene crop; preserve all three faces, photograph and active storyteller. Home destination uses a tighter thumbnail.",
+    "focalRequirements": "Keep the storyteller active, all three faces, photograph and credible hands visible.",
+    "provenance": "New synthetic illustration; not a resident, customer, testimonial, or documented program."
+  },
+  "care-mobile": {
+    "id": "care-mobile",
+    "source": "qa/generated/ASTORY_CARE_MOBILE.png",
+    "sha256": "334107a4faa8d58a1060c9d5fbcde98dcdc6dc4821f7578bc5ba272d4dcdc4e7",
+    "width": 1122,
+    "height": 1402,
+    "prompt": "Recompose this exact illustrative documentary care-community scene into a 4:5 portrait photograph for mobile. Preserve the same three people and clothes: the older woman is the active storyteller holding the photograph, daughter listening, staff member secondary. Retain all three faces, the photograph and plausible visible hands. Move framing and camera distance naturally to fit the people; do not crop anyone's face off. Same ordinary lounge, light and documentary perspective, no text or logo, no added people, no medical cues.",
+    "derivatives": [
+      {
+        "file": "public/supplements/care-mobile-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "file": "public/supplements/care-mobile-1200.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "status": "generated illustrative scene",
+    "placement": [
+      "Home / Care audience selector",
+      "/care-communities / opening"
+    ],
+    "alt": "An older woman shares a family photograph with her daughter and a community staff member",
+    "caption": "Archive photographs and demonstration memories are illustrative.",
+    "sourceStatus": "new generated supplemental illustration",
+    "generationPrompt": "Recompose this exact illustrative documentary care-community scene into a 4:5 portrait photograph for mobile. Preserve the same three people and clothes: the older woman is the active storyteller holding the photograph, daughter listening, staff member secondary. Retain all three faces, the photograph and plausible visible hands. Move framing and camera distance naturally to fit the people; do not crop anyone's face off. Same ordinary lounge, light and documentary perspective, no text or logo, no added people, no medical cues.",
+    "cropMode": "Responsive care-scene crop; preserve all three faces, photograph and active storyteller. Home destination uses a tighter thumbnail.",
+    "focalRequirements": "Keep the storyteller active, all three faces, photograph and credible hands visible.",
+    "provenance": "New synthetic illustration; not a resident, customer, testimonial, or documented program."
+  },
+  "book-object-closed": {
+    "id": "closed",
+    "source": "qa/locked-library/AStory_Master_Visual_Library_UIUX_LOCKED/03_BOOK_OBJECT_FULL_PACKAGE/02_UI_OBJECTS/ASTORY_BOOK_OBJECT_CLOSED_BOOK_THREE_QUARTER_TRANSPARENT_XL_LOCKED.png",
+    "width": 2237,
+    "height": 3000,
+    "alpha": true,
+    "sha256": "0b9596a0a61314486f74c225ff7670125fbd5f8a7697fb4712a1e0b11bb162b9",
+    "derivatives": [
+      {
+        "file": "public/book-objects/closed-640.webp",
+        "width": 640,
+        "height": 858
+      },
+      {
+        "file": "public/book-objects/closed-1200.webp",
+        "width": 1200,
+        "height": 1609
+      },
+      {
+        "file": "public/book-objects/closed-1800.webp",
+        "width": 1800,
+        "height": 2414
+      }
+    ],
+    "sourceStatus": "responsive derivative of approved transparent locked book object",
+    "placement": [
+      "Home / living volume"
+    ],
+    "cropMode": "Contain complete object. No recolor, new art, or fake 3D."
+  },
+  "book-object-open": {
+    "id": "open",
+    "source": "qa/locked-library/AStory_Master_Visual_Library_UIUX_LOCKED/03_BOOK_OBJECT_FULL_PACKAGE/02_UI_OBJECTS/ASTORY_BOOK_OBJECT_OPEN_BOOK_OPEN_TRANSPARENT_XL_LOCKED.png",
+    "width": 3000,
+    "height": 1773,
+    "alpha": true,
+    "sha256": "02b67b6ea2c32810cca82a40d6761940bfcd4950e1f1a46d925b19a49e15d1d0",
+    "derivatives": [
+      {
+        "file": "public/book-objects/open-640.webp",
+        "width": 640,
+        "height": 378
+      },
+      {
+        "file": "public/book-objects/open-1200.webp",
+        "width": 1200,
+        "height": 709
+      },
+      {
+        "file": "public/book-objects/open-1800.webp",
+        "width": 1800,
+        "height": 1064
+      }
+    ],
+    "sourceStatus": "responsive derivative of approved transparent locked book object",
+    "placement": [
+      "Home / living volume"
+    ],
+    "cropMode": "Contain complete object. No recolor, new art, or fake 3D."
+  }
+}

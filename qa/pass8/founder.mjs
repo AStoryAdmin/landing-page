@@ -1,0 +1,2 @@
+import fs from 'node:fs';
+const file='src/pages/site/OurStory.tsx';let s=fs.readFileSync(file,'utf8');s=s.replace('import { Link } from "react-router-dom";','import FounderBeats from "./pass7/FounderBeats";');const start=s.indexOf('      <div className="gf-width">\n        <div className="founder-detail">');const end=s.indexOf('      <Invitation />',start);if(start<0||end<0)throw Error('Founder boundaries');s=s.slice(0,start)+'      <FounderBeats />\n'+s.slice(end);fs.writeFileSync(file,s);

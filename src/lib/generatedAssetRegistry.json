@@ -1,0 +1,128 @@
+[
+  {
+    "id": "g01desktop",
+    "canonicalName": "ASTORY_WEB_G01_PHONE_IN_HAND_PLATE_DESKTOP.png",
+    "resolvedSourcePath": "qa/generated/ASTORY_WEB_G01_PHONE_IN_HAND_PLATE_DESKTOP.png",
+    "sourceStatus": "new generated plate; final app composite pending required boards",
+    "sourceSha256": "0b9de0cd447c744c01909a492b87309e86be01b6a6f6c3f26bcaf99db24e640e",
+    "nativeDimensions": {
+      "width": 1448,
+      "height": 1086
+    },
+    "deliveryDerivatives": [
+      {
+        "path": "public/supplements/g01desktop-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      {
+        "path": "public/supplements/g01desktop-1200.webp",
+        "width": 1200,
+        "height": 900
+      }
+    ],
+    "cropMode": "natural proportions",
+    "focalRequirements": "Keep head, phone, hands and gesture intact.",
+    "intendedPlacement": [
+      "pending app-reference composite"
+    ],
+    "altText": "A phone held over a kitchen table with its screen left blank for a product composite",
+    "caption": "Illustrative scene, not a customer photograph.",
+    "generationPrompt": "Generate a photorealistic 4:3 desktop photograph for ASTORY_WEB_G01_PHONE_IN_HAND_PLATE_DESKTOP. Contemporary quietly observed close photograph of an adult family organizer seated at ordinary kitchen table, holding a modern smartphone in portrait orientation. Near shoulder height looking slightly down. Phone nearly front-facing, mild 5–10 degree lean, screen completely visible with no fingers over it; display occupies 55–65% image height. Anatomically believable hand, thumb on edge, fingers supporting back, natural skin, ordinary neutral clothing. Thin graphite unbranded dark case. Uniform pale ivory BLANK display for later deterministic compositing, absolutely no text/logo/icons/UI. Phone slightly right of center, non-busy domestic context on left; entire hand/device visible. Muted wood table, partly used mug, perhaps corner of two prints. Ordinary side daylight, credible contact shadows, moderate depth of field, screen and hand in focus. No face posing for camera, jewelry focus, luxurious props, marble, flowers, candles, gold pen, cinematic bokeh, orange grading, fake app or typography. New fictional illustrative scene. 2400x1800 if supported, otherwise native highest suitable resolution."
+  },
+  {
+    "id": "g01mobile",
+    "canonicalName": "ASTORY_WEB_G01_PHONE_IN_HAND_PLATE_MOBILE.png",
+    "resolvedSourcePath": "qa/generated/ASTORY_WEB_G01_PHONE_IN_HAND_PLATE_MOBILE.png",
+    "sourceStatus": "new generated plate; final app composite pending required boards",
+    "sourceSha256": "646977c4ee2f6e4a22ecdfa7c4ce5aba93df5064750e8ea242fe2d0e3c21e3e5",
+    "nativeDimensions": {
+      "width": 1122,
+      "height": 1402
+    },
+    "deliveryDerivatives": [
+      {
+        "path": "public/supplements/g01mobile-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "path": "public/supplements/g01mobile-1200.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "natural proportions",
+    "focalRequirements": "Keep head, phone, hands and gesture intact.",
+    "intendedPlacement": [
+      "pending app-reference composite"
+    ],
+    "altText": "A phone held over a kitchen table with its screen left blank for a product composite",
+    "caption": "Illustrative scene, not a customer photograph.",
+    "generationPrompt": "Create a separately composed portrait 4:5 photograph named ASTORY_WEB_G01_PHONE_IN_HAND_PLATE_MOBILE. A quietly observed contemporary family organizer seated at an ordinary muted wood kitchen table holding an unbranded graphite smartphone nearly straight toward their own gaze, slight 5 degree lean. Shoulder-height slightly downward viewpoint. Complete device and supporting hand centered, no fingers cover screen. Display about 60% of image height and UNIFORM BLANK PALE IVORY, no words, logos, icons or invented interface; will be composited later. Correct natural anatomy, thumb on edge, other fingers support back, ordinary skin texture, neutral sleeve, no jewelry focus. Half-used mug and edge of two photo prints, subdued lived-in domestic context. Side daylight, moderate depth of field, hand and screen sharp, believable shadows. No luxury interior, staged presentation to camera, flowers, candles, fake UI, orange grade, cinematic blur. This is a NEW fictional illustrative photo. Do not crop a desktop composition. Target 1920x2400 if supported, otherwise native available resolution."
+  },
+  {
+    "id": "g02desktop",
+    "canonicalName": "ASTORY_WEB_G02_EVERYDAY_CALL_DESKTOP.png",
+    "resolvedSourcePath": "qa/generated/ASTORY_WEB_G02_EVERYDAY_CALL_DESKTOP.png",
+    "sourceStatus": "new generated supplemental illustration",
+    "sourceSha256": "82d76ab8ae50b2a49b6477bf793f8d868b7366a4de91869d8d3fd0ac74648356",
+    "nativeDimensions": {
+      "width": 1536,
+      "height": 1024
+    },
+    "deliveryDerivatives": [
+      {
+        "path": "public/supplements/g02desktop-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      {
+        "path": "public/supplements/g02desktop-1200.webp",
+        "width": 1200,
+        "height": 800
+      }
+    ],
+    "cropMode": "natural proportions",
+    "focalRequirements": "Keep head, phone, hands and gesture intact.",
+    "intendedPlacement": [
+      "/experience",
+      "/your-story"
+    ],
+    "altText": "A woman talking on her phone at the kitchen table, gesturing with her free hand",
+    "caption": "Illustrative scene, not a customer photograph.",
+    "generationPrompt": "Generate ASTORY_WEB_G02_EVERYDAY_CALL_DESKTOP, a natural 3:2 present-day domestic photograph. Fictional older adult woman in her early seventies sits at modest kitchen table holding a smartphone naturally to ear. Mid-thought listening, gaze slightly away, small unperformed free-hand gesture, never smiling at camera. Subject in right two thirds with ordinary room context left, no giant blank wall; preserve head, phone hand, free-hand gesture. Folded mail and half-used tea mug nearby, lived-in but undramatic home, ordinary individual clothing, unstyled hair, honest skin. Soft slightly flat daylight, natural photographic imperfection, physically credible anatomy/phone-to-ear contact/furniture/shadows. No deliberate sadness, advertising grin, therapy or nursing-home setting, luxury props, sepia, heavy grain, orange grade, dramatic rim light, brand-coordinated clothes, medical props, headset, lapel mic, waveform, visible text or logos. Immediately communicates an ordinary conversation at home. New synthetic scene, not a real customer or relative. Target long edge at least2400 if supported, otherwise preserve native generation resolution."
+  },
+  {
+    "id": "g02mobile",
+    "canonicalName": "ASTORY_WEB_G02_EVERYDAY_CALL_MOBILE.png",
+    "resolvedSourcePath": "qa/generated/ASTORY_WEB_G02_EVERYDAY_CALL_MOBILE.png",
+    "sourceStatus": "new generated supplemental illustration",
+    "sourceSha256": "798bae1a519cef63887c6c46954420ef5fa952c2e78de7187b78c2ff07635cd2",
+    "nativeDimensions": {
+      "width": 1122,
+      "height": 1402
+    },
+    "deliveryDerivatives": [
+      {
+        "path": "public/supplements/g02mobile-640.webp",
+        "width": 640,
+        "height": 800
+      },
+      {
+        "path": "public/supplements/g02mobile-1200.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    ],
+    "cropMode": "natural proportions",
+    "focalRequirements": "Keep head, phone, hands and gesture intact.",
+    "intendedPlacement": [
+      "/experience",
+      "/your-story"
+    ],
+    "altText": "A woman talking on her phone at the kitchen table, gesturing with her free hand",
+    "caption": "Illustrative scene, not a customer photograph.",
+    "generationPrompt": "Create a separately composed 4:5 mobile variant of the NEW fictional older adult having a smartphone conversation in this reference scene. Preserve her plausible age, neutral mid-thought expression, ordinary blue cardigan, natural kitchen/home environment, smartphone at ear, full phone hand and free-hand gesture and enough table with mail/mug. Reframe deliberately for portrait, do not simply crop away gesture or phone. Quietly observed photograph, ordinary soft daylight, honest skin texture and believable anatomy, looking slightly away, no smile for camera, no advertising staging. No text, overlays, fake interface, microphone, medical props or logos. Target 1920x2400 if supported, otherwise native available resolution. Output role ASTORY_WEB_G02_EVERYDAY_CALL_MOBILE. This is an illustrative family scene, not a customer."
+  }
+]

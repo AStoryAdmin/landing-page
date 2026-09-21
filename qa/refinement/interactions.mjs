@@ -1,0 +1,47 @@
+import {chromium} from 'playwright';
+import {readFile,writeFile} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const b=await chromium.launch({channel:'msedge',headless:true});
+const p=await b.newPage({viewport:{width:1440,height:900}});
+const errors=[];p.on('pageerror',e=>errors.push(e.message));
+await p.goto('http://127.0.0.1:5174');
+await p.waitForTimeout(4500);
+assert.equal(await p.evaluate(()=>document.body.style.overflow),'');
+await p.screenshot({path:'qa/refinement/home-motion.png'});
+for(let y=0;y<await p.evaluate(()=>document.body.scrollHeight);y+=650){await p.evaluate(y=>scrollTo(0,y),y);await p.waitForTimeout(90);}
+await p.waitForTimeout(1400);
+await p.locator('#demo').screenshot({path:'qa/refinement/listening.png'});
+await p.getByRole('link',{name:'Pricing',exact:true}).first().click();
+await p.locator('h1').waitFor();
+const family=p.locator('.gf-plan-row').filter({has:p.getByRole('radio',{name:'Select Family',exact:true})});
+await family.locator('input[type=radio]').check();
+assert.match(await family.getAttribute('class'),/is-selected/);
+await family.locator('summary').click();
+await family.locator('input[type=checkbox]').check();
+await p.screenshot({path:'qa/refinement/pricing-selected.png',fullPage:true});
+await p.goto('http://127.0.0.1:5174/how-it-works#example');
+await p.getByRole('tab').nth(1).click();
+await p.getByRole('button',{name:'Read the follow-up',exact:true}).click();
+await p.getByRole('button',{name:'Continue the exchange',exact:true}).click();
+await p.getByRole('button',{name:'See what stays',exact:true}).click();
+await p.getByRole('button',{name:'Edit this memory',exact:true}).click();
+await p.getByLabel('Memory title',{exact:true}).fill('Our summer afternoon');
+await p.getByRole('button',{name:'Save example',exact:true}).click();
+assert.equal(await p.getByRole('heading',{name:'Our summer afternoon'}).count(),1);
+await p.setViewportSize({width:393,height:852});
+await p.goto('http://127.0.0.1:5174');await p.waitForTimeout(1800);
+await p.getByRole('button',{name:'Menu',exact:true}).click();
+assert.equal(await p.locator('main').evaluate(e=>e.inert),true);
+await p.keyboard.press('Escape');
+assert.equal(await p.locator('main').evaluate(e=>e.inert),false);
+assert.equal(await p.getByRole('button',{name:'Menu',exact:true}).evaluate(e=>e===document.activeElement),true);
+await p.screenshot({path:'qa/refinement/mobile-opening-final.png'});
+const axe=await readFile('node_modules/axe-core/axe.min.js','utf8');const a11y=[];
+await p.emulateMedia({reducedMotion:'reduce'});
+for(const route of ['/','/our-story','/for-families','/pricing','/start','/how-it-works']){
+ await p.goto('http://127.0.0.1:5174'+route);await p.locator('h1').waitFor();await p.addScriptTag({content:axe});
+ const result=await p.evaluate(()=>window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa']}}));
+ a11y.push({route,violations:result.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))});
+}
+await writeFile('qa/refinement/interactions.json',JSON.stringify({errors,a11y,passed:['intro releases scrolling','pricing family + book','memory edit saves','mobile menu inert and Escape focus']},null,2));
+console.log(JSON.stringify({errors,a11y},null,2));await b.close();

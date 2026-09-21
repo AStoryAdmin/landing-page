@@ -1,26 +1,11 @@
 import styled from 'styled-components';
+import { color, font } from '../styles/theme';
 
-const colors = {
-    dark: '#120E08',
-    ink: '#2B2117',
-    softInk: '#5C4A38',
-    cream: '#EFE6D4',
-    paper: '#F6EFE2',
-    orange: '#b45a2b',
-    gold: '#C7A24E',
-    line: 'rgba(43, 33, 23, 0.12)',
-};
-
-const fonts = {
-    body: "'Figtree', sans-serif",
-    display: "'Cormorant Garamond', serif",
-};
-
-export const Page = styled.div`
+export const Page = styled.main`
     min-height: 100vh;
-    background: ${colors.cream};
-    color: ${colors.ink};
-    font-family: ${fonts.body};
+    background: ${color.ivory};
+    color: ${color.ink};
+    font-family: ${font.body};
 `;
 
 export const Inner = styled.div`
@@ -30,13 +15,19 @@ export const Inner = styled.div`
 `;
 
 export const Brand = styled.div`
+    display: flex;
+    justify-content: center;
     text-align: center;
     letter-spacing: 2px;
-    color: ${colors.softInk};
+    color: ${color.bodyMuted};
     font-size: 14px;
     margin-bottom: 32px;
 
-    b { color: ${colors.orange}; font-family: ${fonts.display}; font-weight: 700; }
+    b {
+        color: ${color.accent};
+        font-family: ${font.display};
+        font-weight: 700;
+    }
 `;
 
 export const Hero = styled.div`
@@ -54,18 +45,18 @@ export const Avatar = styled.div<{ $img?: string }>`
     display: flex;
     align-items: center;
     justify-content: center;
-    color: ${colors.orange};
-    font-family: ${fonts.display};
+    color: ${color.accentText};
+    font-family: ${font.display};
     font-size: 42px;
 `;
 
 export const Name = styled.h1`
-    font-family: ${fonts.display};
+    font-family: ${font.display};
     font-weight: 500;
     font-size: 44px;
     line-height: 1.05;
     margin: 0;
-    color: ${colors.dark};
+    color: ${color.primaryDeep};
 `;
 
 export const Intro = styled.p`
@@ -73,7 +64,7 @@ export const Intro = styled.p`
     margin: 14px auto 0;
     font-size: 18px;
     line-height: 1.6;
-    color: ${colors.softInk};
+    color: ${color.bodyMuted};
 `;
 
 export const Timeline = styled.div`
@@ -83,15 +74,15 @@ export const Timeline = styled.div`
 `;
 
 export const MemoryCard = styled.article`
-    background: ${colors.paper};
-    border: 1px solid ${colors.line};
-    border-radius: 18px;
+    background: ${color.paper};
+    border: 1px solid ${color.primaryLine};
+    border-radius: 2px;
     overflow: hidden;
 `;
 
 export const MemoryImg = styled.img`
     width: 100%;
-    max-height: 360px;
+    height: auto;
     object-fit: cover;
     display: block;
 `;
@@ -103,66 +94,66 @@ export const MemoryBody = styled.div`
 export const Era = styled.p`
     text-transform: uppercase;
     letter-spacing: 3px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
-    color: ${colors.orange};
+    color: ${color.accentText};
     margin: 0 0 8px;
 `;
 
 export const MemoryTitle = styled.h2`
-    font-family: ${fonts.display};
+    font-family: ${font.display};
     font-weight: 600;
     font-size: 28px;
     line-height: 1.15;
     margin: 0;
-    color: ${colors.dark};
+    color: ${color.primaryDeep};
 `;
 
 export const Period = styled.p`
     font-size: 14px;
-    color: ${colors.softInk};
+    color: ${color.bodyMuted};
     margin: 4px 0 0;
 `;
 
 export const MemoryText = styled.p`
-    font-size: 17px;
+    font-size: 18px;
     line-height: 1.7;
-    color: ${colors.ink};
+    color: ${color.ink};
     margin: 14px 0 0;
     white-space: pre-wrap;
 `;
 
 export const SectionTitle = styled.h2`
-    font-family: ${fonts.display};
+    font-family: ${font.display};
     font-weight: 500;
     font-size: 34px;
-    color: ${colors.dark};
+    color: ${color.primaryDeep};
     margin: 56px 0 20px;
     text-align: center;
 `;
 
 export const Testimonial = styled.blockquote`
-    background: ${colors.paper};
-    border: 1px solid ${colors.line};
-    border-left: 3px solid ${colors.orange};
-    border-radius: 16px;
+    background: ${color.paper};
+    border: 1px solid ${color.primaryLine};
+    border-left: 3px solid ${color.accent};
+    border-radius: 2px;
     margin: 0 0 16px;
     padding: 20px 22px;
 `;
 
 export const TestimonialText = styled.p`
-    font-family: ${fonts.display};
+    font-family: ${font.display};
     font-style: italic;
     font-size: 19px;
     line-height: 1.6;
-    color: ${colors.ink};
+    color: ${color.ink};
     margin: 0;
     white-space: pre-wrap;
 `;
 
 export const TestimonialWho = styled.footer`
     font-size: 14px;
-    color: ${colors.softInk};
+    color: ${color.bodyMuted};
     margin-top: 12px;
 `;
 
@@ -183,13 +174,17 @@ export const TestimonialPhotos = styled.div`
 export const Footer = styled.div`
     text-align: center;
     margin-top: 56px;
-    color: ${colors.softInk};
+    color: ${color.bodyMuted};
     font-size: 14px;
 
-    b { color: ${colors.orange}; font-family: ${fonts.display}; font-weight: 700; }
+    b {
+        color: ${color.accent};
+        font-family: ${font.display};
+        font-weight: 700;
+    }
 `;
 
-export const Centered = styled.div`
+export const Centered = styled.main`
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -197,8 +192,10 @@ export const Centered = styled.div`
     justify-content: center;
     text-align: center;
     padding: 24px;
-    background: ${colors.cream};
-    color: ${colors.softInk};
-    font-family: ${fonts.body};
+    background: ${color.ivory};
+    color: ${color.bodyMuted};
+    font-family: ${font.body};
     gap: 8px;
+    h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.15; max-width: 22ch; color: ${color.primary}; }
+    p { font-size: 18px; max-width: 45ch; line-height: 1.6; }
 `;

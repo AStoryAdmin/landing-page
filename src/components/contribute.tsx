@@ -1,10 +1,31 @@
+import Logo from './ui/Logo';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
+import { getSupabase } from '../lib/supabase';
 import {
-    Page, Inner, Brand, Hero, Avatar, Title, Sub, Form, FieldWrap, Label, Input,
-    Textarea, KindRow, KindBtn, PhotoRow, Thumb, FileLabel, Submit, ErrorMsg,
-    Note, Centered, ThankYou, Again,
+    Page,
+    Inner,
+    Brand,
+    Hero,
+    Avatar,
+    Title,
+    Sub,
+    Form,
+    FieldWrap,
+    Label,
+    Input,
+    Textarea,
+    KindRow,
+    KindBtn,
+    PhotoRow,
+    Thumb,
+    FileLabel,
+    Submit,
+    ErrorMsg,
+    Note,
+    Centered,
+    ThankYou,
+    Again,
 } from './contribute.styles';
 
 type Info = {
@@ -23,7 +44,9 @@ const randomKey = () =>
 
 const Contribute = () => {
     const { slug } = useParams<{ slug: string }>();
-    const [state, setState] = useState<'loading' | 'ready' | 'missing'>('loading');
+    const [state, setState] = useState<'loading' | 'ready' | 'missing'>(
+        'loading',
+    );
     const [info, setInfo] = useState<Info | null>(null);
 
     const [name, setName] = useState('');
@@ -38,23 +61,29 @@ const Contribute = () => {
     const [done, setDone] = useState(false);
 
     useEffect(() => {
-        let cancelled = false;
+        let canceled = false;
         (async () => {
-            if (!slug) {
+            const supabase = getSupabase();
+            if (!slug || !supabase) {
                 setState('missing');
                 return;
             }
-            const { data, error: err } = await supabase.rpc('get_contribute_info', { slug });
-            if (cancelled) return;
+            const { data, error: err } = await supabase.rpc(
+                'get_contribute_info',
+                { slug },
+            );
+            if (canceled) return;
             if (err || !data) {
                 setState('missing');
                 return;
             }
             setInfo(data as Info);
             setState('ready');
-        })();
+        })().catch(() => {
+            if (!canceled) setState('missing');
+        });
         return () => {
-            cancelled = true;
+            canceled = true;
         };
     }, [slug]);
 
@@ -66,6 +95,14 @@ const Contribute = () => {
         const room = MAX_PHOTOS - photos.length;
         if (room <= 0) {
             setError(`You can attach up to ${MAX_PHOTOS} photos.`);
+            return;
+        }
+
+        const supabase = getSupabase();
+        if (!supabase) {
+            setError(
+                'Uploads are unavailable right now. Please email contact@astoryapp.com.',
+            );
             return;
         }
 
@@ -82,25 +119,33 @@ const Contribute = () => {
                 const path = `${slug}/${randomKey()}.${ext}`;
                 const { error: upErr } = await supabase.storage
                     .from(BUCKET)
-                    .upload(path, file, { contentType: file.type || 'image/jpeg' });
+                    .upload(path, file, {
+                        contentType: file.type || 'image/jpeg',
+                    });
                 if (upErr) {
                     console.error('upload:', upErr);
                     setError("A photo couldn't be uploaded. Please try again.");
                     continue;
                 }
-                const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+                const { data } = supabase.storage
+                    .from(BUCKET)
+                    .getPublicUrl(path);
                 uploaded.push(data.publicUrl);
             }
             if (uploaded.length) setPhotos((p) => [...p, ...uploaded]);
+        } catch {
+            setError("A photo couldn't be uploaded. Please try again.");
         } finally {
             setUploading(false);
         }
     };
 
-    const removePhoto = (url: string) => setPhotos((p) => p.filter((u) => u !== url));
+    const removePhoto = (url: string) =>
+        setPhotos((p) => p.filter((u) => u !== url));
 
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (sending || uploading) return;
         setError(null);
 
         if (!body.trim() && photos.length === 0) {
@@ -109,23 +154,43 @@ const Contribute = () => {
         }
 
         setSending(true);
-        const { data, error: rpcErr } = await supabase.rpc('submit_contribution', {
-            slug,
-            contributor_name: name.trim(),
-            relationship: relationship.trim(),
-            kind,
-            title: title.trim(),
-            body: body.trim(),
-            photos,
-        });
-        setSending(false);
-
-        if (rpcErr || data === false) {
-            console.error('submit_contribution:', rpcErr);
-            setError("We couldn't send that. The link may no longer be accepting contributions.");
+        const supabase = getSupabase();
+        if (!supabase) {
+            setSending(false);
+            setError(
+                'We could not reach the server. Please email contact@astoryapp.com.',
+            );
             return;
         }
-        setDone(true);
+
+        try {
+            const { data, error: rpcErr } = await supabase.rpc(
+                'submit_contribution',
+                {
+                    slug,
+                    contributor_name: name.trim(),
+                    relationship: relationship.trim(),
+                    kind,
+                    title: title.trim(),
+                    body: body.trim(),
+                    photos,
+                },
+            );
+            setSending(false);
+
+            if (rpcErr || data === false) {
+                console.error('submit_contribution:', rpcErr);
+                setError(
+                    "We couldn't send that. The link may no longer be accepting contributions.",
+                );
+                return;
+            }
+            setDone(true);
+        } catch {
+            setError("We couldn't reach the server. Please try again.");
+        } finally {
+            setSending(false);
+        }
     };
 
     const reset = () => {
@@ -137,7 +202,7 @@ const Contribute = () => {
 
     if (state === 'loading') {
         return (
-            <Centered>
+            <Centered id="main">
                 <p>Loading…</p>
             </Centered>
         );
@@ -145,24 +210,27 @@ const Contribute = () => {
 
     if (state === 'missing' || !info) {
         return (
-            <Centered>
+            <Centered id="main">
                 <Brand>
-                    <b>A</b> Story
+                    <Logo height={44} />
                 </Brand>
-                <p>This contribution link isn't available.</p>
+                <h1>This contribution link isn't available.</h1>
                 <p>It may have been closed by the family.</p>
             </Centered>
         );
     }
 
-    const fullName = [info.name, info.last_name].filter(Boolean).join(' ').trim();
+    const fullName = [info.name, info.last_name]
+        .filter(Boolean)
+        .join(' ')
+        .trim();
     const initial = (info.name || '?').charAt(0).toUpperCase();
 
     return (
-        <Page>
+        <Page id="main">
             <Inner>
                 <Brand>
-                    <b>A</b> Story
+                    <Logo height={44} />
                 </Brand>
 
                 <Hero>
@@ -170,20 +238,21 @@ const Contribute = () => {
                         {!info.photo_url && initial}
                     </Avatar>
                     <Title>
-                        Contributing to {fullName ? `${fullName}'s` : 'their'} story
+                        Contributing to {fullName ? `${fullName}'s` : 'their'}{' '}
+                        story
                     </Title>
                     <Sub>
-                        Share a memory, a note, or a photo. The family reviews everything
-                        before it appears.
+                        Share a memory, a note, or a photo. The family reviews
+                        everything before it appears.
                     </Sub>
                 </Hero>
 
                 {done ? (
-                    <ThankYou>
+                    <ThankYou role="status">
                         <h2>Thank you</h2>
                         <p>
-                            Your contribution has been sent to {info.name}'s family. They'll
-                            review it soon.
+                            Your contribution has been sent to {info.name}'s
+                            family. They'll review it soon.
                         </p>
                         <Again type="button" onClick={reset}>
                             Share something else
@@ -192,8 +261,10 @@ const Contribute = () => {
                 ) : (
                     <Form onSubmit={onSubmit}>
                         <FieldWrap>
-                            <Label>Your name</Label>
+                            <Label htmlFor="contributor-name">Your name</Label>
                             <Input
+                                id="contributor-name"
+                                autoComplete="name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="e.g. Sarah"
@@ -202,11 +273,16 @@ const Contribute = () => {
                         </FieldWrap>
 
                         <FieldWrap>
-                            <Label>How you knew them</Label>
+                            <Label htmlFor="relationship">
+                                Your relationship
+                            </Label>
                             <Input
+                                id="relationship"
                                 value={relationship}
-                                onChange={(e) => setRelationship(e.target.value)}
-                                placeholder="e.g. Daughter, neighbour, colleague"
+                                onChange={(e) =>
+                                    setRelationship(e.target.value)
+                                }
+                                placeholder="e.g. Daughter, neighbor, colleague"
                                 maxLength={120}
                             />
                         </FieldWrap>
@@ -217,6 +293,7 @@ const Contribute = () => {
                                 <KindBtn
                                     type="button"
                                     $on={kind === 'testimonial'}
+                                    aria-pressed={kind === 'testimonial'}
                                     onClick={() => setKind('testimonial')}
                                 >
                                     A note
@@ -224,6 +301,7 @@ const Contribute = () => {
                                 <KindBtn
                                     type="button"
                                     $on={kind === 'memory'}
+                                    aria-pressed={kind === 'memory'}
                                     onClick={() => setKind('memory')}
                                 >
                                     A memory
@@ -233,8 +311,9 @@ const Contribute = () => {
 
                         {kind === 'memory' && (
                             <FieldWrap>
-                                <Label>Title</Label>
+                                <Label htmlFor="memory-title">Title</Label>
                                 <Input
+                                    id="memory-title"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     placeholder="e.g. Sunday music"
@@ -244,8 +323,11 @@ const Contribute = () => {
                         )}
 
                         <FieldWrap>
-                            <Label>{kind === 'memory' ? 'The memory' : 'Your note'}</Label>
+                            <Label htmlFor="contribution-body">
+                                {kind === 'memory' ? 'The memory' : 'Your note'}
+                            </Label>
                             <Textarea
+                                id="contribution-body"
                                 value={body}
                                 onChange={(e) => setBody(e.target.value)}
                                 placeholder={
@@ -263,6 +345,8 @@ const Contribute = () => {
                                 {photos.map((url) => (
                                     <Thumb
                                         key={url}
+                                        type="button"
+                                        aria-label="Remove attached photo"
                                         $img={url}
                                         title="Click to remove"
                                         onClick={() => removePhoto(url)}
@@ -283,14 +367,14 @@ const Contribute = () => {
                             )}
                         </FieldWrap>
 
-                        {error && <ErrorMsg>{error}</ErrorMsg>}
+                        {error && <ErrorMsg role="alert">{error}</ErrorMsg>}
 
                         <Submit type="submit" disabled={sending || uploading}>
                             {sending ? 'Sending…' : 'Send to the family'}
                         </Submit>
                         <Note>
-                            Nothing is published until the family approves it. No account
-                            needed.
+                            Nothing is published until the family approves it.
+                            No account needed.
                         </Note>
                     </Form>
                 )}

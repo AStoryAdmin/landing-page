@@ -1,0 +1,18 @@
+# Public editorial pages; private links remain excluded.
+User-agent: *
+Allow: /
+Disallow: /p/
+Disallow: /contribute/
+Disallow: /thanks
+Disallow: /__design/
+
+# Search discovery is independent of training preferences.
+# No GPTBot override existed in the source; that preference is unchanged.
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /p/
+Disallow: /contribute/
+Disallow: /thanks
+Disallow: /__design/
+
+Sitemap: https://astoryapp.com/sitemap.xml

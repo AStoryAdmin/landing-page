@@ -1,10 +1,30 @@
+import Logo from './ui/Logo';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
+import { getSupabase } from '../lib/supabase';
 import {
-    Page, Inner, Brand, Hero, Avatar, Name, Intro, Timeline, MemoryCard,
-    MemoryImg, MemoryBody, Era, MemoryTitle, Period, MemoryText, Footer, Centered,
-    SectionTitle, Testimonial, TestimonialText, TestimonialWho, TestimonialPhotos,
+    Page,
+    Inner,
+    Brand,
+    Hero,
+    Avatar,
+    Name,
+    Intro,
+    Timeline,
+    MemoryCard,
+    MemoryImg,
+    MemoryBody,
+    Era,
+    MemoryTitle,
+    Period,
+    MemoryText,
+    Footer,
+    Centered,
+    SectionTitle,
+    Testimonial,
+    TestimonialText,
+    TestimonialWho,
+    TestimonialPhotos,
 } from './publicStory.styles';
 
 type Memory = {
@@ -38,33 +58,40 @@ type PublicStoryData = {
 
 const PublicStory = () => {
     const { slug } = useParams<{ slug: string }>();
-    const [state, setState] = useState<'loading' | 'ready' | 'missing'>('loading');
+    const [state, setState] = useState<'loading' | 'ready' | 'missing'>(
+        'loading',
+    );
     const [story, setStory] = useState<PublicStoryData | null>(null);
 
     useEffect(() => {
-        let cancelled = false;
+        let canceled = false;
         (async () => {
-            if (!slug) {
+            const supabase = getSupabase();
+            if (!slug || !supabase) {
                 setState('missing');
                 return;
             }
-            const { data, error } = await supabase.rpc('get_public_story', { slug });
-            if (cancelled) return;
+            const { data, error } = await supabase.rpc('get_public_story', {
+                slug,
+            });
+            if (canceled) return;
             if (error || !data) {
                 setState('missing');
                 return;
             }
             setStory(data as PublicStoryData);
             setState('ready');
-        })();
+        })().catch(() => {
+            if (!canceled) setState('missing');
+        });
         return () => {
-            cancelled = true;
+            canceled = true;
         };
     }, [slug]);
 
     if (state === 'loading') {
         return (
-            <Centered>
+            <Centered id="main">
                 <p>Loading…</p>
             </Centered>
         );
@@ -72,24 +99,27 @@ const PublicStory = () => {
 
     if (state === 'missing' || !story) {
         return (
-            <Centered>
+            <Centered id="main">
                 <Brand>
-                    <b>A</b> Story
+                    <Logo height={44} />
                 </Brand>
-                <p>This story isn't available.</p>
+                <h1>This story isn't available.</h1>
                 <p>The link may be private or no longer shared.</p>
             </Centered>
         );
     }
 
-    const fullName = [story.name, story.last_name].filter(Boolean).join(' ').trim();
+    const fullName = [story.name, story.last_name]
+        .filter(Boolean)
+        .join(' ')
+        .trim();
     const initial = (story.name || '?').charAt(0).toUpperCase();
 
     return (
-        <Page>
+        <Page id="main">
             <Inner>
                 <Brand>
-                    <b>A</b> Story
+                    <Logo height={44} />
                 </Brand>
 
                 <Hero>
@@ -109,13 +139,23 @@ const PublicStory = () => {
                         story.memories.map((m) => (
                             <MemoryCard key={m.id}>
                                 {m.photos?.[0] ? (
-                                    <MemoryImg src={m.photos[0]} alt={m.title} loading="lazy" />
+                                    <MemoryImg
+                                        src={m.photos[0]}
+                                        alt={m.title}
+                                        loading="lazy"
+                                    />
                                 ) : null}
                                 <MemoryBody>
                                     {m.era ? <Era>{m.era}</Era> : null}
-                                    <MemoryTitle>{m.title || 'Untitled'}</MemoryTitle>
-                                    {m.period ? <Period>{m.period}</Period> : null}
-                                    {m.body ? <MemoryText>{m.body}</MemoryText> : null}
+                                    <MemoryTitle>
+                                        {m.title || 'Untitled'}
+                                    </MemoryTitle>
+                                    {m.period ? (
+                                        <Period>{m.period}</Period>
+                                    ) : null}
+                                    {m.body ? (
+                                        <MemoryText>{m.body}</MemoryText>
+                                    ) : null}
                                 </MemoryBody>
                             </MemoryCard>
                         ))
@@ -131,13 +171,20 @@ const PublicStory = () => {
                                 {t.photos?.length > 0 && (
                                     <TestimonialPhotos>
                                         {t.photos.map((url, i) => (
-                                            <img key={url + i} src={url} alt="" loading="lazy" />
+                                            <img
+                                                key={url + i}
+                                                src={url}
+                                                alt=""
+                                                loading="lazy"
+                                            />
                                         ))}
                                     </TestimonialPhotos>
                                 )}
                                 <TestimonialWho>
                                     {t.contributor_name || 'Someone'}
-                                    {t.relationship ? ` · ${t.relationship}` : ''}
+                                    {t.relationship
+                                        ? ` · ${t.relationship}`
+                                        : ''}
                                 </TestimonialWho>
                             </Testimonial>
                         ))}
@@ -145,7 +192,8 @@ const PublicStory = () => {
                 )}
 
                 <Footer>
-                    Preserved with <b>A</b> Story — every family has a story worth preserving.
+                    Preserved with <b>A</b> Story — every family has a story
+                    worth preserving.
                 </Footer>
             </Inner>
         </Page>
