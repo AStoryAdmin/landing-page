@@ -22,6 +22,19 @@ export const HeaderShell = styled.header`
   background: color-mix(in srgb, ${color.ivory} 92%, transparent);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid ${color.primaryLine};
+  /* The namecard's double keyline, under the bar. */
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 1px;
+    background: color-mix(in srgb, ${color.gold} 32%, transparent);
+  }
+  &.is-over-dark::after {
+    background: color-mix(in srgb, ${color.gold} 26%, transparent);
+  }
   transition:
     transform ${motion.reveal},
     background 400ms,
@@ -41,7 +54,7 @@ export const HeaderShell = styled.header`
   .gf-nav-inner {
     width: min(1520px, calc(100% - var(--page-gutter) * 2));
     margin: auto;
-    min-height: 76px;
+    min-height: 84px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -57,7 +70,8 @@ export const HeaderShell = styled.header`
     align-items: center;
     gap: clamp(18px, 2.2vw, 34px);
   }
-  /* Links: small tracked capitals; the current page carries a gold lozenge. */
+  /* Links: the serif, quietly — no capitals, no lozenge (Pass 11k). The page
+     you are on is terracotta with a fine gold rule under the word. */
   .gf-nav-links > a,
   .more-toggle {
     position: relative;
@@ -69,41 +83,44 @@ export const HeaderShell = styled.header`
     background: none;
     border: 0;
     color: inherit;
-    font: 600 12.5px/1 ${font.body};
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    font: 400 18px/1 ${font.display};
+    letter-spacing: 0;
+    text-transform: none;
     text-decoration: none;
     cursor: pointer;
-    opacity: 0.86;
-    transition: opacity 250ms;
+    transition: color 300ms;
   }
-  .gf-nav-links > a:hover,
-  .more-toggle:hover,
-  .gf-nav-links > a[aria-current="page"] {
-    opacity: 1;
-  }
-  .gf-nav-links > a::after,
-  .more-toggle::after {
+  .gf-nav-links > a::after {
     content: "";
     position: absolute;
-    left: 50%;
-    bottom: 4px;
-    width: 5px;
-    height: 5px;
+    left: 0;
+    right: 0;
+    bottom: 9px;
+    height: 1px;
     background: ${color.gold};
-    transform: translateX(-50%) rotate(45deg) scale(0);
+    transform: scaleX(0);
+    transform-origin: left;
     transition: transform ${motion.slow};
   }
-  .gf-nav-links > a:hover::after,
-  .more-toggle:hover::after {
-    transform: translateX(-50%) rotate(45deg) scale(0.7);
+  .gf-nav-links > a:hover,
+  .more-toggle:hover {
+    color: ${color.accent};
+  }
+  .gf-nav-links > a[aria-current="page"] {
+    color: ${color.accent};
   }
   .gf-nav-links > a[aria-current="page"]::after {
-    transform: translateX(-50%) rotate(45deg) scale(1);
+    transform: scaleX(1);
+  }
+  &.is-over-dark .gf-nav-links > a:hover,
+  &.is-over-dark .more-toggle:hover,
+  &.is-over-dark .gf-nav-links > a[aria-current="page"] {
+    color: ${color.gold};
   }
   .more-chevron {
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
+    opacity: 0.6;
     transition: transform 250ms;
   }
   .more-toggle[aria-expanded="true"] .more-chevron {
@@ -232,8 +249,8 @@ export const HeaderShell = styled.header`
     color: ${color.ivory};
     box-shadow: inset 0 0 0 1px
       color-mix(in srgb, ${color.ivory} 18%, transparent);
-    font: 600 12px/1 ${font.body};
-    letter-spacing: 0.14em;
+    font: 600 11.5px/1 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     text-decoration: none;
     white-space: nowrap;

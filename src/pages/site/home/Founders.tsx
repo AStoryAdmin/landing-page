@@ -7,7 +7,8 @@
  * THE LETTER IS DANIEL'S (the earliest version, 2026-09-15 baseline). Quote
  * it exactly; don't tidy it. The photograph is from the illustrative library
  * — a dinner-table storyteller — not the founder's family, so it carries no
- * caption. Swap in a real photo of Daniel when there is one.
+ * caption — a hallway telephone, 1981: the call nobody made. Swap in a real
+ * photo of Daniel when there is one.
  */
 import styled from "styled-components";
 import { ArrowIcon, Picture } from "../kit/kit";
@@ -30,15 +31,18 @@ const Scene = styled.section`
   }
   .photo {
     position: relative;
+    justify-self: center;
+    width: min(100%, 460px);
     border-radius: 20px;
     overflow: hidden;
-    aspect-ratio: 4 / 3.4;
+    aspect-ratio: 4 / 4.8;
     box-shadow: 0 40px 80px -50px rgba(42, 31, 24, 0.7);
   }
   .photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 38% center;
     filter: sepia(0.12);
   }
   .photo::after {
@@ -120,7 +124,7 @@ export default function Founders() {
     <Scene ref={ref} aria-labelledby="founders-title">
       <Frame className="grid">
         <div className="photo">
-          <Picture id="27" alt="" sizes="(max-width: 860px) 92vw, 46vw" />
+          <Picture id="12" alt="" sizes="(max-width: 860px) 92vw, 46vw" />
         </div>
         <div>
           <Eyebrow>Why we started</Eyebrow>

@@ -249,7 +249,7 @@ export default function Header() {
                   ))}
                 </div>
                 <Link className="more-feature" to="/our-story" onClick={close}>
-                  <img src="/mission/27-640.webp" alt="" loading="lazy" />
+                  <img src="/mission/31-640.webp" alt="" loading="lazy" />
                   <small>Our story</small>
                   <b>Why two founders started asking.</b>
                   <span>Read the letter →</span>

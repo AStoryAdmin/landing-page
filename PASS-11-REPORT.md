@@ -258,3 +258,12 @@ comments and readable structure).
   words — never an AI imitation") → "Why families switch" (four reasons) → Joan / Paul /
   the photograph → actions. Removed: market table, documentary contrast, category table,
   "beside what you already use", and the per-competitor "side by side" answers.
+
+## Pass 11k
+
+- **Navigation**: links set in the serif (no capitals, no gold lozenge); the current page is
+  terracotta with a fine gold rule under the word; a double hairline under the bar
+  (namecard keyline); taller row; the waitlist pill tightened.
+- **Our story photographs**: the dinner-table photo is gone. The homepage "Why we started"
+  section uses 12 (a hallway telephone, 1981 — the call nobody made) in a portrait frame;
+  the header's Our story card uses 31 (the 1958 portrait), which reads better small.
