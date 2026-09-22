@@ -45,24 +45,21 @@ const Milestones = styled.section`
     color: ${color.primary};
     max-width: 19ch;
   }
+  /* Only the milestone word is live, and it changes colour — no underline.
+     At rest the three words sit in a quieter brown so they read as a set;
+     the one on top of the pile turns terracotta. */
   h2 button {
     all: unset;
     white-space: nowrap;
     cursor: pointer;
-    position: relative;
-    color: ${color.primary};
-    transition: color 300ms;
-    background: radial-gradient(
-        circle,
-        ${color.primaryMid} 1px,
-        transparent 1.5px
-      )
-      0 96% / 6px 3px repeat-x;
+    color: ${color.primaryLight};
+    transition: color 400ms;
+  }
+  h2 button:hover {
+    color: ${color.accentText};
   }
   h2 button[aria-pressed="true"] {
     color: ${color.accent};
-    background: linear-gradient(${color.accent}, ${color.accent}) 0 96% / 100%
-      2px no-repeat;
   }
   .keep {
     white-space: nowrap;
@@ -223,6 +220,7 @@ function MilestonePile() {
           <h2 id="lost-title">
             {MILESTONES.map((m, i) => (
               <span key={m.photo} className="keep">
+                {m.article}{" "}
                 <button
                   type="button"
                   aria-pressed={top === i}

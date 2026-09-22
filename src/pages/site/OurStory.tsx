@@ -10,11 +10,9 @@
  * ─────────────────────────────────────────────────────────────────────────
  * DANIEL'S LETTER IS VERBATIM from the earliest site (09142026, architecture
  * baseline, story.tsx: "A note from Daniel Hoang Nguyen"). Don't edit it.
- * BAO'S LETTER IS A DRAFT written for the founders to approve or replace
- * (the founder asked for one to be made up). It uses only what the early
- * site says about Bao — an engineer from Michigan, semiconductor research
- * and healthcare, leads how A Story is built and tested — plus an invented
- * family detail. Confirm with Bao before launch.
+ * BAO'S LETTER is his own text (supplied 2026-09-22), lightly tightened for
+ * rhythm — no facts added. Key phrases in both letters are set as <mark>, a
+ * soft gold highlighter, per the founder's request.
  * ─────────────────────────────────────────────────────────────────────────
  *
  * No photographs of the founders exist in the project, so none are faked:
@@ -135,6 +133,16 @@ const Letters = styled(Chapter)`
     margin: 0.08em 0.1em 0 0;
     font: 400 3.6em/0.8 ${font.display};
     color: ${color.teal};
+  }
+  .sheet mark {
+    color: inherit;
+    background: linear-gradient(
+        color-mix(in srgb, ${color.gold} 45%, transparent),
+        color-mix(in srgb, ${color.gold} 45%, transparent)
+      )
+      0 88% / 100% 0.42em no-repeat;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
   .sheet p.turn {
     margin: 1.4em 0;
@@ -298,8 +306,8 @@ export default function OurStory() {
             </p>
             <p>
               I watched men who had carried our family’s history, who knew the
-              names and the reasons and the way we got here, struggle to find
-              words that had always come easily.
+              names and the reasons and the way we got here,{" "}
+              <mark>struggle to find words that had always come easily.</mark>
             </p>
             <p className="turn">I had never thought to ask.</p>
             <p>
@@ -310,42 +318,70 @@ export default function OurStory() {
               attention toward the people who made my life.
             </p>
             <p>
-              So I started building A Story: someone to ask, time to listen, and
-              a place for a family to keep the answers.
+              So I started building A Story:{" "}
+              <mark>
+                someone to ask, time to listen, and a place for a family to keep
+                the answers.
+              </mark>
             </p>
           </Letter>
 
           <Letter
             from="Bao"
-            title="Eleven minutes of her voice."
+            title="The story was never told the same way twice."
             initial="B"
             name="Bao Vo"
             role="Co-founder & COO"
             link="https://www.linkedin.com/in/gbaovo/"
           >
             <p className="first">
-              I grew up in Michigan, a long way from where my family’s stories
-              started. Most of what I know about my grandparents arrived in
-              pieces — a sentence at dinner, a photograph someone found in a
-              drawer, an uncle correcting my mother about which year they left.
+              In my family, a story rarely belonged to one person. Someone would
+              start telling it at dinner. Someone else would interrupt, because
+              they remembered it differently. An old photograph would come out.
+              A name would get corrected. Someone would remember a detail nobody
+              had mentioned before — and suddenly that became the best part.
+              Then dinner would end, the photograph would go back in the drawer,
+              and{" "}
+              <mark>most of what we had just heard stayed in that room.</mark>
             </p>
             <p>
-              For years I assumed I would put it together later. I’m an
-              engineer. I believed the record would always be there to go back
-              and find.
+              Both of my grandfathers were soldiers during the Vietnam War. My
+              parents grew up through the war and the hard subsidy years that
+              followed, then made their way to Saigon and built a life from
+              almost nothing. That life eventually gave me the chance to come to
+              the United States to study. I knew the outline of our story — the
+              war, the move, the years of rebuilding, the sacrifices that made
+              my own life possible. But the older I got, the more I realised how
+              much I didn’t know. What were my grandfathers like as young men?
+              What did my parents worry about when money was scarce? What did
+              their first home in Saigon look like?
             </p>
-            <p className="turn">It wasn’t.</p>
-            <p>
-              My grandmother used to leave me voice messages every Sunday. Then
-              came an old phone, a full storage bar, an account nobody
-              remembered the password to. I had hours of her talking to me. I
-              have eleven minutes left.
+            <p className="turn">
+              I knew what happened. I didn’t always know what it felt like.
             </p>
             <p>
-              Daniel brought the reason. My job is to make sure the thing
-              actually works — built, tested and put into the hands of people
-              like my grandmother, who has never once opened an app on purpose.
-              If it rings and she answers, we did it right.
+              I was trained as an engineer, and I spent years on complicated
+              systems — thinking about how every piece fits together, and where
+              something important can get lost. At some point I started looking
+              at my family the same way. We had photographs, names, dates and
+              places. What we didn’t have was everything around them: why a
+              photograph mattered, why someone made a certain decision, the
+              disagreement over how something really happened, the joke that
+              only works when my father tells it.
+            </p>
+            <p>
+              That’s what made A Story personal to me. I keep coming back to one
+              question: how do you keep all of that{" "}
+              <mark>without asking a family to become archivists?</mark> The
+              technology can be sophisticated underneath, but my parents
+              shouldn’t have to think about any of it. They should just be able
+              to talk — tell it the way they remember it, disagree, go off
+              topic, laugh, change their mind halfway through. Those are often
+              the parts that tell you who someone really was.
+            </p>
+            <p className="turn">
+              A family is not a résumé. A life shouldn’t become one when we
+              preserve it.
             </p>
           </Letter>
         </Frame>

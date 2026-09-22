@@ -62,7 +62,7 @@ const Opening = styled.section`
     color: ${color.onDarkMuted};
   }
   h1 {
-    margin-top: 10px;
+    margin-top: 22px;
     font: 400 ${display.xl} / 1.02 ${font.display};
     letter-spacing: -0.025em;
     color: ${color.ivory};
@@ -247,13 +247,13 @@ export default function CompareOpening() {
       <Frame className="grid">
         <div className="opening-copy">
           <Eyebrow>How A Story is different</Eyebrow>
-          <p className="quiet">Most products preserve a storyteller.</p>
           <h1 id="compare-title">
-            A&nbsp;Story preserves the family <em>record.</em>
+            More than a memoir. A family’s whole <em>story.</em>
           </h1>
           <p className="lead">
-            One moment doesn’t need one official version. Everyone who was there
-            keeps their own — side by side, in their own words.
+            Most products help one storyteller finish a book. A Story keeps
+            everyone’s version of the same moment — side by side, and still
+            growing.
           </p>
         </div>
         <div

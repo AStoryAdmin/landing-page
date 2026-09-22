@@ -9,7 +9,7 @@
  * - It arrives CLOSED — teal cloth, a gold-foil frame and title, the way the
  *   printed volume actually looks (mission CP02) — and opens itself when it
  *   comes into view (or on "Open the book"). Behind the cover: an endpaper
- *   with a bookplate, then a title page.
+ *   with the dedication (as on the printed cover, coverbook.pdf), then a title page.
  * - Each spread is a memory laid out like the app's memory page: a print with
  *   photo corners and a caption on the left; on the right the date, tags,
  *   the teller's own words with a drop cap, and a second family member's
@@ -274,13 +274,17 @@ const Scene = styled.section`
   }
 
   /* ── The cover ── */
+  /* The cover follows the founder's cover design (coverbook.pdf): title in
+     tracked capitals top left, the date, the names in italic, a stack of
+     prints at the right, a line along the foot. Teal cloth. */
   .cover-art {
     position: absolute;
     inset: 0;
-    display: grid;
-    place-items: center;
+    padding: 5.5cqw 4.4cqw 4.6cqw 5.2cqw;
+    display: flex;
+    flex-direction: column;
     background:
-      linear-gradient(90deg, rgba(0, 0, 0, 0.22), transparent 7%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.24), transparent 7%),
       repeating-linear-gradient(
         90deg,
         rgba(255, 255, 255, 0.03) 0 1px,
@@ -292,67 +296,81 @@ const Scene = styled.section`
         transparent 1px 3px
       ),
       ${color.teal};
-    color: ${color.warmGold};
+    color: ${color.ivory};
   }
-  .cover-art::before,
-  .cover-art::after {
-    content: "";
-    position: absolute;
-    border: 1px solid color-mix(in srgb, ${color.warmGold} 80%, transparent);
-    pointer-events: none;
-  }
-  .cover-art::before {
-    inset: 4cqw 3.4cqw 4cqw 4.2cqw;
-  }
-  .cover-art::after {
-    inset: 4.7cqw 4.1cqw 4.7cqw 4.9cqw;
-    border-color: color-mix(in srgb, ${color.warmGold} 45%, transparent);
-  }
-  .cover-inner {
-    display: grid;
-    justify-items: center;
-    gap: 2.2cqw;
-    text-align: center;
-  }
-  .cover-inner small {
-    font: 600 1cqw/1 ${font.body};
-    letter-spacing: 0.4em;
+  .cover-art h3 {
+    font: 600 2.6cqw/1.05 ${font.body};
+    letter-spacing: 0.06em;
     text-transform: uppercase;
+    color: ${color.ivory};
   }
-  .cover-inner h3 {
-    font: 400 4.6cqw/1.05 ${font.display};
-    letter-spacing: 0.01em;
-    color: ${color.warmGold};
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  .cover-art .date {
+    margin-top: 0.8cqw;
+    font: 500 0.95cqw/1 ${font.body};
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, ${color.ivory} 70%, transparent);
   }
-  .cover-inner .orn {
-    width: 10cqw;
-    height: 1px;
-    background: ${color.warmGold};
+  .cover-art .names {
+    margin-top: 2.6cqw;
+    font: italic 400 2.2cqw/1 ${font.display};
+    color: ${color.gold};
+  }
+  .cover-stack {
     position: relative;
+    flex: 1;
+    margin: 1.4cqw 0 1.6cqw;
   }
-  .cover-inner .orn::after {
-    content: "";
+  .cover-stack img {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 1cqw;
-    height: 1cqw;
-    border: 1px solid ${color.warmGold};
-    background: ${color.teal};
-    transform: translate(-50%, -50%) rotate(45deg);
+    display: block;
+    object-fit: cover;
+    padding: 0.5cqw 0.5cqw 1.6cqw;
+    background: ${color.paperPure};
+    box-shadow: 0 1cqw 2cqw -0.8cqw rgba(0, 0, 0, 0.6);
+    filter: grayscale(0.85) sepia(0.2);
   }
-  .cover-inner .logo {
-    font: 500 2cqw/1 ${font.display};
-    letter-spacing: 0.04em;
-    color: ${color.warmGold};
+  .cover-stack img:nth-child(1) {
+    right: 1cqw;
+    top: 8%;
+    width: 17cqw;
+    height: 15cqw;
+    transform: rotate(4deg);
   }
-  .cover-inner p {
-    font: italic 400 1.5cqw/1.3 ${font.display};
-    color: color-mix(in srgb, ${color.warmGold} 85%, ${color.ivory});
+  .cover-stack img:nth-child(2) {
+    right: 10cqw;
+    top: 20%;
+    width: 18cqw;
+    height: 21cqw;
+    transform: rotate(-3deg);
+    z-index: 2;
+  }
+  .cover-stack img:nth-child(3) {
+    right: 2cqw;
+    top: 42%;
+    width: 15cqw;
+    height: 17cqw;
+    transform: rotate(2deg);
+    z-index: 3;
+  }
+  .cover-foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2cqw;
+  }
+  .cover-foot p {
+    font: italic 400 1.7cqw/1.2 ${font.display};
+    color: ${color.ivory};
+  }
+  .cover-foot .mark {
+    font: 400 1.4cqw/1 ${font.display};
+    color: ${color.gold};
   }
   .open-btn {
-    margin-top: 1.6cqw;
+    position: absolute;
+    left: 5.2cqw;
+    bottom: 8.4cqw;
     padding: 1.1cqw 2.4cqw;
     border: 1px solid color-mix(in srgb, ${color.warmGold} 70%, transparent);
     border-radius: 99px;
@@ -368,45 +386,40 @@ const Scene = styled.section`
   }
 
   /* ── Endpaper and title page ── */
+  /* The inside cover carries the dedication, as on the printed volume. */
   .endpaper {
     position: absolute;
     inset: 0;
     display: grid;
     place-items: center;
-    background:
-      radial-gradient(
-          circle at 25% 25%,
-          color-mix(in srgb, ${color.warmGold} 35%, transparent) 0.18cqw,
-          transparent 0.22cqw
-        )
-        0 0 / 3cqw 3cqw,
-      radial-gradient(
-          circle at 75% 75%,
-          color-mix(in srgb, ${color.warmGold} 25%, transparent) 0.18cqw,
-          transparent 0.22cqw
-        )
-        0 0 / 3cqw 3cqw,
-      color-mix(in srgb, ${color.teal} 88%, ${color.black});
-  }
-  .bookplate {
-    width: 58%;
-    padding: 3cqw 2.4cqw;
-    background: ${color.paperPure};
-    outline: 1px solid ${color.goldDeep};
-    outline-offset: -0.8cqw;
+    padding: 6cqw;
+    background: color-mix(in srgb, ${color.teal} 90%, ${color.black});
     text-align: center;
-    box-shadow: 0 1cqw 2cqw -1cqw rgba(0, 0, 0, 0.5);
+    color: ${color.ivory};
   }
-  .bookplate small {
-    font: 600 0.95cqw/1 ${font.body};
-    letter-spacing: 0.3em;
+  .dedication small {
+    font: 500 0.95cqw/1 ${font.body};
+    letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: ${color.accentText};
+    color: color-mix(in srgb, ${color.ivory} 70%, transparent);
   }
-  .bookplate p {
-    margin-top: 1.4cqw;
-    font: italic 400 1.9cqw/1.3 ${font.display};
-    color: ${color.primary};
+  .dedication .rule {
+    display: block;
+    width: 3cqw;
+    height: 1px;
+    margin: 1.2cqw auto;
+    background: ${color.gold};
+  }
+  .dedication b {
+    display: block;
+    font: italic 400 3.6cqw/1.1 ${font.display};
+    color: ${color.gold};
+  }
+  .dedication p {
+    margin: 1.8cqw auto 0;
+    max-width: 30ch;
+    font: italic 400 1.35cqw/1.55 ${font.display};
+    color: color-mix(in srgb, ${color.ivory} 82%, transparent);
   }
   .title-page {
     position: absolute;
@@ -685,7 +698,6 @@ const Scene = styled.section`
     color: ${color.primary};
   }
   .end-page h3 em {
-    display: block;
     font-style: normal;
     font-weight: 500;
     color: ${color.accent};
@@ -907,8 +919,7 @@ const Scene = styled.section`
     .single .by,
     .single .meta,
     .single .also b,
-    .single .sheet figcaption,
-    .single .cover-inner small {
+    .single .sheet figcaption {
       font-size: 2.6cqw;
     }
     .single .title,
@@ -924,12 +935,10 @@ const Scene = styled.section`
     .single .not-end,
     .single .today,
     .single .title-page p,
-    .single .bookplate p,
-    .single .cover-inner p {
+    .single .dedication p {
       font-size: 3.6cqw;
     }
-    .single .end-page h3,
-    .single .cover-inner h3 {
+    .single .end-page h3 {
       font-size: 10cqw;
     }
     .single .because {
@@ -944,6 +953,49 @@ const Scene = styled.section`
       width: 7cqw;
       height: 7cqw;
       font-size: 3cqw;
+    }
+    /* One page wide here, not two: the cover's cqw sizes double. */
+    .single .cover-art {
+      padding: 10cqw 8cqw 9cqw 10cqw;
+    }
+    .single .cover-art h3 {
+      font-size: 5.6cqw;
+    }
+    .single .cover-art .date,
+    .single .dedication small {
+      font-size: 2.2cqw;
+    }
+    .single .cover-art .names {
+      margin-top: 5cqw;
+      font-size: 4.6cqw;
+    }
+    .single .cover-stack img:nth-child(1) {
+      right: 2cqw;
+      width: 34cqw;
+      height: 30cqw;
+    }
+    .single .cover-stack img:nth-child(2) {
+      right: 20cqw;
+      width: 36cqw;
+      height: 42cqw;
+    }
+    .single .cover-stack img:nth-child(3) {
+      right: 4cqw;
+      width: 30cqw;
+      height: 34cqw;
+    }
+    .single .cover-foot p {
+      font-size: 3.6cqw;
+    }
+    .single .cover-foot .mark {
+      font-size: 3cqw;
+    }
+    .single .open-btn {
+      left: 10cqw;
+      bottom: 17cqw;
+    }
+    .single .dedication b {
+      font-size: 8cqw;
     }
     .scrub {
       flex-wrap: wrap;
@@ -975,29 +1027,30 @@ function Running({ left, right }: { left: ReactNode; right: ReactNode }) {
 function CoverPage({ onOpen }: { onOpen?: () => void }) {
   return (
     <div className="cover-art">
-      <div className="cover-inner">
-        <small>Volume I</small>
-        <h3>
-          The Hartley
-          <br />
-          Family
-        </h3>
-        <span className="orn" />
-        <p>1952 — still being written</p>
-        <span className="logo">A Story</span>
-        {onOpen && (
-          <button
-            type="button"
-            className="open-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              onOpen();
-            }}
-          >
-            Open the book
-          </button>
-        )}
+      <h3>Moments &amp; Memories</h3>
+      <span className="date">1952 — still being written</span>
+      <span className="names">The Hartleys</span>
+      <div className="cover-stack" aria-hidden="true">
+        <img src="/mission/01-640.webp" alt="" loading="lazy" />
+        <img src="/mission/H02-640.webp" alt="" loading="lazy" />
+        <img src="/mission/H04-640.webp" alt="" loading="lazy" />
       </div>
+      <div className="cover-foot">
+        <p>Family is everything to us.</p>
+        <span className="mark">A Story</span>
+      </div>
+      {onOpen && (
+        <button
+          type="button"
+          className="open-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpen();
+          }}
+        >
+          Open the book
+        </button>
+      )}
     </div>
   );
 }
@@ -1005,9 +1058,14 @@ function CoverPage({ onOpen }: { onOpen?: () => void }) {
 function Endpaper() {
   return (
     <div className="endpaper">
-      <div className="bookplate">
-        <small>Ex libris</small>
-        <p>Walt &amp; Ruth Hartley — and everyone who came after</p>
+      <div className="dedication">
+        <small>Dedicated to</small>
+        <span className="rule" />
+        <b>Walt &amp; Ruth</b>
+        <p>
+          For the porch steps, the workbench, and every story you told twice.
+          Thank you for always being our home.
+        </p>
       </div>
     </div>
   );

@@ -27,17 +27,32 @@ export const MODELS = [
     note: "They built this category, and they do it well.",
     items: [
       { name: "Storyworth", loop: "Questions → storyteller → memoir → book" },
-      { name: "Remento", loop: "Prompt → voice/video → written story → voice-linked book" },
-      { name: "Storii", loop: "Phone prompt → recording → transcript / memoir" },
-      { name: "Meminto", loop: "Questions + multimedia → collaborative life book" },
+      {
+        name: "Remento",
+        loop: "Prompt → voice/video → written story → voice-linked book",
+      },
+      {
+        name: "Storii",
+        loop: "Phone prompt → recording → transcript / memoir",
+      },
+      {
+        name: "Meminto",
+        loop: "Questions + multimedia → collaborative life book",
+      },
     ],
   },
   {
     group: "Emerging family archives",
     note: "Newer products moving toward living archives.",
     items: [
-      { name: "Spomen", loop: "Multiple voices → attributed family story + archive" },
-      { name: "Heirloom", loop: "Multiple people → living archive + AI Family Council" },
+      {
+        name: "Spomen",
+        loop: "Multiple voices → attributed family story + archive",
+      },
+      {
+        name: "Heirloom",
+        loop: "Multiple people → living archive + AI Family Council",
+      },
     ],
   },
 ] as const;
@@ -54,8 +69,24 @@ export const A_STORY_LOOP = [
 ] as const;
 
 /** A documentary, not a diary. */
-export const MEMOIR_MODEL = ["One narrator", "One account", "Past-focused", "Prompts", "Stories", "Book", "Finished"] as const;
-export const DOCUMENTARY_MODEL = ["Many witnesses", "Attributed accounts", "Past + present", "Conversation", "Context", "Living archive", "Continuing"] as const;
+export const MEMOIR_MODEL = [
+  "One narrator",
+  "One account",
+  "Past-focused",
+  "Prompts",
+  "Stories",
+  "Book",
+  "Finished",
+] as const;
+export const DOCUMENTARY_MODEL = [
+  "Many witnesses",
+  "Attributed accounts",
+  "Past + present",
+  "Conversation",
+  "Context",
+  "Living archive",
+  "Continuing",
+] as const;
 
 /** What one memory can hold. */
 export const MEMORY_HOLDS = [
@@ -90,23 +121,196 @@ export const MAP = [
 /** ● strong, ◐ present or secondary, ○ not central. The source's words are kept as labels. */
 export type Mark = { level: 2 | 1 | 0; label: string };
 const m = (level: 2 | 1 | 0, label: string): Mark => ({ level, label });
-export const MATRIX_COLUMNS = ["Storyworth", "Remento", "Storii", "Meminto", "Spomen", "Heirloom", "A Story"] as const;
+export const MATRIX_COLUMNS = [
+  "Storyworth",
+  "Remento",
+  "Storii",
+  "Meminto",
+  "Spomen",
+  "Heirloom",
+  "A Story",
+] as const;
 export const MATRIX: { row: string; cells: Mark[] }[] = [
-  { row: "Guided questions", cells: [m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong")] },
-  { row: "Voice capture", cells: [m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong")] },
-  { row: "Low-friction / no-app capture", cells: [m(2, "Strong (phone)"), m(2, "Strong (web link)"), m(2, "Strong (phone)"), m(2, "Strong (phone/app)"), m(2, "Strong (private link)"), m(1, "Partial"), m(2, "Strong (phone-first)")] },
-  { row: "AI-guided follow-up", cells: [m(2, "Strong (Magic Interviews)"), m(0, "Not core"), m(0, "Not core"), m(0, "Not core"), m(2, "Strong"), m(1, "AI-guided"), m(2, "Core")] },
-  { row: "Original voice retained", cells: [m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong")] },
-  { row: "Readable written story", cells: [m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong (Card)")] },
-  { row: "Physical book", cells: [m(2, "Core"), m(2, "Core"), m(1, "Present"), m(2, "Core"), m(1, "PDF"), m(1, "Present"), m(1, "Optional chapter")] },
-  { row: "Family participation", cells: [m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong")] },
-  { row: "Living / ongoing archive orientation", cells: [m(1, "Partial"), m(1, "Partial"), m(1, "Partial"), m(0, "Weak"), m(2, "Strong"), m(2, "Strong"), m(2, "Core")] },
-  { row: "People / place / date context", cells: [m(0, "Limited"), m(0, "Limited"), m(1, "Places"), m(0, "Limited"), m(2, "Strong"), m(1, "Timeline"), m(2, "Core")] },
-  { row: "Multiple voices around one family record", cells: [m(1, "Partial"), m(1, "Partial"), m(0, "Limited"), m(1, "Co-storytellers"), m(2, "Strong"), m(2, "Strong"), m(2, "Core")] },
-  { row: "Preserve contradictory versions separately", cells: [m(0, "Not core"), m(0, "Not core"), m(0, "Not core"), m(0, "Not core"), m(1, "Woven into attributed story"), m(1, "Council/synthesis"), m(2, "Core philosophy")] },
-  { row: "Original + organized version coexist", cells: [m(1, "Partial"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(2, "Strong"), m(1, "Source archive"), m(2, "Card + Transcript + Voice")] },
-  { row: "Explicitly includes life happening now", cells: [m(1, "Some"), m(1, "Some"), m(1, "Some"), m(0, "Mostly memoir"), m(2, "Strong"), m(2, "Strong"), m(2, "Core")] },
-  { row: "Synthetic future persona / avatar", cells: [m(0, "No"), m(0, "No"), m(0, "No"), m(0, "No"), m(0, "No"), m(2, "Yes / voice clone tiers"), m(0, "No — deliberate")] },
+  {
+    row: "Guided questions",
+    cells: [
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+    ],
+  },
+  {
+    row: "Voice capture",
+    cells: [
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+    ],
+  },
+  {
+    row: "Low-friction / no-app capture",
+    cells: [
+      m(2, "Strong (phone)"),
+      m(2, "Strong (web link)"),
+      m(2, "Strong (phone)"),
+      m(2, "Strong (phone/app)"),
+      m(2, "Strong (private link)"),
+      m(1, "Partial"),
+      m(2, "Strong (phone-first)"),
+    ],
+  },
+  {
+    row: "AI-guided follow-up",
+    cells: [
+      m(2, "Strong (Magic Interviews)"),
+      m(0, "Not core"),
+      m(0, "Not core"),
+      m(0, "Not core"),
+      m(2, "Strong"),
+      m(1, "AI-guided"),
+      m(2, "Core"),
+    ],
+  },
+  {
+    row: "Original voice retained",
+    cells: [
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+    ],
+  },
+  {
+    row: "Readable written story",
+    cells: [
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong (Card)"),
+    ],
+  },
+  {
+    row: "Physical book",
+    cells: [
+      m(2, "Core"),
+      m(2, "Core"),
+      m(1, "Present"),
+      m(2, "Core"),
+      m(1, "PDF"),
+      m(1, "Present"),
+      m(1, "Optional chapter"),
+    ],
+  },
+  {
+    row: "Family participation",
+    cells: [
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+    ],
+  },
+  {
+    row: "Living / ongoing archive orientation",
+    cells: [
+      m(1, "Partial"),
+      m(1, "Partial"),
+      m(1, "Partial"),
+      m(0, "Weak"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Core"),
+    ],
+  },
+  {
+    row: "People / place / date context",
+    cells: [
+      m(0, "Limited"),
+      m(0, "Limited"),
+      m(1, "Places"),
+      m(0, "Limited"),
+      m(2, "Strong"),
+      m(1, "Timeline"),
+      m(2, "Core"),
+    ],
+  },
+  {
+    row: "Multiple voices around one family record",
+    cells: [
+      m(1, "Partial"),
+      m(1, "Partial"),
+      m(0, "Limited"),
+      m(1, "Co-storytellers"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Core"),
+    ],
+  },
+  {
+    row: "Preserve contradictory versions separately",
+    cells: [
+      m(0, "Not core"),
+      m(0, "Not core"),
+      m(0, "Not core"),
+      m(0, "Not core"),
+      m(1, "Woven into attributed story"),
+      m(1, "Council/synthesis"),
+      m(2, "Core philosophy"),
+    ],
+  },
+  {
+    row: "Original + organized version coexist",
+    cells: [
+      m(1, "Partial"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(1, "Source archive"),
+      m(2, "Card + Transcript + Voice"),
+    ],
+  },
+  {
+    row: "Explicitly includes life happening now",
+    cells: [
+      m(1, "Some"),
+      m(1, "Some"),
+      m(1, "Some"),
+      m(0, "Mostly memoir"),
+      m(2, "Strong"),
+      m(2, "Strong"),
+      m(2, "Core"),
+    ],
+  },
+  {
+    row: "Synthetic future persona / avatar",
+    cells: [
+      m(0, "No"),
+      m(0, "No"),
+      m(0, "No"),
+      m(0, "No"),
+      m(0, "No"),
+      m(2, "Yes / voice clone tiers"),
+      m(0, "No — deliberate"),
+    ],
+  },
 ];
 
 /** "Why not…?" — the source's own answers, for families comparing. */
@@ -130,5 +334,107 @@ export const WHY_NOT = [
   {
     q: "Why not Ancestry?",
     a: "Ancestry can tell you who lived at the house. A Story asks why everyone always used the back door. Genealogy reconstructs family history from records. A Story captures first-person context that no census, family tree or DNA match can recover — and captures today’s life before it becomes another historical record.",
+  },
+] as const;
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Pass 11j — the comparison tables (Home and /compare), in the founder's
+ * reference style (Quippy): one plain benefit per row, written "this, not
+ * that", marked 2 yes / 1 partly / 0 no. Rows are A Story's core values from
+ * the mission; each mark follows the matrix above (● → 2, ◐ → 1, ○ → 0).
+ * Capabilities the app is still building (keeping the voice as audio;
+ * people/places linking) are deliberately left out.
+ * ───────────────────────────────────────────────────────────────────────── */
+
+export type Level = 0 | 1 | 2;
+export type Row = { label: string; cells: Level[] };
+
+export const HOME_COLUMNS = [
+  "A Story",
+  "Storyworth",
+  "Remento",
+  "Storii",
+] as const;
+export const HOME_ROWS: Row[] = [
+  {
+    label: "They just answer the phone — nothing to type or record",
+    cells: [2, 2, 1, 2],
+  },
+  {
+    label: "Follows what they actually said, not a fixed list of prompts",
+    cells: [2, 2, 0, 0],
+  },
+  {
+    label: "Everyone who was there adds their own version",
+    cells: [2, 1, 1, 0],
+  },
+  {
+    label: "Different memories kept side by side, not merged into one",
+    cells: [2, 0, 0, 0],
+  },
+  { label: "Today counts too, not only the past", cells: [2, 1, 1, 1] },
+  {
+    label: "Keeps growing after the book — the book isn’t the end",
+    cells: [2, 1, 1, 1],
+  },
+];
+
+export const COMPARE_COLUMNS = [
+  "A Story",
+  "Storyworth",
+  "Remento",
+  "Storii",
+  "Meminto",
+  "Spomen",
+  "Heirloom",
+] as const;
+export const COMPARE_ROWS: Row[] = [
+  {
+    label: "They just answer the phone — nothing to type or record",
+    cells: [2, 2, 1, 2, 2, 1, 1],
+  },
+  {
+    label: "Follows what they actually said, not a fixed list of prompts",
+    cells: [2, 2, 0, 0, 0, 2, 1],
+  },
+  {
+    label: "Everyone who was there adds their own version",
+    cells: [2, 1, 1, 0, 1, 2, 2],
+  },
+  {
+    label: "Different memories kept side by side, not merged into one",
+    cells: [2, 0, 0, 0, 0, 1, 1],
+  },
+  {
+    label: "Today counts too, not only the past",
+    cells: [2, 1, 1, 1, 0, 2, 2],
+  },
+  {
+    label: "Keeps growing after the book — the book isn’t the end",
+    cells: [2, 1, 1, 1, 0, 2, 2],
+  },
+  {
+    label: "Their real words — never an AI imitation of them",
+    cells: [2, 2, 2, 2, 2, 2, 0],
+  },
+];
+
+/** Why families switch — the /compare argument, in four short reasons. */
+export const SWITCH = [
+  {
+    title: "You want everyone’s version, not just one.",
+    body: "A memoir tells it one way. A Story keeps Mom’s version, her brother’s, and the photograph — side by side, each in their own name.",
+  },
+  {
+    title: "Your parent won’t use an app.",
+    body: "A Story calls at the hour they choose. They answer and talk; it follows what they say, the way someone who knows them would.",
+  },
+  {
+    title: "Life is still happening.",
+    body: "The first apartment, the grandkids, this Tuesday. A Story is built for the life being lived now, not only the one behind you.",
+  },
+  {
+    title: "A book shouldn’t be the end.",
+    body: "Print any chapter when you’re ready. The archive stays open, and the family keeps adding to it.",
   },
 ] as const;

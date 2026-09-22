@@ -49,9 +49,9 @@ export const LOST = [
 
 /** The milestones everybody already keeps — the stack beside the first headline. */
 export const MILESTONES = [
-  { word: "The wedding", photo: "02", alt: "A wedding portrait", caption: "Walt & Ruth · 1951" },
-  { word: "the graduation", photo: "04", alt: "A graduation portrait", caption: "Dan’s graduation · 1994" },
-  { word: "the first house", photo: "03", alt: "A family standing outside their first house", caption: "The house on Maple Drive · 1973" },
+  { article: "The", word: "wedding", photo: "02", alt: "A wedding portrait", caption: "Walt & Ruth · 1951" },
+  { article: "the", word: "graduation", photo: "04", alt: "A graduation portrait", caption: "Dan’s graduation · 1994" },
+  { article: "the", word: "first house", photo: "03", alt: "A family standing outside their first house", caption: "The house on Maple Drive · 1973" },
 ] as const;
 
 /** Everyday photographs for the collage behind "It’s the everyday." (mission CM02). */

@@ -228,3 +228,33 @@ comments and readable structure).
 - **Care communities, Organizations, Your own story (new `/your-story`, aimed younger)**
   share `kit/Audience.tsx`: collage opening, illustrated moments, real app screen + steps,
   statement band, checklist card. Image briefs 12–18 in docs/image-prompts.md.
+
+## Pass 11h
+
+- **Home comparison**: Storii replaces Spomen (beta). Three differentiating rows only
+  (versions kept side by side; follow-up questions; one record for the whole family), then
+  "The model": built around / finished when / covers. Removed "how they answer" and "core
+  product". Marks from lib/landscape.ts.
+- **Milestone words**: only "wedding", "graduation", "first house" are live; colour change,
+  no underline.
+- **Book cover** follows coverbook.pdf: MOMENTS & MEMORIES, date line, italic family name,
+  a cluster of prints, a foot line; the inside cover is the dedication page. (Script font
+  not added — the site self-hosts its fonts; the names use the serif italic.)
+- **Our story**: Bao's own letter ("The story was never told the same way twice."), lightly
+  tightened; key phrases in both letters set as a soft gold highlighter.
+- **Waitlist (/start)**: full-height split — dark photograph with title, steps on a gold
+  thread and the motto; the form as an invitation card (double gold keyline, underline
+  fields, pill submit). LeadForm logic unchanged.
+
+## Pass 11j — comparison, rebuilt
+
+- One table component (`compare/CompareTable`) in the founder's reference style (Quippy):
+  white card, plain "this, not that" rows from A Story's core values, ✓ / ~ / soft-grey ×,
+  tinted A Story column, legend beneath. Data: `HOME_ROWS`, `COMPARE_ROWS`, `SWITCH` in
+  lib/landscape.ts (marks from the research matrix; in-development capabilities left out).
+- **Home**: Storyworth, Remento, Storii; six rows; "One moment does not need one official
+  version" + link.
+- **/compare** is now the case for switching: opening → 7-competitor table (adds "their real
+  words — never an AI imitation") → "Why families switch" (four reasons) → Joan / Paul /
+  the photograph → actions. Removed: market table, documentary contrast, category table,
+  "beside what you already use", and the per-competitor "side by side" answers.
