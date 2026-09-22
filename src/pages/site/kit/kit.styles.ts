@@ -212,72 +212,95 @@ export const SplitHead = styled.div`
 `;
 
 /**
- * The three actions. Primary: a filled square button with a brass sweep.
- * Secondary: a keyline of the same size. Text: an underline that draws away
- * on hover. Nothing else on the site is a button.
+ * The three actions (Pass 11g, premium pass). Primary: a chocolate pill with
+ * a fine ivory keyline, tracked small capitals, and the arrow set in a gold
+ * coin at the right. Secondary: the same pill as a hairline, the coin in ink.
+ * Text: an underline that draws away on hover. The coin is simply the
+ * ArrowIcon svg styled as a circle, so every existing action picks it up.
  */
 const actionBase = css`
   position: relative;
-  isolation: isolate;
-  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 28px;
-  min-height: 56px;
-  padding: 0 22px 0 26px;
-  border-radius: 2px;
-  font: 600 16px/1 ${font.body};
-  letter-spacing: 0.01em;
+  gap: 18px;
+  min-height: 54px;
+  padding: 0 30px;
+  border-radius: 999px;
+  font: 600 13px/1 ${font.body};
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
   transition:
-    color ${motion.reveal},
-    border-color ${motion.reveal};
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: ${color.gold};
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform ${motion.reveal};
+    background ${motion.slow},
+    color ${motion.slow},
+    border-color ${motion.slow},
+    box-shadow ${motion.slow};
+  &:has(svg) {
+    padding: 0 8px 0 28px;
   }
   svg {
-    width: 18px;
-    height: 18px;
+    box-sizing: border-box;
+    width: 38px;
+    height: 38px;
+    padding: 11px;
     flex: none;
-    transition: transform ${motion.reveal};
-  }
-  &:hover::before {
-    transform: scaleY(1);
-  }
-  &:hover {
-    color: ${color.primary};
+    border-radius: 50%;
+    transition:
+      transform ${motion.reveal},
+      background ${motion.slow},
+      color ${motion.slow};
   }
   &:hover svg {
-    transform: translateX(4px);
+    transform: rotate(-45deg);
   }
   &:active {
     transform: translateY(1px);
   }
   &:focus-visible {
-    outline: 3px solid ${color.gold};
-    outline-offset: 3px;
+    outline: 2px solid ${color.gold};
+    outline-offset: 4px;
   }
 `;
 const primary = css`
   ${actionBase};
-  border: 1px solid transparent;
+  border: 0;
   background: var(--action-bg, ${color.primary});
   color: var(--action-ink, ${color.ivory});
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, ${color.ivory} 18%, transparent),
+    0 14px 30px -18px color-mix(in srgb, ${color.primary} 80%, transparent);
+  svg {
+    background: ${color.gold};
+    color: ${color.primary};
+  }
+  &:hover {
+    background: var(--action-hover, ${color.night});
+  }
+  &:hover svg {
+    background: ${color.ivory};
+  }
 `;
 const secondary = css`
   ${actionBase};
-  border: 1px solid var(--ink, ${color.primary});
+  border: 1px solid
+    color-mix(in srgb, var(--ink, ${color.primary}) 45%, transparent);
   background: transparent;
   color: var(--ink, ${color.primary});
+  svg {
+    background: var(--ink, ${color.primary});
+    color: var(--secondary-coin-ink, ${color.ivory});
+  }
+  &:hover {
+    border-color: var(--ink, ${color.primary});
+    background: color-mix(
+      in srgb,
+      var(--ink, ${color.primary}) 6%,
+      transparent
+    );
+  }
 `;
 export const PrimaryLink = styled(Link)`
   ${primary}
@@ -342,6 +365,8 @@ export const Actions = styled.div`
 export const onDarkActions = css`
   --action-bg: ${color.ivory};
   --action-ink: ${color.primary};
+  --action-hover: ${color.paperPure};
+  --secondary-coin-ink: ${color.primary};
 `;
 
 /**

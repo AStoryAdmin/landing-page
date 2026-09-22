@@ -8,6 +8,7 @@ import WhatGetsLost from "./home/WhatGetsLost";
 import ThreeCalls from "./home/ThreeCalls";
 import EveryVoice from "./home/EveryVoice";
 import FamilyBook from "./home/FamilyBook";
+import Founders from "./home/Founders";
 import StepOne from "./home/StepOne";
 import WhereWeSit from "./home/WhereWeSit";
 
@@ -37,6 +38,7 @@ export default function Home() {
       <ThreeCalls />
       <EveryVoice />
       <FamilyBook />
+      <Founders />
       <StepOne />
       <WhereWeSit />
       <Invitation />

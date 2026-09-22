@@ -29,6 +29,10 @@
       "destination": "/compare/index.html"
     },
     {
+      "source": "/your-story",
+      "destination": "/your-story/index.html"
+    },
+    {
       "source": "/our-story",
       "destination": "/our-story/index.html"
     },

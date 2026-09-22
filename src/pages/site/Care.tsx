@@ -1,18 +1,18 @@
 /**
- * Care communities — know the person behind the care record.
+ * For care communities — rebuilt on the shared audience composition
+ * (kit/Audience.tsx, Pass 11g). The message is unchanged from earlier passes:
+ * an invitation, never a test of memory; the family fills in the edges; agree
+ * consent and support before beginning; pricing quoted individually. A Story
+ * records personal stories — it is not a clinical assessment or treatment,
+ * and the page says so.
  *
- * The reader is a care professional deciding whether this fits their
- * residents and families. The opening names the idea and shows one face
- * (31, the library's strongest portrait: a person, not a patient). Three
- * situations follow — the invitation, the family's part, the arrangements —
- * and the nonclinical scope is stated once, where it answers a decision,
- * rather than repeated as a caution. The closing scene is the one detail
- * that proves the point: a question about how someone makes bread.
+ * Photographs are from the illustrative library. docs/image-prompts.md
+ * ("Care communities") has briefs for purpose-made images.
  */
 import EditorialSeo from "../../components/ui/EditorialSeo";
-import { ArrowIcon, PageOpening, Print } from "./kit/kit";
-import { BeforeYouBegin, Situations } from "./kit/Situations";
-import { Actions, PrimaryLink, TextLink } from "./kit/kit.styles";
+import { ArrowIcon } from "./kit/kit";
+import { AudiencePage } from "./kit/Audience";
+import { PrimaryLink, SecondaryLink } from "./kit/kit.styles";
 
 export default function Care() {
   return (
@@ -22,11 +22,11 @@ export default function Care() {
         path="/care-communities"
         description="Make room for a resident’s own stories and family perspectives. Discuss participation, setup, privacy and a small community program."
       />
-      <PageOpening
+      <AudiencePage
         eyebrow="For care communities"
         title={
           <>
-            Every resident has a life worth <em>knowing.</em>
+            Every resident has a life <em>worth knowing.</em>
           </>
         }
         lead="The work they did. The music in the house. The way they made Sunday lunch. Give those stories somewhere to stay — and give the people caring for them a way to learn them."
@@ -35,94 +35,87 @@ export default function Care() {
             <PrimaryLink to="/start?intent=demo">
               Request a demonstration <ArrowIcon />
             </PrimaryLink>
-            <TextLink to="/guides/care-community-participation">
+            <SecondaryLink to="/care-communities#begin-title">
               Planning participation
-            </TextLink>
+            </SecondaryLink>
           </>
         }
-        media={
-          <Print
-            id="31"
-            alt="A portrait of a woman, 1958"
-            tilt={-1}
-            sizes="(max-width: 860px) 80vw, 36vw"
-            priority
-          />
-        }
-      />
-
-      <Situations
-        items={[
+        collage={[
+          { photo: "05", alt: "Hands working dough on a floured counter" },
+          { photo: "31", alt: "A portrait of a woman, 1958" },
           {
-            eyebrow: "An invitation",
-            title: "Start with what they want to tell.",
-            body: (
-              <>
-                <p>
-                  A familiar photograph, recipe or song can open a conversation.
-                  It is an invitation, never a test of what someone remembers.
-                </p>
-                <p>
-                  The resident chooses whether to take part, what to share and
-                  when to stop. A Story records personal stories; it is not a
-                  clinical assessment or treatment.
-                </p>
-              </>
-            ),
-          },
-          {
-            eyebrow: "Family context",
-            title: "Let the family fill in the edges.",
-            body: (
-              <p>
-                Relatives recognise faces, remember names and bring their own
-                accounts. Their perspectives sit beside the resident’s words,
-                each person clearly attributed — so staff can know the life
-                around the record.
-              </p>
-            ),
-          },
-          {
-            eyebrow: "Before you begin",
-            id: "participation",
-            title: "Make participation comfortable.",
-            body: (
-              <p>
-                Agree who will help with installation, introductions and ongoing
-                support. Discuss consent, who may read or contribute, and which
-                material should stay private.
-              </p>
-            ),
+            photo: "23",
+            alt: "Two people looking through old photographs together",
           },
         ]}
-      />
-
-      <BeforeYouBegin
-        title={
+        momentsTitle={
           <>
-            “Who taught you to make it <em>that way?”</em>
+            Know the person <em>behind the care.</em>
           </>
         }
-        art={
-          <Print
-            id="05"
-            alt="Hands working dough on a floured counter, 1960"
-            tilt={1.2}
-            sizes="(max-width: 860px) 80vw, 40vw"
-          />
+        moments={[
+          {
+            photo: "11",
+            alt: "Hands holding playing cards at a kitchen table",
+            eyebrow: "An invitation",
+            title: "Start with what they want to tell.",
+            body: "A familiar photograph, recipe or song can open a conversation. It is an invitation, never a test of what someone remembers — they choose what to share and when to stop.",
+          },
+          {
+            photo: "34",
+            alt: "A family comparing photographs and recollections",
+            eyebrow: "Family context",
+            title: "Let the family fill in the edges.",
+            body: "Relatives recognise faces, remember names and bring their own accounts. Each sits beside the resident’s words, clearly attributed.",
+          },
+          {
+            photo: "12",
+            alt: "A person on a wall telephone in a hallway",
+            eyebrow: "For the team",
+            title: "A few lines before the next shift.",
+            body: "What they did for a living, who they miss, the song that settles them. The kind of detail that turns care into conversation.",
+          },
+        ]}
+        appShot={{ name: "people" }}
+        appTitle={
+          <>
+            One circle around <em>each resident.</em>
+          </>
         }
-      >
-        <p>
-          A familiar detail can be enough. Begin with a small program shaped
-          around the residents and families who want to take part. Community
-          pricing is quoted individually.
-        </p>
-        <Actions>
+        steps={[
+          [
+            "The resident talks, when they like.",
+            "A Story calls at an agreed hour, or a staff member starts a conversation together with them.",
+          ],
+          [
+            "The family adds what they know.",
+            "One link, no account. Photographs, names and their own versions of the story.",
+          ],
+          [
+            "The team reads what matters.",
+            "Only the people the resident and family invite can read it.",
+          ],
+        ]}
+        statement={
+          <>
+            “Who taught you to make it <b>that way?”</b>
+          </>
+        }
+        beginEyebrow="Before you begin"
+        beginTitle="Make participation comfortable."
+        beginBody="Begin with a small program shaped around the residents and families who want to take part. Community pricing is quoted individually. A Story records personal stories; it is not a clinical assessment or treatment."
+        checklist={[
+          "Who will help with installation, introductions and support",
+          "Consent — and who may read or contribute",
+          "Which material should stay private",
+          "How families are invited, and when",
+        ]}
+        beginAction={
           <PrimaryLink to="/start?intent=demo">
             Talk through a program <ArrowIcon />
           </PrimaryLink>
-        </Actions>
-      </BeforeYouBegin>
+        }
+      />
     </>
   );
 }

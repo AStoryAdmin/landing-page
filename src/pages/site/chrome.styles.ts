@@ -57,6 +57,7 @@ export const HeaderShell = styled.header`
     align-items: center;
     gap: clamp(18px, 2.2vw, 34px);
   }
+  /* Links: small tracked capitals; the current page carries a gold lozenge. */
   .gf-nav-links > a,
   .more-toggle {
     position: relative;
@@ -68,33 +69,41 @@ export const HeaderShell = styled.header`
     background: none;
     border: 0;
     color: inherit;
-    font: 500 15px/1 ${font.body};
+    font: 600 12.5px/1 ${font.body};
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     text-decoration: none;
     cursor: pointer;
+    opacity: 0.86;
+    transition: opacity 250ms;
   }
-  /* The rule draws in from the left, and leaves to the right. */
+  .gf-nav-links > a:hover,
+  .more-toggle:hover,
+  .gf-nav-links > a[aria-current="page"] {
+    opacity: 1;
+  }
   .gf-nav-links > a::after,
   .more-toggle::after {
     content: "";
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 8px;
-    height: 1px;
-    background: currentColor;
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform ${motion.reveal};
+    left: 50%;
+    bottom: 4px;
+    width: 5px;
+    height: 5px;
+    background: ${color.gold};
+    transform: translateX(-50%) rotate(45deg) scale(0);
+    transition: transform ${motion.slow};
   }
   .gf-nav-links > a:hover::after,
-  .gf-nav-links > a[aria-current="page"]::after,
   .more-toggle:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
+    transform: translateX(-50%) rotate(45deg) scale(0.7);
+  }
+  .gf-nav-links > a[aria-current="page"]::after {
+    transform: translateX(-50%) rotate(45deg) scale(1);
   }
   .more-chevron {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     transition: transform 250ms;
   }
   .more-toggle[aria-expanded="true"] .more-chevron {
@@ -103,16 +112,23 @@ export const HeaderShell = styled.header`
   .more-wrap {
     position: relative;
   }
+
+  /* The More panel: two columns of rooms and a feature card. */
   .more-panel {
     position: absolute;
     top: calc(100% + 18px);
-    right: -24px;
-    width: 620px;
+    right: -120px;
+    width: min(820px, 92vw);
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 28px;
     padding: 28px;
+    border-radius: 22px;
     background: ${color.paperPure};
     color: ${color.primary};
-    border: 1px solid ${color.primaryLine};
-    box-shadow: 0 30px 60px -30px ${color.primary};
+    box-shadow:
+      0 0 0 1px ${color.primaryLine},
+      0 40px 80px -40px color-mix(in srgb, ${color.primary} 70%, transparent);
   }
   .more-panel[hidden] {
     display: none;
@@ -120,73 +136,133 @@ export const HeaderShell = styled.header`
   .more-groups {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 28px;
+    gap: 22px;
   }
   .more-groups h2,
   .gf-mobile-more h2 {
-    font: 500 12px/1.4 ${font.body};
-    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+    font: 600 11px/1.4 ${font.body};
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: ${color.bodyMuted};
-    margin-bottom: 10px;
+    color: ${color.accentText};
   }
   .more-groups a {
     display: block;
-    padding: 10px 0;
+    padding: 10px 12px;
+    margin: 0 -12px;
+    border-radius: 12px;
     text-decoration: none;
-    border-top: 1px solid ${color.primaryLine};
+    transition: background 250ms;
+  }
+  .more-groups a:hover {
+    background: ${color.ivory};
   }
   .more-groups strong {
     display: block;
-    font: 500 16px/1.35 ${font.body};
+    font: 400 18px/1.25 ${font.display};
+    color: ${color.primary};
   }
   .more-groups small {
     display: block;
-    font-size: 13px;
+    margin-top: 2px;
+    font: 400 13px/1.4 ${font.body};
     color: ${color.bodyMuted};
   }
-  .more-groups a:hover strong {
-    color: ${color.accentText};
-  }
-  .more-start {
+  .more-feature {
+    position: relative;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 22px;
-    padding-top: 16px;
-    border-top: 1px solid ${color.primaryLineStrong};
-    font-size: 14px;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 260px;
+    padding: 22px;
+    border-radius: 16px;
+    overflow: hidden;
+    color: ${color.ivory};
+    text-decoration: none;
+    isolation: isolate;
   }
-  .more-start small {
-    font: 500 12px ${font.body};
-    letter-spacing: 0.12em;
-    color: ${color.bodyMuted};
+  .more-feature img {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .more-feature::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      transparent 30%,
+      color-mix(in srgb, ${color.night} 88%, transparent)
+    );
+  }
+  .more-feature:hover img {
+    transform: scale(1.04);
+  }
+  .more-feature small {
+    font: 600 11px/1 ${font.body};
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: ${color.gold};
+  }
+  .more-feature b {
+    margin-top: 8px;
+    font: 400 22px/1.2 ${font.display};
+  }
+  .more-feature span {
+    margin-top: 10px;
+    font: 600 12px/1 ${font.body};
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
 
+  /* Join the waitlist: the site's primary pill, a size smaller. */
   .gf-button {
     display: inline-flex;
     align-items: center;
     gap: 12px;
     min-height: 44px;
-    padding: 0 18px;
-    border-radius: 2px;
+    padding: 0 6px 0 20px;
+    border-radius: 999px;
     background: ${color.primary};
     color: ${color.ivory};
-    font: 600 14px/1 ${font.body};
+    box-shadow: inset 0 0 0 1px
+      color-mix(in srgb, ${color.ivory} 18%, transparent);
+    font: 600 12px/1 ${font.body};
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     text-decoration: none;
+    white-space: nowrap;
     transition:
       background 300ms,
       color 300ms;
   }
+  .gf-button svg {
+    box-sizing: border-box;
+    width: 32px;
+    height: 32px;
+    padding: 9px;
+    border-radius: 50%;
+    background: ${color.gold};
+    color: ${color.primary};
+    transition: transform ${motion.reveal};
+  }
   .gf-button:hover {
-    background: ${color.accent};
+    background: ${color.night};
+  }
+  .gf-button:hover svg {
+    transform: rotate(-45deg);
   }
   &.is-over-dark .gf-button {
     background: ${color.ivory};
     color: ${color.primary};
   }
   &.is-over-dark .gf-button:hover {
-    background: ${color.gold};
+    background: ${color.paperPure};
   }
 
   .gf-menu-toggle,
@@ -285,8 +361,10 @@ export const HeaderShell = styled.header`
       gap: 0;
     }
     .gf-nav-links > a {
-      font: 500 ${display.md} / 1.1 ${font.body};
-      letter-spacing: -0.04em;
+      font: 400 ${display.md} / 1.1 ${font.display};
+      letter-spacing: -0.01em;
+      text-transform: none;
+      opacity: 1;
       padding: 14px 0;
       border-bottom: 1px solid ${color.onDarkLine};
     }
@@ -300,10 +378,11 @@ export const HeaderShell = styled.header`
       order: 3;
       margin-top: 28px;
       min-height: 56px;
-      justify-content: center;
+      justify-content: space-between;
+      padding: 0 8px 0 24px;
       background: ${color.ivory};
       color: ${color.primary};
-      font-size: 16px;
+      font-size: 13px;
     }
     .gf-mobile-more {
       order: 2;
@@ -356,7 +435,9 @@ export const FooterShell = styled.footer`
     margin-top: 26px;
     font: 400 ${display.sm} / 1.35 ${font.display};
     color: ${color.ivory};
-    max-width: 22ch;
+  }
+  .footer-line .nb {
+    white-space: nowrap;
   }
   .footer-line i {
     color: ${color.gold};

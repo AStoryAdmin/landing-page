@@ -203,3 +203,28 @@ comments and readable structure).
   below a curved teal surface.
 - **Pricing book** now on sand, not chocolate.
 - New photos (image for claude/, H01–H04, F01–F06) were already wired in by the founder.
+
+## Pass 11g
+
+- **Buttons** (kit): pill shape, tracked small caps, arrow in a gold coin that turns on hover.
+  Secondary = hairline pill. Applies site-wide.
+- **Header**: small-caps links with a gold lozenge for the current page; "Join the waitlist"
+  is a pill with the gold coin; the More panel is two columns of serif links plus an
+  "Our story" feature card with photo.
+- **Footer motto** breaks after "finish —" so the dash stays with the word.
+- **"One life. Many witnesses."**: names removed; full-bleed lake photo, dimmed, with the
+  two lines and a gold double-rule ornament; slow parallax.
+- **Home comparison table**: editorial — no card, hairline rows, serif names, fine check /
+  "Partly" / thin rule, raised teal A Story slab.
+- **How it works · What the family receives**: illustrated with the app — memory page
+  phone, a typed transcript sheet, and the Figma voice player (placeholder text blanked,
+  Joan's real words laid in: `public/app/player.webp`).
+- **Home · Why we started** (`home/Founders.tsx`): Remento-style photo + Daniel's letter
+  excerpt + signature + "Read our story".
+- **Our story** rebuilt as two letters on paper. Daniel's is VERBATIM from the earliest site
+  (09142026 baseline). **Bao's letter is a draft to approve** (invented family detail).
+- **Questions**: concierge card, sticky topic pills + search, roman-numbered chapters,
+  answers as cards with a gold +/× coin, "Still wondering?" band.
+- **Care communities, Organizations, Your own story (new `/your-story`, aimed younger)**
+  share `kit/Audience.tsx`: collage opening, illustrated moments, real app screen + steps,
+  statement band, checklist card. Image briefs 12–18 in docs/image-prompts.md.

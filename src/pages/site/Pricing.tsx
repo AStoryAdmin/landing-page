@@ -226,6 +226,7 @@ const Plans = styled(Chapter)`
     box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.6);
     --action-bg: ${color.ivory};
     --action-ink: ${color.primary};
+    --action-hover: ${color.paperPure};
   }
   .decide strong {
     display: block;

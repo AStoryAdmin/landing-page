@@ -727,22 +727,99 @@ const Receives = styled(Chapter)`
   .objects {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(16px, 2vw, 28px);
+    gap: clamp(20px, 3vw, 48px);
     margin-top: clamp(40px, 5vw, 72px);
   }
   .obj {
     display: flex;
     flex-direction: column;
   }
+  .stage {
+    display: grid;
+    place-items: start center;
+    height: clamp(420px, 38vw, 560px);
+    overflow: hidden;
+    padding-top: 28px;
+    border-radius: 22px;
+    background: radial-gradient(
+      ellipse at 50% 100%,
+      color-mix(in srgb, ${color.gold} 30%, ${color.ivory}),
+      ${color.paperPure} 72%
+    );
+    mask-image: linear-gradient(#000 84%, transparent);
+  }
+  /* The transcript as a typed sheet, set down at a slight angle. */
+  .sheet-stage {
+    place-items: center;
+    padding: 28px;
+  }
+  .sheet {
+    width: min(100%, 340px);
+    padding: 26px 26px 30px;
+    background: ${color.paperPure};
+    box-shadow: 0 30px 50px -30px rgba(42, 31, 24, 0.55);
+    transform: rotate(-1.2deg);
+  }
+  .sheet-head {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid ${color.primaryLineStrong};
+    font: 600 11px/1.2 ${font.body};
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: ${color.accentText};
+  }
+  .sheet p:not(.sheet-head) {
+    padding: 9px 0;
+    border-top: 1px solid ${color.primaryLine};
+    font: 400 15px/1.5 ${font.display};
+    color: ${color.primary};
+  }
+  .sheet-head + p {
+    border-top: 0 !important;
+  }
+  .sheet time {
+    display: block;
+    margin-bottom: 3px;
+    font: 600 10.5px/1.2 ${font.body};
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: ${color.bodyMuted};
+  }
+  /* Joan's words laid into the player where the Figma file has placeholder text. */
+  .player-copy {
+    position: absolute;
+    left: 7cqw;
+    right: 7cqw;
+    top: 83cqw;
+    display: grid;
+    justify-items: center;
+    gap: 1.6cqw;
+    text-align: center;
+  }
+  .player-copy b {
+    font: 700 6cqw/1.2 ${font.body};
+    color: ${color.primary};
+  }
+  .player-copy span {
+    font: 500 3.8cqw/1.2 ${font.body};
+    color: ${color.bodyMuted};
+  }
+  .player-copy q {
+    margin-top: 3cqw;
+    font: italic 400 4.4cqw/1.45 ${font.display};
+    color: ${color.primary};
+  }
   .obj > small {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 10px;
-    margin-bottom: 14px;
+    margin-top: 24px;
     font: 600 12px/1.3 ${font.body};
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: ${color.bodyMuted};
+    color: ${color.primary};
   }
   .obj > small i {
     display: grid;
@@ -756,77 +833,14 @@ const Receives = styled(Chapter)`
     font-style: normal;
     letter-spacing: 0;
   }
-  .face {
-    flex: 1;
-    padding: clamp(22px, 2.4vw, 32px);
-    border-radius: 18px;
-    background: ${color.paperPure};
-    box-shadow: 0 24px 50px -30px rgba(42, 31, 24, 0.45);
+  .obj > small ${Soon} {
+    margin-left: 0;
   }
-  .card h4 {
-    font: 700 20px/1.25 ${font.body};
-    color: ${color.primary};
-  }
-  .card .meta {
-    margin: 6px 0 14px;
-    font: 500 13px/1.3 ${font.body};
-    color: ${color.accentText};
-  }
-  .card p {
-    font: 400 16px/1.6 ${font.body};
+  .cap {
+    margin-top: 10px;
+    font: 400 16px/1.55 ${font.body};
     color: ${color.body};
-  }
-  .transcript p {
-    padding: 10px 0;
-    border-top: 1px solid ${color.primaryLine};
-    font: 400 16px/1.5 ${font.display};
-    color: ${color.primary};
-  }
-  .transcript p:first-child {
-    border-top: 0;
-    padding-top: 0;
-  }
-  .transcript time {
-    display: block;
-    margin-bottom: 4px;
-    font: 600 11px/1.2 ${font.body};
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: ${color.bodyMuted};
-  }
-  .voice {
-    display: flex;
-    flex-direction: column;
-    background: ${color.teal};
-    color: ${color.ivory};
-  }
-  .wave {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    height: 64px;
-    margin-bottom: 20px;
-  }
-  .wave i {
-    flex: 1;
-    border-radius: 2px;
-    background: ${color.warmGold};
-    opacity: 0.85;
-  }
-  .voice blockquote {
-    margin: 0;
-    font: italic 400 20px/1.45 ${font.display};
-  }
-  .voice p {
-    margin-top: auto;
-    padding-top: 16px;
-    font: 500 13px/1.4 ${font.body};
-    color: ${color.onDarkMuted};
-  }
-  .voice ${Soon} {
-    margin: 0 0 14px;
-    align-self: flex-start;
-    color: ${color.gold};
+    max-width: 36ch;
   }
   .family {
     display: grid;
@@ -1136,59 +1150,62 @@ export default function HowItWorks() {
             </Lead>
           </SplitHead>
 
+          {/* Illustrated with the app itself (founder's Figma, public/app):
+              the memory page, the words underneath, and the voice player. */}
           <div className="objects">
             <article className="obj" data-rise>
+              <div className="stage">
+                <Phone width="min(300px, 86%)">
+                  <AppShot name="memory" scroll />
+                </Phone>
+              </div>
               <small>
                 <i aria-hidden="true">1</i>The card
               </small>
-              <div className="face card">
-                <h4>{love.label}</h4>
-                <p className="meta">
-                  {love.chapter} · {love.dateLine}
-                </p>
-                <p>
-                  {love.summary
-                    .split(/(?<=\.)\s+/)
-                    .slice(0, 2)
-                    .join(" ")}
-                </p>
-              </div>
+              <p className="cap">
+                A memory page to read — the date, the chapter, the photographs,
+                and who told it.
+              </p>
             </article>
             <article className="obj" data-rise>
+              <div className="stage sheet-stage">
+                <div className="sheet">
+                  <p className="sheet-head">{love.label} · transcript</p>
+                  {love.transcript.slice(0, 3).map((l, i) => (
+                    <p key={i}>
+                      <time>
+                        {l.at} · {l.who}
+                      </time>
+                      {l.text}
+                    </p>
+                  ))}
+                </div>
+              </div>
               <small>
                 <i aria-hidden="true">2</i>The transcript
               </small>
-              <div className="face transcript">
-                {love.transcript.slice(0, 3).map((l, i) => (
-                  <p key={i}>
-                    <time>
-                      {l.at} · {l.who}
-                    </time>
-                    {l.text}
-                  </p>
-                ))}
-              </div>
+              <p className="cap">
+                Every word underneath, timed to the call. The card never
+                replaces it.
+              </p>
             </article>
             <article className="obj" data-rise>
+              <div className="stage">
+                <Phone width="min(300px, 86%)">
+                  <AppShot name="player" />
+                  <div className="player-copy">
+                    <b>{love.label}</b>
+                    <span>{love.chapter}</span>
+                    <q>{love.excerpt}</q>
+                  </div>
+                </Phone>
+              </div>
               <small>
                 <i aria-hidden="true">3</i>
                 {love.clip.label} · {love.clip.duration}
-              </small>
-              <div className="face voice">
                 <Soon>In development</Soon>
-                <span className="wave" aria-hidden="true">
-                  {Array.from({ length: 36 }, (_, i) => (
-                    <i
-                      key={i}
-                      style={{
-                        height: `${22 + Math.abs(Math.sin(i * 1.7) * 60 + Math.cos(i * 0.6) * 18)}%`,
-                      }}
-                    />
-                  ))}
-                </span>
-                <blockquote>“{love.excerpt}”</blockquote>
-                <p>{love.clip.note}</p>
-              </div>
+              </small>
+              <p className="cap">{love.clip.note}</p>
             </article>
           </div>
 

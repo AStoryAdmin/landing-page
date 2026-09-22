@@ -133,3 +133,43 @@ five in ONE style so they read as a set:
 > texture, no outlines, gentle paper grain, calm composition with generous empty
 > space. Subject: [one of the five scenes above, simplified to two or three figures].
 > 4:5 portrait, no text.
+
+---
+
+## Pass 11g — Care, Organizations, Your own story, founders
+
+Same house look: candid, warm natural light, real rooms, no text, no logos, no readable
+screens. Send back with the slot name.
+
+### 12 · `founder-daniel` (home "Why we started" + Our story) — REAL PHOTO, not generated
+A real photograph of Daniel, ideally candid: on the phone with a relative, or at a family
+table. 4:3.4 landscape. Until then the section uses library photo 27.
+
+### 13 · `care-hero` (Care communities, collage)
+> Candid photograph in a warm, ordinary senior-living lounge, an older woman (80s) holding a
+> family print and telling a story to her adult daughter, a staff member in everyday
+> clothes listening a little behind. Window light, lived-in furniture. No medical cues.
+> 4:3 landscape.
+
+### 14 · `care-team` (Care, "A few lines before the next shift")
+> Candid photograph, a care worker in everyday clothes sitting with an older man by a
+> window, both laughing at something he just said, a cup of tea between them. 4:3.
+
+### 15 · `org-retirement` (Organizations, "Before the last day at work")
+> Candid photograph in a small workshop or office, a colleague in his sixties explaining
+> something with his hands to two younger colleagues, a few boxes packed on the desk
+> behind — his last week. Afternoon light, documentary framing. 4:3.
+
+### 16 · `org-anniversary` (Organizations, "A shared history")
+> Candid photograph, a mixed-age group of colleagues around a table of old company
+> photographs and binders, one older woman pointing at a print while others lean in.
+> Natural office light. 4:3.
+
+### 17 · `young-hero` (Your own story, collage)
+> Candid phone photograph, late evening, a woman in her late twenties on the floor of a
+> half-furnished first apartment, takeaway boxes and moving boxes around, laughing with
+> a friend just out of frame. Warm lamp light, a little grain. 4:5 portrait.
+
+### 18 · `young-walk` (Your own story, optional)
+> Candid photograph, a man in his twenties walking home at dusk with earbuds in, talking,
+> city street softly out of focus behind. 4:5 portrait.

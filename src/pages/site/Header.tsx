@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Wordmark } from "./shared";
+import { ArrowIcon } from "./kit/kit";
 import { HeaderShell } from "./chrome.styles";
 const primary = [
   ["How it works", "/how-it-works"],
@@ -31,11 +32,7 @@ const groups = [
         "Know the person behind the care.",
       ],
       ["Organizations", "/organizations", "Keep the knowledge people carry."],
-      [
-        "Your own story",
-        "/for-families#your-own-story",
-        "Your life belongs here too.",
-      ],
+      ["Your own story", "/your-story", "Your life belongs here too."],
       [
         "Get in touch",
         "mailto:contact@astoryapp.com",
@@ -251,17 +248,17 @@ export default function Header() {
                     </div>
                   ))}
                 </div>
-                <div className="more-start">
-                  <small>NEW HERE?</small>
-                  <Link to="/how-it-works" onClick={close}>
-                    Start with How it works →
-                  </Link>
-                </div>
+                <Link className="more-feature" to="/our-story" onClick={close}>
+                  <img src="/mission/27-640.webp" alt="" loading="lazy" />
+                  <small>Our story</small>
+                  <b>Why two founders started asking.</b>
+                  <span>Read the letter →</span>
+                </Link>
               </div>
             </div>
           </div>
           <Link className="gf-button" to="/start" onClick={close}>
-            Join the waitlist
+            Join the waitlist <ArrowIcon />
           </Link>
           <div className="gf-mobile-more">
             {groups.map((g) => (

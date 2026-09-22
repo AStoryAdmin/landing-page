@@ -70,6 +70,16 @@
     ]
   },
   {
+    "path": "/your-story",
+    "name": "Your own story",
+    "og": "your-story",
+    "photo": "45",
+    "phrase": [
+      "You don’t have to be old",
+      "to have a story."
+    ]
+  },
+  {
     "path": "/our-story",
     "name": "Our story",
     "og": "our-story",

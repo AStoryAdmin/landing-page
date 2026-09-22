@@ -456,7 +456,7 @@ export default function Families() {
         }
         text="You don’t have to wait until your life feels finished. Talk about a decision, a friendship, an ordinary week — or write, when you’d rather write. This afternoon belongs here too."
         action={
-          <TextLink to="/start">
+          <TextLink to="/your-story">
             Begin with your own story <ArrowIcon />
           </TextLink>
         }

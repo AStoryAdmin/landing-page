@@ -18,7 +18,9 @@ export default function Footer() {
           <div>
             <Logo tone="dark" height={42} />
             <p className="footer-line">
-              Not a memoir to finish — <i>A Story</i> to keep, and to carry on.
+              <span className="nb">Not a memoir to finish —</span>
+              <br />
+              <i>A Story</i> to keep, and to carry on.
             </p>
             <p className="footer-contact">
               <a href={CONTACT.general}>{SITE.email}</a>
@@ -43,6 +45,7 @@ export default function Footer() {
               <h2>Also for</h2>
               <Link to="/care-communities">Care communities</Link>
               <Link to="/organizations">Organizations</Link>
+              <Link to="/your-story">Your own story</Link>
             </div>
             <div>
               <h2>Company</h2>

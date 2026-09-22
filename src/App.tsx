@@ -47,6 +47,10 @@ const Compare = lazyRoute(
   "/compare",
   () => import("./pages/site/Compare"),
 );
+const YourStory = lazyRoute(
+  "/your-story",
+  () => import("./pages/site/YourStory"),
+);
 const Story = lazyRoute(
   "/our-story",
   () => import("./pages/site/OurStory"),
@@ -141,7 +145,6 @@ function BareLayout() {
 const legacy = {
   "/experience": "/how-it-works",
   "/family": "/for-families",
-  "/your-story": "/for-families#your-own-story",
   "/institution": "/care-communities",
   "/story": "/our-story",
   "/faq": "/questions",
@@ -185,6 +188,7 @@ function App() {
           <Route path="/care-communities" element={<Institution />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/compare" element={<Compare />} />
+          <Route path="/your-story" element={<YourStory />} />
           <Route path="/our-story" element={<Story />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />

@@ -18,6 +18,7 @@
 import styled from "styled-components";
 import { LAKE_MONSTER as M } from "../../../lib/homeExamples";
 import { Phone } from "../app/Phone";
+import { Picture } from "../kit/kit";
 import { MemoryScreen } from "../app/screens";
 import { avatarTints } from "../app/tokens";
 import { Eyebrow, Frame, SplitHead, Statement } from "../kit/kit.styles";
@@ -153,131 +154,95 @@ const Scene = styled.section`
 `;
 
 /*
- * The takeaway — "One life. Many witnesses." — set as the page's one
- * namecard moment: a chocolate field, a double gold keyline, the four people
- * from the lake story gathered on one gold thread, and the mission's line
- * "Not a diary. A documentary." between rules. It arrives once, as a whole.
+ * The takeaway — "One life. Many witnesses." — as a pure statement, nothing
+ * else to read: the lake photograph (the same night the whole family
+ * remembers differently) full-bleed and dimmed, the two lines set large, a
+ * gold ornament between them, and the mission's line beneath. The photograph
+ * drifts slowly as you scroll past, like a film still.
  */
 const Takeaway = styled.div`
   position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  min-height: min(88vh, 820px);
   margin-top: clamp(80px, 10vw, 150px);
-  padding: clamp(80px, 10vw, 150px) 0;
-  background:
-    radial-gradient(
-      ellipse 60% 70% at 50% 45%,
-      color-mix(in srgb, ${color.warmGold} 12%, ${color.primary}),
-      transparent 70%
-    ),
-    ${color.primary};
+  padding: clamp(80px, 10vw, 140px) var(--page-gutter);
   color: ${color.ivory};
   text-align: center;
 
-  .keyline {
+  .bg {
     position: absolute;
-    inset: clamp(16px, 2vw, 28px);
-    border: 1px solid color-mix(in srgb, ${color.gold} 55%, transparent);
-    pointer-events: none;
+    inset: -8% 0;
+    z-index: -2;
   }
-  .keyline::after {
+  .bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  &::before {
     content: "";
     position: absolute;
-    inset: 6px;
-    border: 1px solid color-mix(in srgb, ${color.gold} 25%, transparent);
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(
+        ellipse 60% 55% at 50% 50%,
+        color-mix(in srgb, ${color.night} 55%, transparent),
+        transparent 80%
+      ),
+      linear-gradient(
+        color-mix(in srgb, ${color.night} 72%, transparent),
+        color-mix(in srgb, ${color.night} 82%, transparent)
+      );
   }
   h3 {
-    font: 400 ${display.hero} / 0.98 ${font.display};
+    font: 400 ${display.hero} / 1 ${font.display};
     letter-spacing: -0.03em;
     color: ${color.ivory};
   }
-  h3 span {
+  h3 > span:first-child,
+  h3 em {
     display: block;
   }
   h3 em {
-    display: block;
-    margin-top: 0.08em;
     font-style: italic;
     color: ${color.gold};
   }
-  /* The witnesses, gathered on one thread. */
-  .thread {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    gap: clamp(28px, 5vw, 80px);
-    margin: clamp(36px, 4vw, 56px) auto;
-    width: fit-content;
-  }
-  .thread::before {
-    content: "";
-    position: absolute;
-    left: 24px;
-    right: 24px;
-    top: 24px;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      ${color.gold} 15%,
-      ${color.gold} 85%,
-      transparent
-    );
-    transform-origin: center;
-  }
-  .who {
-    position: relative;
-    display: grid;
-    justify-items: center;
-    gap: 10px;
-  }
-  .who i {
-    display: grid;
-    place-items: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--tint);
-    box-shadow:
-      0 0 0 3px ${color.primary},
-      0 0 0 4px color-mix(in srgb, ${color.gold} 70%, transparent);
-    font: 600 17px/1 ${font.body};
-    font-style: normal;
-    color: ${color.ivory};
-  }
-  .who small {
-    font: 600 11px/1.2 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: ${color.onDarkMuted};
-  }
-  .motto {
+  /* Double hairline with a lozenge — the namecard's ornament. */
+  .orn {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 18px;
-    font: 600 13px/1 ${font.body};
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: ${color.gold};
+    gap: 14px;
+    margin: clamp(18px, 2vw, 28px) auto;
+    width: min(320px, 60vw);
   }
-  .motto::before,
-  .motto::after {
+  .orn::before,
+  .orn::after {
     content: "";
-    width: clamp(40px, 8vw, 120px);
-    height: 1px;
-    background: color-mix(in srgb, ${color.gold} 60%, transparent);
+    flex: 1;
+    height: 3px;
+    border-top: 1px solid color-mix(in srgb, ${color.gold} 80%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, ${color.gold} 40%, transparent);
+  }
+  .orn i {
+    width: 9px;
+    height: 9px;
+    border: 1px solid ${color.gold};
+    transform: rotate(45deg);
+  }
+  .motto {
+    margin-top: clamp(28px, 3vw, 44px);
+    font: italic 400 ${display.sm} / 1.3 ${font.display};
+    color: ${color.onDarkMuted};
   }
   .motto b {
-    font-weight: 600;
+    font-style: normal;
+    font-weight: 500;
     color: ${color.ivory};
-  }
-  ${media.sm} {
-    .thread {
-      gap: 18px;
-    }
-    .motto {
-      letter-spacing: 0.18em;
-      font-size: 11px;
-    }
   }
 `;
 
@@ -291,36 +256,44 @@ export default function EveryVoice() {
       ease: "expo.out",
       scrollTrigger: { trigger: ".lead", start: "top 85%", once: true },
     });
-    // The takeaway arrives once, whole: the lines, then the thread draws and
-    // the four witnesses take their places on it.
+    // The takeaway: the lines arrive once, the ornament opens between them,
+    // and the photograph drifts slowly behind while it is on screen.
     gsap
       .timeline({
-        scrollTrigger: { trigger: ".takeaway", start: "top 70%", once: true },
+        scrollTrigger: { trigger: ".takeaway", start: "top 65%", once: true },
       })
-      .from(".takeaway h3 > *", {
-        yPercent: 40,
+      .from(".takeaway h3 > span:first-child, .takeaway h3 em", {
+        yPercent: 30,
         opacity: 0,
-        duration: 1.1,
+        duration: 1.2,
         ease: "expo.out",
-        stagger: 0.15,
+        stagger: 0.2,
       })
       .from(
-        ".takeaway .who",
-        {
-          y: 16,
-          scale: 0.6,
-          opacity: 0,
-          duration: 0.6,
-          ease: "back.out(2)",
-          stagger: 0.12,
-        },
-        0.5,
+        ".takeaway .orn",
+        { scaleX: 0, opacity: 0, duration: 1, ease: "expo.out" },
+        0.3,
       )
       .from(
         ".takeaway .motto",
-        { opacity: 0, letterSpacing: "0.6em", duration: 1.1, ease: "expo.out" },
-        0.9,
+        { opacity: 0, y: 12, duration: 1, ease: "expo.out" },
+        0.8,
       );
+    gsap.fromTo(
+      ".takeaway .bg",
+      { yPercent: -6, scale: 1.08 },
+      {
+        yPercent: 6,
+        scale: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".takeaway",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      },
+    );
     const notes = gsap.utils.toArray<HTMLElement>(".note", root);
     const voices = gsap.utils.toArray<HTMLElement>("[data-voice]", root);
     const review = root.querySelector("[data-review]");
@@ -432,28 +405,16 @@ export default function EveryVoice() {
       </Frame>
 
       <Takeaway className="takeaway">
-        <span className="keyline" aria-hidden="true" />
+        <div className="bg" aria-hidden="true">
+          <Picture id={M.photo} alt="" sizes="100vw" />
+        </div>
         <h3>
           <span>One life.</span>
+          <span className="orn" aria-hidden="true">
+            <i />
+          </span>
           <em>Many witnesses.</em>
         </h3>
-        <div className="thread" aria-hidden="true">
-          {[M.teller, ...M.added].map((p, i) => (
-            <span
-              className="who"
-              key={p.name}
-              style={{
-                ["--tint" as string]:
-                  i === 0
-                    ? color.teal
-                    : avatarTints[(i - 1) % avatarTints.length],
-              }}
-            >
-              <i>{p.initial}</i>
-              <small>{p.name.split(",")[0]}</small>
-            </span>
-          ))}
-        </div>
         <p className="motto">
           Not a diary. <b>A documentary.</b>
         </p>
