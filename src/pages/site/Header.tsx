@@ -46,7 +46,8 @@ export default function Header() {
     [more, setMore] = useState(false),
     // Decided on first render so the home header never paints ivory first.
     [overDark, setOverDark] = useState(() => window.location.pathname === "/"),
-    [tucked, setTucked] = useState(false);
+    [tucked, setTucked] = useState(false),
+    [condensed, setCondensed] = useState(false);
   const header = useRef<HTMLElement>(null),
     toggle = useRef<HTMLButtonElement>(null),
     moreToggle = useRef<HTMLButtonElement>(null),
@@ -70,6 +71,7 @@ export default function Header() {
           hero.getBoundingClientRect().bottom >
             (header.current?.offsetHeight ?? 90),
       );
+      setCondensed(y > 24);
       if (Math.abs(y - last) > 6) {
         setTucked(y > last && y > 240);
         last = y;
@@ -174,6 +176,7 @@ export default function Header() {
         "gf-header",
         overDark && !open ? "is-over-dark" : "",
         tucked && !open && !more ? "is-tucked" : "",
+        condensed && !overDark ? "is-condensed" : "",
         open ? "is-open" : "",
       ].join(" ")}
       onFocus={() => setTucked(false)}

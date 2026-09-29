@@ -1,5 +1,5 @@
-import { getSupabase, isSupabaseConfigured } from './supabase';
-import { CONTACT } from './contact';
+import { getSupabase, isSupabaseConfigured } from "./supabase";
+import { CONTACT } from "./contact";
 
 /**
  * Turning someone who wants this into a row we can act on.
@@ -38,26 +38,26 @@ import { CONTACT } from './contact';
  */
 
 export type Lead = {
-    firstName: string;
-    lastName: string;
-    /** Optional now — the form asks for a phone number instead. */
-    email?: string;
-    phone: string;
-    /** Who the archive is for, in their words. */
-    giftFor?: string;
-    /** A date it has to be ready by, if there is one. */
-    neededBy?: string;
-    note?: string;
-    /** Which page and button this came from. */
-    source: string;
+  firstName: string;
+  lastName: string;
+  /** Optional now — the form asks for a phone number instead. */
+  email?: string;
+  phone: string;
+  /** Who the archive is for, in their words. */
+  giftFor?: string;
+  /** A date it has to be ready by, if there is one. */
+  neededBy?: string;
+  note?: string;
+  /** Which page and button this came from. */
+  source: string;
 };
 
 export type LeadResult =
-    | { ok: true; alreadyKnown: boolean }
-    | { ok: false; fallbackMailto: string; reason: 'unconfigured' | 'failed' };
+  | { ok: true; alreadyKnown: boolean }
+  | { ok: false; fallbackMailto: string; reason: "unconfigured" | "failed" };
 
 /** Postgres unique_violation — the same person, asking again. */
-const UNIQUE_VIOLATION = '23505';
+const UNIQUE_VIOLATION = "23505";
 
 /**
  * Strips a phone number down to something two submissions of the same number
@@ -65,14 +65,14 @@ const UNIQUE_VIOLATION = '23505';
  * unique constraint has to see them that way.
  */
 export const normalizePhone = (value: string): string => {
-    const trimmed = value.trim();
-    const digits = trimmed.replace(/\D/g, '');
-    return trimmed.startsWith('+') ? `+${digits}` : digits;
+  const trimmed = value.trim();
+  const digits = trimmed.replace(/\D/g, "");
+  return trimmed.startsWith("+") ? `+${digits}` : digits;
 };
 
 /** Loose on purpose: international formats vary more than any regex allows. */
 export const looksLikePhone = (value: string) =>
-    value.replace(/\D/g, '').length >= 7;
+  value.replace(/\D/g, "").length >= 7;
 
 /**
  * The form no longer asks for an email, but `waitlist_signups.email` is NOT
@@ -87,99 +87,99 @@ export const looksLikePhone = (value: string) =>
  * what we want it to do.
  */
 const syntheticEmail = (phone: string) =>
-    `no-email+${phone.replace(/\D/g, '')}@astoryapp.invalid`;
+  `no-email+${phone.replace(/\D/g, "")}@astoryapp.invalid`;
 
 /**
  * PostgREST's codes for "that column isn't there".
  * 42703 is Postgres's own undefined_column; PGRST204 is the schema cache
  * saying the same thing before the query ever reaches the database.
  */
-const MISSING_COLUMN = new Set(['42703', 'PGRST204']);
+const MISSING_COLUMN = new Set(["42703", "PGRST204"]);
 
 /** Everything the extra columns would have held, as one readable line. */
 function foldedNote(lead: Lead): string {
-    return [
-        lead.giftFor && `For: ${lead.giftFor}`,
-        lead.neededBy && `Needed by: ${lead.neededBy}`,
-        lead.note && `Note: ${lead.note}`,
-        `Source: ${lead.source}`,
-    ]
-        .filter(Boolean)
-        .join(' · ');
+  return [
+    lead.giftFor && `For: ${lead.giftFor}`,
+    lead.neededBy && `Needed by: ${lead.neededBy}`,
+    lead.note && `Note: ${lead.note}`,
+    `Source: ${lead.source}`,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 }
 
 export async function submitLead(lead: Lead): Promise<LeadResult> {
-    const fallbackMailto = lead.source.endsWith(':demo')
-        ? CONTACT.demo
-        : lead.giftFor?.trim() ? CONTACT.gift : CONTACT.waitlist;
-    try {
-        const supabase = getSupabase();
-        if (!supabase || !isSupabaseConfigured) {
-            return {
-                ok: false,
-                fallbackMailto,
-                reason: 'unconfigured',
-            };
-        }
+  const fallbackMailto = lead.source.endsWith(":demo")
+    ? CONTACT.demo
+    : lead.giftFor?.trim()
+      ? CONTACT.gift
+      : CONTACT.waitlist;
+  try {
+    const supabase = getSupabase();
+    if (!supabase || !isSupabaseConfigured) {
+      return {
+        ok: false,
+        fallbackMailto,
+        reason: "unconfigured",
+      };
+    }
 
-        /* Lowercased so the UNIQUE constraint behaves case-insensitively — the
+    /* Lowercased so the UNIQUE constraint behaves case-insensitively — the
        app's own client does the same, and the two have to agree or the same
        person lands twice. */
-        const givenEmail = (lead.email ?? '').trim().toLowerCase();
-        const core = {
-            first_name: lead.firstName.trim(),
-            last_name: lead.lastName.trim(),
-            email: givenEmail || syntheticEmail(lead.phone),
-            phone: normalizePhone(lead.phone),
-        };
+    const givenEmail = (lead.email ?? "").trim().toLowerCase();
+    const core = {
+      first_name: lead.firstName.trim(),
+      last_name: lead.lastName.trim(),
+      email: givenEmail || syntheticEmail(lead.phone),
+      phone: normalizePhone(lead.phone),
+    };
 
-        const full = {
-            ...core,
-            gift_for: (lead.giftFor ?? '').trim(),
-            needed_by: (lead.neededBy ?? '').trim(),
-            note: (lead.note ?? '').trim(),
-            source: lead.source,
-        };
+    const full = {
+      ...core,
+      gift_for: (lead.giftFor ?? "").trim(),
+      needed_by: (lead.neededBy ?? "").trim(),
+      note: (lead.note ?? "").trim(),
+      source: lead.source,
+    };
 
-        const first = await supabase.from('waitlist_signups').insert(full);
-        if (!first.error) return { ok: true, alreadyKnown: false };
-        if (first.error.code === UNIQUE_VIOLATION)
-            return { ok: true, alreadyKnown: true };
+    const first = await supabase.from("waitlist_signups").insert(full);
+    if (!first.error) return { ok: true, alreadyKnown: false };
+    if (first.error.code === UNIQUE_VIOLATION)
+      return { ok: true, alreadyKnown: true };
 
-        if (MISSING_COLUMN.has(first.error.code ?? '')) {
-            /* supabase/lead-fields.sql has not been run. Keep the lead rather than
+    if (MISSING_COLUMN.has(first.error.code ?? "")) {
+      /* supabase/lead-fields.sql has not been run. Keep the lead rather than
            the schema: the detail goes into the phone-adjacent free text so it
            is still readable in the Dashboard. */
-            const folded = await supabase.from('waitlist_signups').insert({
-                ...core,
-                phone: [core.phone, foldedNote(lead)]
-                    .filter(Boolean)
-                    .join(' — '),
-            });
+      const folded = await supabase.from("waitlist_signups").insert({
+        ...core,
+        phone: [core.phone, foldedNote(lead)].filter(Boolean).join(" — "),
+      });
 
-            if (!folded.error) return { ok: true, alreadyKnown: false };
-            if (folded.error.code === UNIQUE_VIOLATION)
-                return { ok: true, alreadyKnown: true };
+      if (!folded.error) return { ok: true, alreadyKnown: false };
+      if (folded.error.code === UNIQUE_VIOLATION)
+        return { ok: true, alreadyKnown: true };
 
-            console.error(
-                '[leads] insert failed after column fallback:',
-                folded.error,
-            );
-            return {
-                ok: false,
-                fallbackMailto,
-                reason: 'failed',
-            };
-        }
-
-        console.error('[leads] insert failed:', first.error);
-        return { ok: false, fallbackMailto, reason: 'failed' };
-    } catch {
-        // A transport exception needs the same explicit fallback as an API error.
-        return { ok: false, fallbackMailto, reason: 'failed' };
+      console.error(
+        "[leads] insert failed after column fallback:",
+        folded.error,
+      );
+      return {
+        ok: false,
+        fallbackMailto,
+        reason: "failed",
+      };
     }
+
+    console.error("[leads] insert failed:", first.error);
+    return { ok: false, fallbackMailto, reason: "failed" };
+  } catch {
+    // A transport exception needs the same explicit fallback as an API error.
+    return { ok: false, fallbackMailto, reason: "failed" };
+  }
 }
 
 /** Enough to catch a typo, and nothing like enough to reject a real address. */
 export const looksLikeEmail = (value: string) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim());
+  /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim());

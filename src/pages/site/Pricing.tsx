@@ -227,6 +227,8 @@ const Plans = styled(Chapter)`
     --action-bg: ${color.ivory};
     --action-ink: ${color.primary};
     --action-hover: ${color.paperPure};
+    --focus: ${color.gold};
+    --focus-halo: ${color.night};
   }
   .decide strong {
     display: block;
@@ -347,10 +349,21 @@ const Compare = styled.div`
     font: 600 15px/1.4 ${font.body};
     color: ${color.primary};
   }
-  .yes::before {
-    content: "✓ ";
+  /*
+   * A drawn tick, matching the comparison table's. It was a Unicode "✓" in a
+   * ::before, which matches no icon anywhere else on the site and renders
+   * differently on every platform.
+   */
+  .yes {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .yes svg {
+    width: 15px;
+    height: 15px;
+    flex: none;
     color: ${color.teal};
-    font-weight: 700;
   }
   .note {
     margin-top: 12px;
@@ -503,7 +516,24 @@ const COLS = [
   },
 ];
 
-/** Rows: each cell is [strong line, detail]; "✓" rows use the yes mark. */
+/** The tick in the comparison grid — one stroke weight, like the arrow. */
+function YesTick() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M4.5 12.5l4.6 4.6L19.5 6.8" />
+    </svg>
+  );
+}
+
+/** Rows: each cell is [strong line, detail]; `yes` rows carry the tick. */
 const ROWS: { label: string; cells: [string, string?][]; yes?: boolean }[] = [
   {
     label: "Who it’s for",
@@ -764,6 +794,7 @@ export default function Pricing() {
                           }
                         >
                           <strong className={r.yes ? "yes" : undefined}>
+                            {r.yes && <YesTick />}
                             {main}
                           </strong>
                           {sub && <span>{sub}</span>}
@@ -870,7 +901,6 @@ export default function Pricing() {
             loading="lazy"
           />
           <div>
-            <Eyebrow>The book</Eyebrow>
             <Statement id="book-title" $size="lg" data-lines>
               Printed when a chapter is worth <em>holding.</em>
             </Statement>

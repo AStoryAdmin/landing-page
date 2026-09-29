@@ -2,11 +2,11 @@
  * Site kit components. See kit.styles.ts for the rules they follow.
  */
 import type { ReactNode } from "react";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { mission } from "../../../lib/mission";
-import { gsap, useScene } from "../../../lib/scrollMotion";
 import { useReveals } from "./reveals";
-import { color, display, font, media } from "../../../styles/theme";
+import { color, display, font, media, motion } from "../../../styles/theme";
 import {
   Actions,
   Chapter,
@@ -97,7 +97,12 @@ export function Print({
   className?: string;
 }) {
   return (
-    <PrintMat $bare={!isArchival(id)} $tilt={tilt} className={className}>
+    <PrintMat
+      $bare={!isArchival(id)}
+      $tilt={tilt}
+      className={className}
+      data-bare={!isArchival(id) || undefined}
+    >
       <div className="print-window">
         <Picture id={id} alt={alt} sizes={sizes} priority={priority} />
       </div>
@@ -117,8 +122,12 @@ const Opening = styled(Chapter)`
   .opening-grid.solo {
     grid-template-columns: minmax(0, 1fr);
   }
+  /*
+   * 18ch broke a twelve-word title into four narrow lines, which is a size
+   * error dressed as a measure. A page title gets two or three.
+   */
   .opening-grid.solo h1 {
-    max-width: 18ch;
+    max-width: 28ch;
   }
   .opening-lead {
     margin-top: clamp(22px, 2.4vw, 34px);
@@ -204,37 +213,78 @@ const Band = styled.section`
     background: ${color.sand};
     border-radius: 50% 50% 0 0 / 100% 100% 0 0;
   }
-  .marquee-clip {
-    overflow: hidden;
-    padding-bottom: 0.12em;
-  }
-  .marquee {
-    display: flex;
-    width: max-content;
-    font: 400 ${display.md} / 1.15 ${font.display};
-    letter-spacing: -0.01em;
-    white-space: nowrap;
-  }
-  .marquee span {
-    padding-right: 0.4em;
-  }
-  .marquee b {
-    font-weight: 500;
-    color: ${color.accent};
-    padding-right: 0.4em;
-  }
   .band-row {
     display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 32px;
-    align-items: end;
-    margin-top: clamp(36px, 4.5vw, 72px);
-    padding-top: 24px;
-    border-top: 1px solid ${color.primaryLineStrong};
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+    gap: clamp(36px, 5vw, 92px);
+    align-items: start;
   }
-  .band-row p {
-    font: 400 ${display.sm} / 1.35 ${font.display};
-    max-width: 34ch;
+  .band-row h2 {
+    font: 400 ${display.md} / 1.2 ${font.display};
+    color: ${color.primary};
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+  .band-row h2 em {
+    font-style: normal;
+    font-weight: 500;
+    color: ${color.accent};
+  }
+  .band-row > div > p {
+    margin-top: 14px;
+    font: 400 17px/1.6 ${font.body};
+    color: ${color.body};
+    max-width: 40ch;
+  }
+  /* Where to go next: the three rooms this reader has not been in. */
+  .next {
+    display: grid;
+  }
+  .next-label {
+    font: 600 11px/1 ${font.body};
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: ${color.accentText};
+    padding-bottom: 14px;
+  }
+  .next a {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 20px;
+    padding: 17px 0;
+    border-top: 1px solid ${color.primaryLineStrong};
+    text-decoration: none;
+    color: inherit;
+  }
+  .next a:last-child {
+    border-bottom: 1px solid ${color.primaryLineStrong};
+  }
+  .next b {
+    display: block;
+    font: 400 ${display.sm} / 1.2 ${font.display};
+    color: ${color.primary};
+    transition: color ${motion.base};
+  }
+  .next span {
+    display: block;
+    margin-top: 3px;
+    font: 400 15px/1.45 ${font.body};
+    color: ${color.bodyMuted};
+  }
+  .next svg {
+    width: 18px;
+    height: 18px;
+    color: ${color.accentText};
+    transition: transform ${motion.base};
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .next a:hover b {
+      color: ${color.accent};
+    }
+    .next a:hover svg {
+      transform: translateX(5px);
+    }
   }
   ${media.md} {
     .band-row {
@@ -244,54 +294,88 @@ const Band = styled.section`
 `;
 
 /** From the app's closing mission screen (CM09). */
-const LINE = (
-  <>
-    <span>The story</span>
-    <b>keeps going.</b>
-    <span>Because so do you.</span>
-    <span aria-hidden="true">·</span>
-  </>
-);
+
+/**
+ * Where a reader can go from here. The closing band used to run the app's
+ * mission line as an endless marquee; the founder asked for a way onward
+ * instead, so it now offers the one action and the three rooms this reader
+ * has not been in — the current route filters itself out.
+ */
+const ROOMS = [
+  {
+    to: "/how-it-works",
+    title: "How it works",
+    hint: "The call, the card, the book.",
+  },
+  {
+    to: "/for-families",
+    title: "For families",
+    hint: "Giving it, and using it together.",
+  },
+  {
+    to: "/pricing",
+    title: "Pricing",
+    hint: "Everyone starts free. Only calls are paid for.",
+  },
+  {
+    to: "/compare",
+    title: "How A Story is different",
+    hint: "Beside the products you may be comparing.",
+  },
+  {
+    to: "/questions",
+    title: "Questions & answers",
+    hint: "The practical things, answered plainly.",
+  },
+  {
+    to: "/our-story",
+    title: "Our story",
+    hint: "Why we started, in our own words.",
+  },
+];
 
 /**
  * The one closing invitation, at the foot of every narrative route: the app's
- * own closing screen (mission CM09) — a sand panel rising on a curve,
- * chocolate type, one word in terracotta. Sand sits softly against the
- * chocolate footer; the saturated brass band of Pass 11b did not.
+ * sand panel rising on a curve, chocolate type, one word in terracotta.
  */
 export function Invitation({
   line = "One conversation to begin. The whole family keeps adding to it.",
 }: {
   line?: string;
 }) {
-  // A slow, steady drift — no scroll-linked speed-up (it made the founder dizzy).
-  const ref = useScene<HTMLElement>(() => {
-    gsap.to(".marquee", {
-      xPercent: -50,
-      ease: "none",
-      duration: 110,
-      repeat: -1,
-    });
-  });
+  const { pathname } = useLocation();
+  const rooms = ROOMS.filter((r) => r.to !== pathname).slice(0, 3);
   return (
-    <Band ref={ref} aria-labelledby="invitation-title">
-      <h2 id="invitation-title" className="sr-only">
-        The story keeps going. Because so do you.
-      </h2>
-      <div className="marquee-clip" aria-hidden="true">
-        <div className="marquee">
-          {LINE}
-          {LINE}
-          {LINE}
-          {LINE}
-        </div>
-      </div>
+    <Band aria-labelledby="invitation-title">
       <Frame className="band-row">
-        <p>{line}</p>
-        <PrimaryLink to="/start">
-          Begin your story <ArrowIcon />
-        </PrimaryLink>
+        <div>
+          <h2 id="invitation-title">
+            The story <em>keeps going.</em> Because so do you.
+          </h2>
+          <p>{line}</p>
+          <Actions>
+            <PrimaryLink to="/start">
+              Join the waitlist <ArrowIcon />
+            </PrimaryLink>
+          </Actions>
+        </div>
+        <nav className="next" aria-label="Where to go next">
+          <p className="next-label">Where to next</p>
+          {rooms.map((r) => (
+            <Link key={r.to} to={r.to}>
+              <span>
+                <b>{r.title}</b>
+                <span>{r.hint}</span>
+              </span>
+              <ArrowIcon />
+            </Link>
+          ))}
+        </nav>
       </Frame>
     </Band>
   );
 }
+
+/**
+ * Site kit components. See kit.styles.ts for the rules they follow.
+ */

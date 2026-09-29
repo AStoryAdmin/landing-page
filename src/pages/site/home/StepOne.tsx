@@ -20,7 +20,6 @@ import { AppShot, Phone } from "../app/Phone";
 import { IncomingScreen } from "../app/screens";
 import {
   Actions,
-  Eyebrow,
   Frame,
   PrimaryLink,
   SecondaryLink,
@@ -58,7 +57,7 @@ const Scene = styled.section`
   --mark: ${color.accent};
   --label: ${color.accentText};
   background: ${color.ivory};
-  padding: clamp(96px, 11vw, 176px) 0;
+  padding: calc(clamp(96px, 11vw, 176px) * var(--sy)) 0;
 
   .step-head {
     margin-bottom: clamp(48px, 6vw, 96px);
@@ -179,7 +178,6 @@ export default function StepOne() {
     <Scene ref={ref} aria-labelledby="step-title">
       <Frame>
         <header className="step-head">
-          <Eyebrow>How you begin</Eyebrow>
           <Statement id="step-title" $size="xl">
             You do step one. That’s the whole <em>job.</em>
           </Statement>

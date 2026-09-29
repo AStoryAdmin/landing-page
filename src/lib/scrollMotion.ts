@@ -108,7 +108,9 @@ export function openMasks(masks: Element[] | undefined) {
 /** After fonts and images settle, pinned scenes need their measurements redone. */
 export function refreshWhenSettled() {
   let active = true;
-  const refresh = () => { if (active) ScrollTrigger.refresh(); };
+  const refresh = () => {
+    if (active) ScrollTrigger.refresh();
+  };
   document.fonts?.ready.then(refresh);
   if (document.readyState === "complete") refresh();
   else window.addEventListener("load", refresh, { once: true });

@@ -267,3 +267,156 @@ comments and readable structure).
 - **Our story photographs**: the dinner-table photo is gone. The homepage "Why we started"
   section uses 12 (a hallway telephone, 1981 — the call nobody made) in a portrait frame;
   the header's Our story card uses 31 (the 1958 portrait), which reads better small.
+
+## Pass 12 — craft pass (short screens, browser surfaces, interaction timing)
+
+Run against three installed design skills (`emilkowalski/skills`, `pbakaus/impeccable`,
+`leonxlnx/taste-skill`, in `.claude/skills/`). No page was redesigned; the structure,
+copy and art direction are unchanged.
+
+### A 16" laptop is a wide viewport with a short one's height
+
+The whole scale was written in `vw`, so a 1536×730 laptop got a 32" monitor's display
+type and section rhythm inside two-thirds of the height. Every composition meant to be
+read in one look arrived in pieces.
+
+- `display.*` are now custom properties (`--d-hero` … `--d-sm`) declared in `styles/global.ts`
+  and multiplied by `--vs`; every chapter's padding is multiplied by `--sy`.
+- Four height steps (940 / 840 / 760 / 680px, above 1024px wide) bring both back a notch at
+  a time. A tall screen is unchanged — `--vs` and `--sy` are 1.
+- Result on a 1536×730 laptop: the homepage is ~1,300px shorter and each section fits its
+  viewport again. `theme.displayBase` keeps the literal ramp for the property declarations.
+
+### The surfaces we did not draw
+
+Selection was themed; the caret, scrollbar, underline offset and figure alignment were not.
+All now come from the namecard palette (`styles/global.ts`). The keyboard focus ring reads
+`--focus` / `--focus-halo` from the ground it lands on — brass on night and teal, where a
+chocolate ring on a paper halo was invisible.
+
+### Interaction timing
+
+Hover and press ran on the 520ms / 900ms scroll curves and read as lag. Pills and text
+links now answer on 180–220ms, with the arrow coin at 420ms; hover states are behind
+`@media (hover: hover)` so they no longer stick after a tap.
+
+### Reveals
+
+`[data-rise]` siblings are grouped by parent and staggered from one trigger, so a row of
+cards cascades instead of landing as a slab. Prints settle from 1.035 as they open.
+
+### Fixes found by inspection
+
+- The book and "Why we started" share a ground; two full chapter paddings met there and left
+  a third of a laptop screen of empty sand. The seam is closed.
+- The eyebrow is `inline-flex`, so in a centred composition (Our story, For families, Care,
+  Organizations, Your own story) it centres with the headline instead of sitting in the gutter.
+- How it works: the inactive step recedes by colour, not `opacity: 0.3`, which had put the
+  heading at 1.7:1 and its sentence at 1.6:1 against the ivory.
+- The one-line statement on the audience pages rises as a block; splitting it put an
+  `aria-label` on a `<p>`, which ARIA prohibits.
+- The comparison close block reads as one 58ch block instead of a full-width line over a
+  narrow column.
+- The header condenses (84 → 68px, a resting shadow) once the reader leaves the top, and a
+  nav link draws its gold rule under the word on hover.
+
+### Verified
+
+`tsc -b`, `eslint src`, `build:static` (22 routes), axe-core WCAG 2.1 AA at 1536×730,
+2560×1380 and 390×844: **no violations in the settled state**. Five groups appear only when
+the audit samples a frame mid-reveal on the home intro and one card — they clear as the tween
+finishes and never occur under `prefers-reduced-motion`, which is what the prerender captures.
+
+Guarded files (`pricing.ts`, `product.ts`, `checkout.ts`, `demoScripts.ts`, `brand.json`)
+byte-identical to the 2026-09-24 export.
+
+## Pass 13 — the opening
+
+The first-visit opening is rebuilt from the founder's own idea: the prints rise
+along the timeline at their year, gather, and bind into the keepsake.
+
+**The scene** (`home/introGather.ts`) is WebGL (`three`). It was a namecard, then
+a CSS-3D book, then a CSS-3D corridor; all three read as flat rectangles, because
+what the opening has to sell is depth and CSS perspective cannot light a surface.
+
+1. A brass rule lies across the dark, the year at 1952.
+2. As the count climbs, a photograph rises out of the rule at the year it was
+   taken. By "Today" a whole life is hanging there, scattered — which is how a
+   family actually holds it, and the problem the product exists to solve.
+3. They gather, oldest first, into one block at the centre.
+4. Boards close over the block and it *is* the keepsake, in the cover the product
+   prints (coverbook.pdf: tracked capitals, the date line, the names in brass
+   italic, the clustered prints, "Family is everything to us").
+5. The volume turns three-quarters under one warm key and the name resolves above.
+6. One more photograph arrives *after* the book is shut, and goes in anyway. The
+   book is not the end; that is the product, in one gesture.
+
+Teal and brass only — the site's chocolate goes muddy against the teal.
+
+**Cost.** `three` is imported dynamically, so it is a 134 kB gzip chunk fetched
+only when the opening actually runs (first home visit per session, motion allowed,
+one route). The main bundle is unchanged at ~109 kB gzip. Under
+`prefers-reduced-motion` none of it is built or fetched. Any input runs the
+remainder out, and there is a Skip.
+
+## Pass 13b — the three skills, applied
+
+- **Eyebrows.** Both skills flag the label-above-every-heading rhythm as the
+  single clearest templated tell; impeccable bans it outright, the taste skill
+  caps it at one per three sections. Home ran six on nine sections. Twelve are
+  gone across Home, How it works, Pricing, Compare, Our story and the audience
+  pages; the ones that survive say something the headline does not. ("Side by
+  side" went with them — it should have gone in Pass 11j.)
+- **Section headers.** A page that opens every section with the statement left
+  and its explanation floating right reads as one template repeated. `StackHead`
+  is a second header family (statement, house hairline, explanation at a reading
+  measure); Home and How it works each had a run of three split headers, now
+  broken.
+- **One label per intent.** "Begin your story" and "Start your story" were the
+  same action as "Join the waitlist" under three names. One label now.
+- **Press and hover** (Emil): `:active` compresses (`scale(0.97)`) instead of
+  sliding down; the nav rule draws in at 380ms and withdraws at 200ms; the More
+  panel scales from its trigger with `@starting-style` instead of appearing from
+  `display:none`; `transition: all` is gone.
+- **Delight**: an archival print straightens and lifts under the pointer, and its
+  shadow opens with it — a photograph picked up off a table. Real prints only,
+  pointer devices only.
+
+Verified: `tsc -b`, `eslint src`, `build:static` (22 routes), axe-core WCAG 2.1 AA
+at 1536×730, 2560×1380 and 390×844 — no violations in the settled state. The
+opening is absent from every prerendered route. Guarded files byte-identical to
+the 2026-09-24 export.
+
+## Pass 13c — the inner pages
+
+The skills had reached the inner pages only through shared primitives. This
+pass went page by page.
+
+- **The closing band, on every route.** It ran the mission line as an endless
+  marquee. The founder asked for a way onward instead: it is now the one
+  action beside "Where to next" — three rooms with a line each, the current
+  route filtering itself out. One infinite animation removed from every page.
+- **The audience section** (For families, Care communities, Organizations,
+  Your own story — four pages from one component). Three identical white tiles
+  of photo + label + heading + paragraph is the most templated shape on the
+  web. They now sit on the ground: one print taken larger because it matters
+  more, each in the house keyline frame, the gold rule between the picture and
+  what is said about it, and no label above the heading.
+- **The occasions** (For families, Your own story). Five equal rounded cards
+  became a frieze of prints — square, keylined, alternately dropped so the row
+  has a rhythm, the occasion named in the caption voice underneath.
+- **Conversation guides.** The four starter questions were four white boxes
+  each repeating the same closing sentence; the same words four times is
+  filler. They are now four questions under the house rule, and the sentence
+  is said once beneath the row.
+- **Page openings.** `max-width: 18ch` on a solo title broke a twelve-word
+  headline into four narrow lines — a size error dressed as a measure. 28ch.
+- **Drawn ticks, not glyphs.** The audience checklist used a Unicode "✓" in a
+  sand disc, which reads khaki on paper; the pricing grid used another in a
+  `::before`. Both are now the same authored SVG at the site's stroke weight.
+- **The letters' highlighter** sat so low it read as an underline; the band
+  now covers the x-height.
+
+Verified: `tsc -b`, `eslint src`, `build:static` (22 routes), axe-core WCAG 2.1
+AA across 14 routes at 1536×730, 2560×1380 and 390×844 — no violations.
+Guarded files untouched (2026-09-20).

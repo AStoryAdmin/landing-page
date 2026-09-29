@@ -26,7 +26,7 @@ const Scene = styled.section`
   --mark: ${color.accent};
   --label: ${color.accentText};
   background: ${color.paperPure};
-  padding: clamp(96px, 11vw, 176px) 0;
+  padding: calc(clamp(96px, 11vw, 176px) * var(--sy)) 0;
 
   .lead {
     font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.body};
@@ -42,9 +42,13 @@ const Scene = styled.section`
     padding-top: 28px;
     border-top: 1px solid ${color.primaryLineStrong};
   }
+  .close > div {
+    max-width: 58ch;
+  }
   .close h3 {
     font: 400 ${display.md} / 1.2 ${font.display};
     color: ${color.primary};
+    text-wrap: balance;
   }
   .close p {
     margin-top: 10px;

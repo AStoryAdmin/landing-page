@@ -79,7 +79,25 @@ export const type = {
  * launch rather than a family archive; the grotesque now carries interface,
  * explanation and labels only. Each size is one clamp, so nothing jumps.
  */
+/**
+ * The sizes themselves are CSS custom properties, declared in `global.ts`, so
+ * that one rule can retune the whole scale for a short screen. A 16" laptop is
+ * nearly as *wide* as a 32" monitor and a third shorter, and a scale written
+ * only in `vw` answers the width: display type stays at its 32" size while the
+ * viewport it has to fit inside loses 500px of height, and every composition
+ * meant to be read in one look spills over the fold. `--vs` (type) and `--sy`
+ * (section rhythm) are 1 on a tall screen and step down as height runs out.
+ */
 export const display = {
+  hero: "var(--d-hero)",
+  xl: "var(--d-xl)",
+  lg: "var(--d-lg)",
+  md: "var(--d-md)",
+  sm: "var(--d-sm)",
+} as const;
+
+/** The same ramp as literal clamps, for the custom properties in global.ts. */
+export const displayBase = {
   hero: "clamp(3rem, 1.2rem + 5.6vw, 7.25rem)",
   xl: "clamp(2.5rem, 1.2rem + 3.9vw, 5.25rem)",
   lg: "clamp(2.2rem, 1.3rem + 2.6vw, 4rem)",

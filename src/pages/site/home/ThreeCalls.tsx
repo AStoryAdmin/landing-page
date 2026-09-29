@@ -19,7 +19,6 @@ import styled from "styled-components";
 import CallTrio from "../app/CallTrio";
 import { ArrowIcon } from "../kit/kit";
 import {
-  Eyebrow,
   Frame,
   SplitHead,
   Statement,
@@ -31,13 +30,16 @@ import { color, font } from "../../../styles/theme";
 
 const Scene = styled.section`
   --ink: ${grounds.teal.ink};
+  --focus: ${grounds.teal.focus};
+  --focus-halo: ${grounds.teal.focusHalo};
   --muted: ${grounds.teal.muted};
   --line: ${grounds.teal.line};
   --mark: ${grounds.teal.mark};
   --label: ${grounds.teal.label};
   background: ${color.teal};
   color: ${color.ivory};
-  padding: clamp(96px, 11vw, 176px) 0 clamp(80px, 9vw, 140px);
+  padding: calc(clamp(96px, 11vw, 176px) * var(--sy)) 0
+    calc(clamp(80px, 9vw, 140px) * var(--sy));
 
   .calls-lead {
     font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.55 ${font.body};
@@ -60,7 +62,6 @@ export default function ThreeCalls() {
       <Frame>
         <SplitHead>
           <div>
-            <Eyebrow>The conversation</Eyebrow>
             <Statement id="listen-title" $size="xl">
               Three calls. Nobody changes the <em>subject.</em>
             </Statement>

@@ -49,13 +49,44 @@ export const LOST = [
 
 /** The milestones everybody already keeps — the stack beside the first headline. */
 export const MILESTONES = [
-  { article: "The", word: "wedding", photo: "02", alt: "A wedding portrait", caption: "Walt & Ruth · 1951" },
-  { article: "the", word: "graduation", photo: "04", alt: "A graduation portrait", caption: "Dan’s graduation · 1994" },
-  { article: "the", word: "first house", photo: "03", alt: "A family standing outside their first house", caption: "The house on Maple Drive · 1973" },
+  {
+    article: "The",
+    word: "wedding",
+    photo: "02",
+    alt: "A wedding portrait",
+    caption: "Walt & Ruth · 1951",
+  },
+  {
+    article: "the",
+    word: "graduation",
+    photo: "04",
+    alt: "A graduation portrait",
+    caption: "Dan’s graduation · 1994",
+  },
+  {
+    article: "the",
+    word: "first house",
+    photo: "03",
+    alt: "A family standing outside their first house",
+    caption: "The house on Maple Drive · 1973",
+  },
 ] as const;
 
 /** Everyday photographs for the collage behind "It’s the everyday." (mission CM02). */
-export const EVERYDAY = ["05", "09", "11", "12", "14", "17", "07", "13", "20", "25", "06", "10"] as const;
+export const EVERYDAY = [
+  "05",
+  "09",
+  "11",
+  "12",
+  "14",
+  "17",
+  "07",
+  "13",
+  "20",
+  "25",
+  "06",
+  "10",
+] as const;
 
 /**
  * "Quietly." (mission CM03–CM05): one ordinary photograph slips away, then
@@ -83,9 +114,28 @@ export const LAKE_MONSTER = {
   told: "I told Lily there was a monster in that lake. I never thought she’d believe me for three whole summers.",
   /** What arrives from the family afterwards, in order. */
   added: [
-    { name: "Sarah", initial: "S", role: "Lily’s mum", kind: "12 photos", quote: "She didn’t sleep. She kept watch at the tent door with a flashlight." },
-    { name: "Lily, 11", initial: "L", role: "Walt’s granddaughter", kind: "Voice note", quote: "There WAS a monster. I heard it breathing." },
-    { name: "Uncle Ben", initial: "B", role: "Walt’s son", kind: "Written", quote: "The monster was me. With a paddle. Sorry, Lily." },
+    {
+      name: "Sarah",
+      initial: "S",
+      role: "Lily’s mum",
+      kind: "12 photos",
+      quote:
+        "She didn’t sleep. She kept watch at the tent door with a flashlight.",
+    },
+    {
+      name: "Lily, 11",
+      initial: "L",
+      role: "Walt’s granddaughter",
+      kind: "Voice note",
+      quote: "There WAS a monster. I heard it breathing.",
+    },
+    {
+      name: "Uncle Ben",
+      initial: "B",
+      role: "Walt’s son",
+      kind: "Written",
+      quote: "The monster was me. With a paddle. Sorry, Lily.",
+    },
   ],
 } as const;
 
@@ -104,9 +154,14 @@ export const SPREADS = [
     photo: "01",
     alt: "Two people on the porch steps of a new home, 1952",
     caption: "Walt & Ruth, Elm Street",
-    words: "We had one chair and a crate, so we sat on the steps. Every evening that first summer, till the streetlights came on. The neighbours thought we couldn’t afford furniture. We couldn’t.",
+    words:
+      "We had one chair and a crate, so we sat on the steps. Every evening that first summer, till the streetlights came on. The neighbours thought we couldn’t afford furniture. We couldn’t.",
     by: "Grandma Ruth · told in a call",
-    also: { name: "Dan", initial: "D", quote: "Mum still sits on the steps at every party. Now I know why." },
+    also: {
+      name: "Dan",
+      initial: "D",
+      quote: "Mum still sits on the steps at every party. Now I know why.",
+    },
   },
   {
     year: "1984",
@@ -116,9 +171,14 @@ export const SPREADS = [
     photo: "H02",
     alt: "Walt and twelve-year-old Dan at a workbench, 1984",
     caption: "Walt and Dan in the garage",
-    words: "Every broken fan on the street ended up in that garage. So did every story. He’d hand you a screwdriver and start: “Now, in 1962…”",
+    words:
+      "Every broken fan on the street ended up in that garage. So did every story. He’d hand you a screwdriver and start: “Now, in 1962…”",
     by: "Added by Dan, his son",
-    also: { name: "Grandpa Walt", initial: "W", quote: "The fan was never the point." },
+    also: {
+      name: "Grandpa Walt",
+      initial: "W",
+      quote: "The fan was never the point.",
+    },
   },
   {
     year: "1998",
@@ -128,7 +188,8 @@ export const SPREADS = [
     photo: "H03",
     alt: "Dan and Sam laughing beside an overturned canoe, 1998",
     caption: "After the lake",
-    words: "We were never lost. We were taking the long way round the lake, and I’d do it again.",
+    words:
+      "We were never lost. We were taking the long way round the lake, and I’d do it again.",
     by: "Dan · told in a call",
     also: { name: "Sam", initial: "S", quote: "Six hours, Dan. Six." },
   },
@@ -140,9 +201,15 @@ export const SPREADS = [
     photo: "H01",
     alt: "Mia and Sarah looking at the moon through a bedroom window",
     caption: "Mia at the bedroom window",
-    words: "At bedtime, Mia asked where the moon goes in the daytime. I began explaining the sky, but she shook her head. She wanted to know who keeps it company while we can't see it. Writing this down before I forget how she said it.",
+    words:
+      "At bedtime, Mia asked where the moon goes in the daytime. I began explaining the sky, but she shook her head. She wanted to know who keeps it company while we can't see it. Writing this down before I forget how she said it.",
     by: "Sarah · written the same night",
-    also: { name: "Grandma Ruth", initial: "R", quote: "Dan asked me the same thing at her age. I wish I'd written down his words." },
+    also: {
+      name: "Grandma Ruth",
+      initial: "R",
+      quote:
+        "Dan asked me the same thing at her age. I wish I'd written down his words.",
+    },
   },
   {
     year: "2024",
@@ -152,9 +219,14 @@ export const SPREADS = [
     photo: "H04",
     alt: "A family around a campfire by a lake",
     caption: "The last night at the lake",
-    words: "I told Lily there was a monster in that lake. I never thought she’d believe me for three whole summers.",
+    words:
+      "I told Lily there was a monster in that lake. I never thought she’d believe me for three whole summers.",
     by: "Grandpa Walt · and three more versions",
-    also: { name: "Uncle Ben", initial: "B", quote: "The monster was me. With a paddle. Sorry, Lily." },
+    also: {
+      name: "Uncle Ben",
+      initial: "B",
+      quote: "The monster was me. With a paddle. Sorry, Lily.",
+    },
   },
   {
     year: "Today",
@@ -164,8 +236,13 @@ export const SPREADS = [
     photo: "35",
     alt: "A parent carrying laundry through a family home",
     caption: "Tuesday, 8:14",
-    words: "Nobody photographs laundry on purpose. That’s exactly why it’s here — the radio on, Mia singing the wrong words, the house smelling of clean sheets.",
+    words:
+      "Nobody photographs laundry on purpose. That’s exactly why it’s here — the radio on, Mia singing the wrong words, the house smelling of clean sheets.",
     by: "Sarah · added this morning",
-    also: { name: "Mia, 10", initial: "M", quote: "They’re not the wrong words." },
+    also: {
+      name: "Mia, 10",
+      initial: "M",
+      quote: "They’re not the wrong words.",
+    },
   },
 ] as const;

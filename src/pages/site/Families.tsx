@@ -173,17 +173,33 @@ const Occasions = styled(Chapter)`
     outline: 3px solid ${color.accent};
     outline-offset: 4px;
   }
+  /*
+   * A frieze of prints, not five tiles. Five identical rounded cards in a row
+   * is the shape every template ships; these are the same photographs laid
+   * out on the sand the way the rest of the site lays out prints — square,
+   * keylined, alternately dropped so the row has a rhythm — with the occasion
+   * named underneath in the caption voice and the line it earns in serif.
+   */
   .occ {
     display: flex;
     flex-direction: column;
-    background: ${color.paperPure};
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 30px 60px -44px rgba(42, 31, 24, 0.55);
+  }
+  .occ:nth-child(even) {
+    margin-top: clamp(26px, 3.4vw, 62px);
   }
   .occ .img {
+    position: relative;
     aspect-ratio: 4 / 5;
     overflow: hidden;
+    background: ${color.ivoryDeep};
+    box-shadow: 0 24px 48px -30px rgba(42, 31, 24, 0.68);
+  }
+  .occ .img::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 1px rgba(42, 31, 24, 0.18);
+    pointer-events: none;
   }
   .occ img {
     width: 100%;
@@ -191,21 +207,23 @@ const Occasions = styled(Chapter)`
     object-fit: cover;
     transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .occ:hover img {
-    transform: scale(1.04);
+  @media (hover: hover) and (pointer: fine) {
+    .occ:hover img {
+      transform: scale(1.035);
+    }
   }
   .occ div + div {
-    padding: 18px 18px 22px;
+    padding: 16px 0 0;
   }
   .occ small {
-    font: 600 12px/1.3 ${font.body};
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: ${color.accentText};
+    font: italic 400 15px/1.3 ${font.display};
+    letter-spacing: 0;
+    text-transform: none;
+    color: ${color.bodyMuted};
   }
   .occ p {
-    margin-top: 8px;
-    font: 400 20px/1.3 ${font.display};
+    margin-top: 6px;
+    font: 400 20px/1.28 ${font.display};
     color: ${color.primary};
   }
   .gift {

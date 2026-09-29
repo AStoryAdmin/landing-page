@@ -21,7 +21,7 @@ import { Phone } from "../app/Phone";
 import { Picture } from "../kit/kit";
 import { MemoryScreen } from "../app/screens";
 import { avatarTints } from "../app/tokens";
-import { Eyebrow, Frame, SplitHead, Statement } from "../kit/kit.styles";
+import { Frame, StackHead, Statement } from "../kit/kit.styles";
 import {
   gsap,
   riseLines,
@@ -36,7 +36,7 @@ const Scene = styled.section`
   --mark: ${color.accent};
   --label: ${color.accentText};
   background: ${color.ivory};
-  padding: clamp(96px, 11vw, 176px) 0 0;
+  padding: calc(clamp(96px, 11vw, 176px) * var(--sy)) 0 0;
   overflow: hidden;
 
   .lead {
@@ -353,20 +353,17 @@ export default function EveryVoice() {
   return (
     <Scene ref={ref} id="kept" aria-labelledby="voices-title">
       <Frame>
-        <SplitHead>
-          <div>
-            <Eyebrow>Everyone who was there</Eyebrow>
-            <Statement id="voices-title" $size="xl">
-              Every memory has more than one <em>witness.</em>
-            </Statement>
-          </div>
+        <StackHead>
+          <Statement id="voices-title" $size="xl">
+            Every memory has more than one <em>witness.</em>
+          </Statement>
           <p className="lead">
             Invite the people who were there. Their photos, voices and versions
             become part of the same story — through one link, no account needed.
             Nothing replaces anything else, and nothing appears until the
             storyteller says yes.
           </p>
-        </SplitHead>
+        </StackHead>
 
         <div className="stage">
           {M.added.map((a, i) => (

@@ -36,6 +36,8 @@ const VOICES = [
 
 const Opening = styled.section`
   --ink: ${color.ivory};
+  --focus: ${color.gold};
+  --focus-halo: ${color.primaryDeep};
   --label: ${color.gold};
   --mark: ${color.gold};
   position: relative;

@@ -21,7 +21,14 @@ const Scene = styled.section`
   --mark: ${color.accent};
   --label: ${color.accentText};
   background: ${color.ivoryDeep};
-  padding: clamp(96px, 11vw, 176px) 0;
+  /*
+   * The book closes on this same ground, so a full chapter's padding on both
+   * sides of the seam left a third of a laptop screen of empty sand between
+   * the print line and "Why we started". The top comes in; the bottom, which
+   * meets a different ground, keeps the full measure.
+   */
+  padding: calc(clamp(64px, 7vw, 104px) * var(--sy)) 0
+    calc(clamp(96px, 11vw, 176px) * var(--sy));
 
   .grid {
     display: grid;

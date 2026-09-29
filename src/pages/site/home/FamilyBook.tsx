@@ -89,7 +89,8 @@ const Scene = styled.section`
       transparent 70%
     ),
     ${color.ivoryDeep};
-  padding: clamp(96px, 11vw, 176px) 0;
+  padding: calc(clamp(96px, 11vw, 176px) * var(--sy)) 0
+    calc(clamp(72px, 8vw, 128px) * var(--sy));
   overflow: hidden;
 
   .lead {
@@ -1180,7 +1181,7 @@ function EndRight() {
       </h3>
       <p className="because">Because so do you.</p>
       <Link className="begin" to="/start" onClick={(e) => e.stopPropagation()}>
-        Begin your story <ArrowIcon />
+        Join the waitlist <ArrowIcon />
       </Link>
     </div>
   );

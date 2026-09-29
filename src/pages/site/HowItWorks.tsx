@@ -47,6 +47,7 @@ import {
   PrimaryLink,
   SecondaryLink,
   SplitHead,
+  StackHead,
   Statement,
   TextLink,
   grounds,
@@ -193,7 +194,6 @@ const Walk = styled(Chapter)`
     flex-direction: column;
     justify-content: center;
     padding-left: clamp(28px, 3vw, 48px);
-    transition: opacity 500ms ease;
   }
   .step::before {
     content: "";
@@ -215,10 +215,27 @@ const Walk = styled(Chapter)`
     border-color: ${color.accent};
     transform: scale(1.3);
   }
+  /*
+   * The step you are not on recedes by colour, not by opacity. At 0.3 the
+   * heading fell to 1.7:1 against the ivory and the sentence under it to
+   * 1.6 — a reader with low vision lost every step but one. Holding the ink
+   * at the lighter chocolates keeps the same recession and stays readable.
+   */
   @media (prefers-reduced-motion: no-preference) {
-    .step:not(.on) {
-      opacity: 0.3;
+    .step:not(.on) h3 {
+      color: ${color.primaryLight};
     }
+    .step:not(.on) p {
+      color: ${color.faint};
+    }
+    .step:not(.on) .num b {
+      color: color-mix(in srgb, ${color.accent} 46%, ${color.ivoryDeep});
+    }
+  }
+  .step h3,
+  .step p,
+  .step .num b {
+    transition: color 500ms ease;
   }
   .num {
     display: flex;
@@ -265,7 +282,6 @@ const Walk = styled(Chapter)`
     .step {
       min-height: 0;
       padding: 40px 0 40px 28px;
-      opacity: 1 !important;
     }
     .mini {
       display: block;
@@ -301,7 +317,6 @@ function Walkthrough() {
       <Frame>
         <SplitHead>
           <div>
-            <Eyebrow>The whole thing</Eyebrow>
             <Statement id="walk-title" $size="xl" data-lines>
               Five moments. You’re in <em>one.</em>
             </Statement>
@@ -368,7 +383,8 @@ const Listen = styled.section`
   --label: ${grounds.teal.label};
   background: ${color.teal};
   color: ${color.ivory};
-  padding: clamp(96px, 11vw, 176px) 0 clamp(80px, 9vw, 140px);
+  padding: calc(clamp(96px, 11vw, 176px) * var(--sy)) 0
+    calc(clamp(80px, 9vw, 140px) * var(--sy));
   .lead {
     font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.55 ${font.body};
     color: var(--muted);
@@ -577,7 +593,8 @@ const Depth = styled.section`
   --mark: ${color.accent};
   --label: ${color.accentText};
   position: relative;
-  padding: clamp(96px, 11vw, 176px) 0 clamp(110px, 12vw, 190px);
+  padding: calc(clamp(96px, 11vw, 176px) * var(--sy)) 0
+    calc(clamp(110px, 12vw, 190px) * var(--sy));
   /* Two clean tones, not a blend (any ivory→teal blend goes sage in the
      middle): the lower rungs sink below a curved "surface" into teal. */
   background: ${color.ivory};
@@ -1075,18 +1092,15 @@ export default function HowItWorks() {
 
       <Depth ref={depth} aria-labelledby="depth-title">
         <Frame>
-          <SplitHead>
-            <div>
-              <Eyebrow>How deep it goes</Eyebrow>
-              <Statement id="depth-title" $size="lg" data-lines>
-                It goes deeper, one step at a <em>time.</em>
-              </Statement>
-            </div>
+          <StackHead>
+            <Statement id="depth-title" $size="lg" data-lines>
+              It goes deeper, one step at a <em>time.</em>
+            </Statement>
             <Lead data-rise>
               The interview only goes a step further once the one before has
               been answered — which is why the last question lands.
             </Lead>
-          </SplitHead>
+          </StackHead>
           <div className="descent">
             <p className="gauge" aria-hidden="true">
               <span>Surface</span>
@@ -1241,7 +1255,6 @@ export default function HowItWorks() {
       <Scan ref={scan} $ground="ivory" aria-labelledby="scan-title">
         <Frame className="scan">
           <div>
-            <Eyebrow>Bring the family in</Eyebrow>
             <Statement id="scan-title" $size="lg" data-lines>
               One scan, and they’re <em>in the story.</em>
             </Statement>
@@ -1270,7 +1283,6 @@ export default function HowItWorks() {
       <Person ref={person} $ground="ivory" aria-labelledby="person-title">
         <Frame className="person">
           <div>
-            <Eyebrow>Built for the person, not the phone</Eyebrow>
             <h2 id="person-title" className="quote" data-lines>
               “She’s not good with these things.”
               <span>Good. Neither is this.</span>
@@ -1300,7 +1312,6 @@ export default function HowItWorks() {
             />
           </div>
           <div>
-            <Eyebrow>And when you’re ready</Eyebrow>
             <Statement id="volume-title" $size="lg" data-lines>
               When a chapter is ready, make it a <em>volume.</em>
             </Statement>

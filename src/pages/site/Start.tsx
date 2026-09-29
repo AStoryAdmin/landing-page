@@ -40,6 +40,8 @@ const Page = styled.section`
     padding: clamp(56px, 7vw, 110px) clamp(28px, 5vw, 88px);
     color: ${color.ivory};
     --label: ${color.gold};
+    --focus: ${color.gold};
+    --focus-halo: ${color.night};
   }
   .story .bg {
     position: absolute;
@@ -274,7 +276,9 @@ const Page = styled.section`
     cursor: pointer;
     box-shadow: 0 16px 30px -18px
       color-mix(in srgb, ${color.primary} 80%, transparent);
-    transition: background ${motion.slow};
+    transition:
+      background ${motion.base},
+      transform ${motion.fast};
   }
   .card button[type="submit"]::after {
     content: "→";
@@ -294,6 +298,10 @@ const Page = styled.section`
   }
   .card button[type="submit"]:hover::after {
     transform: rotate(-45deg);
+  }
+  .card button[type="submit"]:active {
+    transform: scale(0.98);
+    transition-duration: 60ms;
   }
   .card button[type="submit"]:focus-visible {
     outline: 2px solid ${color.gold};

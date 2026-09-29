@@ -1,6 +1,6 @@
-import styled, { keyframes, css } from 'styled-components';
-import { Link } from 'react-router-dom';
-import { color, font } from '../styles/theme';
+import styled, { keyframes, css } from "styled-components";
+import { Link } from "react-router-dom";
+import { color, font } from "../styles/theme";
 
 const bounce = keyframes`
     0%, 80%, 100% { transform: translateY(0); opacity: .35; }
@@ -13,119 +13,119 @@ const pulseDot = keyframes`
 `;
 
 export const PhoneContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 460px;
-    aspect-ratio: 430 / 780;
-    /* Both of these are load-bearing now that three phones sit in a row. As a
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 430 / 780;
+  /* Both of these are load-bearing now that three phones sit in a row. As a
        flex item, this box's automatic minimum size is its content height, and a
        running conversation is far taller than 660px — so without min-height the
        aspect ratio loses and the phone playing grows to twice the height of the
        two beside it. flex-shrink: 0 then stops the same column squeezing it. */
-    min-height: 0;
-    flex-shrink: 0;
-    border-radius: 24px;
-    overflow: hidden;
-    background: ${color.ivory};
-    box-shadow: 2px 2px 50px 0px rgba(43, 33, 23, 0.3);
+  min-height: 0;
+  flex-shrink: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  background: ${color.ivory};
+  box-shadow: 2px 2px 50px 0px rgba(43, 33, 23, 0.3);
 `;
 
 export const StatusBar = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-shrink: 0;
-    padding: 15px 25px;
-    font-size: 16px;
-    font-weight: 600;
-    font-family: ${font.body};
-    border-bottom: 1px solid ${color.primaryLine};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 15px 25px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: ${font.body};
+  border-bottom: 1px solid ${color.primaryLine};
 `;
 
 export const ChatBar = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-shrink: 0;
-    padding: 12px 20px;
-    background: ${color.ivory};
-    border-bottom: 1px solid ${color.primaryLine};
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 12px 20px;
+  background: ${color.ivory};
+  border-bottom: 1px solid ${color.primaryLine};
 `;
 
 export const ChatDot = styled.div<{ $accent?: boolean }>`
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: ${color.ivory};
-    border: 1px solid ${color.primaryLine};
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: ${color.ivory};
+  border: 1px solid ${color.primaryLine};
 
-    ${({ $accent }) =>
-        $accent &&
-        css`
-            background: ${color.gold};
-            border-color: ${color.gold};
-        `}
+  ${({ $accent }) =>
+    $accent &&
+    css`
+      background: ${color.gold};
+      border-color: ${color.gold};
+    `}
 `;
 
 export const ChatBarLabel = styled.span`
-    margin-left: auto;
-    font-family: ${font.body};
-    font-size: 16px;
-    font-style: italic;
-    color: ${color.faint};
+  margin-left: auto;
+  font-family: ${font.body};
+  font-size: 16px;
+  font-style: italic;
+  color: ${color.faint};
 `;
 
 export const PhoneBody = styled.div`
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 `;
 
 export const ChatMsgs = styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
 `;
 
-export const Bubble = styled.div<{ $role: 'ai' | 'user'; $show: boolean }>`
-    max-width: 84%;
-    padding: 10px 14px;
-    border-radius: 14px;
-    font-family: ${font.body};
-    font-size: 16px;
-    line-height: 1.55;
-    opacity: 0;
-    transform: translateY(6px);
-    transition:
-        opacity 350ms ease,
-        transform 350ms ease;
+export const Bubble = styled.div<{ $role: "ai" | "user"; $show: boolean }>`
+  max-width: 84%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-family: ${font.body};
+  font-size: 16px;
+  line-height: 1.55;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 350ms ease,
+    transform 350ms ease;
 
-    ${({ $show }) =>
-        $show &&
-        css`
-            opacity: 1;
-            transform: none;
+  ${({ $show }) =>
+    $show &&
+    css`
+      opacity: 1;
+      transform: none;
+    `}
+
+  ${({ $role }) =>
+    $role === "ai"
+      ? css`
+          align-self: flex-start;
+          background: ${color.ivory};
+          border: 1px solid ${color.primaryLine};
+          border-bottom-left-radius: 4px;
+        `
+      : css`
+          align-self: flex-end;
+          background: ${color.accent};
+          color: ${color.paperPure};
+          border-bottom-right-radius: 4px;
         `}
-
-    ${({ $role }) =>
-        $role === 'ai'
-            ? css`
-                  align-self: flex-start;
-                  background: ${color.ivory};
-                  border: 1px solid ${color.primaryLine};
-                  border-bottom-left-radius: 4px;
-              `
-            : css`
-                  align-self: flex-end;
-                  background: ${color.accent};
-                  color: ${color.paperPure};
-                  border-bottom-right-radius: 4px;
-              `}
 `;
 
 /*
@@ -139,169 +139,169 @@ export const Bubble = styled.div<{ $role: 'ai' | 'user'; $show: boolean }>`
  * there is no opacity to spend: the label earns its hierarchy from size, case
  * and tracking instead, which is where it should have come from anyway.
  */
-export const BubbleWho = styled.div<{ $role: 'ai' | 'user' }>`
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-    color: ${({ $role }) => ($role === 'user' ? color.paperPure : color.faint)};
+export const BubbleWho = styled.div<{ $role: "ai" | "user" }>`
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  color: ${({ $role }) => ($role === "user" ? color.paperPure : color.faint)};
 `;
 
 export const TypingIndicator = styled.div`
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    width: fit-content;
-    align-self: flex-start;
-    padding: 10px 14px;
-    background: ${color.ivory};
-    border: 1px solid ${color.primaryLine};
-    border-radius: 14px;
-    border-bottom-left-radius: 4px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  width: fit-content;
+  align-self: flex-start;
+  padding: 10px 14px;
+  background: ${color.ivory};
+  border: 1px solid ${color.primaryLine};
+  border-radius: 14px;
+  border-bottom-left-radius: 4px;
 
-    span {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: ${color.faint};
-        animation: ${bounce} 1.4s infinite;
-    }
-    span:nth-child(2) {
-        animation-delay: 0.2s;
-    }
-    span:nth-child(3) {
-        animation-delay: 0.4s;
-    }
+  span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${color.faint};
+    animation: ${bounce} 1.4s infinite;
+  }
+  span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
 `;
 
 export const ChatAction = styled.div`
-    flex-shrink: 0;
-    padding: 16px 20px;
-    border-top: 1px solid ${color.primaryLine};
-    background: ${color.ivory};
+  flex-shrink: 0;
+  padding: 16px 20px;
+  border-top: 1px solid ${color.primaryLine};
+  background: ${color.ivory};
 `;
 
 export const ChatPlayButton = styled.button`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-height: 46px;
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 500;
-    color: ${color.accentText};
-    background: transparent;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition:
-        background 0.2s ease,
-        opacity 0.2s ease;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 500;
+  color: ${color.accentText};
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
 
-    &:hover:not(:disabled) {
-        background: ${color.accentWash};
-    }
-    &:disabled {
-        opacity: 0.5;
-        cursor: default;
-    }
+  &:hover:not(:disabled) {
+    background: ${color.accentWash};
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
 `;
 
 export const MemoryCardReveal = styled.div<{ $show: boolean }>`
-    flex-shrink: 0;
-    padding: 0 20px 20px;
-    opacity: 0;
-    transform: translateY(10px);
-    transition:
-        opacity 500ms ease,
-        transform 500ms ease;
+  flex-shrink: 0;
+  padding: 0 20px 20px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 500ms ease,
+    transform 500ms ease;
 
-    ${({ $show }) =>
-        $show &&
-        css`
-            opacity: 1;
-            transform: none;
-        `}
+  ${({ $show }) =>
+    $show &&
+    css`
+      opacity: 1;
+      transform: none;
+    `}
 `;
 
 export const McIntro = styled.p`
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: ${color.faint};
-    margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: ${color.faint};
+  margin: 0 0 8px;
 
-    &::before {
-        content: '';
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: ${color.live};
-        flex-shrink: 0;
-        animation: ${pulseDot} 2s ease infinite;
-    }
+  &::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${color.live};
+    flex-shrink: 0;
+    animation: ${pulseDot} 2s ease infinite;
+  }
 `;
 
 export const MemoryCard = styled.div`
-    background: ${color.ivory};
-    border: 1px solid ${color.primaryLine};
-    border-left: 3px solid ${color.accent};
-    border-radius: 4px;
-    padding: 14px;
+  background: ${color.ivory};
+  border: 1px solid ${color.primaryLine};
+  border-left: 3px solid ${color.accent};
+  border-radius: 4px;
+  padding: 14px;
 `;
 
 export const McHeader = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
 `;
 
 export const McEra = styled.span`
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: ${color.accentText};
-    background: ${color.accentWash};
-    padding: 3px 10px;
-    border-radius: 4px;
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: ${color.accentText};
+  background: ${color.accentWash};
+  padding: 3px 10px;
+  border-radius: 4px;
 `;
 
 export const McSaved = styled.span`
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 500;
-    color: ${color.faint};
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 500;
+  color: ${color.faint};
 `;
 
 export const McTitle = styled.h3`
-    font-family: ${font.display};
-    font-size: 23px;
-    font-weight: 500;
-    color: ${color.primaryDeep};
-    margin: 0 0 8px;
-    line-height: 1.25;
+  font-family: ${font.display};
+  font-size: 23px;
+  font-weight: 500;
+  color: ${color.primaryDeep};
+  margin: 0 0 8px;
+  line-height: 1.25;
 `;
 
 export const McExcerpt = styled.p`
-    font-family: ${font.display};
-    font-size: 16px;
-    font-style: italic;
-    color: ${color.body};
-    line-height: 1.6;
-    margin: 0 0 10px;
+  font-family: ${font.display};
+  font-size: 16px;
+  font-style: italic;
+  color: ${color.body};
+  line-height: 1.6;
+  margin: 0 0 10px;
 `;
 
 /* ── The layers under a memory card ───────────────────────────────────────
@@ -310,78 +310,78 @@ export const McExcerpt = styled.p`
  */
 
 export const McLayers = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin: 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 0 0 10px;
 `;
 
 export const McLayerTab = styled.button<{ $active?: boolean }>`
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    padding: 4px 9px;
-    min-height: 26px;
-    border-radius: 4px;
-    border: 1px solid ${color.primaryLine};
-    background: transparent;
-    color: ${color.body};
-    cursor: pointer;
-    transition:
-        color 140ms ease,
-        border-color 140ms ease,
-        background 140ms ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 4px 9px;
+  min-height: 26px;
+  border-radius: 4px;
+  border: 1px solid ${color.primaryLine};
+  background: transparent;
+  color: ${color.body};
+  cursor: pointer;
+  transition:
+    color 140ms ease,
+    border-color 140ms ease,
+    background 140ms ease;
 
-    &:hover {
-        border-color: ${color.accentText};
-        color: ${color.accentText};
-    }
+  &:hover {
+    border-color: ${color.accentText};
+    color: ${color.accentText};
+  }
 
-    ${({ $active }) =>
-        $active &&
-        css`
-            color: ${color.accentText};
-            border-color: ${color.accentText};
-            background: ${color.accentWash};
-        `}
+  ${({ $active }) =>
+    $active &&
+    css`
+      color: ${color.accentText};
+      border-color: ${color.accentText};
+      background: ${color.accentWash};
+    `}
 
-    @media (prefers-reduced-motion: reduce) {
-        transition: none;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 export const McTranscript = styled.div`
-    margin: 2px 0 10px;
-    padding: 10px 12px;
-    background: ${color.paper};
-    border: 1px solid ${color.primaryLine};
-    border-radius: 10px;
+  margin: 2px 0 10px;
+  padding: 10px 12px;
+  background: ${color.paper};
+  border: 1px solid ${color.primaryLine};
+  border-radius: 10px;
 
-    p {
-        font-family: ${font.body};
-        font-size: 16px;
-        line-height: 1.65;
-        color: ${color.body};
-        margin: 0 0 8px;
-    }
-    p:last-child {
-        margin-bottom: 0;
-    }
+  p {
+    font-family: ${font.body};
+    font-size: 16px;
+    line-height: 1.65;
+    color: ${color.body};
+    margin: 0 0 8px;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
 
-    .who {
-        display: block;
-        font-size: 16px;
-        font-weight: 700;
-        letter-spacing: 0.07em;
-        text-transform: uppercase;
-        color: ${color.faint};
-        margin-bottom: 2px;
-    }
+  .who {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: ${color.faint};
+    margin-bottom: 2px;
+  }
 `;
 
 /**
@@ -390,50 +390,50 @@ export const McTranscript = styled.div`
  * be a promise the page cannot keep.
  */
 export const McClip = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    padding: 8px 10px;
-    background: ${color.paper};
-    border: 1px solid ${color.primaryLine};
-    border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  background: ${color.paper};
+  border: 1px solid ${color.primaryLine};
+  border-radius: 10px;
 
-    svg {
-        color: ${color.accentText};
-        flex-shrink: 0;
-    }
+  svg {
+    color: ${color.accentText};
+    flex-shrink: 0;
+  }
 
-    .label {
-        font-family: ${font.body};
-        font-size: 16px;
-        font-weight: 600;
-        color: ${color.body};
-    }
+  .label {
+    font-family: ${font.body};
+    font-size: 16px;
+    font-weight: 600;
+    color: ${color.body};
+  }
 
-    .dur {
-        margin-left: auto;
-        font-family: ${font.body};
-        font-size: 16px;
-        color: ${color.faint};
-        font-variant-numeric: tabular-nums;
-    }
+  .dur {
+    margin-left: auto;
+    font-family: ${font.body};
+    font-size: 16px;
+    color: ${color.faint};
+    font-variant-numeric: tabular-nums;
+  }
 `;
 
 /** The bars are decorative; the clip's meaning is carried by its label. */
 export const McWave = styled.span`
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    height: 16px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 16px;
 
-    i {
-        display: block;
-        width: 2px;
-        border-radius: 2px;
-        background: ${color.accentText};
-        opacity: 0.55;
-    }
+  i {
+    display: block;
+    width: 2px;
+    border-radius: 2px;
+    background: ${color.accentText};
+    opacity: 0.55;
+  }
 `;
 
 /* ── What the archive added that the conversation didn't ──────────────────
@@ -444,74 +444,74 @@ export const McWave = styled.span`
  */
 
 export const McLinked = styled.div`
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
 
-    .lbl {
-        font-family: ${font.body};
-        font-size: 16px;
-        font-weight: 700;
-        letter-spacing: 0.07em;
-        text-transform: uppercase;
-        color: ${color.faint};
-    }
+  .lbl {
+    font-family: ${font.body};
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: ${color.faint};
+  }
 `;
 
 export const McChip = styled.span`
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 600;
-    color: ${color.accentText};
-    background: ${color.accentWash};
-    border-radius: 4px;
-    padding: 2px 8px;
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 600;
+  color: ${color.accentText};
+  background: ${color.accentWash};
+  border-radius: 4px;
+  padding: 2px 8px;
 `;
 
 export const McShared = styled.p`
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin: 0 0 10px;
-    font-family: ${font.body};
-    font-size: 16px;
-    color: ${color.body};
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 10px;
+  font-family: ${font.body};
+  font-size: 16px;
+  color: ${color.body};
 
-    b {
-        font-weight: 600;
-        color: ${color.primaryDeep};
-    }
-    svg {
-        color: ${color.faint};
-        flex-shrink: 0;
-    }
+  b {
+    font-weight: 600;
+    color: ${color.primaryDeep};
+  }
+  svg {
+    color: ${color.faint};
+    flex-shrink: 0;
+  }
 `;
 
 /** Timestamp beside each transcript line — proof it is indexed, not pasted. */
 export const McAt = styled.span`
-    font-family: ${font.body};
-    font-size: 16px;
-    font-variant-numeric: tabular-nums;
-    color: ${color.faint};
-    margin-left: 6px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
+  font-family: ${font.body};
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  color: ${color.faint};
+  margin-left: 6px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
 `;
 
 export const McMeta = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    font-family: ${font.body};
-    font-size: 16px;
-    color: ${color.faint};
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-family: ${font.body};
+  font-size: 16px;
+  color: ${color.faint};
 `;
 
 export const McSep = styled.span`
-    opacity: 0.4;
+  opacity: 0.4;
 `;
 
 /* ── The depth ladder ─────────────────────────────────────────────────────
@@ -524,55 +524,55 @@ export const McSep = styled.span`
  * app's own, from src/data/interview.js via ../lib/product.
  */
 export const DepthBand = styled.div<{ $show: boolean }>`
-    position: sticky;
-    top: 0;
-    z-index: 3;
-    display: ${({ $show }) => ($show ? 'block' : 'none')};
-    padding: 8px 14px 9px;
-    background: ${color.primaryDeep};
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: ${({ $show }) => ($show ? "block" : "none")};
+  padding: 8px 14px 9px;
+  background: ${color.primaryDeep};
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 export const DepthHead = styled.p`
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 8px;
-    margin: 0 0 6px;
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: ${color.onDarkMuted};
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: ${color.onDarkMuted};
 
-    b {
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: none;
-        font-size: 16px;
-        color: ${color.gold};
-    }
+  b {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    font-size: 16px;
+    color: ${color.gold};
+  }
 `;
 
 export const DepthRungs = styled.div`
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 4px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
 `;
 
 /* The bar thickens as the interview earns the next rung — the same signal the
    ladder uses on /experience, so the two pages describe one mechanism. */
 export const DepthRung = styled.span<{ $level: number; $on: boolean }>`
-    height: ${({ $level }) => 2 + $level}px;
-    border-radius: 2px;
-    background: ${({ $on }) => ($on ? color.gold : 'rgba(255, 255, 255, 0.16)')};
-    transition: background 420ms ease;
-    align-self: end;
+  height: ${({ $level }) => 2 + $level}px;
+  border-radius: 2px;
+  background: ${({ $on }) => ($on ? color.gold : "rgba(255, 255, 255, 0.16)")};
+  transition: background 420ms ease;
+  align-self: end;
 
-    @media (prefers-reduced-motion: reduce) {
-        transition: none;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 /* The line the AI is holding to, shown as a system note rather than a bubble:
@@ -580,54 +580,54 @@ export const DepthRung = styled.span<{ $level: number; $on: boolean }>`
 /* Lives inside the sticky band, and keeps its height when empty so the chat
    underneath doesn't jump every time the reasoning changes. */
 export const StayNote = styled.p<{ $show: boolean }>`
-    margin: 7px 0 0;
-    padding-left: 8px;
-    border-left: 2px solid ${color.gold};
-    min-height: 30px;
-    /* Block, not flex: as a flex item the "Why this question:" label became its
+  margin: 7px 0 0;
+  padding-left: 8px;
+  border-left: 2px solid ${color.gold};
+  min-height: 30px;
+  /* Block, not flex: as a flex item the "Why this question:" label became its
        own column and wrapped away from the sentence it introduces. */
-    display: block;
-    font-family: ${font.body};
-    font-size: 16px;
-    line-height: 1.45;
-    color: ${color.onDarkMuted};
-    opacity: ${({ $show }) => ($show ? 1 : 0)};
-    transition: opacity 320ms ease;
+  display: block;
+  font-family: ${font.body};
+  font-size: 16px;
+  line-height: 1.45;
+  color: ${color.onDarkMuted};
+  opacity: ${({ $show }) => ($show ? 1 : 0)};
+  transition: opacity 320ms ease;
 
-    b {
-        color: ${color.gold};
-        font-weight: 600;
-        margin-right: 4px;
-    }
+  b {
+    color: ${color.gold};
+    font-weight: 600;
+    margin-right: 4px;
+  }
 
-    @media (prefers-reduced-motion: reduce) {
-        transition: none;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 /* ── Memory-card panels ───────────────────────────────────────────────── */
 
 export const McPanel = styled.div`
-    margin: 0 0 10px;
+  margin: 0 0 10px;
 `;
 
 /* The readable summary — the layer the family actually meets first. The card
    used to open on a pull quote, which read well and told nobody what the
    conversation had been about. */
 export const McSummary = styled.p`
-    font-family: ${font.body};
-    font-size: 16px;
-    line-height: 1.65;
-    color: ${color.body};
-    margin: 0 0 8px;
+  font-family: ${font.body};
+  font-size: 16px;
+  line-height: 1.65;
+  color: ${color.body};
+  margin: 0 0 8px;
 `;
 
 export const McVoiceNote = styled.p`
-    margin: 8px 0 0;
-    font-family: ${font.body};
-    font-size: 16px;
-    line-height: 1.55;
-    color: ${color.body};
+  margin: 8px 0 0;
+  font-family: ${font.body};
+  font-size: 16px;
+  line-height: 1.55;
+  color: ${color.body};
 `;
 
 /* Who else is in this archive, and what they are allowed to do to it. The app
@@ -635,74 +635,74 @@ export const McVoiceNote = styled.p`
    anyone with the contribute link (submits, pending approval). The card is
    where that becomes concrete rather than a claim on a marketing page. */
 export const McFamily = styled.div`
-    margin: 0 0 10px;
-    padding: 9px 10px;
-    background: ${color.paper};
-    border: 1px solid ${color.primaryLine};
-    border-radius: 10px;
+  margin: 0 0 10px;
+  padding: 9px 10px;
+  background: ${color.paper};
+  border: 1px solid ${color.primaryLine};
+  border-radius: 10px;
 
-    .row {
-        display: flex;
-        align-items: flex-start;
-        gap: 7px;
-        font-family: ${font.body};
-        font-size: 16px;
-        line-height: 1.5;
-        color: ${color.body};
-    }
+  .row {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    font-family: ${font.body};
+    font-size: 16px;
+    line-height: 1.5;
+    color: ${color.body};
+  }
 
-    .row + .row {
-        margin-top: 7px;
-    }
+  .row + .row {
+    margin-top: 7px;
+  }
 
-    b {
-        color: ${color.primaryDeep};
-        font-weight: 600;
-    }
+  b {
+    color: ${color.primaryDeep};
+    font-weight: 600;
+  }
 
-    svg {
-        flex-shrink: 0;
-        margin-top: 1px;
-        color: ${color.accentText};
-    }
+  svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: ${color.accentText};
+  }
 `;
 
 export const McPending = styled.span`
-    display: inline-block;
-    margin-left: 4px;
-    padding: 1px 6px;
-    border-radius: 4px;
-    border: 1px solid ${color.primaryLine};
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    color: ${color.faint};
+  display: inline-block;
+  margin-left: 4px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid ${color.primaryLine};
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: ${color.faint};
 `;
 
 /* The demo's one editorial line — that this evening belongs to a man who died
    in 2009, and the archive exists anyway. Everything else on the card is
    mechanism; this is the argument. */
 export const McAbout = styled.p`
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin: 0 0 10px;
-    padding: 7px 10px;
-    background: ${color.accentWash};
-    border-radius: 8px;
-    font-family: ${font.body};
-    font-size: 16px;
-    line-height: 1.5;
-    color: ${color.body};
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 10px;
+  padding: 7px 10px;
+  background: ${color.accentWash};
+  border-radius: 8px;
+  font-family: ${font.body};
+  font-size: 16px;
+  line-height: 1.5;
+  color: ${color.body};
 
-    b {
-        color: ${color.accentText};
-        font-weight: 600;
-    }
-    svg {
-        flex-shrink: 0;
-        color: ${color.accentText};
-    }
+  b {
+    color: ${color.accentText};
+    font-weight: 600;
+  }
+  svg {
+    flex-shrink: 0;
+    color: ${color.accentText};
+  }
 `;
 
 /* ── The permission line ──────────────────────────────────────────────────
@@ -715,63 +715,63 @@ export const McAbout = styled.p`
  * not read it out, it is what the app puts on the screen.
  */
 export const SensitiveNote = styled.p<{ $show: boolean }>`
-    align-self: flex-start;
-    max-width: 92%;
-    margin: 2px 0 -2px;
-    padding: 6px 10px;
-    border-radius: 10px;
-    border: 1px dashed ${color.primaryLine};
-    background: ${color.paper};
-    font-family: ${font.body};
+  align-self: flex-start;
+  max-width: 92%;
+  margin: 2px 0 -2px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px dashed ${color.primaryLine};
+  background: ${color.paper};
+  font-family: ${font.body};
+  font-size: 16px;
+  line-height: 1.5;
+  color: ${color.body};
+  opacity: ${({ $show }) => ($show ? 1 : 0)};
+  transform: translateY(${({ $show }) => ($show ? "0" : "4px")});
+  transition:
+    opacity 320ms ease,
+    transform 320ms ease;
+
+  b {
+    display: block;
+    font-weight: 700;
     font-size: 16px;
-    line-height: 1.5;
-    color: ${color.body};
-    opacity: ${({ $show }) => ($show ? 1 : 0)};
-    transform: translateY(${({ $show }) => ($show ? '0' : '4px')});
-    transition:
-        opacity 320ms ease,
-        transform 320ms ease;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: ${color.accentText};
+    margin-bottom: 2px;
+  }
 
-    b {
-        display: block;
-        font-weight: 700;
-        font-size: 16px;
-        letter-spacing: 0.07em;
-        text-transform: uppercase;
-        color: ${color.accentText};
-        margin-bottom: 2px;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        transition: none;
-        transform: none;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    transform: none;
+  }
 `;
 
 /* The terracotta line under the title: when it happened and how old they were.
    lib/memoryCard.js's dateLine(), which every card in the app draws. */
 export const McDate = styled.p`
-    margin: -4px 0 9px;
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 600;
-    color: ${color.accentText};
+  margin: -4px 0 9px;
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 600;
+  color: ${color.accentText};
 `;
 
 /* Said once, under the tabs, while the demo cycles them — otherwise three
    pills read as decoration and nobody presses one. */
 export const McLayersHint = styled.p<{ $show: boolean }>`
-    margin: -4px 0 10px;
-    font-family: ${font.body};
-    font-size: 16px;
-    line-height: 1.5;
-    color: ${color.faint};
-    opacity: ${({ $show }) => ($show ? 1 : 0)};
-    transition: opacity 300ms ease;
+  margin: -4px 0 10px;
+  font-family: ${font.body};
+  font-size: 16px;
+  line-height: 1.5;
+  color: ${color.faint};
+  opacity: ${({ $show }) => ($show ? 1 : 0)};
+  transition: opacity 300ms ease;
 
-    @media (prefers-reduced-motion: reduce) {
-        transition: none;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 /* ── The reel ─────────────────────────────────────────────────────────────
@@ -782,35 +782,35 @@ export const McLayersHint = styled.p<{ $show: boolean }>`
  * leaves an orphan.
  */
 export const ReelGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(20px, 2.6vw, 36px);
-    align-items: start;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 2.6vw, 36px);
+  align-items: start;
 
-    @media (max-width: 1080px) {
-        grid-template-columns: minmax(0, 1fr);
-        justify-items: center;
-        gap: 56px;
-    }
+  @media (max-width: 1080px) {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 56px;
+  }
 `;
 
 export const ReelItem = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    width: 100%;
-    /* The same 330px the phone is capped at, so the heading's left edge and the
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  /* The same 330px the phone is capped at, so the heading's left edge and the
        phone's left edge are one line rather than two. */
-    max-width: 330px;
+  max-width: 330px;
 
-    @media (max-width: 1080px) {
-        margin: 0 auto;
-    }
+  @media (max-width: 1080px) {
+    margin: 0 auto;
+  }
 `;
 
 export const ReelHead = styled.div`
-    width: 100%;
+  width: 100%;
 `;
 
 /*
@@ -824,36 +824,36 @@ export const ReelHead = styled.div`
  * near-empty body happened to have. A wrapper with no styles is still a box.
  */
 export const ReelSlot = styled.div`
-    display: flex;
-    justify-content: center;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;
 
 export const ReelChapter = styled.p`
-    margin: 0 0 5px;
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: ${color.accentText};
+  margin: 0 0 5px;
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: ${color.accentText};
 `;
 
 export const ReelTitle = styled.h3`
-    margin: 0 0 6px;
-    font-family: ${font.display};
-    font-size: 1.35rem;
-    font-weight: 500;
-    line-height: 1.2;
-    color: ${color.primaryDeep};
+  margin: 0 0 6px;
+  font-family: ${font.display};
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: ${color.primaryDeep};
 `;
 
 export const ReelWatch = styled.p`
-    margin: 0;
-    font-family: ${font.body};
-    font-size: 0.875rem;
-    line-height: 1.55;
-    color: ${color.body};
+  margin: 0;
+  font-family: ${font.body};
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: ${color.body};
 `;
 
 /* ── The closed state ─────────────────────────────────────────────────────
@@ -866,105 +866,105 @@ export const ReelWatch = styled.p`
  * makes somebody want it, say whose it is, and say how long it takes.
  */
 export const Cover = styled.div<{ $gone: boolean }>`
-    position: absolute;
-    inset: 0;
-    z-index: 4;
-    display: flex;
-    flex-direction: column;
-    /* Centred, not bottom-aligned: flex-end overflows upward and silently
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  /* Centred, not bottom-aligned: flex-end overflows upward and silently
        crops the quote, which is the one thing on the cover that has to be
        read. The scroll is a floor for very short phones, not a design. */
-    justify-content: center;
-    overflow-y: auto;
-    gap: 12px;
-    padding: 26px 22px 22px;
-    background: ${color.primaryDeep};
-    color: ${color.onDark};
-    opacity: ${({ $gone }) => ($gone ? 0 : 1)};
-    pointer-events: ${({ $gone }) => ($gone ? 'none' : 'auto')};
-    transition: opacity 420ms ease;
+  justify-content: center;
+  overflow-y: auto;
+  gap: 12px;
+  padding: 26px 22px 22px;
+  background: ${color.primaryDeep};
+  color: ${color.onDark};
+  opacity: ${({ $gone }) => ($gone ? 0 : 1)};
+  pointer-events: ${({ $gone }) => ($gone ? "none" : "auto")};
+  transition: opacity 420ms ease;
 
-    @media (prefers-reduced-motion: reduce) {
-        transition: none;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 export const CoverChapter = styled.p`
-    margin: 0;
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: ${color.gold};
+  margin: 0;
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: ${color.gold};
 `;
 
 export const CoverQuote = styled.blockquote`
-    margin: 0;
-    font-family: ${font.display};
-    font-size: 28px;
-    font-style: italic;
-    line-height: 1.32;
-    color: ${color.onDark};
+  margin: 0;
+  font-family: ${font.display};
+  font-size: 28px;
+  font-style: italic;
+  line-height: 1.32;
+  color: ${color.onDark};
 `;
 
 export const CoverAttribution = styled.p`
-    margin: 0;
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 600;
-    color: ${color.gold};
+  margin: 0;
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 600;
+  color: ${color.gold};
 `;
 
 export const CoverLead = styled.p`
-    margin: 0;
-    font-family: ${font.body};
-    font-size: 16px;
-    line-height: 1.55;
-    color: ${color.onDarkMuted};
+  margin: 0;
+  font-family: ${font.body};
+  font-size: 16px;
+  line-height: 1.55;
+  color: ${color.onDarkMuted};
 `;
 
 export const CoverOpen = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    min-height: 48px;
-    margin-top: 4px;
-    padding: 0 16px;
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 600;
-    color: ${color.paperPure};
-    background: ${color.accent};
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: filter 160ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 4px;
+  padding: 0 16px;
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 600;
+  color: ${color.paperPure};
+  background: ${color.accent};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: filter 160ms ease;
 
-    &:hover {
-        filter: brightness(1.08);
-    }
-    @media (prefers-reduced-motion: reduce) {
-        transition: none;
-    }
+  &:hover {
+    filter: brightness(1.08);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 export const CoverLength = styled.p`
-    margin: 0;
-    text-align: center;
-    font-family: ${font.body};
-    font-size: 16px;
-    color: ${color.onDarkMuted};
+  margin: 0;
+  text-align: center;
+  font-family: ${font.body};
+  font-size: 16px;
+  color: ${color.onDarkMuted};
 `;
 
 /* The phone needs to be the positioning context for the cover that covers it. */
 export const PhoneStage = styled.div`
-    position: relative;
-    display: flex;
-    flex: 1;
-    min-height: 0;
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
 `;
 
 /* ── The move being made ──────────────────────────────────────────────────
@@ -974,17 +974,17 @@ export const PhoneStage = styled.div`
  * same AI asking another question.
  */
 export const MethodTag = styled.span`
-    display: inline-block;
-    margin-bottom: 3px;
-    padding: 2px 7px;
-    border-radius: 4px;
-    background: ${color.accentWash};
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: ${color.gold};
+  display: inline-block;
+  margin-bottom: 3px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: ${color.accentWash};
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: ${color.gold};
 `;
 
 /* ── After the card ───────────────────────────────────────────────────────
@@ -994,50 +994,50 @@ export const MethodTag = styled.span`
  * needed them to do — start an archive — was not what it asked for.
  */
 export const DemoClose = styled.div`
-    flex-shrink: 0;
-    padding: 4px 20px 22px;
+  flex-shrink: 0;
+  padding: 4px 20px 22px;
 `;
 
 export const DemoCloseInner = styled.div`
-    padding: 16px;
-    border-radius: 14px;
-    background: ${color.primaryDeep};
-    text-align: center;
+  padding: 16px;
+  border-radius: 14px;
+  background: ${color.primaryDeep};
+  text-align: center;
 `;
 
 export const DemoCloseTitle = styled.p`
-    margin: 0 0 4px;
-    font-family: ${font.display};
-    font-size: 17px;
-    line-height: 1.25;
-    color: ${color.onDark};
+  margin: 0 0 4px;
+  font-family: ${font.display};
+  font-size: 17px;
+  line-height: 1.25;
+  color: ${color.onDark};
 `;
 
 export const DemoCloseSub = styled.p`
-    margin: 0 0 12px;
-    font-family: ${font.body};
-    font-size: 16px;
-    line-height: 1.55;
-    color: ${color.onDarkMuted};
+  margin: 0 0 12px;
+  font-family: ${font.body};
+  font-size: 16px;
+  line-height: 1.55;
+  color: ${color.onDarkMuted};
 `;
 
 export const DemoCloseLink = styled(Link)`
-    display: block;
-    min-height: 42px;
-    line-height: 42px;
-    border-radius: 10px;
-    background: ${color.gold};
-    font-family: ${font.body};
-    font-size: 16px;
-    font-weight: 600;
-    color: ${color.primaryDeep};
-    text-decoration: none;
-    transition: filter 160ms ease;
+  display: block;
+  min-height: 42px;
+  line-height: 42px;
+  border-radius: 10px;
+  background: ${color.gold};
+  font-family: ${font.body};
+  font-size: 16px;
+  font-weight: 600;
+  color: ${color.primaryDeep};
+  text-decoration: none;
+  transition: filter 160ms ease;
 
-    &:hover {
-        filter: brightness(1.06);
-    }
-    @media (prefers-reduced-motion: reduce) {
-        transition: none;
-    }
+  &:hover {
+    filter: brightness(1.06);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;

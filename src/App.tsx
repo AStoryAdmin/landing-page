@@ -39,28 +39,16 @@ const Organizations = lazyRoute(
   "/organizations",
   () => import("./pages/site/Organizations"),
 );
-const Pricing = lazyRoute(
-  "/pricing",
-  () => import("./pages/site/Pricing"),
-);
-const Compare = lazyRoute(
-  "/compare",
-  () => import("./pages/site/Compare"),
-);
+const Pricing = lazyRoute("/pricing", () => import("./pages/site/Pricing"));
+const Compare = lazyRoute("/compare", () => import("./pages/site/Compare"));
 const YourStory = lazyRoute(
   "/your-story",
   () => import("./pages/site/YourStory"),
 );
-const Story = lazyRoute(
-  "/our-story",
-  () => import("./pages/site/OurStory"),
-);
+const Story = lazyRoute("/our-story", () => import("./pages/site/OurStory"));
 const Terms = lazyRoute("/terms", () => import("./components/terms"));
 const Privacy = lazyRoute("/privacy", () => import("./components/privacy"));
-const FAQ = lazyRoute(
-  "/questions",
-  () => import("./pages/site/Questions"),
-);
+const FAQ = lazyRoute("/questions", () => import("./pages/site/Questions"));
 const PublicStory = lazyRoute(
   "/p/:slug",
   () => import("./components/publicStory"),
@@ -69,28 +57,13 @@ const Contribute = lazyRoute(
   "/contribute/:slug",
   () => import("./components/contribute"),
 );
-const Guides = lazyRoute(
-  "/guides",
-  () => import("./pages/site/Guides"),
-);
-const Guide = lazyRoute(
-  "/guides/:slug",
-  () => import("./pages/site/Guide"),
-);
-const Thanks = lazyRoute(
-  "/thanks",
-  () => import("./pages/site/Thanks"),
-);
+const Guides = lazyRoute("/guides", () => import("./pages/site/Guides"));
+const Guide = lazyRoute("/guides/:slug", () => import("./pages/site/Guide"));
+const Thanks = lazyRoute("/thanks", () => import("./pages/site/Thanks"));
 /* The conversion page. Every call to action on the site ends here —
    it used to end in the visitor's email client. See components/start.tsx. */
-const Start = lazyRoute(
-  "/start",
-  () => import("./pages/site/Start"),
-);
-const NotFound = lazyRoute(
-  "*",
-  () => import("./pages/site/NotFound"),
-);
+const Start = lazyRoute("/start", () => import("./pages/site/Start"));
+const NotFound = lazyRoute("*", () => import("./pages/site/NotFound"));
 const PrivateHome = lazyRoute(
   "/__design/a-story-home-vnext",
   () => import("./pages/site/PrivateHome"),

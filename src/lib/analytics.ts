@@ -28,8 +28,8 @@
 
 const DOMAIN = import.meta.env?.VITE_ANALYTICS_DOMAIN as string | undefined;
 const SRC =
-    (import.meta.env?.VITE_ANALYTICS_SRC as string | undefined) ??
-    'https://plausible.io/js/script.js';
+  (import.meta.env?.VITE_ANALYTICS_SRC as string | undefined) ??
+  "https://plausible.io/js/script.js";
 
 /** True once a provider is configured. Nothing below does anything otherwise. */
 export const analyticsEnabled = (): boolean => Boolean(DOMAIN);
@@ -42,14 +42,14 @@ let loaded = false;
  * all, and so the tag never blocks first paint.
  */
 export const initAnalytics = (): void => {
-    if (!DOMAIN || loaded || typeof document === 'undefined') return;
-    loaded = true;
+  if (!DOMAIN || loaded || typeof document === "undefined") return;
+  loaded = true;
 
-    const tag = document.createElement('script');
-    tag.defer = true;
-    tag.setAttribute('data-domain', DOMAIN);
-    tag.src = SRC;
-    document.head.appendChild(tag);
+  const tag = document.createElement("script");
+  tag.defer = true;
+  tag.setAttribute("data-domain", DOMAIN);
+  tag.src = SRC;
+  document.head.appendChild(tag);
 };
 
 type Props = Record<string, string | number | boolean>;
@@ -60,13 +60,13 @@ type Props = Record<string, string | number | boolean>;
  * this adapter does not own an event queue.
  */
 export const track = (event: string, props?: Props): void => {
-    if (!DOMAIN || typeof window === 'undefined') return;
-    const w = window as unknown as {
-        plausible?: (e: string, o?: { props: Props }) => void;
-    };
-    try {
-        w.plausible?.(event, props ? { props } : undefined);
-    } catch {
-        /* Analytics must never be able to break a page. */
-    }
+  if (!DOMAIN || typeof window === "undefined") return;
+  const w = window as unknown as {
+    plausible?: (e: string, o?: { props: Props }) => void;
+  };
+  try {
+    w.plausible?.(event, props ? { props } : undefined);
+  } catch {
+    /* Analytics must never be able to break a page. */
+  }
 };

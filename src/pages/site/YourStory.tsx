@@ -34,7 +34,7 @@ export default function YourStory() {
         actions={
           <>
             <PrimaryLink to="/start">
-              Start your story <ArrowIcon />
+              Join the waitlist <ArrowIcon />
             </PrimaryLink>
             <SecondaryLink to="/how-it-works">See how it works</SecondaryLink>
           </>
@@ -103,7 +103,7 @@ export default function YourStory() {
         checklist={FREE_TIER.includes.slice(0, 4)}
         beginAction={
           <PrimaryLink to="/start">
-            Start your story <ArrowIcon />
+            Join the waitlist <ArrowIcon />
           </PrimaryLink>
         }
       />

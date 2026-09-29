@@ -324,7 +324,7 @@ const Everyday = styled.section`
   }
 
   .moments {
-    padding: clamp(40px, 5vw, 80px) 0 clamp(96px, 11vw, 176px);
+    padding: clamp(40px, 5vw, 80px) 0 calc(clamp(96px, 11vw, 176px) * var(--sy));
   }
   .moments ol {
     list-style: none;

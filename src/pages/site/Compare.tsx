@@ -173,7 +173,6 @@ export default function Compare() {
         <Frame>
           <SplitHead>
             <div>
-              <Eyebrow>Side by side</Eyebrow>
               <Statement id="matrix-title" $size="lg" data-lines>
                 What you get with A&nbsp;Story that a memoir{" "}
                 <em>can’t give you.</em>

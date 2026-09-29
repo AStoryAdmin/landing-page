@@ -29,6 +29,23 @@ export type Moment = {
   body: string;
 };
 
+/** The drawn tick used in the checklist: one stroke weight, like the arrow. */
+function TickIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M4.5 12.5l4.6 4.6L19.5 6.8" />
+    </svg>
+  );
+}
+
 const Opening = styled(Chapter)`
   padding: clamp(72px, 9vw, 150px) 0 clamp(80px, 9vw, 150px);
   overflow: hidden;
@@ -107,55 +124,86 @@ const Moments = styled(Chapter)`
     font-style: italic;
     color: var(--mark);
   }
+  /*
+   * Three moments, not three cards. The row of identical white tiles — photo,
+   * label, heading, paragraph — is the most templated shape on the web, and
+   * it was carrying four of this site's pages. These sit directly on the
+   * ground instead: one taken larger because it matters more, each print in
+   * the house's own keyline frame, with the gold rule between the picture and
+   * what is said about it. No container, no label above the heading.
+   */
   .cards {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(18px, 2.4vw, 36px);
+    grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr);
+    gap: clamp(30px, 3.6vw, 64px) clamp(34px, 4.4vw, 78px);
     margin-top: clamp(40px, 5vw, 72px);
   }
-  .card {
-    display: flex;
-    flex-direction: column;
-    border-radius: 20px;
-    overflow: hidden;
-    background: ${color.paperPure};
-    box-shadow: 0 30px 60px -44px rgba(42, 31, 24, 0.6);
+  .card:first-child {
+    grid-row: span 2;
   }
   .card .img {
-    aspect-ratio: 4 / 3;
+    position: relative;
+    aspect-ratio: 16 / 10;
     overflow: hidden;
+    background: ${color.ivoryDeep};
+    box-shadow: 0 26px 54px -34px rgba(42, 31, 24, 0.7);
+  }
+  .card:first-child .img {
+    aspect-ratio: 4 / 4.3;
+  }
+  .card .img::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 1px rgba(42, 31, 24, 0.16);
+    pointer-events: none;
   }
   .card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .card:hover img {
-    transform: scale(1.04);
+  @media (hover: hover) and (pointer: fine) {
+    .card:hover img {
+      transform: scale(1.035);
+    }
   }
-  .card .txt {
-    padding: clamp(22px, 2.4vw, 30px);
-  }
-  .card small {
-    font: 600 11px/1.3 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: ${color.accentText};
-  }
+  /* The house rule, between the picture and what is said about it. */
   .card h3 {
-    margin-top: 10px;
-    font: 400 ${display.sm} / 1.25 ${font.display};
+    position: relative;
+    margin-top: clamp(22px, 2.2vw, 32px);
+    padding-top: clamp(18px, 1.8vw, 26px);
+    font: 400 ${display.sm} / 1.22 ${font.display};
     color: ${color.primary};
   }
+  .card:first-child h3 {
+    font-size: ${display.md};
+  }
+  .card h3::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 52px;
+    height: 1px;
+    background: color-mix(in srgb, ${color.gold} 78%, transparent);
+  }
   .card p {
-    margin-top: 10px;
-    font: 400 16px/1.6 ${font.body};
+    margin-top: 12px;
+    font: 400 17px/1.62 ${font.body};
     color: ${color.body};
+    max-width: 46ch;
   }
   ${media.md} {
     .cards {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .card:first-child {
+      grid-row: auto;
+    }
+    .card:first-child .img {
+      aspect-ratio: 16 / 10;
     }
   }
 `;
@@ -311,16 +359,16 @@ const Begin = styled(Chapter)`
     font: 400 17px/1.5 ${font.body};
     color: ${color.primary};
   }
-  ul li::before {
-    content: "✓";
-    display: grid;
-    place-items: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: ${color.sand};
+  /*
+   * A drawn tick, in the teal. It was a Unicode "✓" in a sand disc, which on
+   * paper read khaki — a colour this site does not have — and which no icon
+   * set on the page matches.
+   */
+  ul li svg {
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
     color: ${color.teal};
-    font: 700 13px/1 ${font.body};
   }
   ${media.md} {
     .card {
@@ -416,7 +464,6 @@ export function AudiencePage({
                   />
                 </div>
                 <div className="txt">
-                  <small>{m.eyebrow}</small>
                   <h3>{m.title}</h3>
                   <p>{m.body}</p>
                 </div>
@@ -434,7 +481,6 @@ export function AudiencePage({
             </Phone>
           </div>
           <div>
-            <Eyebrow>In the app</Eyebrow>
             <h2 id="inapp-title" data-lines>
               {appTitle}
             </h2>
@@ -452,11 +498,17 @@ export function AudiencePage({
         </Frame>
       </InApp>
 
+      {/*
+        The one line. It rises as a block rather than line by line: splitting
+        it puts an aria-label on the paragraph, which is prohibited on a <p>
+        with no role, and the statement is short enough that a block arrival
+        reads the same.
+      */}
       <Statement ref={r4} aria-label="In one line">
         <span className="orn" aria-hidden="true">
           <i />
         </span>
-        <p data-lines>{statement}</p>
+        <p data-rise>{statement}</p>
       </Statement>
 
       <Begin ref={r5} $ground="ivory" aria-labelledby="begin-title">
@@ -470,7 +522,10 @@ export function AudiencePage({
             </div>
             <ul>
               {checklist.map((c) => (
-                <li key={c}>{c}</li>
+                <li key={c}>
+                  <TickIcon />
+                  <span>{c}</span>
+                </li>
               ))}
             </ul>
           </div>

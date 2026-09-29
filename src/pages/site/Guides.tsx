@@ -31,31 +31,33 @@ const Starters = styled(Chapter)`
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: clamp(14px, 1.6vw, 24px);
   }
+  /*
+   * Four questions, not four boxes. They sat in identical white cards, each
+   * repeating the same closing sentence — the same words four times is
+   * filler, so it is said once under the row instead, and the questions sit
+   * on the ground under the house rule.
+   */
   .card {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 28px;
-    min-height: 260px;
-    padding: clamp(24px, 2.4vw, 34px);
-    background: ${color.paperPure};
-    box-shadow:
-      0 1px 1px rgba(42, 31, 24, 0.06),
-      0 18px 36px -26px rgba(42, 31, 24, 0.45);
+    gap: 14px;
+    padding-top: clamp(20px, 2vw, 28px);
+    border-top: 1px solid color-mix(in srgb, ${color.gold} 72%, transparent);
   }
   .card small {
-    font: 600 12px/1.3 ${font.body};
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: ${color.teal};
+    font: italic 400 15px/1.3 ${font.display};
+    letter-spacing: 0;
+    text-transform: none;
+    color: ${color.bodyMuted};
   }
   .card p {
     font: 400 ${display.sm} / 1.3 ${font.display};
     color: ${color.primary};
   }
-  .card span {
-    font: italic 400 15px/1.45 ${font.display};
-    color: ${color.bodyMuted};
+  .after {
+    margin-top: clamp(26px, 2.6vw, 40px);
+    font: italic 400 17px/1.5 ${font.display};
+    color: ${color.primaryMid};
   }
   ${media.lg} {
     .cards {
@@ -199,14 +201,18 @@ export default function Guides() {
         $ground="ivory"
         aria-label="Questions to begin with"
       >
-        <Frame className="cards">
-          {STARTERS.map(([topic, question]) => (
-            <article className="card" key={topic} data-rise>
-              <small>{topic}</small>
-              <p>“{question}”</p>
-              <span>Then follow the detail they choose to share.</span>
-            </article>
-          ))}
+        <Frame>
+          <div className="cards">
+            {STARTERS.map(([topic, question]) => (
+              <article className="card" key={topic} data-rise>
+                <small>{topic}</small>
+                <p>“{question}”</p>
+              </article>
+            ))}
+          </div>
+          <p className="after" data-rise>
+            Then follow the detail they choose to share.
+          </p>
         </Frame>
       </Starters>
 

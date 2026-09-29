@@ -36,6 +36,9 @@ export const grounds: Record<
     line: string;
     mark: string;
     label: string;
+    /** The keyboard focus ring and its halo, so it stays visible on this ground. */
+    focus: string;
+    focusHalo: string;
   }
 > = {
   ivory: {
@@ -45,6 +48,8 @@ export const grounds: Record<
     line: color.primaryLineStrong,
     mark: color.accent,
     label: color.accentText,
+    focus: color.accentText,
+    focusHalo: color.paperPure,
   },
   paper: {
     bg: color.paperPure,
@@ -53,6 +58,8 @@ export const grounds: Record<
     line: color.primaryLineStrong,
     mark: color.accent,
     label: color.accentText,
+    focus: color.accentText,
+    focusHalo: color.ivory,
   },
   sand: {
     bg: color.ivoryDeep,
@@ -61,6 +68,8 @@ export const grounds: Record<
     line: color.primaryLineStrong,
     mark: color.accentText,
     label: color.accentText,
+    focus: color.accentText,
+    focusHalo: color.paperPure,
   },
   night: {
     bg: color.night,
@@ -69,6 +78,8 @@ export const grounds: Record<
     line: color.nightLine,
     mark: color.gold,
     label: color.gold,
+    focus: color.gold,
+    focusHalo: color.night,
   },
   teal: {
     bg: color.teal,
@@ -77,6 +88,8 @@ export const grounds: Record<
     line: color.onDarkLine,
     mark: color.warmGold,
     label: color.gold,
+    focus: color.gold,
+    focusHalo: color.teal,
   },
 };
 
@@ -99,11 +112,15 @@ export const Chapter = styled.section<{ $ground?: Ground; $tight?: boolean }>`
   --line: ${({ $ground = "ivory" }) => grounds[$ground].line};
   --mark: ${({ $ground = "ivory" }) => grounds[$ground].mark};
   --label: ${({ $ground = "ivory" }) => grounds[$ground].label};
+  --focus: ${({ $ground = "ivory" }) => grounds[$ground].focus};
+  --focus-halo: ${({ $ground = "ivory" }) => grounds[$ground].focusHalo};
   position: relative;
   background: ${({ $ground = "ivory" }) => grounds[$ground].bg};
   color: var(--ink);
   padding: ${({ $tight }) =>
-    $tight ? "clamp(64px, 7vw, 112px) 0" : "clamp(96px, 11vw, 176px) 0"};
+    $tight
+      ? "calc(clamp(64px, 7vw, 112px) * var(--sy)) 0"
+      : "calc(clamp(96px, 11vw, 176px) * var(--sy)) 0"};
 `;
 
 /** The app's cream panel rising over a dark scene: a page being turned, used between acts. */
@@ -121,7 +138,13 @@ export const RisingEdge = styled.div<{ $to?: Ground }>`
 
 /** A single word or two above a headline. No numbers, no sentences. */
 export const Eyebrow = styled.p`
-  display: flex;
+  /*
+   * inline-flex, not flex: in a centred composition the eyebrow then centres
+   * with the headline it belongs to. As a block it stayed pinned to the left
+   * gutter while the title sat in the middle of the page.
+   */
+  display: inline-flex;
+  vertical-align: top;
   align-items: center;
   gap: 14px;
   margin: 0 0 clamp(20px, 2.4vw, 32px);
@@ -199,6 +222,50 @@ export const Note = styled.p`
   color: var(--muted, ${color.bodyMuted});
 `;
 
+/**
+ * The second header family. A page that opens every section with the statement
+ * on the left and its explanation floating in a right-hand column starts to
+ * read as one template repeated, however good each section is; three of those
+ * in a row is the giveaway. StackHead sets the same two parts down the page
+ * instead — the statement, the house hairline, then the explanation at a
+ * reading measure — so the rhythm changes without the vocabulary changing.
+ * Alternate it with SplitHead; never run three of either together.
+ */
+export const StackHead = styled.div<{ $center?: boolean }>`
+  display: grid;
+  justify-items: ${({ $center }) => ($center ? "center" : "start")};
+  text-align: ${({ $center }) => ($center ? "center" : "left")};
+  margin-bottom: clamp(48px, 6vw, 96px);
+  > :first-child {
+    max-width: 20ch;
+  }
+  .lead,
+  > p {
+    position: relative;
+    margin-top: clamp(26px, 2.6vw, 38px);
+    padding-top: clamp(24px, 2.4vw, 34px);
+    max-width: 62ch;
+    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.body};
+    color: var(--muted, ${color.body});
+  }
+  .lead::before,
+  > p::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: ${({ $center }) => ($center ? "50%" : "0")};
+    transform: ${({ $center }) => ($center ? "translateX(-50%)" : "none")};
+    width: 64px;
+    height: 1px;
+    background: color-mix(in srgb, ${color.gold} 75%, transparent);
+  }
+  ${media.md} {
+    > :first-child {
+      max-width: none;
+    }
+  }
+`;
+
 /** Statement left, explanation right, aligned on the last line — the house header for a section. */
 export const SplitHead = styled.div`
   display: grid;
@@ -233,11 +300,17 @@ const actionBase = css`
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
+  /*
+   * A press answers the hand, not the scroll. Arrivals are authored long and
+   * decelerating; a hover or a press has to land inside the moment the reader
+   * made it, so these run on the short curve; the long one here read as lag.
+   */
   transition:
-    background ${motion.slow},
-    color ${motion.slow},
-    border-color ${motion.slow},
-    box-shadow ${motion.slow};
+    background ${motion.base},
+    color ${motion.base},
+    border-color ${motion.base},
+    box-shadow ${motion.base},
+    transform ${motion.fast};
   &:has(svg) {
     padding: 0 8px 0 28px;
   }
@@ -249,15 +322,23 @@ const actionBase = css`
     flex: none;
     border-radius: 50%;
     transition:
-      transform ${motion.reveal},
-      background ${motion.slow},
-      color ${motion.slow};
+      transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+      background ${motion.base},
+      color ${motion.base};
   }
-  &:hover svg {
-    transform: rotate(-45deg);
+  /* Touch has no hover to leave, so the state would stick after a tap. */
+  @media (hover: hover) {
+    &:hover svg {
+      transform: rotate(-45deg);
+    }
+    &:hover {
+      transform: translateY(-1px);
+    }
   }
+  /* A press compresses; it does not slide down. 0.97 is felt, not seen. */
   &:active {
-    transform: translateY(1px);
+    transform: scale(0.97);
+    transition-duration: 60ms;
   }
   &:focus-visible {
     outline: 2px solid ${color.gold};
@@ -327,10 +408,12 @@ const textLink = css`
   text-decoration: none;
   background: linear-gradient(currentColor, currentColor) 0 calc(100% - 10px) /
     100% 1px no-repeat;
-  transition: background-size ${motion.reveal};
-  &:hover {
-    background-size: 0 1px;
-    background-position: 100% calc(100% - 10px);
+  transition: background-size 460ms cubic-bezier(0.16, 1, 0.3, 1);
+  @media (hover: hover) {
+    &:hover {
+      background-size: 0 1px;
+      background-position: 100% calc(100% - 10px);
+    }
   }
   svg {
     width: 16px;
@@ -379,13 +462,33 @@ export const PrintMat = styled.figure<{ $bare?: boolean; $tilt?: number }>`
   margin: 0;
   position: relative;
   min-width: 0;
+  --tilt: ${({ $tilt = 0 }) => $tilt}deg;
   padding: ${({ $bare }) => ($bare ? "0" : "clamp(8px, 0.9vw, 14px)")};
   background: ${({ $bare }) => ($bare ? "transparent" : color.paperPure)};
   box-shadow: ${({ $bare }) =>
     $bare
       ? "none"
       : `0 1px 1px rgba(42, 31, 24, 0.08), 0 14px 28px -14px rgba(42, 31, 24, 0.45), 0 40px 70px -40px rgba(42, 31, 24, 0.5)`};
-  transform: rotate(${({ $tilt = 0 }) => $tilt}deg);
+  transform: rotate(var(--tilt));
+  /*
+   * The one piece of personality on the page, and it comes from the subject
+   * rather than from a catalogue: a print left at an angle on a table
+   * straightens and lifts a little under the hand, and the shadow it casts
+   * opens with it. Only real prints — a bare contemporary photograph is not
+   * an object you pick up — and only where there is a pointer to do it with.
+   */
+  @media (hover: hover) and (pointer: fine) {
+    transition:
+      transform 300ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 300ms ease-out;
+    &:not([data-bare]):hover {
+      transform: rotate(calc(var(--tilt) * 0.3)) translateY(-6px);
+      box-shadow:
+        0 1px 1px rgba(42, 31, 24, 0.08),
+        0 22px 40px -18px rgba(42, 31, 24, 0.5),
+        0 60px 90px -44px rgba(42, 31, 24, 0.55);
+    }
+  }
   .print-window {
     overflow: hidden;
     position: relative;

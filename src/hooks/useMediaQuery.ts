@@ -1,4 +1,4 @@
-import { useCallback, useSyncExternalStore } from 'react';
+import { useCallback, useSyncExternalStore } from "react";
 
 /**
  * Subscribes to a media query.
@@ -11,20 +11,20 @@ import { useCallback, useSyncExternalStore } from 'react';
  * rather than patched in afterwards, which avoids a flash of the wrong layout.
  */
 export const useMediaQuery = (query: string): boolean => {
-    const subscribe = useCallback(
-        (onChange: () => void) => {
-            const mql = window.matchMedia(query);
-            mql.addEventListener('change', onChange);
-            return () => mql.removeEventListener('change', onChange);
-        },
-        [query],
-    );
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      const mql = window.matchMedia(query);
+      mql.addEventListener("change", onChange);
+      return () => mql.removeEventListener("change", onChange);
+    },
+    [query],
+  );
 
-    return useSyncExternalStore(
-        subscribe,
-        () => window.matchMedia(query).matches,
-        () => false, // A server snapshot of false means the query is not yet matched.
-    );
+  return useSyncExternalStore(
+    subscribe,
+    () => window.matchMedia(query).matches,
+    () => false, // A server snapshot of false means the query is not yet matched.
+  );
 };
 
 export default useMediaQuery;

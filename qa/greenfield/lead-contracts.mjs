@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import ts from 'typescript';
 import assert from 'node:assert/strict';
 let source = await fs.readFile('src/lib/leads.ts', 'utf8');
-source = source.replace("import { getSupabase, isSupabaseConfigured } from './supabase';", 'const getSupabase = () => globalThis.leadFixture.client; const isSupabaseConfigured = true;').replace("import { CONTACT } from './contact';", "const CONTACT = { gift: 'mailto:qa@example.invalid?subject=gift', demo: 'mailto:qa@example.invalid?subject=demo', waitlist: 'mailto:qa@example.invalid?subject=waitlist' };");
+source = source.replace(/import \{ getSupabase, isSupabaseConfigured \} from ["']\.\/supabase["'];/, 'const getSupabase = () => globalThis.leadFixture.client; const isSupabaseConfigured = true;').replace(/import \{ CONTACT \} from ["']\.\/contact["'];/, "const CONTACT = { gift: 'mailto:qa@example.invalid?subject=gift', demo: 'mailto:qa@example.invalid?subject=demo', waitlist: 'mailto:qa@example.invalid?subject=waitlist' };");
 const compiled = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 } }).outputText;
 const module = await import('data:text/javascript;base64,' + Buffer.from(compiled).toString('base64'));
 const results = [];

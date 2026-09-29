@@ -27,6 +27,8 @@ import { color, display, font, media } from "../../../styles/theme";
 
 const Scene = styled.section`
   --ink: ${color.ivory};
+  --focus: ${color.gold};
+  --focus-halo: ${color.night};
   --mark: ${color.gold};
   position: relative;
   /* The header floats over the photograph on this route only. */

@@ -50,6 +50,14 @@ export const HeaderShell = styled.header`
   &.is-tucked {
     transform: translateY(-100%);
   }
+  /*
+   * Once the reader has left the top, the bar settles: a little shorter, with
+   * the weight of something resting on the page rather than cut into it. It
+   * gives a short screen back sixteen pixels of page, which is most of a line.
+   */
+  &.is-condensed {
+    box-shadow: 0 18px 40px -34px rgba(42, 31, 24, 0.75);
+  }
 
   .gf-nav-inner {
     width: min(1520px, calc(100% - var(--page-gutter) * 2));
@@ -59,10 +67,18 @@ export const HeaderShell = styled.header`
     justify-content: space-between;
     align-items: center;
     gap: 30px;
+    transition: min-height ${motion.slow};
+  }
+  &.is-condensed .gf-nav-inner {
+    min-height: 68px;
   }
   .gf-nav-inner > span svg {
     height: 40px;
     width: auto;
+    transition: height ${motion.slow};
+  }
+  &.is-condensed .gf-nav-inner > span svg {
+    height: 34px;
   }
   nav,
   .gf-nav-links {
@@ -100,7 +116,22 @@ export const HeaderShell = styled.header`
     background: ${color.gold};
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform ${motion.slow};
+    transition: transform 200ms ease-out;
+  }
+  .gf-nav-links > a:hover::after {
+    transition: transform 380ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  /* The rule draws in under the word the pointer is on, and withdraws. */
+  @media (hover: hover) {
+    .gf-nav-links > a:hover::after {
+      transform: scaleX(1);
+    }
+    .gf-nav-links > a:not([aria-current="page"])::after {
+      transform-origin: right;
+    }
+    .gf-nav-links > a:not([aria-current="page"]):hover::after {
+      transform-origin: left;
+    }
   }
   .gf-nav-links > a:hover,
   .more-toggle:hover {
@@ -146,9 +177,29 @@ export const HeaderShell = styled.header`
     box-shadow:
       0 0 0 1px ${color.primaryLine},
       0 40px 80px -40px color-mix(in srgb, ${color.primary} 70%, transparent);
+    /*
+     * The panel belongs to the word that opened it, so it grows from that
+     * corner rather than from its own middle, and it never arrives from
+     * nothing: 0.97 is a panel already the right shape, just not yet set down.
+     * Leaving is quicker than arriving — the reader has already decided.
+     */
+    transform-origin: top right;
+    transition:
+      opacity 170ms ease-out,
+      transform 210ms cubic-bezier(0.23, 1, 0.32, 1),
+      display 210ms allow-discrete;
+  }
+  @starting-style {
+    .more-panel:not([hidden]) {
+      opacity: 0;
+      transform: scale(0.97) translateY(-6px);
+    }
   }
   .more-panel[hidden] {
     display: none;
+    opacity: 0;
+    transform: scale(0.97) translateY(-6px);
+    transition-duration: 120ms, 120ms, 120ms;
   }
   .more-groups {
     display: grid;
@@ -435,6 +486,8 @@ export const HeaderShell = styled.header`
  */
 export const FooterShell = styled.footer`
   background: ${color.night};
+  --focus: ${color.gold};
+  --focus-halo: ${color.night};
   color: ${color.onDarkMuted};
   padding: clamp(64px, 7vw, 104px) 0 28px;
   border-top: 1px solid color-mix(in srgb, ${color.gold} 35%, transparent);

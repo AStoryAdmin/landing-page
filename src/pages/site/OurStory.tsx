@@ -35,7 +35,8 @@ import {
 import { color, display, font, media } from "../../styles/theme";
 
 const Opening = styled(Chapter)`
-  padding: clamp(88px, 11vw, 180px) 0 clamp(72px, 8vw, 130px);
+  padding: calc(clamp(88px, 11vw, 180px) * var(--sy)) 0
+    calc(clamp(72px, 8vw, 130px) * var(--sy));
   text-align: center;
   h1 {
     margin: 18px auto 0;
@@ -140,7 +141,7 @@ const Letters = styled(Chapter)`
         color-mix(in srgb, ${color.gold} 45%, transparent),
         color-mix(in srgb, ${color.gold} 45%, transparent)
       )
-      0 88% / 100% 0.42em no-repeat;
+      0 76% / 100% 0.64em no-repeat;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
   }
@@ -389,7 +390,6 @@ export default function OurStory() {
 
       <Together ref={together} $ground="ivory" aria-labelledby="together-title">
         <Frame>
-          <Eyebrow>The idea keeps growing</Eyebrow>
           <h2 id="together-title" data-lines>
             A family archive is <em>never finished.</em>
           </h2>
