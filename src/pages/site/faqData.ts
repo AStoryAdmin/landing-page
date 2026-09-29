@@ -10,7 +10,7 @@ export const groups = [
       },
       {
         q: "Can I sign up today?",
-        a: "We are opening to a few families at a time. Reserve a place for $1 and hold 30% off your first year, or become one of 100 founding families for $29 and start before launch. Both are refundable.",
+        a: "We are opening to a few families at a time. Reserve a place for $1 by 30 November and hold 30% off your first year, or become one of 100 founding families for $29 and start before launch. Both are refundable.",
       },
       {
         q: "Does my family member need to install an app?",

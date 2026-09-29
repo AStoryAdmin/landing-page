@@ -66,6 +66,53 @@
 
 export type OfferId = 'reserve' | 'founding';
 
+/**
+ * ─────────────────────────────────────────────────────────────────────────
+ * URGENCY HERE IS ONLY EVER TRUE. Two real limits, and nothing else:
+ *   - the dollar's 30% closes at RESERVE_DEADLINE, a date we honour;
+ *   - there are a hundred founding places, counted live (foundingCount.ts).
+ * No countdown to the second, no "only 3 left" that is not, no deadline
+ * that quietly moves. And it is about the offer, never the family — "the
+ * price goes up on 30 November", never "before it is too late to ask them".
+ * A Story is not a memoir to finish.
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * The end of 30 November in Pacific time — the last place in the US to
+ * reach it — so nobody loses the price because of their time zone. Decided
+ * by the team on 2026-09-29. If it ever moves, it moves later, never
+ * earlier, and the Terms say so.
+ */
+export const RESERVE_DEADLINE = new Date('2026-11-30T23:59:59-08:00');
+export const RESERVE_DEADLINE_LABEL = '30 November';
+
+/** True while the dollar still holds the 30%. */
+export const reserveDiscountOpen = (now = Date.now()): boolean => now <= RESERVE_DEADLINE.getTime();
+
+/**
+ * Whole days until the deadline, or null once it has passed. Only said out
+ * loud in the last week (see deadlineLine); before that the date is enough.
+ */
+export const daysToDeadline = (now = Date.now()): number | null => {
+    const ms = RESERVE_DEADLINE.getTime() - now;
+    return ms < 0 ? null : Math.ceil(ms / 86_400_000);
+};
+
+/** The one sentence of urgency, in its three states. */
+export const deadlineLine = (now = Date.now()): string => {
+    const days = daysToDeadline(now);
+    if (days === null) return `The ${OFFERS.reserve.discount}% offer closed on ${RESERVE_DEADLINE_LABEL}`;
+    if (days <= 1) return `${OFFERS.reserve.discount}% off ends today`;
+    if (days <= 7) return `${OFFERS.reserve.discount}% off ends in ${days} days`;
+    return `${OFFERS.reserve.discount}% off if you reserve by ${RESERVE_DEADLINE_LABEL}`;
+};
+
+/**
+ * The live count of founding places is shown only once at least this many
+ * are taken. "96 of 100 left" is an honest number and a reason to act; "100
+ * of 100 left" is just as honest and reads like nobody wants it.
+ */
+export const SHOW_COUNT_FROM = 10;
+
 /** Places one family can reserve at a dollar each. */
 export const MAX_PER_FAMILY = 2;
 
@@ -147,7 +194,7 @@ export const offerCheckoutUrl = (id: OfferId, account?: { id: string; email: str
 export const INCLUDES: Record<OfferId, string[]> = {
     reserve: [
         'Your place in line, in the order places were reserved',
-        `${OFFERS.reserve.discount}% off your first year at launch`,
+        `${OFFERS.reserve.discount}% off your first year, if you reserve by ${RESERVE_DEADLINE_LABEL}`,
         'The dollar comes off that year too',
         `Up to ${MAX_PER_FAMILY} places per family — one for each parent`,
         'Refunded any time before launch, no questions',
@@ -165,7 +212,7 @@ export const INCLUDES: Record<OfferId, string[]> = {
 export const WHY_PAY = [
     {
         t: 'It holds a price we will not offer again',
-        d: `${OFFERS.founding.discount}% off the first year for founding families, ${OFFERS.reserve.discount}% for everyone who reserves before launch.`,
+        d: `${OFFERS.founding.discount}% off the first year for founding families, ${OFFERS.reserve.discount}% for everyone who reserves by ${RESERVE_DEADLINE_LABEL}.`,
     },
     {
         t: 'None of it is a fee',
@@ -185,8 +232,9 @@ export const WHY_PAY = [
 export const OFFER_TERMS =
     `Before public launch we offer two pre-launch purchases. A Reservation is a one-time payment of ` +
     `${OFFERS.reserve.price} per place, up to ${MAX_PER_FAMILY} places per family, refundable in full on request ` +
-    `at any time before launch; it holds a place in the order reservations are made and ${OFFERS.reserve.discount}% ` +
-    `off the first year of an Individual or Family annual plan. A Founding Family place is a one-time payment of ` +
+    `at any time before launch; it holds a place in the order reservations are made and, for reservations made ` +
+    `by 11:59 p.m. Pacific time on 30 November 2026, ${OFFERS.reserve.discount}% off the first year of an Individual ` +
+    `or Family annual plan. That date will not be brought forward. A Founding Family place is a one-time payment of ` +
     `${OFFERS.founding.price}, limited to ${OFFERS.founding.places}, refundable in full on request at any time before ` +
     `the first call; it gives access before launch, set up with the purchaser, 30 days of access equivalent to the ` +
     `Individual plan beginning on the date of the first call, and ${OFFERS.founding.discount}% off the first year of an ` +

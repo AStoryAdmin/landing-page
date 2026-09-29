@@ -11,7 +11,7 @@
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Seo from "../../../components/ui/Seo";
 import { signOut, useAccount } from "../../../lib/auth";
-import { OFFERS } from "../../../lib/founding";
+import { OFFERS, RESERVE_DEADLINE_LABEL, reserveDiscountOpen } from "../../../lib/founding";
 import { track } from "../../../lib/analytics";
 import AccountShell from "./AccountShell";
 
@@ -56,7 +56,9 @@ export default function Account() {
         intro={
           holds
             ? "Nothing more to do today. We will email you when payment opens, or when it is your turn."
-            : `Reserve for ${OFFERS.reserve.price} to hold ${OFFERS.reserve.discount}% off your first year — or start now as a founding family.`
+            : reserveDiscountOpen()
+              ? `Reserve for ${OFFERS.reserve.price} by ${RESERVE_DEADLINE_LABEL} to hold ${OFFERS.reserve.discount}% off your first year — or start now as a founding family.`
+              : `Reserve for ${OFFERS.reserve.price} to hold your place — or start now as a founding family.`
         }
       >
         <dl className="details">

@@ -23,7 +23,7 @@
  *   payment not live   → account, then claimed free on the account
  *   claimed            → confirmation
  */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
@@ -32,12 +32,17 @@ import {
   FULL_PRICE,
   INCLUDES,
   OFFERS,
+  RESERVE_DEADLINE_LABEL,
+  SHOW_COUNT_FROM,
   WHY_PAY,
+  deadlineLine,
   isOfferLive,
+  reserveDiscountOpen,
   offerCheckoutUrl,
   type OfferId,
 } from "../../lib/founding";
 import { markOffer, useAccount, useReferralCode } from "../../lib/auth";
+import { useFoundingTaken } from "../../lib/foundingCount";
 import { track } from "../../lib/analytics";
 import { SITE } from "../../lib/seo";
 import { ArrowIcon, PageOpening } from "./kit/kit";
@@ -371,6 +376,28 @@ export default function Reserve() {
 
   const claimedAt = (id: OfferId) =>
     (id === "reserve" ? account?.reservedAt : account?.foundingRequestedAt) ?? null;
+
+  /* The two true limits (see the banner in lib/founding.ts). The count only
+     appears once it is real and worth saying; when it reaches the hundred,
+     the founding card closes by itself. */
+  const taken = useFoundingTaken();
+  const foundingOpen =
+    OFFERS.founding.open && !(taken !== null && OFFERS.founding.places !== null && taken >= OFFERS.founding.places);
+  const placesLeft = taken !== null && OFFERS.founding.places !== null ? OFFERS.founding.places - taken : null;
+  const showCount = foundingOpen && placesLeft !== null && taken !== null && taken >= SHOW_COUNT_FROM;
+  const discountOpen = reserveDiscountOpen();
+  const deadline = deadlineLine();
+  const isOpen = (id: OfferId) => (id === "founding" ? foundingOpen : OFFERS[id].open);
+  const live = (id: OfferId) => isOpen(id) && isOfferLive(id);
+
+  /* Back from Stripe and signed in: write the place onto the account, so the
+     account page shows it and the founding count includes it. */
+  const paidId = justPaid;
+  const paidClaimed = paidId ? claimedAt(paidId) : null;
+  useEffect(() => {
+    if (!paidId || !account || paidClaimed) return;
+    void markOffer(OFFERS[paidId].meta, null);
+  }, [paidId, account, paidClaimed]);
   const isIn = Boolean(justPaid || account?.reservedAt || account?.foundingRequestedAt);
 
   /* Sign-up carries the referral code on, so a sister who came through her
@@ -409,7 +436,7 @@ export default function Reserve() {
     const offer = OFFERS[id];
     const copy = COPY[id];
 
-    if (!offer.open) {
+    if (!isOpen(id)) {
       return (
         <p className="small">
           All {offer.places} founding places have been taken. Reserve for {OFFERS.reserve.price} and you are
@@ -438,7 +465,7 @@ export default function Reserve() {
         </>
       );
     }
-    if (isOfferLive(id)) {
+    if (live(id)) {
       return (
         <>
           <PrimaryAnchor
@@ -505,7 +532,7 @@ export default function Reserve() {
 
   /* The opening's first action does what the dollar card's does when it can,
      so the quickest path is one tap; otherwise it goes to the cards. */
-  const openingHref = isOfferLive("reserve") && !justPaid ? offerCheckoutUrl("reserve", account) : "#offers";
+  const openingHref = live("reserve") && !justPaid ? offerCheckoutUrl("reserve", account) : "#offers";
   const { reserve, founding } = OFFERS;
 
   const card = (id: OfferId) => {
@@ -513,17 +540,34 @@ export default function Reserve() {
     const isFounding = id === "founding";
     const body = (
       <>
-        <p className="tag">{isFounding ? (o.open ? `${o.places} places · start now` : `All ${o.places} taken`) : "The easy yes"}</p>
+        <p className="tag">
+          {isFounding
+            ? !foundingOpen
+              ? `All ${o.places} taken`
+              : showCount
+                ? `${placesLeft} of ${o.places} places left · start now`
+                : `${o.places} places · start now`
+            : discountOpen
+              ? `The easy yes · ends ${RESERVE_DEADLINE_LABEL}`
+              : "The easy yes"}
+        </p>
         <h2 className="name">{o.name}</h2>
         <p className="who">
-          {isFounding ? "Start before launch, set up with us by hand." : "Hold your place in line, and the price."}
+          {isFounding
+            ? "Start before launch, set up with us by hand."
+            : discountOpen
+              ? "Hold your place in line, and the price."
+              : "Hold your place in line."}
         </p>
         <p className="price">
           <b>{o.price}</b>
           <span>{isFounding ? "once" : "once, per place"}</span>
         </p>
         <div className="held">
-          <p className="h">{isFounding ? "Half off your first year" : `${o.discount}% off your first year`}</p>
+          <p className="h">
+            {isFounding ? "Half off your first year" : discountOpen ? `${o.discount}% off your first year` : deadline}
+          </p>
+          {(isFounding || discountOpen) && (
           <dl>
             <div>
               <dt>Individual</dt>
@@ -538,16 +582,21 @@ export default function Reserve() {
               </dd>
             </div>
           </dl>
+          )}
           <p className="f">
             {isFounding
               ? `The ${o.price} counts toward it — ${FOUNDING_BALANCE.individual} more for Individual, whenever you choose.`
-              : "And the dollar comes off that."}
+              : discountOpen
+                ? "And the dollar comes off that."
+                : "A dollar still holds your place in line, and still comes off your first year."}
           </p>
         </div>
         <ul className="inc">
-          {INCLUDES[id].map((f) => (
-            <li key={f}>{f}</li>
-          ))}
+          {INCLUDES[id]
+            .filter((f) => isFounding || discountOpen || !f.includes("% off"))
+            .map((f) => (
+              <li key={f}>{f}</li>
+            ))}
         </ul>
         <div className="act">{action(id)}</div>
       </>
@@ -573,7 +622,7 @@ export default function Reserve() {
 
       <PageOpening
         ground="night"
-        eyebrow="Before launch · two ways in"
+        eyebrow={discountOpen ? `Before launch · ${deadline}` : "Before launch · two ways in"}
         labelledBy="reserve-title"
         title={
           <>
@@ -687,8 +736,11 @@ export default function Reserve() {
             There is a question in your family <em>nobody has asked yet.</em>
           </Statement>
           <p className="lead">
-            A dollar puts you in line to have it asked. Twenty-nine has it asked before launch. Either way, if
-            the timing turns out wrong, the money comes back.
+            A dollar puts you in line to have it asked
+            {discountOpen ? `, at ${OFFERS.reserve.discount}% off if you reserve by ${RESERVE_DEADLINE_LABEL}` : ""}.
+            Twenty-nine has it asked before launch
+            {showCount ? ` — and ${placesLeft} of the ${OFFERS.founding.places} founding places are left` : ""}.
+            Either way, if the timing turns out wrong, the money comes back.
           </p>
           <Actions className="acts">
             <PrimaryAnchor href={openingHref}>
