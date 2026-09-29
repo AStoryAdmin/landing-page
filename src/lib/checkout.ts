@@ -1,3 +1,4 @@
+
 /**
  * Where the money is taken.
  *
@@ -102,8 +103,7 @@ const LINKS: Record<string, string> = {
 export const isCheckoutLive = (id: string): boolean => Boolean(LINKS[id]);
 
 /** True once anything at all can be bought — used to switch button wording. */
-export const anyCheckoutLive = (): boolean =>
-    Object.values(LINKS).some(Boolean);
+export const anyCheckoutLive = (): boolean => Object.values(LINKS).some(Boolean);
 
 /**
  * Where a buy button points.
@@ -117,7 +117,7 @@ export const anyCheckoutLive = (): boolean =>
  * decided to buy. See src/lib/leads.ts for what replaced it.
  */
 export const checkoutFor = (id: string): string =>
-    LINKS[id] || `/start?plan=${encodeURIComponent(id)}`;
+    LINKS[id] || `/reserve?plan=${encodeURIComponent(id)}`;
 
 /**
  * Where "Book a demo" goes — the same two-field form, asking for the same
@@ -136,29 +136,31 @@ export const DEMO_HREF = '/start?intent=demo';
  * NOTHING IS ON SALE. Every row in LINKS above is empty, the webhook cannot
  * yet grant a plan to a buyer with no account (see "The gap"), and so a
  * button reading "Gift a story" or "Choose Individual" promises a
- * transaction that cannot happen. Until a link goes in, the site asks for a
- * place on the waitlist instead, which is a thing we can actually honour.
+ * transaction that cannot happen. Until a link goes in, the site asks people
+ * to reserve a place for $1, or take a $29 founding place and start now
+ * (lib/founding.ts).
  * ─────────────────────────────────────────────────────────────────────────
  *
+ * It said "Join the waitlist" until 2026-09-29. The names below still say
+ * WAITLIST because thirty call sites import them; what they point at is the
+ * founding offer.
+ *
  * One constant rather than the wording repeated at thirty call sites, so
- * switching the site from "waitlist" to "buy" on the day checkout works is a
- * change to this file and nothing else.
+ * switching the site to "buy" on the day checkout works is a change to this
+ * file and nothing else.
  */
-export const WAITLIST_LABEL = 'Join the waitlist';
+export const WAITLIST_LABEL = 'Reserve for $1';
 
-/** Where that button goes. Same form, whichever plan they were looking at. */
-export const WAITLIST_HREF = '/start';
+/** Where that button goes, whichever plan they were looking at. */
+export const WAITLIST_HREF = '/reserve';
 
 /**
  * What the button should say. Before checkout exists, promising "Buy" and
  * opening an email client is a small lie that costs more trust than the click
  * is worth.
  */
-export const buyLabel = (
-    id: string,
-    live: string,
-    fallback: string = WAITLIST_LABEL,
-): string => (isCheckoutLive(id) ? live : fallback);
+export const buyLabel = (id: string, live: string, fallback: string = WAITLIST_LABEL): string =>
+    isCheckoutLive(id) ? live : fallback;
 
 /**
  * The three things a buyer needs to know at the moment they are deciding, in
@@ -168,8 +170,8 @@ export const buyLabel = (
  */
 export const AT_CHECKOUT = [
     {
-        t: 'Three days of everything, free',
-        d: 'Every account opens with full access and guided calls, no card. It falls back to Free afterwards rather than locking you out, so nothing is lost by taking your time.',
+        t: 'Free until you choose otherwise',
+        d: 'Every account starts on Free, with no card and no clock. A plan is for when you want A Story doing the calling — nothing is lost by taking your time.',
     },
     {
         t: 'Your recordings stay yours',

@@ -235,8 +235,8 @@ export default function Compare() {
               A Story keeps all of them attached to the same memory.
             </p>
             <Actions data-rise>
-              <PrimaryLink to="/start">
-                Join the waitlist <ArrowIcon />
+              <PrimaryLink to="/reserve">
+                Reserve for $1 <ArrowIcon />
               </PrimaryLink>
               <SecondaryLink to="/how-it-works">See how it works</SecondaryLink>
             </Actions>

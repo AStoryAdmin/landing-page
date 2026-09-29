@@ -1,4 +1,4 @@
-import { PLANS, PRICE, TRIAL } from "../../lib/pricing";
+import { PLANS, PRICE, START } from "../../lib/pricing";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
 export const groups = [
   {
@@ -10,7 +10,7 @@ export const groups = [
       },
       {
         q: "Can I sign up today?",
-        a: "We are opening to a few families at a time. Join the waitlist and we will call you to talk about getting started. No payment is collected on the waitlist.",
+        a: "We are opening to a few families at a time. Reserve a place for $1 and hold 30% off your first year, or become one of 100 founding families for $29 and start before launch. Both are refundable.",
       },
       {
         q: "Does my family member need to install an app?",
@@ -57,7 +57,7 @@ export const groups = [
       },
       {
         q: "Is there a free trial?",
-        a: `${TRIAL.headline}. ${TRIAL.detail} The website currently accepts waitlist requests; it cannot start a trial.`,
+        a: `No — there is something better: a Free tier that never runs out. ${START.detail}`,
       },
       {
         q: "How much is the printed book?",
@@ -65,7 +65,7 @@ export const groups = [
       },
       {
         q: "How does giving A Story work?",
-        a: "You help set up an archive for your relative and choose a good time for the first call. There is no gift card, code, or redemption process. Express is the one-time plan; the annual and monthly plans renew. Join the waitlist to discuss the option that fits your family.",
+        a: "You help set up an archive for your relative and choose a good time for the first call. There is no gift card, code, or redemption process. Express is the one-time plan; the annual and monthly plans renew. Reserve for $1 to hold your place, or start now as a founding family.",
       },
     ],
   },

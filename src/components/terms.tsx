@@ -9,6 +9,7 @@ import {
   organizationSchema,
   websiteSchema,
 } from "../lib/seo";
+import { OFFER_TERMS } from "../lib/founding";
 import {
   CardView,
   Label,
@@ -186,10 +187,11 @@ const sections: SectionData[] = [
           lift the limit on AI-guided conversations. Individual and Family are
           annual subscriptions that renew until canceled; Express is a one-time
           purchase covering roughly thirty days and does not renew. Every
-          account begins with three days of full access at no charge and without
-          a card. Printed books are purchased separately unless bundled at
-          checkout.
+          account begins on the Free tier, at no charge and without a card;
+          there is no free trial of the paid plans. Printed books are purchased
+          separately unless bundled at checkout.
         </Paragraph>
+        <Paragraph>{OFFER_TERMS}</Paragraph>
         <Paragraph>
           <Bold>What continues if you cancel or stop paying.</Bold> Your account
           returns to the Free tier and your archive does not expire. You keep
@@ -446,7 +448,7 @@ const Terms = () => {
           <HeroTitle>Terms of Service</HeroTitle>
           <HeroSub>The agreement between you and A Story.</HeroSub>
           <LegalMeta>
-            Last updated: June 16, 2026 &middot; A Story Technologies, Inc.
+            Last updated: September 29, 2026 &middot; A Story Technologies, Inc.
           </LegalMeta>
         </CardView>
       </HeroSection>

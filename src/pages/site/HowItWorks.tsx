@@ -1025,8 +1025,8 @@ export default function HowItWorks() {
         lead="Set it up once. After that their phone rings at the hour they chose, and a patient voice asks about their life — then follows whatever they actually say."
         actions={
           <>
-            <PrimaryLink to="/start">
-              Join the waitlist <ArrowIcon />
+            <PrimaryLink to="/reserve">
+              Reserve for $1 <ArrowIcon />
             </PrimaryLink>
             <SecondaryLink to="/how-it-works#calls">Watch a call</SecondaryLink>
           </>

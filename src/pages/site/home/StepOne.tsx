@@ -11,10 +11,10 @@
  * (public/app): Home with the question of the day, the call arriving, and
  * The Archive. The phones are large and run off the card ("zoomed in"), and
  * the tall screens scroll slowly inside them. Roman numerals in the serif carry the bookish thread.
- * Prices and the trial come from `pricing.ts`.
+ * Prices and the Free tier come from `pricing.ts`.
  */
 import styled from "styled-components";
-import { PLANS, TRIAL } from "../../../lib/pricing";
+import { PLANS } from "../../../lib/pricing";
 import { ArrowIcon } from "../kit/kit";
 import { AppShot, Phone } from "../app/Phone";
 import { IncomingScreen } from "../app/screens";
@@ -208,13 +208,13 @@ export default function StepOne() {
         </ol>
         <div className="terms">
           <p>
-            {TRIAL.headline}, then free for as long as you like. Guided calls
+            Free for as long as you like, no card. Guided calls
             from <em>{individual.price}</em>{" "}
             {individual.period.replace("per ", "a ")}.
           </p>
           <Actions>
-            <PrimaryLink to="/start">
-              Join the waitlist <ArrowIcon />
+            <PrimaryLink to="/reserve">
+              Reserve for $1 <ArrowIcon />
             </PrimaryLink>
             <SecondaryLink to="/pricing">Compare plans</SecondaryLink>
           </Actions>

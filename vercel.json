@@ -41,8 +41,8 @@
       "destination": "/questions/index.html"
     },
     {
-      "source": "/start",
-      "destination": "/start/index.html"
+      "source": "/reserve",
+      "destination": "/reserve/index.html"
     },
     {
       "source": "/guides",
