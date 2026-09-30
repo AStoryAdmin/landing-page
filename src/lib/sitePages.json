@@ -99,13 +99,13 @@
     ]
   },
   {
-    "path": "/reserve",
-    "name": "Reserve",
+    "path": "/start",
+    "name": "Join the waitlist",
     "og": "start",
     "photo": "05",
     "phrase": [
-      "Hold your place",
-      "for a dollar."
+      "Start with",
+      "a conversation."
     ]
   },
   {

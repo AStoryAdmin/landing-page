@@ -16,6 +16,7 @@
  */
 import type { ReactNode } from "react";
 import styled from "styled-components";
+import { usePauseOffscreen } from "../../../hooks/usePauseOffscreen";
 import { mission } from "../../../lib/mission";
 import { color, font } from "../../../styles/theme";
 
@@ -132,8 +133,10 @@ export function Phone({
   /** The screen holds real controls (a Play button): a labelled region, not a picture. */
   interactive?: boolean;
 }) {
+  const live = usePauseOffscreen<HTMLDivElement>();
   return (
     <Device
+      ref={live}
       $w={width}
       className={className}
       role={interactive ? "group" : label ? "img" : undefined}

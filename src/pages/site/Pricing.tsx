@@ -24,7 +24,7 @@ import {
   OTHER_PLANS,
   PLANS,
   PRICE,
-  START,
+  TRIAL,
 } from "../../lib/pricing";
 import { anyCheckoutLive, buyLabel, checkoutFor } from "../../lib/checkout";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
@@ -634,7 +634,7 @@ export default function Pricing() {
             Everyone starts free. Only the <em>calls</em> are paid for.
           </>
         }
-        lead={`${START.headline} — ${START.detail} Inviting family, writing and reading are never charged by the person.`}
+        lead={`${TRIAL.headline} — ${TRIAL.detail} Inviting family, writing and reading are never charged by the person.`}
       />
 
       <Plans ref={plans} $ground="ivory" aria-label="Plans">
@@ -806,7 +806,7 @@ export default function Pricing() {
               </table>
             </div>
             <p className="note">
-              {START.headline}. {START.detail}
+              {TRIAL.headline}. {TRIAL.detail}
             </p>
           </Compare>
 
@@ -823,7 +823,7 @@ export default function Pricing() {
               <small>
                 {anyCheckoutLive()
                   ? "Continue with your selected plan."
-                  : "Before launch: reserve for $1 by 30 November and hold 30% off this plan's first year, or start now as a founding family."}
+                  : "The website is taking waitlist requests. No payment is taken today — we’ll speak with you first."}
               </small>
             </div>
             <PrimaryAnchor
@@ -831,7 +831,7 @@ export default function Pricing() {
               aria-label={buyLabel(
                 selectedId,
                 `Choose ${name}`,
-                `Reserve for $1 — ${name}`,
+                `Join the waitlist for ${name}`,
               )}
             >
               {buyLabel(selectedId, `Choose ${name}`)} <ArrowIcon />
@@ -863,9 +863,10 @@ export default function Pricing() {
 
           <div className="questions">
             <details>
-              <summary>Is there a free trial?</summary>
+              <summary>{TRIAL.headline}</summary>
               <p>
-                No — there is a Free tier that never runs out. {START.detail}
+                {TRIAL.detail} Joining the website waitlist does not start a
+                trial.
               </p>
             </details>
             <details>

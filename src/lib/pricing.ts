@@ -12,8 +12,8 @@
  * An earlier version of this file invented a different model entirely —
  * one-time "capture windows" with a "pay to capture, never to keep" promise
  * and no free tier. It read well and none of it was true: the app sells
- * annual plans metered in AI call minutes and has a free tier. A marketing
- * site that argues for pricing the product does not have
+ * annual plans metered in AI call minutes, has a free tier, and has a 3-day
+ * trial. A marketing site that argues for pricing the product does not have
  * is worse than one with no pricing page at all, because the first thing a
  * buyer discovers after paying attention is that we were making it up.
  *
@@ -29,11 +29,8 @@
  *    a book you can still order. What it does not include is the AI calling
  *    you — which is exactly the thing that costs money to run.
  *
- * 3. Everyone starts on Free, with no card and no clock. There is no trial:
- *    the app had a 3-day one until 2026-09-28, removed because it counted
- *    from account creation and was spent before anyone on the waitlist could
- *    install the app. Free never runs out, so nobody loses an archive by not
- *    deciding.
+ * 3. Everyone starts with three days of everything, no card. The fallback is
+ *    Free, not a lockout, so nobody loses an archive by not deciding.
  *
  * 4. The book is unbundled by default but offered as a bundle, because some
  *    people want a year of recording and to decide about the object later.
@@ -112,7 +109,8 @@ export const PLANS: Plan[] = [
         period: 'per year',
         monthlyEquivalent: '≈ $19.08/mo',
         meter: '200 minutes a month, shared',
-        meterNote: 'Pooled, so a quiet storyteller never wastes anyone else’s minutes',
+        meterNote:
+            'Pooled, so a quiet storyteller never wastes anyone else’s minutes',
         blurb:
             'Both parents, or a grandmother and her sister. The same afternoon told by more ' +
             'than one person is the whole point of this, and it costs less than buying the ' +
@@ -171,9 +169,9 @@ export const OTHER_PLANS = [
 ];
 
 /** Everyone starts here, including people who never pay. */
-export const START = {
-    headline: 'Every account starts on Free',
-    detail: 'No card and no clock. Three guided questions a day and unlimited writing for as long as you like — a plan adds A Story doing the calling.',
+export const TRIAL = {
+    headline: 'Start with 3 days of full access',
+    detail: 'Guided calls included, no card required. It falls back to Free afterwards — never a lockout.',
 } as const;
 
 /** What the Free tier actually is, stated plainly rather than as a tease. */
@@ -191,7 +189,8 @@ export const FREE_TIER = {
         'Five photo uploads a week',
         'Order a printed book any time',
     ],
-    excludes: 'Guided AI calls, unlimited photos, and the full 504-question bank open by chapter',
+    excludes:
+        'Guided AI calls, unlimited photos, and the full 504-question bank open by chapter',
 } as const;
 
 /** The headline figure, for pages that quote a single number. */

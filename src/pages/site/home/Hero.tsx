@@ -216,8 +216,8 @@ export default function Hero() {
               archive the whole family can add to.
             </p>
             <div className="hero-actions">
-              <PrimaryLink to="/reserve">
-                Reserve for $1 <ArrowIcon />
+              <PrimaryLink to="/start">
+                Join the waitlist <ArrowIcon />
               </PrimaryLink>
               <TextLink to="/#listen">Hear a conversation</TextLink>
             </div>

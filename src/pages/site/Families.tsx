@@ -422,8 +422,8 @@ export default function Families() {
         }
         lead="Nobody loses the wedding photos. They lose everything around them — the story he tells every Thanksgiving, and why everyone in that photograph is laughing."
         actions={
-          <PrimaryLink to="/reserve">
-            Reserve for $1 <ArrowIcon />
+          <PrimaryLink to="/start">
+            Join the waitlist <ArrowIcon />
           </PrimaryLink>
         }
         media={

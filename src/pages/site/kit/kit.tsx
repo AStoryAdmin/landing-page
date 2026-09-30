@@ -354,8 +354,8 @@ export function Invitation({
           </h2>
           <p>{line}</p>
           <Actions>
-            <PrimaryLink to="/reserve">
-              Reserve for $1 <ArrowIcon />
+            <PrimaryLink to="/start">
+              Join the waitlist <ArrowIcon />
             </PrimaryLink>
           </Actions>
         </div>

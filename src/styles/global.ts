@@ -52,6 +52,14 @@ const GlobalStyle = createGlobalStyle`
 
   ${media.nav} { html { --nav-total: 68px; } }
 
+  /*
+   * Loops inside something scrolled out of view stop until it comes back.
+   * Set by hooks/usePauseOffscreen; see the note there for why.
+   */
+  [data-paused], [data-paused] * {
+    animation-play-state: paused !important;
+  }
+
   ${media.motion} {
     html { scroll-behavior: auto; }
     *, *::before, *::after {

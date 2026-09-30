@@ -119,7 +119,7 @@ export default function Footer() {
           <div>
             <h2>Contact</h2>
             <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-            <Link to="/reserve">Reserve for $1</Link>
+            <Link to="/start">Join the waitlist</Link>
           </div>
         </div>
         <div className="bottom">

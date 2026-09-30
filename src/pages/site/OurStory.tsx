@@ -399,8 +399,8 @@ export default function OurStory() {
             ways people remember the same day.
           </p>
           <div className="actions" data-rise>
-            <PrimaryLink to="/reserve">
-              Reserve for $1 <ArrowIcon />
+            <PrimaryLink to="/start">
+              Join the waitlist <ArrowIcon />
             </PrimaryLink>
             <SecondaryLink to="/how-it-works">See how it works</SecondaryLink>
           </div>

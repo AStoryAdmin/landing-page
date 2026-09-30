@@ -12,7 +12,7 @@
  * the done state); this page only restyles it from the outside. Plan and
  * intent are still read from the URL. Complete without motion.
  */
-import { Link, Navigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import LeadForm from "../../components/ui/LeadForm";
@@ -280,17 +280,25 @@ const Page = styled.section`
       background ${motion.base},
       transform ${motion.fast};
   }
+  /*
+   * The coin, with the site's own arrow in it. It was a Unicode "→", which
+   * every platform draws differently and which matches no other button here;
+   * this is the same path as ArrowIcon, drawn into the gold disc. The ink is
+   * interpolated from the palette rather than written out as a hex.
+   */
   .card button[type="submit"]::after {
-    content: "→";
-    display: grid;
-    place-items: center;
+    content: "";
+    display: block;
     width: 42px;
     height: 42px;
+    flex: none;
     border-radius: 50%;
-    background: ${color.gold};
-    color: ${color.primary};
-    font: 400 18px/1 ${font.body};
-    letter-spacing: 0;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M3 10h13m-5-5 5 5-5 5' stroke='${encodeURIComponent(
+          color.primary,
+        )}' stroke-width='1.6'/%3E%3C/svg%3E")
+        center / 20px 20px no-repeat,
+      ${color.gold};
     transition: transform ${motion.reveal};
   }
   .card button[type="submit"]:hover {
@@ -353,14 +361,6 @@ export default function Start() {
   const source = planLabel ? `start:plan:${plan}` : "start:hero";
   const ref = useReveals<HTMLElement>();
   const demo = intent === "demo";
-
-  /* The waitlist became /reserve on 2026-09-29 — $1 to hold a place, or $29
-     to start now. Old links here (ads, emails, bookmarks, the plan buttons'
-     fallback) land there with their plan; only "request a demonstration"
-     still uses this page. */
-  if (!demo) {
-    return <Navigate to={`/reserve${plan ? `?plan=${encodeURIComponent(plan)}` : ""}`} replace />;
-  }
 
   return (
     <Page ref={ref} aria-labelledby="start-title">

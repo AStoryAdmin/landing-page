@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import { Wordmark } from "./shared";
 import { ArrowIcon } from "./kit/kit";
 import { HeaderShell } from "./chrome.styles";
-import { hasStoredSession } from "../../lib/authSession";
 const primary = [
   ["How it works", "/how-it-works"],
   ["For families", "/for-families"],
@@ -170,12 +169,6 @@ export default function Header() {
     setOpen(false);
     setMore(false);
   };
-  /* Re-read on every render, which includes every navigation, so signing in
-     or out flips it on the next page. Reads storage directly rather than
-     loading supabase-js into the first bundle — see lib/authSession.ts. */
-  const account = hasStoredSession()
-    ? (["Account", "/account"] as const)
-    : (["Sign in", "/sign-in"] as const);
   return (
     <HeaderShell
       ref={header}
@@ -203,7 +196,7 @@ export default function Header() {
         </button>
         <nav id="site-navigation" aria-label="Main navigation">
           <div className="gf-nav-links">
-            {[...primary, account].map(([label, to]) => (
+            {primary.map(([label, to]) => (
               <Link
                 key={to}
                 to={to}
@@ -267,8 +260,8 @@ export default function Header() {
               </div>
             </div>
           </div>
-          <Link className="gf-button" to="/reserve" onClick={close}>
-            Reserve for $1 <ArrowIcon />
+          <Link className="gf-button" to="/start" onClick={close}>
+            Join the waitlist <ArrowIcon />
           </Link>
           <div className="gf-mobile-more">
             {groups.map((g) => (

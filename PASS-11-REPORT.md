@@ -420,3 +420,44 @@ pass went page by page.
 Verified: `tsc -b`, `eslint src`, `build:static` (22 routes), axe-core WCAG 2.1
 AA across 14 routes at 1536×730, 2560×1380 and 390×844 — no violations.
 Guarded files untouched (2026-09-20).
+
+## Pass 13d — final runthrough
+
+The routes the earlier passes never opened, plus a mechanical sweep of the
+whole codebase for the things the eye misses.
+
+**Routes reviewed this pass:** the seven guide articles, /privacy, /terms and
+the 404. All four shapes hold up — the guide article carries a contents rail
+beside the text, and the legal pages are appropriately restrained. No changes
+were needed there, which is the right outcome for a legal page.
+
+**Mechanical sweep** (grep across `src/`, not by eye):
+
+| Check | Result |
+|---|---|
+| `transition: all` | none |
+| `scale(0)` entries | none |
+| `ease-in` on a transition | none |
+| Unicode glyphs standing in for icons | 2 found, 1 fixed |
+| Raw hex outside the palette | only app-mockup tokens and the intro's documented `ROOM` |
+| Type below the 14px floor | all tracked uppercase labels, contrast clean |
+| Perpetual animations | 6 found, none of them stopping off screen |
+
+- **The waitlist submit** drew its arrow as a Unicode "→" while every other
+  button on the site uses the drawn `ArrowIcon`. It is now the same path,
+  painted into the gold coin, with the ink interpolated from the palette
+  rather than written as a hex. (The remaining glyph is inside the phone
+  mockup, where it is reproducing the app's own UI.)
+- **Loops now stop when nobody is looking.** The app mockups ran six
+  perpetual animations between them — typing dots, the live mark, the scan
+  line and the slow drift over the two large screenshots — and browsers do
+  not reliably throttle those off screen, so on a 12,000px page they kept
+  compositing for the whole visit. `hooks/usePauseOffscreen` marks a phone
+  `data-paused` when it leaves the viewport and one rule in `global.ts`
+  pauses everything beneath it. Pausing rather than cancelling means a loop
+  resumes where it left off. Verified: visible phones run, off-screen phones
+  are paused.
+
+**Verified across all 22 routes:** `tsc -b`, `eslint src`, `build:static`,
+axe-core WCAG 2.1 AA at 1536×730, 2560×1380 and 390×844 — no violations; no
+console errors or failed requests on any route. Guarded files untouched.
