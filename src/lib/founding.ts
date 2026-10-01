@@ -162,7 +162,8 @@ export const OFFERS: Record<OfferId, Offer> = {
         individual: money(off(INDIVIDUAL, RESERVE_DISCOUNT)),
         family: money(off(FAMILY, RESERVE_DISCOUNT)),
         places: null,
-        link: '',
+        /* Live since 2026-10-01. Stripe: "A Story — Reservation", $1. */
+        link: 'https://buy.stripe.com/dRmeVfetL8169Ek31Pe7m00',
         open: true,
         meta: 'reserved_at',
     },
@@ -174,7 +175,8 @@ export const OFFERS: Record<OfferId, Offer> = {
         individual: money(off(INDIVIDUAL, FOUNDING_DISCOUNT)),
         family: money(off(FAMILY, FOUNDING_DISCOUNT)),
         places: 100,
-        link: '',
+        /* Live since 2026-10-01. Stripe: "A Story — Founding Family", $29. */
+        link: 'https://buy.stripe.com/fZu4gB3P72GM9EkgSFe7m01',
         open: true,
         meta: 'founding_requested_at',
     },
