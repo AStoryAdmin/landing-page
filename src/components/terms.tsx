@@ -188,8 +188,10 @@ const sections: SectionData[] = [
           annual subscriptions that renew until canceled; Express is a one-time
           purchase covering roughly thirty days and does not renew. Every
           account begins on the Free tier, at no charge and without a card;
-          there is no free trial of the paid plans. Printed books are purchased
-          separately unless bundled at checkout.
+          there is no free trial of the paid plans. The Individual, Family and
+          Express plans include a printed book as described on the Pricing page,
+          with shipping charged separately; on other plans a printed book is
+          purchased separately.
         </Paragraph>
         <Paragraph>{OFFER_TERMS}</Paragraph>
         <Paragraph>

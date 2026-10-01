@@ -35,9 +35,19 @@
  *    install the app. Free never runs out, so nobody loses an archive by not
  *    deciding.
  *
- * 4. The book is unbundled by default but offered as a bundle, because some
- *    people want a year of recording and to decide about the object later.
- *    Express includes the first 40 pages, which is the whole book for most.
+ * 4. The printed book comes with the membership: one hardcover a year on
+ *    Individual, one a year for each storyteller on Family, one with each
+ *    Express pass, with no page limit — a member pays only the shipping. On
+ *    Free and Monthly it is a flat price, shipped. Extra copies are not sold
+ *    yet. This mirrors the app's supabase/functions/_shared/bookAllowance.js
+ *    and create-book-checkout, decided 2026-09-28.
+ *
+ *    Until 2026-10-01 this file sold something else: "with the book" bundles
+ *    at $154 and $319, a 40-page cap, and $0.75 a page after it. The app
+ *    never charged any of that — the per-page line was copy only — and the
+ *    bundles would have put a physical book inside an in-app purchase, which
+ *    the App Store does not allow (guideline 3.1.3(e)). BOOK below is the
+ *    one place the site states it now.
  *
  * 5. Nobody is ever charged per family member. Storytellers are metered
  *    because call minutes scale with them. Everyone else — reading,
@@ -69,8 +79,8 @@ export type Plan = {
     blurb: string;
     /** What the plan includes, beyond what every plan includes. */
     features: string[];
-    /** The bundled-book option, where there is one. */
-    book?: { price: string; note: string; saving?: string };
+    /** The printed book this plan includes — see BOOK. */
+    book: string;
     /** The default choice, visually. */
     featured?: boolean;
     /** Sits apart from the annual plans — never comparable dollar for dollar. */
@@ -96,11 +106,7 @@ export const PLANS: Plan[] = [
             'Unlimited photo uploads',
             'Invite the whole family to read and contribute, free',
         ],
-        book: {
-            price: '$154',
-            note: 'Adds the Keepsake book — first 40 color pages included',
-            saving: 'Saves $34 against adding the book later',
-        },
+        book: 'A printed hardcover every year, included',
         featured: true,
     },
     {
@@ -122,11 +128,7 @@ export const PLANS: Plan[] = [
             'Unlimited photo uploads',
             'One shared archive — invite anyone to read and contribute, free',
         ],
-        book: {
-            price: '$319',
-            note: 'Adds a Keepsake book for all three — first 40 color pages each',
-            saving: 'Saves $117 against adding the books later',
-        },
+        book: 'A printed hardcover for each storyteller, every year',
     },
     {
         id: 'express',
@@ -146,10 +148,7 @@ export const PLANS: Plan[] = [
             'Unlimited photo uploads',
             'One storyteller',
         ],
-        book: {
-            price: 'included',
-            note: 'The first 40 color pages of the Keepsake book are included — a $69 value',
-        },
+        book: 'A printed hardcover with the pass',
         utility: true,
     },
 ];
@@ -160,7 +159,7 @@ export const OTHER_PLANS = [
         id: 'monthly' as const,
         label: 'Monthly',
         price: '$19.99/mo',
-        sub: 'No yearly commitment · book sold separately',
+        sub: 'No yearly commitment · the book is $69',
     },
     {
         id: 'free' as const,
@@ -189,7 +188,7 @@ export const FREE_TIER = {
         'Unlimited writing in your own words',
         'Unlimited family members reading and contributing',
         'Five photo uploads a week',
-        'Order a printed book any time',
+        'A printed book for $69, whenever you want one',
     ],
     excludes: 'Guided AI calls, unlimited photos, and the full 504-question bank open by chapter',
 } as const;
@@ -200,11 +199,28 @@ export const PRICE = {
     headline: '$119',
     headlineAmount: '119',
     currency: 'USD',
-    headlineNote: 'a year for one storyteller, or $154 with the book',
-    /** The Keepsake book bought on its own. */
-    book: '$69',
-    bookPages: '40 color pages',
-    bookOverage: 'then $0.75 a page in color, or $0.35 black and white',
+    headlineNote: 'a year for one storyteller, with a printed hardcover every year',
+} as const;
+
+/**
+ * ─────────────────────────────────────────────────────────────────────────
+ * THE BOOK, AS THE APP SELLS IT. The server decides who pays what
+ * (bookAllowance.js); these lines only say it. The shipping amount is not
+ * quoted: it is a server setting (BOOK_SHIPPING_CENTS) to be confirmed
+ * against the print company's rates, and the app shows it before checkout.
+ * ─────────────────────────────────────────────────────────────────────────
+ */
+export const BOOK = {
+    /** Free and Monthly: the flat price, shipping included (LEGACY_BOOK_PRICE_CENTS). */
+    price: '$69',
+    priceNote: 'on Free and Monthly, shipped',
+    members: 'Included with Individual, Family and Express — you pay only the shipping',
+    allowance: 'One a year on Individual, one a year for each storyteller on Family, one with each Express pass',
+    pages: 'Every page of it — there is no page limit',
+    ships: 'Ships to the US and Canada',
+    extra: 'Extra copies are not sold yet — we are working on it',
+    /** BOOK_ORDERING_OPEN is off until a print company is set up. */
+    opens: 'Hardcover ordering opens soon. The whole book can always be saved as a PDF or printed at home.',
 } as const;
 
 /**

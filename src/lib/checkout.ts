@@ -87,14 +87,12 @@ const LINKS: Record<string, string> = {
     individual: '',
     family: '',
 
-    /* The same two with the Keepsake book bundled in */
-    'individual+book': '',
-    'family+book': '',
-
     /* Monthly subscription — the quiet option on /pricing */
     monthly: '',
 
-    /* One-time: a 30-day window, and the hardcover on its own */
+    /* One-time: a 30-day window, and the hardcover on its own. There are
+       no "+book" bundles: every plan includes a hardcover (pricing.ts, BOOK),
+       and old /reserve?plan=individual+book links still resolve in Start. */
     express: '',
     book: '',
 };

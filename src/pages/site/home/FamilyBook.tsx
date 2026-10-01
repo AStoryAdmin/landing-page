@@ -34,7 +34,7 @@ import {
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { SPREADS } from "../../../lib/homeExamples";
-import { PRICE } from "../../../lib/pricing";
+import { BOOK } from "../../../lib/pricing";
 import { ArrowIcon, Picture } from "../kit/kit";
 import {
   Eyebrow,
@@ -1381,8 +1381,9 @@ export default function FamilyBook() {
         <div className="print-line">
           <p>
             Some chapters deserve to leave the screen. When one is ready, make
-            it a volume — <b>{PRICE.book}</b> for {PRICE.bookPages}. The archive
-            keeps growing after the book is printed.
+            it a volume — <b>a printed hardcover every year</b> with a plan, or{" "}
+            {BOOK.price} on its own. The archive keeps growing after the book is
+            printed.
           </p>
           <TextLink to="/pricing#book">
             See book options <ArrowIcon />

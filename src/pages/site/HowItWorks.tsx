@@ -33,7 +33,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { DEPTHS, SCENARIOS } from "../../lib/demoScripts";
-import { PRICE } from "../../lib/pricing";
+import { BOOK } from "../../lib/pricing";
 import CallTrio from "./app/CallTrio";
 import { AppShot, Phone } from "./app/Phone";
 import { CallScreen, IncomingScreen } from "./app/screens";
@@ -1317,8 +1317,9 @@ export default function HowItWorks() {
             </Statement>
             <p className="price" data-rise>
               A beautifully bound edition of the stories, photographs and voices
-              that shaped it — <b>{PRICE.book}</b> for {PRICE.bookPages}. The
-              archive keeps growing after the book is printed.
+              that shaped it — <b>a hardcover every year</b> with a plan, or{" "}
+              {BOOK.price} on its own. The archive keeps growing after the book
+              is printed.
             </p>
             <div className="links" data-rise>
               <TextLink to="/pricing#book">

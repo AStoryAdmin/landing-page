@@ -1,12 +1,16 @@
 /**
  * Pricing — how the economics work, and nothing else.
  *
- * Every figure, allowance and bundle comes from `pricing.ts` (which mirrors
- * the app and Stripe) and every destination from `checkout.ts`; the page
- * only arranges them. The selection model is unchanged from earlier passes:
- * choose a plan, optionally add the book, and the one action at the bottom
- * follows the choice to checkout or — while checkout is unconfigured — to
- * the waitlist with the choice carried along.
+ * Every figure and allowance comes from `pricing.ts` (which mirrors the
+ * app) and every destination from `checkout.ts`; the page only arranges
+ * them. Choose a plan, and the one action at the bottom follows the choice
+ * to checkout or — while checkout is unconfigured — to /reserve with the
+ * choice carried along.
+ *
+ * Until 2026-10-01 each plan also had an "Include the book" checkbox that
+ * swapped its price for a bundle ($154, $319). The app never sold those: a
+ * hardcover comes with every plan, and a member pays only the shipping
+ * (pricing.ts, BOOK). The checkbox became a line saying what is included.
  *
  * Composition: the three annual/one-time plans side by side with the default
  * (Individual) set inside the gold plate; the two quiet options beneath; the
@@ -23,7 +27,7 @@ import {
   FREE_TIER,
   OTHER_PLANS,
   PLANS,
-  PRICE,
+  BOOK,
   START,
 } from "../../lib/pricing";
 import { anyCheckoutLive, buyLabel, checkoutFor } from "../../lib/checkout";
@@ -142,22 +146,11 @@ const Plans = styled(Chapter)`
     margin-top: auto;
     padding-top: 24px;
   }
-  .bundle label {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    min-height: 48px;
+  .bundle p {
     padding: 14px 0 0;
     border-top: 1px solid ${color.primaryLine};
     font: 500 15px/1.45 ${font.body};
     color: ${color.primary};
-    cursor: pointer;
-  }
-  .bundle input {
-    width: 18px;
-    height: 18px;
-    margin-top: 2px;
-    accent-color: ${color.primary};
   }
   .bundle small {
     display: block;
@@ -175,10 +168,7 @@ const Plans = styled(Chapter)`
     outline: 3px solid ${color.accent};
     outline-offset: 4px;
   }
-  .bundle label {
-    position: relative;
-    z-index: 1;
-  }
+
 
   .others {
     display: grid;
@@ -587,12 +577,12 @@ const ROWS: { label: string; cells: [string, string?][]; yes?: boolean }[] = [
     ],
   },
   {
-    label: "The Keepsake book",
+    label: "The printed book",
     cells: [
-      [`${PRICE.book} any time`, PRICE.bookPages],
-      ["First 40 pages included", "A $69 value"],
-      [`${individual.book?.price} with the book`, individual.book?.saving],
-      [`${family.book?.price} with three books`, family.book?.saving],
+      [`${BOOK.price}, shipped`, "Whenever you want one"],
+      ["Included", "One with the pass · you pay shipping"],
+      ["Included", "One every year · you pay shipping"],
+      ["Included", "One a year for each storyteller · you pay shipping"],
     ],
   },
   {
@@ -608,10 +598,7 @@ const ROWS: { label: string; cells: [string, string?][]; yes?: boolean }[] = [
 
 export default function Pricing() {
   const [selected, setSelected] = useState("individual");
-  const [bundles, setBundles] = useState<Record<string, boolean>>({});
-  const bundled =
-    bundles[selected] && (selected === "individual" || selected === "family");
-  const selectedId = selected + (bundled ? "+book" : "");
+  const selectedId = selected;
   const name =
     PLANS.find((x) => x.id === selected)?.name ??
     OTHER_PLANS.find((x) => x.id === selected)?.label ??
@@ -625,7 +612,7 @@ export default function Pricing() {
       <EditorialSeo
         title="A Story pricing — plans, family participation and books"
         path="/pricing"
-        description="Compare Individual, Family, Express, Monthly and Free. See call allowances, book bundles and what stays in your archive."
+        description="Compare Individual, Family, Express, Monthly and Free. See call allowances, the printed book every plan includes, and what stays in your archive."
       />
       <PageOpening
         eyebrow="Pricing · USD"
@@ -664,11 +651,7 @@ export default function Pricing() {
                   {p.featured && <span className="tag">Most families</span>}
                 </div>
                 <p className="who">{p.who}</p>
-                <p className="price">
-                  {bundles[p.id] && p.id !== "express"
-                    ? p.book?.price
-                    : p.price}
-                </p>
+                <p className="price">{p.price}</p>
                 <p className="period">
                   {p.period}
                   {p.monthlyEquivalent && ` · ${p.monthlyEquivalent}`}
@@ -681,29 +664,10 @@ export default function Pricing() {
                   ))}
                 </ul>
                 <div className="bundle">
-                  {p.id === "express" ? (
-                    <small>{p.book?.note}</small>
-                  ) : (
-                    <label onClick={(e) => e.stopPropagation()}>
-                      <input
-                        type="checkbox"
-                        checked={!!bundles[p.id]}
-                        onChange={(e) => {
-                          setBundles({ ...bundles, [p.id]: e.target.checked });
-                          setSelected(p.id);
-                        }}
-                      />
-                      <span>
-                        {p.id === "family"
-                          ? "Include three books"
-                          : "Include the book"}{" "}
-                        — {p.book?.price}
-                        <small>
-                          {p.book?.note}. {p.book?.saving}.
-                        </small>
-                      </span>
-                    </label>
-                  )}
+                  <p>
+                    {p.book}
+                    <small>No page limit · you pay only the shipping</small>
+                  </p>
                 </div>
               </article>
             ))}
@@ -812,14 +776,7 @@ export default function Pricing() {
 
           <div className="decide" aria-live="polite">
             <div>
-              <strong>
-                {name}
-                {bundled
-                  ? selected === "family"
-                    ? " with three books"
-                    : " with the book"
-                  : ""}
-              </strong>
+              <strong>{name}</strong>
               <small>
                 {anyCheckoutLive()
                   ? "Continue with your selected plan."
@@ -904,14 +861,15 @@ export default function Pricing() {
               Printed when a chapter is worth <em>holding.</em>
             </Statement>
             <p className="book-price" data-rise>
-              {PRICE.book} <span>{PRICE.bookPages}</span>
+              Included <span>with Individual, Family and Express</span>
             </p>
             <p data-rise>
-              {PRICE.bookOverage[0].toUpperCase() + PRICE.bookOverage.slice(1)}.
+              {BOOK.allowance}. {BOOK.pages}, and you pay only the shipping.
+              On Free and Monthly it is {BOOK.price}, shipped. {BOOK.ships}.
             </p>
             <p data-rise>
               Choose the stories and photographs whenever you’re ready. The
-              archive keeps growing afterwards.
+              archive keeps growing afterwards. {BOOK.opens}
             </p>
           </div>
         </Frame>

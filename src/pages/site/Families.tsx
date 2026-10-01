@@ -366,7 +366,7 @@ function OccasionsRoom() {
         <div className="gift" data-rise>
           <p>
             The easiest to give: {express.name}, <b>{express.price}</b> one time
-            — about a month of calls and the first 40 pages of the book. Nothing
+            — about a month of calls and a printed hardcover. Nothing
             renews.
           </p>
           <TextLink to="/pricing">

@@ -1,4 +1,4 @@
-import { PLANS, PRICE, START } from "../../lib/pricing";
+import { BOOK, PLANS, START } from "../../lib/pricing";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
 export const groups = [
   {
@@ -53,7 +53,7 @@ export const groups = [
     items: [
       {
         q: "What does it cost?",
-        a: `Individual is ${PLANS[0].price} ${PLANS[0].period}; Family is ${PLANS[1].price} ${PLANS[1].period}. Express is ${PLANS[2].price}, ${PLANS[2].period}. A Free plan and Monthly option are also available in the product. The Pricing page lists call allowances and book bundles.`,
+        a: `Individual is ${PLANS[0].price} ${PLANS[0].period}; Family is ${PLANS[1].price} ${PLANS[1].period}. Express is ${PLANS[2].price}, ${PLANS[2].period}. A Free plan and Monthly option are also available in the product. Every plan includes a printed hardcover. The Pricing page lists call allowances.`,
       },
       {
         q: "Is there a free trial?",
@@ -61,7 +61,7 @@ export const groups = [
       },
       {
         q: "How much is the printed book?",
-        a: `${PRICE.book} for ${PRICE.bookPages}; ${PRICE.bookOverage}. Express includes the first 40 color pages. Individual and Family offer book bundles. You choose when to print.`,
+        a: `${BOOK.members}. ${BOOK.allowance}, with no page limit. On Free and Monthly it is ${BOOK.price}, shipped. ${BOOK.ships}. ${BOOK.extra}. ${BOOK.opens}`,
       },
       {
         q: "How does giving A Story work?",
