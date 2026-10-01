@@ -231,15 +231,43 @@ export async function signOut(): Promise<void> {
  * it survives any device, and onAuthStateChange hands the new value straight
  * back to useAccount. Claiming twice keeps the first date — that date is the
  * person's place in the queue.
+ *
+ * `cohort` is the founding week chosen before paying, when this browser
+ * still knows it (founding.ts, recalledCohort); it is written alongside the
+ * date as founding_cohort, which the public count groups by.
  */
 export async function markOffer(
     field: 'reserved_at' | 'founding_requested_at',
     existing: string | null,
+    cohort?: number | null,
 ): Promise<AuthResult> {
     const supabase = getAuthClient();
     if (!supabase) return UNCONFIGURED;
     if (existing) return { ok: true };
-    const { error } = await supabase.auth.updateUser({ data: { [field]: new Date().toISOString() } });
+    const data: Record<string, string | number> = { [field]: new Date().toISOString() };
+    if (field === 'founding_requested_at' && cohort) data.founding_cohort = cohort;
+    const { error } = await supabase.auth.updateUser({ data });
+    return error ? fail(error.message) : { ok: true };
+}
+
+/**
+ * Puts the account on the waitlist for a full founding week, or for the
+ * next group once every week is full or under way — see founding.ts,
+ * "Waitlist". Free, and nothing is held: it is the order we write in when a
+ * place opens or a new group is planned.
+ *
+ * Changing the week keeps the first date, so someone who moves from a full
+ * October week to "the next group" does not lose their place in line.
+ */
+export async function joinFoundingWaitlist(
+    week: number | 'next',
+    existingAt: string | null,
+): Promise<AuthResult> {
+    const supabase = getAuthClient();
+    if (!supabase) return UNCONFIGURED;
+    const { error } = await supabase.auth.updateUser({
+        data: { founding_waitlist: week, founding_waitlist_at: existingAt ?? new Date().toISOString() },
+    });
     return error ? fail(error.message) : { ok: true };
 }
 
@@ -253,10 +281,19 @@ export type Account = {
     reservedAt: string | null;
     /** When they asked for a founding place, likewise. */
     foundingRequestedAt: string | null;
+    /** The founding week they chose, when it was recorded — founding.ts COHORTS. */
+    foundingCohort: number | null;
+    /** The founding week they are waiting on, or 'next' for the next group. */
+    foundingWaitlist: number | 'next' | null;
+    /** When they first joined that waitlist — their place in it. */
+    foundingWaitlistAt: string | null;
 };
 
 function toAccount(session: Session): Account {
     const meta = (session.user.user_metadata || {}) as Record<string, string | undefined>;
+    const cohort = Number(meta.founding_cohort);
+    const waitlist = meta.founding_waitlist;
+    const waitN = Number(waitlist);
     return {
         id: session.user.id,
         email: (session.user.email || '').toLowerCase(),
@@ -264,6 +301,9 @@ function toAccount(session: Session): Account {
         lastName: meta.last_name || '',
         reservedAt: meta.reserved_at || null,
         foundingRequestedAt: meta.founding_requested_at || null,
+        foundingCohort: Number.isInteger(cohort) && cohort > 0 ? cohort : null,
+        foundingWaitlist: waitlist === 'next' ? 'next' : Number.isInteger(waitN) && waitN > 0 ? waitN : null,
+        foundingWaitlistAt: meta.founding_waitlist_at || null,
     };
 }
 

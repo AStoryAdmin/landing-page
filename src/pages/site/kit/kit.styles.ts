@@ -398,6 +398,9 @@ export const SecondaryLink = styled(Link)`
 export const SecondaryButton = styled.button`
   ${secondary}
 `;
+export const SecondaryAnchor = styled.a`
+  ${secondary}
+`;
 const textLink = css`
   display: inline-flex;
   align-items: center;

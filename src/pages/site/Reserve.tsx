@@ -17,6 +17,15 @@
  * the two suits whom. No countdown and no invented "only 7 left": a hundred
  * is a real limit, said once. A Story is not a memoir to finish.
  *
+ * The founding card sells a week, not a place in a pile: the hundred come in
+ * cohorts of twenty-five (lib/founding.ts, COHORTS), and its tag names the
+ * next one and, once it is worth saying, what is left of it. Before the $29
+ * button it asks two things — an iPhone, and which week — so a family that
+ * does not fit finds out before paying, with the dollar beside it. That
+ * check replaced "pay, and we pick" (2026-10-01): nobody here is turned away
+ * after paying. A full week stays on the list with a free waitlist, and once
+ * every week is full or under way the card offers one for the next group.
+ *
  * Each card's action:
  *   payment live       → Stripe straight away; the account comes after
  *   just paid (?paid=) → confirmation, then "make your account" (same email)
@@ -35,13 +44,23 @@ import {
   RESERVE_DEADLINE_LABEL,
   SHOW_COUNT_FROM,
   WHY_PAY,
+  cohortByN,
+  cohortLeft,
+  cohortTaken,
   deadlineLine,
   isOfferLive,
+  openCohorts,
+  recalledCohort,
+  rememberCohort,
   reserveDiscountOpen,
   offerCheckoutUrl,
+  upcomingCohorts,
+  waitlistLabel,
+  type Cohort,
   type OfferId,
+  type WaitFor,
 } from "../../lib/founding";
-import { markOffer, useAccount, useReferralCode } from "../../lib/auth";
+import { joinFoundingWaitlist, markOffer, useAccount, useReferralCode } from "../../lib/auth";
 import { useFoundingTaken } from "../../lib/foundingCount";
 import { track } from "../../lib/analytics";
 import { SITE } from "../../lib/seo";
@@ -59,6 +78,7 @@ import {
   PrimaryAnchor,
   PrimaryButton,
   PrimaryLink,
+  SecondaryAnchor,
   SecondaryButton,
   SplitHead,
   Statement,
@@ -195,6 +215,7 @@ const Offers = styled(Chapter)`
   }
   .act {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 14px;
     margin-top: 30px;
   }
@@ -245,6 +266,73 @@ const Offers = styled(Chapter)`
     font: 400 15px/1.4 ${font.body};
     color: ${color.primary};
     overflow-wrap: anywhere;
+  }
+  .fit {
+    display: grid;
+    gap: 22px;
+    padding-top: 22px;
+    border-top: 1px solid ${color.primaryLine};
+  }
+  .fit fieldset {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .fit legend {
+    padding: 0;
+    margin-bottom: 12px;
+    font: 500 16px/1.45 ${font.body};
+    color: ${color.primary};
+  }
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .choices.weeks {
+    display: grid;
+    gap: 8px;
+  }
+  .choice {
+    position: relative;
+    display: block;
+  }
+  .choice input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .choice span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    min-height: 46px;
+    padding: 10px 18px;
+    border: 1px solid ${color.primaryLine};
+    background: ${color.paperPure};
+    font: 500 15px/1.3 ${font.body};
+    color: ${color.body};
+  }
+  .choice span small {
+    white-space: nowrap;
+    font: 400 14px/1.3 ${font.body};
+    color: ${color.bodyMuted};
+  }
+  .choice input:checked + span {
+    border-color: ${color.teal};
+    box-shadow: inset 0 0 0 1px ${color.teal};
+    background: ${color.ivory};
+    color: ${color.primary};
+  }
+  .choice input:focus-visible + span {
+    outline: 2px solid ${color.teal};
+    outline-offset: 2px;
   }
   .signin {
     margin-top: 28px;
@@ -354,10 +442,10 @@ const COPY: Record<
     pay: `Start now for ${OFFERS.founding.price}`,
     claim: "Request a founding place",
     signUp: "Create your account to request a place",
-    claimed: "Founding place requested.",
+    claimed: "Your founding place is held.",
     paid: "Welcome, founding family.",
-    paidBody:
-      "We will write within a working day to set up your first call. A receipt is on its way from Stripe.",
+    /* Preceded on the page by the week, when this browser knows it. */
+    paidBody: "A receipt is on its way from Stripe.",
   },
 };
 
@@ -377,14 +465,24 @@ export default function Reserve() {
   const claimedAt = (id: OfferId) =>
     (id === "reserve" ? account?.reservedAt : account?.foundingRequestedAt) ?? null;
 
-  /* The two true limits (see the banner in lib/founding.ts). The count only
-     appears once it is real and worth saying; when it reaches the hundred,
-     the founding card closes by itself. */
+  /* The two true limits (see the banner in lib/founding.ts). The founding one
+     is per cohort: the card offers the weeks still taking families, and
+     closes by itself when every week has filled or passed. A cohort's count
+     only appears once it is real and worth saying. */
   const taken = useFoundingTaken();
-  const foundingOpen =
-    OFFERS.founding.open && !(taken !== null && OFFERS.founding.places !== null && taken >= OFFERS.founding.places);
-  const placesLeft = taken !== null && OFFERS.founding.places !== null ? OFFERS.founding.places - taken : null;
-  const showCount = foundingOpen && placesLeft !== null && taken !== null && taken >= SHOW_COUNT_FROM;
+  const cohorts = openCohorts(taken);
+  /* Full weeks stay on the list, offering their waitlist (founding.ts). */
+  const weeks = upcomingCohorts();
+  const isFull = (c: Cohort) => cohortLeft(c, taken) === 0;
+  const foundingOpen = OFFERS.founding.open && cohorts.length > 0;
+  const next: Cohort | undefined = cohorts[0];
+  const showLeft = (c: Cohort) => (cohortTaken(c, taken) ?? 0) >= SHOW_COUNT_FROM;
+  const nextLeft = next && showLeft(next) ? cohortLeft(next, taken) : null;
+
+  /* The two questions before the $29 (see the header). */
+  const [iphone, setIphone] = useState<"yes" | "no" | null>(null);
+  const [pick, setPick] = useState<number | null>(null);
+  const chosen = weeks.find((c) => c.n === pick) ?? next;
   const discountOpen = reserveDiscountOpen();
   const deadline = deadlineLine();
   const isOpen = (id: OfferId) => (id === "founding" ? foundingOpen : OFFERS[id].open);
@@ -396,9 +494,87 @@ export default function Reserve() {
   const paidClaimed = paidId ? claimedAt(paidId) : null;
   useEffect(() => {
     if (!paidId || !account || paidClaimed) return;
-    void markOffer(OFFERS[paidId].meta, null);
+    void markOffer(OFFERS[paidId].meta, null, paidId === "founding" ? recalledCohort() : null);
   }, [paidId, account, paidClaimed]);
+  /* The week a founding family has, from the account or, just back from
+     Stripe, from this browser. Only read on ?paid=founding, which the
+     prerender never sees, so the static page and the first render agree. */
+  const [recalled, setRecalled] = useState<number | null>(() =>
+    justPaid === "founding" ? recalledCohort() : null,
+  );
+  const theirWeek = cohortByN(account?.foundingCohort ?? recalled)?.week ?? null;
   const isIn = Boolean(justPaid || account?.reservedAt || account?.foundingRequestedAt);
+
+  /* The founding waitlist (founding.ts, "Waitlist"). Someone signed out is
+     sent to make an account with ?wait= on the way back, and is put on the
+     list when they arrive — the same pattern as ?paid=. */
+  const waitParam: WaitFor | null =
+    params.get("wait") === "next" ? "next" : (cohortByN(Number(params.get("wait")))?.n ?? null);
+  const [waitBusy, setWaitBusy] = useState(false);
+  const [waitError, setWaitError] = useState<string | null>(null);
+  useEffect(() => {
+    if (!waitParam || !account || account.foundingRequestedAt || account.foundingWaitlist === waitParam) return;
+    void joinFoundingWaitlist(waitParam, account.foundingWaitlistAt);
+  }, [waitParam, account]);
+  const joinWait = async (w: WaitFor) => {
+    if (!account || waitBusy) return;
+    setWaitError(null);
+    setWaitBusy(true);
+    const res = await joinFoundingWaitlist(w, account.foundingWaitlistAt);
+    setWaitBusy(false);
+    if (!res.ok) return setWaitError(res.error);
+    track("founding_waitlist", { week: String(w) });
+  };
+  const waitlistAction = (w: WaitFor) => {
+    const label = waitlistLabel(w);
+    /* Short on the button — pill labels do not wrap, and a week's full name
+       pushed the card past a phone's edge. The line above says which. */
+    const join = "Join the waitlist";
+    if (account?.foundingWaitlist === w) {
+      return (
+        <div className="done" role="status">
+          <h3>You are on the waitlist for {label}.</h3>
+          <p>
+            Nothing is charged. When a place opens, or we add another group, we write to{" "}
+            <strong>{account.email}</strong> in the order families joined.
+          </p>
+        </div>
+      );
+    }
+    if (account === undefined) return null;
+    if (!account) {
+      return (
+        <>
+          <PrimaryLink
+            to={signUpHref(`/reserve?wait=${w}`)}
+            onClick={() => track("offer_click", { offer: "founding_waitlist", week: String(w), mode: "signup" })}
+          >
+            {join} <ArrowIcon />
+          </PrimaryLink>
+          <p className="small">
+            For {label}. Free, and nothing is charged — the account is so we know where to write.
+          </p>
+        </>
+      );
+    }
+    return (
+      <>
+        <PrimaryButton type="button" onClick={() => joinWait(w)} disabled={waitBusy}>
+          {waitBusy ? "Saving…" : join} <ArrowIcon />
+        </PrimaryButton>
+        {waitError && (
+          <p className="error" role="alert">
+            {waitError}
+          </p>
+        )}
+        <p className="small">
+          {account.foundingWaitlist
+            ? `For ${label}. You are waiting on ${waitlistLabel(account.foundingWaitlist)}; this moves you and keeps your place in line.`
+            : `For ${label}. Free, and nothing is charged. We write to ${account.email} when a place opens, in the order families joined.`}
+        </p>
+      </>
+    );
+  };
 
   /* Sign-up carries the referral code on, so a sister who came through her
      brother's link is recorded as his (profiles.referred_by). */
@@ -409,7 +585,11 @@ export default function Reserve() {
     if (!account || busy) return;
     setError(null);
     setBusy(id);
-    const res = await markOffer(OFFERS[id].meta, claimedAt(id));
+    if (id === "founding" && chosen) {
+      rememberCohort(chosen.n);
+      setRecalled(chosen.n);
+    }
+    const res = await markOffer(OFFERS[id].meta, claimedAt(id), id === "founding" ? chosen?.n : null);
     setBusy(null);
     if (!res.ok) return setError({ id, msg: res.error });
     track("offer_claimed_free", { offer: id });
@@ -433,23 +613,20 @@ export default function Reserve() {
   };
 
   const action = (id: OfferId) => {
-    const offer = OFFERS[id];
     const copy = COPY[id];
 
-    if (!isOpen(id)) {
-      return (
-        <p className="small">
-          All {offer.places} founding places have been taken. Reserve for {OFFERS.reserve.price} and you are
-          next in line.
-        </p>
-      );
-    }
     if (justPaid === id) {
       return (
         <>
           <div className="done" role="status">
             <h3>{copy.paid}</h3>
-            <p>{copy.paidBody}</p>
+            <p>
+              {id === "founding" &&
+                (theirWeek
+                  ? `Your first call is the week of ${theirWeek}. We will write within a working day to set it up. `
+                  : "We will write within a working day to set up your first call. ")}
+              {copy.paidBody}
+            </p>
           </div>
           {account === null && (
             <>
@@ -465,6 +642,138 @@ export default function Reserve() {
         </>
       );
     }
+    /* Before "closed", so someone who took the last place still sees their
+       place rather than the waitlist. */
+    if (id === "founding" && claimedAt(id)) {
+      return (
+        <div className="done" role="status">
+          <h3>{copy.claimed}</h3>
+          <p>
+            {theirWeek ? <>Your first call is the week of {theirWeek}. </> : null}
+            We will write to <strong>{account?.email}</strong> to set it up.
+          </p>
+        </div>
+      );
+    }
+    if (!isOpen(id)) {
+      return (
+        <>
+          <p className="small">
+            Every founding week has filled or begun. Join the waitlist for the next group — or reserve for{" "}
+            {OFFERS.reserve.price} and hold your place for launch.
+          </p>
+          {waitlistAction("next")}
+        </>
+      );
+    }
+    if (id === "founding") {
+      const fit = (
+        <div className="fit">
+          <fieldset>
+            <legend>Does the person A Story will call have an iPhone?</legend>
+            <div className="choices">
+              {(["yes", "no"] as const).map((v) => (
+                <label className="choice" key={v}>
+                  <input
+                    type="radio"
+                    name="iphone"
+                    value={v}
+                    checked={iphone === v}
+                    onChange={() => {
+                      setIphone(v);
+                      track("founding_fit", { iphone: v });
+                    }}
+                  />
+                  <span>{v === "yes" ? "Yes, an iPhone" : "No"}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          {iphone === "no" && (
+            <>
+              <p className="small" role="status">
+                Before launch, A Story can only ring an iPhone — on other phones it reminds them to write instead,
+                which is not what a founding place is for. A dollar holds your place and
+                {discountOpen ? ` ${OFFERS.reserve.discount}% off` : " the price"} instead.
+              </p>
+              <SecondaryAnchor
+                href={openingHref}
+                onClick={() => track("offer_click", { offer: "reserve", from: "founding_fit" })}
+              >
+                Reserve for {OFFERS.reserve.price} instead
+              </SecondaryAnchor>
+            </>
+          )}
+          {iphone === "yes" && (
+            <fieldset>
+              <legend>Which week suits the first call?</legend>
+              <div className="choices weeks">
+                {weeks.map((c) => {
+                  const left = showLeft(c) || isFull(c) ? cohortLeft(c, taken) : null;
+                  return (
+                    <label className="choice" key={c.n}>
+                      <input
+                        type="radio"
+                        name="cohort"
+                        value={c.n}
+                        checked={chosen?.n === c.n}
+                        onChange={() => setPick(c.n)}
+                      />
+                      <span>
+                        The week of {c.week}
+                        <small>
+                          {left === 0
+                            ? "Full · waitlist"
+                            : left !== null
+                              ? `${left} of ${c.places} left`
+                              : `${c.places} places`}
+                        </small>
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+          )}
+        </div>
+      );
+      if (iphone !== "yes" || !chosen) return fit;
+      if (isFull(chosen)) {
+        return (
+          <>
+            {fit}
+            {waitlistAction(chosen.n)}
+          </>
+        );
+      }
+      if (live(id)) {
+        return (
+          <>
+            {fit}
+            <PrimaryAnchor
+              href={offerCheckoutUrl(id, account, chosen.n)}
+              onClick={() => {
+                rememberCohort(chosen.n);
+                track("offer_click", { offer: id, cohort: chosen.n, signedIn: Boolean(account) });
+              }}
+            >
+              {copy.pay} <ArrowIcon />
+            </PrimaryAnchor>
+            <p className="small">
+              Apple Pay, Google Pay or card, through Stripe. Refunded any time before the first call.
+              {account?.reservedAt && " Your dollar still comes off your first year."}
+            </p>
+          </>
+        );
+      }
+      /* Payment not live: the fit check, then the free claim below. */
+      return (
+        <>
+          {fit}
+          {freeClaim(id)}
+        </>
+      );
+    }
     if (live(id)) {
       return (
         <>
@@ -474,13 +783,17 @@ export default function Reserve() {
           >
             {copy.pay} <ArrowIcon />
           </PrimaryAnchor>
-          <p className="small">
-            Apple Pay, Google Pay or card, through Stripe.
-            {id === "founding" && account?.reservedAt && " Your dollar still comes off your first year."}
-          </p>
+          <p className="small">Apple Pay, Google Pay or card, through Stripe.</p>
         </>
       );
     }
+    return freeClaim(id);
+  };
+
+  /* Before a Payment Link exists: the place is claimed on the account, free. */
+  const freeClaim = (id: OfferId) => {
+    const offer = OFFERS[id];
+    const copy = COPY[id];
     /* Payment not switched on yet — claim it on the account, free. */
     if (account === undefined) {
       return (
@@ -494,7 +807,10 @@ export default function Reserve() {
         <>
           <PrimaryLink
             to={signUpHref("/reserve")}
-            onClick={() => track("offer_click", { offer: id, mode: "signup" })}
+            onClick={() => {
+              if (id === "founding" && chosen) rememberCohort(chosen.n);
+              track("offer_click", { offer: id, mode: "signup" });
+            }}
           >
             {copy.signUp} <ArrowIcon />
           </PrimaryLink>
@@ -542,11 +858,11 @@ export default function Reserve() {
       <>
         <p className="tag">
           {isFounding
-            ? !foundingOpen
-              ? `All ${o.places} taken`
-              : showCount
-                ? `${placesLeft} of ${o.places} places left · start now`
-                : `${o.places} places · start now`
+            ? !foundingOpen || !next
+              ? "Founding weeks full · waitlist open"
+              : nextLeft !== null
+                ? `Next group · week of ${next.week} · ${nextLeft} of ${next.places} left`
+                : `Next group · week of ${next.week} · ${next.places} places`
             : discountOpen
               ? `The easy yes · ends ${RESERVE_DEADLINE_LABEL}`
               : "The easy yes"}
@@ -629,7 +945,7 @@ export default function Reserve() {
             Hold your place for a dollar. <em>Or start now.</em>
           </>
         }
-        lead={`A Story calls someone you love and asks about their life, and we are opening it a few families at a time. Reserve a place for ${reserve.price} — or be one of ${founding.places} founding families and start before anyone else.`}
+        lead={`A Story calls someone you love and asks about their life, and we are opening it a few families at a time. Reserve a place for ${reserve.price} — or be one of ${founding.places} founding families and start before anyone else${foundingOpen && next ? `, from the week of ${next.week}` : ""}.`}
         actions={
           <>
             <PrimaryAnchor
@@ -739,7 +1055,12 @@ export default function Reserve() {
             A dollar puts you in line to have it asked
             {discountOpen ? `, at ${OFFERS.reserve.discount}% off if you reserve by ${RESERVE_DEADLINE_LABEL}` : ""}.
             Twenty-nine has it asked before launch
-            {showCount ? ` — and ${placesLeft} of the ${OFFERS.founding.places} founding places are left` : ""}.
+            {foundingOpen && next
+              ? nextLeft !== null
+                ? ` — ${nextLeft} of ${next.places} places are left for the week of ${next.week}`
+                : ` — the next group starts the week of ${next.week}`
+              : ""}
+            .
             Either way, if the timing turns out wrong, the money comes back.
           </p>
           <Actions className="acts">

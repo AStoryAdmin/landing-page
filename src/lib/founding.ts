@@ -44,6 +44,33 @@
  * When the hundred founding places are gone, set OFFERS.founding.open to
  * false. The card stays up, says so, and the dollar carries on.
  *
+ * ── Cohorts ─────────────────────────────────────────────────────────────
+ * The hundred places are four cohorts of twenty-five, each a week in which
+ * its first calls happen (COHORTS below). Decided on 2026-10-01, replacing
+ * a proposal to take $29 as an application, pick families, and refund the
+ * rest. That would have made the offer LESS urgent — "pay and wait to hear"
+ * gives nobody a reason to act today — and the one message we would have
+ * sent most often was "your family was not chosen". Cohorts make the same
+ * limit honest: a founder is on every first call, so a week really does
+ * hold only so many.
+ *
+ * The cohort chosen before paying travels three ways, because a Payment
+ * Link carries no custom fields:
+ *   - into Stripe as client_reference_id, `cohort2` or `cohort2_<account
+ *     id>` (offerCheckoutUrl) — the record of who paid for which week;
+ *   - into this browser (rememberCohort), so the place written to the
+ *     account on return carries it as user_metadata.founding_cohort;
+ *   - into the public count, per cohort (supabase/founding-count.sql).
+ * A buyer who pays on one device and makes the account on another arrives
+ * with no cohort; the count files them under the first cohort (see
+ * cohortTaken), and Stripe's client_reference_id says where they belong.
+ *
+ * Before paying, the founding card asks two things (Reserve.tsx): does the
+ * person A Story will call have an iPhone — before launch only an iPhone
+ * rings (the app's lib/callDelivery.js); Android gets a reminder to write —
+ * and which week suits the first call. Families who do not fit find out
+ * before they pay, not after, and the dollar is right there for them.
+ *
  * ── Before the links exist ──────────────────────────────────────────────
  * No dead buttons: a signed-in visitor can still reserve, or ask for a
  * founding place, for free. It is written on the account (lib/auth.ts,
@@ -107,11 +134,125 @@ export const deadlineLine = (now = Date.now()): string => {
 };
 
 /**
- * The live count of founding places is shown only once at least this many
- * are taken. "96 of 100 left" is an honest number and a reason to act; "100
- * of 100 left" is just as honest and reads like nobody wants it.
+ * The live count of a cohort's places is shown only once at least this many
+ * are taken. "19 of 25 left" is an honest number and a reason to act; "25
+ * of 25 left" is just as honest and reads like nobody wants it.
  */
-export const SHOW_COUNT_FROM = 10;
+export const SHOW_COUNT_FROM = 5;
+
+export type Cohort = {
+    /** 1, 2, 3… — what founding_cohort and client_reference_id carry. */
+    n: number;
+    /** The week its first calls happen, as the page says it. */
+    week: string;
+    /**
+     * When it stops taking families: the Friday before its week, end of day
+     * Pacific, so there is a weekend to set each family up by hand.
+     */
+    closes: Date;
+    places: number;
+};
+
+/**
+ * ─────────────────────────────────────────────────────────────────────────
+ * The founding weeks. Every date here is a promise to a family that paid —
+ * a founder on the call that week. Move a week later if you must, and write
+ * to everyone in it; never move one earlier. Proposed 2026-10-01 for the
+ * team to confirm: every other Monday from 19 October.
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * Unfilled places in a cohort that has closed are not carried forward: the
+ * limit is a founder's week, not a number to hit, so "25 places" in the next
+ * one stays true.
+ */
+export const COHORTS: Cohort[] = [
+    { n: 1, week: '19 October', closes: new Date('2026-10-16T23:59:59-07:00'), places: 25 },
+    { n: 2, week: '2 November', closes: new Date('2026-10-30T23:59:59-07:00'), places: 25 },
+    { n: 3, week: '16 November', closes: new Date('2026-11-13T23:59:59-08:00'), places: 25 },
+    { n: 4, week: '30 November', closes: new Date('2026-11-27T23:59:59-08:00'), places: 25 },
+];
+
+export const cohortByN = (n: number | null | undefined): Cohort | undefined => COHORTS.find((c) => c.n === n);
+
+/**
+ * Founding places taken, as foundingCount.ts reads them; null when unknown.
+ * `unassigned` is places on accounts with no cohort — claimed before there
+ * were cohorts, or paid for on another device.
+ */
+export type FoundingTaken = { byCohort: Record<number, number>; unassigned: number };
+
+/**
+ * Places taken in one cohort. Unassigned places are counted against the
+ * first cohort: if they really belong to a later one, the first shows one
+ * place fewer than it has, which is the safe way round — the page never
+ * shows a place that is not there.
+ */
+export const cohortTaken = (c: Cohort, taken: FoundingTaken | null): number | null =>
+    taken === null ? null : (taken.byCohort[c.n] ?? 0) + (c.n === COHORTS[0].n ? taken.unassigned : 0);
+
+/** Places left in a cohort, or null while the count is unknown. */
+export const cohortLeft = (c: Cohort, taken: FoundingTaken | null): number | null => {
+    const t = cohortTaken(c, taken);
+    return t === null ? null : Math.max(0, c.places - t);
+};
+
+/** The cohorts that have not closed yet, full or not, soonest first. */
+export const upcomingCohorts = (now = Date.now()): Cohort[] => COHORTS.filter((c) => now <= c.closes.getTime());
+
+/** The cohorts a family can still join, soonest first. */
+export const openCohorts = (taken: FoundingTaken | null, now = Date.now()): Cohort[] =>
+    upcomingCohorts(now).filter((c) => cohortLeft(c, taken) !== 0);
+
+/**
+ * ── Waitlist ────────────────────────────────────────────────────────────
+ * Added 2026-10-01. When a week fills, it stays on the card marked full and
+ * offers a waitlist for that week; when every week has filled or begun, the
+ * card offers a waitlist for the next group. A week fills; the people who
+ * wanted it should not have to keep checking back.
+ *
+ * It is free and holds nothing — no price, no place. It is the order we
+ * write in: when a founding family is refunded and their place in a week
+ * opens, or when a new group is added to COHORTS. A free list that held the
+ * founding price would undercut both offers; the dollar is still the way to
+ * hold a price. Written to the account (auth.ts, joinFoundingWaitlist) as
+ * founding_waitlist (a cohort number, or 'next') and founding_waitlist_at:
+ *
+ *   select email, raw_user_meta_data->>'first_name' as name,
+ *          raw_user_meta_data->>'founding_waitlist' as week,
+ *          raw_user_meta_data->>'founding_waitlist_at' as since
+ *   from auth.users
+ *   where raw_user_meta_data ? 'founding_waitlist'
+ *     and not raw_user_meta_data ? 'founding_requested_at'
+ *   order by raw_user_meta_data->>'founding_waitlist_at';
+ *
+ * A refunded place only reappears on the card once its account no longer
+ * carries founding_requested_at — remove it by hand with the refund.
+ */
+export type WaitFor = number | 'next';
+export const waitlistLabel = (w: WaitFor): string =>
+    w === 'next' ? 'the next group' : `the week of ${cohortByN(w)?.week ?? 'a founding week'}`;
+
+/**
+ * The cohort chosen before going to Stripe, kept in this browser so the
+ * place written on return carries it. Storage can be missing or refuse
+ * (private windows, blocked site data); then the cohort is simply not
+ * recorded on the account, and Stripe's client_reference_id still has it.
+ */
+const COHORT_KEY = 'astory-founding-cohort';
+export const rememberCohort = (n: number): void => {
+    try {
+        localStorage.setItem(COHORT_KEY, String(n));
+    } catch {
+        /* see above */
+    }
+};
+export const recalledCohort = (): number | null => {
+    try {
+        return cohortByN(Number(localStorage.getItem(COHORT_KEY)))?.n ?? null;
+    } catch {
+        return null;
+    }
+};
 
 /** Places one family can reserve at a dollar each. */
 export const MAX_PER_FAMILY = 2;
@@ -174,7 +315,8 @@ export const OFFERS: Record<OfferId, Offer> = {
         discount: FOUNDING_DISCOUNT,
         individual: money(off(INDIVIDUAL, FOUNDING_DISCOUNT)),
         family: money(off(FAMILY, FOUNDING_DISCOUNT)),
-        places: 100,
+        /* The hundred is the cohorts added up — change a cohort, not this. */
+        places: COHORTS.reduce((sum, c) => sum + c.places, 0),
         /* Live since 2026-10-01. Stripe: "A Story — Founding Family", $29. */
         link: 'https://buy.stripe.com/fZu4gB3P72GM9EkgSFe7m01',
         open: true,
@@ -191,15 +333,20 @@ export const FOUNDING_BALANCE = {
 export const isOfferLive = (id: OfferId): boolean => OFFERS[id].open && Boolean(OFFERS[id].link);
 
 /**
- * The offer's Payment Link, labelled with who is paying when we know.
- * Stripe reads client_reference_id and prefilled_email straight off the URL.
+ * The offer's Payment Link, labelled with who is paying when we know, and
+ * for a founding place, which week. Stripe reads client_reference_id and
+ * prefilled_email straight off the URL; a client_reference_id may only hold
+ * letters, digits, dashes and underscores, hence `cohort2_<account id>`.
  */
-export const offerCheckoutUrl = (id: OfferId, account?: { id: string; email: string } | null): string => {
+export const offerCheckoutUrl = (
+    id: OfferId,
+    account?: { id: string; email: string } | null,
+    cohort?: number | null,
+): string => {
     const url = new URL(OFFERS[id].link);
-    if (account) {
-        url.searchParams.set('client_reference_id', account.id);
-        url.searchParams.set('prefilled_email', account.email);
-    }
+    const ref = [cohort ? `cohort${cohort}` : '', account?.id ?? ''].filter(Boolean).join('_');
+    if (ref) url.searchParams.set('client_reference_id', ref);
+    if (account) url.searchParams.set('prefilled_email', account.email);
     return url.toString();
 };
 
@@ -213,7 +360,8 @@ export const INCLUDES: Record<OfferId, string[]> = {
         'Refunded any time before launch, no questions',
     ],
     founding: [
-        'Start before launch — we set it up with you, by hand',
+        'Start before launch, in a small group — you pick the week',
+        'We set it up with you, by hand',
         'Your first month of guided calls, from the first call',
         'One of us there for that first call',
         `Half off your first year, and the $29 counts toward it`,
@@ -249,7 +397,9 @@ export const OFFER_TERMS =
     `by 11:59 p.m. Pacific time on 30 November 2026, ${OFFERS.reserve.discount}% off the first year of an Individual ` +
     `or Family annual plan. That date will not be brought forward. A Founding Family place is a one-time payment of ` +
     `${OFFERS.founding.price}, limited to ${OFFERS.founding.places}, refundable in full on request at any time before ` +
-    `the first call; it gives access before launch, set up with the purchaser, 30 days of access equivalent to the ` +
+    `the first call; places are offered in cohorts, each with a stated week for the first call, chosen at purchase, ` +
+    `which may be moved later but never earlier, with notice to the purchaser; it gives access before launch, set ` +
+    `up with the purchaser, 30 days of access equivalent to the ` +
     `Individual plan beginning on the date of the first call, and ${OFFERS.founding.discount}% off the first year of an ` +
     `Individual or Family annual plan. In both cases the amount paid is deducted from that first year, and the ` +
     'discount applies to the first year of a plan bought on the website within 60 days of launch or of the ' +

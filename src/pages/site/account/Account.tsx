@@ -11,7 +11,7 @@
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Seo from "../../../components/ui/Seo";
 import { signOut, useAccount } from "../../../lib/auth";
-import { OFFERS, RESERVE_DEADLINE_LABEL, reserveDiscountOpen } from "../../../lib/founding";
+import { OFFERS, RESERVE_DEADLINE_LABEL, cohortByN, reserveDiscountOpen, waitlistLabel } from "../../../lib/founding";
 import { track } from "../../../lib/analytics";
 import AccountShell from "./AccountShell";
 
@@ -75,7 +75,19 @@ export default function Account() {
           {account.foundingRequestedAt && (
             <>
               <dt>Founding</dt>
-              <dd>Place requested {longDate(account.foundingRequestedAt)}</dd>
+              <dd>
+                Place taken {longDate(account.foundingRequestedAt)}
+                {cohortByN(account.foundingCohort) && ` · first call the week of ${cohortByN(account.foundingCohort)?.week}`}
+              </dd>
+            </>
+          )}
+          {account.foundingWaitlist && !account.foundingRequestedAt && (
+            <>
+              <dt>Waitlist</dt>
+              <dd>
+                Founding, {waitlistLabel(account.foundingWaitlist)}
+                {account.foundingWaitlistAt && ` · since ${longDate(account.foundingWaitlistAt)}`}
+              </dd>
             </>
           )}
         </dl>
