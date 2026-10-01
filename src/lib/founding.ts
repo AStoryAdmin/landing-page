@@ -69,7 +69,7 @@ export type OfferId = 'reserve' | 'founding';
 /**
  * ─────────────────────────────────────────────────────────────────────────
  * URGENCY HERE IS ONLY EVER TRUE. Two real limits, and nothing else:
- *   - the dollar's 30% closes at RESERVE_DEADLINE, a date we honour;
+ *   - the dollar's 15% closes at RESERVE_DEADLINE, a date we honour;
  *   - there are a hundred founding places, counted live (foundingCount.ts).
  * No countdown to the second, no "only 3 left" that is not, no deadline
  * that quietly moves. And it is about the offer, never the family — "the
@@ -85,7 +85,7 @@ export type OfferId = 'reserve' | 'founding';
 export const RESERVE_DEADLINE = new Date('2026-11-30T23:59:59-08:00');
 export const RESERVE_DEADLINE_LABEL = '30 November';
 
-/** True while the dollar still holds the 30%. */
+/** True while the dollar still holds its discount. */
 export const reserveDiscountOpen = (now = Date.now()): boolean => now <= RESERVE_DEADLINE.getTime();
 
 /**
@@ -123,6 +123,14 @@ const FAMILY = 229;
 const money = (n: number) => `$${Number.isInteger(n) ? n : n.toFixed(2)}`;
 const off = (price: number, pct: number) => Math.round(price * (100 - pct)) / 100;
 
+/**
+ * Each offer's discount, stated once. The held prices below are derived from
+ * these — they used to repeat the percentage by hand, and changing the
+ * dollar from 30% to 15% left the cards still quoting 30% prices.
+ */
+const RESERVE_DISCOUNT = 15;
+const FOUNDING_DISCOUNT = 50;
+
 export const FULL_PRICE = { individual: money(INDIVIDUAL), family: money(FAMILY) } as const;
 
 type Offer = {
@@ -147,9 +155,12 @@ export const OFFERS: Record<OfferId, Offer> = {
         name: 'Reserve',
         price: '$1',
         amount: 1,
-        discount: 30,
-        individual: money(off(INDIVIDUAL, 30)),
-        family: money(off(FAMILY, 30)),
+        /* 30% until 2026-09-29, when the team cut it to 15%: 30% was giving
+           away too much for a dollar, and a wider gap to the founding 50%
+           makes the $29 the better-looking choice for anyone who is sure. */
+        discount: RESERVE_DISCOUNT,
+        individual: money(off(INDIVIDUAL, RESERVE_DISCOUNT)),
+        family: money(off(FAMILY, RESERVE_DISCOUNT)),
         places: null,
         link: '',
         open: true,
@@ -159,9 +170,9 @@ export const OFFERS: Record<OfferId, Offer> = {
         name: 'Founding Family',
         price: '$29',
         amount: 29,
-        discount: 50,
-        individual: money(off(INDIVIDUAL, 50)),
-        family: money(off(FAMILY, 50)),
+        discount: FOUNDING_DISCOUNT,
+        individual: money(off(INDIVIDUAL, FOUNDING_DISCOUNT)),
+        family: money(off(FAMILY, FOUNDING_DISCOUNT)),
         places: 100,
         link: '',
         open: true,
@@ -171,8 +182,8 @@ export const OFFERS: Record<OfferId, Offer> = {
 
 /** What is left to pay at launch for a founding family's first year — the $29 counts. */
 export const FOUNDING_BALANCE = {
-    individual: money(off(INDIVIDUAL, 50) - OFFERS.founding.amount),
-    family: money(off(FAMILY, 50) - OFFERS.founding.amount),
+    individual: money(off(INDIVIDUAL, FOUNDING_DISCOUNT) - OFFERS.founding.amount),
+    family: money(off(FAMILY, FOUNDING_DISCOUNT) - OFFERS.founding.amount),
 } as const;
 
 export const isOfferLive = (id: OfferId): boolean => OFFERS[id].open && Boolean(OFFERS[id].link);

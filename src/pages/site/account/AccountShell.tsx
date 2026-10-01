@@ -317,18 +317,22 @@ const Page = styled.section`
       color-mix(in srgb, ${color.primary} 80%, transparent);
     transition: background ${motion.slow};
   }
+  /* The coin, with the site's own arrow drawn into it — /start's (Pass 13d),
+     which replaced a Unicode "→" that every platform draws differently. */
   .card form > button[type="submit"]::after,
   .card .go::after {
-    content: "→";
-    display: grid;
-    place-items: center;
+    content: "";
+    display: block;
     width: 42px;
     height: 42px;
+    flex: none;
     border-radius: 50%;
-    background: ${color.gold};
-    color: ${color.primary};
-    font: 400 18px/1 ${font.body};
-    letter-spacing: 0;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M3 10h13m-5-5 5 5-5 5' stroke='${encodeURIComponent(
+          color.primary,
+        )}' stroke-width='1.6'/%3E%3C/svg%3E")
+        center / 20px 20px no-repeat,
+      ${color.gold};
     transition: transform ${motion.reveal};
   }
   .card form > button[type="submit"]:hover,

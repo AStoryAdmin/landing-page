@@ -1180,8 +1180,8 @@ function EndRight() {
         The story <em>keeps going.</em>
       </h3>
       <p className="because">Because so do you.</p>
-      <Link className="begin" to="/start" onClick={(e) => e.stopPropagation()}>
-        Join the waitlist <ArrowIcon />
+      <Link className="begin" to="/reserve" onClick={(e) => e.stopPropagation()}>
+        Reserve for $1 <ArrowIcon />
       </Link>
     </div>
   );

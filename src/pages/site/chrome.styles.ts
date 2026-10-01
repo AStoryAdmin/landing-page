@@ -288,7 +288,7 @@ export const HeaderShell = styled.header`
     text-transform: uppercase;
   }
 
-  /* Join the waitlist: the site's primary pill, a size smaller. */
+  /* Reserve for $1: the site's primary pill, a size smaller. */
   .gf-button {
     display: inline-flex;
     align-items: center;

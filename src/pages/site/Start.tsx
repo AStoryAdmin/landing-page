@@ -12,7 +12,7 @@
  * the done state); this page only restyles it from the outside. Plan and
  * intent are still read from the URL. Complete without motion.
  */
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import LeadForm from "../../components/ui/LeadForm";
@@ -361,6 +361,14 @@ export default function Start() {
   const source = planLabel ? `start:plan:${plan}` : "start:hero";
   const ref = useReveals<HTMLElement>();
   const demo = intent === "demo";
+
+  /* The waitlist became /reserve on 2026-09-29 — $1 to hold a place, or $29
+     to start now. Old links here (ads, emails, bookmarks, the plan buttons'
+     fallback) land there with their plan; only "request a demonstration"
+     still uses this page. */
+  if (!demo) {
+    return <Navigate to={`/reserve${plan ? `?plan=${encodeURIComponent(plan)}` : ""}`} replace />;
+  }
 
   return (
     <Page ref={ref} aria-labelledby="start-title">

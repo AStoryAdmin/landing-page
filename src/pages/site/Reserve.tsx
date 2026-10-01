@@ -2,7 +2,7 @@
  * /reserve — two ways in before launch. It replaced the waitlist on
  * 2026-09-29; every "Reserve for $1" button on the site lands here.
  *
- *   Reserve, $1           a place in line and 30% off the first year
+ *   Reserve, $1           a place in line and 15% off the first year
  *   Founding Family, $29  start now, set up by hand, half off the first year
  *
  * The offers live in lib/founding.ts and nowhere else; this page presents
