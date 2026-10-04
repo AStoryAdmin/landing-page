@@ -4,7 +4,9 @@ const SITE = (process.env.VITE_SITE_URL ?? 'https://astoryapp.com').replace(
     /\/$/,
     '',
 );
-const lastmod = '2026-09-16';
+/* When the pages last changed in substance — move it forward with a real
+   content change, not every build, so the sitemap is not noise in every diff. */
+const lastmod = '2026-10-04';
 writeFileSync(
     'public/sitemap.xml',
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +

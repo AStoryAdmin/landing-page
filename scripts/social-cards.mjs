@@ -39,7 +39,7 @@ for (const item of all) {
     .toBuffer({ resolveWithObject: true });
   const layers = [
     { input: mark, left: 54, top: 47 },
-    { input: await text(item.name.toUpperCase(), 15), left: 56, top: 169 },
+    { input: await text((item.card ?? item.name).toUpperCase(), 15), left: 56, top: 169 },
     {
       input: photo.data,
       left: 632 + Math.floor((542 - photo.info.width) / 2),

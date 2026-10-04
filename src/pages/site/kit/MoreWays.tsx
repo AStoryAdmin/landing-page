@@ -42,7 +42,9 @@ const Section = styled(Chapter)`
     font: 600 11px/1 ${font.body};
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--mark, ${color.accentText});
+    /* accentText, not the ground's mark: terracotta is 4.2:1 on ivory, under
+       the 4.5:1 that 11px text needs. */
+    color: ${color.accentText};
   }
   .three h3 {
     margin-top: 14px;

@@ -36,3 +36,7 @@ HANDOFF.md
 
 # Temporary local font conversion runtime
 qa/font-tools/
+
+# Written by `npm run check` on every run; reports, not source.
+qa/definitive/source-comparison.json
+qa/greenfield/lead-contracts.json

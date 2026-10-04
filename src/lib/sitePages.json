@@ -101,7 +101,8 @@
   {
     "path": "/reserve",
     "name": "Reserve",
-    "og": "start",
+    "card": "Before launch · Reserve for $1",
+    "og": "reserve",
     "photo": "05",
     "phrase": [
       "Hold your place",

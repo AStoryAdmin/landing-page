@@ -294,11 +294,20 @@ const actionBase = css`
   min-height: 54px;
   padding: 0 30px;
   border-radius: 999px;
-  font: 600 13px/1 ${font.body};
+  font: 600 13px/1.25 ${font.body};
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
+  /* On a phone a long label wraps inside the pill instead of pushing the
+     page sideways (a guide's "See how a memory takes shape" did,
+     2026-10-04). Phones only: on wider screens nowrap keeps a row of
+     buttons from squeezing one into two lines. */
+  max-width: 100%;
+  ${media.sm} {
+    white-space: normal;
+    text-wrap: balance;
+  }
   cursor: pointer;
   /*
    * A press answers the hand, not the scroll. Arrivals are authored long and
