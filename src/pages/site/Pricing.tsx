@@ -28,6 +28,7 @@ import {
   OTHER_PLANS,
   PLANS,
   BOOK,
+  BOOK_EDITIONS,
   START,
 } from "../../lib/pricing";
 import { anyCheckoutLive, buyLabel, checkoutFor } from "../../lib/checkout";
@@ -466,6 +467,98 @@ const Book = styled(Chapter)`
   .book p + p {
     margin-top: 12px;
   }
+  .editions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 2vw, 24px);
+    margin: clamp(48px, 6vw, 88px) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .editions li {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(22px, 2.4vw, 32px);
+    background: ${color.paperPure};
+    box-shadow: 0 1px 2px rgba(42, 31, 24, 0.06);
+  }
+  .editions .badge {
+    font: 600 11px/1 ${font.body};
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: ${color.accentText};
+    min-height: 11px;
+  }
+  .editions h3 {
+    margin-top: 12px;
+    font: 400 ${display.sm} / 1.15 ${font.display};
+    color: ${color.primary};
+  }
+  .editions .cost {
+    margin-top: 10px;
+    font: 400 28px/1 ${font.display};
+    color: ${color.primary};
+  }
+  .editions .cost small {
+    margin-left: 8px;
+    font: 400 14px/1.4 ${font.body};
+    color: ${color.bodyMuted};
+  }
+  .editions .tag {
+    margin-top: 10px;
+    font: italic 400 17px/1.45 ${font.display};
+    color: ${color.primaryMid};
+  }
+  .editions ul {
+    flex: 1;
+    display: grid;
+    gap: 8px;
+    align-content: start;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .editions ul li {
+    padding: 0 0 0 16px;
+    background: none;
+    box-shadow: none;
+    position: relative;
+    font: 400 15px/1.5 ${font.body};
+    color: ${color.body};
+  }
+  .editions ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 7px;
+    height: 1px;
+    background: ${color.accent};
+  }
+  .editions .when {
+    margin-top: 16px;
+    font: 500 13px/1.4 ${font.body};
+    color: ${color.bodyMuted};
+  }
+  .members {
+    margin-top: clamp(28px, 3vw, 40px);
+    padding: 20px 24px;
+    border-left: 2px solid ${color.gold};
+    background: ${color.paperPure};
+    font: 400 17px/1.6 ${font.body};
+    color: ${color.body};
+    max-width: 72ch;
+  }
+  ${media.lg} {
+    .editions {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  ${media.sm} {
+    .editions {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
   ${media.md} {
     .book {
       grid-template-columns: minmax(0, 1fr);
@@ -579,10 +672,19 @@ const ROWS: { label: string; cells: [string, string?][]; yes?: boolean }[] = [
   {
     label: "The printed book",
     cells: [
-      [`${BOOK.price}, shipped`, "Whenever you want one"],
-      ["Included", "One with the pass · you pay shipping"],
-      ["Included", "One every year · you pay shipping"],
-      ["Included", "One a year for each storyteller · you pay shipping"],
+      ["Print at home, free", `Printed editions from ${BOOK.from}`],
+      ["Classic Hardcover included", "One with the pass · you pay shipping"],
+      ["Classic Hardcover included", "One every year · you pay shipping"],
+      ["Classic Hardcover included", "One a year for each storyteller"],
+    ],
+  },
+  {
+    label: "Digital Edition",
+    cells: [
+      [BOOK_EDITIONS[1].price, "Print-ready, for any print shop"],
+      ["Included"],
+      ["Included"],
+      ["Included"],
     ],
   },
   {
@@ -666,7 +768,7 @@ export default function Pricing() {
                 <div className="bundle">
                   <p>
                     {p.book}
-                    <small>No page limit · you pay only the shipping</small>
+                    <small>Plus the Digital Edition · you pay only the shipping</small>
                   </p>
                 </div>
               </article>
@@ -861,17 +963,43 @@ export default function Pricing() {
               Printed when a chapter is worth <em>holding.</em>
             </Statement>
             <p className="book-price" data-rise>
-              Included <span>with Individual, Family and Express</span>
+              Free <span>to print at home — or six ways to hold it</span>
             </p>
             <p data-rise>
-              {BOOK.allowance}. {BOOK.pages}, and you pay only the shipping.
-              On Free and Monthly it is {BOOK.price}, shipped. {BOOK.ships}.
+              From a PDF you print at the library to a linen Heirloom in its
+              box, or an editor of ours doing all of it. {BOOK.pages}.
             </p>
             <p data-rise>
               Choose the stories and photographs whenever you’re ready. The
-              archive keeps growing afterwards. {BOOK.opens}
+              archive keeps growing afterwards, and the book can be printed
+              again.
             </p>
           </div>
+        </Frame>
+        <Frame>
+          <ul className="editions" aria-label="Book editions">
+            {BOOK_EDITIONS.map((e) => (
+              <li key={e.id} data-rise>
+                <span className="badge">{e.badge ?? ""}</span>
+                <h3>{e.name}</h3>
+                <p className="cost">
+                  {e.price}
+                  {e.extra && <small>{e.extra} each extra copy</small>}
+                </p>
+                <p className="tag">{e.tagline}</p>
+                <ul>
+                  {e.includes.map((x) => (
+                    <li key={x}>{x}</li>
+                  ))}
+                </ul>
+                <p className="when">{e.delivery}</p>
+              </li>
+            ))}
+          </ul>
+          <p className="members" data-rise>
+            <strong>With a plan:</strong> {BOOK.members}{" "}
+            {BOOK.allowance}. Ordering opens soon.
+          </p>
         </Frame>
       </Book>
     </>

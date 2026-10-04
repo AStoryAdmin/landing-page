@@ -35,19 +35,19 @@
  *    install the app. Free never runs out, so nobody loses an archive by not
  *    deciding.
  *
- * 4. The printed book comes with the membership: one hardcover a year on
- *    Individual, one a year for each storyteller on Family, one with each
- *    Express pass, with no page limit — a member pays only the shipping. On
- *    Free and Monthly it is a flat price, shipped. Extra copies are not sold
- *    yet. This mirrors the app's supabase/functions/_shared/bookAllowance.js
- *    and create-book-checkout, decided 2026-09-28.
+ * 4. The book comes in six editions, from free to done-for-you, mirroring
+ *    the app's supabase/functions/_shared/bookCatalog.js (added 2026-10-02):
+ *    print at home free, a print-ready Digital Edition, Softcover, Classic
+ *    Hardcover, Heirloom, and a Full-Service Legacy Edition with an editor.
+ *    Every membership includes a Classic Hardcover a year (one per
+ *    storyteller on Family, one per Express pass) — or its value toward a
+ *    finer edition — plus the Digital Edition; a member pays only shipping.
+ *    The allowance is bookAllowance.js; the words are the app's planPerks.js.
  *
- *    Until 2026-10-01 this file sold something else: "with the book" bundles
- *    at $154 and $319, a 40-page cap, and $0.75 a page after it. The app
- *    never charged any of that — the per-page line was copy only — and the
- *    bundles would have put a physical book inside an in-app purchase, which
- *    the App Store does not allow (guideline 3.1.3(e)). BOOK below is the
- *    one place the site states it now.
+ *    History, so it is not repeated: until 2026-10-01 this file sold "with
+ *    the book" bundles at $154 and $319, a 40-page cap and $0.75 a page
+ *    after it. The app never charged any of that, and a bundle would have
+ *    put a physical book inside an in-app purchase (App Store 3.1.3(e)).
  *
  * 5. Nobody is ever charged per family member. Storytellers are metered
  *    because call minutes scale with them. Everyone else — reading,
@@ -106,7 +106,7 @@ export const PLANS: Plan[] = [
             'Unlimited photo uploads',
             'Invite the whole family to read and contribute, free',
         ],
-        book: 'A printed hardcover every year, included',
+        book: 'A Classic Hardcover every year, or its $69 toward a finer edition',
         featured: true,
     },
     {
@@ -128,7 +128,7 @@ export const PLANS: Plan[] = [
             'Unlimited photo uploads',
             'One shared archive — invite anyone to read and contribute, free',
         ],
-        book: 'A printed hardcover for each storyteller, every year',
+        book: 'A Classic Hardcover for each storyteller every year, up to three',
     },
     {
         id: 'express',
@@ -148,7 +148,7 @@ export const PLANS: Plan[] = [
             'Unlimited photo uploads',
             'One storyteller',
         ],
-        book: 'A printed hardcover with the pass',
+        book: 'A Classic Hardcover with the pass, or its $69 toward a finer edition',
         utility: true,
     },
 ];
@@ -159,7 +159,7 @@ export const OTHER_PLANS = [
         id: 'monthly' as const,
         label: 'Monthly',
         price: '$19.99/mo',
-        sub: 'No yearly commitment · the book is $69',
+        sub: 'No yearly commitment · the Digital Edition included, printed books from $39',
     },
     {
         id: 'free' as const,
@@ -188,7 +188,7 @@ export const FREE_TIER = {
         'Unlimited writing in your own words',
         'Unlimited family members reading and contributing',
         'Five photo uploads a week',
-        'A printed book for $69, whenever you want one',
+        'The whole book to print at home, free',
     ],
     excludes: 'Guided AI calls, unlimited photos, and the full 504-question bank open by chapter',
 } as const;
@@ -204,23 +204,107 @@ export const PRICE = {
 
 /**
  * ─────────────────────────────────────────────────────────────────────────
- * THE BOOK, AS THE APP SELLS IT. The server decides who pays what
- * (bookAllowance.js); these lines only say it. The shipping amount is not
+ * THE BOOK, AS THE APP SELLS IT. Every edition and price below is the
+ * app's bookCatalog.js default; the server can override a price
+ * (BOOK_PRICES_JSON), and the app always shows what the server says. If a
+ * price moves there, move it here. The members' shipping amount is not
  * quoted: it is a server setting (BOOK_SHIPPING_CENTS) to be confirmed
  * against the print company's rates, and the app shows it before checkout.
  * ─────────────────────────────────────────────────────────────────────────
  */
+export type BookEdition = {
+    id: 'home' | 'digital' | 'softcover' | 'hardcover' | 'heirloom' | 'legacy';
+    name: string;
+    price: string;
+    /** Each further copy of the same book, where copies are sold. */
+    extra?: string;
+    badge?: string;
+    tagline: string;
+    includes: string[];
+    delivery: string;
+};
+
+export const BOOK_EDITIONS: BookEdition[] = [
+    {
+        id: 'home',
+        name: 'Print at home',
+        price: 'Free',
+        tagline: 'The whole book as a PDF, right now.',
+        includes: ['Every memory and photograph, laid out as the book', 'Print it yourself, or keep it on your phone'],
+        delivery: 'Instantly',
+    },
+    {
+        id: 'digital',
+        name: 'Digital Edition',
+        price: '$19',
+        tagline: 'Print-shop ready, to print anywhere.',
+        includes: [
+            'A print-ready PDF for any print shop or library',
+            'The keepsake cover as its own file, laid flat',
+            'Download again any time, as the story grows',
+        ],
+        delivery: 'Instantly',
+    },
+    {
+        id: 'softcover',
+        name: 'Softcover',
+        price: '$39',
+        extra: '$29',
+        tagline: 'A paperback for every sibling’s shelf.',
+        includes: ['Matte softcover, full colour inside', 'Every memory, every photograph, the listening codes'],
+        delivery: 'Ships in 7–10 days',
+    },
+    {
+        id: 'hardcover',
+        name: 'Classic Hardcover',
+        price: '$69',
+        extra: '$49',
+        badge: 'Most chosen',
+        tagline: 'The book, bound to last.',
+        includes: ['Case-bound hardcover with the keepsake cover', 'Heavy paper, full colour, every listening code'],
+        delivery: 'Ships in 7–10 days',
+    },
+    {
+        id: 'heirloom',
+        name: 'Heirloom Edition',
+        price: '$149',
+        extra: '$119',
+        badge: 'The gift',
+        tagline: 'Made to be handed down.',
+        includes: [
+            'Linen hardcover, name foil-stamped on the spine',
+            'Archival paper, satin ribbon marker',
+            'Presentation box, with a dedication card in your words',
+        ],
+        delivery: 'Ships in 2–3 weeks',
+    },
+    {
+        id: 'legacy',
+        name: 'Full-Service Legacy Edition',
+        price: '$499',
+        badge: 'We do everything',
+        tagline: 'A person of ours, start to finish.',
+        includes: [
+            'Your own editor reads and gently edits every memory',
+            'Up to 50 old photographs restored',
+            'A design call with you, and a proof copy before printing',
+            'Three Heirloom copies in their boxes, sent to up to three homes',
+        ],
+        delivery: 'Ready in 6–8 weeks',
+    },
+];
+
+/** The book in sentences, for pages that only mention it. */
 export const BOOK = {
-    /** Free and Monthly: the flat price, shipping included (LEGACY_BOOK_PRICE_CENTS). */
-    price: '$69',
-    priceNote: 'on Free and Monthly, shipped',
-    members: 'Included with Individual, Family and Express — you pay only the shipping',
+    /** Printed editions start here and run to the Legacy Edition. */
+    from: '$39',
+    members:
+        'Every membership includes a Classic Hardcover — or its $69 toward a finer edition — and the Digital Edition. You pay only the shipping.',
     allowance: 'One a year on Individual, one a year for each storyteller on Family, one with each Express pass',
     pages: 'Every page of it — there is no page limit',
-    ships: 'Ships to the US and Canada',
-    extra: 'Extra copies are not sold yet — we are working on it',
-    /** BOOK_ORDERING_OPEN is off until a print company is set up. */
-    opens: 'Hardcover ordering opens soon. The whole book can always be saved as a PDF or printed at home.',
+    ships: 'Printed editions ship to the US and Canada, with shipping included when you buy one',
+    /** BOOK_ORDERING_OPEN is off in the app until a print company is set up. */
+    opens: 'Printed editions open for ordering soon. The whole book can always be saved as a PDF or printed at home, free.',
 } as const;
 
 /**

@@ -57,6 +57,8 @@ const Contribute = lazyRoute(
   "/contribute/:slug",
   () => import("./components/contribute"),
 );
+/* The listening codes printed in a book. See pages/site/Listen.tsx. */
+const Listen = lazyRoute("/l", () => import("./pages/site/Listen"));
 const Guides = lazyRoute("/guides", () => import("./pages/site/Guides"));
 const Guide = lazyRoute("/guides/:slug", () => import("./pages/site/Guide"));
 const Thanks = lazyRoute("/thanks", () => import("./pages/site/Thanks"));
@@ -157,6 +159,7 @@ function App() {
         <Route element={<BareLayout />}>
           <Route path="/p/:slug" element={<PublicStory />} />
           <Route path="/contribute/:slug" element={<Contribute />} />
+          <Route path="/l" element={<Listen />} />
         </Route>
         <Route element={<MarketingLayout />}>
           <Route path="/" element={<Home />} />
@@ -189,6 +192,9 @@ function App() {
           <Route path="/signup" element={<Legacy to="/sign-up" />} />
           <Route path="/signin" element={<Legacy to="/sign-in" />} />
           <Route path="/login" element={<Legacy to="/sign-in" />} />
+          {/* The app's legal links, as older builds spell them. */}
+          <Route path="/terms.html" element={<Legacy to="/terms" />} />
+          <Route path="/privacy.html" element={<Legacy to="/privacy" />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

@@ -122,6 +122,10 @@ for (const route of ROUTES) {
     const dir = route === '/' ? dist : join(dist, route);
     mkdirSync(dir, { recursive: true });
     writeFileSync(join(dir, 'index.html'), html);
+    /* The app linked its legal pages as /terms.html and /privacy.html (its
+       lib/links.js, and builds already in people's hands). Same page at that
+       address too; App.tsx sends the browser on to /terms once React boots. */
+    if (route === '/terms' || route === '/privacy') writeFileSync(join(dist, route.slice(1) + '.html'), html);
     console.log(
         `prerendered ${route.padEnd(16)} ${(html.length / 1024).toFixed(0)} KB`,
     );

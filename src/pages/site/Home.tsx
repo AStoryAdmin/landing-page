@@ -11,6 +11,7 @@ import FamilyBook from "./home/FamilyBook";
 import Founders from "./home/Founders";
 import StepOne from "./home/StepOne";
 import WhereWeSit from "./home/WhereWeSit";
+import MoreWays from "./kit/MoreWays";
 
 /**
  * Pass 11. The homepage carries the whole idea once, in the order a visitor
@@ -37,6 +38,7 @@ export default function Home() {
       <WhatGetsLost />
       <ThreeCalls />
       <EveryVoice />
+      <MoreWays ground="ivory" />
       <FamilyBook />
       <Founders />
       <StepOne />

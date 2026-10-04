@@ -18,6 +18,7 @@
     "logo": "node scripts/trace-logo.mjs",
     "social": "node scripts/social-cards.mjs",
     "test:contracts": "node qa/greenfield/lead-contracts.mjs",
+    "verify:live": "node scripts/verify-live.mjs",
     "check": "npm run lint && npm run test:contracts && npm run build:static && node qa/definitive/production-contracts.mjs"
   },
   "dependencies": {

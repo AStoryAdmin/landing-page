@@ -1381,9 +1381,9 @@ export default function FamilyBook() {
         <div className="print-line">
           <p>
             Some chapters deserve to leave the screen. When one is ready, make
-            it a volume — <b>a printed hardcover every year</b> with a plan, or{" "}
-            {BOOK.price} on its own. The archive keeps growing after the book is
-            printed.
+            it a volume — <b>a Classic Hardcover comes with every plan</b>, or
+            print it at home free. Printed editions from {BOOK.from}. The archive
+            keeps growing after the book is printed.
           </p>
           <TextLink to="/pricing#book">
             See book options <ArrowIcon />

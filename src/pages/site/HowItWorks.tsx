@@ -39,6 +39,7 @@ import { AppShot, Phone } from "./app/Phone";
 import { CallScreen, IncomingScreen } from "./app/screens";
 import { ArrowIcon, Invitation, PageOpening, Picture, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
+import MoreWays from "./kit/MoreWays";
 import {
   Chapter,
   Eyebrow,
@@ -1302,6 +1303,8 @@ export default function HowItWorks() {
         </Frame>
       </Person>
 
+      <MoreWays ground="sand" />
+
       <Volume ref={volume} $ground="paper" aria-labelledby="volume-title">
         <Frame className="vol">
           <div data-print>
@@ -1317,9 +1320,9 @@ export default function HowItWorks() {
             </Statement>
             <p className="price" data-rise>
               A beautifully bound edition of the stories, photographs and voices
-              that shaped it — <b>a hardcover every year</b> with a plan, or{" "}
-              {BOOK.price} on its own. The archive keeps growing after the book
-              is printed.
+              that shaped it — <b>a Classic Hardcover comes with every plan</b>,
+              or print it at home free. Printed editions from {BOOK.from}. The
+              archive keeps growing after the book is printed.
             </p>
             <div className="links" data-rise>
               <TextLink to="/pricing#book">

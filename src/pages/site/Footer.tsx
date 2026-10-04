@@ -34,6 +34,7 @@ export default function Footer() {
               <Link to="/pricing">Pricing</Link>
               <Link to="/compare">Compare</Link>
               <Link to="/reserve">Reserve for $1</Link>
+              <Link to="/sign-in">Sign in</Link>
             </div>
             <div>
               <h2>Help</h2>

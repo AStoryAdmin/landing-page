@@ -51,6 +51,12 @@ Self-hosted Figtree and Source Serif 4 are retained with their licenses. `assets
 
 `scripts/brand-svg.mjs` shares the browser logo geometry and brand colors. `scripts/brand-assets.mjs` generates custom-A-only icons, and `scripts/social-cards.mjs` uses the complete single-A wordmark.
 
+## Publishing
+
+astoryapp.com is S3 + CloudFront, published by hand: see `docs/PUBLISHING.md` (build with `build:static`, upload all of `dist/`, the CloudFront rule in `deploy/cloudfront-index-rewrite.js`). After every publish, `npm run verify:live` checks the live site page by page.
+
+Added 2026-10-03: `pages/site/Listen.tsx` (`/l`, where the listening codes in a printed book land), `kit/MoreWays.tsx` (family calls by link, the dinner table, WhatsApp imports — on Home and How it works), and `BOOK_EDITIONS` in `lib/pricing.ts` (the app's six book editions).
+
 ## Run and verify
 
 ```sh
