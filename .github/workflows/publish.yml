@@ -1,0 +1,87 @@
+# Publishes astoryapp.com from main, so nobody has to.
+#
+# Until 2026-10 the site was published by hand from someone's computer. Twice
+# that went wrong without anyone noticing: a publish from an out-of-date
+# checkout took /reserve off the site (2026-09-29), and publishes that
+# uploaded only the app shell left every page but the home page answering
+# "404 Not Found". Publishing from main, the same way every time, and checking
+# the result before calling it done, makes both impossible.
+#
+# Every push to main: lint → build every page → upload → clear the CDN →
+# `npm run verify:live`. A red run means the live site is not what main says.
+#
+# Off until it is set up: with no AWS role configured the job is skipped, not
+# failed. One-time setup is in docs/PUBLISHING.md, "Automatic publishing".
+name: Publish astoryapp.com
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One publish at a time; a newer push replaces a queued one.
+concurrency:
+  group: publish-astoryapp
+  cancel-in-progress: false
+
+permissions:
+  id-token: write # to sign in to AWS without a stored password (OIDC)
+  contents: read
+
+jobs:
+  publish:
+    # Repository variables (Settings → Secrets and variables → Actions →
+    # Variables). Read here before the job starts, which is why they are
+    # repository-level and not an environment's.
+    if: ${{ vars.AWS_ROLE_ARN != '' }}
+    runs-on: ubuntu-latest
+    env:
+      VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # The prerender opens each page in a real browser to save its HTML.
+      - run: npx playwright install --with-deps chromium
+
+      - name: Lint and lead-form tests
+        run: npm run lint && npm run test:contracts
+
+      - name: Build every page
+        run: |
+          test -n "$VITE_SUPABASE_URL" || { echo "VITE_SUPABASE_URL is not set: sign-up and accounts would not work."; exit 1; }
+          npm run build:static
+          test -f dist/reserve/index.html || { echo "dist/reserve/index.html missing: the prerender did not run."; exit 1; }
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+
+      # Hashed files never change, so they cache for a year; pages must not,
+      # or a fix waits on every browser's cache.
+      - name: Upload
+        run: |
+          aws s3 sync dist/ "s3://${{ vars.S3_BUCKET }}/" --delete \
+            --exclude "assets/*" \
+            --cache-control "public, max-age=0, must-revalidate"
+          aws s3 sync dist/assets/ "s3://${{ vars.S3_BUCKET }}/assets/" \
+            --cache-control "public, max-age=31536000, immutable"
+
+      - name: Clear CloudFront
+        run: |
+          id=$(aws cloudfront create-invalidation \
+            --distribution-id "${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}" \
+            --paths "/*" --query Invalidation.Id --output text)
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}" --id "$id"
+
+      - name: Check the live site
+        run: npm run verify:live

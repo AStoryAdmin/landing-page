@@ -1,8 +1,61 @@
 # Publishing astoryapp.com
 
-astoryapp.com is S3 + CloudFront, published by hand. Pushing to GitHub does
-**not** change the live site. This is the whole procedure; it takes about ten
-minutes, and the last step tells you whether it worked.
+astoryapp.com is S3 + CloudFront. Once the one-time setup below is done,
+**every push to `main` publishes the site by itself** (GitHub Actions,
+`.github/workflows/publish.yml`) and checks the live result. Until then it is
+published by hand with the procedure further down.
+
+## Automatic publishing — one-time setup (AWS account owner, ~15 minutes)
+
+The workflow signs in to AWS with a role GitHub is allowed to use for this one
+repository's `main` branch — no access keys stored anywhere.
+
+1. **Let GitHub sign in.** AWS → IAM → *Identity providers* → *Add provider* →
+   OpenID Connect. Provider URL `https://token.actions.githubusercontent.com`,
+   audience `sts.amazonaws.com`. (Skip if it already exists.)
+2. **The role.** IAM → *Roles* → *Create role* → *Web identity* → that
+   provider, audience `sts.amazonaws.com`, GitHub organization `AStoryAdmin`,
+   repository `landing-page`, branch `main`. Name it `astoryapp-publish`.
+3. **What it may do** — add this inline policy, with the real bucket name and
+   distribution ID:
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       { "Effect": "Allow", "Action": "s3:ListBucket",
+         "Resource": "arn:aws:s3:::BUCKET" },
+       { "Effect": "Allow", "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
+         "Resource": "arn:aws:s3:::BUCKET/*" },
+       { "Effect": "Allow", "Action": ["cloudfront:CreateInvalidation", "cloudfront:GetInvalidation"],
+         "Resource": "arn:aws:cloudfront::ACCOUNT_ID:distribution/DISTRIBUTION_ID" }
+     ]
+   }
+   ```
+4. **Tell GitHub where to publish.** github.com/AStoryAdmin/landing-page →
+   *Settings* → *Secrets and variables* → *Actions* → **Variables** tab →
+   *New repository variable*, one for each:
+
+   | Variable | Value |
+   |---|---|
+   | `AWS_ROLE_ARN` | the role's ARN, `arn:aws:iam::…:role/astoryapp-publish` |
+   | `S3_BUCKET` | the bucket name |
+   | `CLOUDFRONT_DISTRIBUTION_ID` | the distribution ID (`E…`) |
+   | `AWS_REGION` | the bucket's region (default `us-east-1`) |
+   | `VITE_SUPABASE_URL` | the app's Supabase URL |
+   | `VITE_SUPABASE_ANON_KEY` | the app's public anon key |
+
+   The Supabase values are public keys that ship in the browser anyway, so
+   variables, not secrets, are right for them.
+5. **The CloudFront rule** in "Once: the CloudFront rule" below, if not done.
+6. **First run.** *Actions* → *Publish astoryapp.com* → *Run workflow*. Green
+   means the live site matches `main` and passed `verify:live`. From then on,
+   every push to `main` does the same.
+
+While `AWS_ROLE_ARN` is unset the workflow is skipped (grey), not failed.
+
+## By hand
+
+Only needed before the setup above, or if GitHub Actions is down.
 
 ## Why this document exists
 
