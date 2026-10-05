@@ -18,7 +18,7 @@ export const SITE = {
       "",
     ) ?? "https://astoryapp.com",
   email: "contact@astoryapp.com",
-  tagline: "Your Living Memories",
+  tagline: "Your Family’s Living Memories",
   ogImage: "/og/home.jpg",
   twitter: "@astoryapp",
 } as const;
@@ -142,10 +142,20 @@ export const applySeo = ({
 
 /* ── Reusable structured-data nodes ───────────────────────────────────── */
 
+/**
+ * "A Story" is two of the most common words in English, and other products
+ * use them. These are the names Google can tie to this one — the domain, and
+ * the name with "app" that people type when the plain one fails (2026-10-05).
+ * Add the company's profiles to sameAs as they are made (App Store listing,
+ * Instagram, LinkedIn page): it is how a search engine knows they are all us.
+ */
+export const ALTERNATE_NAMES = ["A Story App", "astoryapp", "A Story: Your Family’s Living Memories"];
+
 export const organizationSchema = () => ({
   "@type": "Organization",
   "@id": `${SITE.url}/#organization`,
   name: SITE.name,
+  alternateName: ALTERNATE_NAMES,
   url: SITE.url,
   email: SITE.email,
   slogan: SITE.tagline,
@@ -161,7 +171,7 @@ export const productSchema = () => ({
   operatingSystem: "Web, iOS, Android",
   url: SITE.url,
   description:
-    "Voice-first life-story capture. A guided AI interviewer, a private family archive, and a printed hardcover memoir.",
+    "A Story calls a parent or grandparent and asks about their life: a guided conversation, a private family archive everyone can add to, and printed books.",
   offers: {
     "@type": "Offer",
     price: PRICE.headlineAmount,
@@ -193,6 +203,7 @@ export const websiteSchema = () => ({
   "@type": "WebSite",
   "@id": SITE.url + "/#website",
   name: SITE.name,
+  alternateName: ALTERNATE_NAMES,
   url: SITE.url,
   publisher: { "@id": SITE.url + "/#organization" },
 });

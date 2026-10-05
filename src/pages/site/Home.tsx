@@ -29,9 +29,13 @@ export default function Home() {
   return (
     <>
       <EditorialSeo
-        title="A Story — most of a life goes undocumented"
+        /* The name, then what it is — the line the app's intro opens on. It
+           replaced "A Story — most of a life goes undocumented" (2026-10-05):
+           a search result is often the first thing anyone reads about us,
+           and it should say what A Story is, not what is lost. */
+        title="A Story — Your Family’s Living Memories"
         path="/"
-        description="A Story calls someone you love, listens, follows up, and keeps what they say in a private living archive the whole family can add to."
+        description="A Story calls a parent or grandparent, asks about their life, and keeps what they tell in a private archive the whole family can add to — and print as a book."
       />
       <Intro />
       <Hero />
