@@ -140,7 +140,7 @@ export default function Founders() {
           </h2>
           <p className="letter">
             Two of my uncles had strokes within months of each other. They lived
-            — I want to say that first, because what follows is not a story
+ - I want to say that first, because what follows is not a story
             about dying.
           </p>
           <p className="letter">

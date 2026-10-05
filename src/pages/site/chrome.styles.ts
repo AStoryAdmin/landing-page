@@ -86,7 +86,7 @@ export const HeaderShell = styled.header`
     align-items: center;
     gap: clamp(18px, 2.2vw, 34px);
   }
-  /* Links: the serif, quietly — no capitals, no lozenge (Pass 11k). The page
+  /* Links: the serif, quietly - no capitals, no lozenge (Pass 11k). The page
      you are on is terracotta with a fine gold rule under the word. */
   .gf-nav-links > a,
   .more-toggle {
@@ -181,7 +181,7 @@ export const HeaderShell = styled.header`
      * The panel belongs to the word that opened it, so it grows from that
      * corner rather than from its own middle, and it never arrives from
      * nothing: 0.97 is a panel already the right shape, just not yet set down.
-     * Leaving is quicker than arriving — the reader has already decided.
+     * Leaving is quicker than arriving - the reader has already decided.
      */
     transform-origin: top right;
     transition:

@@ -690,8 +690,8 @@ const ROWS: { label: string; cells: [string, string?][]; yes?: boolean }[] = [
   {
     label: "Renews",
     cells: [
-      ["Never — it’s free"],
-      ["Never — one time"],
+      ["Never - it’s free"],
+      ["Never - one time"],
       ["Yearly"],
       ["Yearly"],
     ],
@@ -712,7 +712,7 @@ export default function Pricing() {
   return (
     <>
       <EditorialSeo
-        title="A Story pricing — plans, family participation and books"
+        title="A Story pricing - plans, family participation and books"
         path="/pricing"
         description="Compare Individual, Family, Express, Monthly and Free. See call allowances, the printed book every plan includes, and what stays in your archive."
       />
@@ -723,7 +723,7 @@ export default function Pricing() {
             Everyone starts free. Only the <em>calls</em> are paid for.
           </>
         }
-        lead={`${START.headline} — ${START.detail} Inviting family, writing and reading are never charged by the person.`}
+        lead={`${START.headline} - ${START.detail} Inviting family, writing and reading are never charged by the person.`}
       />
 
       <Plans ref={plans} $ground="ivory" aria-label="Plans">
@@ -890,7 +890,7 @@ export default function Pricing() {
               aria-label={buyLabel(
                 selectedId,
                 `Choose ${name}`,
-                `Reserve for $1 — ${name}`,
+                `Reserve for $1 - ${name}`,
               )}
             >
               {buyLabel(selectedId, `Choose ${name}`)} <ArrowIcon />
@@ -924,7 +924,7 @@ export default function Pricing() {
             <details>
               <summary>Is there a free trial?</summary>
               <p>
-                No — there is a Free tier that never runs out. {START.detail}
+                No - there is a Free tier that never runs out. {START.detail}
               </p>
             </details>
             <details>
@@ -963,7 +963,7 @@ export default function Pricing() {
               Printed when a chapter is worth <em>holding.</em>
             </Statement>
             <p className="book-price" data-rise>
-              Free <span>to print at home — or six ways to hold it</span>
+              Free <span>to print at home - or six ways to hold it</span>
             </p>
             <p data-rise>
               From a PDF you print at the library to a linen Heirloom in its

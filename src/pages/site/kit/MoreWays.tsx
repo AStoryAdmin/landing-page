@@ -73,7 +73,7 @@ const WAYS = [
   {
     k: "By link",
     t: "Grandpa joins from a text.",
-    d: "Send him a link on WhatsApp or by text. He taps it, his browser opens, he presses one big button and you’re talking — no app, no account, no password. Your phone listens for you both, and nothing is kept until you’ve read it and saved it.",
+    d: "Send him a link on WhatsApp or by text. He taps it, his browser opens, he presses one big button and you’re talking - no app, no account, no password. Your phone listens for you both, and nothing is kept until you’ve read it and saved it.",
   },
   {
     k: "At the table",
@@ -83,7 +83,7 @@ const WAYS = [
   {
     k: "From the chat",
     t: "Years of the family group chat.",
-    d: "Export a WhatsApp chat — voice messages included, which may be the only recordings of someone’s voice anywhere — and A Story finds the memories in it for you to keep or skip. Journals, notes and old posts come in the same way.",
+    d: "Export a WhatsApp chat - voice messages included, which may be the only recordings of someone’s voice anywhere - and A Story finds the memories in it for you to keep or skip. Journals, notes and old posts come in the same way.",
   },
 ];
 

@@ -50,7 +50,7 @@ const Privacy = () => {
   return (
     <>
       <Seo
-        title="Privacy policy — A Story"
+        title="Privacy policy - A Story"
         description="What we collect, what we never do with it, and how a storyteller stays in control. We do not sell data and we do not train AI models on your stories."
         path="/privacy"
         image="/og/privacy.jpg"
@@ -140,7 +140,7 @@ const Privacy = () => {
                       and the payment details needed to take a payment.
                     </ListItem>
                     <ListItem>
-                      <Bold>The memories themselves</Bold> &mdash; the audio
+                      <Bold>The memories themselves</Bold>  - the audio
                       recordings, transcripts, photographs, and stories that you
                       and your storyteller share. This is the heart of what we
                       hold, and we treat it as highly sensitive personal
@@ -163,10 +163,10 @@ const Privacy = () => {
                   <SectionNum>3</SectionNum>
                   <SectionTitle>How we use your information</SectionTitle>
                   <Paragraph>
-                    We use your information to deliver A Story &mdash; to
+                    We use your information to deliver A Story - to
                     conduct the interviews, build the memory cards and life
                     timeline, produce your printed book, and host your archive
-                    &mdash; as well as to communicate with you, process
+ - as well as to communicate with you, process
                     payments, provide customer support, maintain security, and
                     comply with our legal obligations. We do not sell your
                     personal information or your family's stories.
@@ -180,7 +180,7 @@ const Privacy = () => {
                     Your recordings, transcripts, photographs, and stories are
                     private to the storyteller and the people they choose to
                     share them with. The storyteller is always the one who
-                    decides where a memory goes &mdash; nothing is shared
+                    decides where a memory goes - nothing is shared
                     without their permission. We will never sell your family's
                     stories, show them to advertisers, or use them to train
                     outside artificial-intelligence models. They are not a
@@ -225,9 +225,9 @@ const Privacy = () => {
                   <SectionTitle>How we share information</SectionTitle>
                   <Paragraph>
                     We share information only with service providers who help us
-                    operate A Story &mdash; such as secure cloud hosting, book
+                    operate A Story - such as secure cloud hosting, book
                     printing and fulfillment, payment processing, and analytics
-                    &mdash; and only under agreements that limit their use of it
+ - and only under agreements that limit their use of it
                     to providing services to us. We may also disclose
                     information where we are required to do so by law, or where
                     we believe in good faith that disclosure is necessary to
@@ -256,7 +256,7 @@ const Privacy = () => {
                   <Paragraph>
                     Your archive does not expire when you stop paying. Canceling
                     a plan, or letting a one-time purchase lapse, returns the
-                    account to the Free tier &mdash; the guided AI conversations
+                    account to the Free tier - the guided AI conversations
                     stop, and everything else keeps working. We will not delete
                     an archive or restrict access to material already recorded
                     because a plan ended.
@@ -357,8 +357,8 @@ const Privacy = () => {
                   </Paragraph>
                   <Paragraph>
                     <Bold>Content imported from other services.</Bold> If you
-                    ever choose to connect another account &mdash; a social
-                    profile or a photo library &mdash; anything brought across
+                    ever choose to connect another account - a social
+                    profile or a photo library - anything brought across
                     is treated exactly like anything else in your archive: it
                     belongs to the storyteller, it is never sold, it is never
                     used to train models, and it can be removed at any time. We
@@ -372,11 +372,11 @@ const Privacy = () => {
                     the person who gave you the gift can read, hear or download
                     any of it, and you can change your mind at any time. We will
                     tell them the gift was opened and, if you order one, that
-                    the book is on its way &mdash; nothing about what you said.
+                    the book is on its way - nothing about what you said.
                   </Paragraph>
                   <Paragraph>
                     We may send either of you occasional messages about A Story
-                    &mdash; no spam, just a note when there is something worth
+ - no spam, just a note when there is something worth
                     telling you. You can opt out at any time using the
                     unsubscribe link or by writing to us.
                   </Paragraph>

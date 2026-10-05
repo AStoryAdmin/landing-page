@@ -111,7 +111,7 @@ function BareLayout() {
   return (
     <RouteTransition>
       <Seo
-        title="Family archive — A Story"
+        title="Family archive - A Story"
         description="A family-controlled story and contribution link."
         path="/"
         noindex

@@ -7,7 +7,7 @@ export default function NotFound() {
   return (
     <>
       <Seo
-        title="Page not found — A Story"
+        title="Page not found - A Story"
         path="/404"
         description="This page could not be found."
         noindex

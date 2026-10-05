@@ -175,7 +175,7 @@ const PublicStory = () => {
         )}
 
         <Footer>
-          Preserved with <b>A</b> Story — every family has a story worth
+          Preserved with <b>A</b> Story - every family has a story worth
           preserving.
         </Footer>
       </Inner>

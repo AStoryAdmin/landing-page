@@ -308,7 +308,7 @@ export const MATRIX: { row: string; cells: Mark[] }[] = [
       m(0, "No"),
       m(0, "No"),
       m(2, "Yes / voice clone tiers"),
-      m(0, "No — deliberate"),
+      m(0, "No - deliberate"),
     ],
   },
 ];
@@ -329,11 +329,11 @@ export const WHY_NOT = [
   },
   {
     q: "Why not Heirloom?",
-    a: "Heirloom is moving toward an interactive AI legacy — a Family Council and, at higher tiers, cloned voice. A Story makes a different trust decision. It does not try to recreate a person. It preserves what they actually said, what others actually remember, and the original material underneath it.",
+    a: "Heirloom is moving toward an interactive AI legacy - a Family Council and, at higher tiers, cloned voice. A Story makes a different trust decision. It does not try to recreate a person. It preserves what they actually said, what others actually remember, and the original material underneath it.",
   },
   {
     q: "Why not Ancestry?",
-    a: "Ancestry can tell you who lived at the house. A Story asks why everyone always used the back door. Genealogy reconstructs family history from records. A Story captures first-person context that no census, family tree or DNA match can recover — and captures today’s life before it becomes another historical record.",
+    a: "Ancestry can tell you who lived at the house. A Story asks why everyone always used the back door. Genealogy reconstructs family history from records. A Story captures first-person context that no census, family tree or DNA match can recover - and captures today’s life before it becomes another historical record.",
   },
 ] as const;
 
@@ -357,7 +357,7 @@ export const HOME_COLUMNS = [
 ] as const;
 export const HOME_ROWS: Row[] = [
   {
-    label: "They just answer the phone — nothing to type or record",
+    label: "They just answer the phone - nothing to type or record",
     cells: [2, 2, 1, 2],
   },
   {
@@ -374,7 +374,7 @@ export const HOME_ROWS: Row[] = [
   },
   { label: "Today counts too, not only the past", cells: [2, 1, 1, 1] },
   {
-    label: "Keeps growing after the book — the book isn’t the end",
+    label: "Keeps growing after the book - the book isn’t the end",
     cells: [2, 1, 1, 1],
   },
 ];
@@ -390,7 +390,7 @@ export const COMPARE_COLUMNS = [
 ] as const;
 export const COMPARE_ROWS: Row[] = [
   {
-    label: "They just answer the phone — nothing to type or record",
+    label: "They just answer the phone - nothing to type or record",
     cells: [2, 2, 1, 2, 2, 1, 1],
   },
   {
@@ -410,11 +410,11 @@ export const COMPARE_ROWS: Row[] = [
     cells: [2, 1, 1, 1, 0, 2, 2],
   },
   {
-    label: "Keeps growing after the book — the book isn’t the end",
+    label: "Keeps growing after the book - the book isn’t the end",
     cells: [2, 1, 1, 1, 0, 2, 2],
   },
   {
-    label: "Their real words — never an AI imitation of them",
+    label: "Their real words - never an AI imitation of them",
     cells: [2, 2, 2, 2, 2, 2, 0],
   },
 ];
@@ -423,7 +423,7 @@ export const COMPARE_ROWS: Row[] = [
 export const SWITCH = [
   {
     title: "You want everyone’s version, not just one.",
-    body: "A memoir tells it one way. A Story keeps Mom’s version, her brother’s, and the photograph — side by side, each in their own name.",
+    body: "A memoir tells it one way. A Story keeps Mom’s version, her brother’s, and the photograph - side by side, each in their own name.",
   },
   {
     title: "Your parent won’t use an app.",

@@ -237,7 +237,7 @@ function coverTexture(stack: (HTMLImageElement | null)[]) {
   g.fillStyle = "rgba(243,235,221,0.68)";
   g.font = "500 22px 'Figtree', system-ui, sans-serif";
   let dx = L;
-  for (const ch of "1952 — STILL BEING WRITTEN") {
+  for (const ch of "1952 - STILL BEING WRITTEN") {
     g.fillText(ch, dx, 232);
     dx += g.measureText(ch).width + 4.4;
   }

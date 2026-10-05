@@ -124,8 +124,8 @@ export default function SignUp() {
   return (
     <>
       <Seo
-        title="Create your account — A Story"
-        description="Make your A Story account on the web. It is the same account you sign into in the app — no card, and nobody is called until you say so."
+        title="Create your account - A Story"
+        description="Make your A Story account on the web. It is the same account you sign into in the app - no card, and nobody is called until you say so."
         path="/sign-up"
         noindex
       />
@@ -138,10 +138,10 @@ export default function SignUp() {
             One account, <em>on the web and in the app.</em>
           </>
         }
-        lead="Make it here, now. When it is your turn you sign into the app with the same email and password — nothing to set up twice."
+        lead="Make it here, now. When it is your turn you sign into the app with the same email and password - nothing to set up twice."
         steps={[
           "No card, and nothing charged. An account on its own costs nothing.",
-          "The same account everywhere — made on a laptop, signed into on a phone.",
+          "The same account everywhere - made on a laptop, signed into on a phone.",
           "Nobody is called until you say so.",
         ]}
         label={stage === "form" ? "Your family’s place" : "One more step"}

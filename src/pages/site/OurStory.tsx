@@ -302,7 +302,7 @@ export default function OurStory() {
           >
             <p className="first">
               Two of my uncles had strokes within months of each other. They
-              lived — I want to say that first, because what follows is not a
+              lived - I want to say that first, because what follows is not a
               story about dying.
             </p>
             <p>
@@ -340,7 +340,7 @@ export default function OurStory() {
               start telling it at dinner. Someone else would interrupt, because
               they remembered it differently. An old photograph would come out.
               A name would get corrected. Someone would remember a detail nobody
-              had mentioned before — and suddenly that became the best part.
+              had mentioned before - and suddenly that became the best part.
               Then dinner would end, the photograph would go back in the drawer,
               and{" "}
               <mark>most of what we had just heard stayed in that room.</mark>
@@ -350,7 +350,7 @@ export default function OurStory() {
               parents grew up through the war and the hard subsidy years that
               followed, then made their way to Saigon and built a life from
               almost nothing. That life eventually gave me the chance to come to
-              the United States to study. I knew the outline of our story — the
+              the United States to study. I knew the outline of our story - the
               war, the move, the years of rebuilding, the sacrifices that made
               my own life possible. But the older I got, the more I realised how
               much I didn’t know. What were my grandfathers like as young men?
@@ -362,7 +362,7 @@ export default function OurStory() {
             </p>
             <p>
               I was trained as an engineer, and I spent years on complicated
-              systems — thinking about how every piece fits together, and where
+              systems - thinking about how every piece fits together, and where
               something important can get lost. At some point I started looking
               at my family the same way. We had photographs, names, dates and
               places. What we didn’t have was everything around them: why a
@@ -376,7 +376,7 @@ export default function OurStory() {
               <mark>without asking a family to become archivists?</mark> The
               technology can be sophisticated underneath, but my parents
               shouldn’t have to think about any of it. They should just be able
-              to talk — tell it the way they remember it, disagree, go off
+              to talk - tell it the way they remember it, disagree, go off
               topic, laugh, change their mind halfway through. Those are often
               the parts that tell you who someone really was.
             </p>

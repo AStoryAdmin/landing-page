@@ -100,7 +100,7 @@ const sections: SectionData[] = [
       <>
         <Paragraph>
           Most people who tell their story to A Story never create an account
-          &mdash; they open the link they were given and talk. Where an account
+ - they open the link they were given and talk. Where an account
           does exist, you are responsible for the accuracy of the information
           you provide and for keeping your credentials secure, and for activity
           that occurs under it.
@@ -131,7 +131,7 @@ const sections: SectionData[] = [
         Access is granted by the storyteller and can be withdrawn by them at any
         time, including from the person who gave them the gift. You grant A
         Story a limited, non-exclusive license to use Your Content solely to
-        provide the service &mdash; to conduct interviews, build and host your
+        provide the service - to conduct interviews, build and host your
         archive, produce your book, and support you. We will not sell Your
         Content, show it to advertisers, or use it to train outside
         artificial-intelligence models. The storyteller controls with whom Your
@@ -148,7 +148,7 @@ const sections: SectionData[] = [
         <Paragraph>
           Consent comes from the person speaking. Before recording begins, the
           storyteller is shown what is being captured, who will be able to see
-          it, and how to stop &mdash; and nothing is recorded until they agree.
+          it, and how to stop - and nothing is recorded until they agree.
           Buying the gift does not consent on their behalf, and neither does
           handing them the link.
         </Paragraph>
@@ -217,8 +217,8 @@ const sections: SectionData[] = [
         </Paragraph>
         <Paragraph>
           <Bold>If you started under an earlier offer.</Bold> Where you began
-          using A Story under different terms &mdash; including while it was
-          free during early access &mdash; those terms continue to apply to your
+          using A Story under different terms - including while it was
+          free during early access - those terms continue to apply to your
           archive for as long as you keep it, whatever we charge afterwards. We
           will not move you onto new pricing, and we will not close an archive
           because the offer it was created under has ended. Printed books are
@@ -227,7 +227,7 @@ const sections: SectionData[] = [
         <Paragraph>
           Printed books are produced to order. Once printing has begun a book
           order cannot be canceled, except where required by law or where a book
-          arrives damaged or defective &mdash; in which case we replace it.
+          arrives damaged or defective - in which case we replace it.
           Additional copies are priced separately and charged when ordered.
         </Paragraph>
       </>
@@ -257,7 +257,7 @@ const sections: SectionData[] = [
     title: "Acceptable use",
     content: (
       <Paragraph>
-        You agree not to misuse the service &mdash; for example, by attempting
+        You agree not to misuse the service - for example, by attempting
         to disrupt or interfere with it, accessing it unlawfully or without
         authorization, reverse-engineering it except where permitted by law, or
         using it to upload content that is illegal or that infringes the rights
@@ -285,7 +285,7 @@ const sections: SectionData[] = [
     title: "Third-party services",
     content: (
       <Paragraph>
-        We rely on third parties to operate the service &mdash; for example,
+        We rely on third parties to operate the service - for example,
         hosting, printing, and payment providers. We are not responsible for the
         acts or omissions of these third parties, and their services may be
         subject to their own terms.
@@ -431,7 +431,7 @@ const Terms = () => {
   return (
     <>
       <Seo
-        title="Terms of service — A Story"
+        title="Terms of service - A Story"
         description="The terms that govern use of A Story, written to be read rather than skipped."
         path="/terms"
         image="/og/terms.jpg"
@@ -469,7 +469,7 @@ const Terms = () => {
               points={[
                 {
                   label: "Buying it does not make it yours.",
-                  text: "The person telling the stories owns them and controls access — including whether the buyer ever sees them.",
+                  text: "The person telling the stories owns them and controls access - including whether the buyer ever sees them.",
                 },
                 {
                   label: "Cancel and you keep it all.",
@@ -489,7 +489,7 @@ const Terms = () => {
                 },
                 {
                   label: "Disputes go to arbitration.",
-                  text: "In Michigan, individually — with a small-claims and an opt-out route, both spelled out below.",
+                  text: "In Michigan, individually - with a small-claims and an opt-out route, both spelled out below.",
                 },
               ]}
               caveat="This summary is here to be read, not to be relied on. Where it and the terms below differ, the terms govern."

@@ -18,7 +18,7 @@ export default function Footer() {
           <div>
             <Logo tone="dark" height={42} />
             <p className="footer-line">
-              <span className="nb">Not a memoir to finish —</span>
+              <span className="nb">Not a memoir to finish - </span>
               <br />
               <i>A Story</i> to keep, and to carry on.
             </p>

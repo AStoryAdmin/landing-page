@@ -98,7 +98,7 @@ export const QUIET = {
   date: "Tue, 6 Sep 2022",
   title: "Apple slices, facing up",
   teller: "Sarah",
-  told: "Mia’s first week of school. She’d only eat them if the peel faced up — ‘so they can see out.’",
+  told: "Mia’s first week of school. She’d only eat them if the peel faced up - ‘so they can see out.’",
 } as const;
 
 /** The collaboration example: one memory, started in a call, finished by the family. */
@@ -237,7 +237,7 @@ export const SPREADS = [
     alt: "A parent carrying laundry through a family home",
     caption: "Tuesday, 8:14",
     words:
-      "Nobody photographs laundry on purpose. That’s exactly why it’s here — the radio on, Mia singing the wrong words, the house smelling of clean sheets.",
+      "Nobody photographs laundry on purpose. That’s exactly why it’s here - the radio on, Mia singing the wrong words, the house smelling of clean sheets.",
     by: "Sarah · added this morning",
     also: {
       name: "Mia, 10",

@@ -542,7 +542,7 @@ export default function Intro() {
         <p className="tagline">Your Family’s Living Memories</p>
         <span className="keyline" />
         <p className="motto">
-          Not a memoir to finish —
+          Not a memoir to finish -
           <br />
           <i>A Story</i> to keep, and to carry on.
         </p>

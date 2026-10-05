@@ -634,7 +634,7 @@ const DemoPhone = ({
                       ))}
                     </McTranscript>
                     <McVoiceNote>
-                      Word for word, nothing edited out, and searchable &mdash;
+                      Word for word, nothing edited out, and searchable -
                       the summary above is a layer over this, never a
                       replacement for it.
                     </McVoiceNote>

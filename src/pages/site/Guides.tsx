@@ -33,7 +33,7 @@ const Starters = styled(Chapter)`
   }
   /*
    * Four questions, not four boxes. They sat in identical white cards, each
-   * repeating the same closing sentence — the same words four times is
+   * repeating the same closing sentence - the same words four times is
    * filler, so it is said once under the row instead, and the questions sit
    * on the ground under the house rule.
    */
@@ -181,7 +181,7 @@ export default function Guides() {
   return (
     <>
       <EditorialSeo
-        title="Conversation guides — A Story"
+        title="Conversation guides - A Story"
         path="/guides"
         description="Practical ways to begin family conversations, name the faces in photographs and make room for different recollections."
       />

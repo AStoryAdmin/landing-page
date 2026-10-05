@@ -18,7 +18,7 @@ export default function Organizations() {
   return (
     <>
       <EditorialSeo
-        title="A Story for organizations — keep the experience behind the record"
+        title="A Story for organizations - keep the experience behind the record"
         path="/organizations"
         description="Keep firsthand accounts around a retirement, an anniversary or a founding story. Define participants, consent and access before beginning."
       />
@@ -62,14 +62,14 @@ export default function Organizations() {
             alt: "A person repairing a fan at a workbench",
             eyebrow: "A retirement",
             title: "Before the last day at work.",
-            body: "Make time for the stories behind the procedures — the judgment, relationships and experience a list of responsibilities leaves out.",
+            body: "Make time for the stories behind the procedures - the judgment, relationships and experience a list of responsibilities leaves out.",
           },
           {
             photo: "52",
             alt: "A group of people together",
             eyebrow: "An anniversary",
             title: "A shared history. Several versions.",
-            body: "Invite people from different years and roles. Their accounts sit together, with names and dates attached — an anniversary volume can draw from it without ending it.",
+            body: "Invite people from different years and roles. Their accounts sit together, with names and dates attached - an anniversary volume can draw from it without ending it.",
           },
         ]}
         appShot={{ name: "archive", scroll: true }}
@@ -85,7 +85,7 @@ export default function Organizations() {
           ],
           [
             "A Story does the interviews.",
-            "Guided calls that follow up on what people actually say — at the hour each person chooses.",
+            "Guided calls that follow up on what people actually say - at the hour each person chooses.",
           ],
           [
             "Keep it, or publish from it.",
@@ -102,7 +102,7 @@ export default function Organizations() {
         beginBody="A private working archive and a public anniversary story need different decisions. Program pricing is quoted individually."
         checklist={[
           "Participants and themes",
-          "The audience — and who has access",
+          "The audience - and who has access",
           "Consent, and how sensitive material is handled",
           "Whether anything will be published",
         ]}

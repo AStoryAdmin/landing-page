@@ -33,9 +33,9 @@ export default function Home() {
            replaced "A Story — most of a life goes undocumented" (2026-10-05):
            a search result is often the first thing anyone reads about us,
            and it should say what A Story is, not what is lost. */
-        title="A Story — Your Family’s Living Memories"
+        title="A Story - Your Family’s Living Memories"
         path="/"
-        description="A Story calls a parent or grandparent, asks about their life, and keeps what they tell in a private archive the whole family can add to — and print as a book."
+        description="A Story calls a parent or grandparent, asks about their life, and keeps what they tell in a private archive the whole family can add to - and print as a book."
       />
       <Intro />
       <Hero />

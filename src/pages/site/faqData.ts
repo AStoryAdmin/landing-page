@@ -57,7 +57,7 @@ export const groups = [
       },
       {
         q: "Is there a free trial?",
-        a: `No — there is something better: a Free tier that never runs out. ${START.detail}`,
+        a: `No - there is something better: a Free tier that never runs out. ${START.detail}`,
       },
       {
         q: "How much is the printed book?",

@@ -20,7 +20,7 @@ export const PhoneContainer = styled.div`
   aspect-ratio: 430 / 780;
   /* Both of these are load-bearing now that three phones sit in a row. As a
        flex item, this box's automatic minimum size is its content height, and a
-       running conversation is far taller than 660px — so without min-height the
+       running conversation is far taller than 660px - so without min-height the
        aspect ratio loses and the phone playing grows to twice the height of the
        two beside it. flex-shrink: 0 then stops the same column squeezing it. */
   min-height: 0;

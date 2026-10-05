@@ -211,7 +211,7 @@ const Takeaway = styled.div`
     font-style: italic;
     color: ${color.gold};
   }
-  /* Double hairline with a lozenge — the namecard's ornament. */
+  /* Double hairline with a lozenge - the namecard's ornament. */
   .orn {
     display: flex;
     align-items: center;
@@ -359,7 +359,7 @@ export default function EveryVoice() {
           </Statement>
           <p className="lead">
             Invite the people who were there. Their photos, voices and versions
-            become part of the same story — through one link, no account needed.
+            become part of the same story - through one link, no account needed.
             Nothing replaces anything else, and nothing appears until the
             storyteller says yes.
           </p>

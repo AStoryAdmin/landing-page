@@ -126,7 +126,7 @@ export const PLANS: Plan[] = [
         features: [
             'All 504 questions, every chapter',
             'Unlimited photo uploads',
-            'One shared archive — invite anyone to read and contribute, free',
+            'One shared archive - invite anyone to read and contribute, free',
         ],
         book: 'A Classic Hardcover for each storyteller every year, up to three',
     },
@@ -138,7 +138,7 @@ export const PLANS: Plan[] = [
         amount: '79',
         period: 'one time · about 30 days',
         meter: '140 minutes of guided calls',
-        meterNote: 'Use them whenever you like inside the month — no daily cap',
+        meterNote: 'Use them whenever you like inside the month - no daily cap',
         blurb:
             'For the week everyone is finally in the same house, or the month after a ' +
             'diagnosis. Nothing renews, which also makes it the straightforward one to give ' +
@@ -172,7 +172,7 @@ export const OTHER_PLANS = [
 /** Everyone starts here, including people who never pay. */
 export const START = {
     headline: 'Every account starts on Free',
-    detail: 'No card and no clock. Three guided questions a day and unlimited writing for as long as you like — a plan adds A Story doing the calling.',
+    detail: 'No card and no clock. Three guided questions a day and unlimited writing for as long as you like - a plan adds A Story doing the calling.',
 } as const;
 
 /** What the Free tier actually is, stated plainly rather than as a tease. */
@@ -181,7 +181,7 @@ export const FREE_TIER = {
     blurb:
         'Not a trial that runs out. Three guided questions a day, writing in your own words ' +
         'without limit, the whole family invited free, and a printed book whenever you want ' +
-        'one. What Free does not include is A Story calling you — that is the part with a ' +
+        'one. What Free does not include is A Story calling you - that is the part with a ' +
         'real cost behind it.',
     includes: [
         'Three guided questions a day',
@@ -252,7 +252,7 @@ export const BOOK_EDITIONS: BookEdition[] = [
         extra: '$29',
         tagline: 'A paperback for every sibling’s shelf.',
         includes: ['Matte softcover, full colour inside', 'Every memory, every photograph, the listening codes'],
-        delivery: 'Ships in 7–10 days',
+        delivery: 'Ships in 7-10 days',
     },
     {
         id: 'hardcover',
@@ -262,7 +262,7 @@ export const BOOK_EDITIONS: BookEdition[] = [
         badge: 'Most chosen',
         tagline: 'The book, bound to last.',
         includes: ['Case-bound hardcover with the keepsake cover', 'Heavy paper, full colour, every listening code'],
-        delivery: 'Ships in 7–10 days',
+        delivery: 'Ships in 7-10 days',
     },
     {
         id: 'heirloom',
@@ -276,7 +276,7 @@ export const BOOK_EDITIONS: BookEdition[] = [
             'Archival paper, satin ribbon marker',
             'Presentation box, with a dedication card in your words',
         ],
-        delivery: 'Ships in 2–3 weeks',
+        delivery: 'Ships in 2-3 weeks',
     },
     {
         id: 'legacy',
@@ -290,7 +290,7 @@ export const BOOK_EDITIONS: BookEdition[] = [
             'A design call with you, and a proof copy before printing',
             'Three Heirloom copies in their boxes, sent to up to three homes',
         ],
-        delivery: 'Ready in 6–8 weeks',
+        delivery: 'Ready in 6-8 weeks',
     },
 ];
 
@@ -299,9 +299,9 @@ export const BOOK = {
     /** Printed editions start here and run to the Legacy Edition. */
     from: '$39',
     members:
-        'Every membership includes a Classic Hardcover — or its $69 toward a finer edition — and the Digital Edition. You pay only the shipping.',
+        'Every membership includes a Classic Hardcover - or its $69 toward a finer edition - and the Digital Edition. You pay only the shipping.',
     allowance: 'One a year on Individual, one a year for each storyteller on Family, one with each Express pass',
-    pages: 'Every page of it — there is no page limit',
+    pages: 'Every page of it - there is no page limit',
     ships: 'Printed editions ship to the US and Canada, with shipping included when you buy one',
     /** BOOK_ORDERING_OPEN is off in the app until a print company is set up. */
     opens: 'Printed editions open for ordering soon. The whole book can always be saved as a PDF or printed at home, free.',
@@ -312,7 +312,7 @@ export const BOOK = {
  * replaced, it is one the app already makes on its own pricing screen.
  */
 export const KEEPS_LINE =
-    'The app stays yours either way — keep writing new chapters, free, for life.';
+    'The app stays yours either way - keep writing new chapters, free, for life.';
 
 /**
  * The promise, framed the way the company actually thinks about it.
@@ -328,7 +328,7 @@ export const FOREVER = {
     headline: 'The app is yours. It does not stop being yours.',
     /** True on every plan, including Free, including after a cancellation. */
     kept: [
-        'Keep writing new chapters for as long as you live — unlimited, free, always',
+        'Keep writing new chapters for as long as you live - unlimited, free, always',
         'The archive stays open, searchable, and still growing',
         'Everyone you invited keeps their access and keeps contributing',
         'Every recording, transcript and photo stays yours',
@@ -337,7 +337,7 @@ export const FOREVER = {
     ],
     /** What a plan actually buys, rather than what stopping costs. */
     stops:
-        'A plan buys one thing: A Story doing the asking — calling, listening, following up. ' +
+        'A plan buys one thing: A Story doing the asking - calling, listening, following up. ' +
         'Switch it off and that is all that pauses. You carry on writing, the family carries ' +
         'on adding, the story carries on. Switch it back on whenever there is more you want ' +
         'drawn out of somebody.',

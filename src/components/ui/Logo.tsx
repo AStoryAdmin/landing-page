@@ -41,7 +41,7 @@ export default function Logo({
       to={to}
       $height={height}
       className={className}
-      aria-label="A Story — home"
+      aria-label="A Story - home"
     >
       <svg
         viewBox={mark ? "0 0 420 464" : geometry.viewBox}

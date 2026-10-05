@@ -35,7 +35,7 @@ export default function Account() {
 
   return (
     <>
-      <Seo title="Your account — A Story" description="Your A Story account." path="/account" noindex />
+      <Seo title="Your account - A Story" description="Your A Story account." path="/account" noindex />
       <AccountShell
         labelledBy="account-title"
         photo="34"
@@ -47,7 +47,7 @@ export default function Account() {
         }
         lead="This is the same account you will sign into in the app. We are opening A Story a few families at a time, and we will write to you when it is your turn."
         steps={[
-          "We get in touch when it is your turn — a person, not a system.",
+          "We get in touch when it is your turn - a person, not a system.",
           "You get the app and sign in with this email and password.",
           "You tell it whose story this is, and choose the day their phone first rings.",
         ]}
@@ -57,13 +57,13 @@ export default function Account() {
           holds
             ? "Nothing more to do today. We will email you when payment opens, or when it is your turn."
             : reserveDiscountOpen()
-              ? `Reserve for ${OFFERS.reserve.price} by ${RESERVE_DEADLINE_LABEL} to hold ${OFFERS.reserve.discount}% off your first year — or start now as a founding family.`
-              : `Reserve for ${OFFERS.reserve.price} to hold your place — or start now as a founding family.`
+              ? `Reserve for ${OFFERS.reserve.price} by ${RESERVE_DEADLINE_LABEL} to hold ${OFFERS.reserve.discount}% off your first year - or start now as a founding family.`
+              : `Reserve for ${OFFERS.reserve.price} to hold your place - or start now as a founding family.`
         }
       >
         <dl className="details">
           <dt>Name</dt>
-          <dd>{[account.firstName, account.lastName].filter(Boolean).join(" ") || "—"}</dd>
+          <dd>{[account.firstName, account.lastName].filter(Boolean).join(" ") || " - "}</dd>
           <dt>Email</dt>
           <dd>{account.email}</dd>
           {account.reservedAt && (

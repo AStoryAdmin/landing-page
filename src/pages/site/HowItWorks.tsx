@@ -96,7 +96,7 @@ const STEPS = [
   {
     who: "You",
     title: "Set it up once.",
-    text: "Two minutes on their phone. Choose the hour A Story should ring — that’s your whole job.",
+    text: "Two minutes on their phone. Choose the hour A Story should ring - that’s your whole job.",
   },
   {
     who: "Them",
@@ -106,7 +106,7 @@ const STEPS = [
   {
     who: "A Story",
     title: "It listens, and follows.",
-    text: "Not a questionnaire. It follows what they actually say — or lets go when they say no.",
+    text: "Not a questionnaire. It follows what they actually say - or lets go when they say no.",
   },
   {
     who: "A Story",
@@ -116,7 +116,7 @@ const STEPS = [
   {
     who: "Everyone",
     title: "The family adds theirs.",
-    text: "One link, no account. Their photos and versions sit beside the original — nothing replaces anything.",
+    text: "One link, no account. Their photos and versions sit beside the original - nothing replaces anything.",
   },
 ];
 
@@ -219,7 +219,7 @@ const Walk = styled(Chapter)`
   /*
    * The step you are not on recedes by colour, not by opacity. At 0.3 the
    * heading fell to 1.7:1 against the ivory and the sentence under it to
-   * 1.6 — a reader with low vision lost every step but one. Holding the ink
+   * 1.6 - a reader with low vision lost every step but one. Holding the ink
    * at the lighter chocolates keeps the same recession and stays readable.
    */
   @media (prefers-reduced-motion: no-preference) {
@@ -323,7 +323,7 @@ function Walkthrough() {
             </Statement>
           </div>
           <Lead data-rise>
-            From the first two minutes to the family adding what they remember —
+            From the first two minutes to the family adding what they remember -
             follow it on the phone.
           </Lead>
         </SplitHead>
@@ -1012,7 +1012,7 @@ export default function HowItWorks() {
   return (
     <>
       <EditorialSeo
-        title="How A Story works — a conversation becomes a family archive"
+        title="How A Story works - a conversation becomes a family archive"
         path="/how-it-works"
         description="Set it up once. A Story calls, listens and follows what they actually say. Watch a call, then see what the family receives."
       />
@@ -1023,7 +1023,7 @@ export default function HowItWorks() {
             You make time. A Story does the <em>asking.</em>
           </>
         }
-        lead="Set it up once. After that their phone rings at the hour they chose, and a patient voice asks about their life — then follows whatever they actually say."
+        lead="Set it up once. After that their phone rings at the hour they chose, and a patient voice asks about their life - then follows whatever they actually say."
         actions={
           <>
             <PrimaryLink to="/reserve">
@@ -1060,7 +1060,7 @@ export default function HowItWorks() {
             </div>
             <p className="lead" data-rise>
               Every question comes from the app’s own bank. Each call turns on a
-              different move — pick one and watch.
+              different move - pick one and watch.
             </p>
           </SplitHead>
           <CallTrio />
@@ -1099,7 +1099,7 @@ export default function HowItWorks() {
             </Statement>
             <Lead data-rise>
               The interview only goes a step further once the one before has
-              been answered — which is why the last question lands.
+              been answered - which is why the last question lands.
             </Lead>
           </StackHead>
           <div className="descent">
@@ -1161,7 +1161,7 @@ export default function HowItWorks() {
             </div>
             <Lead data-rise>
               The card is organised so it can be found again. It never replaces
-              what was said — the transcript stays underneath it.
+              what was said - the transcript stays underneath it.
             </Lead>
           </SplitHead>
 
@@ -1178,7 +1178,7 @@ export default function HowItWorks() {
                 <i aria-hidden="true">1</i>The card
               </small>
               <p className="cap">
-                A memory page to read — the date, the chapter, the photographs,
+                A memory page to read - the date, the chapter, the photographs,
                 and who told it.
               </p>
             </article>
@@ -1262,7 +1262,7 @@ export default function HowItWorks() {
             <ol className="steps3" data-rise>
               <li>Open your family’s code in the app.</li>
               <li>They scan it with their phone camera.</li>
-              <li>They land on your family’s story — and can add their own.</li>
+              <li>They land on your family’s story - and can add their own.</li>
             </ol>
           </div>
           <div className="pair" data-rise>
@@ -1296,7 +1296,7 @@ export default function HowItWorks() {
               <li>No password to remember</li>
             </ul>
             <p>
-              The app is installed once — by you, if you like — and after that A
+              The app is installed once - by you, if you like - and after that A
               Story rings them at the hour they chose.
             </p>
           </div>
@@ -1320,7 +1320,7 @@ export default function HowItWorks() {
             </Statement>
             <p className="price" data-rise>
               A beautifully bound edition of the stories, photographs and voices
-              that shaped it — <b>a Classic Hardcover comes with every plan</b>,
+              that shaped it - <b>a Classic Hardcover comes with every plan</b>,
               or print it at home free. Printed editions from {BOOK.from}. The
               archive keeps growing after the book is printed.
             </p>

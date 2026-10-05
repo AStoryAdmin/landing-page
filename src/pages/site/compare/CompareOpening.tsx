@@ -254,7 +254,7 @@ export default function CompareOpening() {
           </h1>
           <p className="lead">
             Most products help one storyteller finish a book. A Story keeps
-            everyone’s version of the same moment — side by side, and still
+            everyone’s version of the same moment - side by side, and still
             growing.
           </p>
         </div>

@@ -30,7 +30,7 @@ const pages: PageData[] = [
   {
     image: "/mission/01-1200.webp",
     alt: "A couple standing on the porch of their home",
-    heading: "1952 — On the porch",
+    heading: "1952 - On the porch",
     quote:
       "“It was small, but everyone knew which window was ours because my mother kept basil on the sill.”",
     pageNumber: "Page 1",
@@ -38,7 +38,7 @@ const pages: PageData[] = [
   {
     image: "/mission/02-1200.webp",
     alt: "A bride and groom at the wedding cake",
-    heading: "1961 — The wedding",
+    heading: "1961 - The wedding",
     quote:
       "“It rained all morning. By noon, the sun came out like it had been waiting for us.”",
     pageNumber: "Page 2",
@@ -46,7 +46,7 @@ const pages: PageData[] = [
   {
     image: "/mission/11-1200.webp",
     alt: "A family playing cards around a table",
-    heading: "1962 — Around the table",
+    heading: "1962 - Around the table",
     quote:
       "“Everyone talked over everyone. That was how you knew the house was full.”",
     pageNumber: "Page 3",
@@ -54,21 +54,21 @@ const pages: PageData[] = [
   {
     image: "/mission/03-1200.webp",
     alt: "A station wagon outside the family home",
-    heading: "1973 — A place of our own",
+    heading: "1973 - A place of our own",
     quote: "“Nobody planned that photo. That is why I love it.”",
     pageNumber: "Page 4",
   },
   {
     image: "/mission/04-1200.webp",
     alt: "A young woman in her graduation gown",
-    heading: "1994 — Graduation day",
+    heading: "1994 - Graduation day",
     quote: "“Nobody planned that photo. That is why I love it.”",
     pageNumber: "Page 5",
   },
   {
     image: "/mission/33-1200.webp",
     alt: "An older mother talking with her adult son",
-    heading: "Today — Still telling it",
+    heading: "Today - Still telling it",
     quote: "“Ask me anything. I remember more than you think.”",
     pageNumber: "Page 6",
   },

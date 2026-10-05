@@ -154,7 +154,7 @@ export async function submitLead(lead: Lead): Promise<LeadResult> {
            is still readable in the Dashboard. */
       const folded = await supabase.from("waitlist_signups").insert({
         ...core,
-        phone: [core.phone, foldedNote(lead)].filter(Boolean).join(" — "),
+        phone: [core.phone, foldedNote(lead)].filter(Boolean).join(" - "),
       });
 
       if (!folded.error) return { ok: true, alreadyKnown: false };

@@ -95,7 +95,7 @@ export default function WhereWeSit() {
           <p className="lead">
             Memoir apps turn one storyteller’s answers into a finished book. A
             Story calls, follows what they say, and keeps every version of the
-            family’s story — and it keeps going.
+            family’s story - and it keeps going.
           </p>
         </SplitHead>
 

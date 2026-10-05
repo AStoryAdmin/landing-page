@@ -189,7 +189,7 @@ export default function SignIn() {
   return (
     <>
       <Seo
-        title="Sign in — A Story"
+        title="Sign in - A Story"
         description="Sign in to your A Story account with the same email and password you use in the app."
         path="/sign-in"
         noindex
@@ -203,7 +203,7 @@ export default function SignIn() {
             Sign in to <em>A Story.</em>
           </>
         }
-        lead="Your reservation, your family link, and — when it opens to you — the app, all on one account."
+        lead="Your reservation, your family link, and - when it opens to you - the app, all on one account."
         label="Welcome"
         heading={head.h}
         intro={head.p(email.trim().toLowerCase())}

@@ -68,7 +68,7 @@ export default function ThreeCalls() {
           </div>
           <p className="calls-lead">
             Some stories only appear because somebody asks twice. Someone lets
-            something slip on the way to answering a different question — A
+            something slip on the way to answering a different question - A
             Story drops its own question and goes after it.
           </p>
         </SplitHead>

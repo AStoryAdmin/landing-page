@@ -148,7 +148,7 @@ export default function AudienceSelector() {
         <Headline>
           A Story can begin with{" "}
           <span style={{ color: color.accentText }}>
-            one person—or a whole community.
+            one person - or a whole community.
           </span>
         </Headline>
         <Grid>

@@ -62,7 +62,7 @@ export default function Listen() {
 
   return (
     <Page>
-      <Seo title="Listening — A Story" path="/l" description="A memory from an A Story book." noindex />
+      <Seo title="Listening - A Story" path="/l" description="A memory from an A Story book." noindex />
       <div role="status">
         <h1>{failed ? "This code didn’t open." : "Opening the recording…"}</h1>
         <p>
