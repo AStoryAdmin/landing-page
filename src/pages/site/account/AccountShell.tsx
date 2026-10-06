@@ -317,7 +317,7 @@ const Page = styled.section`
       color-mix(in srgb, ${color.primary} 80%, transparent);
     transition: background ${motion.slow};
   }
-  /* The coin, with the site's own arrow drawn into it — /start's (Pass 13d),
+  /* The coin, with the site's own arrow drawn into it - /start's (Pass 13d),
      which replaced a Unicode "→" that every platform draws differently. */
   .card form > button[type="submit"]::after,
   .card .go::after {
@@ -483,7 +483,7 @@ export default function AccountShell({
           </ol>
         )}
         <p className="motto" data-rise>
-          Not a memoir to finish — <i>A Story</i> to keep, and to carry on.
+          Not a memoir to finish - <i>A Story</i> to keep, and to carry on.
         </p>
       </div>
 

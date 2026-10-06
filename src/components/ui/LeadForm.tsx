@@ -52,7 +52,7 @@ const COPY: Record<
   start: {
     submit: "Join the waitlist",
     reassure:
-      "No payment, and nothing charged. We call once — if it is not for you, say so and that is the end of it.",
+      "No payment, and nothing charged. We call once - if it is not for you, say so and that is the end of it.",
     heading: "You’re on the list.",
     body: "We have your number. Nothing has been charged, nobody is called, and nothing is set up until we have spoken.",
   },
@@ -153,7 +153,7 @@ const LeadForm = ({
         </p>
         <ol>
           <li>
-            <strong>We call you</strong> when your turn comes round — a person,
+            <strong>We call you</strong> when your turn comes round - a person,
             not a system.
           </li>
           <li>
@@ -218,7 +218,7 @@ const LeadForm = ({
         />
         {invalid === "phone" && (
           <Reassure $onDark={onDark} id={`${uid}-phone-err`}>
-            That does not look like a number we could reach you on &mdash; have
+            That does not look like a number we could reach you on - have
             another look.
           </Reassure>
         )}
@@ -232,7 +232,7 @@ const LeadForm = ({
         <span>
           Email{" "}
           <span className="opt">
-            &mdash; optional, if you would rather we wrote
+             - optional, if you would rather we wrote
           </span>
         </span>
         <input

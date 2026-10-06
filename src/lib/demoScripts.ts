@@ -161,7 +161,7 @@ const faith: Scenario = {
     subject: 'One winter · her mother',
     cover: {
         quote: 'I’d tell her they moved the wall. That’s all. I’d just want her to know they moved the wall.',
-        attribution: 'Rosa, 84 — about a brother who lived four days',
+        attribution: 'Rosa, 84 - about a brother who lived four days',
         lead: 'Her grandson asked for her earliest memory of church. She gave it, and then added eight words she had not planned to say.',
         length: '11 questions · about a minute to watch',
     },
@@ -169,7 +169,7 @@ const faith: Scenario = {
         {
             role: 'ai',
             depth: 1,
-            text: 'Hello — is that Rosa? This is A Story. Your grandson Marco set this up and asked me to call. There’s nothing to prepare, and we can stop whenever you like.',
+            text: 'Hello - is that Rosa? This is A Story. Your grandson Marco set this up and asked me to call. There’s nothing to prepare, and we can stop whenever you like.',
             delay: 500,
         },
         {
@@ -183,8 +183,8 @@ const faith: Scenario = {
             depth: 1,
             source: 'faith-earliest',
             method: 'Open on the easiest rung',
-            stay: 'A warm-up, and the bank means it — answerable on a bad day, by somebody who has just said they are not much of a talker. Nothing is being fished for yet.',
-            text: 'Then I’ll do the asking, and you can put it down any time. What’s your earliest memory of worship — how old were you, and whose hand were you holding?',
+            stay: 'A warm-up, and the bank means it - answerable on a bad day, by somebody who has just said they are not much of a talker. Nothing is being fished for yet.',
+            text: 'Then I’ll do the asking, and you can put it down any time. What’s your earliest memory of worship - how old were you, and whose hand were you holding?',
             delay: 2400,
         },
         {
@@ -198,7 +198,7 @@ const faith: Scenario = {
             depth: 2,
             method: 'Follow the aside, not the answer',
             stay: 'She answered the question in her first sentence and then added eight words to the end of it. A question list takes the answer and moves on. The eight words are the thing she actually put in front of me.',
-            text: 'Rosa — you slipped something in at the end there. The winter she wouldn’t look at Father Dolan. I’d much rather stay with that than move on. What happened that winter?',
+            text: 'Rosa - you slipped something in at the end there. The winter she wouldn’t look at Father Dolan. I’d much rather stay with that than move on. What happened that winter?',
             delay: 2700,
         },
         {
@@ -233,7 +233,7 @@ const faith: Scenario = {
         },
         {
             role: 'user',
-            text: 'Her beads. Her mother’s, from Cork. And she went through them so fast that winter — I remember thinking she was angry at them. I was six. I thought you could be angry at beads.',
+            text: 'Her beads. Her mother’s, from Cork. And she went through them so fast that winter - I remember thinking she was angry at them. I was six. I thought you could be angry at beads.',
             delay: 2900,
         },
 
@@ -242,13 +242,13 @@ const faith: Scenario = {
             depth: 3,
             source: 'faith-grandparent',
             method: 'Draw the person, not the belief',
-            stay: 'Belief can be described. A woman who goes anyway has to be drawn — so the question asks for what she did, and rules out what she said.',
+            stay: 'Belief can be described. A woman who goes anyway has to be drawn - so the question asks for what she did, and rules out what she said.',
             text: 'Which of your elders had the deepest faith? And don’t tell me what they said. Tell me what they did.',
             delay: 2600,
         },
         {
             role: 'user',
-            text: 'Her. And that’s the thing I only understood much later — she was furious with that church for forty years and she never missed a morning in it. My mother could hold both at once. I never learned how to do that.',
+            text: 'Her. And that’s the thing I only understood much later - she was furious with that church for forty years and she never missed a morning in it. My mother could hold both at once. I never learned how to do that.',
             delay: 3000,
         },
 
@@ -258,13 +258,13 @@ const faith: Scenario = {
             source: 'faith-no-answer',
             sensitiveKind: 'private',
             method: 'Offer the exit first',
-            stay: 'Marked sensitive in the bank, so it arrives with permission to refuse it — and the permission comes before the question rather than after. Ten questions in it has been earned. Asked first it would have been an intrusion.',
+            stay: 'Marked sensitive in the bank, so it arrives with permission to refuse it - and the permission comes before the question rather than after. Ten questions in it has been earned. Asked first it would have been an intrusion.',
             text: 'What did you ask for and never receive?',
             delay: 2800,
         },
         {
             role: 'user',
-            text: 'That they’d let him inside the wall. I wrote to them about it, when I was older — for years, on and off. They did change it, in the end. Long after she was dead. Too late to be the slightest use to her.',
+            text: 'That they’d let him inside the wall. I wrote to them about it, when I was older - for years, on and off. They did change it, in the end. Long after she was dead. Too late to be the slightest use to her.',
             delay: 3100,
         },
 
@@ -275,7 +275,7 @@ const faith: Scenario = {
             sensitiveKind: 'loss',
             method: 'The last rung, once it is owed',
             stay: 'Only askable because the four rungs under it were answered. Put in the first minute this gets a polite sentence about heaven. Put here it gets the true one.',
-            text: 'Who do you hope to see again — and what would you say to them first?',
+            text: 'Who do you hope to see again - and what would you say to them first?',
             delay: 2800,
         },
         {
@@ -289,7 +289,7 @@ const faith: Scenario = {
             depth: 5,
             method: 'Say what was kept',
             stay: 'Somebody who has just given away something that cost them should not be thanked and hung up on. The close names the person the call was really about.',
-            text: 'Then that is what we’ll keep, Rosa — in your voice, in your words. Thomas had four days and no headstone, and as of this morning he has a name, a month and a hawthorn tree in your family’s book. That is more than the parish ever gave him.',
+            text: 'Then that is what we’ll keep, Rosa - in your voice, in your words. Thomas had four days and no headstone, and as of this morning he has a name, a month and a hawthorn tree in your family’s book. That is more than the parish ever gave him.',
             delay: 2800,
         },
     ],
@@ -298,14 +298,14 @@ const faith: Scenario = {
     badge: 'Treasured',
     about: 'Thomas lived four days in 1948 and has no headstone. This page is the only place his name is written down.',
     summary:
-        'Rosa’s earliest memory of church is her mother’s hand at six o’clock Mass, before the laundry shift. In the February of 1948 her brother Thomas was born and lived four days; he had not been baptised, so the parish would not bury him inside the churchyard wall, and her father buried him himself under the hawthorn. Her mother never missed a morning Mass afterwards — she moved the family to the back pew, stopped taking Communion, and would not look at Father Dolan. She went through her own mother’s beads from Cork so fast that winter that Rosa, at six, believed you could be angry at beads. Rosa wrote to the diocese about the wall for years. The rule changed long after her mother had died.',
+        'Rosa’s earliest memory of church is her mother’s hand at six o’clock Mass, before the laundry shift. In the February of 1948 her brother Thomas was born and lived four days; he had not been baptised, so the parish would not bury him inside the churchyard wall, and her father buried him himself under the hawthorn. Her mother never missed a morning Mass afterwards - she moved the family to the back pew, stopped taking Communion, and would not look at Father Dolan. She went through her own mother’s beads from Cork so fast that winter that Rosa, at six, believed you could be angry at beads. Rosa wrote to the diocese about the wall for years. The rule changed long after her mother had died.',
     excerpt:
         'She was furious with that church for forty years and she never missed a morning in it. My mother could hold both at once.',
     transcript: [
         {
             who: 'A Story',
             at: '02:14',
-            text: 'Rosa — you slipped something in at the end there. The winter she wouldn’t look at Father Dolan. I’d much rather stay with that than move on. What happened that winter?',
+            text: 'Rosa - you slipped something in at the end there. The winter she wouldn’t look at Father Dolan. I’d much rather stay with that than move on. What happened that winter?',
         },
         {
             who: 'Rosa',
@@ -330,7 +330,7 @@ const faith: Scenario = {
         {
             who: 'Rosa',
             at: '03:44',
-            text: 'Her beads. Her mother’s, from Cork. And she went through them so fast that winter — I remember thinking she was angry at them. I was six. I thought you could be angry at beads.',
+            text: 'Her beads. Her mother’s, from Cork. And she went through them so fast that winter - I remember thinking she was angry at them. I was six. I thought you could be angry at beads.',
         },
         {
             who: 'A Story',
@@ -340,12 +340,12 @@ const faith: Scenario = {
         {
             who: 'Rosa',
             at: '05:49',
-            text: 'That they’d let him inside the wall. I wrote to them about it, when I was older — for years, on and off. They did change it, in the end. Long after she was dead. Too late to be the slightest use to her.',
+            text: 'That they’d let him inside the wall. I wrote to them about it, when I was older - for years, on and off. They did change it, in the end. Long after she was dead. Too late to be the slightest use to her.',
         },
         {
             who: 'A Story',
             at: '07:02',
-            text: 'Who do you hope to see again — and what would you say to them first?',
+            text: 'Who do you hope to see again - and what would you say to them first?',
         },
         {
             who: 'Rosa',
@@ -356,7 +356,7 @@ const faith: Scenario = {
     clip: {
         label: 'In Rosa’s voice',
         duration: '0:38',
-        note: 'Thirty-eight seconds out of fifty minutes. Four seconds of nothing before she answers, and then what her voice does on “they moved the wall” — which she says twice, and the second time is not the same as the first. No transcript holds that, so it is kept as sound.',
+        note: 'Thirty-eight seconds out of fifty minutes. Four seconds of nothing before she answers, and then what her voice does on “they moved the wall” - which she says twice, and the second time is not the same as the first. No transcript holds that, so it is kept as sound.',
     },
     linked: [
         'Her mother, Angela',
@@ -405,7 +405,7 @@ const childhood: Scenario = {
     subject: 'One year · his aunt',
     cover: {
         quote: 'She never once said why we went round that way, and neither did I. No. I never told her.',
-        attribution: 'Errol, 79 — about the year he was seven',
+        attribution: 'Errol, 79 - about the year he was seven',
         lead: 'He refuses a question in the middle of this call. What happens next is the reason families stop being frightened of this.',
         length: '10 questions · about a minute to watch',
     },
@@ -413,7 +413,7 @@ const childhood: Scenario = {
         {
             role: 'ai',
             depth: 1,
-            text: 'Good morning — Errol? This is A Story. Your daughter Simone set this up. Nothing to get ready, and we can stop any time you want to.',
+            text: 'Good morning - Errol? This is A Story. Your daughter Simone set this up. Nothing to get ready, and we can stop any time you want to.',
             delay: 500,
         },
         {
@@ -427,8 +427,8 @@ const childhood: Scenario = {
             depth: 1,
             source: 'child-first-memory',
             method: 'One image, no explaining',
-            stay: 'The bank’s easiest question, and its hint is “one image, do not explain it” — which is how you get a memory instead of a summary of a childhood.',
-            text: 'What’s the first thing you remember? One image — you don’t have to explain it.',
+            stay: 'The bank’s easiest question, and its hint is “one image, do not explain it” - which is how you get a memory instead of a summary of a childhood.',
+            text: 'What’s the first thing you remember? One image - you don’t have to explain it.',
             delay: 2300,
         },
         {
@@ -443,7 +443,7 @@ const childhood: Scenario = {
             source: 'child-kitchen-smell',
             method: 'Stand where they are standing',
             stay: 'He has handed me a window. The quickest way into a house is to go and stand at it, rather than ask him to describe the house.',
-            text: 'Then let’s go and stand at that window. What did the kitchen smell like in the morning — and who was already in there when you came down?',
+            text: 'Then let’s go and stand at that window. What did the kitchen smell like in the morning - and who was already in there when you came down?',
             delay: 2600,
         },
         {
@@ -457,12 +457,12 @@ const childhood: Scenario = {
             depth: 2,
             method: 'Hear the subordinate clause',
             stay: 'He put the sanatorium in the middle of a sentence about bread, which is where people put the things they have decided not to make a fuss of.',
-            text: 'You went straight past something there. The year your mother was in the sanatorium. I’d like to come back to that rather than the bread — how old were you?',
+            text: 'You went straight past something there. The year your mother was in the sanatorium. I’d like to come back to that rather than the bread - how old were you?',
             delay: 2600,
         },
         {
             role: 'user',
-            text: 'Seven. Eight by the time she came home. Look — I’d rather not go into what she had, if that’s all right with you.',
+            text: 'Seven. Eight by the time she came home. Look - I’d rather not go into what she had, if that’s all right with you.',
             delay: 2700,
         },
 
@@ -471,8 +471,8 @@ const childhood: Scenario = {
             depth: 2,
             source: 'child-looked-after',
             method: 'Take the no at face value',
-            stay: 'That is a no, so it is a no. It does not get rephrased, it does not come back sideways in four questions, and nothing about it goes into the archive. The illness was never the point — the year was, and a year has a dozen other doors.',
-            text: 'Of course. We’ll leave that exactly where it is, and it won’t come up again. Tell me about the house instead — who looked after you that year, and what did an ordinary day with them actually look like?',
+            stay: 'That is a no, so it is a no. It does not get rephrased, it does not come back sideways in four questions, and nothing about it goes into the archive. The illness was never the point - the year was, and a year has a dozen other doors.',
+            text: 'Of course. We’ll leave that exactly where it is, and it won’t come up again. Tell me about the house instead - who looked after you that year, and what did an ordinary day with them actually look like?',
             delay: 2800,
         },
         {
@@ -507,7 +507,7 @@ const childhood: Scenario = {
         },
         {
             role: 'user',
-            text: 'Vera. The long way to school — she never once said why we went round that way, and neither did I, not in twelve months of it. No. I never told her. She died in ’91 and I never said a word about it.',
+            text: 'Vera. The long way to school - she never once said why we went round that way, and neither did I, not in twelve months of it. No. I never told her. She died in ’91 and I never said a word about it.',
             delay: 3200,
         },
         {
@@ -521,7 +521,7 @@ const childhood: Scenario = {
             depth: 5,
             method: 'Keep what was offered, not what was asked',
             stay: 'He came back to it on his own, twelve minutes after the only time it was raised. That is what taking a no buys.',
-            text: 'Thank you, Errol. We’ll put that down properly — and we’ll put the long way to school down beside it. I don’t think Simone has ever heard that one.',
+            text: 'Thank you, Errol. We’ll put that down properly - and we’ll put the long way to school down beside it. I don’t think Simone has ever heard that one.',
             delay: 2800,
         },
     ],
@@ -530,24 +530,24 @@ const childhood: Scenario = {
     badge: 'From Errol',
     about: 'Errol turned one question down. It is not in the archive, and nobody in his family will ever see that it was asked.',
     summary:
-        'The year Errol was seven his mother went into a sanatorium and his aunt Vera — who already had four children — took him as a fifth without discussing it. He remembers a blue enamel jug on the windowsill, the fire at six, and bread every other day. For twelve months Vera walked him to school the long way round so that they never passed the hospital gate, and she never once said why; he never asked, and never thanked her for it. She died in 1991. Late in the conversation Errol returned to the question he had declined earlier and named the illness himself.',
+        'The year Errol was seven his mother went into a sanatorium and his aunt Vera - who already had four children - took him as a fifth without discussing it. He remembers a blue enamel jug on the windowsill, the fire at six, and bread every other day. For twelve months Vera walked him to school the long way round so that they never passed the hospital gate, and she never once said why; he never asked, and never thanked her for it. She died in 1991. Late in the conversation Errol returned to the question he had declined earlier and named the illness himself.',
     excerpt:
         'She never once said why we went round that way, and neither did I. No. I never told her.',
     transcript: [
         {
             who: 'A Story',
             at: '01:48',
-            text: 'You went straight past something there. The year your mother was in the sanatorium. I’d like to come back to that rather than the bread — how old were you?',
+            text: 'You went straight past something there. The year your mother was in the sanatorium. I’d like to come back to that rather than the bread - how old were you?',
         },
         {
             who: 'Errol',
             at: '01:57',
-            text: 'Seven. Eight by the time she came home. Look — I’d rather not go into what she had, if that’s all right with you.',
+            text: 'Seven. Eight by the time she came home. Look - I’d rather not go into what she had, if that’s all right with you.',
         },
         {
             who: 'A Story',
             at: '02:06',
-            text: 'Of course. We’ll leave that exactly where it is, and it won’t come up again. Tell me about the house instead — who looked after you that year, and what did an ordinary day with them actually look like?',
+            text: 'Of course. We’ll leave that exactly where it is, and it won’t come up again. Tell me about the house instead - who looked after you that year, and what did an ordinary day with them actually look like?',
         },
         {
             who: 'Errol',
@@ -562,7 +562,7 @@ const childhood: Scenario = {
         {
             who: 'Errol',
             at: '06:44',
-            text: 'Vera. The long way to school — she never once said why we went round that way, and neither did I, not in twelve months of it. No. I never told her. She died in ’91 and I never said a word about it.',
+            text: 'Vera. The long way to school - she never once said why we went round that way, and neither did I, not in twelve months of it. No. I never told her. She died in ’91 and I never said a word about it.',
         },
         {
             who: 'Errol',
@@ -573,14 +573,14 @@ const childhood: Scenario = {
     clip: {
         label: 'In Errol’s voice',
         duration: '0:29',
-        note: 'Twenty-nine seconds, and most of what matters is two of them — the gap before “no, I never told her”. Written down that is four words. It is not four words when a seventy-nine-year-old says it about somebody who died in 1991.',
+        note: 'Twenty-nine seconds, and most of what matters is two of them - the gap before “no, I never told her”. Written down that is four words. It is not four words when a seventy-nine-year-old says it about somebody who died in 1991.',
     },
     linked: ['Vera, his aunt', 'The sanatorium year', 'Walsall', '1954'],
     family: [
         {
             kind: 'edit',
             name: 'Simone',
-            text: 'was invited and can edit this archive. She dated it — 1954, from her grandmother’s discharge letter.',
+            text: 'was invited and can edit this archive. She dated it - 1954, from her grandmother’s discharge letter.',
         },
         {
             kind: 'add',
@@ -618,7 +618,7 @@ const love: Scenario = {
     subject: 'One marriage · the letters',
     cover: {
         quote: 'He’d been writing it down where I wouldn’t see. All those years. Because he couldn’t get it out of his mouth.',
-        attribution: 'Joan, 84 — about fifty-one years of marriage',
+        attribution: 'Joan, 84 - about fifty-one years of marriage',
         lead: 'A question about a courtship. She answers it in one sentence, adds three more words, and the whole call turns on them.',
         length: '9 questions · about a minute to watch',
     },
@@ -626,7 +626,7 @@ const love: Scenario = {
         {
             role: 'ai',
             depth: 1,
-            text: 'Hello — is that Joan? This is A Story. Your son Paul asked me to give you a ring. There’s nothing to get ready, and five minutes is a perfectly good conversation if that’s all you fancy today.',
+            text: 'Hello - is that Joan? This is A Story. Your son Paul asked me to give you a ring. There’s nothing to get ready, and five minutes is a perfectly good conversation if that’s all you fancy today.',
             delay: 500,
         },
         {
@@ -640,13 +640,13 @@ const love: Scenario = {
             depth: 2,
             source: 'love-noticed',
             method: 'The detail, not the summary',
-            stay: 'Fifty-one years is not a starting point, so the bank does not ask for one. It asks for the first thing she noticed — a single detail, which anybody can find.',
+            stay: 'Fifty-one years is not a starting point, so the bank does not ask for one. It asks for the first thing she noticed - a single detail, which anybody can find.',
             text: 'You don’t start with the fifty-one years. You start with one thing. What did you notice first about him?',
             delay: 2600,
         },
         {
             role: 'user',
-            text: 'His handwriting. I knew his handwriting a year and a half before I properly knew his face — he was posted out to Aden and we wrote. I’ve still got them all in a biscuit tin. All but one.',
+            text: 'His handwriting. I knew his handwriting a year and a half before I properly knew his face - he was posted out to Aden and we wrote. I’ve still got them all in a biscuit tin. All but one.',
             delay: 3000,
         },
 
@@ -654,7 +654,7 @@ const love: Scenario = {
             role: 'ai',
             depth: 2,
             method: 'Follow the aside, not the answer',
-            stay: '“All but one” means she has counted them, and that somewhere there is a decision she once made about a letter. That is worth more than the whole courtship — and she is the one who put it on the table.',
+            stay: '“All but one” means she has counted them, and that somewhere there is a decision she once made about a letter. That is worth more than the whole courtship - and she is the one who put it on the table.',
             text: 'All but one. So you’ve counted them. What happened to the one, Joan?',
             delay: 2700,
         },
@@ -668,8 +668,8 @@ const love: Scenario = {
             role: 'ai',
             depth: 2,
             method: 'Park it, and say you are parking it',
-            stay: 'She has just named a year and a fire. Pushing now gets the headline and loses the room. She is told plainly that we are coming back to it, then asked something she can answer easily — which is also how a person catches their breath.',
-            text: 'We’ll come back to 1971, and we don’t have to rush at it. First — the tin. Where does it live?',
+            stay: 'She has just named a year and a fire. Pushing now gets the headline and loses the room. She is told plainly that we are coming back to it, then asked something she can answer easily - which is also how a person catches their breath.',
+            text: 'We’ll come back to 1971, and we don’t have to rush at it. First - the tin. Where does it live?',
             delay: 2700,
         },
         {
@@ -684,12 +684,12 @@ const love: Scenario = {
             source: 'love-never-used-to',
             method: 'The irritation is the portrait',
             stay: 'Nobody describes a husband accurately on being asked to describe a husband. The bank asks what he did that she never got used to, because a person is made of the specific thing that drove you mad for fifty years.',
-            text: 'Fifty-one years. What did he do that you never got used to — and did you ever say so?',
+            text: 'Fifty-one years. What did he do that you never got used to - and did you ever say so?',
             delay: 2800,
         },
         {
             role: 'user',
-            text: 'He would not use my name. Not once. It was “you” — “you all right?”, “you want a cup?” Fifty-one years of it. I thought it was coldness, and I told him so more than once.',
+            text: 'He would not use my name. Not once. It was “you” - “you all right?”, “you want a cup?” Fifty-one years of it. I thought it was coldness, and I told him so more than once.',
             delay: 3000,
         },
 
@@ -700,12 +700,12 @@ const love: Scenario = {
             sensitiveKind: 'rupture',
             method: 'Come back when you said you would',
             stay: 'The return trip promised four questions ago. It is marked sensitive, so the offer to leave it comes first. Asked at the start this gets a year. Asked now it gets the year and what was in it.',
-            text: 'Then let’s go back to 1971, if today’s a day for it. What was the hardest year the two of you had together — and what got you through it?',
+            text: 'Then let’s go back to 1971, if today’s a day for it. What was the hardest year the two of you had together - and what got you through it?',
             delay: 2900,
         },
         {
             role: 'user',
-            text: 'We lost Susan in the March. She was eighteen months. And Ray never said her name again after the funeral — not once, not in fifty years. I thought he’d stopped loving her. I thought that about my own husband for a very long time.',
+            text: 'We lost Susan in the March. She was eighteen months. And Ray never said her name again after the funeral - not once, not in fifty years. I thought he’d stopped loving her. I thought that about my own husband for a very long time.',
             delay: 3300,
         },
 
@@ -715,7 +715,7 @@ const love: Scenario = {
             source: 'love-kept-together',
             method: 'Ask for the unromantic answer',
             stay: 'The bank’s own hint on this one: not the romantic answer, the true one. At the start it gets a wedding photograph. Here it gets 1971.',
-            text: 'What actually kept the two of you together? Not the romantic answer — the true one.',
+            text: 'What actually kept the two of you together? Not the romantic answer - the true one.',
             delay: 2900,
         },
         {
@@ -734,16 +734,16 @@ const love: Scenario = {
             depth: 5,
             method: 'Close on what she just worked out',
             stay: 'She did not know that when the call started. It arrived because the handwriting was on the table from the first minute, and nothing since had changed the subject.',
-            text: 'Then we’ll keep all of it, Joan — the tin on the wardrobe, the one you burned, and the backs of the photographs. Susan has a name in this book now, and so does the reason nobody could say it out loud.',
+            text: 'Then we’ll keep all of it, Joan - the tin on the wardrobe, the one you burned, and the backs of the photographs. Susan has a name in this book now, and so does the reason nobody could say it out loud.',
             delay: 3000,
         },
     ],
     title: 'What actually kept you together?',
-    dateLine: '1969–2020 · from her thirties',
+    dateLine: '1969-2020 · from her thirties',
     badge: 'From Paul',
     about: 'Susan lived eighteen months and was not spoken of again for fifty years. Her name is in the family’s book now, and so is her father’s reason.',
     summary:
-        'Joan knew Ray’s handwriting eighteen months before she knew his face — he was posted to Aden and they wrote. She kept every letter in a biscuit tin on top of the wardrobe in the back bedroom, and takes it down about twice a year, not to read them but to check they are still there. One letter is missing: she burned the proposal in 1971, the March their daughter Susan died at eighteen months. Ray never said Susan’s name again after the funeral, and never used Joan’s name either in fifty-one years of marriage — which Joan took for coldness until, going through the house after he died, she found Susan’s name written on the back of every photograph in it.',
+        'Joan knew Ray’s handwriting eighteen months before she knew his face - he was posted to Aden and they wrote. She kept every letter in a biscuit tin on top of the wardrobe in the back bedroom, and takes it down about twice a year, not to read them but to check they are still there. One letter is missing: she burned the proposal in 1971, the March their daughter Susan died at eighteen months. Ray never said Susan’s name again after the funeral, and never used Joan’s name either in fifty-one years of marriage - which Joan took for coldness until, going through the house after he died, she found Susan’s name written on the back of every photograph in it.',
     excerpt:
         'He’d been writing it down where I wouldn’t see. All those years. Because he couldn’t get it out of his mouth.',
     transcript: [
@@ -755,7 +755,7 @@ const love: Scenario = {
         {
             who: 'Joan',
             at: '00:52',
-            text: 'His handwriting. I knew his handwriting a year and a half before I properly knew his face — he was posted out to Aden and we wrote. I’ve still got them all in a biscuit tin. All but one.',
+            text: 'His handwriting. I knew his handwriting a year and a half before I properly knew his face - he was posted out to Aden and we wrote. I’ve still got them all in a biscuit tin. All but one.',
         },
         {
             who: 'A Story',
@@ -770,17 +770,17 @@ const love: Scenario = {
         {
             who: 'A Story',
             at: '04:31',
-            text: 'Then let’s go back to 1971, if today’s a day for it. What was the hardest year the two of you had together — and what got you through it?',
+            text: 'Then let’s go back to 1971, if today’s a day for it. What was the hardest year the two of you had together - and what got you through it?',
         },
         {
             who: 'Joan',
             at: '04:44',
-            text: 'We lost Susan in the March. She was eighteen months. And Ray never said her name again after the funeral — not once, not in fifty years. I thought he’d stopped loving her. I thought that about my own husband for a very long time.',
+            text: 'We lost Susan in the March. She was eighteen months. And Ray never said her name again after the funeral - not once, not in fifty years. I thought he’d stopped loving her. I thought that about my own husband for a very long time.',
         },
         {
             who: 'A Story',
             at: '06:02',
-            text: 'What actually kept the two of you together? Not the romantic answer — the true one.',
+            text: 'What actually kept the two of you together? Not the romantic answer - the true one.',
         },
         {
             who: 'Joan',
@@ -796,11 +796,11 @@ const love: Scenario = {
     clip: {
         label: 'In Joan’s voice',
         duration: '0:47',
-        note: 'Forty-seven seconds, and the last eight are the ones her son has played most. She says “I’d had that wrong for fifty-one years as well”, and then laughs — once, not happily — and that laugh is the whole marriage. It does not survive being typed out.',
+        note: 'Forty-seven seconds, and the last eight are the ones her son has played most. She says “I’d had that wrong for fifty-one years as well”, and then laughs - once, not happily - and that laugh is the whole marriage. It does not survive being typed out.',
     },
     linked: [
         'Ray, her husband',
-        'Susan, 1969–1971',
+        'Susan, 1969-1971',
         'The biscuit tin',
         'Aden, 1961',
     ],
@@ -813,12 +813,12 @@ const love: Scenario = {
         {
             kind: 'add',
             name: 'Her niece Christine',
-            text: 'sent three of Ray’s letters from Aden through the contribute link — she had been keeping them since 1998.',
+            text: 'sent three of Ray’s letters from Aden through the contribute link - she had been keeping them since 1998.',
             pending: 'Waiting for Joan',
         },
     ],
     shared: 'Joan decides who sees this. Right now: Paul, Christine and 6 others.',
-    meta: ['Chapter: Love & family', '1961–2020', 'Added today'],
+    meta: ['Chapter: Love & family', '1961-2020', 'Added today'],
 };
 
 export const SCENARIOS: Scenario[] = [faith, childhood, love];

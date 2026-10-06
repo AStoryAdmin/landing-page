@@ -52,7 +52,7 @@ export const CHAPTERS: Chapter[] = [
     {
         name: 'Work & making a living',
         blurb: 'Farms, shops, kitchens, offices, and caring for people.',
-        note: 'Deliberately not "Career" — most of the women this exists for never had one, and all of them worked.',
+        note: 'Deliberately not "Career" - most of the women this exists for never had one, and all of them worked.',
     },
     {
         name: 'The world we lived through',
@@ -75,7 +75,7 @@ export const CHAPTERS: Chapter[] = [
     },
     {
         name: 'From the family',
-        blurb: 'The same years from the other side — what the children and grandchildren remember.',
+        blurb: 'The same years from the other side - what the children and grandchildren remember.',
         note: 'Somebody else’s voice on the same afternoon. This is the chapter that makes it a documentary rather than a diary.',
     },
     {
@@ -142,7 +142,7 @@ export const SENSITIVE_LINE =
 export const MEMORY_LAYERS = [
     {
         name: 'The card',
-        blurb: 'A short, readable summary you can take in over a cup of tea — titled, dated, and filed in its chapter.',
+        blurb: 'A short, readable summary you can take in over a cup of tea - titled, dated, and filed in its chapter.',
     },
     {
         name: 'The full transcript',
@@ -150,6 +150,6 @@ export const MEMORY_LAYERS = [
     },
     {
         name: 'The voice highlight',
-        blurb: 'The part actually worth hearing, kept as audio in their own voice — the laugh, the pause, the way they said her name.',
+        blurb: 'The part actually worth hearing, kept as audio in their own voice - the laugh, the pause, the way they said her name.',
     },
 ];

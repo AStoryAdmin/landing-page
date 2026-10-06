@@ -356,11 +356,11 @@ export const INCLUDES: Record<OfferId, string[]> = {
         'Your place in line, in the order places were reserved',
         `${OFFERS.reserve.discount}% off your first year, if you reserve by ${RESERVE_DEADLINE_LABEL}`,
         'The dollar comes off that year too',
-        `Up to ${MAX_PER_FAMILY} places per family — one for each parent`,
+        `Up to ${MAX_PER_FAMILY} places per family - one for each parent`,
         'Refunded any time before launch, no questions',
     ],
     founding: [
-        'Start before launch, in a small group — you pick the week',
+        'Start before launch, in a small group - you pick the week',
         'We set it up with you, by hand',
         'Your first month of guided calls, from the first call',
         'One of us there for that first call',

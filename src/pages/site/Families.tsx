@@ -176,8 +176,8 @@ const Occasions = styled(Chapter)`
   /*
    * A frieze of prints, not five tiles. Five identical rounded cards in a row
    * is the shape every template ships; these are the same photographs laid
-   * out on the sand the way the rest of the site lays out prints — square,
-   * keylined, alternately dropped so the row has a rhythm — with the occasion
+   * out on the sand the way the rest of the site lays out prints - square,
+   * keylined, alternately dropped so the row has a rhythm - with the occasion
    * named underneath in the caption voice and the line it earns in serif.
    */
   .occ {
@@ -279,7 +279,7 @@ const TOGETHER = [
     shot: "family",
     scroll: false,
     title: "Everyone in the circle.",
-    line: "Add the people who were there — grandparents, cousins, the oldest friend.",
+    line: "Add the people who were there - grandparents, cousins, the oldest friend.",
   },
 ];
 
@@ -366,7 +366,7 @@ function OccasionsRoom() {
         <div className="gift" data-rise>
           <p>
             The easiest to give: {express.name}, <b>{express.price}</b> one time
-            — about a month of calls and a printed hardcover. Nothing
+ - about a month of calls and a printed hardcover. Nothing
             renews.
           </p>
           <TextLink to="/pricing">
@@ -409,7 +409,7 @@ export default function Families() {
   return (
     <>
       <EditorialSeo
-        title="For families — the stories between you"
+        title="For families - the stories between you"
         path="/for-families"
         description="For the questions you want to ask your parents, the life you want to record yourself, and the days your family remembers differently."
       />
@@ -420,7 +420,7 @@ export default function Families() {
             The stories <em>between you.</em>
           </>
         }
-        lead="Nobody loses the wedding photos. They lose everything around them — the story he tells every Thanksgiving, and why everyone in that photograph is laughing."
+        lead="Nobody loses the wedding photos. They lose everything around them - the story he tells every Thanksgiving, and why everyone in that photograph is laughing."
         actions={
           <PrimaryLink to="/reserve">
             Reserve for $1 <ArrowIcon />
@@ -472,7 +472,7 @@ export default function Families() {
             “I’d like them to know <em>why.</em>”
           </>
         }
-        text="You don’t have to wait until your life feels finished. Talk about a decision, a friendship, an ordinary week — or write, when you’d rather write. This afternoon belongs here too."
+        text="You don’t have to wait until your life feels finished. Talk about a decision, a friendship, an ordinary week - or write, when you’d rather write. This afternoon belongs here too."
         action={
           <TextLink to="/your-story">
             Begin with your own story <ArrowIcon />
@@ -495,7 +495,7 @@ export default function Families() {
             “We were all there. We remember it <em>differently.</em>”
           </>
         }
-        text="Invite the family at no extra cost. Each account is kept in the teller’s name, beside the others — nobody’s version has to replace anybody else’s."
+        text="Invite the family at no extra cost. Each account is kept in the teller’s name, beside the others - nobody’s version has to replace anybody else’s."
         action={
           <TextLink to="/how-it-works">
             See what the family adds <ArrowIcon />

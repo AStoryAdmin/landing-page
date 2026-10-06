@@ -337,7 +337,7 @@ const Page = styled.section`
 `;
 
 const NEXT = [
-  "We call you to talk it through — who it’s for, and when.",
+  "We call you to talk it through - who it’s for, and when.",
   "We help you choose a plan and set things up when you’re ready.",
   "Nothing is paid today, and nothing starts until you say so.",
 ];
@@ -416,7 +416,7 @@ export default function Start() {
           ))}
         </ol>
         <p className="motto" data-rise>
-          Not a memoir to finish — <i>A Story</i> to keep, and to carry on.
+          Not a memoir to finish - <i>A Story</i> to keep, and to carry on.
         </p>
       </div>
 

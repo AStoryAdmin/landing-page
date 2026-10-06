@@ -552,7 +552,7 @@ export default function Reserve() {
             {join} <ArrowIcon />
           </PrimaryLink>
           <p className="small">
-            For {label}. Free, and nothing is charged — the account is so we know where to write.
+            For {label}. Free, and nothing is charged - the account is so we know where to write.
           </p>
         </>
       );
@@ -598,7 +598,7 @@ export default function Reserve() {
   const shareUrl = code ? `${SITE.url}/reserve?ref=${code}` : null;
   const share = async () => {
     if (!shareUrl) return;
-    const text = `I've reserved A Story — it calls my parents and asks about their life. Reserve for ${OFFERS.reserve.price} and it's ${OFFERS.reserve.discount}% off the first year:`;
+    const text = `I've reserved A Story - it calls my parents and asks about their life. Reserve for ${OFFERS.reserve.price} and it's ${OFFERS.reserve.discount}% off the first year:`;
     track("offer_share");
     try {
       if (navigator.share) {
@@ -634,7 +634,7 @@ export default function Reserve() {
                 Now make your account <ArrowIcon />
               </PrimaryLink>
               <p className="small">
-                Use the email you just paid with — that is how your place finds you. It is the same account
+                Use the email you just paid with - that is how your place finds you. It is the same account
                 you will sign into in the app.
               </p>
             </>
@@ -659,7 +659,7 @@ export default function Reserve() {
       return (
         <>
           <p className="small">
-            Every founding week has filled or begun. Join the waitlist for the next group — or reserve for{" "}
+            Every founding week has filled or begun. Join the waitlist for the next group - or reserve for{" "}
             {OFFERS.reserve.price} and hold your place for launch.
           </p>
           {waitlistAction("next")}
@@ -692,7 +692,7 @@ export default function Reserve() {
           {iphone === "no" && (
             <>
               <p className="small" role="status">
-                Before launch, A Story can only ring an iPhone — on other phones it reminds them to write instead,
+                Before launch, A Story can only ring an iPhone - on other phones it reminds them to write instead,
                 which is not what a founding place is for. A dollar holds your place and
                 {discountOpen ? ` ${OFFERS.reserve.discount}% off` : " the price"} instead.
               </p>
@@ -815,7 +815,7 @@ export default function Reserve() {
             {copy.signUp} <ArrowIcon />
           </PrimaryLink>
           <p className="small">
-            Free while payment opens — we email you the {offer.price} link, and your place counts from today.
+            Free while payment opens - we email you the {offer.price} link, and your place counts from today.
           </p>
         </>
       );
@@ -901,7 +901,7 @@ export default function Reserve() {
           )}
           <p className="f">
             {isFounding
-              ? `The ${o.price} counts toward it — ${FOUNDING_BALANCE.individual} more for Individual, whenever you choose.`
+              ? `The ${o.price} counts toward it - ${FOUNDING_BALANCE.individual} more for Individual, whenever you choose.`
               : discountOpen
                 ? "And the dollar comes off that."
                 : "A dollar still holds your place in line, and still comes off your first year."}
@@ -931,7 +931,7 @@ export default function Reserve() {
   return (
     <>
       <EditorialSeo
-        title={`Reserve A Story for ${reserve.price} — or start now`}
+        title={`Reserve A Story for ${reserve.price} - or start now`}
         path="/reserve"
         description={`A Story opens a few families at a time. Reserve a place for ${reserve.price} and hold ${reserve.discount}% off your first year, or become one of ${founding.places} founding families for ${founding.price} and start before launch at half price. Refundable.`}
       />
@@ -945,7 +945,7 @@ export default function Reserve() {
             Hold your place for a dollar. <em>Or start now.</em>
           </>
         }
-        lead={`A Story calls someone you love and asks about their life, and we are opening it a few families at a time. Reserve a place for ${reserve.price} — or be one of ${founding.places} founding families and start before anyone else${foundingOpen && next ? `, from the week of ${next.week}` : ""}.`}
+        lead={`A Story calls someone you love and asks about their life, and we are opening it a few families at a time. Reserve a place for ${reserve.price} - or be one of ${founding.places} founding families and start before anyone else${foundingOpen && next ? `, from the week of ${next.week}` : ""}.`}
         actions={
           <>
             <PrimaryAnchor
@@ -976,13 +976,13 @@ export default function Reserve() {
             <div className="share" data-rise>
               <Heading as="h2">Bring your brothers and sisters in.</Heading>
               <Lead>
-                Anyone who reserves through your link gets the same {reserve.discount}% off — and it is one more
+                Anyone who reserves through your link gets the same {reserve.discount}% off - and it is one more
                 person who will read what your parents say.
               </Lead>
               <div className="row">
                 <code>{shareUrl}</code>
                 <SecondaryButton type="button" onClick={share}>
-                  {copied ? "Copied — paste it to them" : "Share with family"}
+                  {copied ? "Copied - paste it to them" : "Share with family"}
                 </SecondaryButton>
               </div>
             </div>
@@ -1057,8 +1057,8 @@ export default function Reserve() {
             Twenty-nine has it asked before launch
             {foundingOpen && next
               ? nextLeft !== null
-                ? ` — ${nextLeft} of ${next.places} places are left for the week of ${next.week}`
-                : ` — the next group starts the week of ${next.week}`
+                ? ` - ${nextLeft} of ${next.places} places are left for the week of ${next.week}`
+                : ` - the next group starts the week of ${next.week}`
               : ""}
             .
             Either way, if the timing turns out wrong, the money comes back.

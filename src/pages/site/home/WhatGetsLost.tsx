@@ -45,7 +45,7 @@ const Milestones = styled.section`
     color: ${color.primary};
     max-width: 19ch;
   }
-  /* Only the milestone word is live, and it changes colour — no underline.
+  /* Only the milestone word is live, and it changes colour - no underline.
      At rest the three words sit in a quieter brown so they read as a set;
      the one on top of the pile turns terracotta. */
   h2 button {
@@ -234,7 +234,7 @@ function MilestonePile() {
                 {i < MILESTONES.length - 1 ? "," : ""}
               </span>
             )).flatMap((el, i) => (i ? [" ", el] : [el]))}{" "}
-            — the milestones usually survive.
+             - the milestones usually survive.
           </h2>
           <p className="hint" aria-hidden="true">
             Every family keeps these.

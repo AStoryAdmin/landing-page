@@ -25,7 +25,7 @@ const fadeIn = keyframes`
 const Frame = styled.div<{ $animate: boolean }>`
   /*
      * Chrome re-anchors the scroll position when content above the viewport
-     * changes height — which is exactly what happens when a route's Suspense
+     * changes height - which is exactly what happens when a route's Suspense
      * fallback is swapped for the real page, and it left every navigation a
      * few dozen pixels below the top.
      */

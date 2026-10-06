@@ -78,7 +78,7 @@ function friendly(message: string | undefined): string {
         msg.includes('timeout') ||
         msg.includes('timed out')
     ) {
-        return 'We couldn’t reach A Story. Check your connection and try again — nothing was lost.';
+        return 'We couldn’t reach A Story. Check your connection and try again - nothing was lost.';
     }
     if (msg.includes('invalid login credentials')) return 'Incorrect email or password.';
     if (msg.includes('email not confirmed')) return 'Please confirm your email before signing in.';

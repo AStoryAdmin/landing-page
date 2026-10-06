@@ -83,7 +83,7 @@ export default function Guides() {
           <Kicker>A Story guides</Kicker>
           <HeroTitle>Questions worth asking.</HeroTitle>
           <Intro>
-            Small ways to begin a conversation—and thoughtful ways to keep what
+            Small ways to begin a conversation - and thoughtful ways to keep what
             follows.
           </Intro>
           <Feature>

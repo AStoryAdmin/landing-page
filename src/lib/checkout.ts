@@ -169,11 +169,11 @@ export const buyLabel = (id: string, live: string, fallback: string = WAITLIST_L
 export const AT_CHECKOUT = [
     {
         t: 'Free until you choose otherwise',
-        d: 'Every account starts on Free, with no card and no clock. A plan is for when you want A Story doing the calling — nothing is lost by taking your time.',
+        d: 'Every account starts on Free, with no card and no clock. A plan is for when you want A Story doing the calling - nothing is lost by taking your time.',
     },
     {
         t: 'Your recordings stay yours',
-        d: 'Cancel whenever you like. The archive, the transcripts, the photos and everyone you invited all keep working — cancelling stops the AI calls, not the memories.',
+        d: 'Cancel whenever you like. The archive, the transcripts, the photos and everyone you invited all keep working - cancelling stops the AI calls, not the memories.',
     },
     {
         t: 'Refunded if it goes unused',

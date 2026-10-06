@@ -20,7 +20,7 @@ export const getSupabase = (): SupabaseClient | null => {
   if (!isSupabaseConfigured) {
     console.warn(
       "[supabase] Missing VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY. " +
-        "Copy .env.example to .env and fill them in — form submissions are disabled until then.",
+        "Copy .env.example to .env and fill them in - form submissions are disabled until then.",
     );
     return null;
   }

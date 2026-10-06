@@ -18,7 +18,7 @@ export default function EditorialSeo({
 }) {
   return (
     <Seo
-      title={title.includes("A Story") ? title : `${title} — A Story`}
+      title={title.includes("A Story") ? title : `${title} - A Story`}
       description={description}
       path={path}
       image={

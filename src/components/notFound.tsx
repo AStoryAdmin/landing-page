@@ -39,7 +39,7 @@ const Links = styled.div`
 const NotFound = () => (
   <Section $tone="ivory">
     <Seo
-      title="Page not found — A Story"
+      title="Page not found - A Story"
       description="That page does not exist. Here is the way back."
       path="/404"
       noindex
@@ -49,7 +49,7 @@ const NotFound = () => (
       <Eyebrow>Not found</Eyebrow>
       <H2 as="h1">This page didn&rsquo;t make it into the archive.</H2>
       <Lead>
-        The link is broken or the page has moved. Nothing has been lost —
+        The link is broken or the page has moved. Nothing has been lost -
         everything worth keeping is one of these clicks away.
       </Lead>
       <Actions>

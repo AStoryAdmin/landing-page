@@ -365,7 +365,7 @@ export default function Questions() {
               The practical things, answered <em>plainly.</em>
             </Title>
             <p className="lead" data-rise>
-              What people ask before the first conversation — about calls,
+              What people ask before the first conversation - about calls,
               privacy, the family, plans and the book.
             </p>
           </div>
@@ -421,7 +421,7 @@ export default function Questions() {
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search — try privacy, books or calls"
+                placeholder="Search - try privacy, books or calls"
               />
             </label>
           </div>
@@ -468,7 +468,7 @@ export default function Questions() {
                 Still <em>wondering?</em>
               </h2>
               <p>
-                Tell us about your family — we’ll answer, and we won’t send you
+                Tell us about your family - we’ll answer, and we won’t send you
                 a newsletter.
               </p>
             </div>

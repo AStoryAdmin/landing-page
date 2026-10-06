@@ -125,8 +125,8 @@ const Moments = styled(Chapter)`
     color: var(--mark);
   }
   /*
-   * Three moments, not three cards. The row of identical white tiles — photo,
-   * label, heading, paragraph — is the most templated shape on the web, and
+   * Three moments, not three cards. The row of identical white tiles - photo,
+   * label, heading, paragraph - is the most templated shape on the web, and
    * it was carrying four of this site's pages. These sit directly on the
    * ground instead: one taken larger because it matters more, each print in
    * the house's own keyline frame, with the gold rule between the picture and
@@ -361,7 +361,7 @@ const Begin = styled(Chapter)`
   }
   /*
    * A drawn tick, in the teal. It was a Unicode "✓" in a sand disc, which on
-   * paper read khaki — a colour this site does not have — and which no icon
+   * paper read khaki - a colour this site does not have - and which no icon
    * set on the page matches.
    */
   ul li svg {

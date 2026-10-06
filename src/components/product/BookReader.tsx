@@ -367,7 +367,7 @@ export default function BookReader({ onClose }: { onClose: () => void }) {
             Previous
           </QuietButton>
           <span aria-live="polite">
-            {mobile ? start + 1 : `${start + 1}–${start + 2}`} of 8
+            {mobile ? start + 1 : `${start + 1}-${start + 2}`} of 8
           </span>
           <QuietButton
             disabled={start >= (mobile ? 7 : 6) || turning}

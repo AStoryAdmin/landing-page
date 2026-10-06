@@ -17,7 +17,7 @@ export default function Thanks() {
   return (
     <>
       <Seo
-        title="After your purchase — A Story"
+        title="After your purchase - A Story"
         path="/thanks"
         noindex
         description="What happens after an A Story purchase: account setup, your receipt email, and the first conversation."

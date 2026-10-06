@@ -163,7 +163,7 @@ export default function Compare() {
   return (
     <>
       <EditorialSeo
-        title="How A Story is different — more than a memoir"
+        title="How A Story is different - more than a memoir"
         path="/compare"
         description="A Story compared with Storyworth, Remento, Storii, Meminto, Spomen and Heirloom: phone calls that follow up, every family member's version kept side by side, and an archive that keeps growing."
       />
@@ -180,7 +180,7 @@ export default function Compare() {
             </div>
             <p className="lead" data-rise>
               Memoir products help one person finish a book. A Story keeps the
-              whole family’s story — every voice, still growing.
+              whole family’s story - every voice, still growing.
             </p>
           </SplitHead>
           <div data-rise>

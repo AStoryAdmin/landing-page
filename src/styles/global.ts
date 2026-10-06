@@ -42,8 +42,8 @@ const GlobalStyle = createGlobalStyle`
    * the width-driven ramp above has no way to know that. Below roughly the
    * height of a 16" laptop the display scale and the space between chapters
    * come back a step at a time, so a section still reads as one composition
-   * instead of arriving in pieces. Width is guarded so a phone in landscape —
-   * where the layout has already gone to one column — keeps its own sizes.
+   * instead of arriving in pieces. Width is guarded so a phone in landscape -
+   * where the layout has already gone to one column - keeps its own sizes.
    */
   @media (min-width: 1025px) and (max-height: 940px) { html { --vs: 0.94; --sy: 0.9; } }
   @media (min-width: 1025px) and (max-height: 840px) { html { --vs: 0.88; --sy: 0.82; } }
@@ -157,7 +157,7 @@ const GlobalStyle = createGlobalStyle`
   a:not([class]):hover { text-decoration-color: currentColor; }
 
   /*
-   * Figures the reader compares — prices, dates, durations — set on a fixed
+   * Figures the reader compares - prices, dates, durations - set on a fixed
    * advance so a column of them lines up instead of shimmering.
    */
   table, time, .tnum { font-variant-numeric: tabular-nums; }
@@ -175,7 +175,7 @@ const GlobalStyle = createGlobalStyle`
   }
   :focus:not(:focus-visible) { outline: none; }
 
-  /* Skip link — first tab stop on every page. */
+  /* Skip link - first tab stop on every page. */
   .skip-link {
     position: absolute;
     left: 16px;

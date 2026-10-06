@@ -147,7 +147,7 @@ const Scene = styled.section`
   }
   /* The back board of the case, teal cloth. There is no separate front board:
      the cover leaf IS the front board, and its inside (endpaper on cloth)
-     becomes the left side of the open book — so nothing appears or scales in
+     becomes the left side of the open book - so nothing appears or scales in
      behind the cover as it turns (the "second layer" the founder saw). */
   .board {
     position: absolute;
@@ -1029,7 +1029,7 @@ function CoverPage({ onOpen }: { onOpen?: () => void }) {
   return (
     <div className="cover-art">
       <h3>Moments &amp; Memories</h3>
-      <span className="date">1952 — still being written</span>
+      <span className="date">1952 - still being written</span>
       <span className="names">The Hartleys</span>
       <div className="cover-stack" aria-hidden="true">
         <img src="/mission/01-640.webp" alt="" loading="lazy" />
@@ -1138,7 +1138,7 @@ function TextPage({ e, n }: { e: Entry; n: number }) {
 function EndLeft() {
   return (
     <div className="end-page">
-      <Running left="The Hartley family" right="1952 —" />
+      <Running left="The Hartley family" right="1952 - " />
       <div className="sheet">
         {SPREADS.map((s) => (
           <figure key={s.year}>
@@ -1269,7 +1269,7 @@ export default function FamilyBook() {
           <p className="lead">
             The mistake is thinking a life becomes worth recording only when
             it’s nearly over. You’re already living the part you’ll miss later.
-            Open one family’s archive — 1952 to this morning.
+            Open one family’s archive - 1952 to this morning.
           </p>
         </SplitHead>
 
@@ -1284,7 +1284,7 @@ export default function FamilyBook() {
               tabIndex={0}
               role="group"
               aria-roledescription="book"
-              aria-label={`The Hartley family archive — ${label}. Use the arrow keys to turn the page.`}
+              aria-label={`The Hartley family archive - ${label}. Use the arrow keys to turn the page.`}
               onKeyDown={onKey}
             >
               <span className="board r" />
@@ -1381,7 +1381,7 @@ export default function FamilyBook() {
         <div className="print-line">
           <p>
             Some chapters deserve to leave the screen. When one is ready, make
-            it a volume — <b>a Classic Hardcover comes with every plan</b>, or
+            it a volume - <b>a Classic Hardcover comes with every plan</b>, or
             print it at home free. Printed editions from {BOOK.from}. The archive
             keeps growing after the book is printed.
           </p>

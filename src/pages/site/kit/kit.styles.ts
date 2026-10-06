@@ -486,8 +486,8 @@ export const PrintMat = styled.figure<{ $bare?: boolean; $tilt?: number }>`
    * The one piece of personality on the page, and it comes from the subject
    * rather than from a catalogue: a print left at an angle on a table
    * straightens and lifts a little under the hand, and the shadow it casts
-   * opens with it. Only real prints — a bare contemporary photograph is not
-   * an object you pick up — and only where there is a pointer to do it with.
+   * opens with it. Only real prints - a bare contemporary photograph is not
+   * an object you pick up - and only where there is a pointer to do it with.
    */
   @media (hover: hover) and (pointer: fine) {
     transition:

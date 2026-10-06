@@ -47,7 +47,7 @@ export const Field = styled.label<{ $onDark?: boolean }>`
     color: ${({ $onDark }) => ($onDark ? color.onDarkMuted : color.bodyMuted)};
   }
 
-  /* "— optional". It used to carry opacity: 0.75 on top of a colour that is
+  /* " - optional". It used to carry opacity: 0.75 on top of a colour that is
        already translucent, which compounded to well under 4.5:1 and failed the
        gate on both grounds. It now differs from the label by case and weight
        alone, which is where the difference should have come from. */

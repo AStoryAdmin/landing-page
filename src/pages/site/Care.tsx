@@ -29,7 +29,7 @@ export default function Care() {
             Every resident has a life <em>worth knowing.</em>
           </>
         }
-        lead="The work they did. The music in the house. The way they made Sunday lunch. Give those stories somewhere to stay — and give the people caring for them a way to learn them."
+        lead="The work they did. The music in the house. The way they made Sunday lunch. Give those stories somewhere to stay - and give the people caring for them a way to learn them."
         actions={
           <>
             <PrimaryLink to="/start?intent=demo">
@@ -59,7 +59,7 @@ export default function Care() {
             alt: "Hands holding playing cards at a kitchen table",
             eyebrow: "An invitation",
             title: "Start with what they want to tell.",
-            body: "A familiar photograph, recipe or song can open a conversation. It is an invitation, never a test of what someone remembers — they choose what to share and when to stop.",
+            body: "A familiar photograph, recipe or song can open a conversation. It is an invitation, never a test of what someone remembers - they choose what to share and when to stop.",
           },
           {
             photo: "34",
@@ -106,7 +106,7 @@ export default function Care() {
         beginBody="Begin with a small program shaped around the residents and families who want to take part. Community pricing is quoted individually. A Story records personal stories; it is not a clinical assessment or treatment."
         checklist={[
           "Who will help with installation, introductions and support",
-          "Consent — and who may read or contribute",
+          "Consent - and who may read or contribute",
           "Which material should stay private",
           "How families are invited, and when",
         ]}

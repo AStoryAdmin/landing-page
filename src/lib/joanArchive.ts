@@ -22,7 +22,7 @@ export const joanArchive = {
       name: "Joan",
       role: "The storyteller",
       text: "Answered nine questions across three calls. The longest ran fifty-one minutes; she had told Paul she would manage five.",
-      date: "Tuesday, 10am — the hour she chose",
+      date: "Tuesday, 10am - the hour she chose",
     },
     {
       kind: "document",
@@ -44,7 +44,7 @@ export const joanArchive = {
       kind: "family",
       name: "Amy, her granddaughter, 19",
       role: "Invited · can edit",
-      text: "Recorded her own two minutes on the chapter called From the family — the same kitchen, thirty years later, from the person who was four feet lower down.",
+      text: "Recorded her own two minutes on the chapter called From the family - the same kitchen, thirty years later, from the person who was four feet lower down.",
       quote:
         "Nan says Grandad was quiet. He wasn’t quiet with me. He used to do the voices.",
       date: "Added last Sunday",
@@ -53,7 +53,7 @@ export const joanArchive = {
       kind: "book",
       name: "The book",
       role: "Optional, always",
-      text: "Forty-one pages ready to print whenever they want one — and the archive carries on filling either way. Nothing about making a book means the story is finished.",
+      text: "Forty-one pages ready to print whenever they want one - and the archive carries on filling either way. Nothing about making a book means the story is finished.",
       date: "Not ordered. No hurry.",
     },
   ],
@@ -70,5 +70,5 @@ export const joanArchive = {
     88, 74, 62, 49, 35, 27, 19, 13, 9, 6,
   ],
   disclosure:
-    "An illustration of a real archive’s shape and contents. Joan, Ray, Paul, Christine and Amy are invented, and so is every word quoted above — we would rather show you an honest example than a real family’s worst year.",
+    "An illustration of a real archive’s shape and contents. Joan, Ray, Paul, Christine and Amy are invented, and so is every word quoted above - we would rather show you an honest example than a real family’s worst year.",
 } as const;

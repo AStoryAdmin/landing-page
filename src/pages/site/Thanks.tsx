@@ -86,7 +86,7 @@ export default function Thanks() {
   return (
     <>
       <Seo
-        title="After your purchase — A Story"
+        title="After your purchase - A Story"
         path="/thanks"
         description="Account setup and the first conversation after an A Story purchase."
         noindex
@@ -98,7 +98,7 @@ export default function Thanks() {
             Now, the first <em>conversation.</em>
           </>
         }
-        lead="If you’ve completed a purchase, sign up in the app with the same email address — it connects your purchase to your account."
+        lead="If you’ve completed a purchase, sign up in the app with the same email address - it connects your purchase to your account."
       />
       <Steps $ground="ivory" aria-label="What happens next">
         <Frame>

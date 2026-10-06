@@ -12,23 +12,23 @@ export const CONTACT = {
   /** The primary action: someone wants to give A Story as a gift. */
   gift: mailto(
     "I want to gift A Story",
-    "Hi — I'd like to give A Story as a gift.\n\nWho it's for:\nWhen I need it by:\nAnything else:\n",
+    "Hi - I'd like to give A Story as a gift.\n\nWho it's for:\nWhen I need it by:\nAnything else:\n",
   ),
   /** A gift for a specific occasion, from the occasions row. */
   giftFor: (occasion: string) =>
     mailto(
-      `Gifting A Story — ${occasion}`,
-      `Hi — I'd like to give A Story for ${occasion}.\n\nWho it's for:\n`,
+      `Gifting A Story - ${occasion}`,
+      `Hi - I'd like to give A Story for ${occasion}.\n\nWho it's for:\n`,
     ),
   /** Organizations: founder interviews, retiring staff, anniversaries. */
   organization: mailto(
     "A Story for our organization",
-    "Hi — we would like to talk about A Story for our organization.\n\nOrganization:\nMy role:\nWhat we want to keep:\n",
+    "Hi - we would like to talk about A Story for our organization.\n\nOrganization:\nMy role:\nWhat we want to keep:\n",
   ),
   /** Care communities: senior living, memory care, hospice. */
   community: mailto(
     "A Story for our community",
-    "Hi — we would like a walkthrough of A Story for our community.\n\nCommunity:\nMy role:\nNumber of residents:\n",
+    "Hi - we would like a walkthrough of A Story for our community.\n\nCommunity:\nMy role:\nNumber of residents:\n",
   ),
   /**
    * Someone recording their own life rather than giving it to somebody else.
@@ -37,7 +37,7 @@ export const CONTACT = {
    */
   self: mailto(
     "A Story for my own life",
-    "Hi — I'd like to use A Story to record my own life.\n\nWhere I'd want to start:\nAnything else:\n",
+    "Hi - I'd like to use A Story to record my own life.\n\nWhere I'd want to start:\nAnything else:\n",
   ),
   /** Anything else. */
   general: mailto("Hello from astoryapp.com"),
