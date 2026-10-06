@@ -2,6 +2,10 @@ import { Link } from "react-router-dom";
 import { CONTACT } from "../../lib/contact";
 import { SITE } from "../../lib/seo";
 import Logo from "../../components/ui/Logo";
+import InceptionCredit from "../../components/ui/InceptionCredit";
+import {
+  NVIDIA_TRADEMARK_NOTE,
+} from "../../components/ui/InceptionBadge";
 import { FooterShell } from "./chrome.styles";
 
 /**
@@ -25,6 +29,14 @@ export default function Footer() {
             <p className="footer-contact">
               <a href={CONTACT.general}>{SITE.email}</a>
             </p>
+            <div className="footer-credential">
+              <Link
+                to="/our-story#inception-title"
+                aria-label="A Story is a member of the NVIDIA Inception program"
+              >
+                <InceptionCredit height={34} />
+              </Link>
+            </div>
           </div>
           <div className="gf-footer-links">
             <div>
@@ -69,6 +81,7 @@ export default function Footer() {
               testimonials.
             </p>
           </details>
+          <p className="footer-trademark">{NVIDIA_TRADEMARK_NOTE}</p>
         </div>
       </div>
     </FooterShell>

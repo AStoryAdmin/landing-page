@@ -34,6 +34,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { gsap } from "../../../lib/scrollMotion";
+import InceptionCredit from "../../../components/ui/InceptionCredit";
 import {
   LOGO_LETTER_PATH,
   LOGO_WAVEFORM_PATH,
@@ -267,6 +268,17 @@ const Cover = styled.div`
    * reader should not have to guess that, so this reads as a control rather
    * than as a watermark.
    */
+  .credit {
+    position: absolute;
+    left: clamp(20px, 3vw, 44px);
+    top: clamp(20px, 3vh, 40px);
+    z-index: 3;
+    color: ${color.ivory};
+  }
+  @media (max-width: 480px) {
+    .credit .credit-copy { display: none; }
+  }
+
   .skip {
     position: absolute;
     /* Top right: the foot belongs to the years, and the rule runs under it. */
@@ -536,6 +548,10 @@ export default function Intro() {
   return (
     <Cover ref={root}>
       <canvas ref={canvas} aria-hidden="true" />
+
+      <div className="credit">
+        <InceptionCredit height={34} />
+      </div>
 
       <div className="arrival" aria-hidden="true">
         <Mark />

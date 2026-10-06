@@ -16,6 +16,8 @@
 import styled from "styled-components";
 import { introReleased } from "./introSignal";
 import { ArrowIcon, Picture } from "../kit/kit";
+import { Link } from "react-router-dom";
+import InceptionCredit from "../../../components/ui/InceptionCredit";
 import { Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
 import {
   gsap,
@@ -105,6 +107,25 @@ const Scene = styled.section`
     align-items: center;
     flex-wrap: wrap;
     margin-top: 30px;
+  }
+
+  .hero-credential {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid ${color.onDarkLine};
+    color: ${color.onDarkMuted};
+    text-decoration: none;
+  }
+  .hero-credential > svg {
+    width: 18px;
+    height: 18px;
+  }
+  .hero-credential:hover .credit-name {
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 
   ${media.md} {
@@ -221,6 +242,14 @@ export default function Hero() {
               </PrimaryLink>
               <TextLink to="/#listen">Hear a conversation</TextLink>
             </div>
+            <Link
+              className="hero-credential"
+              to="/our-story#inception-title"
+              aria-label="A Story is a member of the NVIDIA Inception program"
+            >
+              <InceptionCredit height={40} />
+              <ArrowIcon />
+            </Link>
           </div>
         </div>
       </Frame>
