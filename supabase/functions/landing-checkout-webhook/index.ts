@@ -41,7 +41,23 @@ const onlyLinks = (Deno.env.get("LANDING_PAYMENT_LINKS") ?? "")
   .map((s) => s.trim())
   .filter(Boolean);
 
-const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, {
+/**
+ * The key that may write past RLS. Older projects inject it as
+ * SUPABASE_SERVICE_ROLE_KEY; projects on the newer API keys inject
+ * SUPABASE_SECRET_KEYS, a JSON object of named "sb_secret_…" keys.
+ */
+const serverKey = (() => {
+  const legacy = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (legacy) return legacy;
+  try {
+    const keys = JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS") ?? "{}") as Record<string, string>;
+    return keys.default ?? Object.values(keys)[0] ?? "";
+  } catch {
+    return "";
+  }
+})();
+
+const db = createClient(Deno.env.get("SUPABASE_URL")!, serverKey, {
   auth: { persistSession: false },
 });
 
@@ -57,6 +73,7 @@ const splitName = (full: string) => {
 Deno.serve(async (req) => {
   if (req.method !== "POST") return reply(405, "POST only");
   if (!signingSecret) return reply(500, "LANDING_STRIPE_WEBHOOK_SECRET is not set");
+  if (!serverKey) return reply(500, "No Supabase server key available to the function");
 
   const body = await req.text();
   let event: Stripe.Event;
