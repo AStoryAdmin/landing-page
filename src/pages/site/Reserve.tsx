@@ -66,6 +66,7 @@ import { track } from "../../lib/analytics";
 import { SITE } from "../../lib/seo";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import ComingSoon from "./kit/ComingSoon";
+import CheckoutDetails, { type CheckoutIntent } from "./CheckoutDetails";
 import { useReveals } from "./kit/reveals";
 import {
   Actions,
@@ -462,6 +463,23 @@ export default function Reserve() {
   const [error, setError] = useState<{ id: OfferId; msg: string } | null>(null);
   const [copied, setCopied] = useState(false);
 
+  /* Signed out, a pay button opens CheckoutDetails first, so the lead is
+     written before Stripe. The href stays on the anchor, so without script
+     — or signed in — it is still a straight link to checkout. */
+  const [intent, setIntent] = useState<CheckoutIntent | null>(null);
+  const gate = (e: React.MouseEvent, id: OfferId, href: string, cohort?: Cohort | null) => {
+    if (account || !href.startsWith("https://buy.stripe.com/")) return;
+    e.preventDefault();
+    setIntent({
+      offer: id,
+      name: OFFERS[id].name,
+      price: OFFERS[id].price,
+      href,
+      cohort: cohort?.n ?? null,
+      week: cohort?.week ?? null,
+    });
+  };
+
   const claimedAt = (id: OfferId) =>
     (id === "reserve" ? account?.reservedAt : account?.foundingRequestedAt) ?? null;
 
@@ -698,7 +716,10 @@ export default function Reserve() {
               </p>
               <SecondaryAnchor
                 href={openingHref}
-                onClick={() => track("offer_click", { offer: "reserve", from: "founding_fit" })}
+                onClick={(e) => {
+                  track("offer_click", { offer: "reserve", from: "founding_fit" });
+                  gate(e, "reserve", openingHref);
+                }}
               >
                 Reserve for {OFFERS.reserve.price} instead
               </SecondaryAnchor>
@@ -752,9 +773,10 @@ export default function Reserve() {
             {fit}
             <PrimaryAnchor
               href={offerCheckoutUrl(id, account, chosen.n)}
-              onClick={() => {
+              onClick={(e) => {
                 rememberCohort(chosen.n);
                 track("offer_click", { offer: id, cohort: chosen.n, signedIn: Boolean(account) });
+                gate(e, id, offerCheckoutUrl(id, account, chosen.n), chosen);
               }}
             >
               {copy.pay} <ArrowIcon />
@@ -779,7 +801,10 @@ export default function Reserve() {
         <>
           <PrimaryAnchor
             href={offerCheckoutUrl(id, account)}
-            onClick={() => track("offer_click", { offer: id, signedIn: Boolean(account) })}
+            onClick={(e) => {
+              track("offer_click", { offer: id, signedIn: Boolean(account) });
+              gate(e, id, offerCheckoutUrl(id, account));
+            }}
           >
             {copy.pay} <ArrowIcon />
           </PrimaryAnchor>
@@ -950,7 +975,10 @@ export default function Reserve() {
           <>
             <PrimaryAnchor
               href={openingHref}
-              onClick={() => track("offer_click", { offer: "reserve", from: "opening" })}
+              onClick={(e) => {
+                track("offer_click", { offer: "reserve", from: "opening" });
+                gate(e, "reserve", openingHref);
+              }}
             >
               Reserve for {reserve.price} <ArrowIcon />
             </PrimaryAnchor>
@@ -1064,7 +1092,7 @@ export default function Reserve() {
             Either way, if the timing turns out wrong, the money comes back.
           </p>
           <Actions className="acts">
-            <PrimaryAnchor href={openingHref}>
+            <PrimaryAnchor href={openingHref} onClick={(e) => gate(e, "reserve", openingHref)}>
               Reserve for {reserve.price} <ArrowIcon />
             </PrimaryAnchor>
             <SecondaryButton
@@ -1076,6 +1104,8 @@ export default function Reserve() {
           </Actions>
         </Frame>
       </Closing>
+
+      <CheckoutDetails intent={intent} onClose={() => setIntent(null)} />
     </>
   );
 }
