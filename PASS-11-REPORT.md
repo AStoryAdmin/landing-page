@@ -461,3 +461,98 @@ were needed there, which is the right outcome for a legal page.
 **Verified across all 22 routes:** `tsc -b`, `eslint src`, `build:static`,
 axe-core WCAG 2.1 AA at 1536×730, 2560×1380 and 390×844 — no violations; no
 console errors or failed requests on any route. Guarded files untouched.
+
+
+---
+
+## Pass 14 — NVIDIA Inception membership
+
+A Story Technologies, Inc. was approved into the NVIDIA Inception program on
+6 October 2026. This pass carries that fact on the site, inside NVIDIA's rules.
+
+### The rules, from NVIDIA's own guidelines
+
+Read from `design.nvidia.com/partners/inception/nvidia-inception-program/`
+(Member Badge, Writing About the Program, Examples of Usage):
+
+- Badge artwork is never recreated, recoloured, re-proportioned, or its text
+  altered. The two SVGs in `src/assets/partners/` are byte-for-byte the files
+  from the member pack (md5 verified against the download).
+- The badge is never larger than the partner logo beside it, and never under
+  30px tall.
+- "NVIDIA Inception Program" in a headline, "the NVIDIA Inception program"
+  mid-sentence. Never "NV Inception", "Inception Program by NVIDIA", "Nvidia".
+- Membership only — never endorsement, investment, partnership or backing.
+- Trademark attribution wherever the marks appear.
+
+### What the artwork forced
+
+The badge carries **its own white card** — a white rect under a black keyline
+is part of the drawing. So no placement frames it; they give it clear space and
+nothing else. An earlier version mounted it on a brass-hairline plate, which
+read as a frame around a frame.
+
+### Placements
+
+| Where | Treatment |
+|---|---|
+| **Intro** | Title-card credit, top left, opposite Skip intro. Label + badge at 34px. Label hides under 720px wide or 560px tall. |
+| **Hero** | "PROUD MEMBER OF" in brass small-caps + badge at 40px, in the text column under the actions, on a brass hairline. |
+| **Our story** | Full section: headline, co-brand lockup, NVIDIA's approved boilerplate, what it means for a family, and the not-an-endorsement line. |
+| **Footer** | Badge at 34px under the contact line, sitewide. Trademark attribution once, on its own row. |
+
+### Two design problems and their fixes
+
+**The badge was unrecognisable.** First version was a bare badge in the hero's
+bottom-right corner. At the size NVIDIA's own rule allows, the words inside the
+artwork are unreadable — so nobody could tell what it was, which is no honour
+to the company that gave it, and a white card floating on the photograph was
+not ours either. Fixed the way the sites that carry this well do it: **the words
+do the recognising and the badge confirms them.** A brass small-caps label sits
+beside it, and the pair moved into the text column with the headline.
+
+**The badge was under-scaled on Our story.** Alone, it is capped at the 40px of
+the header logo, which is lost in a section that wide. Setting the A Story logo
+and the badge at the same 52px in a lockup satisfies the rule exactly (120x52
+against 165x52) and gives the credential its weight.
+
+### Editorial
+
+A developer program means nothing to a daughter deciding whether to call her
+father, so NVIDIA's description of the program is followed by what it buys her:
+tools that hear a name said once, an accent, a sentence that restarts. The
+section closes by saying plainly that membership is not endorsement or
+investment — honest, and what the guidelines require.
+
+### Verified
+
+`tsc -b` clean · `eslint src` clean · `build:static` 22 routes ·
+**PASS 42 public-page accessibility states** · zero console errors and zero
+failed requests across /, /our-story, /pricing at 1536x730 and 390x844 ·
+no horizontal overflow · guarded files still 2026-09-20 · badge md5 matches the
+source download.
+
+### Pre-existing, not from this pass
+
+`qa/greenfield/interactive-a11y.mjs`, `verify.mjs` and `static-audit.mjs` drive a
+button named **"Follow the thread"** and a `.gf-thread-answer` selector. Neither
+string exists anywhere in `src/` — they are from an earlier homepage. The
+interactive half of `npm run a11y` has been failing on that selector since the
+rename; the public-page sweep above is unaffected.
+
+## Publication refinement - 6 October 2026
+
+Merged the new NVIDIA membership files into current main while retaining the
+new pricing, account pages, hyphenated search title and publishing setup.
+
+The intro, hero and footer share a readable badge-plus-membership credit.
+Our Story uses a two-column editorial layout, with larger company and member
+marks on the left and the supplied explanation on the right. Phones stack
+the columns. The membership explanation and trademark attribution remain.
+Official SVG artwork matches the supplied Inception Badges.zip byte for byte.
+
+Lint, lead contract checks and the 22-route static build passed. Desktop and
+390px phone captures have no horizontal overflow or page errors. Source and
+rendered copy checks found no long dashes; the search title remains
+“A Story - Your Family’s Living Memories”. The build retains its existing
+large JavaScript chunk warning.

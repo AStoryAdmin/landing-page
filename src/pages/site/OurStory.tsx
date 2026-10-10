@@ -23,6 +23,7 @@ import type { ReactNode } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { ArrowIcon, Invitation } from "./kit/kit";
+import Inception from "./kit/Inception";
 import { useReveals } from "./kit/reveals";
 import {
   Chapter,
@@ -406,6 +407,8 @@ export default function OurStory() {
           </div>
         </Frame>
       </Together>
+
+      <Inception />
 
       <Invitation />
     </>

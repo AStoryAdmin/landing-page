@@ -523,6 +523,34 @@ export const FooterShell = styled.footer`
     color: ${color.ivory};
     text-underline-offset: 4px;
   }
+  /*
+   * The Inception credential. It sits under the contact line rather than in
+   * the link columns because it is a fact about the company, not a
+   * destination - and it is held to NVIDIA's rules: their own artwork at its
+   * own colours, smaller than our logo above it, with clear space of its own.
+   */
+  .footer-credential {
+    margin-top: 20px;
+    --line: ${color.onDarkLine};
+    --muted: ${color.onDarkMuted};
+    --ink: ${color.ivory};
+  }
+  .footer-credential a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: none;
+    color: ${color.onDarkMuted};
+  }
+  @media (hover: hover) {
+    .footer-credential a:hover {
+      .credit-name {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+    }
+  }
+
   .gf-footer-links {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -559,6 +587,24 @@ export const FooterShell = styled.footer`
     border-top: 1px solid ${color.nightLine};
     font: 400 14px/1.5 ${font.body};
   }
+  /*
+   * NVIDIA require this attribution wherever their marks appear. It is said
+   * once, at the foot of the site, in the smallest voice the page has - a
+   * colophon line, not a disclaimer stuck under the badge.
+   */
+  .footer-trademark {
+    /*
+     * Its own line under the colophon. A max-width here would defeat that:
+     * max-width is resolved after the flex basis, so a capped item shrinks
+     * back onto the row it was supposed to clear.
+     */
+    flex: 0 0 100%;
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: ${color.onDarkFaint};
+  }
+
   .footer-about {
     max-width: 440px;
   }
