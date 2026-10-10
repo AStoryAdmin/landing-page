@@ -33,6 +33,11 @@ import WhereWeSit from "./home/WhereWeSit";
  * why we started, and the offer after the founders, where trust is highest.
  * MoreWays ("Three more ways in") overlapped EasiestWay here and stays on
  * How it works.
+ *
+ * 2026-10-10: the book moved up to straight after StepOne, at the founder's
+ * request. "You do step one" says what you do; the book is what it becomes —
+ * the living memory, shown as the object — so a visitor sees the result
+ * before the proof of how the calls get there.
  */
 export default function Home() {
   // Pinned scenes measure the page; re-measure once fonts and images land.
@@ -52,10 +57,10 @@ export default function Home() {
       <Hero />
       <WhatGetsLost />
       <StepOne />
+      <FamilyBook />
       <ThreeCalls />
       <EveryVoice />
       <EasiestWay />
-      <FamilyBook />
       <Founders />
       <FoundingBand />
       <WhereWeSit />
