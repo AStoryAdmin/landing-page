@@ -232,7 +232,7 @@ const ShotBand = styled.span`
 
 /**
  * A screen of the app (public/app). Since 2026-10-09 these are captured from
- * the app itself (review-fixes 21f0365, Expo web) - see kit/AppTour.tsx;
+ * the app itself (review-fixes ac315b9, the Miller demo family, Expo web) - see kit/AppTour.tsx;
  * only player.webp is still from the founder's Figma file, because the voice
  * player is in development. The HTML screens in screens.tsx are for moments
  * no capture shows (the incoming call, a call in progress).

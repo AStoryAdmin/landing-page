@@ -80,6 +80,7 @@ const WAYS_IN: TourStop[] = [
   },
   {
     shot: "group-call",
+    dark: true,
     k: "Together",
     t: "Call the family together.",
     d: "Up to four phones on one call. Everyone talks, and A Story keeps what’s said.",

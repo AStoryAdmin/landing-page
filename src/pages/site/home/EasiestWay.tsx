@@ -170,12 +170,14 @@ const WAYS: Way[] = [
 const TOUR: TourStop[] = [
   {
     shot: "group-call",
+    dark: true,
     k: "Group calls",
     t: "Call the family together.",
     d: "Up to four phones at once. Everyone talks; A Story listens and turns what’s said into memories.",
   },
   {
     shot: "family",
+    dark: true,
     k: "The family tree",
     t: "Everyone she’d talk about.",
     d: "Parents, partners and children on one tree. Tap a name to add or fix it.",

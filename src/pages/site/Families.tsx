@@ -391,7 +391,7 @@ function TogetherRoom() {
           {TOGETHER.map((t) => (
             <div key={t.shot} className="col" data-rise>
               <div className="stage">
-                <Phone width="min(320px, 88%)" lightStatus={t.shot === "home"}>
+                <Phone width="min(320px, 88%)" lightStatus={t.shot === "group-call" || t.shot === "family"}>
                   <AppShot name={t.shot} scroll={t.scroll} />
                 </Phone>
               </div>
