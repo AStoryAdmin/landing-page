@@ -13,7 +13,6 @@ import StepOne from "./home/StepOne";
 import EasiestWay from "./home/EasiestWay";
 import FoundingBand from "./home/FoundingBand";
 import WhereWeSit from "./home/WhereWeSit";
-import MoreWays from "./kit/MoreWays";
 
 /**
  * Pass 11. The homepage carries the whole idea once, in the order a visitor
@@ -26,6 +25,14 @@ import MoreWays from "./kit/MoreWays";
  * the founding offer while its 25 places last (FoundingBand), and where A
  * Story sits among the products a family might compare it with. Mechanics
  * in depth belong to How it works; the FAQ belongs to Questions.
+ *
+ * Reordered 2026-10-09 so a first-time visitor understands what A Story is
+ * by the second scroll: the loss, then straight to what you actually do
+ * (StepOne, which used to come tenth), then the proof (three calls), the
+ * family (EveryVoice, then EasiestWay's way in for each of them), the book,
+ * why we started, and the offer after the founders, where trust is highest.
+ * MoreWays ("Three more ways in") overlapped EasiestWay here and stays on
+ * How it works.
  */
 export default function Home() {
   // Pinned scenes measure the page; re-measure once fonts and images land.
@@ -44,13 +51,12 @@ export default function Home() {
       <Intro />
       <Hero />
       <WhatGetsLost />
+      <StepOne />
       <ThreeCalls />
       <EveryVoice />
-      <MoreWays ground="ivory" />
+      <EasiestWay />
       <FamilyBook />
       <Founders />
-      <StepOne />
-      <EasiestWay />
       <FoundingBand />
       <WhereWeSit />
       <Invitation />
