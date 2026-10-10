@@ -12,24 +12,33 @@ import type { FoundingTaken } from './founding';
  * made-up number is never shown in place of a missing one.
  *
  * Kept apart from lib/founding.ts so the pages that only need the offer's
- * prices (pricing, account) do not load supabase-js for it.
+ * prices (pricing, account) do not load supabase-js for it. The homepage
+ * imports this file lazily (FoundingNote) for the same reason.
  */
+export async function fetchFoundingTaken(): Promise<FoundingTaken | null> {
+    const supabase = getSupabase();
+    if (!supabase) return null;
+    const { data, error } = await supabase.rpc('founding_places_by_cohort');
+    if (error || !Array.isArray(data)) return null;
+    const next: FoundingTaken = { byCohort: {}, unassigned: 0 };
+    for (const row of data as { cohort: number | null; taken: number }[]) {
+        if (typeof row.taken !== 'number') return null;
+        if (row.cohort === null) next.unassigned += row.taken;
+        else next.byCohort[row.cohort] = (next.byCohort[row.cohort] ?? 0) + row.taken;
+    }
+    return next;
+}
+
 export function useFoundingTaken(): FoundingTaken | null {
     const [taken, setTaken] = useState<FoundingTaken | null>(null);
     useEffect(() => {
-        const supabase = getSupabase();
-        if (!supabase) return;
         let live = true;
-        supabase.rpc('founding_places_by_cohort').then(({ data, error }) => {
-            if (!live || error || !Array.isArray(data)) return;
-            const next: FoundingTaken = { byCohort: {}, unassigned: 0 };
-            for (const row of data as { cohort: number | null; taken: number }[]) {
-                if (typeof row.taken !== 'number') return;
-                if (row.cohort === null) next.unassigned += row.taken;
-                else next.byCohort[row.cohort] = (next.byCohort[row.cohort] ?? 0) + row.taken;
-            }
-            setTaken(next);
-        });
+        fetchFoundingTaken().then(
+            (t) => {
+                if (live) setTaken(t);
+            },
+            () => undefined,
+        );
         return () => {
             live = false;
         };

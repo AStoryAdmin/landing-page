@@ -10,6 +10,8 @@ import EveryVoice from "./home/EveryVoice";
 import FamilyBook from "./home/FamilyBook";
 import Founders from "./home/Founders";
 import StepOne from "./home/StepOne";
+import EasiestWay from "./home/EasiestWay";
+import FoundingBand from "./home/FoundingBand";
 import WhereWeSit from "./home/WhereWeSit";
 import MoreWays from "./kit/MoreWays";
 
@@ -19,7 +21,9 @@ import MoreWays from "./kit/MoreWays";
  * good listening changes the next question), the claim nobody else can copy
  * (one memory, everyone's version), the difference and the object together
  * (one family's archive as a book you can turn, with a page left for today),
- * the one practical answer a buyer needs (you do step one), and where A
+ * the one practical answer a buyer needs (you do step one), a way in for
+ * everyone else in the family (EasiestWay, the app's October features),
+ * the founding offer while its 25 places last (FoundingBand), and where A
  * Story sits among the products a family might compare it with. Mechanics
  * in depth belong to How it works; the FAQ belongs to Questions.
  */
@@ -46,6 +50,8 @@ export default function Home() {
       <FamilyBook />
       <Founders />
       <StepOne />
+      <EasiestWay />
+      <FoundingBand />
       <WhereWeSit />
       <Invitation />
     </>

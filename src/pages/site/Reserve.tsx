@@ -14,17 +14,16 @@
  * site's colour for the conversation.
  *
  * Below: "why pay anything?" — the objection a price raises — and which of
- * the two suits whom. No countdown and no invented "only 7 left": a hundred
- * is a real limit, said once. A Story is not a memoir to finish.
+ * the two suits whom. No countdown and no invented "only 7 left": twenty-five
+ * is a real limit, counted live. A Story is not a memoir to finish.
  *
- * The founding card sells a week, not a place in a pile: the hundred come in
- * cohorts of twenty-five (lib/founding.ts, COHORTS), and its tag names the
- * next one and, once it is worth saying, what is left of it. Before the $29
- * button it asks two things — an iPhone, and which week — so a family that
- * does not fit finds out before paying, with the dollar beside it. That
- * check replaced "pay, and we pick" (2026-10-01): nobody here is turned away
- * after paying. A full week stays on the list with a free waitlist, and once
- * every week is full or under way the card offers one for the next group.
+ * Since 2026-10-09 the page leads with the founding offer: twenty-five
+ * places, open now, set up in the order families join (lib/founding.ts,
+ * "One rolling group of 25"). There are no weeks to pick and nothing dated
+ * after them. Before the $29 button it asks one thing — an iPhone — so a
+ * family that does not fit finds out before paying, with the dollar beside
+ * it. Once the twenty-five are taken, the card offers a free list for the
+ * next group.
  *
  * Each card's action:
  *   payment live       → Stripe straight away; the account comes after
@@ -38,25 +37,20 @@ import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import {
   FOUNDING_BALANCE,
+  FOUNDING_GROUP,
+  FOUNDING_PLACES,
   FULL_PRICE,
   INCLUDES,
   OFFERS,
   RESERVE_DEADLINE_LABEL,
-  SHOW_COUNT_FROM,
   WHY_PAY,
-  cohortByN,
-  cohortLeft,
-  cohortTaken,
   deadlineLine,
+  foundingLeft,
+  foundingPlacesLine,
   isOfferLive,
-  openCohorts,
-  recalledCohort,
-  rememberCohort,
   reserveDiscountOpen,
   offerCheckoutUrl,
-  upcomingCohorts,
   waitlistLabel,
-  type Cohort,
   type OfferId,
   type WaitFor,
 } from "../../lib/founding";
@@ -291,10 +285,6 @@ const Offers = styled(Chapter)`
     flex-wrap: wrap;
     gap: 10px;
   }
-  .choices.weeks {
-    display: grid;
-    gap: 8px;
-  }
   .choice {
     position: relative;
     display: block;
@@ -467,7 +457,7 @@ export default function Reserve() {
      written before Stripe. The href stays on the anchor, so without script
      — or signed in — it is still a straight link to checkout. */
   const [intent, setIntent] = useState<CheckoutIntent | null>(null);
-  const gate = (e: React.MouseEvent, id: OfferId, href: string, cohort?: Cohort | null) => {
+  const gate = (e: React.MouseEvent, id: OfferId, href: string) => {
     if (account || !href.startsWith("https://buy.stripe.com/")) return;
     e.preventDefault();
     setIntent({
@@ -475,32 +465,23 @@ export default function Reserve() {
       name: OFFERS[id].name,
       price: OFFERS[id].price,
       href,
-      cohort: cohort?.n ?? null,
-      week: cohort?.week ?? null,
+      cohort: id === "founding" ? FOUNDING_GROUP : null,
+      week: null,
     });
   };
 
   const claimedAt = (id: OfferId) =>
     (id === "reserve" ? account?.reservedAt : account?.foundingRequestedAt) ?? null;
 
-  /* The two true limits (see the banner in lib/founding.ts). The founding one
-     is per cohort: the card offers the weeks still taking families, and
-     closes by itself when every week has filled or passed. A cohort's count
-     only appears once it is real and worth saying. */
+  /* The two true limits (see the banner in lib/founding.ts). The founding
+     card closes by itself when the twenty-five are taken; its count only
+     appears once it is real and worth saying (foundingPlacesLine). */
   const taken = useFoundingTaken();
-  const cohorts = openCohorts(taken);
-  /* Full weeks stay on the list, offering their waitlist (founding.ts). */
-  const weeks = upcomingCohorts();
-  const isFull = (c: Cohort) => cohortLeft(c, taken) === 0;
-  const foundingOpen = OFFERS.founding.open && cohorts.length > 0;
-  const next: Cohort | undefined = cohorts[0];
-  const showLeft = (c: Cohort) => (cohortTaken(c, taken) ?? 0) >= SHOW_COUNT_FROM;
-  const nextLeft = next && showLeft(next) ? cohortLeft(next, taken) : null;
+  const foundingOpen = OFFERS.founding.open && foundingLeft(taken) !== 0;
+  const placesLine = foundingPlacesLine(taken);
 
-  /* The two questions before the $29 (see the header). */
+  /* The one question before the $29 (see the header). */
   const [iphone, setIphone] = useState<"yes" | "no" | null>(null);
-  const [pick, setPick] = useState<number | null>(null);
-  const chosen = weeks.find((c) => c.n === pick) ?? next;
   const discountOpen = reserveDiscountOpen();
   const deadline = deadlineLine();
   const isOpen = (id: OfferId) => (id === "founding" ? foundingOpen : OFFERS[id].open);
@@ -512,26 +493,18 @@ export default function Reserve() {
   const paidClaimed = paidId ? claimedAt(paidId) : null;
   useEffect(() => {
     if (!paidId || !account || paidClaimed) return;
-    void markOffer(OFFERS[paidId].meta, null, paidId === "founding" ? recalledCohort() : null);
+    void markOffer(OFFERS[paidId].meta, null, paidId === "founding" ? FOUNDING_GROUP : null);
   }, [paidId, account, paidClaimed]);
-  /* The week a founding family has, from the account or, just back from
-     Stripe, from this browser. Only read on ?paid=founding, which the
-     prerender never sees, so the static page and the first render agree. */
-  const [recalled, setRecalled] = useState<number | null>(() =>
-    justPaid === "founding" ? recalledCohort() : null,
-  );
-  const theirWeek = cohortByN(account?.foundingCohort ?? recalled)?.week ?? null;
   const isIn = Boolean(justPaid || account?.reservedAt || account?.foundingRequestedAt);
 
   /* The founding waitlist (founding.ts, "Waitlist"). Someone signed out is
      sent to make an account with ?wait= on the way back, and is put on the
      list when they arrive — the same pattern as ?paid=. */
-  const waitParam: WaitFor | null =
-    params.get("wait") === "next" ? "next" : (cohortByN(Number(params.get("wait")))?.n ?? null);
+  const waitParam: WaitFor | null = params.get("wait") ? "next" : null;
   const [waitBusy, setWaitBusy] = useState(false);
   const [waitError, setWaitError] = useState<string | null>(null);
   useEffect(() => {
-    if (!waitParam || !account || account.foundingRequestedAt || account.foundingWaitlist === waitParam) return;
+    if (!waitParam || !account || account.foundingRequestedAt || account.foundingWaitlist) return;
     void joinFoundingWaitlist(waitParam, account.foundingWaitlistAt);
   }, [waitParam, account]);
   const joinWait = async (w: WaitFor) => {
@@ -544,11 +517,11 @@ export default function Reserve() {
     track("founding_waitlist", { week: String(w) });
   };
   const waitlistAction = (w: WaitFor) => {
-    const label = waitlistLabel(w);
+    const label = waitlistLabel();
     /* Short on the button — pill labels do not wrap, and a week's full name
        pushed the card past a phone's edge. The line above says which. */
     const join = "Join the waitlist";
-    if (account?.foundingWaitlist === w) {
+    if (account?.foundingWaitlist) {
       return (
         <div className="done" role="status">
           <h3>You are on the waitlist for {label}.</h3>
@@ -586,9 +559,8 @@ export default function Reserve() {
           </p>
         )}
         <p className="small">
-          {account.foundingWaitlist
-            ? `For ${label}. You are waiting on ${waitlistLabel(account.foundingWaitlist)}; this moves you and keeps your place in line.`
-            : `For ${label}. Free, and nothing is charged. We write to ${account.email} when a place opens, in the order families joined.`}
+          For {label}. Free, and nothing is charged. We write to {account.email} when a place opens, in the order
+          families joined.
         </p>
       </>
     );
@@ -603,11 +575,7 @@ export default function Reserve() {
     if (!account || busy) return;
     setError(null);
     setBusy(id);
-    if (id === "founding" && chosen) {
-      rememberCohort(chosen.n);
-      setRecalled(chosen.n);
-    }
-    const res = await markOffer(OFFERS[id].meta, claimedAt(id), id === "founding" ? chosen?.n : null);
+    const res = await markOffer(OFFERS[id].meta, claimedAt(id), id === "founding" ? FOUNDING_GROUP : null);
     setBusy(null);
     if (!res.ok) return setError({ id, msg: res.error });
     track("offer_claimed_free", { offer: id });
@@ -639,10 +607,7 @@ export default function Reserve() {
           <div className="done" role="status">
             <h3>{copy.paid}</h3>
             <p>
-              {id === "founding" &&
-                (theirWeek
-                  ? `Your first call is the week of ${theirWeek}. We will write within a working day to set it up. `
-                  : "We will write within a working day to set up your first call. ")}
+              {id === "founding" && "We will write within a working day to set up your first call. "}
               {copy.paidBody}
             </p>
           </div>
@@ -667,8 +632,7 @@ export default function Reserve() {
         <div className="done" role="status">
           <h3>{copy.claimed}</h3>
           <p>
-            {theirWeek ? <>Your first call is the week of {theirWeek}. </> : null}
-            We will write to <strong>{account?.email}</strong> to set it up.
+            We will write to <strong>{account?.email}</strong> within a working day to set up your first call.
           </p>
         </div>
       );
@@ -677,7 +641,7 @@ export default function Reserve() {
       return (
         <>
           <p className="small">
-            Every founding week has filled or begun. Join the waitlist for the next group - or reserve for{" "}
+            All {FOUNDING_PLACES} founding places are taken. Join the list for the next group - or reserve for{" "}
             {OFFERS.reserve.price} and hold your place for launch.
           </p>
           {waitlistAction("next")}
@@ -725,58 +689,18 @@ export default function Reserve() {
               </SecondaryAnchor>
             </>
           )}
-          {iphone === "yes" && (
-            <fieldset>
-              <legend>Which week suits the first call?</legend>
-              <div className="choices weeks">
-                {weeks.map((c) => {
-                  const left = showLeft(c) || isFull(c) ? cohortLeft(c, taken) : null;
-                  return (
-                    <label className="choice" key={c.n}>
-                      <input
-                        type="radio"
-                        name="cohort"
-                        value={c.n}
-                        checked={chosen?.n === c.n}
-                        onChange={() => setPick(c.n)}
-                      />
-                      <span>
-                        The week of {c.week}
-                        <small>
-                          {left === 0
-                            ? "Full · waitlist"
-                            : left !== null
-                              ? `${left} of ${c.places} left`
-                              : `${c.places} places`}
-                        </small>
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-            </fieldset>
-          )}
         </div>
       );
-      if (iphone !== "yes" || !chosen) return fit;
-      if (isFull(chosen)) {
-        return (
-          <>
-            {fit}
-            {waitlistAction(chosen.n)}
-          </>
-        );
-      }
+      if (iphone !== "yes") return fit;
       if (live(id)) {
         return (
           <>
             {fit}
             <PrimaryAnchor
-              href={offerCheckoutUrl(id, account, chosen.n)}
+              href={offerCheckoutUrl(id, account)}
               onClick={(e) => {
-                rememberCohort(chosen.n);
-                track("offer_click", { offer: id, cohort: chosen.n, signedIn: Boolean(account) });
-                gate(e, id, offerCheckoutUrl(id, account, chosen.n), chosen);
+                track("offer_click", { offer: id, cohort: FOUNDING_GROUP, signedIn: Boolean(account) });
+                gate(e, id, offerCheckoutUrl(id, account));
               }}
             >
               {copy.pay} <ArrowIcon />
@@ -832,10 +756,7 @@ export default function Reserve() {
         <>
           <PrimaryLink
             to={signUpHref("/reserve")}
-            onClick={() => {
-              if (id === "founding" && chosen) rememberCohort(chosen.n);
-              track("offer_click", { offer: id, mode: "signup" });
-            }}
+            onClick={() => track("offer_click", { offer: id, mode: "signup" })}
           >
             {copy.signUp} <ArrowIcon />
           </PrimaryLink>
@@ -883,11 +804,9 @@ export default function Reserve() {
       <>
         <p className="tag">
           {isFounding
-            ? !foundingOpen || !next
-              ? "Founding weeks full · waitlist open"
-              : nextLeft !== null
-                ? `Next group · week of ${next.week} · ${nextLeft} of ${next.places} left`
-                : `Next group · week of ${next.week} · ${next.places} places`
+            ? !foundingOpen
+              ? `All ${FOUNDING_PLACES} taken · list open`
+              : `Open now · ${placesLine}`
             : discountOpen
               ? `The easy yes · ends ${RESERVE_DEADLINE_LABEL}`
               : "The easy yes"}
@@ -895,7 +814,7 @@ export default function Reserve() {
         <h2 className="name">{o.name}</h2>
         <p className="who">
           {isFounding
-            ? "Start before launch, set up with us by hand."
+            ? "Start now, before launch, set up with us by hand."
             : discountOpen
               ? "Hold your place in line, and the price."
               : "Hold your place in line."}
@@ -943,7 +862,7 @@ export default function Reserve() {
       </>
     );
     return isFounding ? (
-      <Plate className="offer founding" data-rise>
+      <Plate className="offer founding" id="founding" style={{ scrollMarginTop: 96 }} data-rise>
         {body}
       </Plate>
     ) : (
@@ -956,48 +875,75 @@ export default function Reserve() {
   return (
     <>
       <EditorialSeo
-        title={`Reserve A Story for ${reserve.price} - or start now`}
+        title={`${founding.places} founding families - start A Story now for ${founding.price}`}
         path="/reserve"
-        description={`A Story opens a few families at a time. Reserve a place for ${reserve.price} and hold ${reserve.discount}% off your first year, or become one of ${founding.places} founding families for ${founding.price} and start before launch at half price. Refundable.`}
+        description={`A Story opens to ${founding.places} founding families before launch: ${founding.price}, set up with you by hand, one of us on your first call, half off your first year, refundable until that call. Or hold a place for ${reserve.price}.`}
       />
 
-      <PageOpening
-        ground="night"
-        eyebrow={discountOpen ? `Before launch · ${deadline}` : "Before launch · two ways in"}
-        labelledBy="reserve-title"
-        title={
-          <>
-            Hold your place for a dollar. <em>Or start now.</em>
-          </>
-        }
-        lead={`A Story calls someone you love and asks about their life, and we are opening it a few families at a time. Reserve a place for ${reserve.price} - or be one of ${founding.places} founding families and start before anyone else${foundingOpen && next ? `, from the week of ${next.week}` : ""}.`}
-        actions={
-          <>
-            <PrimaryAnchor
-              href={openingHref}
-              onClick={(e) => {
-                track("offer_click", { offer: "reserve", from: "opening" });
-                gate(e, "reserve", openingHref);
-              }}
-            >
-              Reserve for {reserve.price} <ArrowIcon />
-            </PrimaryAnchor>
-            <SecondaryButton
-              type="button"
-              onClick={() => document.getElementById("offers")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              Start now for {founding.price}
-            </SecondaryButton>
-            <ComingSoon />
-          </>
-        }
-      />
+      {/* While founding places remain, the page leads with them (header);
+          once they are taken it goes back to the dollar. */}
+      {foundingOpen ? (
+        <PageOpening
+          ground="night"
+          eyebrow={`Before launch · ${placesLine}`}
+          labelledBy="reserve-title"
+          title={
+            <>
+              {founding.places} families start now. <em>Be one of them.</em>
+            </>
+          }
+          lead={`A Story calls someone you love and asks about their life. Before launch we are opening it to ${founding.places} families, set up with you by hand and with one of us on your first call. ${founding.price}, which comes off a first year at half price - and refunded if you change your mind before that call.`}
+          actions={
+            <>
+              <PrimaryAnchor href="#founding" onClick={() => track("offer_click", { offer: "founding", from: "opening" })}>
+                Start now for {founding.price} <ArrowIcon />
+              </PrimaryAnchor>
+              <SecondaryAnchor
+                href={openingHref}
+                onClick={(e) => {
+                  track("offer_click", { offer: "reserve", from: "opening" });
+                  gate(e, "reserve", openingHref);
+                }}
+              >
+                Or hold a place for {reserve.price}
+              </SecondaryAnchor>
+              <ComingSoon />
+            </>
+          }
+        />
+      ) : (
+        <PageOpening
+          ground="night"
+          eyebrow={discountOpen ? `Before launch · ${deadline}` : "Before launch"}
+          labelledBy="reserve-title"
+          title={
+            <>
+              Hold your place <em>for a dollar.</em>
+            </>
+          }
+          lead={`A Story calls someone you love and asks about their life. All ${founding.places} founding places are taken; reserve for ${reserve.price} and we tell you the moment it is your turn.`}
+          actions={
+            <>
+              <PrimaryAnchor
+                href={openingHref}
+                onClick={(e) => {
+                  track("offer_click", { offer: "reserve", from: "opening" });
+                  gate(e, "reserve", openingHref);
+                }}
+              >
+                Reserve for {reserve.price} <ArrowIcon />
+              </PrimaryAnchor>
+              <ComingSoon />
+            </>
+          }
+        />
+      )}
 
       <Offers ref={reveal} $ground="ivory" id="offers" aria-label="Two ways in" style={{ scrollMarginTop: 80 }}>
         <Frame>
           <div className="grid">
-            {card("reserve")}
-            {card("founding")}
+            {foundingOpen ? card("founding") : card("reserve")}
+            {foundingOpen ? card("reserve") : card("founding")}
           </div>
 
           {isIn && shareUrl && (
@@ -1067,7 +1013,7 @@ export default function Reserve() {
               <p className="d">
                 There is a birthday coming, or a question you have been meaning to ask for years. Founding
                 families start before launch, with one of us beside you for the first call, at half price for
-                the year.
+                the year. There are {founding.places} places, and they go in the order families join.
               </p>
             </div>
           </div>
@@ -1080,27 +1026,28 @@ export default function Reserve() {
             There is a question in your family <em>nobody has asked yet.</em>
           </Statement>
           <p className="lead">
+            {foundingOpen
+              ? `Twenty-nine dollars has it asked before launch, with one of us on the call (${placesLine}, in the order families join). `
+              : ""}
             A dollar puts you in line to have it asked
             {discountOpen ? `, at ${OFFERS.reserve.discount}% off if you reserve by ${RESERVE_DEADLINE_LABEL}` : ""}.
-            Twenty-nine has it asked before launch
-            {foundingOpen && next
-              ? nextLeft !== null
-                ? ` - ${nextLeft} of ${next.places} places are left for the week of ${next.week}`
-                : ` - the next group starts the week of ${next.week}`
-              : ""}
-            .
             Either way, if the timing turns out wrong, the money comes back.
           </p>
           <Actions className="acts">
-            <PrimaryAnchor href={openingHref} onClick={(e) => gate(e, "reserve", openingHref)}>
-              Reserve for {reserve.price} <ArrowIcon />
-            </PrimaryAnchor>
-            <SecondaryButton
-              type="button"
-              onClick={() => document.getElementById("offers")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              Start now for {founding.price}
-            </SecondaryButton>
+            {foundingOpen && (
+              <PrimaryAnchor href="#founding" onClick={() => track("offer_click", { offer: "founding", from: "closing" })}>
+                Start now for {founding.price} <ArrowIcon />
+              </PrimaryAnchor>
+            )}
+            {foundingOpen ? (
+              <SecondaryAnchor href={openingHref} onClick={(e) => gate(e, "reserve", openingHref)}>
+                Or hold a place for {reserve.price}
+              </SecondaryAnchor>
+            ) : (
+              <PrimaryAnchor href={openingHref} onClick={(e) => gate(e, "reserve", openingHref)}>
+                Reserve for {reserve.price} <ArrowIcon />
+              </PrimaryAnchor>
+            )}
           </Actions>
         </Frame>
       </Closing>

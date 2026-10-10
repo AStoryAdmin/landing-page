@@ -18,6 +18,8 @@ import { introReleased } from "./introSignal";
 import { ArrowIcon, Picture } from "../kit/kit";
 import { Link } from "react-router-dom";
 import InceptionCredit from "../../../components/ui/InceptionCredit";
+import { OFFERS } from "../../../lib/founding";
+import { useFoundingStatus } from "../kit/foundingStatus";
 import { Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
 import {
   gsap,
@@ -109,6 +111,37 @@ const Scene = styled.section`
     margin-top: 30px;
   }
 
+  /* The founding offer, one line under the actions (2026-10-09): a true
+     limit, counted live once it is worth saying (kit/foundingStatus.ts). */
+  .hero-founding {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    margin-top: 22px;
+    font: 500 15px/1.45 ${font.body};
+    color: ${color.onDarkMuted};
+    text-decoration: none;
+  }
+  .hero-founding::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: ${color.gold};
+    box-shadow: 0 0 0 4px color-mix(in srgb, ${color.gold} 25%, transparent);
+  }
+  .hero-founding b {
+    font-weight: 600;
+    color: ${color.ivory};
+    text-decoration: underline;
+    text-decoration-color: ${color.gold};
+    text-underline-offset: 5px;
+  }
+  .hero-founding:hover b {
+    color: ${color.gold};
+  }
+
   .hero-credential {
     display: inline-flex;
     align-items: center;
@@ -143,6 +176,7 @@ const Scene = styled.section`
 `;
 
 export default function Hero() {
+  const founding = useFoundingStatus();
   const ref = useScene<HTMLElement>((root) => {
     const photo = root.querySelector(".hero-photo img");
     const title = root.querySelector("h1")!;
@@ -242,6 +276,12 @@ export default function Hero() {
               </PrimaryLink>
               <TextLink to="/#listen">Hear a conversation</TextLink>
             </div>
+            {founding.open && (
+              <Link className="hero-founding" to="/reserve#founding">
+                <span>Founding families: {founding.line}, open now.</span>
+                <b>Start now for {OFFERS.founding.price}</b>
+              </Link>
+            )}
             <Link
               className="hero-credential"
               to="/our-story#inception-title"
