@@ -27,6 +27,7 @@
  */
 import styled from "styled-components";
 import { useReveals } from "../kit/reveals";
+import AppTour, { type TourStop } from "../kit/AppTour";
 import { Chapter, Eyebrow, Frame, Lead, Statement, TextLink } from "../kit/kit.styles";
 import { color, display, font, media } from "../../../styles/theme";
 
@@ -165,6 +166,36 @@ const WAYS: Way[] = [
   },
 ];
 
+/* The four newest, on the app's own screens (kit/AppTour.tsx). */
+const TOUR: TourStop[] = [
+  {
+    shot: "group-call",
+    k: "Group calls",
+    t: "Call the family together.",
+    d: "Up to four phones at once. Everyone talks; A Story listens and turns what’s said into memories.",
+  },
+  {
+    shot: "family",
+    k: "The family tree",
+    t: "Everyone she’d talk about.",
+    d: "Parents, partners and children on one tree. Tap a name to add or fix it.",
+  },
+  {
+    shot: "person",
+    k: "A page for each person",
+    t: "A life at a glance.",
+    d: "Born, grew up, schools, work - built from what the family has written down.",
+    dark: true,
+    scroll: true,
+  },
+  {
+    shot: "invite",
+    k: "Family codes",
+    t: "Six letters, and they’re in.",
+    d: "Send the code by text. Up to ten people can join with it.",
+  },
+];
+
 export default function EasiestWay() {
   const reveal = useReveals<HTMLElement>();
   return (
@@ -182,6 +213,7 @@ export default function EasiestWay() {
             in for each of them - and none of them has to be good with phones.
           </Lead>
         </div>
+        <AppTour stops={TOUR} />
         <ul className="grid">
           {WAYS.map((w) => (
             <li key={w.t} data-rise>

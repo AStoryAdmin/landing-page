@@ -231,9 +231,11 @@ const ShotBand = styled.span`
 `;
 
 /**
- * A screen exported from the founder's Figma file (public/app, rendered from
- * "APP A Story Us 2026 for Web.pdf"). Real screens where they exist; the
- * HTML screens in screens.tsx are for moments the file doesn't draw.
+ * A screen of the app (public/app). Since 2026-10-09 these are captured from
+ * the app itself (review-fixes 21f0365, Expo web) - see kit/AppTour.tsx;
+ * only player.webp is still from the founder's Figma file, because the voice
+ * player is in development. The HTML screens in screens.tsx are for moments
+ * no capture shows (the incoming call, a call in progress).
  */
 export function AppShot({
   name,

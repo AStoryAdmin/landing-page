@@ -40,6 +40,7 @@ import { CallScreen, IncomingScreen } from "./app/screens";
 import { ArrowIcon, Invitation, PageOpening, Picture, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import MoreWays from "./kit/MoreWays";
+import AppTour, { type TourStop } from "./kit/AppTour";
 import {
   Chapter,
   Eyebrow,
@@ -54,6 +55,36 @@ import {
   grounds,
 } from "./kit/kit.styles";
 import { color, display, font, media } from "../../styles/theme";
+
+/* Everyone else in the family, on the app's own screens (added 2026-10-09;
+   kit/AppTour.tsx says where the screens come from). */
+const WAYS_IN: TourStop[] = [
+  {
+    shot: "talk",
+    k: "Telling about someone",
+    t: "“Rose is here with me.”",
+    d: "A cousin or an aunt can talk with A Story about Rose. The questions turn around for them, and what they add is credited to them.",
+    dark: true,
+  },
+  {
+    shot: "write",
+    k: "Writing it down",
+    t: "A companion, not a blank page.",
+    d: "A question to answer out loud, another if that one doesn’t fit, and tidying that leaves your words yours.",
+  },
+  {
+    shot: "import",
+    k: "Already written",
+    t: "Bring in the memoir.",
+    d: "A Word or text file becomes one memory per chapter, and A Story reads it first, so it never asks again what’s there.",
+  },
+  {
+    shot: "group-call",
+    k: "Together",
+    t: "Call the family together.",
+    d: "Up to four phones on one call. Everyone talks, and A Story keeps what’s said.",
+  },
+];
 
 const love = SCENARIOS.find((s) => s.id === "love")!;
 const QUESTION = "What did the garage smell like when you were fixing things?";
@@ -142,7 +173,7 @@ function StepScreen({ n }: { n: number }) {
         kept={["The card", "The transcript", "Voice · in development"]}
       />
     );
-  if (n === 3) return <AppShot name="memory" scroll />;
+  if (n === 3) return <AppShot name="memory" />;
   return <AppShot name="archive" scroll />;
 }
 
@@ -1006,6 +1037,7 @@ export default function HowItWorks() {
   const scan = useReveals<HTMLElement>();
   const depth = useReveals<HTMLElement>();
   const receives = useReveals<HTMLElement>();
+  const waysIn = useReveals<HTMLElement>();
   const person = useReveals<HTMLElement>();
   const volume = useReveals<HTMLElement>();
 
@@ -1171,15 +1203,15 @@ export default function HowItWorks() {
             <article className="obj" data-rise>
               <div className="stage">
                 <Phone width="min(300px, 86%)">
-                  <AppShot name="memory" scroll />
+                  <AppShot name="memory" />
                 </Phone>
               </div>
               <small>
                 <i aria-hidden="true">1</i>The card
               </small>
               <p className="cap">
-                A memory page to read - the date, the chapter, the photographs,
-                and who told it.
+                A memory page to read - the date, the chapter, the voice, and
+                who told it.
               </p>
             </article>
             <article className="obj" data-rise>
@@ -1253,6 +1285,24 @@ export default function HowItWorks() {
         </Frame>
       </Receives>
 
+      <Chapter ref={waysIn} $ground="paper" aria-labelledby="ways-in-title">
+        <Frame>
+          <SplitHead>
+            <div>
+              <Eyebrow>Everyone else</Eyebrow>
+              <Statement id="ways-in-title" $size="lg" data-lines>
+                Not only the one being asked. <em>Everyone</em> has a way in.
+              </Statement>
+            </div>
+            <Lead data-rise>
+              The people who know her stories tell their part, the one who writes gets help, and whoever typed it up
+              years ago doesn’t type it twice.
+            </Lead>
+          </SplitHead>
+          <AppTour stops={WAYS_IN} />
+        </Frame>
+      </Chapter>
+
       <Scan ref={scan} $ground="ivory" aria-labelledby="scan-title">
         <Frame className="scan">
           <div>
@@ -1260,8 +1310,8 @@ export default function HowItWorks() {
               One scan, and they’re <em>in the story.</em>
             </Statement>
             <ol className="steps3" data-rise>
-              <li>Open your family’s code in the app.</li>
-              <li>They scan it with their phone camera.</li>
+              <li>Open Invite in the app: a six-letter family code, a link, or a QR code.</li>
+              <li>They type the code, tap the link, or scan it with their camera.</li>
               <li>They land on your family’s story - and can add their own.</li>
             </ol>
           </div>

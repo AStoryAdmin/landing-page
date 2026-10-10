@@ -264,22 +264,22 @@ const Occasions = styled(Chapter)`
 
 const TOGETHER = [
   {
-    shot: "home",
+    shot: "group-call",
     scroll: false,
-    title: "Ask it together.",
-    line: "Tap Live Conversation at the kitchen table and let the whole room listen in.",
+    title: "Call it together.",
+    line: "Up to four phones on one call - the grandkids in three cities, Grandma at home. A Story keeps what’s said.",
   },
   {
     shot: "memory",
-    scroll: true,
+    scroll: false,
     title: "Listen back together.",
     line: "Every memory keeps the words, the photographs and who told it.",
   },
   {
     shot: "family",
     scroll: false,
-    title: "Everyone in the circle.",
-    line: "Add the people who were there - grandparents, cousins, the oldest friend.",
+    title: "Everyone on the tree.",
+    line: "Parents, partners, children and cousins on one family tree - and anyone can join with a six-letter code.",
   },
 ];
 
