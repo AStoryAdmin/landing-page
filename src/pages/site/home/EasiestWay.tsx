@@ -147,10 +147,10 @@ const WAYS: Way[] = [
     d: "No hunting for the right email address. Send the family code by text or WhatsApp; whoever types it joins, whatever email they signed up with.",
   },
   {
-    k: "Every person",
-    t: "A page for every life in the tree.",
+    k: "The family tree",
+    t: "Everyone on one tree, each with a page.",
     fresh: true,
-    d: "Dates, places, schools, work, what they were known for - built only from what the family has written down. Anyone can suggest a change; the people keeping the story say yes.",
+    d: "Parents, partners, children and grandchildren on one tree, and a page for each life: dates, places, schools, work - built only from what the family has written down. Anyone can suggest a change; the people keeping the story say yes.",
   },
   {
     k: "When you’d rather write",
@@ -166,21 +166,23 @@ const WAYS: Way[] = [
   },
 ];
 
-/* The four newest, on the app's own screens (kit/AppTour.tsx). */
+/* The four newest, on the app's own screens (kit/AppTour.tsx). The tree
+   leads: it is the one people look for first, and on a phone the first
+   screen is the only one visible before swiping. family-tree.webp is the
+   app's full-screen tree zoomed out, so all four generations show. */
 const TOUR: TourStop[] = [
+  {
+    shot: "family-tree",
+    k: "The family tree",
+    t: "Four generations on one tree.",
+    d: "Rose, her parents, her children and her granddaughter. Tap anyone to add or fix them.",
+  },
   {
     shot: "group-call",
     dark: true,
     k: "Group calls",
     t: "Call the family together.",
     d: "Up to four phones at once. Everyone talks; A Story listens and turns what’s said into memories.",
-  },
-  {
-    shot: "family",
-    dark: true,
-    k: "The family tree",
-    t: "Everyone she’d talk about.",
-    d: "Parents, partners and children on one tree. Tap a name to add or fix it.",
   },
   {
     shot: "person",

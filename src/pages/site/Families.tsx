@@ -276,7 +276,7 @@ const TOGETHER = [
     line: "Every memory keeps the words, the photographs and who told it.",
   },
   {
-    shot: "family",
+    shot: "family-tree",
     scroll: false,
     title: "Everyone on the tree.",
     line: "Parents, partners, children and cousins on one family tree - and anyone can join with a six-letter code.",
@@ -391,7 +391,7 @@ function TogetherRoom() {
           {TOGETHER.map((t) => (
             <div key={t.shot} className="col" data-rise>
               <div className="stage">
-                <Phone width="min(320px, 88%)" lightStatus={t.shot === "group-call" || t.shot === "family"}>
+                <Phone width="min(320px, 88%)" lightStatus={t.shot === "group-call"}>
                   <AppShot name={t.shot} scroll={t.scroll} />
                 </Phone>
               </div>
