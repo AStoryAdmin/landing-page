@@ -882,7 +882,7 @@ export default function Pricing() {
               <small>
                 {anyCheckoutLive()
                   ? "Continue with your selected plan."
-                  : "Before launch: reserve for $1 by 30 November and hold 15% off this plan's first year, or start now as a founding family."}
+                  : "Before launch: reserve for $1 by 2 November and hold 15% off this plan's first year, or start now as a founding family."}
               </small>
             </div>
             <PrimaryAnchor

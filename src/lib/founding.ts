@@ -96,17 +96,19 @@ export type OfferId = 'reserve' | 'founding';
  *   - there are twenty-five founding places, counted live (foundingCount.ts).
  * No countdown to the second, no "only 3 left" that is not, no deadline
  * that quietly moves. And it is about the offer, never the family — "the
- * price goes up on 30 November", never "before it is too late to ask them".
+ * price goes up on 2 November", never "before it is too late to ask them".
  * A Story is not a memoir to finish.
  * ─────────────────────────────────────────────────────────────────────────
  *
- * The end of 30 November in Pacific time — the last place in the US to
- * reach it — so nobody loses the price because of their time zone. Decided
- * by the team on 2026-09-29. If it ever moves, it moves later, never
- * earlier, and the Terms say so.
+ * The end of the day in Pacific time — the last place in the US to reach
+ * it — so nobody loses the price because of their time zone. Set to 30
+ * November by the team on 2026-09-29; brought forward to 2 November by the
+ * user on 2026-10-09. Anyone who reserved before the change keeps the 15%:
+ * the date limits when a reservation is made, not what it holds. (2
+ * November is after daylight saving ends, hence -08:00.)
  */
-export const RESERVE_DEADLINE = new Date('2026-11-30T23:59:59-08:00');
-export const RESERVE_DEADLINE_LABEL = '30 November';
+export const RESERVE_DEADLINE = new Date('2026-11-02T23:59:59-08:00');
+export const RESERVE_DEADLINE_LABEL = '2 November';
 
 /** True while the dollar still holds its discount. */
 export const reserveDiscountOpen = (now = Date.now()): boolean => now <= RESERVE_DEADLINE.getTime();
@@ -341,8 +343,9 @@ export const OFFER_TERMS =
     `Before public launch we offer two pre-launch purchases. A Reservation is a one-time payment of ` +
     `${OFFERS.reserve.price} per place, up to ${MAX_PER_FAMILY} places per family, refundable in full on request ` +
     `at any time before launch; it holds a place in the order reservations are made and, for reservations made ` +
-    `by 11:59 p.m. Pacific time on 30 November 2026, ${OFFERS.reserve.discount}% off the first year of an Individual ` +
-    `or Family annual plan. That date will not be brought forward. A Founding Family place is a one-time payment of ` +
+    `by 11:59 p.m. Pacific time on ${RESERVE_DEADLINE_LABEL} 2026, ${OFFERS.reserve.discount}% off the first year of an Individual ` +
+    `or Family annual plan. Reservations made before that date keep the discount whatever happens to the offer ` +
+    `afterwards. A Founding Family place is a one-time payment of ` +
     `${OFFERS.founding.price}, limited to ${OFFERS.founding.places}, refundable in full on request at any time before ` +
     `the first call; places are offered on a rolling basis in the order they are bought, with the first call ` +
     `arranged with the purchaser after purchase; it gives access before launch, set ` +
