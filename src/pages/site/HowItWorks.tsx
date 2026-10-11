@@ -51,6 +51,7 @@ import {
   SplitHead,
   StackHead,
   Statement,
+  TextAnchor,
   TextLink,
   grounds,
 } from "./kit/kit.styles";
@@ -1376,6 +1377,10 @@ export default function HowItWorks() {
               archive keeps growing after the book is printed.
             </p>
             <div className="links" data-rise>
+              {/* /samples is a page in public/, outside the router: a plain anchor. */}
+              <TextAnchor href="/samples">
+                Flip through three sample books <ArrowIcon />
+              </TextAnchor>
               <TextLink to="/pricing#book">
                 See book options <ArrowIcon />
               </TextLink>

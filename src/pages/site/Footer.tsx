@@ -42,6 +42,8 @@ export default function Footer() {
             <div>
               <h2>The product</h2>
               <Link to="/how-it-works">How it works</Link>
+              {/* A page in public/, outside the router: a plain anchor. */}
+              <a href="/samples">Sample books</a>
               <Link to="/for-families">For families</Link>
               <Link to="/pricing">Pricing</Link>
               <Link to="/compare">Compare</Link>

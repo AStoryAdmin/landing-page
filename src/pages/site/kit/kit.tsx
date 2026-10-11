@@ -308,6 +308,13 @@ const ROOMS = [
     hint: "The call, the card, the book.",
   },
   {
+    /* A finished page in public/, outside the router (2026-10-11). */
+    to: "/samples",
+    title: "Sample books",
+    hint: "Three books you can flip through, page by page.",
+    file: true,
+  },
+  {
     to: "/for-families",
     title: "For families",
     hint: "Giving it, and using it together.",
@@ -361,15 +368,25 @@ export function Invitation({
         </div>
         <nav className="next" aria-label="Where to go next">
           <p className="next-label">Where to next</p>
-          {rooms.map((r) => (
-            <Link key={r.to} to={r.to}>
-              <span>
-                <b>{r.title}</b>
-                <span>{r.hint}</span>
-              </span>
-              <ArrowIcon />
-            </Link>
-          ))}
+          {rooms.map((r) =>
+            "file" in r ? (
+              <a key={r.to} href={r.to}>
+                <span>
+                  <b>{r.title}</b>
+                  <span>{r.hint}</span>
+                </span>
+                <ArrowIcon />
+              </a>
+            ) : (
+              <Link key={r.to} to={r.to}>
+                <span>
+                  <b>{r.title}</b>
+                  <span>{r.hint}</span>
+                </span>
+                <ArrowIcon />
+              </Link>
+            ),
+          )}
         </nav>
       </Frame>
     </Band>

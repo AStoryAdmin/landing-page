@@ -41,6 +41,7 @@ import {
   Frame,
   SplitHead,
   Statement,
+  TextAnchor,
   TextLink,
 } from "../kit/kit.styles";
 import { riseLines, useScene, gsap } from "../../../lib/scrollMotion";
@@ -884,6 +885,12 @@ const Scene = styled.section`
     font-weight: 500;
     color: ${color.accentText};
   }
+  .print-line .links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 32px;
+  }
 
   /* Narrow screens: one spread at a time, stacked, no 3D. */
   .single {
@@ -1385,9 +1392,15 @@ export default function FamilyBook() {
             print it at home free. Printed editions from {BOOK.from}. The archive
             keeps growing after the book is printed.
           </p>
-          <TextLink to="/pricing#book">
-            See book options <ArrowIcon />
-          </TextLink>
+          <div className="links">
+            {/* /samples is a page in public/, outside the router: a plain anchor. */}
+            <TextAnchor href="/samples">
+              Flip through three sample books <ArrowIcon />
+            </TextAnchor>
+            <TextLink to="/pricing#book">
+              See book options <ArrowIcon />
+            </TextLink>
+          </div>
         </div>
       </Frame>
     </Scene>

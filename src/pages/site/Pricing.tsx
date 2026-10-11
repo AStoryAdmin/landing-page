@@ -42,6 +42,7 @@ import {
   PrimaryAnchor,
   SplitHead,
   Statement,
+  TextAnchor,
   TextLink,
 } from "./kit/kit.styles";
 import { color, display, font, media, motion } from "../../styles/theme";
@@ -973,6 +974,12 @@ export default function Pricing() {
               Choose the stories and photographs whenever you’re ready. The
               archive keeps growing afterwards, and the book can be printed
               again.
+            </p>
+            <p data-rise>
+              {/* /samples is a page in public/, outside the router: a plain anchor. */}
+              <TextAnchor href="/samples">
+                Flip through three sample books <ArrowIcon />
+              </TextAnchor>
             </p>
           </div>
         </Frame>
