@@ -6,10 +6,15 @@ import { HeaderShell } from "./chrome.styles";
 import { hasStoredSession } from "../../lib/authSession";
 const primary = [
   ["How it works", "/how-it-works"],
+  ["Sample books", "/samples"],
   ["For families", "/for-families"],
   ["Pricing", "/pricing"],
   ["Our story", "/our-story"],
 ];
+/* /samples is a self-contained page served from public/, outside the React
+   router, so it needs a full navigation - a router Link would show the
+   not-found route. */
+const outsideRouter = (to: string) => to === "/samples";
 const groups = [
   {
     label: "Explore",
@@ -207,16 +212,22 @@ export default function Header() {
         </button>
         <nav id="site-navigation" aria-label="Main navigation">
           <div className="gf-nav-links">
-            {[...primary, ...account].map(([label, to]) => (
-              <Link
-                key={to}
-                to={to}
-                onClick={close}
-                aria-current={location.pathname === to ? "page" : undefined}
-              >
-                {label}
-              </Link>
-            ))}
+            {[...primary, ...account].map(([label, to]) =>
+              outsideRouter(to) ? (
+                <a key={to} href={to} onClick={close}>
+                  {label}
+                </a>
+              ) : (
+                <Link
+                  key={to}
+                  to={to}
+                  onClick={close}
+                  aria-current={location.pathname === to ? "page" : undefined}
+                >
+                  {label}
+                </Link>
+              ),
+            )}
             <div
               className="more-wrap"
               onBlur={(e) => {

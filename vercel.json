@@ -85,6 +85,10 @@
       "destination": "/guides/knowledge-before-retirement/index.html"
     },
     {
+      "source": "/samples",
+      "destination": "/samples/index.html"
+    },
+    {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }

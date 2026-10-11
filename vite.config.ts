@@ -10,6 +10,8 @@ import deployment from './vercel.json' with { type: 'json' };
 function previewStaticRoutes(): Plugin {
     const routes = new Set([
         '/__design/a-story-home-vnext',
+        // Finished pages served from public/ (scripts/site-routes.mjs staticPages).
+        '/samples',
         ...pages.map((page) => page.path),
         ...guides.map((guide) => `/guides/${guide.slug}`),
     ]);

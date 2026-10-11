@@ -12,6 +12,10 @@ export const routes = [
     ...pages.map((p) => p.path),
     ...guides.map((g) => '/guides/' + g.slug),
 ];
+/* Finished pages shipped as files from public/<path>/index.html, outside the
+   React app: in the sitemap and the hosting rewrites, never prerendered
+   (the prerender would overwrite the file with the not-found route). */
+export const staticPages = ['/samples'];
 export const redirects = {
     '/experience': '/how-it-works',
     '/family': '/for-families',

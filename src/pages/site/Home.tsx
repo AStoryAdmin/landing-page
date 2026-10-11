@@ -4,6 +4,7 @@ import { refreshWhenSettled } from "../../lib/scrollMotion";
 import { Invitation } from "./kit/kit";
 import Intro from "./home/Intro";
 import Hero from "./home/Hero";
+import SampleBooks from "./home/SampleBooks";
 import WhatGetsLost from "./home/WhatGetsLost";
 import ThreeCalls from "./home/ThreeCalls";
 import EveryVoice from "./home/EveryVoice";
@@ -33,6 +34,10 @@ import WhereWeSit from "./home/WhereWeSit";
  * why we started, and the offer after the founders, where trust is highest.
  * MoreWays ("Three more ways in") overlapped EasiestWay here and stays on
  * How it works.
+ *
+ * 2026-10-11: SampleBooks ("See a real book") sits straight after the hero -
+ * three sample books a visitor can flip through on /samples before reading
+ * anything about how they are made.
  */
 export default function Home() {
   // Pinned scenes measure the page; re-measure once fonts and images land.
@@ -50,6 +55,7 @@ export default function Home() {
       />
       <Intro />
       <Hero />
+      <SampleBooks />
       <WhatGetsLost />
       <StepOne />
       <ThreeCalls />

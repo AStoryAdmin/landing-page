@@ -23,6 +23,7 @@ const origin = (process.argv[2] || 'https://astoryapp.com').replace(/\/$/, '');
 const PAGES = [
     '/', '/reserve/', '/pricing/', '/how-it-works/', '/for-families/', '/questions/',
     '/terms/', '/privacy/', '/terms.html', '/privacy.html', '/sign-up/', '/sign-in/',
+    '/samples', '/samples/',
 ];
 
 let failed = 0;
@@ -44,6 +45,12 @@ for (const path of PAGES) {
 const home = await (await fetch(origin + '/')).text();
 if (/join the waitlist/i.test(home)) fail('home page still says "Join the waitlist"');
 else pass('no waitlist on the home page');
+
+// /samples is a file in public/, not a React route: the three books must be in it.
+const samples = await (await fetch(origin + '/samples')).text();
+const books = ['carolyn', 'raymond', 'tom'].filter((b) => samples.includes(`data-book="${b}"`));
+if (books.length === 3) pass('/samples carries all three sample books (#carolyn, #raymond, #tom)');
+else fail(`/samples is missing books: ${['carolyn', 'raymond', 'tom'].filter((b) => !books.includes(b)).join(', ')}`);
 
 const scripts = [...home.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1]);
 let supabase = false;

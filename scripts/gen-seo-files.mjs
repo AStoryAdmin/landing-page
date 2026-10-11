@@ -1,16 +1,16 @@
 import { writeFileSync, readFileSync } from 'node:fs';
-import { routes, redirects } from './site-routes.mjs';
+import { routes, redirects, staticPages } from './site-routes.mjs';
 const SITE = (process.env.VITE_SITE_URL ?? 'https://astoryapp.com').replace(
     /\/$/,
     '',
 );
 /* When the pages last changed in substance — move it forward with a real
    content change, not every build, so the sitemap is not noise in every diff. */
-const lastmod = '2026-10-06';
+const lastmod = '2026-10-11';
 writeFileSync(
     'public/sitemap.xml',
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-        routes
+        [...routes, ...staticPages]
             .map(
                 (path) =>
                     `  <url><loc>${SITE}${path}</loc><lastmod>${lastmod}</lastmod></url>`,
@@ -55,7 +55,7 @@ config.redirects = Object.entries(redirects).map(([source, destination]) => ({
 }));
 config.rewrites = [
     { source: '/__design/a-story-home-vnext', destination: '/__design/a-story-home-vnext/index.html' },
-    ...routes
+    ...[...routes, ...staticPages]
         .filter((x) => x !== '/')
         .map((source) => ({ source, destination: source + '/index.html' })),
     { source: '/((?!api/).*)', destination: '/index.html' },

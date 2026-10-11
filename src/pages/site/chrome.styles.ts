@@ -103,8 +103,22 @@ export const HeaderShell = styled.header`
     letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
+    white-space: nowrap;
     cursor: pointer;
     transition: color 300ms;
+  }
+  /* Five links, More and the pill on one line, down to the phone menu at
+     1100px (a fifth link, "Sample books", broke the labels onto two lines
+     below ~1240px, 2026-10-11). */
+  @media (max-width: 1240px) {
+    nav,
+    .gf-nav-links {
+      gap: 16px;
+    }
+    .gf-nav-links > a,
+    .more-toggle {
+      font-size: 17px;
+    }
   }
   .gf-nav-links > a::after {
     content: "";
