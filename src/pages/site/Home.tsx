@@ -35,6 +35,11 @@ import WhereWeSit from "./home/WhereWeSit";
  * MoreWays ("Three more ways in") overlapped EasiestWay here and stays on
  * How it works.
  *
+ * 2026-10-10: the book moved up to straight after StepOne, at the founder's
+ * request. "You do step one" says what you do; the book is what it becomes —
+ * the living memory, shown as the object — so a visitor sees the result
+ * before the proof of how the calls get there.
+ *
  * 2026-10-11: SampleBooks ("See a real book") sits straight after the hero -
  * three sample books a visitor can flip through on /samples before reading
  * anything about how they are made.
@@ -58,10 +63,10 @@ export default function Home() {
       <SampleBooks />
       <WhatGetsLost />
       <StepOne />
+      <FamilyBook />
       <ThreeCalls />
       <EveryVoice />
       <EasiestWay />
-      <FamilyBook />
       <Founders />
       <FoundingBand />
       <WhereWeSit />
