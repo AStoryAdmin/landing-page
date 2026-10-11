@@ -42,8 +42,10 @@ const sections = [
   { id: "s11", title: "Children" },
   { id: "s12", title: "Where your information is stored" },
   { id: "s13", title: "If someone gave this to you as a gift" },
-  { id: "s14", title: "Changes to this policy" },
-  { id: "s15", title: "Contact us" },
+  { id: "s14", title: "What your family adds about you, and letters" },
+  { id: "s15", title: "Email we send" },
+  { id: "s16", title: "Changes to this policy" },
+  { id: "s17", title: "Contact us" },
 ];
 
 const Privacy = () => {
@@ -71,7 +73,7 @@ const Privacy = () => {
             The most precious things a family owns. We treat them that way.
           </HeroSub>
           <LegalMeta>
-            Last updated: June 16, 2026 &middot; A Story Technologies, Inc.
+            Last updated: October 11, 2026 &middot; A Story Technologies, Inc.
           </LegalMeta>
         </CardView>
       </HeroSection>
@@ -152,9 +154,24 @@ const Privacy = () => {
                       store full payment card numbers.
                     </ListItem>
                     <ListItem>
-                      <Bold>Usage information,</Bold> such as device details and
-                      app activity, collected through standard analytics in
-                      order to operate, secure, and improve the service.
+                      <Bold>Usage information.</Bold> The app sends us a record
+                      of which features are used (for example "a memory was
+                      saved" or "a call started"), with the app version, the
+                      kind of phone and the account it came from. These
+                      records never contain what anyone said, wrote, or
+                      photographed. They go to our own database, not to an
+                      advertising or analytics company. You can turn them off
+                      in the app under Privacy Settings ("Help improve A
+                      Story").
+                    </ListItem>
+                    <ListItem>
+                      <Bold>Crash reports.</Bold> When the app crashes on a
+                      phone, a report of the crash (the error, the app version
+                      and the phone model, with your account id so two reports
+                      from one phone can be told apart) goes to Sentry, a
+                      crash-reporting service. It carries no name, no email
+                      and nothing you recorded or wrote. The same "Help
+                      improve A Story" switch turns it off.
                     </ListItem>
                   </List>
                 </Section>
@@ -196,10 +213,23 @@ const Privacy = () => {
                   <Paragraph>
                     A Story uses artificial intelligence to conduct guided
                     interviews and to help shape what is shared into a readable
-                    story. We use your content only to provide and improve the A
+                    story. The company whose AI does this is OpenAI. When you
+                    talk with A Story, dictate a memory, ask it to tidy your
+                    words, or have the book retold, your voice, your words and
+                    any photos you share in that conversation are sent to
+                    OpenAI through our own server, so that they can be
+                    transcribed and answered. The app asks your permission
+                    before the first time, and you can say no; nothing is sent
+                    until you say yes. Text that A Story writes from what you
+                    said is shown to you to read and change before it is kept.
+                  </Paragraph>
+                  <Paragraph>
+                    We use your content only to provide and improve the A
                     Story service itself. We do not use your family's stories,
                     recordings, or transcripts to train third-party or external
-                    artificial-intelligence models.
+                    artificial-intelligence models, and our agreement with
+                    OpenAI does not allow them to train on it either. Letters
+                    (section 14) are never sent to any AI.
                   </Paragraph>
                 </Section>
 
@@ -217,6 +247,30 @@ const Privacy = () => {
                     responsible for ensuring that the storyteller, and anyone
                     else whose voice is recorded, understands and agrees to
                     being recorded.
+                  </Paragraph>
+                  <Paragraph>
+                    <Bold>Calls between family.</Bold> When two or more
+                    relatives talk through A Story, both sides of the call are
+                    transcribed, and the transcript is kept on the call, where
+                    only the people who were on it can read it. Each person is
+                    told that A Story is listening before they join, agrees to
+                    it, and can pause listening at any moment without ending
+                    the call. Somebody who joins by a link, without the app,
+                    sees the same notice before joining and can decline.
+                  </Paragraph>
+                  <Paragraph>
+                    <Bold>Recording in the room.</Bold> When one phone is set
+                    down to listen to several people in a room, the audio and
+                    its transcript are kept and everyone present is recorded.
+                    The person starting it confirms that everyone there knows
+                    A Story is listening and agrees to be recorded, and is
+                    responsible for that being true.
+                  </Paragraph>
+                  <Paragraph>
+                    Some places, including a number of US states, require the
+                    agreement of every person on a recorded conversation. A
+                    Story is built so that every person is asked; it is your
+                    responsibility to record only people who have agreed.
                   </Paragraph>
                 </Section>
 
@@ -247,7 +301,9 @@ const Privacy = () => {
                     <LegalLink href="mailto:contact@astoryapp.com">
                       contact@astoryapp.com
                     </LegalLink>
-                    , and we will delete it within thirty (30) days, except
+                    , or delete your whole account yourself in the app (Menu,
+                    then Account, then Delete account), and we will delete it
+                    within thirty (30) days, except
                     where we must retain certain information to complete a
                     transaction, resolve disputes, or comply with legal
                     obligations, and except for residual copies that are removed
@@ -356,16 +412,18 @@ const Privacy = () => {
                     them access to anything you record.
                   </Paragraph>
                   <Paragraph>
-                    <Bold>Content imported from other services.</Bold> If you
-                    ever choose to connect another account - a social
-                    profile or a photo library - anything brought across
-                    is treated exactly like anything else in your archive: it
-                    belongs to the storyteller, it is never sold, it is never
-                    used to train models, and it can be removed at any time. We
-                    import only what you point us at, we do not post anything
-                    anywhere on your behalf, and disconnecting an account stops
-                    any further import. This capability is in development and is
-                    not available today.
+                    <Bold>Content you bring in from other services.</Bold> You
+                    can bring posts, journal entries and photos into your
+                    archive from an export file you download yourself from
+                    Facebook, Instagram, X, Day One, Journey, Apple Notes,
+                    Google Keep or a WhatsApp chat. The file is read on your
+                    phone; we never connect to those accounts, never sign in
+                    to them, and never post anything anywhere on your behalf.
+                    Only the entries you confirm are kept, and anything
+                    brought across is treated exactly like the rest of your
+                    archive: it belongs to the storyteller, it is never sold,
+                    it is never used to train models, and it can be removed at
+                    any time.
                   </Paragraph>
                   <Paragraph>
                     <Bold>You control your archive.</Bold> You decide whether
@@ -384,6 +442,56 @@ const Privacy = () => {
 
                 <Section id="s14">
                   <SectionNum>14</SectionNum>
+                  <SectionTitle>
+                    What your family adds about you, and letters
+                  </SectionTitle>
+                  <Paragraph>
+                    <Bold>The family tree.</Bold> A relative can add you to
+                    their family tree with your name, your relationship to
+                    them, and, if they know them, your years, places and
+                    photo, before you have an account. That information is
+                    visible only to the family in that tree, never to the
+                    public. Once you have an account, you can change or remove
+                    what is said about you yourself; until then, the person
+                    who added you and the family's organizer look after it.
+                    Memories and facts that others add about you are kept with
+                    your story and can be corrected, declined or reported from
+                    the app, and we act on reports within a day.
+                  </Paragraph>
+                  <Paragraph>
+                    <Bold>Letters.</Bold> A letter is something you write for
+                    one person, by hand, and seal. It is stored apart from your
+                    memories, no AI ever reads it, and nobody can open it but
+                    the person it is for. You can give it to them at any time.
+                    If you have not opened A Story for six months, your sealed
+                    letters pass to the person you named as your trusted
+                    person, or, if you named nobody, to the closest relative
+                    with an account in your family, so that what you wrote is
+                    not lost. You can change your trusted person, or delete a
+                    letter, at any time before then.
+                  </Paragraph>
+                </Section>
+
+                <Section id="s15">
+                  <SectionNum>15</SectionNum>
+                  <SectionTitle>Email we send</SectionTitle>
+                  <Paragraph>
+                    Once a week, on Sunday, we email the people on a story a
+                    short note of what the family added that week: the title
+                    of a memory, a few of its lines, and its photo, with a link
+                    to open the app. A family call is mentioned only as the
+                    memory it became, never as a call or a transcript. The
+                    email is on by default for everyone with an account, and
+                    one tap at the foot of any copy turns it off, as does the
+                    switch in the app under Privacy Settings. Beyond that we
+                    send the emails an account needs (confirming your address,
+                    resetting a password, an invitation somebody sent you) and
+                    nothing else.
+                  </Paragraph>
+                </Section>
+
+                <Section id="s16">
+                  <SectionNum>16</SectionNum>
                   <SectionTitle>Changes to this policy</SectionTitle>
                   <Paragraph>
                     We may update this policy from time to time. When we do, we
@@ -393,8 +501,8 @@ const Privacy = () => {
                   </Paragraph>
                 </Section>
 
-                <Section id="s15">
-                  <SectionNum>15</SectionNum>
+                <Section id="s17">
+                  <SectionNum>17</SectionNum>
                   <SectionTitle>Contact us</SectionTitle>
                   <Paragraph>
                     If you have any questions about this policy or your privacy,
