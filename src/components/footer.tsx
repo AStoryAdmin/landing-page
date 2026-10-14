@@ -113,6 +113,7 @@ export default function Footer() {
           <div>
             <h2>Company</h2>
             <Link to="/our-story">Our story</Link>
+            <Link to="/programs">Programs &amp; grants</Link>
             <Link to="/privacy">Privacy</Link>
             <Link to="/terms">Terms of service</Link>
           </div>

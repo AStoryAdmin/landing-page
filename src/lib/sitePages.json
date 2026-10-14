@@ -90,6 +90,16 @@
     ]
   },
   {
+    "path": "/programs",
+    "name": "Programs & grants",
+    "og": "our-story",
+    "photo": "27",
+    "phrase": [
+      "The programs",
+      "we’re part of."
+    ]
+  },
+  {
     "path": "/questions",
     "name": "Questions & answers",
     "og": "questions",
