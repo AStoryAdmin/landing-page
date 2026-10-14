@@ -17,7 +17,7 @@ import styled from "styled-components";
 import { introReleased } from "./introSignal";
 import { ArrowIcon, Picture } from "../kit/kit";
 import { Link } from "react-router-dom";
-import InceptionCredit from "../../../components/ui/InceptionCredit";
+import ProgramMarks from "../../../components/ui/ProgramMarks";
 import { OFFERS } from "../../../lib/founding";
 import { useFoundingStatus } from "../kit/foundingStatus";
 import { Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
@@ -153,12 +153,9 @@ const Scene = styled.section`
     text-decoration: none;
   }
   .hero-credential > svg {
+    flex: none;
     width: 18px;
     height: 18px;
-  }
-  .hero-credential:hover .credit-name {
-    text-decoration: underline;
-    text-underline-offset: 4px;
   }
 
   ${media.md} {
@@ -284,10 +281,10 @@ export default function Hero() {
             )}
             <Link
               className="hero-credential"
-              to="/our-story#inception-title"
-              aria-label="A Story is a member of the NVIDIA Inception program"
+              to="/programs"
+              aria-label="A Story is a member of the NVIDIA Inception program, the AssemblyAI Startup Program, and a Cartesia Startups grant recipient"
             >
-              <InceptionCredit height={40} />
+              <ProgramMarks height={40} />
               <ArrowIcon />
             </Link>
           </div>

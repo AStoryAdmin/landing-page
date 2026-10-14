@@ -37,6 +37,10 @@
       "destination": "/our-story/index.html"
     },
     {
+      "source": "/programs",
+      "destination": "/programs/index.html"
+    },
+    {
       "source": "/questions",
       "destination": "/questions/index.html"
     },

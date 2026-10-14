@@ -11,10 +11,13 @@ export default function EditorialSeo({
   title,
   description,
   path,
+  schema = [],
 }: {
   title: string;
   description: string;
   path: string;
+  /** Page-specific structured data, added after the shared schemas. */
+  schema?: Record<string, unknown>[];
 }) {
   return (
     <Seo
@@ -39,6 +42,7 @@ export default function EditorialSeo({
                 },
               ]),
         ]),
+        ...schema,
       ]}
     />
   );
