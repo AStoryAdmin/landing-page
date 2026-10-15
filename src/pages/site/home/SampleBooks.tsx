@@ -100,6 +100,7 @@ const Section = styled(Chapter)`
   .cover::after {
     content: "";
     position: absolute;
+    z-index: 1;
     inset: 0 auto 0 0;
     width: 7%;
     background: linear-gradient(

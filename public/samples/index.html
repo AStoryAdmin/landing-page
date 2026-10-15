@@ -719,7 +719,7 @@ header.top{width:100%;max-width:1180px;display:flex;flex-wrap:wrap;align-items:f
   .books button b{font-size:14.5px}
   .books button i{width:12px;height:18px}
   .brand h1{font-size:23px}
-  header.top .cta-top{position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:40;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.25);padding:15px 18px}
+  nav.site .cta-top{position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:40;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.25);padding:15px 18px}
   .wrap{padding-bottom:84px}
 }
 </style>
@@ -764,6 +764,9 @@ header.top .cta-top{order:0;flex:none}
 .dot{height:3px;position:relative}
 .dot::before{content:"";position:absolute;inset:-20px -1px}
 .sw::before{content:"";position:absolute;inset:-8px -4px}
+/* Covers and endpapers in the printed volume's own cloth, cut from the
+   product photograph (2026-10-15, the founder's choice). */
+.cover .linen,.endpaper .linen{background:url("/book-objects/bookcloth.jpg") 0 0/30cqw 30cqw;mix-blend-mode:overlay;opacity:.9}
 .note{gap:4px}
 .note .k{font:600 14px/1.3 var(--ui-sans);letter-spacing:0;text-transform:none;color:var(--ui-accent)}
 .note p{font:400 18px/1.5 var(--ui-serif)}
@@ -775,6 +778,15 @@ header.top .cta-top{order:0;flex:none}
 .rv-copy b{font:400 24px/1.2 var(--ui-serif);color:var(--fg)}
 .rv-copy span{font:400 15px/1.55 var(--ui-sans);color:var(--muted)}
 .hint{max-width:760px;font:400 13px/1.6 var(--ui-sans);letter-spacing:0;color:var(--muted)}
+/* The site's own navigation (2026-10-15): /samples had no way back into the
+   site but a footnote link. Same links and order as the main header. */
+nav.site{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px 28px;padding:10px max(16px,calc((100% - 1180px)/2));background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.site-links{display:flex;gap:4px 22px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.site-links::-webkit-scrollbar{display:none}
+.site-links a{display:inline-flex;align-items:center;min-height:44px;white-space:nowrap;font:400 16px/1 var(--ui-serif);color:var(--fg);text-decoration:none}
+.site-links a:hover{color:var(--ui-accent)}
+.site-links a[aria-current]{color:var(--ui-accent);box-shadow:inset 0 -1px 0 var(--ui-accent)}
+header.top .books{justify-content:flex-start}
 @media (max-width:1100px){
   header.top{flex-wrap:wrap}
   header.top .books{order:3;flex-basis:100%;justify-content:flex-start}
@@ -790,19 +802,31 @@ header.top .cta-top{order:0;flex:none}
   .brand h1{font-size:24px}
   .brand .sub{font-size:14px}
   .swatches{align-items:flex-start}
-  header.top .cta-top{justify-content:center}
+  nav.site{flex-wrap:wrap;padding-inline:16px}
+  .site-links{order:3;flex-basis:100%;margin:0 -16px;padding:0 16px}
+  nav.site .home{margin-right:auto}
 }
 </style>
 
+<nav class="site" aria-label="Site">
+  <a class="home" href="/" aria-label="A Story home"><img src="/favicon.svg" alt="" width="26" height="26">A Story</a>
+  <div class="site-links">
+    <a href="/how-it-works">How it works</a>
+    <a href="/samples" aria-current="page">Sample books</a>
+    <a href="/for-families">For families</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/our-story">Our story</a>
+    <a href="/programs">Programs</a>
+  </div>
+  <a class="cta cta-top" href="/reserve">Reserve for $1</a>
+</nav>
 <div class="wrap">
   <header class="top">
-    <a class="home" href="/" aria-label="A Story home"><img src="/favicon.svg" alt="" width="26" height="26">A Story</a>
     <nav class="books" id="books" aria-label="Choose a sample book">
       <button data-book="carolyn" aria-pressed="true"><i style="background:#1e3962"></i><span><b>Carolyn Bennett</b><small>A family memoir</small></span></button>
       <button data-book="raymond" aria-pressed="false"><i style="background:#1f3328"></i><span><b>Raymond Ortiz</b><small>A founder’s ledger</small></span></button>
       <button data-book="tom" aria-pressed="false"><i style="background:#283f51"></i><span><b>Thomas Kessler</b><small>A veteran’s homecoming</small></span></button>
     </nav>
-    <a class="cta cta-top" href="/reserve">Reserve for $1</a>
   </header>
   <div class="intro">
     <div class="brand">

@@ -65,7 +65,8 @@ sized only by width (`vw`) balloons on it. Since 2026-10-14:
   screen and two sentences at a time.
 
 ## The family book (Home)
-- Outer cover: the samples' linen (`public/book-objects/linen.jpg`) on deep teal.
+- Cloth: `kit/cloth.ts` + `book-objects/bookcloth.jpg`, cut from the product
+  photo of the closed teal book. Every book on the site wears it.
 - Inside cover: the real endpaper - the A mark (`book-objects/a-mark.png`)
   repeated on cloth in the cover colour. Title page in the sample books' style.
 - Memory pages stay light: chapter line, title, words set big, one other voice.

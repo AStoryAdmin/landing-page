@@ -46,6 +46,7 @@ import {
 } from "../kit/kit.styles";
 import { riseLines, useScene, gsap } from "../../../lib/scrollMotion";
 import { color, display, font, media } from "../../../styles/theme";
+import { clothBoard, clothLayer } from "../kit/cloth";
 
 type Entry = (typeof SPREADS)[number];
 const N = SPREADS.length;
@@ -141,10 +142,7 @@ const Scene = styled.section`
     top: 0;
     bottom: 0;
     width: 50%;
-    background:
-      url("/book-objects/linen.jpg") 0 0 / 11cqw 11cqw,
-      color-mix(in srgb, ${color.teal} 84%, ${color.black});
-    background-blend-mode: soft-light;
+    ${clothBoard("15cqw")}
     box-shadow: 0 2px 0 color-mix(in srgb, ${color.teal} 55%, ${color.black});
   }
   .board.r {
@@ -240,10 +238,7 @@ const Scene = styled.section`
     width: calc(100% + 1.6cqw);
     height: calc(100% + 2.8cqw);
     border-radius: 8px 0 0 8px;
-    background:
-      url("/book-objects/linen.jpg") 0 0 / 11cqw 11cqw,
-      color-mix(in srgb, ${color.teal} 84%, ${color.black});
-    background-blend-mode: soft-light;
+    ${clothBoard("15cqw")}
   }
   .leaf .face.back.inside .endpaper {
     inset: 1.4cqw 0.2cqw 1.4cqw 1.4cqw;
@@ -260,31 +255,13 @@ const Scene = styled.section`
     padding: 5.5cqw 4.4cqw 4.6cqw 5.2cqw;
     display: flex;
     flex-direction: column;
-    /* Deeper than the brand teal: the linen's soft-light blend lifts it,
-       and the printed cloth is the deep teal of the real hardcover. */
-    background: color-mix(in srgb, ${color.teal} 84%, ${color.black});
+    /* The printed volume's own cloth (kit/cloth.ts). */
+    ${clothBoard("15cqw")}
     color: ${color.ivory};
     /* The bevel of a cloth-covered board. */
     box-shadow:
       inset 0 0 0 0.25cqw rgba(255, 255, 255, 0.04),
       inset 0 0 3cqw rgba(0, 0, 0, 0.18);
-  }
-  /* The real linen of the printed books (2026-10-15): the same texture and
-     blend the /samples covers use, so this demo is bound in the same cloth.
-     Laid under the art, never over the photographs. */
-  .cover-art::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(90deg, rgba(0, 0, 0, 0.24), transparent 7%),
-      url("/book-objects/linen.jpg") 0 0 / 11cqw 11cqw;
-    mix-blend-mode: soft-light;
-    opacity: 0.6;
-    pointer-events: none;
-  }
-  .cover-art > * {
-    position: relative;
   }
   .cover-art h3 {
     font: 700 2.6cqw/1.05 ${font.body};
@@ -379,13 +356,13 @@ const Scene = styled.section`
   /* ── Endpaper and title page ── */
   /* The inside cover is the real book's endpaper (2026-10-15, founder: "we
      need that texture"): the A Story mark repeated across cloth in the cover
-     colour, exactly as /samples prints it - the same mark, mask and linen.
+     colour, as /samples prints it, on the same cloth as the cover.
      Nothing written on it; the dedication moved to the title page. */
   .endpaper {
     position: absolute;
     inset: 0;
     overflow: hidden;
-    background: color-mix(in srgb, ${color.teal} 84%, ${color.black});
+    background: ${color.teal};
   }
   .endpaper::before,
   .endpaper::after {
@@ -401,9 +378,7 @@ const Scene = styled.section`
     mask: url("/book-objects/a-mark.png") 0 0 / 4cqw 4.4cqw space;
   }
   .endpaper::after {
-    background: url("/book-objects/linen.jpg") 0 0 / 11cqw 11cqw;
-    mix-blend-mode: soft-light;
-    opacity: 0.45;
+    ${clothLayer("15cqw")}
   }
   /* The title page, set like the sample books': the mark, the series in
      tracked capitals, the family's name large, the years, the dedication. */
