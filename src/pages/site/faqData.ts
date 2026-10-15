@@ -1,4 +1,11 @@
-import { FOUNDING_FOR, FOUNDING_PLACES, OFFERS, OFFER_DEADLINE_DAY } from "../../lib/founding";
+import {
+  FOUNDING_DEADLINE_DAY,
+  FOUNDING_FOR,
+  FOUNDING_PICK,
+  FOUNDING_PLACES,
+  OFFERS,
+  RESERVE_DEADLINE_LABEL,
+} from "../../lib/founding";
 import { BOOK, PLANS, START } from "../../lib/pricing";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
 export const groups = [
@@ -11,7 +18,7 @@ export const groups = [
       },
       {
         q: "Can I sign up today?",
-        a: `We are opening to a few families at a time. Reserve a place for ${OFFERS.reserve.price} by ${OFFER_DEADLINE_DAY} and hold ${OFFERS.reserve.discount}% off your first year. The first founding group is closed; for Hope College's family weekend we are opening ${FOUNDING_PLACES} new founding places, for ${FOUNDING_FOR.families} only, until the same day: ${OFFERS.founding.price} to start now, with one of us on your first call. Places go in the order families join. Both are refundable.`,
+        a: `We are opening to a few families at a time. Reserve a place for ${OFFERS.reserve.price} by ${RESERVE_DEADLINE_LABEL} and hold ${OFFERS.reserve.discount}% off your first year. The first founding group is closed; for Hope College's family weekend, ${FOUNDING_PLACES} ${FOUNDING_FOR.families} can put their name down for ${OFFERS.founding.price} by ${FOUNDING_DEADLINE_DAY}. We pick ${FOUNDING_PICK} families who get A Story free, with one of us on the first call, and refund everyone else in full. Both are refundable.`,
       },
       {
         q: "Does my family member need to install an app?",

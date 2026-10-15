@@ -92,9 +92,9 @@ export type OfferId = 'reserve' | 'founding';
 /**
  * ─────────────────────────────────────────────────────────────────────────
  * URGENCY HERE IS ONLY EVER TRUE. Two real limits, and nothing else:
- *   - both offers close at OFFER_DEADLINE, a date we honour;
+ *   - the dollar's 15% closes at RESERVE_DEADLINE, a date we honour;
  *   - there are FOUNDING_PLACES founding seats in the Hope College group,
- *     counted live (foundingCount.ts).
+ *     counted live (foundingCount.ts), and they close at FOUNDING_DEADLINE.
  * No countdown to the second, no "only 3 left" that is not, no deadline
  * that quietly moves. And it is about the offer, never the family — "the
  * offer closes on 21 October", never "before it is too late to ask them".
@@ -106,25 +106,34 @@ export type OfferId = 'reserve' | 'founding';
  * (Holland, MI, Saturday 17 October). The first founding group is closed
  * to the public; in its place we open a NEW group of FOUNDING_PLACES seats
  * for Hope College families only (students, parents, alumni, faculty and
- * staff), and both offers now close on the same day: Wednesday 21 October,
- * end of day Pacific. The dollar's 15% moved from 2 November to that
- * Wednesday; as before, anyone who reserved earlier keeps it. The Hope
- * seats travel as cohort FOUNDING_GROUP (6), so the public count is the
- * new seats only — the first group's places are not counted against them.
+ * staff), open until FOUNDING_DEADLINE: Wednesday 21 October, end of day
+ * Pacific. The Hope seats travel as cohort FOUNDING_GROUP (6), so the
+ * public count is the new seats only — the first group's places are not
+ * counted against them. The dollar is unchanged and still closes on 2
+ * November.
+ *
+ * The seats are APPLICATIONS (decided by the user 2026-10-14, same day):
+ * a family puts its name down for $29; after the Wednesday we pick
+ * FOUNDING_PICK of the FOUNDING_PLACES families, who get A Story free —
+ * set up by hand, one of us on the first call, nothing to pay for the
+ * first year — and their $29 back. Every family not picked is refunded in
+ * full. So the $29 comes back either way; it is there so we know who means
+ * it. (We advised against pay-then-pick on 2026-10-01; the user chose it
+ * for this group with the refund made plain.) Picking and refunding are
+ * done by hand in Stripe, in the week after the close.
  *
  * The end of the day in Pacific time — the last place in the US to reach
- * it — so nobody loses the price because of their time zone. (21 October
- * is still daylight saving time, hence -07:00.) History: 30 November by
- * the team on 2026-09-29; 2 November by the user on 2026-10-09; 21 October
- * by the user on 2026-10-14. The date limits when a reservation is made,
- * not what it holds.
+ * it — so nobody loses the price because of their time zone. The dollar's
+ * date: 30 November by the team on 2026-09-29; 2 November by the user on
+ * 2026-10-09 (after daylight saving ends, hence -08:00). It limits when a
+ * reservation is made, not what it holds. The seats' date, 21 October, is
+ * still daylight saving time, hence -07:00.
  */
-export const OFFER_DEADLINE = new Date('2026-10-21T23:59:59-07:00');
-export const OFFER_DEADLINE_LABEL = '21 October';
-export const OFFER_DEADLINE_DAY = 'Wednesday 21 October';
-/** The dollar's discount closes on the same day as the founding seats. */
-export const RESERVE_DEADLINE = OFFER_DEADLINE;
-export const RESERVE_DEADLINE_LABEL = OFFER_DEADLINE_LABEL;
+export const RESERVE_DEADLINE = new Date('2026-11-02T23:59:59-08:00');
+export const RESERVE_DEADLINE_LABEL = '2 November';
+export const FOUNDING_DEADLINE = new Date('2026-10-21T23:59:59-07:00');
+export const FOUNDING_DEADLINE_LABEL = '21 October';
+export const FOUNDING_DEADLINE_DAY = 'Wednesday 21 October';
 
 /** Who the founding seats in this group are for. */
 export const FOUNDING_FOR = {
@@ -137,7 +146,7 @@ export const FOUNDING_FOR = {
 export const reserveDiscountOpen = (now = Date.now()): boolean => now <= RESERVE_DEADLINE.getTime();
 
 /** True while the founding seats are still open by date. */
-export const foundingDeadlineOpen = (now = Date.now()): boolean => now <= OFFER_DEADLINE.getTime();
+export const foundingDeadlineOpen = (now = Date.now()): boolean => now <= FOUNDING_DEADLINE.getTime();
 
 /**
  * Whole days until the deadline, or null once it has passed. Only said out
@@ -158,17 +167,18 @@ export const deadlineLine = (now = Date.now()): string => {
 };
 /**
  * The live count of founding places is shown once at least this many are
- * taken. "7 of 10 left" is an honest number and a reason to act; "10 of
- * 10 left" is just as honest and reads like nobody wants it, so until then
- * the card says "10 new places".
+ * taken. "19 of 25 left" is an honest number and a reason to act; "25 of
+ * 25 left" is just as honest and reads like nobody wants it, so until then
+ * the card says "25 new places".
  */
-export const SHOW_COUNT_FROM = 3;
+export const SHOW_COUNT_FROM = 5;
 
 /**
  * How many founding seats are open in this group — the Hope College seats
- * (see "Hope College" above). One number to change if the team opens more.
+ * (see "Hope College" above), and how many of those families are picked.
  */
-export const FOUNDING_PLACES = 10;
+export const FOUNDING_PLACES = 25;
+export const FOUNDING_PICK = 10;
 
 /**
  * The cohort number every founding place in this group carries. Group 5
@@ -213,7 +223,7 @@ export const foundingIsOpen = (taken: FoundingTaken | null, now = Date.now()): b
 
 /** Why the founding card is closed, when it is. */
 export const foundingClosedLine = (now = Date.now()): string =>
-    foundingDeadlineOpen(now) ? `All ${FOUNDING_PLACES} taken` : `Closed ${OFFER_DEADLINE_LABEL}`;
+    foundingDeadlineOpen(now) ? `All ${FOUNDING_PLACES} taken` : `Closed ${FOUNDING_DEADLINE_LABEL}`;
 
 /**
  * ── Waitlist ────────────────────────────────────────────────────────────
@@ -349,13 +359,12 @@ export const INCLUDES: Record<OfferId, string[]> = {
         'Refunded any time before launch, no questions',
     ],
     founding: [
-        `One of ${FOUNDING_PLACES} new places, opened for ${FOUNDING_FOR.families}`,
-        `Open through ${OFFER_DEADLINE_DAY}`,
-        'We write within a working day and set it up with you, by hand',
-        'Your first month of guided calls, from the first call',
-        'One of us there for that first call',
-        `Half off your first year, and the $29 counts toward it`,
-        'Refunded any time before the first call',
+        `One of ${FOUNDING_PLACES} places, opened for ${FOUNDING_FOR.families}, until ${FOUNDING_DEADLINE_DAY}`,
+        `After that we pick ${FOUNDING_PICK} families, and write to every one`,
+        `Picked: A Story free for your first year, set up with you by hand`,
+        'One of us there for your first call',
+        `Picked or not, the ${OFFERS.founding.price} comes back to you in full`,
+        'Nothing to worry about, either way',
     ],
 };
 
@@ -363,15 +372,15 @@ export const INCLUDES: Record<OfferId, string[]> = {
 export const WHY_PAY = [
     {
         t: 'It holds a price we will not offer again',
-        d: `${OFFERS.founding.discount}% off the first year for founding families, ${OFFERS.reserve.discount}% for everyone who reserves by ${RESERVE_DEADLINE_LABEL}. Both close on ${OFFER_DEADLINE_DAY}.`,
+        d: `A free first year for the ${FOUNDING_PICK} ${FOUNDING_FOR.short} families we pick, ${OFFERS.reserve.discount}% off for everyone who reserves by ${RESERVE_DEADLINE_LABEL}.`,
     },
     {
         t: 'None of it is a fee',
-        d: 'Whatever you pay today comes off your first year. It is a head start on the plan, not a charge on top of it.',
+        d: `The dollar comes off your first year. The ${OFFERS.founding.price} comes back whether you are picked or not - it is a name on a list, not a charge.`,
     },
     {
         t: 'It is yours back if you ask',
-        d: 'The dollar, any time before launch. The $29, any time before your first call. Write to us and it is refunded.',
+        d: `The dollar, any time before launch. The ${OFFERS.founding.price}, any time before ${FOUNDING_DEADLINE_LABEL} - and after it, in full, either way. Write to us and it is refunded.`,
     },
     {
         t: 'It is how we know you mean it',
@@ -386,14 +395,12 @@ export const OFFER_TERMS =
     `at any time before launch; it holds a place in the order reservations are made and, for reservations made ` +
     `by 11:59 p.m. Pacific time on ${RESERVE_DEADLINE_LABEL} 2026, ${OFFERS.reserve.discount}% off the first year of an Individual ` +
     `or Family annual plan. Reservations made before that date keep the discount whatever happens to the offer ` +
-    `afterwards. A Founding Family place is a one-time payment of ` +
-    `${OFFERS.founding.price}, refundable in full on request at any time before ` +
-    `the first call. The first group of Founding Family places closed on 14 October 2026; a further group of ` +
-    `${OFFERS.founding.places} places is offered to ${FOUNDING_FOR.who} until 11:59 p.m. Pacific time on ` +
-    `${OFFER_DEADLINE_LABEL} 2026. Places are offered on a rolling basis in the order they are bought, with the first call ` +
-    `arranged with the purchaser after purchase; a place gives access before launch, set ` +
-    `up with the purchaser, 30 days of access equivalent to the ` +
-    `Individual plan beginning on the date of the first call, and ${OFFERS.founding.discount}% off the first year of an ` +
-    `Individual or Family annual plan. In both cases the amount paid is deducted from that first year, and the ` +
-    'discount applies to the first year of a plan bought on the website within 60 days of launch or of the ' +
-    'founding month ending, whichever is later.';
+    `afterwards. The first group of Founding Family places closed on 14 October 2026. A further group of ` +
+    `${OFFERS.founding.places} Founding Family places is offered to ${FOUNDING_FOR.who} until 11:59 p.m. ` +
+    `Pacific time on ${FOUNDING_DEADLINE_LABEL} 2026, as applications: a one-time payment of ${OFFERS.founding.price} ` +
+    `puts a family forward, and is refundable in full on request at any time before that date. After it we select ` +
+    `${FOUNDING_PICK} of those families. A selected family receives the Founding Family programme at no charge: ` +
+    `set-up with a founder, a founder present on the first call, and twelve months of access equivalent to the ` +
+    `Individual plan beginning on the date of the first call; its ${OFFERS.founding.price} is refunded. Every family not ` +
+    `selected is refunded its ${OFFERS.founding.price} in full. The Reservation's ${OFFERS.reserve.price} is deducted from ` +
+    `the first year, and its discount applies to the first year of a plan bought on the website within 60 days of launch.`;

@@ -385,7 +385,7 @@ export default function CheckoutDetails({
             </h2>
             <p id={`${uid}-lead`}>
               {founding
-                ? "So we can set up your first call by hand. Then you pay through Stripe."
+                ? "So we know whose name is down. Then you pay through Stripe."
                 : "So your place has a name on it. Then you pay through Stripe."}
             </p>
             <span className="orn" aria-hidden="true">
@@ -452,7 +452,7 @@ export default function CheckoutDetails({
             </PrimaryButton>
             <p className="fine">
               Apple Pay, Google Pay or card, through Stripe.{" "}
-              {founding ? "Refunded any time before the first call." : "Refunded any time before launch."}
+              {founding ? "Refunded in full if you are not picked - and if you are, too." : "Refunded any time before launch."}
             </p>
           </form>
         </div>

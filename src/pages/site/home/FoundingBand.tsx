@@ -12,17 +12,18 @@
  * dollar.
  *
  * Since 2026-10-14 the places are a new group for Hope College families,
- * through Wednesday 21 October (lib/founding.ts, "Hope College").
+ * until Wednesday 21 October, as applications: ten families are picked
+ * and go free, the rest are refunded (lib/founding.ts, "Hope College").
  */
 import styled from "styled-components";
 import {
-  FOUNDING_BALANCE,
+  FOUNDING_DEADLINE_DAY,
   FOUNDING_FOR,
+  FOUNDING_PICK,
   FOUNDING_PLACES,
   FULL_PRICE,
   INCLUDES,
   OFFERS,
-  OFFER_DEADLINE_DAY,
   foundingClosedLine,
 } from "../../../lib/founding";
 import { useReveals } from "../kit/reveals";
@@ -128,17 +129,17 @@ export default function FoundingBand() {
           {open ? (
             <>
               <Statement id="founding-band-title" $size="lg">
-                {FOUNDING_PLACES} more {FOUNDING_FOR.families} start <em>now.</em>
+                {FOUNDING_FOR.families}: {FOUNDING_PLACES} places, <em>{FOUNDING_PICK} go free.</em>
               </Statement>
               <p className="lead">
-                The first founding group is closed. For Hope's family weekend we are opening {FOUNDING_PLACES} new
-                places, for {FOUNDING_FOR.families} only, through {OFFER_DEADLINE_DAY}: set up by hand, with one
-                of us on your first call. We write within a working day of you joining, and places go in the
-                order families join.
+                The first founding group is closed. For Hope's family weekend, {FOUNDING_PLACES}{" "}
+                {FOUNDING_FOR.families} can put their name down for {founding.price} by {FOUNDING_DEADLINE_DAY}. We
+                pick {FOUNDING_PICK} and set them up free, by hand, with one of us on the first call. Everyone else
+                gets the {founding.price} back, in full.
               </p>
               <Actions className="acts">
                 <PrimaryLink to="/reserve#founding">
-                  Start now for {founding.price} <ArrowIcon />
+                  Put my name down for {founding.price} <ArrowIcon />
                 </PrimaryLink>
                 <SecondaryLink to="/reserve">Or hold a place for {reserve.price}</SecondaryLink>
               </Actions>
@@ -163,11 +164,11 @@ export default function FoundingBand() {
           <Plate className="card" data-rise>
             <p className="price">
               <b>{founding.price}</b>
-              <span>once · {FOUNDING_FOR.families} · refundable until your first call</span>
+              <span>once · {FOUNDING_FOR.families} · comes back to you either way</span>
             </p>
             <p className="then">
-              Then half off your first year - <s>{FULL_PRICE.individual}</s> {founding.individual}, and the{" "}
-              {founding.price} counts, so {FOUNDING_BALANCE.individual} more whenever you choose.
+              Picked, your first year is free - <s>{FULL_PRICE.individual}</s> $0 - and the {founding.price} is
+              refunded. Not picked, the {founding.price} is refunded too.
             </p>
             <ul>
               {INCLUDES.founding.map((f) => (
