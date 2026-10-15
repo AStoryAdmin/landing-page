@@ -202,7 +202,7 @@ export const SPREADS = [
     alt: "Mia and Sarah looking at the moon through a bedroom window",
     caption: "Mia at the bedroom window",
     words:
-      "At bedtime, Mia asked where the moon goes in the daytime. I began explaining the sky, but she shook her head. She wanted to know who keeps it company while we can't see it. Writing this down before I forget how she said it.",
+      "Mia asked where the moon goes in the daytime. Not where, she said - who keeps it company while we can’t see it. Writing it down before I forget how she said it.",
     by: "Sarah · written the same night",
     also: {
       name: "Grandma Ruth",

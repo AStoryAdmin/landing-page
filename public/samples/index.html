@@ -7,7 +7,7 @@
 <meta name="description" content="Flip through three sample A Story books: a family memoir, a founder’s story, and a veteran’s homecoming.">
 <link rel="canonical" href="https://astoryapp.com/samples">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="theme-color" content="#e6e4df">
+<meta name="theme-color" content="#F3EBDD">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="website">
@@ -724,24 +724,95 @@ header.top{width:100%;max-width:1180px;display:flex;flex-wrap:wrap;align-items:f
 }
 </style>
 
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+/* ---------- site chrome (2026-10-15) ----------
+   The page around the book now dresses like astoryapp.com: the ivory ground,
+   chocolate ink, Figtree for the interface and Source Serif for the voice,
+   the site's pill buttons. The book itself keeps its own print typography.
+   One sentence says the families are fictional (it was said three times). */
+:root{--bg:#F3EBDD;--bg-2:#E9DECC;--fg:#4A3327;--muted:#70503B;--line:rgba(74,51,39,.2);--chip:#FBF7EF;--ui-accent:#B85126;--ui-sans:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;--ui-serif:"Source Serif 4",Georgia,serif}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1d1814;--bg-2:#14110e;--fg:#F3EBDD;--muted:#c9b9a5;--line:rgba(243,235,221,.18);--chip:#2a231d;--ui-accent:#E0A03F}}
+:root[data-theme="dark"]{--bg:#1d1814;--bg-2:#14110e;--fg:#F3EBDD;--muted:#c9b9a5;--line:rgba(243,235,221,.18);--chip:#2a231d;--ui-accent:#E0A03F}
+body{background:radial-gradient(70% 60% at 50% 55%, color-mix(in srgb,#fff 45%,var(--bg)) 0%, var(--bg) 60%, var(--bg-2) 100%);background-color:var(--bg);font-family:var(--ui-sans)}
+.wrap{gap:12px;padding-block:14px 28px}
+header.top{align-items:center;gap:12px 24px;flex-wrap:nowrap}
+.home{display:inline-flex;align-items:center;gap:10px;flex:none;min-height:44px;color:var(--fg);text-decoration:none;font:500 22px/1 var(--ui-serif);letter-spacing:-.01em}
+.home img{width:26px;height:26px}
+.home:hover{color:var(--ui-accent)}
+.home:focus-visible,.books button:focus-visible,.btn:focus-visible,.cta:focus-visible,.sw:focus-visible,.dot:focus-visible{outline:2px solid var(--ui-accent);outline-offset:3px}
+header.top .books{order:0;flex:1 1 auto;justify-content:center;max-width:none;width:auto}
+header.top .cta-top{order:0;flex:none}
+.books{gap:6px;flex-wrap:nowrap}
+.books button{flex:0 1 auto;gap:10px;padding:8px 16px 8px 10px;min-height:48px;border-radius:999px;background:transparent;border:1px solid transparent;transition:background-color .2s,border-color .2s}
+.books button:hover{background:color-mix(in srgb,var(--chip) 70%,transparent)}
+.books button[aria-pressed="true"]{background:var(--chip);border-color:var(--line);box-shadow:0 6px 18px -12px rgba(74,51,39,.45)}
+.books button i{width:16px;height:22px}
+.books button b{font:500 16px/1.15 var(--ui-serif);white-space:nowrap}
+.books button small{font:400 13px/1.2 var(--ui-sans);letter-spacing:0;text-transform:none;color:var(--muted);white-space:nowrap}
+.intro{width:100%;max-width:1180px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 32px}
+.brand{gap:6px}
+.brand h1{font:400 clamp(26px,2.6vw,36px)/1.08 var(--ui-serif);letter-spacing:-.015em;color:var(--fg)}
+.brand h1 em{font-style:normal;color:var(--ui-accent)}
+.brand .sub{margin:0;font:400 16px/1.45 var(--ui-sans);color:var(--muted)}
+.swatches{align-items:flex-end}
+.sw-label{font:400 14px/1.2 var(--ui-sans);letter-spacing:0;color:var(--muted)}
+.sw-label b{font-weight:600}
+.sw{width:28px;height:28px}
+.btn{font:600 14px/1 var(--ui-sans);letter-spacing:0;text-transform:none;min-height:44px;padding:0 20px;background:var(--chip)}
+.pos{font:500 14px/1 var(--ui-sans);letter-spacing:0;text-transform:none}
+.dot{height:3px}
+.note{gap:4px}
+.note .k{font:600 14px/1.3 var(--ui-sans);letter-spacing:0;text-transform:none;color:var(--ui-accent)}
+.note p{font:400 18px/1.5 var(--ui-serif)}
+.cta{font:600 15px/1 var(--ui-sans);letter-spacing:0;text-transform:none;display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;background:var(--fg);color:var(--bg);box-sizing:border-box}
+.cta::after{content:"→"}
+.cta:hover{background:var(--ui-accent);color:#fff}
+.reserve{max-width:860px;margin-top:10px;padding:22px 28px;border-radius:6px;gap:16px 32px;background:var(--chip);border-color:var(--line)}
+.rv-copy{gap:6px}
+.rv-copy b{font:400 24px/1.2 var(--ui-serif);color:var(--fg)}
+.rv-copy span{font:400 15px/1.55 var(--ui-sans);color:var(--muted)}
+.hint{max-width:760px;font:400 13px/1.6 var(--ui-sans);letter-spacing:0;color:var(--muted)}
+@media (max-width:1100px){
+  header.top{flex-wrap:wrap}
+  header.top .books{order:3;flex-basis:100%;justify-content:flex-start}
+  .home{margin-right:auto}
+}
+@media (max-width:760px){
+  .books{flex-wrap:nowrap}
+  header.top .books{width:100%;min-width:0}
+  .books button{flex:1 1 0;min-width:0;justify-content:center;padding:8px 6px}
+  .books button i{display:none}
+  .books button span{align-items:center}
+  .books button b{font-size:14px;white-space:normal;text-align:center}
+  .brand h1{font-size:24px}
+  .brand .sub{font-size:14px}
+  .swatches{align-items:flex-start}
+  header.top .cta-top{justify-content:center}
+}
+</style>
+
 <div class="wrap">
   <header class="top">
-    <div class="brand">
-      <span class="eyebrow"><a href="/" title="Back to astoryapp.com">A Story</a> · Sample books</span>
-      <h1>Flip through a sample <em>A Story</em> book</h1>
-    </div>
+    <a class="home" href="/" aria-label="A Story home"><img src="/favicon.svg" alt="" width="26" height="26">A Story</a>
+    <nav class="books" id="books" aria-label="Choose a sample book">
+      <button data-book="carolyn" aria-pressed="true"><i style="background:#1e3962"></i><span><b>Carolyn Bennett</b><small>A family memoir</small></span></button>
+      <button data-book="raymond" aria-pressed="false"><i style="background:#1f3328"></i><span><b>Raymond Ortiz</b><small>A founder’s ledger</small></span></button>
+      <button data-book="tom" aria-pressed="false"><i style="background:#283f51"></i><span><b>Thomas Kessler</b><small>A veteran’s homecoming</small></span></button>
+    </nav>
     <a class="cta cta-top" href="/reserve">Reserve for $1</a>
+  </header>
+  <div class="intro">
+    <div class="brand">
+      <h1>Turn the pages of a real <em>A Story</em> book.</h1>
+      <p class="sub">Three fictional families, printed exactly the way yours will be.</p>
+    </div>
     <div class="swatches">
       <span class="sw-label">Cover color · <b id="swName">Navy</b></span>
       <div class="swatch-row" id="swatches" role="group" aria-label="Cover color"></div>
     </div>
-  </header>
-  <nav class="books" id="books" aria-label="Choose a sample book">
-    <button data-book="carolyn" aria-pressed="true"><i style="background:#1e3962"></i><span><b>Carolyn Bennett</b><small>Sample · family memoir · first person</small></span></button>
-    <button data-book="raymond" aria-pressed="false"><i style="background:#1f3328"></i><span><b>Raymond Ortiz</b><small>Sample · founder’s ledger · third person</small></span></button>
-    <button data-book="tom" aria-pressed="false"><i style="background:#283f51"></i><span><b>Thomas Kessler</b><small>Sample · veteran’s homecoming · first person</small></span></button>
-  </nav>
-  <p class="sample-note">Carolyn, Raymond and Tom are fictional families. Every page shows how a real A Story book is made.</p>
+  </div>
+
 
   <div id="stageHost" aria-live="polite"></div>
 
@@ -762,7 +833,7 @@ header.top{width:100%;max-width:1180px;display:flex;flex-wrap:wrap;align-items:f
     <div class="rv-copy"><b>Start your parent’s book for $1.</b><span>$1 holds your place, refunded any time before launch. Or start now as a founding family for $29. Your parent talks, writes, or shares what they already have, and A Story does the shaping.</span></div>
     <a class="cta" href="/reserve">Reserve for $1</a>
   </div>
-  <p class="hint">Click a page or use ← → to turn. Tap any QR code to see what it opens. All three families and stories are fictional samples. <a class="back" href="/">Back to astoryapp.com</a> · <a class="back" href="/how-it-works">How a book is made</a></p>
+  <p class="hint">Click a page or use ← → to turn. Tap a QR code to see what it opens. <a class="back" href="/how-it-works">How a book is made</a> · <a class="back" href="/">Back to astoryapp.com</a></p>
 </div>
 
 <div class="scan" id="scan" hidden role="dialog" aria-modal="true" aria-label="What opens when you scan">

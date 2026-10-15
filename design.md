@@ -64,12 +64,21 @@ sized only by width (`vw`) balloons on it. Since 2026-10-14:
 - "The easiest way" asks who in the family the reader means and shows one
   screen and two sentences at a time.
 
+## The family book (Home)
+- Outer cover: the samples' linen (`public/book-objects/linen.jpg`) on deep teal.
+- Inside cover: the real endpaper - the A mark (`book-objects/a-mark.png`)
+  repeated on cloth in the cover colour. Title page in the sample books' style.
+- Memory pages stay light: chapter line, title, words set big, one other voice.
+
 ## Startup programs
 - One component, `components/ui/ProgramMarks.tsx`; NVIDIA's artwork unmodified.
 - Size: 48px badges on Home and in the footer, under a 56px footer logo —
   legible, and never larger than the A Story logo beside them (NVIDIA rule).
 - Home: one labelled row under the hero ("Startup programs & grants" → /programs).
   Footer: the marks. Intro: NVIDIA credit only.
+- /programs: one big idea on night, then one verb per program (Build, Hear,
+  Answer) setting what the program is for beside why A Story belongs.
+  Grand is allowed in A Story's voice; the programs' side is paraphrase.
 - Wording: membership and grant status only. Never "backed by", "supported
   by" or "partner".
 
@@ -83,7 +92,10 @@ invitation.
 - A self-contained page outside the React app. The book casts one shadow per
   stack (not one per leaf, which summed to a black halo), and sizes itself
   from the measured space above and below it so the controls never sit on
-  the book. Home's sample covers are captured from it.
+  the book.
+- Its chrome dresses like the site (ivory, Figtree + Source Serif, pill
+  buttons); the book keeps its print typography. Fictional families are
+  stated once, under the title. Home's sample covers are captured from it.
 
 ## Motion
 GSAP via `lib/scrollMotion.ts`. Animate transform and opacity only. Every

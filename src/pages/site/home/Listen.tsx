@@ -1,22 +1,25 @@
 /**
- * Listen — the mechanism, shown as the one moment each call turns on.
+ * Listen — three calls, each told the way the lake-monster scene tells a
+ * memory (EveryVoice): one object in the middle, the voices arriving around it.
  *
- * Replaced ThreeCalls on the home page (2026-10-14), then rebuilt the same
- * day: the first version set all three turns of each exchange as a
- * transcript — tabs, six small capitals labels, three paragraphs — and read
- * as a document, not a call. The founder called it very bad, and it was.
+ * History. 2026-10-14 it replaced the three-phone player (still unused in
+ * app/CallTrio.tsx); first as a transcript (too much like a document), then as
+ * a photograph with a large quote (better, but static). The founder asked for
+ * it to work like the lake monster, and that is the right model: there the
+ * family's notes gather round the memory; here the call's own three turns
+ * gather round the photograph it is about —
  *
- * The idea, from the taste-skill pass: the words the storyteller let slip
- * become the headline of the scene. Each call is one still: the photograph
- * from that call, one plain line saying what was asked, the slipped words
- * set large, and A Story's reply beneath. Pick Rosa, Errol or Joan. The
- * same section stands in for the three-phone player on How it works
- * (2026-10-14; app/CallTrio.tsx is now unused).
+ *   A Story asks      (top left)    the question
+ *   Rosa answers      (right)       her answer, the words she let slip marked
+ *   A Story follows   (bottom left) the reply that goes after those words
  *
- * Every quoted line comes from `demoScripts.ts` (the cover lead, the
- * attribution, the script turns), never paraphrased; `app/calls.ts` names
- * the turns and the slipped words. The voice layer is labelled as in
- * development, as demoScripts.ts requires.
+ * The notes land one after another each time a call is chosen, so the
+ * exchange plays in order without anyone pressing play. Pick Rosa, Errol or
+ * Joan. Under 1024px the notes stack beneath the photograph.
+ *
+ * Every quoted line comes from `demoScripts.ts`, never paraphrased;
+ * `app/calls.ts` names the turns and the slipped words. The voice layer is
+ * labelled as in development, as demoScripts.ts requires.
  */
 import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import styled from "styled-components";
@@ -27,17 +30,25 @@ import { Frame, Statement, TextLink, grounds } from "../kit/kit.styles";
 import { riseLines, useScene } from "../../../lib/scrollMotion";
 import { color, font, media, motion } from "../../../styles/theme";
 
-const MOMENTS = CALLS.map((c) => {
+const CALL = CALLS.map((c) => {
   const s = SCENARIOS.find((x) => x.id === c.id)!;
+  const answer = s.script[c.answer].text;
+  const at = answer.indexOf(c.detail);
+  const [name, about] = s.cover.attribution.split(" - ");
   return {
     id: c.id,
     photo: c.photo,
     behaviour: c.behaviour,
     teller: s.teller,
-    who: s.cover.attribution,
+    name,
+    about,
     lead: s.cover.lead,
-    detail: c.detail,
-    reply: s.script[c.follow].text,
+    ask: s.script[c.ask].text,
+    before: at < 0 ? answer : answer.slice(0, at),
+    detail: at < 0 ? "" : c.detail,
+    after: at < 0 ? "" : answer.slice(at + c.detail.length),
+    method: s.script[c.follow].method ?? "",
+    follow: s.script[c.follow].text,
   };
 });
 
@@ -51,6 +62,7 @@ const Scene = styled.section`
   background: ${color.teal};
   color: ${color.ivory};
   padding: calc(clamp(72px, 8vw, 132px) * var(--sy)) 0;
+  overflow: hidden;
 
   .top {
     display: flex;
@@ -58,13 +70,18 @@ const Scene = styled.section`
     align-items: end;
     justify-content: space-between;
     gap: 20px 48px;
-    margin-bottom: calc(clamp(28px, 3.4vw, 52px) * var(--sy));
   }
   .top h2 {
     max-width: 21ch;
   }
+  .lead {
+    margin-top: 14px;
+    font: 400 clamp(1.05rem, 1rem + 0.3vw, 1.2rem) / 1.55 ${font.body};
+    color: ${color.onDarkMuted};
+    max-width: 52ch;
+  }
 
-  /* The three calls: names you can choose, said the way you would say them. */
+  /* The three calls. */
   [role="tablist"] {
     display: flex;
     flex-wrap: wrap;
@@ -79,7 +96,7 @@ const Scene = styled.section`
     border: 0;
     border-radius: 999px;
     background: color-mix(in srgb, ${color.ivory} 9%, transparent);
-    font: 400 17px/1.2 ${font.body};
+    font: 400 16px/1.2 ${font.body};
     color: ${color.onDarkMuted};
     white-space: nowrap;
     cursor: pointer;
@@ -107,67 +124,128 @@ const Scene = styled.section`
     transform: scale(0.98);
   }
 
-  /* The still: the photograph from that call beside the moment it turns on. */
-  .still {
+  /* The table: the photograph in the middle, the turns laid round it. */
+  .stage {
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: clamp(28px, 4.4vw, 80px);
-    align-items: center;
-    animation: still-in 420ms cubic-bezier(0.16, 1, 0.3, 1);
+    place-items: center;
+    min-height: clamp(540px, 74svh, 740px);
+    margin-top: calc(clamp(20px, 2.4vw, 40px) * var(--sy));
   }
-  @keyframes still-in {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-  }
-  .photo {
+  .print {
+    position: relative;
+    z-index: 1;
+    width: min(300px, 25vw);
     margin: 0;
-    aspect-ratio: 4 / 5;
-    max-height: 56svh;
-    width: 100%;
+    padding: 12px 12px 0;
+    background: ${color.paperPure};
+    transform: rotate(-1.5deg);
+    box-shadow: 0 30px 60px -28px rgba(0, 0, 0, 0.7);
+  }
+  .print .window {
+    aspect-ratio: 4 / 4.6;
     overflow: hidden;
     background: ${color.primary};
   }
-  .photo img {
+  .print img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     filter: sepia(0.12) saturate(0.92);
   }
-  .lead {
-    font: 400 clamp(1.05rem, 1rem + 0.3vw, 1.25rem) / 1.55 ${font.body};
+  .print figcaption {
+    padding: 12px 4px 16px;
+    font: italic 400 16px/1.35 ${font.display};
+    color: ${color.primaryMid};
+    text-align: center;
+  }
+
+  .note {
+    position: absolute;
+    z-index: 2;
+    width: min(380px, 31vw);
+    padding: 18px 22px 20px;
+    background: ${color.paperPure};
+    color: ${color.primary};
+    border-top: 3px solid var(--tint);
+    border-radius: 2px 2px 6px 6px;
+    box-shadow:
+      0 1px 1px rgba(0, 0, 0, 0.08),
+      0 30px 54px -26px rgba(0, 0, 0, 0.6);
+    animation: note-in 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .note.ask {
+    --tint: ${color.teal};
+    left: 0;
+    top: 4%;
+    rotate: -2deg;
+  }
+  .note.answer {
+    --tint: ${color.accent};
+    right: 0;
+    top: 24%;
+    rotate: 1.6deg;
+    animation-delay: 380ms;
+  }
+  .note.follow {
+    --tint: ${color.warmGold};
+    left: 4%;
+    bottom: 4%;
+    rotate: 1.2deg;
+    animation-delay: 760ms;
+  }
+  @keyframes note-in {
+    from {
+      opacity: 0;
+      translate: 0 18px;
+    }
+  }
+  .note header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .note i {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font: 600 14px/1 ${font.body};
+    font-style: normal;
     color: ${color.ivory};
-    max-width: 46ch;
+    background: var(--tint);
   }
-  blockquote {
-    margin: calc(clamp(20px, 2.4vw, 36px) * var(--sy)) 0 0;
-    font: 400 clamp(1.9rem, 1.2rem + 2.1vw, 2.6rem) / 1.15 ${font.display};
-    letter-spacing: -0.015em;
-    color: ${color.sand};
-    text-wrap: balance;
-    max-width: 22ch;
-  }
-  .said {
-    margin-top: 14px;
-    font: 400 16px/1.4 ${font.body};
-    color: ${color.onDarkMuted};
-  }
-  .reply {
-    margin-top: calc(clamp(22px, 2.6vw, 40px) * var(--sy));
-    padding: 20px 24px 22px;
-    background: color-mix(in srgb, ${color.night} 32%, transparent);
-    max-width: 52ch;
-  }
-  .reply span {
+  .note b {
     display: block;
-    margin-bottom: 8px;
-    font: 500 15px/1.3 ${font.body};
-    color: ${color.gold};
+    font: 600 15px/1.2 ${font.body};
+    color: ${color.primary};
   }
-  .reply p {
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.5 ${font.display};
-    color: ${color.ivory};
+  .note small {
+    display: block;
+    margin-top: 2px;
+    font: 500 13px/1.3 ${font.body};
+    color: ${color.bodyMuted};
+  }
+  .note p {
+    font: 400 17px/1.5 ${font.display};
+    color: ${color.primary};
+  }
+  /* Her words are hers: set in the italic the site keeps for what people say. */
+  .note.answer p {
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.45;
+  }
+  .note mark {
+    color: inherit;
+    background: linear-gradient(
+        color-mix(in srgb, ${color.warmGold} 50%, transparent),
+        color-mix(in srgb, ${color.warmGold} 50%, transparent)
+      )
+      0 88% / 100% 0.42em no-repeat;
   }
 
   .foot {
@@ -176,19 +254,35 @@ const Scene = styled.section`
     align-items: center;
     justify-content: space-between;
     gap: 12px 32px;
-    margin-top: calc(clamp(28px, 3.4vw, 52px) * var(--sy));
+    margin-top: calc(clamp(20px, 2.4vw, 40px) * var(--sy));
     font: 400 14px/1.5 ${font.body};
     color: ${color.onDarkMuted};
   }
 
+  ${media.lg} {
+    .stage {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 18px;
+      min-height: 0;
+    }
+    .print {
+      align-self: center;
+      width: min(280px, 72vw);
+      margin-bottom: 10px;
+    }
+    .note {
+      position: static;
+      width: 100%;
+      max-width: 560px;
+      rotate: 0deg;
+    }
+    .note.answer {
+      align-self: flex-end;
+    }
+  }
   ${media.md} {
-    .still {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .photo {
-      aspect-ratio: 16 / 10;
-      max-height: none;
-    }
     [role="tablist"] {
       width: 100%;
     }
@@ -202,7 +296,7 @@ const Scene = styled.section`
     }
   }
   ${media.motion} {
-    .still {
+    .note {
       animation: none;
     }
   }
@@ -236,21 +330,24 @@ export default function Listen({
     const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
     if (!step) return;
     e.preventDefault();
-    const next = (active + step + MOMENTS.length) % MOMENTS.length;
+    const next = (active + step + CALL.length) % CALL.length;
     setActive(next);
     tabs.current[next]?.focus({ preventScroll: true });
   };
 
-  const m = MOMENTS[active];
+  const c = CALL[active];
   return (
     <Scene ref={ref} id={id} aria-labelledby={`${uid}-title`}>
       <Frame>
         <div className="top">
-          <Statement id={`${uid}-title`} $size="lg">
-            {title}
-          </Statement>
+          <div>
+            <Statement id={`${uid}-title`} $size="lg">
+              {title}
+            </Statement>
+            <p className="lead">{c.lead}</p>
+          </div>
           <div role="tablist" aria-label="Three calls" onKeyDown={onKey}>
-            {MOMENTS.map((x, i) => (
+            {CALL.map((x, i) => (
               <button
                 key={x.id}
                 ref={(el) => {
@@ -272,19 +369,52 @@ export default function Listen({
         </div>
 
         <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-tab-${active}`}>
-          <div className="still" key={m.id}>
-            <figure className="photo">
-              <Picture id={m.photo} alt="" sizes="(max-width: 860px) 100vw, 42vw" />
-            </figure>
-            <div>
-              <p className="lead">{m.lead}</p>
-              <blockquote>“{m.detail}”</blockquote>
-              <p className="said">{m.who}</p>
-              <div className="reply">
-                <span>A Story replied</span>
-                <p>{m.reply}</p>
+          <div className="stage" key={c.id}>
+            <figure className="print">
+              <div className="window">
+                <Picture id={c.photo} alt="" sizes="300px" />
               </div>
-            </div>
+              <figcaption>
+                {c.name}, {c.about}
+              </figcaption>
+            </figure>
+
+            <article className="note ask">
+              <header>
+                <i aria-hidden="true">A</i>
+                <div>
+                  <b>A Story asks</b>
+                  <small>{c.behaviour}</small>
+                </div>
+              </header>
+              <p>{c.ask}</p>
+            </article>
+
+            <article className="note answer">
+              <header>
+                <i aria-hidden="true">{c.teller[0]}</i>
+                <div>
+                  <b>{c.name}</b>
+                  <small>{c.about}</small>
+                </div>
+              </header>
+              <p>
+                “{c.before}
+                {c.detail && <mark>{c.detail}</mark>}
+                {c.after}”
+              </p>
+            </article>
+
+            <article className="note follow">
+              <header>
+                <i aria-hidden="true">A</i>
+                <div>
+                  <b>A Story follows</b>
+                  <small>{c.method}</small>
+                </div>
+              </header>
+              <p>{c.follow}</p>
+            </article>
           </div>
         </div>
 
