@@ -56,7 +56,7 @@ const Opening = styled(Chapter)`
     align-items: center;
   }
   h1 em {
-    font-style: italic;
+    font-style: normal;
   }
   .lead {
     margin-top: clamp(22px, 2.4vw, 32px);
@@ -121,7 +121,7 @@ const Moments = styled(Chapter)`
     max-width: 20ch;
   }
   h2 em {
-    font-style: italic;
+    font-style: normal;
     color: var(--mark);
   }
   /*
@@ -235,7 +235,7 @@ const InApp = styled(Chapter)`
     color: var(--ink);
   }
   h2 em {
-    font-style: italic;
+    font-style: normal;
     color: var(--mark);
   }
   ol {

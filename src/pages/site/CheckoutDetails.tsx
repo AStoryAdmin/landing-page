@@ -135,7 +135,7 @@ const Sheet = styled.dialog`
     color: ${color.primary};
   }
   h2 em {
-    font-style: italic;
+    font-style: normal;
     color: ${color.accentText};
   }
   header p {

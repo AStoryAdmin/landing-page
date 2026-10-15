@@ -40,7 +40,7 @@ const Opening = styled(Chapter)`
     max-width: 16ch;
   }
   h1 em {
-    font-style: italic;
+    font-style: normal;
   }
   .lead {
     margin: clamp(24px, 3vw, 40px) auto 0;

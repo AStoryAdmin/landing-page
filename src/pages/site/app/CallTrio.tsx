@@ -19,42 +19,12 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { SCENARIOS } from "../../../lib/demoScripts";
+import { CALLS } from "./calls";
 import { mission } from "../../../lib/mission";
 import { Phone } from "./Phone";
 import { CallScreen } from "./screens";
 import { color, display, font, media } from "../../../styles/theme";
 
-/** Which turns of each script show the behaviour, the words it turns on, and its photograph. */
-const CALLS = [
-  {
-    id: "faith",
-    behaviour: "Hears the aside",
-    ask: 2,
-    answer: 3,
-    follow: 4,
-    detail: "Even the winter she wouldn’t look at Father Dolan.",
-    photo: "32",
-  },
-  {
-    id: "childhood",
-    behaviour: "Takes the no",
-    ask: 6,
-    answer: 7,
-    follow: 8,
-    detail:
-      "I’d rather not go into what she had, if that’s all right with you.",
-    photo: "16",
-  },
-  {
-    id: "love",
-    behaviour: "Follows the detail",
-    ask: 2,
-    answer: 3,
-    follow: 4,
-    detail: "All but one.",
-    photo: "31",
-  },
-] as const;
 
 /** The mission's verbs are the chapters of every call. */
 const CHAPTERS = [

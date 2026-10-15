@@ -17,7 +17,6 @@ import styled from "styled-components";
 import { introReleased } from "./introSignal";
 import { ArrowIcon, Picture } from "../kit/kit";
 import { Link } from "react-router-dom";
-import ProgramMarks from "../../../components/ui/ProgramMarks";
 import { OFFERS } from "../../../lib/founding";
 import { useFoundingStatus } from "../kit/foundingStatus";
 import { Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
@@ -89,7 +88,7 @@ const Scene = styled.section`
   }
   h1 em {
     white-space: nowrap;
-    font-style: italic;
+    font-style: normal;
     color: ${color.gold};
   }
   .hero-row {
@@ -142,21 +141,6 @@ const Scene = styled.section`
     color: ${color.gold};
   }
 
-  .hero-credential {
-    display: inline-flex;
-    align-items: center;
-    gap: 20px;
-    margin-top: 28px;
-    padding-top: 20px;
-    border-top: 1px solid ${color.onDarkLine};
-    color: ${color.onDarkMuted};
-    text-decoration: none;
-  }
-  .hero-credential > svg {
-    flex: none;
-    width: 18px;
-    height: 18px;
-  }
 
   ${media.md} {
     min-height: max(100svh, 620px);
@@ -279,14 +263,6 @@ export default function Hero() {
                 <b>Start now for {OFFERS.founding.price}</b>
               </Link>
             )}
-            <Link
-              className="hero-credential"
-              to="/programs"
-              aria-label="A Story is a member of the NVIDIA Inception program, the AssemblyAI Startup Program, and a Cartesia Startups grant recipient"
-            >
-              <ProgramMarks height={40} />
-              <ArrowIcon />
-            </Link>
           </div>
         </div>
       </Frame>

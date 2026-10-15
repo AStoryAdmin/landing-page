@@ -272,7 +272,7 @@ export const SplitHead = styled.div`
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
   gap: clamp(28px, 6vw, 110px);
   align-items: end;
-  margin-bottom: clamp(48px, 6vw, 96px);
+  margin-bottom: calc(clamp(40px, 5vw, 96px) * var(--sy));
   ${media.md} {
     grid-template-columns: minmax(0, 1fr);
   }

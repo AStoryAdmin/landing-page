@@ -44,7 +44,7 @@ const Opening = styled(Chapter)`
     max-width: 15ch;
   }
   h1 em {
-    font-style: italic;
+    font-style: normal;
   }
   .lead {
     margin: clamp(24px, 3vw, 40px) auto 0;
@@ -202,7 +202,7 @@ const Together = styled(Chapter)`
     margin: 14px auto 0;
   }
   h2 em {
-    font-style: italic;
+    font-style: normal;
     color: var(--mark);
   }
   p {

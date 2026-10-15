@@ -67,7 +67,7 @@ const Scene = styled.section`
     color: ${color.primary};
   }
   h2 em {
-    font-style: italic;
+    font-style: normal;
     color: ${color.accent};
   }
   .letter {

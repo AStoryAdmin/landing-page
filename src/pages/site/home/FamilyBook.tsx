@@ -90,8 +90,8 @@ const Scene = styled.section`
       transparent 70%
     ),
     ${color.ivoryDeep};
-  padding: calc(clamp(96px, 11vw, 176px) * var(--sy)) 0
-    calc(clamp(72px, 8vw, 128px) * var(--sy));
+  padding: calc(clamp(80px, 9vw, 160px) * var(--sy)) 0
+    calc(clamp(64px, 7vw, 120px) * var(--sy));
   overflow: hidden;
 
   .lead {
@@ -101,11 +101,15 @@ const Scene = styled.section`
   }
 
   .book-wrap {
-    margin-top: clamp(24px, 3vw, 48px);
+    margin-top: calc(clamp(20px, 2.6vw, 48px) * var(--sy));
   }
+  /* Height-aware (2026-10-14). The book is 1.5 : 1, so at full width it was
+     779px tall in a 720px laptop window and could never be seen whole. Its
+     inside is sized in cqw, so capping the width by the screen's height
+     scales the entire volume down together — the open book always fits. */
   .stage {
     position: relative;
-    width: min(1160px, 100%);
+    width: min(1160px, 100%, calc(60svh * 1.5));
     margin: 0 auto;
   }
   /* The shadow the book casts on the table; it widens as the book opens. */
@@ -769,7 +773,7 @@ const Scene = styled.section`
     align-items: center;
     gap: clamp(12px, 2vw, 28px);
     width: min(980px, 100%);
-    margin: clamp(40px, 4vw, 64px) auto 0;
+    margin: calc(clamp(28px, 3.4vw, 64px) * var(--sy)) auto 0;
   }
   .rail {
     position: relative;

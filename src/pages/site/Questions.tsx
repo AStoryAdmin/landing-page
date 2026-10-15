@@ -46,7 +46,7 @@ const Opening = styled(Chapter)`
     align-items: end;
   }
   h1 em {
-    font-style: italic;
+    font-style: normal;
   }
   .lead {
     margin-top: 24px;
@@ -310,7 +310,7 @@ const Still = styled(Chapter)`
     color: ${color.ivory};
   }
   h2 em {
-    font-style: italic;
+    font-style: normal;
     color: ${color.gold};
   }
   p {
