@@ -44,20 +44,30 @@ sized only by width (`vw`) balloons on it. Since 2026-10-14:
 ## Device imagery
 - **New work does not draw device chrome.** Show real app screens as
   themselves: rounded corners, a hairline, cropped to what matters, fading out
-  (`kit/AppTour.tsx`). The existing drawn phones in StepOne, EveryVoice and
-  the How it works call demo remain until they are next redesigned.
+  (`kit/AppTour.tsx`). The single drawn phones in StepOne, EveryVoice and
+  the How it works walkthrough remain until they are next redesigned.
 - Never generate fake UI; screens come from `public/app/` (captured from the
   app) and covers from `/samples`.
 
 ## The calls
-- Home shows the three exchanges as text (`home/Listen.tsx`): what A Story
-  asked, what was said (the slipped detail marked), what it asked next.
-- How it works shows the full phone demo (`app/CallTrio.tsx`).
-- Both read `app/calls.ts` and quote `lib/demoScripts.ts` verbatim. The voice
-  layer is always labelled "in development".
+- One component, `home/Listen.tsx`, on Home and How it works (#calls): pick
+  Rosa, Errol or Joan; one still per call — the call's photograph, its setup
+  line, the words they let slip set large, and A Story's reply.
+- The three-phone player (`app/CallTrio.tsx`) is no longer used; it is kept
+  in the repo, not deleted.
+- Quotes come from `lib/demoScripts.ts` verbatim via `app/calls.ts`. The
+  voice layer is always labelled "in development".
+
+## Showing the app
+- No rows of three drawn phones anywhere. App screens appear as cropped real
+  screens (Home "The easiest way", How it works, For families).
+- "The easiest way" asks who in the family the reader means and shows one
+  screen and two sentences at a time.
 
 ## Startup programs
 - One component, `components/ui/ProgramMarks.tsx`; NVIDIA's artwork unmodified.
+- Size: 48px badges on Home and in the footer, under a 56px footer logo —
+  legible, and never larger than the A Story logo beside them (NVIDIA rule).
 - Home: one labelled row under the hero ("Startup programs & grants" → /programs).
   Footer: the marks. Intro: NVIDIA credit only.
 - Wording: membership and grant status only. Never "backed by", "supported
@@ -68,6 +78,12 @@ Hero → what gets lost (programs row on top) → you do step one → the family
 book → sample books → listen → every memory has more than one witness → the
 easiest way → why we started → founding families → how A Story compares →
 invitation.
+
+## /samples (public/samples/index.html)
+- A self-contained page outside the React app. The book casts one shadow per
+  stack (not one per leaf, which summed to a black halo), and sizes itself
+  from the measured space above and below it so the controls never sit on
+  the book. Home's sample covers are captured from it.
 
 ## Motion
 GSAP via `lib/scrollMotion.ts`. Animate transform and opacity only. Every

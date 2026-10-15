@@ -543,8 +543,19 @@ export const FooterShell = styled.footer`
    * destination - and it is held to NVIDIA's rules: their own artwork at its
    * own colours, smaller than our logo above it, with clear space of its own.
    */
+  /* Badges at 48px under a 56px logo: legible, and never larger than the
+     A Story logo beside them, as NVIDIA's badge rules require. */
+  .footer-programs {
+    margin: 0;
+    font: 500 14px/1.4 ${font.body};
+    color: ${color.onDarkMuted};
+  }
   .footer-credential {
-    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 24px;
+    margin-top: clamp(40px, 4.4vw, 64px);
     --line: ${color.onDarkLine};
     --muted: ${color.onDarkMuted};
     --ink: ${color.ivory};

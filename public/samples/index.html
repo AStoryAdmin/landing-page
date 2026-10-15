@@ -121,8 +121,13 @@ header.top{width:100%;max-width:1180px;display:flex;flex-wrap:wrap;align-items:f
 .leaf.flipped{transform:rotateY(-180deg)}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;container-type:size;background:var(--paper);color:var(--ink)}
 .face.back{transform:rotateY(180deg)}
-.leaf .face.front{box-shadow:0 calc(var(--P)*.02) calc(var(--P)*.05) rgba(20,18,15,.28)}
-.leaf .face.back{box-shadow:0 calc(var(--P)*.02) calc(var(--P)*.05) rgba(20,18,15,.28)}
+/* 2026-10-14: one shadow per stack, not one per leaf. Each of the ~27 leaves
+   cast its own 28% shadow and, stacked, they summed to a near-black halo round
+   the book. Only the top leaf of each side casts one now. */
+.leaf:first-child:not(.flipped) .face.front,
+.leaf.flipped + .leaf:not(.flipped) .face.front,
+.leaf.flipped:has(+ .leaf:not(.flipped)) .face.back,
+.leaf.flipped:last-child .face.back{box-shadow:0 calc(var(--P)*.018) calc(var(--P)*.05) rgba(20,18,15,.22)}
 /* gutter shading */
 .face.r::after,.face.l::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:20}
 .face.r::after{background:linear-gradient(90deg,rgba(0,0,0,.16) 0,rgba(0,0,0,.05) 3.5%,rgba(0,0,0,0) 9%,rgba(255,255,255,0) 92%,rgba(0,0,0,.05) 100%)}
@@ -2397,7 +2402,12 @@ COVERS.forEach((c,i)=>{ const b=document.createElement('button'); b.className='s
 /* sizing */
 function layout(){
   const vw = document.documentElement.clientWidth, vh = window.innerHeight;
-  const reserved = 270;
+  /* Measured, not guessed (2026-10-14): the header above the book plus the
+     controls under it. A fixed 270 left a 720px laptop with the controls on
+     top of the book and its caption off screen. */
+  const stageEl = document.getElementById('stage');
+  const above = stageEl ? Math.max(0, stageEl.getBoundingClientRect().top + window.scrollY) : 230;
+  const reserved = Math.max(270, above + 104);
   const want = (vw < 760 || vw < vh*0.9) ? 'single' : 'book';
   let P;
   if(want==='book') P = Math.floor(Math.min((vw-48)/2, vh-reserved, 560));

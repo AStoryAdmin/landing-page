@@ -21,7 +21,6 @@ import type { ReactNode } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { PLANS } from "../../lib/pricing";
-import { AppShot, Phone } from "./app/Phone";
 import { ArrowIcon, Invitation, PageOpening, Picture, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import {
@@ -265,19 +264,16 @@ const Occasions = styled(Chapter)`
 const TOGETHER = [
   {
     shot: "group-call",
-    scroll: false,
     title: "Call it together.",
     line: "Up to four phones on one call - the grandkids in three cities, Grandma at home. A Story keeps what’s said.",
   },
   {
     shot: "memory",
-    scroll: false,
     title: "Listen back together.",
     line: "Every memory keeps the words, the photographs and who told it.",
   },
   {
     shot: "family-tree",
-    scroll: false,
     title: "Everyone on the tree.",
     line: "Parents, partners, children and cousins on one family tree - and anyone can join with a six-letter code.",
   },
@@ -288,30 +284,32 @@ const Together = styled(Chapter)`
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(20px, 3vw, 56px);
-    margin-top: clamp(40px, 5vw, 72px);
+    margin-top: calc(clamp(32px, 4vw, 72px) * var(--sy));
   }
   .col {
     display: grid;
+    align-content: start;
     justify-items: center;
     text-align: center;
   }
-  .stage {
-    width: 100%;
-    display: grid;
-    place-items: center;
-    height: clamp(420px, 38vw, 560px);
+  /* Real screens, cropped and fading, not drawn phones (2026-10-14) — the
+     same treatment as the home page's app screens. Height-capped for laptops. */
+  .screen {
+    width: min(100%, 290px, calc(48svh * 860 / 1250));
+    aspect-ratio: 860 / 1250;
+    margin: 0;
+    border-radius: 22px;
     overflow: hidden;
-    padding-top: 32px;
-    border-radius: 20px;
-    background: radial-gradient(
-      ellipse at 50% 100%,
-      color-mix(in srgb, ${color.gold} 28%, ${color.ivory}),
-      transparent 70%
-    );
-    mask-image: linear-gradient(#000 82%, transparent);
+    background: ${color.paperPure};
+    box-shadow: 0 0 0 1px ${color.primaryLine};
+    mask-image: linear-gradient(#000 80%, transparent);
   }
-  .stage > * {
-    align-self: start;
+  .screen img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
   }
   h3 {
     margin-top: 24px;
@@ -390,11 +388,9 @@ function TogetherRoom() {
         <div className="cols">
           {TOGETHER.map((t) => (
             <div key={t.shot} className="col" data-rise>
-              <div className="stage">
-                <Phone width="min(320px, 88%)" lightStatus={t.shot === "group-call"}>
-                  <AppShot name={t.shot} scroll={t.scroll} />
-                </Phone>
-              </div>
+              <figure className="screen">
+                <img src={`/app/${t.shot}.webp`} alt="" width={860} height={1250} loading="lazy" decoding="async" />
+              </figure>
               <h3>{t.title}</h3>
               <p>{t.line}</p>
             </div>
