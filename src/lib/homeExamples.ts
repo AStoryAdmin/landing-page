@@ -93,12 +93,12 @@ export const EVERYDAY = [
  * comes back with the story A Story caught behind it.
  */
 export const QUIET = {
-  photo: "21",
-  alt: "Hands packing a lunchbox at a kitchen counter",
-  date: "Tue, 6 Sep 2022",
-  title: "Apple slices, facing up",
-  teller: "Sarah",
-  told: "Mia’s first week of school. She’d only eat them if the peel faced up - ‘so they can see out.’",
+  photo: "18",
+  alt: "A couple on a porch watching the rain, 1960",
+  date: "Sunday, June 1960",
+  title: "The day he stayed",
+  teller: "Ruth",
+  told: "He was leaving for Detroit that morning. It rained, the bus never came, and he never went.",
 } as const;
 
 /** The collaboration example: one memory, started in a call, finished by the family. */

@@ -11,7 +11,7 @@
  * Once the twenty-five are taken it says so and offers the dollar.
  */
 import styled from "styled-components";
-import { FOUNDING_BALANCE, FOUNDING_PLACES, FULL_PRICE, INCLUDES, OFFERS } from "../../../lib/founding";
+import { FOUNDING_BALANCE, FOUNDING_PLACES, FULL_PRICE, OFFERS } from "../../../lib/founding";
 import { useReveals } from "../kit/reveals";
 import { ArrowIcon } from "../kit/kit";
 import { useFoundingStatus } from "../kit/foundingStatus";
@@ -118,9 +118,8 @@ export default function FoundingBand() {
                 Twenty-five families start <em>now.</em>
               </Statement>
               <p className="lead">
-                Before launch, we are setting A Story up by hand for {FOUNDING_PLACES} families, with one of us on
-                your first call. No week to wait for: we write within a working day of you joining, and places go
-                in the order families join.
+                Before launch, we set A Story up by hand for {FOUNDING_PLACES} families - with one of us on your
+                first call.
               </p>
               <Actions className="acts">
                 <PrimaryLink to="/reserve#founding">
@@ -155,11 +154,6 @@ export default function FoundingBand() {
               Then half off your first year - <s>{FULL_PRICE.individual}</s> {founding.individual}, and the{" "}
               {founding.price} counts, so {FOUNDING_BALANCE.individual} more whenever you choose.
             </p>
-            <ul>
-              {INCLUDES.founding.map((f) => (
-                <li key={f}>{f}</li>
-              ))}
-            </ul>
           </Plate>
         )}
       </Frame>

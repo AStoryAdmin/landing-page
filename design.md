@@ -83,11 +83,16 @@ sized only by width (`vw`) balloons on it. Since 2026-10-14:
 - Wording: membership and grant status only. Never "backed by", "supported
   by" or "partner".
 
-## Home page order (2026-10-14)
+## Home page order (2026-10-15)
 Hero → what gets lost (programs row on top) → you do step one → the family
-book → sample books → listen → every memory has more than one witness → the
-easiest way → why we started → founding families → how A Story compares →
-invitation.
+book → sample books → listen → every memory has more than one witness → why
+we started → founding families → invitation. "The easiest way" and the
+comparison table left Home; they live on How it works and /compare.
+
+## Less text (2026-10-15)
+Home sections are a headline, one line, a picture and a link; the detail
+lives on the topic's own page. Home went from 1,878 words / 18 screens to
+about 1,400 / 14 (a third of what is left is the Hartley book's pages).
 
 ## /samples (public/samples/index.html)
 - A self-contained page outside the React app. The book casts one shadow per

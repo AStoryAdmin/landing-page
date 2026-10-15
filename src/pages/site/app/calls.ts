@@ -14,7 +14,7 @@ export const CALLS = [
     answer: 3,
     follow: 4,
     detail: "Even the winter she wouldn’t look at Father Dolan.",
-    photo: "32",
+    photo: "31",
   },
   {
     id: "childhood",
@@ -24,7 +24,7 @@ export const CALLS = [
     follow: 8,
     detail:
       "I’d rather not go into what she had, if that’s all right with you.",
-    photo: "16",
+    photo: "07",
   },
   {
     id: "love",
@@ -33,6 +33,6 @@ export const CALLS = [
     answer: 3,
     follow: 4,
     detail: "All but one.",
-    photo: "31",
+    photo: "14",
   },
 ] as const;

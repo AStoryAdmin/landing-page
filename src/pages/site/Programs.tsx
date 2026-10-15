@@ -9,9 +9,8 @@
  * Now the page is built from the two real things it has: the programs' own
  * marks, shown large, and Cartesia's grant-recipient card for A Story, which
  * is the hero's picture. Then, on night, the page's one big idea; then one
- * row per program that sets the program's purpose beside A Story's - one
- * verb each, build, hear, answer - so a visitor sees why a family archive
- * belongs in programs about the future of AI. Then the plain questions.
+ * card per program - one verb each, build, hear, answer, the badge, and one
+ * sentence on why a family archive belongs there. Then the plain questions.
  *
  * The founder asked for the missions to be shown big and a little grand
  * (2026-10-15). Grand is allowed in A Story's own voice; the programs' side
@@ -31,7 +30,7 @@ import aaiBoxed from "../../assets/partners/assemblyai-startup-program-lockup-bo
 import cartesiaBoxed from "../../assets/partners/cartesia-startups-lockup-boxed.svg";
 import { ArrowIcon, Invitation } from "./kit/kit";
 import { Chapter, Eyebrow, Frame, PrimaryLink, SecondaryLink, Statement, Title } from "./kit/kit.styles";
-import { display, font, media, motion } from "../../styles/theme";
+import { color, display, font, media, motion } from "../../styles/theme";
 import { PROGRAMS, faqSchema } from "../../lib/seo";
 
 type Row = {
@@ -41,12 +40,8 @@ type Row = {
   mark: ReactNode;
   /** One verb: what the program is about, in A Story's terms. */
   word: string;
-  /** What the program is for, paraphrased. */
-  mission: string;
-  /** Why A Story belongs in it - A Story's voice, allowed to be grand. */
+  /** Why A Story belongs in it - one sentence, A Story's voice. */
   fit: ReactNode;
-  /** NVIDIA's approved boilerplate, where a program has one. */
-  fine?: string;
   href: string;
   host: string;
 };
@@ -56,17 +51,13 @@ const ROWS: Row[] = [
     id: "inception-title",
     name: "NVIDIA Inception",
     status: "Member since October 2026",
-    mark: <InceptionBadge height={56} />,
+    mark: <InceptionBadge height={48} />,
     word: "Build.",
-    mission:
-      "NVIDIA makes the hardware and software much of today’s AI runs on. Its Inception program takes in startups building what comes next.",
     fit: (
       <>
-        We think the most important thing AI will ever do is the oldest thing people do: <b>keep a family’s
-        stories.</b> We’re building the archive that outlives all of us.
+        The most important thing AI will ever do is the oldest thing people do: <b>keep a family’s stories.</b>
       </>
     ),
-    fine: "The NVIDIA Inception program is designed to help startups accelerate innovation and growth. Members get access to the latest developer resources and training, exclusive pricing on NVIDIA hardware and software, and exposure to the venture capital community.",
     href: "https://www.nvidia.com/en-us/startups/",
     host: "nvidia.com",
   },
@@ -74,14 +65,11 @@ const ROWS: Row[] = [
     id: "assemblyai-title",
     name: "AssemblyAI Startup Program",
     status: "Member",
-    mark: <img src={aaiBoxed} alt="AssemblyAI Startup Program" width={279} height={56} />,
+    mark: <img src={aaiBoxed} alt="AssemblyAI Startup Program" width={239} height={48} />,
     word: "Hear.",
-    mission:
-      "AssemblyAI works on one of AI’s hardest problems: understanding people when they speak. Its startup program is for early companies building with voice.",
     fit: (
       <>
-        That is our whole job. A grandmother says a name once, in an accent seventy years old. <b>If it isn’t
-        heard, it’s gone</b> - so we listen like it’s the only time.
+        A grandmother says a name once, in an accent seventy years old. <b>If it isn’t heard, it’s gone.</b>
       </>
     ),
     href: "https://www.assemblyai.com",
@@ -91,20 +79,21 @@ const ROWS: Row[] = [
     id: "cartesia-title",
     name: "Cartesia Startups",
     status: "Grant recipient",
-    mark: <img src={cartesiaBoxed} alt="Cartesia Startups" width={283} height={56} />,
+    mark: <img src={cartesiaBoxed} alt="Cartesia Startups" width={242} height={48} />,
     word: "Answer.",
-    mission:
-      "Cartesia builds real-time voice AI: speech that answers as quickly and naturally as a person. Its grants go to early teams building products with voice.",
     fit: (
       <>
-        A Story calls people who will never download an app. For them the only screen is a voice, so it has to
-        sound like <b>someone who is really listening</b> - and know what to ask next.
+        For people who will never download an app, the only screen is a voice. <b>It has to sound like someone listening.</b>
       </>
     ),
     href: "https://cartesia.ai",
     host: "cartesia.ai",
   },
 ];
+
+/** NVIDIA's approved description of the program, kept as their fine print. */
+const NVIDIA_ABOUT =
+  "The NVIDIA Inception program is designed to help startups accelerate innovation and growth. Members get access to the latest developer resources and training, exclusive pricing on NVIDIA hardware and software, and exposure to the venture capital community.";
 
 /* ── Opening: the promise on the left, the grant card on the right ──────── */
 
@@ -209,98 +198,71 @@ const Idea = styled(Chapter)`
 /* ── The missions: one row per program ───────────────────────────────────── */
 
 const Ledger = styled(Chapter)`
+  /* Three cards side by side (2026-10-15): one verb, the badge, the name,
+     one sentence. The long two-column rows read as a document. */
   ol {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 2vw, 28px);
     margin: 0;
     padding: 0;
     list-style: none;
-    counter-reset: row;
   }
   li {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: clamp(28px, 5vw, 96px);
-    padding: calc(clamp(40px, 5vw, 80px) * var(--sy)) 0;
-    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    padding: clamp(28px, 3vw, 44px);
+    background: ${color.paperPure};
+    border-radius: 6px;
+    box-shadow: 0 24px 48px -36px rgba(42, 31, 24, 0.45);
   }
-  li:last-child {
-    border-bottom: 1px solid var(--line);
-  }
-  /* The verb, set as large as the page allows: the row's whole idea. */
   .word {
-    font: 400 clamp(3.4rem, 1.4rem + 6vw, 7.5rem) / 0.95 ${font.display};
+    font: 400 clamp(3rem, 1.6rem + 3.4vw, 5.2rem) / 0.95 ${font.display};
     letter-spacing: -0.03em;
     color: var(--ink);
   }
-  .word::before {
-    counter-increment: row;
-    content: "0" counter(row);
-    display: block;
-    margin-bottom: 18px;
-    font: 500 15px/1 ${font.body};
-    letter-spacing: 0.04em;
-    color: var(--label);
-  }
   .mark {
-    margin-top: calc(clamp(24px, 3vw, 40px) * var(--sy));
+    margin-top: calc(clamp(20px, 2.4vw, 32px) * var(--sy));
   }
   .mark img {
     display: block;
-    height: 56px;
+    height: 48px;
     width: auto;
     max-width: 100%;
   }
   .mark > span {
     padding: 0;
   }
-  .name {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 6px 14px;
-  }
   h3 {
+    margin-top: 22px;
+    /* Two lines held for every name, so the cards stay in line. */
+    min-height: 2.4em;
+    display: flex;
+    align-items: flex-end;
     font: 400 ${display.sm} / 1.2 ${font.display};
     color: var(--ink);
   }
   .status {
+    margin-top: 4px;
     font: 500 15px/1.3 ${font.body};
     color: var(--label);
   }
-  .pair {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-    gap: clamp(24px, 3.4vw, 56px);
-    margin-top: calc(clamp(20px, 2.4vw, 32px) * var(--sy));
-  }
-  .pair h4 {
-    font: 600 15px/1.3 ${font.body};
-    color: var(--muted);
-  }
-  .pair p {
-    margin-top: 10px;
-    font: 400 17px/1.6 ${font.body};
-    color: var(--muted);
-  }
-  .pair .fit p {
-    font: 400 clamp(1.25rem, 1.05rem + 0.6vw, 1.6rem) / 1.4 ${font.display};
+  .fit {
+    flex: 1;
+    margin-top: 18px;
+    font: 400 clamp(1.1rem, 1rem + 0.3vw, 1.3rem) / 1.45 ${font.display};
     color: var(--ink);
   }
   .fit b {
     font-weight: 400;
     color: var(--label);
   }
-  .fine {
-    margin-top: 22px;
-    font: 400 14px/1.55 ${font.body};
-    color: var(--muted);
-    max-width: 72ch;
-  }
   .out {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     min-height: 44px;
-    margin-top: 12px;
+    margin-top: 16px;
     font: 600 15px/1.3 ${font.body};
     color: var(--ink);
     text-decoration: underline;
@@ -311,18 +273,15 @@ const Ledger = styled(Chapter)`
     width: 14px;
     height: 14px;
   }
-  ${media.lg} {
-    .pair {
-      grid-template-columns: minmax(0, 1fr);
-    }
+  .fine {
+    margin-top: 24px;
+    max-width: 80ch;
+    font: 400 14px/1.55 ${font.body};
+    color: var(--muted);
   }
-  ${media.md} {
-    li {
+  ${media.lg} {
+    ol {
       grid-template-columns: minmax(0, 1fr);
-      gap: 20px;
-    }
-    .mark img {
-      height: 48px;
     }
   }
 `;
@@ -430,40 +389,25 @@ export default function Programs() {
         </Frame>
       </Idea>
 
-      <Ledger $ground="ivory" aria-label="The three programs" data-nosnippet>
+      <Ledger $ground="ivory" $tight aria-label="The three programs" data-nosnippet>
         <Frame>
           <ol>
             {ROWS.map((r) => (
               <li key={r.id}>
-                <div>
-                  <p className="word" aria-hidden="true">
-                    {r.word}
-                  </p>
-                  <div className="mark">{r.mark}</div>
-                </div>
-                <div>
-                  <div className="name">
-                    <h3 id={r.id}>{r.name}</h3>
-                    <span className="status">{r.status}</span>
-                  </div>
-                  <div className="pair">
-                    <div>
-                      <h4>What the program is for</h4>
-                      <p>{r.mission}</p>
-                    </div>
-                    <div className="fit">
-                      <h4>Why A Story belongs</h4>
-                      <p>{r.fit}</p>
-                    </div>
-                  </div>
-                  {r.fine && <p className="fine">{r.fine}</p>}
-                  <a className="out" href={r.href} target="_blank" rel="noopener noreferrer">
-                    {r.host} <ArrowIcon />
-                  </a>
-                </div>
+                <p className="word" aria-hidden="true">
+                  {r.word}
+                </p>
+                <div className="mark">{r.mark}</div>
+                <h3 id={r.id}>{r.name}</h3>
+                <p className="status">{r.status}</p>
+                <p className="fit">{r.fit}</p>
+                <a className="out" href={r.href} target="_blank" rel="noopener noreferrer">
+                  {r.host} <ArrowIcon />
+                </a>
               </li>
             ))}
           </ol>
+          <p className="fine">{NVIDIA_ABOUT}</p>
         </Frame>
       </Ledger>
 

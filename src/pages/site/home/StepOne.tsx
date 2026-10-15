@@ -37,7 +37,7 @@ const STEPS = [
     at: "50% 47%",
     ground: "light",
     title: "Set it up once.",
-    text: "A couple of minutes on their phone or tablet, and the hour A Story should ring. You can do it while they’re in the next room.",
+    text: "Two minutes on their phone. Pick the hour A Story calls.",
   },
   {
     n: "II",
@@ -47,7 +47,7 @@ const STEPS = [
     at: "50% 66%",
     ground: "dark",
     title: "They answer the phone.",
-    text: "No typing, nothing to open or save. Twenty minutes is a real conversation, and the next call picks up where the last one stopped.",
+    text: "Nothing to type, open or save. They just talk.",
   },
   {
     n: "III",
@@ -57,7 +57,7 @@ const STEPS = [
     at: "50% 9%",
     ground: "sand",
     title: "The family keeps it.",
-    text: "Invite anyone to read, correct and add their own memories. Inviting fifteen people costs the same as inviting nobody.",
+    text: "Everyone reads, adds and remembers - free.",
   },
 ];
 

@@ -13,6 +13,9 @@
  *   Rosa answers      (right)       her answer, the words she let slip marked
  *   A Story follows   (bottom left) the reply that goes after those words
  *
+ * 2026-10-15: the ask note went; the lead line already says what was asked,
+ * and two notes read at a glance where three read as a transcript.
+ *
  * The notes land one after another each time a call is chosen, so the
  * exchange plays in order without anyone pressing play. Pick Rosa, Errol or
  * Joan. Under 1024px the notes stack beneath the photograph.
@@ -43,7 +46,6 @@ const CALL = CALLS.map((c) => {
     name,
     about,
     lead: s.cover.lead,
-    ask: s.script[c.ask].text,
     before: at < 0 ? answer : answer.slice(0, at),
     detail: at < 0 ? "" : c.detail,
     after: at < 0 ? "" : answer.slice(at + c.detail.length),
@@ -130,7 +132,7 @@ const Scene = styled.section`
     display: grid;
     place-items: center;
     /* Height-aware: the photograph and all three turns in one laptop screen. */
-    min-height: clamp(500px, 60svh, 640px);
+    min-height: clamp(440px, 54svh, 580px);
     margin-top: calc(clamp(20px, 2.4vw, 40px) * var(--sy));
   }
   .print {
@@ -175,25 +177,18 @@ const Scene = styled.section`
       0 30px 54px -26px rgba(0, 0, 0, 0.6);
     animation: note-in 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  .note.ask {
-    --tint: ${color.teal};
-    left: 0;
-    top: 0;
-    rotate: -2deg;
-  }
   .note.answer {
     --tint: ${color.accent};
     right: 0;
-    top: 24%;
+    top: 8%;
     rotate: 1.6deg;
-    animation-delay: 380ms;
   }
   .note.follow {
     --tint: ${color.warmGold};
-    left: 4%;
-    bottom: 0;
-    rotate: 1.2deg;
-    animation-delay: 760ms;
+    left: 2%;
+    top: 30%;
+    rotate: -1.6deg;
+    animation-delay: 420ms;
   }
   @keyframes note-in {
     from {
@@ -379,17 +374,6 @@ export default function Listen({
                 {c.name}, {c.about}
               </figcaption>
             </figure>
-
-            <article className="note ask">
-              <header>
-                <i aria-hidden="true">A</i>
-                <div>
-                  <b>A Story asks</b>
-                  <small>{c.behaviour}</small>
-                </div>
-              </header>
-              <p>{c.ask}</p>
-            </article>
 
             <article className="note answer">
               <header>

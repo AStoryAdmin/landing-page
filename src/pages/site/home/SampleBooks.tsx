@@ -26,7 +26,6 @@ import {
   Eyebrow,
   Frame,
   Lead,
-  Note,
   SplitHead,
   Statement,
 } from "../kit/kit.styles";
@@ -210,9 +209,7 @@ export default function SampleBooks() {
             </Statement>
           </div>
           <Lead data-rise>
-            Three lives, three books, every page made the way A Story makes
-            them: from conversations, the family’s photographs and the things
-            everyone else remembered. Turn the pages.
+            Three fictional families. Every page made the way yours will be.
           </Lead>
         </SplitHead>
         <ul className="cards">
@@ -245,9 +242,6 @@ export default function SampleBooks() {
             </li>
           ))}
         </ul>
-        <Note className="fiction" data-rise>
-          Fictional families. Every page shows how a real A Story book is made.
-        </Note>
       </Frame>
     </Section>
   );
