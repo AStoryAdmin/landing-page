@@ -46,9 +46,9 @@ const GlobalStyle = createGlobalStyle`
    * where the layout has already gone to one column - keeps its own sizes.
    */
   @media (min-width: 1025px) and (max-height: 940px) { html { --vs: 0.94; --sy: 0.9; } }
-  @media (min-width: 1025px) and (max-height: 840px) { html { --vs: 0.88; --sy: 0.82; } }
-  @media (min-width: 1025px) and (max-height: 760px) { html { --vs: 0.83; --sy: 0.76; } }
-  @media (min-width: 1025px) and (max-height: 680px) { html { --vs: 0.78; --sy: 0.7; } }
+  @media (min-width: 1025px) and (max-height: 840px) { html { --vs: 0.88; --sy: 0.78; } }
+  @media (min-width: 1025px) and (max-height: 760px) { html { --vs: 0.83; --sy: 0.66; } }
+  @media (min-width: 1025px) and (max-height: 680px) { html { --vs: 0.78; --sy: 0.6; } }
 
   ${media.nav} { html { --nav-total: 68px; } }
 

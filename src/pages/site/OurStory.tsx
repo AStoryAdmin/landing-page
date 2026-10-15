@@ -23,7 +23,6 @@ import type { ReactNode } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { ArrowIcon, Invitation } from "./kit/kit";
-import Inception from "./kit/Inception";
 import { useReveals } from "./kit/reveals";
 import {
   Chapter,
@@ -45,7 +44,7 @@ const Opening = styled(Chapter)`
     max-width: 15ch;
   }
   h1 em {
-    font-style: italic;
+    font-style: normal;
   }
   .lead {
     margin: clamp(24px, 3vw, 40px) auto 0;
@@ -203,7 +202,7 @@ const Together = styled(Chapter)`
     margin: 14px auto 0;
   }
   h2 em {
-    font-style: italic;
+    font-style: normal;
     color: var(--mark);
   }
   p {
@@ -407,8 +406,6 @@ export default function OurStory() {
           </div>
         </Frame>
       </Together>
-
-      <Inception />
 
       <Invitation />
     </>

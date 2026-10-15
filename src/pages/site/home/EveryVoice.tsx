@@ -21,7 +21,7 @@ import { Phone } from "../app/Phone";
 import { Picture } from "../kit/kit";
 import { MemoryScreen } from "../app/screens";
 import { avatarTints } from "../app/tokens";
-import { Frame, StackHead, Statement } from "../kit/kit.styles";
+import { Frame, SplitHead, Statement } from "../kit/kit.styles";
 import {
   gsap,
   riseLines,
@@ -36,7 +36,7 @@ const Scene = styled.section`
   --mark: ${color.accent};
   --label: ${color.accentText};
   background: ${color.ivory};
-  padding: calc(clamp(96px, 11vw, 176px) * var(--sy)) 0 0;
+  padding: calc(clamp(80px, 9vw, 160px) * var(--sy)) 0 0;
   overflow: hidden;
 
   .lead {
@@ -48,7 +48,8 @@ const Scene = styled.section`
     position: relative;
     display: grid;
     place-items: center;
-    min-height: min(92vh, 860px);
+    /* svh, not vh: on a phone vh includes the hidden toolbar (2026-10-14). */
+    min-height: min(76svh, 780px);
   }
   /* A pool of warm light under the phone, so it sits on the table with the notes. */
   .stage::before {
@@ -166,9 +167,11 @@ const Takeaway = styled.div`
   overflow: hidden;
   display: grid;
   place-items: center;
-  min-height: min(88vh, 820px);
-  margin-top: clamp(80px, 10vw, 150px);
-  padding: clamp(80px, 10vw, 140px) var(--page-gutter);
+  /* A beat between chapters, not a chapter: two-thirds of the window
+     (2026-10-14; it was 88vh plus a 150px gap, a full laptop screen). */
+  min-height: min(54svh, 520px);
+  margin-top: calc(clamp(56px, 7vw, 120px) * var(--sy));
+  padding: calc(clamp(64px, 8vw, 120px) * var(--sy)) var(--page-gutter);
   color: ${color.ivory};
   text-align: center;
 
@@ -208,7 +211,7 @@ const Takeaway = styled.div`
     display: block;
   }
   h3 em {
-    font-style: italic;
+    font-style: normal;
     color: ${color.gold};
   }
   /* Double hairline with a lozenge - the namecard's ornament. */
@@ -353,8 +356,8 @@ export default function EveryVoice() {
   return (
     <Scene ref={ref} id="kept" aria-labelledby="voices-title">
       <Frame>
-        <StackHead>
-          <Statement id="voices-title" $size="xl">
+        <SplitHead>
+          <Statement id="voices-title" $size="lg">
             Every memory has more than one <em>witness.</em>
           </Statement>
           <p className="lead">
@@ -363,7 +366,7 @@ export default function EveryVoice() {
             Nothing replaces anything else, and nothing appears until the
             storyteller says yes.
           </p>
-        </StackHead>
+        </SplitHead>
 
         <div className="stage">
           {M.added.map((a, i) => (
@@ -384,7 +387,7 @@ export default function EveryVoice() {
             </article>
           ))}
           <Phone
-            width="min(400px, 86vw, calc((100vh - 100px) * 0.4756))"
+            width="min(400px, 86vw, calc((80svh - 40px) * 0.4756))"
             label={`“${M.title}” in the A Story app, with the family’s versions`}
           >
             <MemoryScreen

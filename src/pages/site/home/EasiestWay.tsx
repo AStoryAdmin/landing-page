@@ -29,7 +29,7 @@ import styled from "styled-components";
 import { useReveals } from "../kit/reveals";
 import AppTour, { type TourStop } from "../kit/AppTour";
 import { Chapter, Eyebrow, Frame, Lead, Statement, TextLink } from "../kit/kit.styles";
-import { color, display, font, media } from "../../../styles/theme";
+import { color, font, media } from "../../../styles/theme";
 
 const Section = styled(Chapter)`
   .head {
@@ -40,14 +40,14 @@ const Section = styled(Chapter)`
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(28px, 3vw, 48px) clamp(20px, 2.6vw, 40px);
-    margin: clamp(44px, 5vw, 80px) 0 0;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: calc(clamp(22px, 2.6vw, 44px) * var(--sy)) clamp(20px, 2.6vw, 40px);
+    margin: calc(clamp(36px, 4.4vw, 72px) * var(--sy)) 0 0;
     padding: 0;
     list-style: none;
   }
   .grid li {
-    padding-top: 20px;
+    padding-top: 16px;
     border-top: 1px solid var(--line, ${color.primaryLine});
   }
   .k {
@@ -69,15 +69,15 @@ const Section = styled(Chapter)`
     letter-spacing: 0.16em;
   }
   h3 {
-    margin-top: 14px;
-    font: 400 ${display.sm} / 1.2 ${font.display};
+    margin-top: 10px;
+    font: 400 clamp(1.15rem, 1rem + 0.5vw, 1.45rem) / 1.25 ${font.display};
     letter-spacing: -0.012em;
     color: var(--ink, ${color.primary});
     text-wrap: balance;
   }
   .grid p.d {
-    margin-top: 10px;
-    font: 400 16px/1.6 ${font.body};
+    margin-top: 8px;
+    font: 400 15px/1.58 ${font.body};
     color: var(--muted, ${color.bodyMuted});
   }
   .grid q {
@@ -85,7 +85,7 @@ const Section = styled(Chapter)`
     color: var(--ink, ${color.primary});
   }
   .more {
-    margin-top: clamp(36px, 4vw, 56px);
+    margin-top: calc(clamp(28px, 3.4vw, 52px) * var(--sy));
   }
   ${media.lg} {
     .grid {
@@ -106,17 +106,14 @@ const Section = styled(Chapter)`
 
 type Way = { k: string; t: string; d: React.ReactNode; fresh?: boolean };
 
+/* 2026-10-14: three of the eight (the cousins, joining, the family tree)
+   said again what the screens above already show; they were cut here so
+   the section fits a laptop window. Their facts stay in TOUR. */
 const WAYS: Way[] = [
   {
     k: "The one telling it",
     t: "They just talk.",
     d: "No typing, nothing to learn, nothing to save. A Story rings at the hour you choose and follows up like someone who knows them. The first conversation is on us: ten minutes, no card.",
-  },
-  {
-    k: "The cousins",
-    t: "Four of you on one call.",
-    fresh: true,
-    d: "Grandkids in three cities and Grandma at home, on one call. Ring up to four phones at once, and what gets said is kept with her story.",
   },
   {
     k: "Everyone who knows them",
@@ -139,18 +136,6 @@ const WAYS: Way[] = [
         <q>From Rose’s memoir</q>. Nothing written down is ever typed twice.
       </>
     ),
-  },
-  {
-    k: "Joining",
-    t: "A six-letter code, and you’re in.",
-    fresh: true,
-    d: "No hunting for the right email address. Send the family code by text or WhatsApp; whoever types it joins, whatever email they signed up with.",
-  },
-  {
-    k: "The family tree",
-    t: "Everyone on one tree, each with a page.",
-    fresh: true,
-    d: "Parents, partners, children and grandchildren on one tree, and a page for each life: dates, places, schools, work - built only from what the family has written down. Anyone can suggest a change; the people keeping the story say yes.",
   },
   {
     k: "When you’d rather write",

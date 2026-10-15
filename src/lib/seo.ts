@@ -162,7 +162,44 @@ export const organizationSchema = () => ({
   description:
     "A Story helps families build a private living archive through conversation, photographs, original words, voice, and multiple perspectives, with optional printed volumes.",
   logo: `${SITE.url}/logo.png`,
+  memberOf: PROGRAMS.memberships.map((m) => ({
+    "@type": "ProgramMembership",
+    programName: m.program,
+    hostingOrganization: { "@type": "Organization", name: m.host, url: m.url },
+  })),
+  award: PROGRAMS.awards,
 });
+
+/**
+ * The startup programs A Story belongs to, stated once for structured data
+ * and the Programs & grants page. Membership and a grant only: never
+ * endorsement, investment or partnership.
+ */
+export const PROGRAMS = {
+  memberships: [
+    { program: "NVIDIA Inception", host: "NVIDIA", url: "https://www.nvidia.com/en-us/startups/" },
+    { program: "AssemblyAI Startup Program", host: "AssemblyAI", url: "https://www.assemblyai.com" },
+  ],
+  awards: ["Cartesia Startups grant recipient"],
+  faq: [
+    {
+      q: "Is A Story part of NVIDIA Inception?",
+      a: "Yes. A Story is a member of the NVIDIA Inception program, NVIDIA’s program for startups, since October 2026. Membership is not an endorsement, an investment, or a partnership.",
+    },
+    {
+      q: "Is A Story in the AssemblyAI Startup Program?",
+      a: "Yes. A Story is a member of the AssemblyAI Startup Program. AssemblyAI builds speech AI models that transcribe and understand spoken audio.",
+    },
+    {
+      q: "Did A Story receive a Cartesia grant?",
+      a: "Yes. A Story is a Cartesia Startups grant recipient. Cartesia builds real-time voice AI models, and Cartesia Startups awards grants to early teams building products with voice.",
+    },
+    {
+      q: "Do these programs endorse or invest in A Story?",
+      a: "No. They are programs for young companies. None of them is an endorsement, an investment, or a partnership.",
+    },
+  ],
+};
 
 export const productSchema = () => ({
   "@type": "SoftwareApplication",

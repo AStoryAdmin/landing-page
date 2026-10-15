@@ -71,7 +71,7 @@ const Page = styled.section`
     color: ${color.ivory};
   }
   h1 em {
-    font-style: italic;
+    font-style: normal;
     color: ${color.gold};
   }
   .lead {

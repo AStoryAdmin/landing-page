@@ -46,6 +46,7 @@ const YourStory = lazyRoute(
   () => import("./pages/site/YourStory"),
 );
 const Story = lazyRoute("/our-story", () => import("./pages/site/OurStory"));
+const Programs = lazyRoute("/programs", () => import("./pages/site/Programs"));
 const Terms = lazyRoute("/terms", () => import("./components/terms"));
 const Privacy = lazyRoute("/privacy", () => import("./components/privacy"));
 const FAQ = lazyRoute("/questions", () => import("./pages/site/Questions"));
@@ -172,6 +173,7 @@ function App() {
           <Route path="/compare" element={<Compare />} />
           <Route path="/your-story" element={<YourStory />} />
           <Route path="/our-story" element={<Story />} />
+          <Route path="/programs" element={<Programs />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/questions" element={<FAQ />} />

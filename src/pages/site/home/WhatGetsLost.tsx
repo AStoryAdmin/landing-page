@@ -18,6 +18,7 @@
  */
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import ProgramsRail from "./ProgramsRail";
 import { EVERYDAY, LOST, MILESTONES, QUIET } from "../../../lib/homeExamples";
 import { mission } from "../../../lib/mission";
 import { Picture } from "../kit/kit";
@@ -31,7 +32,10 @@ const Milestones = styled.section`
   position: relative;
   z-index: 1;
   background: ${color.ivory};
-  padding: clamp(72px, 9vw, 140px) 0 clamp(96px, 10vw, 160px);
+  /* The programs row opens this section now, so it starts close under the
+     curve (2026-10-14). */
+  padding: calc(clamp(28px, 3.4vw, 64px) * var(--sy)) 0
+    calc(clamp(80px, 9vw, 150px) * var(--sy));
 
   .grid {
     display: grid;
@@ -215,6 +219,9 @@ function MilestonePile() {
   return (
     <Milestones ref={ref} id="why-a-story" aria-labelledby="lost-title">
       <RisingEdge $to="ivory" />
+      <Frame>
+        <ProgramsRail />
+      </Frame>
       <Frame className="grid">
         <div>
           <h2 id="lost-title">
@@ -276,9 +283,12 @@ const Everyday = styled.section`
   color: ${color.ivory};
   overflow: hidden;
 
+  /* Height-aware (2026-10-14): 72vw made this 920px tall inside a 720px
+     laptop window. The prints are placed in percentages, so the pile simply
+     packs a little tighter on a short screen. */
   .collage {
     position: relative;
-    height: clamp(620px, 72vw, 1040px);
+    height: clamp(520px, min(72vw, 88svh), 1040px);
   }
   .collage h2 {
     position: absolute;
@@ -324,7 +334,8 @@ const Everyday = styled.section`
   }
 
   .moments {
-    padding: clamp(40px, 5vw, 80px) 0 calc(clamp(96px, 11vw, 176px) * var(--sy));
+    padding: calc(clamp(32px, 4vw, 72px) * var(--sy)) 0
+      calc(clamp(80px, 9vw, 160px) * var(--sy));
   }
   .moments ol {
     list-style: none;
@@ -336,7 +347,7 @@ const Everyday = styled.section`
     align-items: start;
   }
   .moments li:nth-child(2) {
-    margin-top: clamp(40px, 6vw, 110px);
+    margin-top: calc(clamp(24px, 5vw, 110px) * var(--sy));
   }
   .polaroid {
     margin: 0 0 clamp(24px, 2.6vw, 36px);
@@ -346,7 +357,7 @@ const Everyday = styled.section`
     transform: rotate(var(--tilt));
   }
   .polaroid .window {
-    aspect-ratio: 4 / 3.4;
+    aspect-ratio: 4 / 3.1;
     overflow: hidden;
   }
   .polaroid img {

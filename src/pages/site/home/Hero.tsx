@@ -17,7 +17,6 @@ import styled from "styled-components";
 import { introReleased } from "./introSignal";
 import { ArrowIcon, Picture } from "../kit/kit";
 import { Link } from "react-router-dom";
-import InceptionCredit from "../../../components/ui/InceptionCredit";
 import { OFFERS } from "../../../lib/founding";
 import { useFoundingStatus } from "../kit/foundingStatus";
 import { Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
@@ -89,7 +88,7 @@ const Scene = styled.section`
   }
   h1 em {
     white-space: nowrap;
-    font-style: italic;
+    font-style: normal;
     color: ${color.gold};
   }
   .hero-row {
@@ -142,24 +141,6 @@ const Scene = styled.section`
     color: ${color.gold};
   }
 
-  .hero-credential {
-    display: inline-flex;
-    align-items: center;
-    gap: 20px;
-    margin-top: 28px;
-    padding-top: 20px;
-    border-top: 1px solid ${color.onDarkLine};
-    color: ${color.onDarkMuted};
-    text-decoration: none;
-  }
-  .hero-credential > svg {
-    width: 18px;
-    height: 18px;
-  }
-  .hero-credential:hover .credit-name {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
 
   ${media.md} {
     min-height: max(100svh, 620px);
@@ -282,14 +263,6 @@ export default function Hero() {
                 <b>Start now for {OFFERS.founding.price}</b>
               </Link>
             )}
-            <Link
-              className="hero-credential"
-              to="/our-story#inception-title"
-              aria-label="A Story is a member of the NVIDIA Inception program"
-            >
-              <InceptionCredit height={40} />
-              <ArrowIcon />
-            </Link>
           </div>
         </div>
       </Frame>

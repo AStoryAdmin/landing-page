@@ -57,10 +57,10 @@ const Scene = styled.section`
   --mark: ${color.accent};
   --label: ${color.accentText};
   background: ${color.ivory};
-  padding: calc(clamp(96px, 11vw, 176px) * var(--sy)) 0;
+  padding: calc(clamp(80px, 9vw, 160px) * var(--sy)) 0;
 
   .step-head {
-    margin-bottom: clamp(48px, 6vw, 96px);
+    margin-bottom: calc(clamp(32px, 5vw, 88px) * var(--sy));
   }
   .step-head h2 {
     max-width: 22ch;
@@ -74,14 +74,14 @@ const Scene = styled.section`
     border-top: 1px solid ${color.primaryLineStrong};
   }
   li {
-    padding: 40px clamp(20px, 3vw, 48px) 0 0;
+    padding: calc(32px * var(--sy)) clamp(20px, 3vw, 48px) 0 0;
   }
   /* Each step shown in the app itself, on a soft card, set down at a slight angle. */
   .shot {
     display: grid;
     place-items: center;
-    margin-bottom: 36px;
-    padding: 36px 0 0;
+    margin-bottom: calc(28px * var(--sy));
+    padding: calc(30px * var(--sy)) 0 0;
     border-radius: 6px;
     background: radial-gradient(
       ellipse at 50% 100%,
@@ -89,7 +89,9 @@ const Scene = styled.section`
       transparent 70%
     );
     overflow: hidden;
-    height: clamp(420px, 40vw, 580px);
+    /* Height-aware (2026-10-14): 40vw alone made each card 512px on a
+       1280x720 laptop, before a word of the step was visible. */
+    height: clamp(260px, min(40vw, 42svh), 580px);
     padding-inline: 4%;
     /* Zoomed in: the phone runs off the bottom of the card, so the screen reads large. */
     mask-image: linear-gradient(#000 82%, transparent);
@@ -105,8 +107,8 @@ const Scene = styled.section`
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 28px;
-    font: 400 ${display.lg} / 1 ${font.display};
+    margin-bottom: calc(20px * var(--sy));
+    font: 400 ${display.md} / 1 ${font.display};
     color: ${color.accent};
   }
   .n small {
@@ -130,8 +132,8 @@ const Scene = styled.section`
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 24px 48px;
     align-items: end;
-    margin-top: clamp(56px, 6vw, 96px);
-    padding-top: 28px;
+    margin-top: calc(clamp(40px, 5vw, 88px) * var(--sy));
+    padding-top: 24px;
     border-top: 1px solid ${color.primaryLineStrong};
   }
   .terms p {

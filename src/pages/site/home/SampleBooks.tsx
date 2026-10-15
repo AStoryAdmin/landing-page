@@ -1,8 +1,12 @@
 /**
- * "See a real book" — three sample A Story books, right after the hero
- * (added 2026-10-11). The visitor has just read that most of a life goes
- * undocumented; this is the first proof of what the alternative looks like,
- * before any explanation of calls or the app.
+ * "See a real book" — three sample A Story books (added 2026-10-11).
+ *
+ * 2026-10-14 (Hallmark redesign): moved from straight after the hero to
+ * straight after FamilyBook, the demo book it proves — ahead of the hero's
+ * own explanation it read as a detour. The flat coloured rectangles became
+ * the books' real front covers, captured from /samples into
+ * public/book-objects/sample-<id>-{360,720}.webp, so the card and the book
+ * it opens are the same object. (Re-capture if a /samples cover changes.)
  *
  * Each card is one book: its cover colour, who it is about, what kind of
  * book it is. A card opens /samples at that book (/samples#carolyn, …).
@@ -34,21 +38,18 @@ const BOOKS = [
     name: "Carolyn Bennett",
     kind: "A family memoir",
     line: "Baker, Holland, Michigan. Fifteen memories, in her own words.",
-    cover: "#1e3962",
   },
   {
     id: "raymond",
     name: "Raymond Ortiz",
     kind: "A founder’s ledger",
     line: "Machinist and founder. Forty years of a shop, told by the family.",
-    cover: "#1f3328",
   },
   {
     id: "tom",
     name: "Thomas Kessler",
     kind: "A veteran’s homecoming",
     line: "Army medic, then an ER nurse. Forty-one letters home.",
-    cover: "#283f51",
   },
 ];
 
@@ -74,45 +75,40 @@ const Section = styled(Chapter)`
     outline: 3px solid var(--focus, ${color.accentText});
     outline-offset: 6px;
   }
-  /* The closed book: its cloth colour, a fine foil frame, the name in ivory. */
+  /* The real front cover, set down on the table: square like the book, a
+     hint of spine on the left, and capped by the screen's height so the
+     shelf fits a laptop window with its captions. */
   .cover {
     position: relative;
-    aspect-ratio: 4 / 3;
-    display: flex;
-    align-items: flex-end;
-    padding: clamp(18px, 2vw, 28px);
-    background: var(--cover);
-    color: ${color.ivory};
-    border-radius: 2px 6px 6px 2px;
+    width: min(100%, 34svh, 340px);
+    aspect-ratio: 1;
+    border-radius: 2px 4px 4px 2px;
+    overflow: hidden;
     box-shadow:
-      inset 6px 0 0 color-mix(in srgb, ${color.black} 22%, transparent),
-      0 1px 1px rgba(42, 31, 24, 0.08),
-      0 24px 40px -24px rgba(42, 31, 24, 0.55);
+      0 1px 1px rgba(42, 31, 24, 0.1),
+      0 22px 36px -22px rgba(42, 31, 24, 0.6);
     transition:
       transform ${motion.slow},
       box-shadow ${motion.slow};
   }
-  .cover::before {
+  .cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .cover::after {
     content: "";
     position: absolute;
-    inset: clamp(10px, 1.1vw, 16px);
-    left: clamp(16px, 1.6vw, 24px);
-    border: 1px solid color-mix(in srgb, ${color.gold} 55%, transparent);
+    inset: 0 auto 0 0;
+    width: 7%;
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.28),
+      rgba(255, 255, 255, 0.06) 55%,
+      transparent
+    );
     pointer-events: none;
-  }
-  .cover b {
-    display: block;
-    font: 400 ${display.sm} / 1.15 ${font.display};
-    letter-spacing: -0.012em;
-    text-wrap: balance;
-  }
-  .cover small {
-    display: block;
-    margin-top: 8px;
-    font: 500 11px/1.3 ${font.body};
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: ${color.gold};
   }
   .card .kind {
     font: 600 12px/1.4 ${font.body};
@@ -154,9 +150,8 @@ const Section = styled(Chapter)`
     .card:hover .cover {
       transform: translateY(-6px) rotate(-0.6deg);
       box-shadow:
-        inset 6px 0 0 color-mix(in srgb, ${color.black} 22%, transparent),
-        0 1px 1px rgba(42, 31, 24, 0.08),
-        0 36px 56px -26px rgba(42, 31, 24, 0.6);
+        0 1px 1px rgba(42, 31, 24, 0.1),
+        0 34px 52px -26px rgba(42, 31, 24, 0.65);
     }
     .card:hover h3 {
       color: ${color.accentText};
@@ -176,8 +171,24 @@ const Section = styled(Chapter)`
       grid-template-columns: minmax(0, 1fr);
       gap: clamp(28px, 4vw, 40px);
     }
+    /* On a phone the shelf becomes a list: cover left, words right. */
+    .card {
+      display: grid;
+      grid-template-columns: 112px minmax(0, 1fr);
+      grid-template-rows: auto auto auto 1fr;
+      column-gap: 18px;
+      row-gap: 6px;
+      align-items: start;
+    }
     .cover {
-      aspect-ratio: 16 / 9;
+      grid-row: 1 / -1;
+      width: 112px;
+    }
+    .card h3 {
+      margin-top: 0;
+    }
+    .open {
+      min-height: 40px;
     }
     .card p {
       max-width: 52ch;
@@ -209,14 +220,19 @@ export default function SampleBooks() {
               <a
                 className="card"
                 href={`/samples#${b.id}`}
-                style={{ "--cover": b.cover } as React.CSSProperties}
                 aria-label={`${b.name}: ${b.kind}. Open the sample book`}
               >
                 <span className="cover" aria-hidden="true">
-                  <span>
-                    <b>{b.name}</b>
-                    <small>A Story</small>
-                  </span>
+                  <img
+                    src={`/book-objects/sample-${b.id}-360.webp`}
+                    srcSet={`/book-objects/sample-${b.id}-360.webp 360w, /book-objects/sample-${b.id}-720.webp 720w`}
+                    sizes="(max-width: 860px) 112px, 340px"
+                    alt=""
+                    width={360}
+                    height={360}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </span>
                 <span className="kind">{b.kind}</span>
                 <h3>{b.name}</h3>

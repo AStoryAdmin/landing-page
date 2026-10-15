@@ -7,7 +7,7 @@ import CodeFromFamily from "./home/CodeFromFamily";
 import Hero from "./home/Hero";
 import SampleBooks from "./home/SampleBooks";
 import WhatGetsLost from "./home/WhatGetsLost";
-import ThreeCalls from "./home/ThreeCalls";
+import Listen from "./home/Listen";
 import EveryVoice from "./home/EveryVoice";
 import FamilyBook from "./home/FamilyBook";
 import Founders from "./home/Founders";
@@ -44,6 +44,12 @@ import WhereWeSit from "./home/WhereWeSit";
  * 2026-10-11: SampleBooks ("See a real book") sits straight after the hero -
  * three sample books a visitor can flip through on /samples before reading
  * anything about how they are made.
+ *
+ * 2026-10-14 (Hallmark redesign, laptop pass): the sample books had been
+ * moved up to straight after the hero, ahead of anything explaining what A
+ * Story is; they now follow the family book they illustrate. The three-phone
+ * call demo became Listen — the same three exchanges set as text, readable
+ * at a glance; the full phones stay on How it works.
  */
 export default function Home() {
   // Pinned scenes measure the page; re-measure once fonts and images land.
@@ -64,11 +70,11 @@ export default function Home() {
       <CodeFromFamily />
       <Intro />
       <Hero />
-      <SampleBooks />
       <WhatGetsLost />
       <StepOne />
       <FamilyBook />
-      <ThreeCalls />
+      <SampleBooks />
+      <Listen />
       <EveryVoice />
       <EasiestWay />
       <Founders />

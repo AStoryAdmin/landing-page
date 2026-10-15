@@ -5,6 +5,11 @@
  * founder's reference table style (Quippy): six plain rows, one per core
  * value, readable in a few seconds. The section ends with one editorial line and the
  * link to /compare — no second matrix, no documentary-vs-diary table.
+ *
+ * 2026-10-14: the closing "One moment does not need one official version"
+ * paragraph was cut — it restated EveryVoice ("Every memory has more than one
+ * witness"), which the reader has just scrolled through. The close is now the
+ * link and the sourcing note on one line.
  * Table: compare/CompareTable; data: lib/landscape.ts (HOME_*).
  */
 import styled from "styled-components";
@@ -19,14 +24,14 @@ import {
   TextLink,
 } from "../kit/kit.styles";
 import { gsap, riseLines, useScene } from "../../../lib/scrollMotion";
-import { color, display, font } from "../../../styles/theme";
+import { color, font } from "../../../styles/theme";
 
 const Scene = styled.section`
   --ink: ${color.primary};
   --mark: ${color.accent};
   --label: ${color.accentText};
   background: ${color.paperPure};
-  padding: calc(clamp(96px, 11vw, 176px) * var(--sy)) 0;
+  padding: calc(clamp(80px, 9vw, 160px) * var(--sy)) 0;
 
   .lead {
     font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.body};
@@ -34,37 +39,18 @@ const Scene = styled.section`
     max-width: 46ch;
   }
   .close {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 20px 48px;
-    align-items: end;
-    margin-top: clamp(48px, 6vw, 88px);
-    padding-top: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 40px;
+    margin-top: calc(clamp(28px, 3.4vw, 52px) * var(--sy));
+    padding-top: 18px;
     border-top: 1px solid ${color.primaryLineStrong};
   }
-  .close > div {
-    max-width: 58ch;
-  }
-  .close h3 {
-    font: 400 ${display.md} / 1.2 ${font.display};
-    color: ${color.primary};
-    text-wrap: balance;
-  }
-  .close p {
-    margin-top: 10px;
-    font: italic 400 18px/1.5 ${font.display};
-    color: ${color.primaryMid};
-    max-width: 56ch;
-  }
   .note {
-    margin-top: 18px;
     font: 400 13px/1.5 ${font.body};
     color: ${color.bodyMuted};
-  }
-  @media (max-width: 860px) {
-    .close {
-      grid-template-columns: minmax(0, 1fr);
-    }
   }
 `;
 
@@ -107,22 +93,14 @@ export default function WhereWeSit() {
         <CompareLegend />
 
         <div className="close">
-          <div>
-            <h3>One moment does not need one official version.</h3>
-            <p>
-              Mom remembers it one way. Her brother remembers another. The
-              photograph adds something else. A Story keeps all three attached
-              to the same memory.
-            </p>
-          </div>
+          <p className="note">
+            From each company’s public pages, {AS_OF}. Features change; we
+            update this as they do.
+          </p>
           <TextLink to="/compare">
             See the full comparison <ArrowIcon />
           </TextLink>
         </div>
-        <p className="note">
-          From each company’s public pages, {AS_OF}. Features change; we update
-          this as they do.
-        </p>
       </Frame>
     </Scene>
   );
