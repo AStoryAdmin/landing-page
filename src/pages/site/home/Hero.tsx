@@ -17,7 +17,7 @@ import styled from "styled-components";
 import { introReleased } from "./introSignal";
 import { ArrowIcon, Picture } from "../kit/kit";
 import { Link } from "react-router-dom";
-import { OFFERS } from "../../../lib/founding";
+import { FOUNDING_FOR, OFFERS, OFFER_DEADLINE_LABEL } from "../../../lib/founding";
 import { useFoundingStatus } from "../kit/foundingStatus";
 import { Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
 import {
@@ -259,7 +259,9 @@ export default function Hero() {
             </div>
             {founding.open && (
               <Link className="hero-founding" to="/reserve#founding">
-                <span>Founding families: {founding.line}, open now.</span>
+                <span>
+                  Founding families: {founding.line} for {FOUNDING_FOR.short}, through {OFFER_DEADLINE_LABEL}.
+                </span>
                 <b>Start now for {OFFERS.founding.price}</b>
               </Link>
             )}

@@ -191,6 +191,9 @@ function App() {
           {/* The spellings people type, and the $29-only offer's old address.
               Kept out of `legacy` above: the contracts count those seven. */}
           <Route path="/founding" element={<Legacy to="/reserve" />} />
+          {/* The Hope College family weekend (17 October 2026): the short
+              address for the table card and QR code. See lib/founding.ts. */}
+          <Route path="/hope" element={<Legacy to="/reserve#founding" />} />
           <Route path="/signup" element={<Legacy to="/sign-up" />} />
           <Route path="/signin" element={<Legacy to="/sign-in" />} />
           <Route path="/login" element={<Legacy to="/sign-in" />} />

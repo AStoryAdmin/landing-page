@@ -25,6 +25,13 @@
  * it. Once the twenty-five are taken, the card offers a free list for the
  * next group.
  *
+ * Since 2026-10-14 the founding seats are a NEW group for Hope College
+ * families, opened for the Hope family weekend (lib/founding.ts, "Hope
+ * College"): the first group is closed, FOUNDING_PLACES new places, and
+ * both offers close on the same Wednesday. Before the $29 the card asks
+ * two things — a Hope College family, and an iPhone — and sends anyone
+ * who does not fit to the dollar.
+ *
  * Each card's action:
  *   payment live       → Stripe straight away; the account comes after
  *   just paid (?paid=) → confirmation, then "make your account" (same email)
@@ -37,15 +44,20 @@ import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import {
   FOUNDING_BALANCE,
+  FOUNDING_FOR,
   FOUNDING_GROUP,
   FOUNDING_PLACES,
   FULL_PRICE,
   INCLUDES,
   OFFERS,
+  OFFER_DEADLINE_DAY,
+  OFFER_DEADLINE_LABEL,
   RESERVE_DEADLINE_LABEL,
   WHY_PAY,
   deadlineLine,
-  foundingLeft,
+  foundingClosedLine,
+  foundingDeadlineOpen,
+  foundingIsOpen,
   foundingPlacesLine,
   isOfferLive,
   reserveDiscountOpen,
@@ -473,14 +485,16 @@ export default function Reserve() {
   const claimedAt = (id: OfferId) =>
     (id === "reserve" ? account?.reservedAt : account?.foundingRequestedAt) ?? null;
 
-  /* The two true limits (see the banner in lib/founding.ts). The founding
-     card closes by itself when the twenty-five are taken; its count only
-     appears once it is real and worth saying (foundingPlacesLine). */
+  /* The true limits (see the banner in lib/founding.ts): the Hope College
+     seats, counted live, and the Wednesday they close. The card closes by
+     itself on either; its count only appears once it is real and worth
+     saying (foundingPlacesLine). */
   const taken = useFoundingTaken();
-  const foundingOpen = OFFERS.founding.open && foundingLeft(taken) !== 0;
+  const foundingOpen = foundingIsOpen(taken);
   const placesLine = foundingPlacesLine(taken);
 
-  /* The one question before the $29 (see the header). */
+  /* The two questions before the $29 (see the header). */
+  const [hope, setHope] = useState<"yes" | "no" | null>(null);
   const [iphone, setIphone] = useState<"yes" | "no" | null>(null);
   const discountOpen = reserveDiscountOpen();
   const deadline = deadlineLine();
@@ -641,8 +655,11 @@ export default function Reserve() {
       return (
         <>
           <p className="small">
-            All {FOUNDING_PLACES} founding places are taken. Join the list for the next group - or reserve for{" "}
-            {OFFERS.reserve.price} and hold your place for launch.
+            {foundingDeadlineOpen()
+              ? `All ${FOUNDING_PLACES} ${FOUNDING_FOR.short} places are taken.`
+              : `The ${FOUNDING_FOR.short} places closed on ${OFFER_DEADLINE_LABEL}.`}{" "}
+            Join the list for the next group - or reserve for {OFFERS.reserve.price} and hold your place for
+            launch.
           </p>
           {waitlistAction("next")}
         </>
@@ -652,26 +669,67 @@ export default function Reserve() {
       const fit = (
         <div className="fit">
           <fieldset>
-            <legend>Does the person A Story will call have an iPhone?</legend>
+            <legend>Is your family part of {FOUNDING_FOR.short}?</legend>
             <div className="choices">
               {(["yes", "no"] as const).map((v) => (
                 <label className="choice" key={v}>
                   <input
                     type="radio"
-                    name="iphone"
+                    name="hope"
                     value={v}
-                    checked={iphone === v}
+                    checked={hope === v}
                     onChange={() => {
-                      setIphone(v);
-                      track("founding_fit", { iphone: v });
+                      setHope(v);
+                      track("founding_fit", { hope: v });
                     }}
                   />
-                  <span>{v === "yes" ? "Yes, an iPhone" : "No"}</span>
+                  <span>{v === "yes" ? "Yes - a student, parent, alum, or staff" : "No"}</span>
                 </label>
               ))}
             </div>
           </fieldset>
-          {iphone === "no" && (
+          {hope === "no" && (
+            <>
+              <p className="small" role="status">
+                These {FOUNDING_PLACES} places were opened for {FOUNDING_FOR.families} this week, and the first
+                group is closed. A dollar holds your place
+                {discountOpen ? ` and ${OFFERS.reserve.discount}% off` : ""}, and we write the moment another
+                group opens.
+              </p>
+              <SecondaryAnchor
+                href={openingHref}
+                onClick={(e) => {
+                  track("offer_click", { offer: "reserve", from: "founding_fit" });
+                  gate(e, "reserve", openingHref);
+                }}
+              >
+                Reserve for {OFFERS.reserve.price} instead
+              </SecondaryAnchor>
+            </>
+          )}
+          {hope === "yes" && (
+            <fieldset>
+              <legend>Does the person A Story will call have an iPhone?</legend>
+              <div className="choices">
+                {(["yes", "no"] as const).map((v) => (
+                  <label className="choice" key={v}>
+                    <input
+                      type="radio"
+                      name="iphone"
+                      value={v}
+                      checked={iphone === v}
+                      onChange={() => {
+                        setIphone(v);
+                        track("founding_fit", { iphone: v });
+                      }}
+                    />
+                    <span>{v === "yes" ? "Yes, an iPhone" : "No"}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          )}
+          {hope === "yes" && iphone === "no" && (
             <>
               <p className="small" role="status">
                 Before launch, A Story can only ring an iPhone - on other phones it reminds them to write instead,
@@ -691,7 +749,7 @@ export default function Reserve() {
           )}
         </div>
       );
-      if (iphone !== "yes") return fit;
+      if (hope !== "yes" || iphone !== "yes") return fit;
       if (live(id)) {
         return (
           <>
@@ -805,8 +863,8 @@ export default function Reserve() {
         <p className="tag">
           {isFounding
             ? !foundingOpen
-              ? `All ${FOUNDING_PLACES} taken · list open`
-              : `Open now · ${placesLine}`
+              ? `${foundingClosedLine()} · list open`
+              : `For ${FOUNDING_FOR.short} · ${placesLine} · ends ${OFFER_DEADLINE_LABEL}`
             : discountOpen
               ? `The easy yes · ends ${RESERVE_DEADLINE_LABEL}`
               : "The easy yes"}
@@ -814,7 +872,7 @@ export default function Reserve() {
         <h2 className="name">{o.name}</h2>
         <p className="who">
           {isFounding
-            ? "Start now, before launch, set up with us by hand."
+            ? `Start now, before launch, set up with us by hand. New places for ${FOUNDING_FOR.families}, through ${OFFER_DEADLINE_DAY}.`
             : discountOpen
               ? "Hold your place in line, and the price."
               : "Hold your place in line."}
@@ -875,9 +933,9 @@ export default function Reserve() {
   return (
     <>
       <EditorialSeo
-        title={`${founding.places} founding families - start A Story now for ${founding.price}`}
+        title={`${founding.places} new founding places for ${FOUNDING_FOR.families} - start A Story now for ${founding.price}`}
         path="/reserve"
-        description={`A Story opens to ${founding.places} founding families before launch: ${founding.price}, set up with you by hand, one of us on your first call, half off your first year, refundable until that call. Or hold a place for ${reserve.price}.`}
+        description={`For Hope College's family weekend, A Story opens ${founding.places} new founding places, for ${FOUNDING_FOR.families} only, through ${OFFER_DEADLINE_DAY}: ${founding.price}, set up with you by hand, one of us on your first call, half off your first year, refundable until that call. Or hold a place for ${reserve.price} and ${reserve.discount}% off, by the same day.`}
       />
 
       {/* While founding places remain, the page leads with them (header);
@@ -885,14 +943,14 @@ export default function Reserve() {
       {foundingOpen ? (
         <PageOpening
           ground="night"
-          eyebrow={`Before launch · ${placesLine}`}
+          eyebrow={`Hope College family weekend · ${placesLine} · through ${OFFER_DEADLINE_LABEL}`}
           labelledBy="reserve-title"
           title={
             <>
-              {founding.places} families start now. <em>Be one of them.</em>
+              {FOUNDING_FOR.families}: {founding.places} more start <em>now.</em>
             </>
           }
-          lead={`A Story calls someone you love and asks about their life. Before launch we are opening it to ${founding.places} families, set up with you by hand and with one of us on your first call. ${founding.price}, which comes off a first year at half price - and refunded if you change your mind before that call.`}
+          lead={`A Story calls someone you love and asks about their life. The first founding group is closed. For Hope's family weekend we are opening ${founding.places} new places, for ${FOUNDING_FOR.families} only, through ${OFFER_DEADLINE_DAY} - set up with you by hand and with one of us on your first call. ${founding.price}, which comes off a first year at half price, and refunded if you change your mind before that call.`}
           actions={
             <>
               <PrimaryAnchor href="#founding" onClick={() => track("offer_click", { offer: "founding", from: "opening" })}>
@@ -921,7 +979,7 @@ export default function Reserve() {
               Hold your place <em>for a dollar.</em>
             </>
           }
-          lead={`A Story calls someone you love and asks about their life. All ${founding.places} founding places are taken; reserve for ${reserve.price} and we tell you the moment it is your turn.`}
+          lead={`A Story calls someone you love and asks about their life. The founding places are closed for now; reserve for ${reserve.price} and we tell you the moment it is your turn.`}
           actions={
             <>
               <PrimaryAnchor
@@ -1009,11 +1067,12 @@ export default function Reserve() {
             </div>
             <div>
               <p className="k">{founding.price}</p>
-              <Heading>Founding, if you would rather start now.</Heading>
+              <Heading>Founding, if you are a {FOUNDING_FOR.short} family and would rather start now.</Heading>
               <p className="d">
                 There is a birthday coming, or a question you have been meaning to ask for years. Founding
                 families start before launch, with one of us beside you for the first call, at half price for
-                the year. There are {founding.places} places, and they go in the order families join.
+                the year. This week there are {founding.places} new places, for {FOUNDING_FOR.families}, until{" "}
+                {OFFER_DEADLINE_DAY}, and they go in the order families join.
               </p>
             </div>
           </div>
@@ -1027,7 +1086,7 @@ export default function Reserve() {
           </Statement>
           <p className="lead">
             {foundingOpen
-              ? `Twenty-nine dollars has it asked before launch, with one of us on the call (${placesLine}, in the order families join). `
+              ? `For ${FOUNDING_FOR.families}, twenty-nine dollars has it asked before launch, with one of us on the call (${placesLine}, until ${OFFER_DEADLINE_LABEL}). `
               : ""}
             A dollar puts you in line to have it asked
             {discountOpen ? `, at ${OFFERS.reserve.discount}% off if you reserve by ${RESERVE_DEADLINE_LABEL}` : ""}.

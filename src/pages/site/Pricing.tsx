@@ -32,6 +32,7 @@ import {
   START,
 } from "../../lib/pricing";
 import { anyCheckoutLive, buyLabel, checkoutFor } from "../../lib/checkout";
+import { FOUNDING_FOR, OFFERS, OFFER_DEADLINE_LABEL } from "../../lib/founding";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
@@ -883,7 +884,7 @@ export default function Pricing() {
               <small>
                 {anyCheckoutLive()
                   ? "Continue with your selected plan."
-                  : "Before launch: reserve for $1 by 2 November and hold 15% off this plan's first year, or start now as a founding family."}
+                  : `Before launch: reserve for ${OFFERS.reserve.price} by ${OFFER_DEADLINE_LABEL} and hold ${OFFERS.reserve.discount}% off this plan's first year - or, for ${FOUNDING_FOR.families}, start now as a founding family.`}
               </small>
             </div>
             <PrimaryAnchor

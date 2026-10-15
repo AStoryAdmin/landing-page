@@ -57,8 +57,8 @@ export default function Account() {
           holds
             ? "Nothing more to do today. We will email you when payment opens, or when it is your turn."
             : reserveDiscountOpen()
-              ? `Reserve for ${OFFERS.reserve.price} by ${RESERVE_DEADLINE_LABEL} to hold ${OFFERS.reserve.discount}% off your first year - or start now as a founding family.`
-              : `Reserve for ${OFFERS.reserve.price} to hold your place - or start now as a founding family.`
+              ? `Reserve for ${OFFERS.reserve.price} by ${RESERVE_DEADLINE_LABEL} to hold ${OFFERS.reserve.discount}% off your first year - or, for Hope College families, start now as a founding family.`
+              : `Reserve for ${OFFERS.reserve.price} to hold your place - or, for Hope College families, start now as a founding family.`
         }
       >
         <dl className="details">

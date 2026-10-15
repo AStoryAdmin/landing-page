@@ -8,10 +8,23 @@
  * worth saying (foundingStatus.ts); there is no countdown and no date. The
  * dollar stays beside it for anyone who is not ready.
  *
- * Once the twenty-five are taken it says so and offers the dollar.
+ * Once the places are taken, or the date passes, it says so and offers the
+ * dollar.
+ *
+ * Since 2026-10-14 the places are a new group for Hope College families,
+ * through Wednesday 21 October (lib/founding.ts, "Hope College").
  */
 import styled from "styled-components";
-import { FOUNDING_BALANCE, FOUNDING_PLACES, FULL_PRICE, INCLUDES, OFFERS } from "../../../lib/founding";
+import {
+  FOUNDING_BALANCE,
+  FOUNDING_FOR,
+  FOUNDING_PLACES,
+  FULL_PRICE,
+  INCLUDES,
+  OFFERS,
+  OFFER_DEADLINE_DAY,
+  foundingClosedLine,
+} from "../../../lib/founding";
 import { useReveals } from "../kit/reveals";
 import { ArrowIcon } from "../kit/kit";
 import { useFoundingStatus } from "../kit/foundingStatus";
@@ -111,16 +124,17 @@ export default function FoundingBand() {
     <Section ref={reveal} $ground="night" aria-labelledby="founding-band-title">
       <Frame className="row">
         <div data-rise>
-          <Eyebrow>Founding families · {open ? line : `all ${FOUNDING_PLACES} taken`}</Eyebrow>
+          <Eyebrow>Founding families · {FOUNDING_FOR.short} · {open ? line : foundingClosedLine()}</Eyebrow>
           {open ? (
             <>
               <Statement id="founding-band-title" $size="lg">
-                Twenty-five families start <em>now.</em>
+                {FOUNDING_PLACES} more {FOUNDING_FOR.families} start <em>now.</em>
               </Statement>
               <p className="lead">
-                Before launch, we are setting A Story up by hand for {FOUNDING_PLACES} families, with one of us on
-                your first call. No week to wait for: we write within a working day of you joining, and places go
-                in the order families join.
+                The first founding group is closed. For Hope's family weekend we are opening {FOUNDING_PLACES} new
+                places, for {FOUNDING_FOR.families} only, through {OFFER_DEADLINE_DAY}: set up by hand, with one
+                of us on your first call. We write within a working day of you joining, and places go in the
+                order families join.
               </p>
               <Actions className="acts">
                 <PrimaryLink to="/reserve#founding">
@@ -132,7 +146,7 @@ export default function FoundingBand() {
           ) : (
             <>
               <Statement id="founding-band-title" $size="lg">
-                The founding places <em>are taken.</em>
+                The {FOUNDING_FOR.short} places <em>are closed.</em>
               </Statement>
               <p className="lead">
                 Thank you. A dollar still holds your place for launch, and comes off your first year.
@@ -149,7 +163,7 @@ export default function FoundingBand() {
           <Plate className="card" data-rise>
             <p className="price">
               <b>{founding.price}</b>
-              <span>once · refundable until your first call</span>
+              <span>once · {FOUNDING_FOR.families} · refundable until your first call</span>
             </p>
             <p className="then">
               Then half off your first year - <s>{FULL_PRICE.individual}</s> {founding.individual}, and the{" "}
