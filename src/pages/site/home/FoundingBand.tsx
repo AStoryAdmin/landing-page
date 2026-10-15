@@ -59,7 +59,7 @@ const Section = styled(Chapter)`
     letter-spacing: -0.03em;
   }
   .price span {
-    font: 600 12px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.gold};

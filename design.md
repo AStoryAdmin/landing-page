@@ -97,6 +97,15 @@ invitation.
   buttons); the book keeps its print typography. Fictional families are
   stated once, under the title. Home's sample covers are captured from it.
 
+## Ship rules (audit, 2026-10-15)
+- No text under 13px outside the books themselves; tracked capitals are 13px
+  with at most 0.16em spacing.
+- Every tap target is at least 44px tall (or has a 44px hit area).
+- Nothing sticky may cover content the reader has not chosen: the Pricing
+  decision bar floats only after a plan is picked; the Questions filter does
+  not stick on phones.
+- Things that are not links do not look like buttons (App Store line).
+
 ## Motion
 GSAP via `lib/scrollMotion.ts`. Animate transform and opacity only. Every
 scene must be complete with `prefers-reduced-motion: reduce` (the prerender

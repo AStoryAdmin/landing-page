@@ -138,7 +138,7 @@ const Scene = styled.section`
     color: ${color.accent};
   }
   .n small {
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};

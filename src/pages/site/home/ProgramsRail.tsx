@@ -67,6 +67,16 @@ const Rail = styled.div`
       margin-left: 0;
     }
   }
+  /* Phones: 32px badges sit two to a line instead of one per line, which
+     took a whole screen before the first chapter. NVIDIA minimum is 30px. */
+  ${media.sm} {
+    .marks img {
+      height: 32px;
+    }
+    .marks span span {
+      padding: 7px;
+    }
+  }
   ${media.motion} {
     .more {
       transition: none;

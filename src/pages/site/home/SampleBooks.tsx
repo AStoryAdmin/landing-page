@@ -111,7 +111,7 @@ const Section = styled(Chapter)`
     pointer-events: none;
   }
   .card .kind {
-    font: 600 12px/1.4 ${font.body};
+    font: 600 13px/1.4 ${font.body};
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--label, ${color.accentText});

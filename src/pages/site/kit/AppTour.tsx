@@ -67,8 +67,8 @@ const Row = styled.ul<{ $n: number }>`
   }
   .k {
     margin-top: 22px;
-    font: 600 11px/1.3 ${font.body};
-    letter-spacing: 0.2em;
+    font: 600 13px/1.3 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--label, ${color.accentText});
   }

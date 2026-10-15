@@ -167,8 +167,8 @@ const Page = styled.section`
     margin-bottom: 30px;
   }
   .card-head small {
-    font: 600 11px/1 ${font.body};
-    letter-spacing: 0.24em;
+    font: 600 13px/1 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
@@ -214,7 +214,7 @@ const Page = styled.section`
     gap: 6px;
   }
   .field > span {
-    font: 600 11px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -252,7 +252,7 @@ const Page = styled.section`
     padding: 0 10px;
     border: 0;
     background: transparent;
-    font: 600 11px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -405,7 +405,7 @@ const Page = styled.section`
     border-block: 1px solid ${color.primaryLine};
   }
   dl.details dt {
-    font: 600 11px/1.9 ${font.body};
+    font: 600 13px/1.9 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};

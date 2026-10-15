@@ -39,8 +39,8 @@ const Section = styled(Chapter)`
     border-top: 1px solid var(--line, ${color.primaryLine});
   }
   .three .k {
-    font: 600 11px/1 ${font.body};
-    letter-spacing: 0.22em;
+    font: 600 13px/1 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     /* accentText, not the ground's mark: terracotta is 4.2:1 on ivory, under
        the 4.5:1 that 11px text needs. */

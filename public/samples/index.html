@@ -761,7 +761,9 @@ header.top .cta-top{order:0;flex:none}
 .sw{width:28px;height:28px}
 .btn{font:600 14px/1 var(--ui-sans);letter-spacing:0;text-transform:none;min-height:44px;padding:0 20px;background:var(--chip)}
 .pos{font:500 14px/1 var(--ui-sans);letter-spacing:0;text-transform:none}
-.dot{height:3px}
+.dot{height:3px;position:relative}
+.dot::before{content:"";position:absolute;inset:-20px -1px}
+.sw::before{content:"";position:absolute;inset:-8px -4px}
 .note{gap:4px}
 .note .k{font:600 14px/1.3 var(--ui-sans);letter-spacing:0;text-transform:none;color:var(--ui-accent)}
 .note p{font:400 18px/1.5 var(--ui-serif)}

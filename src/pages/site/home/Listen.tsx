@@ -129,13 +129,14 @@ const Scene = styled.section`
     position: relative;
     display: grid;
     place-items: center;
-    min-height: clamp(540px, 74svh, 740px);
+    /* Height-aware: the photograph and all three turns in one laptop screen. */
+    min-height: clamp(500px, 60svh, 640px);
     margin-top: calc(clamp(20px, 2.4vw, 40px) * var(--sy));
   }
   .print {
     position: relative;
     z-index: 1;
-    width: min(300px, 25vw);
+    width: min(280px, 22vw, 34svh);
     margin: 0;
     padding: 12px 12px 0;
     background: ${color.paperPure};
@@ -177,7 +178,7 @@ const Scene = styled.section`
   .note.ask {
     --tint: ${color.teal};
     left: 0;
-    top: 4%;
+    top: 0;
     rotate: -2deg;
   }
   .note.answer {
@@ -190,7 +191,7 @@ const Scene = styled.section`
   .note.follow {
     --tint: ${color.warmGold};
     left: 4%;
-    bottom: 4%;
+    bottom: 0;
     rotate: 1.2deg;
     animation-delay: 760ms;
   }

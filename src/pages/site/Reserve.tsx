@@ -108,8 +108,8 @@ const Offers = styled(Chapter)`
     --action-hover: ${color.night};
   }
   .tag {
-    font: 600 11px/1 ${font.body};
-    letter-spacing: 0.24em;
+    font: 600 13px/1 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
@@ -135,7 +135,7 @@ const Offers = styled(Chapter)`
     color: ${color.primary};
   }
   .price span {
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};

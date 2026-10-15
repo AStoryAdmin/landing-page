@@ -223,8 +223,8 @@ export const HeaderShell = styled.header`
   .more-groups h2,
   .gf-mobile-more h2 {
     margin-bottom: 8px;
-    font: 600 11px/1.4 ${font.body};
-    letter-spacing: 0.18em;
+    font: 600 13px/1.4 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
@@ -286,8 +286,8 @@ export const HeaderShell = styled.header`
     transform: scale(1.04);
   }
   .more-feature small {
-    font: 600 11px/1 ${font.body};
-    letter-spacing: 0.18em;
+    font: 600 13px/1 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.gold};
   }
@@ -297,7 +297,7 @@ export const HeaderShell = styled.header`
   }
   .more-feature span {
     margin-top: 10px;
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
@@ -314,7 +314,7 @@ export const HeaderShell = styled.header`
     color: ${color.ivory};
     box-shadow: inset 0 0 0 1px
       color-mix(in srgb, ${color.ivory} 18%, transparent);
-    font: 600 11.5px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     text-decoration: none;
@@ -560,6 +560,14 @@ export const FooterShell = styled.footer`
     --muted: ${color.onDarkMuted};
     --ink: ${color.ivory};
   }
+  ${media.sm} {
+    .footer-credential img {
+      height: 32px;
+    }
+    .footer-credential span span {
+      padding: 7px;
+    }
+  }
   .footer-credential a {
     display: inline-flex;
     align-items: center;
@@ -625,7 +633,7 @@ export const FooterShell = styled.footer`
      */
     flex: 0 0 100%;
     margin-top: 10px;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.6;
     color: ${color.onDarkFaint};
   }

@@ -89,6 +89,9 @@ const Layout = styled.div`
     padding: 18px 0;
   }
   .gf-legal-contents summary {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
     cursor: pointer;
     font-weight: 600;
     font-size: 18px;
@@ -100,12 +103,12 @@ const Layout = styled.div`
   }
   .gf-legal-contents li {
     break-inside: avoid;
-    margin: 0 0 8px;
+    margin: 0 0 2px;
     font-size: 16px;
   }
   .gf-legal-contents a {
     display: inline-block;
-    padding: 5px 0;
+    padding: 10px 0;
     text-underline-offset: 4px;
   }
   .gf-legal-contents a[aria-current="true"] {

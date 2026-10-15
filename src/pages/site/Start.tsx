@@ -168,8 +168,8 @@ const Page = styled.section`
     margin-bottom: 30px;
   }
   .card-head small {
-    font: 600 11px/1 ${font.body};
-    letter-spacing: 0.24em;
+    font: 600 13px/1 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
@@ -212,7 +212,7 @@ const Page = styled.section`
     color: ${color.primary};
   }
   .selection a {
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -226,7 +226,7 @@ const Page = styled.section`
   .card label {
     display: grid;
     gap: 6px;
-    font: 600 11px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};

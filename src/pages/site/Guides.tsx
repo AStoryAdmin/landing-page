@@ -103,7 +103,7 @@ const Index = styled(Chapter)`
     outline-offset: 4px;
   }
   .cat {
-    font: 600 12px/1.4 ${font.body};
+    font: 600 13px/1.4 ${font.body};
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: ${color.accentText};

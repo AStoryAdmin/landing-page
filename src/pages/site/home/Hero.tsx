@@ -117,7 +117,9 @@ const Scene = styled.section`
     flex-wrap: wrap;
     align-items: center;
     gap: 6px 12px;
-    margin-top: 22px;
+    width: fit-content;
+    min-height: 44px;
+    margin-top: 12px;
     font: 500 15px/1.45 ${font.body};
     color: ${color.onDarkMuted};
     text-decoration: none;

@@ -605,7 +605,7 @@ const Catch = styled.section`
     transform: rotate(1.2deg);
   }
   .memo small {
-    font: 500 12px/1.3 ${font.body};
+    font: 500 13px/1.3 ${font.body};
     color: ${color.bodyMuted};
   }
   .memo h3 {
@@ -622,7 +622,7 @@ const Catch = styled.section`
     align-items: center;
     gap: 10px;
     margin-top: 14px;
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -635,7 +635,7 @@ const Catch = styled.section`
     border-radius: 50%;
     background: ${color.teal};
     color: ${color.ivory};
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     font-style: normal;
     letter-spacing: 0;
   }

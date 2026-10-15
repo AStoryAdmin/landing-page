@@ -124,8 +124,8 @@ const Sheet = styled.dialog`
     text-align: center;
   }
   .tag {
-    font: 600 11px/1.4 ${font.body};
-    letter-spacing: 0.18em;
+    font: 600 13px/1.4 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
@@ -179,7 +179,7 @@ const Sheet = styled.dialog`
     display: flex;
     justify-content: space-between;
     gap: 12px;
-    font: 600 11px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};

@@ -96,7 +96,7 @@ const Soon = styled.span`
   padding: 3px 8px;
   border: 1px solid currentColor;
   border-radius: 2px;
-  font: 600 11px/1.2 ${font.body};
+  font: 600 13px/1.2 ${font.body};
   letter-spacing: 0.1em;
   text-transform: uppercase;
   vertical-align: middle;
@@ -287,7 +287,7 @@ const Walk = styled(Chapter)`
     border-radius: 99px;
     background: ${color.paperPure};
     box-shadow: inset 0 0 0 1px ${color.primaryLine};
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -581,8 +581,8 @@ const Depth = styled.section`
     flex-direction: column;
     justify-content: space-between;
     padding: 6px 0;
-    font: 600 11px/1 ${font.body};
-    letter-spacing: 0.2em;
+    font: 600 13px/1 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
   }
   .gauge::before {
@@ -645,7 +645,7 @@ const Depth = styled.section`
     gap: 4px 12px;
   }
   .rung b {
-    font: 600 12px/1.2 ${font.body};
+    font: 600 13px/1.2 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.teal};
@@ -735,7 +735,7 @@ const Receives = styled(Chapter)`
     margin-bottom: 12px;
     padding-bottom: 10px;
     border-bottom: 1px solid ${color.primaryLineStrong};
-    font: 600 11px/1.2 ${font.body};
+    font: 600 13px/1.2 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -752,7 +752,7 @@ const Receives = styled(Chapter)`
   .sheet time {
     display: block;
     margin-bottom: 3px;
-    font: 600 10.5px/1.2 ${font.body};
+    font: 600 13px/1.2 ${font.body};
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -787,7 +787,7 @@ const Receives = styled(Chapter)`
     align-items: center;
     gap: 10px;
     margin-top: 24px;
-    font: 600 12px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: ${color.primary};
@@ -800,7 +800,7 @@ const Receives = styled(Chapter)`
     border-radius: 50%;
     background: ${color.teal};
     color: ${color.ivory};
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     font-style: normal;
     letter-spacing: 0;
   }
@@ -854,7 +854,7 @@ const Receives = styled(Chapter)`
   .family li small {
     display: block;
     margin-top: 4px;
-    font: 600 12px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     color: ${color.accentText};
   }
   ${media.lg} {

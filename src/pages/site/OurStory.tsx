@@ -109,8 +109,8 @@ const Letters = styled(Chapter)`
     padding-bottom: 18px;
     margin-bottom: clamp(28px, 3vw, 40px);
     border-bottom: 1px solid ${color.primaryLine};
-    font: 600 11px/1.3 ${font.body};
-    letter-spacing: 0.2em;
+    font: 600 13px/1.3 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
@@ -176,8 +176,11 @@ const Letters = styled(Chapter)`
     color: ${color.bodyMuted};
   }
   .sign a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     margin-left: auto;
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: ${color.accentText};

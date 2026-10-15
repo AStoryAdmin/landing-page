@@ -357,6 +357,9 @@ const Scene = styled.section`
   }
   .open-btn {
     position: absolute;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     left: 5.2cqw;
     bottom: 8.4cqw;
     padding: 1.1cqw 2.4cqw;
@@ -713,6 +716,7 @@ const Scene = styled.section`
     align-self: flex-start;
     display: inline-flex;
     align-items: center;
+    min-height: 44px;
     gap: 1cqw;
     margin-top: 3.4cqw;
     padding: 1.4cqw 2.4cqw;
@@ -777,6 +781,8 @@ const Scene = styled.section`
     justify-items: center;
     gap: 10px;
     min-width: 44px;
+    min-height: 44px;
+    align-content: end;
     padding: 0;
     border: 0;
     background: none;
@@ -953,8 +959,13 @@ const Scene = styled.section`
     }
     .single .begin,
     .single .open-btn {
-      font-size: 3cqw;
-      padding: 3cqw 5cqw;
+      min-height: 44px;
+      font-size: max(13px, 3cqw);
+      padding: 0 5cqw;
+    }
+    .single .open-btn {
+      display: inline-flex;
+      align-items: center;
     }
     /* One page wide here, not two: the cover's cqw sizes double. */
     .single .cover-art {
