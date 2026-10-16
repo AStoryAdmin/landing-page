@@ -93,7 +93,9 @@ function Reason({
           <p data-rise>{text}</p>
           <div data-rise>{action}</div>
         </div>
-        <div data-rise>{art}</div>
+        <div data-rise data-drift="4">
+          {art}
+        </div>
       </Frame>
     </Scene>
   );

@@ -1245,7 +1245,7 @@ export default function HowItWorks() {
 
       <Volume ref={volume} $ground="paper" aria-labelledby="volume-title">
         <Frame className="vol">
-          <div data-print>
+          <div data-print data-drift="4">
             <Picture
               id="37"
               alt="An open A Story volume"

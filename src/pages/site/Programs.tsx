@@ -30,6 +30,7 @@ import aaiBoxed from "../../assets/partners/assemblyai-startup-program-lockup-bo
 import cartesiaBoxed from "../../assets/partners/cartesia-startups-lockup-boxed.svg";
 import { ArrowIcon, Invitation } from "./kit/kit";
 import { Chapter, Eyebrow, Frame, PrimaryLink, SecondaryLink, Statement, Title } from "./kit/kit.styles";
+import { useReveals } from "./kit/reveals";
 import { color, display, font, media, motion } from "../../styles/theme";
 import { PROGRAMS, faqSchema } from "../../lib/seo";
 
@@ -332,6 +333,12 @@ const Means = styled(Chapter)`
 `;
 
 export default function Programs() {
+  // The one page that stood still (2026-10-16): it now arrives the way the
+  // other secondary routes do - headlines line by line, blocks in order.
+  const opening = useReveals<HTMLElement>();
+  const idea = useReveals<HTMLElement>();
+  const ledger = useReveals<HTMLElement>();
+  const means = useReveals<HTMLElement>();
   return (
     <>
       <EditorialSeo
@@ -341,18 +348,18 @@ export default function Programs() {
         schema={[faqSchema(PROGRAMS.faq)]}
       />
 
-      <Opening $ground="ivory" aria-labelledby="programs-title">
+      <Opening ref={opening} $ground="ivory" aria-labelledby="programs-title">
         <Frame className="grid">
           <div>
             <Eyebrow>Programs &amp; grants</Eyebrow>
-            <Title id="programs-title">
+            <Title id="programs-title" data-lines>
               In very good <em>company.</em>
             </Title>
-            <p className="lead">
+            <p className="lead" data-rise>
               A Story is a young company, and three of the programs shaping AI and voice have taken it in: NVIDIA Inception,
               the AssemblyAI Startup Program, and a Cartesia Startups grant.
             </p>
-            <nav className="marks" aria-label="Programs on this page">
+            <nav className="marks" aria-label="Programs on this page" data-rise>
               <a href="#inception-title" aria-label="NVIDIA Inception">
                 <InceptionBadge height={40} />
               </a>
@@ -364,7 +371,7 @@ export default function Programs() {
               </a>
             </nav>
           </div>
-          <figure className="card">
+          <figure className="card" data-rise data-drift="4">
             <img
               src="/brand/partners/cartesia-grant-recipient-astory.png"
               alt="Cartesia Startups grant recipient: A Story"
@@ -377,24 +384,25 @@ export default function Programs() {
         </Frame>
       </Opening>
 
-      <Idea $ground="night" aria-labelledby="programs-idea">
+      <Idea ref={idea} $ground="night" aria-labelledby="programs-idea">
         <Frame>
-          <Statement id="programs-idea" $size="xl">
+          <Statement id="programs-idea" $size="xl" data-lines>
             The future of AI is being built now. Its oldest job is <em>keeping a family’s voice.</em>
           </Statement>
-          <p>
+          <p data-rise>
             Three programs for the companies building with AI and voice have taken A Story in. Here is what each one
             is for, and why a family archive belongs in it.
           </p>
         </Frame>
       </Idea>
 
-      <Ledger $ground="ivory" $tight aria-label="The three programs" data-nosnippet>
+      <Ledger ref={ledger} $ground="ivory" $tight aria-label="The three programs" data-nosnippet>
         <Frame>
           <ol>
             {ROWS.map((r) => (
-              <li key={r.id}>
-                <p className="word" aria-hidden="true">
+              <li key={r.id} data-rise>
+                {/* The verb rises out of its card a beat after the card lands. */}
+                <p className="word" aria-hidden="true" data-lines="0.18">
                   {r.word}
                 </p>
                 <div className="mark">{r.mark}</div>
@@ -407,14 +415,16 @@ export default function Programs() {
               </li>
             ))}
           </ol>
-          <p className="fine">{NVIDIA_ABOUT}</p>
+          <p className="fine" data-rise>
+            {NVIDIA_ABOUT}
+          </p>
         </Frame>
       </Ledger>
 
-      <Means $ground="sand" aria-labelledby="programs-answers">
+      <Means ref={means} $ground="sand" aria-labelledby="programs-answers">
         <Frame>
           <div className="grid">
-            <div>
+            <div data-rise>
               <h2 id="programs-answers">Questions, answered plainly</h2>
               <p className="plain">
                 None of these is an endorsement, an investment, or a partnership. They are programs for young
@@ -427,7 +437,7 @@ export default function Programs() {
                 <SecondaryLink to="/our-story">Read our story</SecondaryLink>
               </div>
             </div>
-            <dl>
+            <dl data-rise>
               {PROGRAMS.faq.map(({ q, a }) => (
                 <div key={q}>
                   <dt>{q}</dt>

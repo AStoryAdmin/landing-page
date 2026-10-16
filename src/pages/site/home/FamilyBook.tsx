@@ -206,8 +206,16 @@ const Scene = styled.section`
     height: 100%;
     transform-origin: left center;
     transform-style: preserve-3d;
+    /* Before it opens, the cover lifts a few degrees with the reader's scroll
+       (--lift, written by the scene below); the turn itself stays a
+       transition, and starts from wherever the lift has got to. */
+    transform: rotateY(var(--lift, 0deg));
     transition: transform ${TURN_MS}ms cubic-bezier(0.645, 0.045, 0.355, 1);
     cursor: pointer;
+  }
+  /* While scroll is driving the lift, the transition must not chase it. */
+  .stage.lifting .cover-leaf {
+    transition: none;
   }
   .leaf.turned {
     transform: rotateY(-180deg);
@@ -1163,12 +1171,26 @@ export default function FamilyBook() {
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const stageRef = useRef<HTMLDivElement>(null);
   const touched = useRef(false);
+  /* The scroll-driven lift of the cover (2026-10-16): the tween, and whether
+     scroll is driving it right now (then the cover's transition is off). */
+  const lift = useRef<gsap.core.Tween | null>(null);
+  const [lifting, setLifting] = useState(false);
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const go = (to: number, byHand = true) => {
     if (byHand) touched.current = true;
     const next = Math.max(0, Math.min(LAST, to));
     if (next === spread) return;
+    // Once the book has been opened by anyone, the cover stops answering to
+    // scroll; closed again by hand, it closes flat.
+    if (spread === 0 && lift.current) {
+      const targets = lift.current.targets();
+      lift.current.scrollTrigger?.kill();
+      lift.current.kill();
+      lift.current = null;
+      gsap.set(targets, { "--lift": "0deg" });
+      setLifting(false);
+    }
     // The leaf that moves is the one between the two spreads nearest the target.
     setMoving(next > spread ? spread : spread - 1);
     clearTimeout(timer.current);
@@ -1200,7 +1222,7 @@ export default function FamilyBook() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const ref = useScene<HTMLElement>((root) => {
+  const ref = useScene<HTMLElement>((root, { narrow }) => {
     riseLines(root.querySelector("h2")!);
     gsap.from(".stage, .single", {
       y: 70,
@@ -1209,9 +1231,46 @@ export default function FamilyBook() {
       ease: "expo.out",
       scrollTrigger: { trigger: ".book-wrap", start: "top 85%", once: true },
     });
+    /*
+     * The cover lifts - up to twenty-two degrees, toward the reader - as the
+     * closed book rises into view, so the reader's scroll is the hand on the
+     * cover and the book is already stirring before it opens itself. The
+     * opening (the observer above, or "Open the book") takes over from
+     * wherever the lift has got to. Narrow screens show one spread with no
+     * leaves to lift, and reduced motion starts the book open.
+     */
+    const cover = root.querySelector<HTMLElement>(".cover-leaf");
+    if (cover && !narrow) {
+      lift.current = gsap.fromTo(
+        cover,
+        { "--lift": "0deg" },
+        {
+          "--lift": "-22deg",
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".stage",
+            start: "top 92%",
+            end: "top 32%",
+            scrub: 0.5,
+            onToggle: (self) => setLifting(self.isActive),
+          },
+        },
+      );
+    }
+    return () => {
+      lift.current = null;
+    };
   });
 
   const label = LABELS[spread];
+  const stageClass = [
+    "stage",
+    spread === 0 && "closed",
+    spread === 0 && lifting && moving === null && "lifting",
+    spread === LAST && "at-end",
+  ]
+    .filter(Boolean)
+    .join(" ");
   return (
     <Scene ref={ref} id="book" aria-labelledby="book-title">
       <Frame>
@@ -1231,10 +1290,7 @@ export default function FamilyBook() {
 
         <div className="book-wrap">
           {/* Wide: the book, with 3D page turns. */}
-          <div
-            ref={stageRef}
-            className={`stage${spread === 0 ? " closed" : ""}${spread === LAST ? " at-end" : ""}`}
-          >
+          <div ref={stageRef} className={stageClass}>
             <div
               className="book"
               tabIndex={0}
@@ -1259,7 +1315,7 @@ export default function FamilyBook() {
                   return (
                     <div
                       key={j}
-                      className={`leaf ${turned ? "turned" : ""}`}
+                      className={`leaf${j === 0 ? " cover-leaf" : ""}${turned ? " turned" : ""}`}
                       style={{ zIndex: z }}
                       onClick={() => go(turned ? spread - 1 : spread + 1)}
                       aria-hidden={!visible}

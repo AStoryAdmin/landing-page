@@ -18,9 +18,11 @@
  * action is the kit's text link. The families are fictional and the section
  * says so in one line, as /samples does.
  */
+import { useEffect } from "react";
 import styled from "styled-components";
 import { ArrowIcon } from "../kit/kit";
 import { useReveals } from "../kit/reveals";
+import { gsap } from "../../../lib/scrollMotion";
 import {
   Chapter,
   Eyebrow,
@@ -73,6 +75,16 @@ const Section = styled(Chapter)`
   .card:focus-visible {
     outline: 3px solid var(--focus, ${color.accentText});
     outline-offset: 6px;
+  }
+  /* Depth for the cover's tilt under the pointer (the effect below). */
+  .card {
+    perspective: 1100px;
+  }
+  /* When the pointer drives the cover, GSAP owns its transform; the CSS
+     transition keeps only the shadow, so the tilt never chases itself. */
+  .cards.live .cover {
+    transition: box-shadow ${motion.slow};
+    will-change: transform;
   }
   /* The real front cover, set down on the table: square like the book, a
      hint of spine on the left, and capped by the screen's height so the
@@ -198,6 +210,64 @@ const Section = styled(Chapter)`
 
 export default function SampleBooks() {
   const reveal = useReveals<HTMLElement>();
+
+  /*
+   * A book on a table gives a little where you press it (2026-10-16). With a
+   * fine pointer and motion allowed, the cover under the pointer lifts a few
+   * pixels and tilts toward the corner being pressed - never more than
+   * eleven degrees - and settles back when the pointer leaves. quickTo reuses one
+   * tween per axis, so following the pointer costs nothing per move. Touch
+   * and reduced motion keep the CSS hover lift, or none.
+   */
+  useEffect(() => {
+    const root = reveal.current;
+    if (!root) return;
+    const mm = gsap.matchMedia(root);
+    mm.add(
+      "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
+      () => {
+        const list = root.querySelector(".cards");
+        list?.classList.add("live");
+        const offs: (() => void)[] = [];
+        const unit = gsap.utils.clamp(-0.5, 0.5);
+        root.querySelectorAll<HTMLElement>(".card").forEach((card) => {
+          const cover = card.querySelector<HTMLElement>(".cover");
+          if (!cover) return;
+          const tilt = { duration: 0.7, ease: "power3" };
+          const rx = gsap.quickTo(cover, "rotationX", tilt);
+          const ry = gsap.quickTo(cover, "rotationY", tilt);
+          const y = gsap.quickTo(cover, "y", { duration: 0.6, ease: "power3" });
+          const move = (e: PointerEvent) => {
+            const r = cover.getBoundingClientRect();
+            const px = unit((e.clientX - r.left) / r.width - 0.5);
+            const py = unit((e.clientY - r.top) / r.height - 0.5);
+            ry(px * 11);
+            rx(-py * 8);
+          };
+          const enter = () => y(-8);
+          const leave = () => {
+            rx(0);
+            ry(0);
+            y(0);
+          };
+          card.addEventListener("pointerenter", enter);
+          card.addEventListener("pointermove", move);
+          card.addEventListener("pointerleave", leave);
+          offs.push(() => {
+            card.removeEventListener("pointerenter", enter);
+            card.removeEventListener("pointermove", move);
+            card.removeEventListener("pointerleave", leave);
+          });
+        });
+        return () => {
+          offs.forEach((off) => off());
+          list?.classList.remove("live");
+        };
+      },
+    );
+    return () => mm.revert();
+  }, [reveal]);
+
   return (
     <Section ref={reveal} $ground="paper" $tight aria-labelledby="samples-title">
       <Frame>

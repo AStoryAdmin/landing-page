@@ -24,6 +24,7 @@ import { mission } from "../../../lib/mission";
 import { Picture } from "../kit/kit";
 import { Frame, RisingEdge } from "../kit/kit.styles";
 import { gsap, riseLines, useScene } from "../../../lib/scrollMotion";
+import { drift } from "../kit/reveals";
 import { color, display, font, media } from "../../../styles/theme";
 
 /* ── 1. The milestones ─────────────────────────────────────────────────── */
@@ -674,6 +675,11 @@ function CatchRoom() {
         },
         0.35,
       );
+    // The photograph and the story behind it lie at different depths: the
+    // print drifts down as it passes, the memo up, so the memo reads as laid
+    // over the photograph rather than printed on it.
+    drift(root.querySelector(".caught .print")!, 4);
+    drift(root.querySelector(".memo")!, -3);
   });
 
   return (

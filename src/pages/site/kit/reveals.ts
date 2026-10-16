@@ -11,10 +11,26 @@ import { gsap, riseLines, useScene } from "../../../lib/scrollMotion";
  * line in the same frame and landed as one slab. Grouping them by parent and
  * staggering from the group's own trigger gives the row the left-to-right
  * cascade a reader expects and costs three triggers instead of four.
+ *
+ * `data-lines="0.2"` holds the lines back by that many seconds, so a headline
+ * inside a block that is itself rising can arrive a beat after its card.
+ *
+ * `data-drift` (2026-10-16) is the one scrubbed move on these routes: a
+ * photograph crosses the window a few per cent slower than the words beside
+ * it, so the print reads as an object lying on the page rather than part of
+ * it. The amount is in per cent of the element's height (default 5); a
+ * negative value moves the other way, for a caption against its photograph.
+ * Transform only, and nothing is hidden: at rest the element sits where the
+ * layout put it.
  */
 export function useReveals<T extends HTMLElement>() {
   return useScene<T>((root) => {
-    root.querySelectorAll("[data-lines]").forEach((el) => riseLines(el));
+    root.querySelectorAll<HTMLElement>("[data-lines]").forEach((el) =>
+      riseLines(el, { delay: Number(el.dataset.lines) || 0 }),
+    );
+    root.querySelectorAll<HTMLElement>("[data-drift]").forEach((el) =>
+      drift(el, Number(el.dataset.drift) || 5),
+    );
 
     const groups = new Map<Element, HTMLElement[]>();
     root.querySelectorAll<HTMLElement>("[data-rise]").forEach((el) => {
@@ -50,4 +66,26 @@ export function useReveals<T extends HTMLElement>() {
       }),
     );
   });
+}
+
+/**
+ * A photograph drifting against the page: `amount` per cent of its own height
+ * down as it enters, up as it leaves, linear with the scroll. Used by
+ * `[data-drift]` here and by the homepage scenes that author their own motion.
+ */
+export function drift(el: Element, amount = 5) {
+  return gsap.fromTo(
+    el,
+    { yPercent: amount },
+    {
+      yPercent: -amount,
+      ease: "none",
+      scrollTrigger: {
+        trigger: el,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      },
+    },
+  );
 }

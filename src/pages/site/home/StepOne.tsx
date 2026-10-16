@@ -119,11 +119,14 @@ const Scene = styled.section`
     background: ${color.paperPure};
     box-shadow: 0 0 0 1px color-mix(in srgb, ${color.primary} 14%, transparent);
   }
+  /* Taller than its frame, so the screen can scroll inside it as the page
+     scrolls (the scene below); at rest it sits on the same crop as before. */
   .shot img {
     display: block;
     width: 100%;
-    height: 100%;
+    height: 112%;
     object-fit: cover;
+    transform: translateY(-6%);
   }
   li + li {
     padding-left: clamp(20px, 3vw, 48px);
@@ -200,6 +203,23 @@ export default function StepOne() {
       stagger: 0.1,
       scrollTrigger: { trigger: "ol", start: "top 82%", once: true },
     });
+    /*
+     * The three real screens scroll inside their frames as the page does -
+     * twelve per cent of their height across the section's passage - so they
+     * read as one live phone, not three stills. The header above promised
+     * this and the Hallmark redesign lost it. Linear, scrubbed, and the
+     * midpoint is the crop the layout shows without motion.
+     */
+    gsap.fromTo(
+      root.querySelectorAll(".shot img"),
+      { y: 0, yPercent: 0 },
+      {
+        y: 0,
+        yPercent: -10.7,
+        ease: "none",
+        scrollTrigger: { trigger: "ol", start: "top 85%", end: "bottom 15%", scrub: 0.6 },
+      },
+    );
   });
 
   return (

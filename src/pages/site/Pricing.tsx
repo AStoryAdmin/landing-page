@@ -964,6 +964,7 @@ export default function Pricing() {
         <Frame className="book">
           <img
             data-rise
+            data-drift="5"
             src="/book-objects/closed-1200.webp"
             srcSet="/book-objects/closed-640.webp 640w, /book-objects/closed-1200.webp 1200w"
             sizes="(max-width: 860px) 70vw, 420px"

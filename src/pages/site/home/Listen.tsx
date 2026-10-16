@@ -24,13 +24,20 @@
  * `app/calls.ts` names the turns and the slipped words. The voice layer is
  * labelled as in development, as demoScripts.ts requires.
  */
-import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
 import styled from "styled-components";
 import { SCENARIOS } from "../../../lib/demoScripts";
 import { CALLS } from "../app/calls";
 import { ArrowIcon, Picture } from "../kit/kit";
 import { Frame, Statement, TextLink, grounds } from "../kit/kit.styles";
-import { riseLines, useScene } from "../../../lib/scrollMotion";
+import { gsap, riseLines, SplitText, useScene } from "../../../lib/scrollMotion";
 import { color, font, media, motion } from "../../../styles/theme";
 
 const CALL = CALLS.map((c) => {
@@ -175,7 +182,10 @@ const Scene = styled.section`
     box-shadow:
       0 1px 1px rgba(0, 0, 0, 0.08),
       0 30px 54px -26px rgba(0, 0, 0, 0.6);
-    animation: note-in 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    /* Its own stacking context, so the highlighter can sit behind the words
+       and still above the paper (also on narrow screens, where the note is
+       static). */
+    isolation: isolate;
   }
   .note.answer {
     --tint: ${color.accent};
@@ -188,13 +198,6 @@ const Scene = styled.section`
     left: 2%;
     top: 30%;
     rotate: -1.6deg;
-    animation-delay: 420ms;
-  }
-  @keyframes note-in {
-    from {
-      opacity: 0;
-      translate: 0 18px;
-    }
   }
   .note header {
     display: flex;
@@ -242,6 +245,32 @@ const Scene = styled.section`
         color-mix(in srgb, ${color.warmGold} 50%, transparent)
       )
       0 88% / 100% 0.42em no-repeat;
+  }
+  /* With motion, the phrase is split into words and the highlighter is drawn
+     across them one word at a time (--hl, scaled from the left). The bar sits
+     behind each word at the same height the gradient has above; without
+     motion, no split happens and the gradient stands. */
+  .note mark.split {
+    background: none;
+  }
+  .note mark .w {
+    position: relative;
+  }
+  .note mark .w::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: -0.06em;
+    /* Reaches across the space to the next word, so the line is unbroken. */
+    right: -0.3em;
+    bottom: 0.15em;
+    height: 0.42em;
+    background: color-mix(in srgb, ${color.warmGold} 50%, transparent);
+    transform: scaleX(var(--hl, 1));
+    transform-origin: left center;
+  }
+  .note mark .w:last-of-type::before {
+    right: -0.06em;
   }
 
   .foot {
@@ -291,12 +320,11 @@ const Scene = styled.section`
       display: none;
     }
   }
-  ${media.motion} {
-    .note {
-      animation: none;
-    }
-  }
 `;
+
+const reduced = () =>
+  typeof window !== "undefined" &&
+  matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 type Props = {
   /** Anchor id; How it works keeps its old #calls links. */
@@ -321,6 +349,63 @@ export default function Listen({
   const ref = useScene<HTMLElement>((root) => {
     riseLines(root.querySelector("h2")!);
   });
+
+  /*
+   * The exchange, played in the order it happened, each time a call is
+   * chosen (2026-10-16): the photograph is set down, her words arrive, the
+   * highlighter runs over the words she let slip, and only after that pause
+   * - A Story has heard them - does the follow-up land, from her side of the
+   * table. The CSS keyframes this replaces landed both notes 420ms apart,
+   * which read as a page loading rather than someone listening.
+   *
+   * First time through it waits for the reader to reach the table; after a
+   * choice it plays at once. Under reduced motion nothing runs and the stage
+   * stands complete, highlight and all.
+   */
+  const first = useRef(true);
+  useEffect(() => {
+    const root = ref.current;
+    if (!root || reduced()) return;
+    const stage = root.querySelector<HTMLElement>(".stage");
+    const mark = stage?.querySelector("mark");
+    if (!stage) return;
+    const ctx = gsap.context(() => {
+      const split = mark
+        ? SplitText.create(mark, { type: "words", tag: "span", wordsClass: "w", aria: "none" })
+        : null;
+      mark?.classList.add("split");
+      // `first` flips only when the trigger has really fired, so a rehearsal
+      // run of this effect (StrictMode) cannot use it up before anyone scrolls.
+      const tl = gsap.timeline({
+        defaults: { ease: "expo.out" },
+        scrollTrigger: first.current
+          ? {
+              trigger: stage,
+              start: "top 78%",
+              once: true,
+              onEnter: () => {
+                first.current = false;
+              },
+            }
+          : undefined,
+      });
+      tl.from(".print", { y: 18, opacity: 0, rotation: "-=2.5", duration: 1 })
+        .from(".note.answer", { y: 24, opacity: 0, duration: 0.9 }, 0.3);
+      if (split?.words.length) {
+        tl.fromTo(
+          split.words,
+          { "--hl": 0 },
+          { "--hl": 1, duration: 0.3, ease: "power1.inOut", stagger: 0.07 },
+          ">-0.35",
+        );
+      }
+      tl.from(".note.follow", { y: 24, x: 12, opacity: 0, duration: 0.9 }, "+=0.5");
+    }, stage);
+    return () => {
+      ctx.revert();
+      mark?.classList.remove("split");
+    };
+  }, [active, ref]);
 
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
     const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];

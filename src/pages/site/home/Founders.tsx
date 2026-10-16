@@ -14,6 +14,7 @@ import styled from "styled-components";
 import { ArrowIcon, Picture } from "../kit/kit";
 import { Eyebrow, Frame, PrimaryLink } from "../kit/kit.styles";
 import { gsap, riseLines, useScene } from "../../../lib/scrollMotion";
+import { drift } from "../kit/reveals";
 import { color, display, font, media } from "../../../styles/theme";
 
 const Scene = styled.section`
@@ -125,6 +126,8 @@ export default function Founders() {
       stagger: 0.1,
       scrollTrigger: { trigger: root, start: "top 70%", once: true },
     });
+    // The photograph lies a little deeper than the letter beside it.
+    drift(root.querySelector(".photo")!, 4);
   });
 
   return (
