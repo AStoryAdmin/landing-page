@@ -75,19 +75,51 @@ sized only by width (`vw`) balloons on it. Since 2026-10-14:
 - One component, `components/ui/ProgramMarks.tsx`; NVIDIA's artwork unmodified.
 - Size: 48px badges on Home and in the footer, under a 56px footer logo —
   legible, and never larger than the A Story logo beside them (NVIDIA rule).
-- Home: one labelled row under the hero ("Startup programs & grants" → /programs).
-  Footer: the marks. Intro: NVIDIA credit only.
+- Footer only (2026-10-16): the marks and the "Programs & grants" link. The
+  labelled row under Home's hero and the nav entries were removed - a
+  credential in the main path read as a notice about the company's stage.
+  Intro: NVIDIA credit only.
 - /programs: one big idea on night, then one verb per program (Build, Hear,
   Answer) setting what the program is for beside why A Story belongs.
   Grand is allowed in A Story's voice; the programs' side is paraphrase.
 - Wording: membership and grant status only. Never "backed by", "supported
   by" or "partner".
 
-## Home page order (2026-10-15)
-Hero → what gets lost (programs row on top) → you do step one → the family
-book → sample books → listen → every memory has more than one witness → why
-we started → founding families → invitation. "The easiest way" and the
-comparison table left Home; they live on How it works and /compare.
+## Home page order (2026-10-16)
+Hero → what gets lost → you do step one → the family book → sample books →
+listen → what a call becomes (Proof: the app's memory card, the words raw and
+tidied, a real spread of the book) → every memory has more than one witness →
+the family loop (three steps on the app's screens) → why we started → the
+price ladder → invitation. "The easiest way" and the comparison table left
+Home; they live on How it works and /compare. FoundingBand left Home on
+2026-10-16 (kept in the repo).
+
+## One price ladder (2026-10-16)
+Prices are said once, in `kit/PriceLadder.tsx`, on Home and at the top of
+Pricing: the archive (free, forever), the calls (from $119 a year; the $29
+founding place and the $1 reservation explained there as early access to the
+same calls), the book (print at home free; the printed editions). No other
+section on Home quotes a figure; the hero and StepOne lost theirs. Every
+number is from `lib/pricing.ts` and `lib/founding.ts`.
+
+## Showing the app's own surfaces (2026-10-16)
+`app/MemoryCard.tsx` is the web app's memory card (its component and
+astory.css §9) carried over line for line, with the app's inks in
+`theme.ts` (`app`). Its book faces are not loaded here - no new fonts - so
+it falls through to Source Serif 4 and Figtree, the app's own fallbacks.
+
+## The phone bar (2026-10-16)
+`kit/StickyStart.tsx`: on phones only, once the opening has scrolled out of
+view, the primary action in one bar at the foot of the window, inside the
+safe area (`viewport-fit=cover` in index.html). It steps away when the
+closing invitation or the footer is in view, and is not shown on Pricing
+(its own decision bar), Reserve, Start, the account or legal pages. No
+countdown, no urgency copy.
+
+## Scripts off (2026-10-16)
+The `<noscript>` block in index.html is the name, one sentence and where to
+write - never a notice that reads as beta, and never a price. The prerender
+strips it from the static snapshots.
 
 ## Less text (2026-10-15)
 Home sections are a headline, one line, a picture and a link; the detail

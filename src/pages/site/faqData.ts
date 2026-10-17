@@ -84,6 +84,14 @@ export const groups = [
         q: "Can I take the archive with me?",
         a: "Yes. You can request a PDF or an archive of your audio and transcripts. Your recordings remain yours to keep.",
       },
+      {
+        q: "Who looks after this if I can’t?",
+        a: "You can name a trusted person in Account. They receive what you have written, and the letters you have left, if you are no longer here.",
+      },
+      {
+        q: "Can I leave a letter for later?",
+        a: "Yes. Write a letter to one person now, give it a date, and it is delivered then.",
+      },
     ],
   },
 ];

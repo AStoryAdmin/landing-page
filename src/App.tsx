@@ -16,6 +16,7 @@ import Home from "./pages/site/Home";
 import RouteTransition from "./components/ui/RouteTransition";
 import RouteErrorBoundary from "./components/ui/RouteErrorBoundary";
 import Seo from "./components/ui/Seo";
+import StickyStart from "./pages/site/kit/StickyStart";
 import { initAnalytics } from "./lib/analytics";
 
 /*
@@ -101,6 +102,7 @@ function MarketingLayout() {
             </Suspense>
           </RouteErrorBoundary>
         </RouteTransition>
+        <StickyStart key={location.pathname} />
       </Main>
       <Footer />
     </>

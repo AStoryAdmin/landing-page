@@ -11,22 +11,16 @@
  * (public/app): Home with the question of the day, the call arriving, and
  * The Archive. The phones are large and run off the card ("zoomed in"), and
  * the tall screens scroll slowly inside them. Roman numerals in the serif carry the bookish thread.
- * Prices and the Free tier come from `pricing.ts`.
+ *
+ * Until 2026-10-16 the section closed with the price ("Free for as long as
+ * you like... guided calls from $119 a year") and two buttons. That line was
+ * one of three places the home page quoted a price; the ladder
+ * (kit/PriceLadder.tsx) now says it once, lower down.
  */
 import styled from "styled-components";
-import { PLANS } from "../../../lib/pricing";
-import { ArrowIcon } from "../kit/kit";
-import {
-  Actions,
-  Frame,
-  PrimaryLink,
-  SecondaryLink,
-  Statement,
-} from "../kit/kit.styles";
+import { Frame, Statement } from "../kit/kit.styles";
 import { gsap, riseLines, useScene } from "../../../lib/scrollMotion";
 import { color, display, font, media } from "../../../styles/theme";
-
-const individual = PLANS.find((p) => p.id === "individual")!;
 
 const STEPS = [
   {
@@ -156,31 +150,8 @@ const Scene = styled.section`
     color: ${color.body};
     max-width: 34ch;
   }
-  .terms {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 24px 48px;
-    align-items: end;
-    margin-top: calc(clamp(40px, 5vw, 88px) * var(--sy));
-    padding-top: 24px;
-    border-top: 1px solid ${color.primaryLineStrong};
-  }
-  .terms p {
-    font: 400 ${display.sm} / 1.35 ${font.display};
-    color: ${color.primary};
-    max-width: 40ch;
-  }
-  /* Body-size serif, so the deeper terracotta that reaches 4.5:1. */
-  .terms p em {
-    font-style: normal;
-    color: ${color.accentText};
-  }
-  .terms > div {
-    margin: 0;
-  }
   ${media.md} {
-    ol,
-    .terms {
+    ol {
       grid-template-columns: minmax(0, 1fr);
     }
     li + li {
@@ -195,7 +166,7 @@ const Scene = styled.section`
 export default function StepOne() {
   const ref = useScene<HTMLElement>((root) => {
     riseLines(root.querySelector("h2")!);
-    gsap.from(root.querySelectorAll("li, .terms"), {
+    gsap.from(root.querySelectorAll("li"), {
       y: 30,
       opacity: 0,
       duration: 1.1,
@@ -255,19 +226,6 @@ export default function StepOne() {
             </li>
           ))}
         </ol>
-        <div className="terms">
-          <p>
-            Free for as long as you like, no card. Guided calls
-            from <em>{individual.price}</em>{" "}
-            {individual.period.replace("per ", "a ")}.
-          </p>
-          <Actions>
-            <PrimaryLink to="/reserve">
-              Reserve for $1 <ArrowIcon />
-            </PrimaryLink>
-            <SecondaryLink to="/pricing">Compare plans</SecondaryLink>
-          </Actions>
-        </div>
       </Frame>
     </Scene>
   );

@@ -11,7 +11,9 @@ import EveryVoice from "./home/EveryVoice";
 import FamilyBook from "./home/FamilyBook";
 import Founders from "./home/Founders";
 import StepOne from "./home/StepOne";
-import FoundingBand from "./home/FoundingBand";
+import Proof from "./home/Proof";
+import FamilyLoop from "./home/FamilyLoop";
+import PriceLadder from "./kit/PriceLadder";
 
 /**
  * Pass 11. The homepage carries the whole idea once, in the order a visitor
@@ -47,6 +49,16 @@ import FoundingBand from "./home/FoundingBand";
  * Story is; they now follow the family book they illustrate. The three-phone
  * call demo became Listen — the same three exchanges set as text, readable
  * at a glance; the full phones stay on How it works.
+ *
+ * 2026-10-16: three changes from the founder's review. The product is shown
+ * rather than described - after Listen, Proof sets down the app's own memory
+ * card, the words of a call raw and tidied, and a real spread of the book.
+ * The family loop follows EveryVoice as three steps on the app's screens.
+ * And the price is said once: FoundingBand and the price line in StepOne
+ * and the hero gave way to one ladder (kit/PriceLadder.tsx) after Founders
+ * - the archive, the calls, the book - with the founding place and the
+ * dollar explained there as early access to the same calls. The startup
+ * programs row left the main path; the footer keeps it.
  */
 export default function Home() {
   // Pinned scenes measure the page; re-measure once fonts and images land.
@@ -69,9 +81,11 @@ export default function Home() {
       <FamilyBook />
       <SampleBooks />
       <Listen />
+      <Proof />
       <EveryVoice />
+      <FamilyLoop />
       <Founders />
-      <FoundingBand />
+      <PriceLadder />
       <Invitation />
     </>
   );

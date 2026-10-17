@@ -75,3 +75,5 @@ See `BUILD-REPORT.md` for the completed scope, verification and launch requireme
 See `PASS-10-REFINEMENT.md` for the follow-up design and usability work. Home retains the Pass 10 scenes; its mobile timeline now reads vertically. Scroll scenes avoid pinning on short screens or when their content cannot fit. Supporting pages share the wider editorial frame and refined controls; the founder page uses open narrative sections. Current responsive and interaction evidence is in `qa/refinement/`.
 
 - Shared: `app/CallPlayer.tsx` (the call as a playable film, Home + How it works); `home/WhereWeSit.tsx` (competitive teaser on Home).
+
+Added 2026-10-16 (the founder's review): `kit/PriceLadder.tsx` (the one price block, Home + Pricing), `home/Proof.tsx` (the app's memory card, the words raw and tidied, the book you can turn), `app/MemoryCard.tsx` (the web app's card, ported), `home/FamilyLoop.tsx` (three steps on the app's screens, PRD §3.3a), `kit/StickyStart.tsx` (the phone bar). `home/FoundingBand.tsx` and `home/ProgramsRail.tsx` are no longer rendered on Home; both stay in the repo. Browser evidence for this pass: `qa/founder-review-2026-10-16/`.

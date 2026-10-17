@@ -18,6 +18,13 @@
  * promise that the app stays yours given a section of its own, because it is
  * the argument that makes the price make sense; the book staged last.
  * Motion is limited to selection feedback — this is a page for deciding.
+ *
+ * 2026-10-16: the page opens with the same ladder as Home (kit/PriceLadder)
+ * - the archive, the calls, the book - so the dollar and the founding place
+ * are read as early access to the calls before the plans are compared. Two
+ * lines the app already supports sit with "What stays yours": the trusted
+ * person, and a letter for later. The book section says what a printed book
+ * is: Volume I.
  */
 import { useState } from "react";
 import styled from "styled-components";
@@ -34,6 +41,7 @@ import {
 import { anyCheckoutLive, buyLabel, checkoutFor } from "../../lib/checkout";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
 import { ArrowIcon, PageOpening } from "./kit/kit";
+import PriceLadder from "./kit/PriceLadder";
 import { useReveals } from "./kit/reveals";
 import {
   Chapter,
@@ -396,6 +404,31 @@ const Forever = styled(Chapter)`
     color: ${color.body};
     max-width: 62ch;
   }
+  /* Two things the app already does for the day you are not there. */
+  .later {
+    list-style: none;
+    margin: clamp(40px, 5vw, 64px) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(20px, 3vw, 40px);
+    max-width: 960px;
+  }
+  .later li {
+    padding: 22px 0 0;
+    border-top: 1px solid ${color.primaryLineStrong};
+  }
+  .later b {
+    display: block;
+    font: 400 ${display.sm} / 1.3 ${font.display};
+    color: ${color.primary};
+  }
+  .later p {
+    margin-top: 8px;
+    font: 400 16px/1.6 ${font.body};
+    color: ${color.body};
+    max-width: 40ch;
+  }
   details {
     border-top: 1px solid ${color.primaryLineStrong};
     max-width: 760px;
@@ -424,7 +457,8 @@ const Forever = styled(Chapter)`
     margin-top: clamp(64px, 7vw, 110px);
   }
   ${media.md} {
-    .kept {
+    .kept,
+    .later {
       grid-template-columns: minmax(0, 1fr);
     }
   }
@@ -740,6 +774,8 @@ export default function Pricing() {
         lead={`${START.headline} - ${START.detail} Inviting family, writing and reading are never charged by the person.`}
       />
 
+      <PriceLadder ground="ivory" title={false} onward={false} />
+
       <Plans ref={plans} $ground="ivory" aria-label="Plans">
         <Frame>
           <div
@@ -934,6 +970,24 @@ export default function Pricing() {
             {FOREVER.stops}
           </p>
 
+          <ul className="later" aria-label="For later">
+            <li data-rise>
+              <b>Who looks after this if I can’t</b>
+              <p>
+                Name a trusted person in Account. They receive what you have
+                written, and the letters you have left, if you are no longer
+                here.
+              </p>
+            </li>
+            <li data-rise>
+              <b>A letter for later</b>
+              <p>
+                Write a letter to one person now, give it a date, and it is
+                delivered then.
+              </p>
+            </li>
+          </ul>
+
           <div className="questions">
             <details>
               <summary>Is there a free trial?</summary>
@@ -985,9 +1039,10 @@ export default function Pricing() {
               box, or an editor of ours doing all of it. {BOOK.pages}.
             </p>
             <p data-rise>
-              Choose the stories and photographs whenever you’re ready. The
-              archive keeps growing afterwards, and the book can be printed
-              again.
+              A printed book is Volume I. The archive goes on after it is
+              printed: the family asks the next question, somebody answers,
+              and the next edition has more pages. Print it again whenever
+              you like.
             </p>
             <p data-rise>
               {/* /samples is a page in public/, outside the router: a plain anchor. */}

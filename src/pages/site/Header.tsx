@@ -10,8 +10,10 @@ const primary = [
   ["For families", "/for-families"],
   ["Pricing", "/pricing"],
   ["Our story", "/our-story"],
-  ["Programs", "/programs"],
 ];
+/* The startup programs left the navigation on 2026-10-16: a credential in
+   the main path read as a notice about the company's stage, not the family's
+   story. /programs stays reachable from the footer. */
 /* /samples is a self-contained page served from public/, outside the React
    router, so it needs a full navigation - a router Link would show the
    not-found route. */
@@ -27,11 +29,6 @@ const groups = [
       ],
       ["Questions & answers", "/questions", "The practical things, explained."],
       ["Conversation guides", "/guides", "A good place to begin."],
-      [
-        "Programs & grants",
-        "/programs",
-        "NVIDIA Inception, AssemblyAI, Cartesia.",
-      ],
       ["Privacy", "/privacy", "Their story belongs to them."],
     ],
   },

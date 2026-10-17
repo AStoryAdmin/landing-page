@@ -51,6 +51,24 @@ export const color = {
   nightLine: "rgba(243, 235, 221, 0.14)",
 } as const;
 
+/**
+ * The app's own inks, for the one place the site draws an app surface
+ * exactly as the app does: the memory card (pages/site/app/MemoryCard.tsx,
+ * ported from web-app/src/components/MemoryCard.tsx and astory.css §9).
+ * Values are the app's tokens (web-app/src/styles/astory.css §1); if a value
+ * changes there, change it here. Nothing else on the site uses them.
+ */
+export const app = {
+  card: "#FBF7EE",
+  ink: "#2A2320",
+  inkSoft: "#6B625B",
+  paperButter: "#F8F3DF",
+  bookSage: "#55745A",
+  bookSageBg: "#E4E8DC",
+  bookPrint: "#FFFDF8",
+  support: "#E9E2D8",
+} as const;
+
 /** Website typography is distinct from the immutable app/print artwork. */
 export const font = {
   display: "'Source Serif 4', Georgia, serif",

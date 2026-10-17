@@ -18,7 +18,6 @@
  */
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import ProgramsRail from "./ProgramsRail";
 import { EVERYDAY, LOST, MILESTONES, QUIET } from "../../../lib/homeExamples";
 import { mission } from "../../../lib/mission";
 import { Picture } from "../kit/kit";
@@ -33,9 +32,10 @@ const Milestones = styled.section`
   position: relative;
   z-index: 1;
   background: ${color.ivory};
-  /* The programs row opens this section now, so it starts close under the
-     curve (2026-10-14). */
-  padding: calc(clamp(28px, 3.4vw, 64px) * var(--sy)) 0
+  /* The programs row opened this section from 2026-10-14 to 2026-10-16; it
+     now lives in the footer only, and the chapter starts a measured step
+     under the curve. */
+  padding: calc(clamp(56px, 7vw, 120px) * var(--sy)) 0
     calc(clamp(80px, 9vw, 150px) * var(--sy));
 
   .grid {
@@ -220,9 +220,6 @@ function MilestonePile() {
   return (
     <Milestones ref={ref} id="why-a-story" aria-labelledby="lost-title">
       <RisingEdge $to="ivory" />
-      <Frame>
-        <ProgramsRail />
-      </Frame>
       <Frame className="grid">
         <div>
           <h2 id="lost-title">

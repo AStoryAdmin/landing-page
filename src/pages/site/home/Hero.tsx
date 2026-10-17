@@ -16,9 +16,6 @@
 import styled from "styled-components";
 import { introReleased } from "./introSignal";
 import { ArrowIcon, Picture } from "../kit/kit";
-import { Link } from "react-router-dom";
-import { OFFERS } from "../../../lib/founding";
-import { useFoundingStatus } from "../kit/foundingStatus";
 import { Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
 import {
   gsap,
@@ -110,38 +107,9 @@ const Scene = styled.section`
     margin-top: 30px;
   }
 
-  /* The founding offer, one line under the actions (2026-10-09): a true
-     limit, counted live once it is worth saying (kit/foundingStatus.ts). */
-  .hero-founding {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 6px 12px;
-    width: fit-content;
-    min-height: 44px;
-    margin-top: 12px;
-    font: 500 15px/1.45 ${font.body};
-    color: ${color.onDarkMuted};
-    text-decoration: none;
-  }
-  .hero-founding::before {
-    content: "";
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: ${color.gold};
-    box-shadow: 0 0 0 4px color-mix(in srgb, ${color.gold} 25%, transparent);
-  }
-  .hero-founding b {
-    font-weight: 600;
-    color: ${color.ivory};
-    text-decoration: underline;
-    text-decoration-color: ${color.gold};
-    text-underline-offset: 5px;
-  }
-  .hero-founding:hover b {
-    color: ${color.gold};
-  }
+  /* The founding offer's line under the actions (2026-10-09 to 2026-10-16)
+     moved into the price ladder (kit/PriceLadder.tsx), where the dollar, the
+     founding place and the plans are explained once, side by side. */
 
 
   ${media.md} {
@@ -159,7 +127,6 @@ const Scene = styled.section`
 `;
 
 export default function Hero() {
-  const founding = useFoundingStatus();
   const ref = useScene<HTMLElement>((root) => {
     const photo = root.querySelector(".hero-photo img");
     const title = root.querySelector("h1")!;
@@ -259,12 +226,6 @@ export default function Hero() {
               </PrimaryLink>
               <TextLink to="/#listen">Hear a conversation</TextLink>
             </div>
-            {founding.open && (
-              <Link className="hero-founding" to="/reserve#founding">
-                <span>Founding families: {founding.line}, open now.</span>
-                <b>Start now for {OFFERS.founding.price}</b>
-              </Link>
-            )}
           </div>
         </div>
       </Frame>
