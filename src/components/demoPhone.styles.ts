@@ -706,7 +706,7 @@ export const McAbout = styled.p`
 `;
 
 /* ── The permission line ──────────────────────────────────────────────────
- * 64 of the app's 504 questions are marked sensitive — loss, hardship,
+ * 66 of the app's 547 questions are marked sensitive — loss, hardship,
  * rupture, private — and they arrive with a sentence rather than a warning
  * triangle (phone-app-main/src/lib/sensitivity.js). It is the clearest single
  * signal in the product that this was built by somebody who has sat with an

@@ -51,7 +51,7 @@ const STEPS = [
     at: "50% 9%",
     ground: "sand",
     title: "The family keeps it.",
-    text: "Everyone reads, adds and remembers - free.",
+    text: "Everyone reads, adds and remembers - free, on a phone or in any browser at app.astoryapp.com.",
   },
 ];
 

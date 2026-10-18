@@ -203,7 +203,7 @@ export default function SignIn() {
             Sign in to <em>A Story.</em>
           </>
         }
-        lead="Your reservation, your family link, and - when it opens to you - the app, all on one account."
+        lead="Your reservation, on the same account you use in A Story at app.astoryapp.com."
         label="Welcome"
         heading={head.h}
         intro={head.p(email.trim().toLowerCase())}

@@ -31,7 +31,6 @@ import {
   useState,
   type KeyboardEvent,
 } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { SPREADS } from "../../../lib/homeExamples";
 import { BOOK } from "../../../lib/pricing";
@@ -47,6 +46,7 @@ import {
 import { riseLines, useScene, gsap } from "../../../lib/scrollMotion";
 import { color, display, font, media } from "../../../styles/theme";
 import { clothBoard, clothLayer } from "../kit/cloth";
+import { START_HREF, START_LABEL } from "../../../lib/app";
 
 type Entry = (typeof SPREADS)[number];
 const N = SPREADS.length;
@@ -1144,9 +1144,9 @@ function EndRight() {
         The story <em>keeps going.</em>
       </h3>
       <p className="because">Because so do you.</p>
-      <Link className="begin" to="/reserve" onClick={(e) => e.stopPropagation()}>
-        Reserve for $1 <ArrowIcon />
-      </Link>
+      <a className="begin" href={START_HREF} onClick={(e) => e.stopPropagation()}>
+        {START_LABEL} <ArrowIcon />
+      </a>
     </div>
   );
 }

@@ -24,6 +24,7 @@ import {
   useScene,
 } from "../../../lib/scrollMotion";
 import { color, display, font, media } from "../../../styles/theme";
+import { START_HREF, START_LABEL } from "../../../lib/app";
 
 const Scene = styled.section`
   --ink: ${color.ivory};
@@ -221,8 +222,8 @@ export default function Hero() {
               archive the whole family can add to.
             </p>
             <div className="hero-actions">
-              <PrimaryLink to="/reserve">
-                Reserve for $1 <ArrowIcon />
+              <PrimaryLink to={START_HREF}>
+                {START_LABEL} <ArrowIcon />
               </PrimaryLink>
               <TextLink to="/#listen">Hear a conversation</TextLink>
             </div>

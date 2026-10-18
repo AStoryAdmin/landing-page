@@ -28,7 +28,6 @@ import {
   RESERVE_DEADLINE_LABEL,
 } from "../../../lib/founding";
 import { useFoundingStatus } from "./foundingStatus";
-import { ArrowIcon } from "./kit";
 import { useReveals } from "./reveals";
 import {
   Actions,
@@ -36,7 +35,6 @@ import {
   Eyebrow,
   Frame,
   Lead,
-  PrimaryLink,
   SecondaryLink,
   SplitHead,
   Statement,
@@ -193,11 +191,14 @@ export default function PriceLadder({
   ground = "paper",
   title = true,
   onward = true,
+  early = false,
   id = "price-ladder",
 }: {
   ground?: Ground;
   title?: boolean;
   onward?: boolean;
+  /** The $1 reservation and the $29 founding place: on Pricing only (2026-10-18). */
+  early?: boolean;
   id?: string;
 }) {
   const reveal = useReveals<HTMLElement>();
@@ -273,19 +274,20 @@ export default function PriceLadder({
               </li>
               <li>
                 <b>{express.name}</b> · {express.price} once · {express.meter}
-                , inside a month
+                {" "}inside 30 days
               </li>
             </ul>
+            {early && (
             <div className="early">
               <div>
                 {foundingOpen ? (
                   <>
                     <p>
-                      <b>Before launch, two early ways into the same calls.</b>
+                      <b>Plans are not sold on the web yet. Two early ways into the same calls.</b>
                     </p>
                     <p>
                       A founding family pays <b>{founding.price}</b> now and
-                      starts before launch, set up by hand, with {founding.discount}% off the
+                      starts now, set up by hand, with {founding.discount}% off the
                       first year. Set up in the order families join;{" "}
                       {foundingLine}.
                     </p>
@@ -302,7 +304,7 @@ export default function PriceLadder({
                 ) : (
                   <>
                     <p>
-                      <b>Before launch.</b> The {FOUNDING_PLACES} founding
+                      <b>Plans are not sold on the web yet.</b> The {FOUNDING_PLACES} founding
                       places are taken. A reservation is still{" "}
                       <b>{reserve.price}</b>: a place in line, and{" "}
                       {reserve.discount}% off the first year if you reserve by{" "}
@@ -312,6 +314,7 @@ export default function PriceLadder({
                 )}
               </div>
             </div>
+            )}
           </li>
 
           <li className="rung" data-rise>
@@ -323,8 +326,8 @@ export default function PriceLadder({
               Free <span>to print at home, every page</span>
             </p>
             <p className="line">
-              Printed editions from {BOOK.from}. Every plan includes a Classic
-              Hardcover; you pay the shipping.
+              Printed editions from {BOOK.from}. Individual, Family and
+              Express include a Classic Hardcover; you pay the shipping.
             </p>
             <ul>
               {printed.map((e) => (
@@ -343,9 +346,8 @@ export default function PriceLadder({
 
         {onward && (
           <Actions data-rise>
-            <PrimaryLink to="/reserve">
-              Reserve for $1 <ArrowIcon />
-            </PrimaryLink>
+            {/* Home's one primary action is in the hero and the closing
+                invitation; here, only the way to the details. */}
             <SecondaryLink to="/pricing">Every plan, side by side</SecondaryLink>
           </Actions>
         )}

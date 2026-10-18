@@ -14,6 +14,7 @@ import { FREE_TIER } from "../../lib/pricing";
 import { ArrowIcon } from "./kit/kit";
 import { AudiencePage } from "./kit/Audience";
 import { PrimaryLink, SecondaryLink } from "./kit/kit.styles";
+import { START_HREF, START_LABEL } from "../../lib/app";
 
 export default function YourStory() {
   return (
@@ -33,8 +34,8 @@ export default function YourStory() {
         lead="The first apartment. The group of friends. The year everything changed. Keep it while it’s still happening - in your own words, on your own time."
         actions={
           <>
-            <PrimaryLink to="/reserve">
-              Reserve for $1 <ArrowIcon />
+            <PrimaryLink to={START_HREF}>
+              {START_LABEL} <ArrowIcon />
             </PrimaryLink>
             <SecondaryLink to="/how-it-works">See how it works</SecondaryLink>
           </>
@@ -102,8 +103,8 @@ export default function YourStory() {
         beginBody="Not a trial that runs out. Guided calls are the only paid part - everything else is yours to keep."
         checklist={FREE_TIER.includes.slice(0, 4)}
         beginAction={
-          <PrimaryLink to="/reserve">
-            Reserve for $1 <ArrowIcon />
+          <PrimaryLink to={START_HREF}>
+            {START_LABEL} <ArrowIcon />
           </PrimaryLink>
         }
       />

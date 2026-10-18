@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Wordmark } from "./shared";
 import { ArrowIcon } from "./kit/kit";
 import { HeaderShell } from "./chrome.styles";
-import { hasStoredSession } from "../../lib/authSession";
+import { APP, START_HREF, START_LABEL } from "../../lib/app";
 const primary = [
   ["How it works", "/how-it-works"],
   ["Sample books", "/samples"],
@@ -17,7 +17,7 @@ const primary = [
 /* /samples is a self-contained page served from public/, outside the React
    router, so it needs a full navigation - a router Link would show the
    not-found route. */
-const outsideRouter = (to: string) => to === "/samples";
+const outsideRouter = (to: string) => to === "/samples" || /^https?:/.test(to);
 const groups = [
   {
     label: "Explore",
@@ -178,16 +178,10 @@ export default function Header() {
     setOpen(false);
     setMore(false);
   };
-  /* "Account" only for somebody already signed in. Before launch there is
-     nothing to sign into for — a "Sign in" beside "Pricing" read as an app to
-     log into and led to an empty page — so the nav's one action stays
-     "Reserve for $1", and "Sign in" lives in the footer and on /reserve for
-     the people who have reserved (decided 2026-10-03).
-
-     Re-read on every render, which includes every navigation, so signing in
-     or out flips it on the next page. Reads storage directly rather than
-     loading supabase-js into the first bundle — see lib/authSession.ts. */
-  const account = hasStoredSession() ? [["Account", "/account"] as const] : [];
+  /* "Sign in" opens the web app (2026-10-18): accounts live there now, and
+     there is something to sign into. It was left out of the nav from
+     2026-10-03 until then because it led to an empty page. */
+  const account = [["Sign in", APP.signIn] as const];
   return (
     <HeaderShell
       ref={header}
@@ -285,9 +279,9 @@ export default function Header() {
               </div>
             </div>
           </div>
-          <Link className="gf-button" to="/reserve" onClick={close}>
-            Reserve for $1 <ArrowIcon />
-          </Link>
+          <a className="gf-button" href={START_HREF} onClick={close}>
+            {START_LABEL} <ArrowIcon />
+          </a>
           <div className="gf-mobile-more">
             {groups.map((g) => (
               <div key={g.label}>

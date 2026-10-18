@@ -71,9 +71,9 @@ const Section = styled(Chapter)`
 
 const WAYS = [
   {
-    k: "By link",
-    t: "Grandpa joins from a text.",
-    d: "Send him a link on WhatsApp or by text. He taps it, his browser opens, he presses one big button and you’re talking - no app, no account, no password. Your phone listens for you both, and nothing is kept until you’ve read it and saved it.",
+    k: "Phone to phone",
+    t: "Call Grandpa from the app.",
+    d: "Ring anyone in the family who has A Story on their phone, and A Story listens to you both. Nothing is kept until you’ve read it and saved it.",
   },
   {
     k: "At the table",

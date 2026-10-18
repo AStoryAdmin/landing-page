@@ -1,5 +1,5 @@
 /**
- * "Coming soon on the App Store".
+ * What the Reserve page says about the phone app, and what works today.
  *
  * Our own pill, not Apple's badge. Apple's "Download on the App Store" and
  * "Pre-order on the App Store" artwork may only be used as a link to a real
@@ -10,7 +10,8 @@
  * 180 days before release — and every pre-order there is one more number to
  * show), put the listing URL in APP_STORE_URL and this becomes a link.
  *
- * Until then it is a plain line, not a pill (2026-10-15 audit): a bordered
+ * Until then it is a plain line, not a pill (2026-10-15 audit), and it says
+ * what works in a browser today (2026-10-18). A bordered
  * pill beside two real buttons read as a third button that did nothing.
  *
  * It takes its colours from the ground it stands on (--ink, --label), so the
@@ -75,7 +76,7 @@ export default function ComingSoon({ className }: { className?: string }) {
     </Pill>
   ) : (
     <Note className={className}>
-      <PhoneIcon /> Coming soon to the App Store
+      <PhoneIcon /> Writing, the archive and the book work today in any browser, at app.astoryapp.com
     </Note>
   );
 }

@@ -1,3 +1,5 @@
+import { QUESTION_COUNT } from './product';
+
 /**
  * What A Story costs.
  *
@@ -24,10 +26,12 @@
  *    plan — someone typing out an afternoon in 1962 is doing the thing this
  *    product exists for, and charging for it would meter the wrong side.
  *
- * 2. There is a free tier, and it is honest rather than crippled: three
- *    guided questions a day, unlimited writing, unlimited invited family, and
- *    a book you can still order. What it does not include is the AI calling
- *    you — which is exactly the thing that costs money to run.
+ * 2. There is a free tier, and it is honest rather than crippled: one
+ *    ten-minute conversation with A Story to begin (the app's firstCall.js,
+ *    FREE_FIRST_CALL_MINUTES), three guided questions a day, unlimited
+ *    writing, unlimited invited family, and a book you can still order. What
+ *    it does not include is A Story calling you after that first time —
+ *    which is exactly the thing that costs money to run.
  *
  * 3. Everyone starts on Free, with no card and no clock. There is no trial:
  *    the app had a 3-day one until 2026-09-28, removed because it counted
@@ -39,9 +43,11 @@
  *    the app's supabase/functions/_shared/bookCatalog.js (added 2026-10-02):
  *    print at home free, a print-ready Digital Edition, Softcover, Classic
  *    Hardcover, Heirloom, and a Full-Service Legacy Edition with an editor.
- *    Every membership includes a Classic Hardcover a year (one per
- *    storyteller on Family, one per Express pass) — or its value toward a
- *    finer edition — plus the Digital Edition; a member pays only shipping.
+ *    Individual, Family and Express include a Classic Hardcover (one a year,
+ *    one per storyteller a year on Family, one per Express pass) — or its
+ *    value toward a finer edition — plus the Digital Edition; a member pays
+ *    only shipping. Monthly includes the Digital Edition only, and Free none
+ *    (the app's _shared/bookAllowance.js).
  *    The allowance is bookAllowance.js; the words are the app's planPerks.js.
  *
  *    History, so it is not repeated: until 2026-10-01 this file sold "with
@@ -102,7 +108,7 @@ export const PLANS: Plan[] = [
             'The one most people want. A year is long enough that nobody feels chased, and ' +
             'ninety minutes a month is a whole life told properly rather than a highlight reel.',
         features: [
-            'All 504 questions, every chapter',
+            `All ${QUESTION_COUNT} questions, every chapter`,
             'Unlimited photo uploads',
             'Invite the whole family to read and contribute, free',
         ],
@@ -124,7 +130,7 @@ export const PLANS: Plan[] = [
             'than one person is the whole point of this, and it costs less than buying the ' +
             'plans separately.',
         features: [
-            'All 504 questions, every chapter',
+            `All ${QUESTION_COUNT} questions, every chapter`,
             'Unlimited photo uploads',
             'One shared archive - invite anyone to read and contribute, free',
         ],
@@ -136,15 +142,15 @@ export const PLANS: Plan[] = [
         who: 'A short visit, or a moment that will not wait',
         price: '$79',
         amount: '79',
-        period: 'one time · about 30 days',
+        period: 'one time · 30 days',
         meter: '140 minutes of guided calls',
-        meterNote: 'Use them whenever you like inside the month - no daily cap',
+        meterNote: 'Use them whenever you like inside the 30 days - no daily cap',
         blurb:
             'For the week everyone is finally in the same house, or the month after a ' +
             'diagnosis. Nothing renews, which also makes it the straightforward one to give ' +
             'as a present.',
         features: [
-            'All 504 questions, every chapter',
+            `All ${QUESTION_COUNT} questions, every chapter`,
             'Unlimited photo uploads',
             'One storyteller',
         ],
@@ -159,38 +165,40 @@ export const OTHER_PLANS = [
         id: 'monthly' as const,
         label: 'Monthly',
         price: '$19.99/mo',
-        sub: 'No yearly commitment · the Digital Edition included, printed books from $39',
+        sub: 'No yearly commitment · 90 minutes of guided calls a month · the Digital Edition included, printed books from $39',
     },
     {
         id: 'free' as const,
         label: 'Free',
         price: '$0',
-        sub: 'Three questions a day, unlimited writing, no calls',
+        sub: 'One ten-minute conversation to begin, then three questions a day and unlimited writing',
     },
 ];
 
 /** Everyone starts here, including people who never pay. */
 export const START = {
     headline: 'Every account starts on Free',
-    detail: 'No card and no clock. Three guided questions a day and unlimited writing for as long as you like - a plan adds A Story doing the calling.',
+    detail: 'No card and no clock. One ten-minute conversation with A Story to begin, then three guided questions a day and unlimited writing for as long as you like. A plan adds A Story doing the calling.',
 } as const;
 
 /** What the Free tier actually is, stated plainly rather than as a tease. */
 export const FREE_TIER = {
     headline: 'Free, for as long as you like',
     blurb:
-        'Not a trial that runs out. Three guided questions a day, writing in your own words ' +
-        'without limit, the whole family invited free, and a printed book whenever you want ' +
-        'one. What Free does not include is A Story calling you - that is the part with a ' +
-        'real cost behind it.',
+        'Not a trial that runs out. One ten-minute conversation with A Story to begin, then ' +
+        'three guided questions a day, writing in your own words without limit, the whole ' +
+        'family invited free, and a printed book whenever you want one. What Free does not ' +
+        'include is A Story calling you after that first time - that is the part with a real ' +
+        'cost behind it.',
     includes: [
+        'One ten-minute conversation with A Story, to begin',
         'Three guided questions a day',
         'Unlimited writing in your own words',
         'Unlimited family members reading and contributing',
         'Five photo uploads a week',
         'The whole book to print at home, free',
     ],
-    excludes: 'Guided AI calls, unlimited photos, and the full 504-question bank open by chapter',
+    excludes: `Guided calls after the first, unlimited photos, and the full ${QUESTION_COUNT}-question bank open by chapter`,
 } as const;
 
 /** The headline figure, for pages that quote a single number. */
@@ -299,7 +307,7 @@ export const BOOK = {
     /** Printed editions start here and run to the Legacy Edition. */
     from: '$39',
     members:
-        'Every membership includes a Classic Hardcover - or its $69 toward a finer edition - and the Digital Edition. You pay only the shipping.',
+        'Individual, Family and Express include a Classic Hardcover - or its $69 toward a finer edition - and the Digital Edition. You pay only the shipping. Monthly includes the Digital Edition.',
     allowance: 'One a year on Individual, one a year for each storyteller on Family, one with each Express pass',
     pages: 'Every page of it - there is no page limit',
     ships: 'Printed editions ship to the US and Canada, with shipping included when you buy one',

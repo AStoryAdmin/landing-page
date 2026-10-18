@@ -1,3 +1,4 @@
+import { START_HREF, START_LABEL } from './app';
 
 /**
  * Where the money is taken.
@@ -91,7 +92,7 @@ const LINKS: Record<string, string> = {
     monthly: '',
 
     /* One-time: a 30-day window, and the hardcover on its own. There are
-       no "+book" bundles: every plan includes a hardcover (pricing.ts, BOOK),
+       no "+book" bundles: Individual, Family and Express include a hardcover (pricing.ts, BOOK),
        and old /reserve?plan=individual+book links still resolve in Start. */
     express: '',
     book: '',
@@ -128,29 +129,19 @@ export const checkoutFor = (id: string): string =>
 export const DEMO_HREF = '/start?intent=demo';
 
 /**
- * What every call to action says until payment works.
+ * What the site's call to action says, and where it goes.
  *
- * ─────────────────────────────────────────────────────────────────────────
- * NOTHING IS ON SALE. Every row in LINKS above is empty, the webhook cannot
- * yet grant a plan to a buyer with no account (see "The gap"), and so a
- * button reading "Gift a story" or "Choose Individual" promises a
- * transaction that cannot happen. Until a link goes in, the site asks people
- * to reserve a place for $1, or take a $29 founding place and start now
- * (lib/founding.ts).
- * ─────────────────────────────────────────────────────────────────────────
+ * Since 2026-10-18 A Story is open: every "Start" opens the web app's
+ * create-account page (lib/app.ts). Before that it said "Join the waitlist"
+ * (to 2026-09-29) and then "Reserve for $1". The $1 reservation and the $29
+ * founding place stay, as the secondary action on Pricing only.
  *
- * It said "Join the waitlist" until 2026-09-29. The names below still say
- * WAITLIST because thirty call sites import them; what they point at is the
- * founding offer.
- *
- * One constant rather than the wording repeated at thirty call sites, so
- * switching the site to "buy" on the day checkout works is a change to this
- * file and nothing else.
+ * The names still say WAITLIST because older components import them.
  */
-export const WAITLIST_LABEL = 'Reserve for $1';
+export const WAITLIST_LABEL = START_LABEL;
 
 /** Where that button goes, whichever plan they were looking at. */
-export const WAITLIST_HREF = '/reserve';
+export const WAITLIST_HREF = START_HREF;
 
 /**
  * What the button should say. Before checkout exists, promising "Buy" and

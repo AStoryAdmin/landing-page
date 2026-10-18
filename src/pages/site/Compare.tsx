@@ -44,6 +44,7 @@ import {
   onDarkActions,
 } from "./kit/kit.styles";
 import { color, display, font, media } from "../../styles/theme";
+import { START_HREF, START_LABEL } from "../../lib/app";
 
 const Matrix = styled(Chapter)`
   .lead {
@@ -235,8 +236,8 @@ export default function Compare() {
               A Story keeps all of them attached to the same memory.
             </p>
             <Actions data-rise>
-              <PrimaryLink to="/reserve">
-                Reserve for $1 <ArrowIcon />
+              <PrimaryLink to={START_HREF}>
+                {START_LABEL} <ArrowIcon />
               </PrimaryLink>
               <SecondaryLink to="/how-it-works">See how it works</SecondaryLink>
             </Actions>

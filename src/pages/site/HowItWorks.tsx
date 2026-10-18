@@ -55,6 +55,7 @@ import {
   TextLink,
 } from "./kit/kit.styles";
 import { color, display, font, media } from "../../styles/theme";
+import { START_HREF, START_LABEL } from "../../lib/app";
 
 /* Everyone else in the family, on the app's own screens (added 2026-10-09;
    kit/AppTour.tsx says where the screens come from). */
@@ -978,8 +979,8 @@ export default function HowItWorks() {
         lead="Set it up once. After that their phone rings at the hour they chose, and a patient voice asks about their life - then follows whatever they actually say."
         actions={
           <>
-            <PrimaryLink to="/reserve">
-              Reserve for $1 <ArrowIcon />
+            <PrimaryLink to={START_HREF}>
+              {START_LABEL} <ArrowIcon />
             </PrimaryLink>
             <SecondaryLink to="/how-it-works#calls">Watch a call</SecondaryLink>
           </>
@@ -1200,7 +1201,7 @@ export default function HowItWorks() {
             <ol className="steps3" data-rise>
               <li>Open Invite in the app: a six-letter family code, a link, or a QR code.</li>
               <li>They type the code, tap the link, or scan it with their camera.</li>
-              <li>They land on your family’s story - and can add their own.</li>
+              <li>They open your family’s story, read what is there, and add their side.</li>
             </ol>
           </div>
           <div className="pair" data-rise>

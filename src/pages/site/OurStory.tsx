@@ -33,6 +33,7 @@ import {
   Title,
 } from "./kit/kit.styles";
 import { color, display, font, media } from "../../styles/theme";
+import { START_HREF, START_LABEL } from "../../lib/app";
 
 const Opening = styled(Chapter)`
   padding: calc(clamp(88px, 11vw, 180px) * var(--sy)) 0
@@ -402,8 +403,8 @@ export default function OurStory() {
             ways people remember the same day.
           </p>
           <div className="actions" data-rise>
-            <PrimaryLink to="/reserve">
-              Reserve for $1 <ArrowIcon />
+            <PrimaryLink to={START_HREF}>
+              {START_LABEL} <ArrowIcon />
             </PrimaryLink>
             <SecondaryLink to="/how-it-works">See how it works</SecondaryLink>
           </div>

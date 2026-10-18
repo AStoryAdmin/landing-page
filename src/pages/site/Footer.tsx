@@ -7,6 +7,7 @@ import {
   NVIDIA_TRADEMARK_NOTE,
 } from "../../components/ui/InceptionBadge";
 import { FooterShell } from "./chrome.styles";
+import { APP, START_HREF, START_LABEL } from "../../lib/app";
 
 /**
  * The back of the namecard, at the foot of every page. The explanation that
@@ -39,8 +40,8 @@ export default function Footer() {
               <Link to="/for-families">For families</Link>
               <Link to="/pricing">Pricing</Link>
               <Link to="/compare">Compare</Link>
-              <Link to="/reserve">Reserve for $1</Link>
-              <Link to="/sign-in">Sign in</Link>
+              <a href={START_HREF}>{START_LABEL}</a>
+              <a href={APP.signIn}>Sign in</a>
             </div>
             <div>
               <h2>Help</h2>

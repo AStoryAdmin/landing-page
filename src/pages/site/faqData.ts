@@ -1,4 +1,4 @@
-import { BOOK, PLANS, START } from "../../lib/pricing";
+import { BOOK, OTHER_PLANS, PLANS, START } from "../../lib/pricing";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
 export const groups = [
   {
@@ -10,11 +10,15 @@ export const groups = [
       },
       {
         q: "Can I sign up today?",
-        a: "We are opening to a few families at a time. Reserve a place for $1 by 2 November and hold 15% off your first year, or become one of 25 founding families for $29 and start now, with one of us on your first call. Founding places go in the order families join. Both are refundable.",
+        a: "Yes. Start free at app.astoryapp.com: make an account in your browser, with no card. Plans with A Story doing the calling are not sold on the web yet; the Pricing page says how to reserve one.",
       },
       {
         q: "Does my family member need to install an app?",
-        a: "Yes. You and your storyteller install A Story once, and you can help with the setup. After that, their phone rings at the chosen time and they answer the call. They do not need to operate the archive to tell their story.",
+        a: "To be called, yes. You and your storyteller install A Story once, and you can help with the setup. After that, their phone rings at the chosen time and they answer the call. To read or add to the archive, no: any browser works, at app.astoryapp.com.",
+      },
+      {
+        q: "Can I use A Story on a computer?",
+        a: "Yes. At app.astoryapp.com you can write, read the archive, see the family tree and read the book, in any browser. The calls happen on the phone.",
       },
       {
         q: "Can I record my own story?",
@@ -44,7 +48,7 @@ export const groups = [
     items: [
       {
         q: "Can relatives add a different version?",
-        a: "Yes. Invited family members can contribute memories, add photographs, and correct details. Different perspectives help build the archive; participation does not carry a per-relative fee.",
+        a: "Yes. Invite them with your family code or link. They read the memories the family keeps and add their side, with photographs. There is no fee per relative.",
       },
     ],
   },
@@ -53,7 +57,7 @@ export const groups = [
     items: [
       {
         q: "What does it cost?",
-        a: `Individual is ${PLANS[0].price} ${PLANS[0].period}; Family is ${PLANS[1].price} ${PLANS[1].period}. Express is ${PLANS[2].price}, ${PLANS[2].period}. A Free plan and Monthly option are also available in the product. Every plan includes a printed hardcover. The Pricing page lists call allowances.`,
+        a: `Individual is ${PLANS[0].price} ${PLANS[0].period}; Family is ${PLANS[1].price} ${PLANS[1].period}. Express is ${PLANS[2].price}, ${PLANS[2].period}. Monthly is ${OTHER_PLANS[0].price}, and Free is free. Individual, Family and Express include a Classic Hardcover; on Free and Monthly you can print at home free or order from ${BOOK.from}. The Pricing page lists call minutes.`,
       },
       {
         q: "Is there a free trial?",
@@ -65,7 +69,7 @@ export const groups = [
       },
       {
         q: "How does giving A Story work?",
-        a: "You help set up an archive for your relative and choose a good time for the first call. There is no gift card, code, or redemption process. Express is the one-time plan; the annual and monthly plans renew. Reserve for $1 to hold your place, or start now as a founding family.",
+        a: "You help set up an archive for your relative and choose a good time for the first call. There is no gift card, code, or redemption process. Express is the one-time plan; the annual and monthly plans renew.",
       },
     ],
   },

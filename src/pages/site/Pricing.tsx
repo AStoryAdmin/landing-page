@@ -38,7 +38,9 @@ import {
   BOOK_EDITIONS,
   START,
 } from "../../lib/pricing";
-import { anyCheckoutLive, buyLabel, checkoutFor } from "../../lib/checkout";
+import { checkoutFor, isCheckoutLive } from "../../lib/checkout";
+import { START_HREF, START_LABEL } from "../../lib/app";
+import { OFFERS, RESERVE_DEADLINE_LABEL, reserveDiscountOpen } from "../../lib/founding";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import PriceLadder from "./kit/PriceLadder";
@@ -238,8 +240,20 @@ const Plans = styled(Chapter)`
     font: 400 ${display.sm} / 1.2 ${font.display};
   }
   .decide small {
-    font: 400 14px/1.4 ${font.body};
+    font: 400 15px/1.4 ${font.body};
     color: ${color.onDarkMuted};
+  }
+  .decide-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 24px;
+  }
+  .decide .reserve {
+    color: ${color.ivory};
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
   .all-plans {
     margin-top: 18px;
@@ -671,7 +685,7 @@ const ROWS: { label: string; cells: [string, string?][]; yes?: boolean }[] = [
   {
     label: "Guided calls",
     cells: [
-      ["No calls", FREE_TIER.includes[0]],
+      ["One ten-minute conversation", "To begin, on us"],
       [express.meter, express.meterNote],
       [individual.meter, individual.meterNote],
       [family.meter, family.meterNote],
@@ -680,7 +694,7 @@ const ROWS: { label: string; cells: [string, string?][]; yes?: boolean }[] = [
   {
     label: "Questions",
     cells: [
-      [FREE_TIER.includes[0]],
+      [FREE_TIER.includes[1]],
       [`All ${QUESTION_COUNT}, every chapter`],
       [`All ${QUESTION_COUNT}, every chapter`],
       [`All ${QUESTION_COUNT}, every chapter`],
@@ -704,7 +718,7 @@ const ROWS: { label: string; cells: [string, string?][]; yes?: boolean }[] = [
   {
     label: "Photos",
     cells: [
-      [FREE_TIER.includes[3]],
+      [FREE_TIER.includes[4]],
       ["Unlimited"],
       ["Unlimited"],
       ["Unlimited"],
@@ -762,7 +776,7 @@ export default function Pricing() {
       <EditorialSeo
         title="A Story pricing - plans, family participation and books"
         path="/pricing"
-        description="Compare Individual, Family, Express, Monthly and Free. See call allowances, the printed book every plan includes, and what stays in your archive."
+        description="Compare Individual, Family, Express, Monthly and Free: the call minutes, which plans include a hardcover, and what stays yours whatever you choose."
       />
       <PageOpening
         eyebrow="Pricing · USD"
@@ -774,7 +788,7 @@ export default function Pricing() {
         lead={`${START.headline} - ${START.detail} Inviting family, writing and reading are never charged by the person.`}
       />
 
-      <PriceLadder ground="ivory" title={false} onward={false} />
+      <PriceLadder ground="ivory" title={false} onward={false} early />
 
       <Plans ref={plans} $ground="ivory" aria-label="Plans">
         <Frame>
@@ -848,7 +862,7 @@ export default function Pricing() {
                 <span>
                   {p.sub}.{" "}
                   {p.id === "free"
-                    ? `${FREE_TIER.includes[3]}.`
+                    ? `${FREE_TIER.includes[4]}.`
                     : "Billed monthly."}
                 </span>
               </div>
@@ -864,7 +878,8 @@ export default function Pricing() {
           <Compare aria-labelledby="compare-title">
             <h2 id="compare-title">Compare every plan</h2>
             <p>
-              Monthly is {OTHER_PLANS[0].price} with no yearly commitment.
+              Monthly is {OTHER_PLANS[0].price} with no yearly commitment: 90
+              minutes of guided calls a month and the Digital Edition.
               Everything else is side by side below.
             </p>
             <div
@@ -930,21 +945,34 @@ export default function Pricing() {
             <div>
               <strong>{name}</strong>
               <small>
-                {anyCheckoutLive()
-                  ? "Continue with your selected plan."
-                  : "Before launch: reserve for $1 by 2 November and hold 15% off this plan's first year, or start now as a founding family."}
+                {selectedId === "free"
+                  ? "No card. Make your account in your browser and begin today."
+                  : isCheckoutLive(selectedId)
+                    ? "Continue with your selected plan."
+                    : `Everyone starts on Free. ${name} is not sold on the web yet.`}
               </small>
             </div>
-            <PrimaryAnchor
-              href={checkoutFor(selectedId)}
-              aria-label={buyLabel(
-                selectedId,
-                `Choose ${name}`,
-                `Reserve for $1 - ${name}`,
+            <div className="decide-actions">
+              {/* One primary action on this page: Start free. Plans that
+                  cannot be bought yet offer the $1 reservation beside it, the
+                  only place on the site that still does. */}
+              {isCheckoutLive(selectedId) ? (
+                <PrimaryAnchor href={checkoutFor(selectedId)}>
+                  Choose {name} <ArrowIcon />
+                </PrimaryAnchor>
+              ) : (
+                <PrimaryAnchor href={START_HREF}>
+                  {START_LABEL} <ArrowIcon />
+                </PrimaryAnchor>
               )}
-            >
-              {buyLabel(selectedId, `Choose ${name}`)} <ArrowIcon />
-            </PrimaryAnchor>
+              {selectedId !== "free" && !isCheckoutLive(selectedId) && (
+                <TextLink to={checkoutFor(selectedId)} className="reserve">
+                  {reserveDiscountOpen()
+                    ? `Or reserve ${name} for ${OFFERS.reserve.price} by ${RESERVE_DEADLINE_LABEL}, ${OFFERS.reserve.discount}% off`
+                    : `Or reserve ${name} for ${OFFERS.reserve.price}`}
+                </TextLink>
+              )}
+            </div>
           </div>
         </Frame>
       </Plans>

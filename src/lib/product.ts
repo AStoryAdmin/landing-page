@@ -15,8 +15,15 @@
  * argued over, and the reasoning is worth showing rather than smoothing away.
  */
 
-/** Every question in the bank, across every chapter. */
-export const QUESTION_COUNT = 504;
+import bank from './questionBank.json';
+
+/**
+ * Every question in the bank, across every chapter: 547 on 2026-10-18.
+ * Counted from the app's own ALL_PROMPTS by scripts/question-bank.mjs at the
+ * start of every build, into questionBank.json. It said 504 for weeks after
+ * the app had 547; do not type the number by hand.
+ */
+export const QUESTION_COUNT: number = bank.questions;
 
 /** How many chapters a life is told in here. */
 export const CHAPTER_COUNT = 11;
@@ -119,15 +126,10 @@ export const DEPTHS = [
 ];
 
 /**
- * How many questions are marked sensitive — loss (14), hardship (19), rupture
- * (12), private (19). Counted straight off the app's bank:
- *
- *   grep -c 'sensitive: "' phone-app-main/src/data/interview.js
- *
- * This said 62 for a while, which was true of an older CSV. If the bank grows,
- * re-run the grep rather than guessing.
+ * How many questions are marked sensitive (loss, hardship, rupture, private):
+ * 66 on 2026-10-18. Counted with QUESTION_COUNT by scripts/question-bank.mjs.
  */
-export const SENSITIVE_COUNT = 64;
+export const SENSITIVE_COUNT: number = bank.sensitive;
 
 /**
  * The line those questions arrive with, instead of a warning triangle. Quoted

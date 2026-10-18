@@ -3,7 +3,7 @@
  *
  * On a phone the opening's button is gone after the first screen, and the
  * next one is several screens down. Once the opening has scrolled out of
- * view, the site's primary action - "Reserve for $1", the same pill as
+ * view, the site's primary action - "Start free", the same pill as
  * everywhere else - sits in one bar at the foot of the window, inside the
  * safe area. Nothing else is in the bar: no countdown, no line of urgency.
  *
@@ -22,6 +22,7 @@ import styled from "styled-components";
 import { ArrowIcon } from "./kit";
 import { PrimaryLink } from "./kit.styles";
 import { color, media, motion } from "../../../styles/theme";
+import { START_HREF, START_LABEL } from "../../../lib/app";
 
 const SHOW_ON = new Set([
   "/",
@@ -123,8 +124,8 @@ export default function StickyStart() {
   if (!showsOn(pathname)) return null;
   return (
     <Bar data-shown={shown} aria-hidden={!shown}>
-      <PrimaryLink to="/reserve" tabIndex={shown ? 0 : -1}>
-        Reserve for $1 <ArrowIcon />
+      <PrimaryLink to={START_HREF} tabIndex={shown ? 0 : -1}>
+        {START_LABEL} <ArrowIcon />
       </PrimaryLink>
     </Bar>
   );

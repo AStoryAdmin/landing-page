@@ -34,6 +34,7 @@ import {
   type Ground,
 } from "./kit/kit.styles";
 import { color, display, font, media } from "../../styles/theme";
+import { START_HREF, START_LABEL } from "../../lib/app";
 
 const Scene = styled(Chapter)`
   .scene {
@@ -420,8 +421,8 @@ export default function Families() {
         }
         lead="Nobody loses the wedding photos. They lose everything around them - the story he tells every Thanksgiving, and why everyone in that photograph is laughing."
         actions={
-          <PrimaryLink to="/reserve">
-            Reserve for $1 <ArrowIcon />
+          <PrimaryLink to={START_HREF}>
+            {START_LABEL} <ArrowIcon />
           </PrimaryLink>
         }
         media={

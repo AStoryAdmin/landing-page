@@ -520,11 +520,11 @@ export default function Reserve() {
     const label = waitlistLabel();
     /* Short on the button — pill labels do not wrap, and a week's full name
        pushed the card past a phone's edge. The line above says which. */
-    const join = "Join the waitlist";
+    const join = "Ask for a place";
     if (account?.foundingWaitlist) {
       return (
         <div className="done" role="status">
-          <h3>You are on the waitlist for {label}.</h3>
+          <h3>You are in line for {label}.</h3>
           <p>
             Nothing is charged. When a place opens, or we add another group, we write to{" "}
             <strong>{account.email}</strong> in the order families joined.
@@ -877,7 +877,7 @@ export default function Reserve() {
       <EditorialSeo
         title={`${founding.places} founding families - start A Story now for ${founding.price}`}
         path="/reserve"
-        description={`A Story opens to ${founding.places} founding families before launch: ${founding.price}, set up with you by hand, one of us on your first call, half off your first year, refundable until that call. Or hold a place for ${reserve.price}.`}
+        description={`${founding.places} founding families start A Story's calls now for ${founding.price}: set up by hand, half off the first year, refundable. Or hold a place for ${reserve.price}.`}
       />
 
       {/* While founding places remain, the page leads with them (header);
@@ -885,14 +885,14 @@ export default function Reserve() {
       {foundingOpen ? (
         <PageOpening
           ground="night"
-          eyebrow={`Before launch · ${placesLine}`}
+          eyebrow={`Founding families · ${placesLine}`}
           labelledBy="reserve-title"
           title={
             <>
               {founding.places} families start now. <em>Be one of them.</em>
             </>
           }
-          lead={`A Story calls someone you love and asks about their life. Before launch we are opening it to ${founding.places} families, set up with you by hand and with one of us on your first call. ${founding.price}, which comes off a first year at half price - and refunded if you change your mind before that call.`}
+          lead={`Anyone can start A Story free in a browser. The calls are what a plan adds, and plans are not on sale yet. Until they are, ${founding.places} families start the calls now, set up by hand, with one of us on the first call. ${founding.price}, which comes off a first year at half price - and refunded if you change your mind before that call.`}
           actions={
             <>
               <PrimaryAnchor href="#founding" onClick={() => track("offer_click", { offer: "founding", from: "opening" })}>
@@ -914,14 +914,14 @@ export default function Reserve() {
       ) : (
         <PageOpening
           ground="night"
-          eyebrow={discountOpen ? `Before launch · ${deadline}` : "Before launch"}
+          eyebrow={discountOpen ? `Reserve · ${deadline}` : "Reserve"}
           labelledBy="reserve-title"
           title={
             <>
               Hold your place <em>for a dollar.</em>
             </>
           }
-          lead={`A Story calls someone you love and asks about their life. All ${founding.places} founding places are taken; reserve for ${reserve.price} and we tell you the moment it is your turn.`}
+          lead={`Anyone can start A Story free in a browser. The calls are what a plan adds, and plans are not on sale yet. All ${founding.places} founding places are taken; reserve for ${reserve.price} and we tell you the day plans go on sale.`}
           actions={
             <>
               <PrimaryAnchor
@@ -1004,7 +1004,7 @@ export default function Reserve() {
               <Heading>Reserve, if you want to be sure of it.</Heading>
               <p className="d">
                 You like the idea and you want the price, but there is no hurry. A dollar holds both, and we
-                tell you the moment it is your turn. Reserve one for each parent if they live apart.
+                tell you the day plans go on sale. Reserve one for each parent if they live apart.
               </p>
             </div>
             <div>

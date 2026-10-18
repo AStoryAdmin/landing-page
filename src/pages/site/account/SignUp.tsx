@@ -138,7 +138,7 @@ export default function SignUp() {
             One account, <em>on the web and in the app.</em>
           </>
         }
-        lead="Make it here, now. When it is your turn you sign into the app with the same email and password - nothing to set up twice."
+        lead="Make it here, now. The same email and password sign you into A Story at app.astoryapp.com - nothing to set up twice."
         steps={[
           "No card, and nothing charged. An account on its own costs nothing.",
           "The same account everywhere - made on a laptop, signed into on a phone.",

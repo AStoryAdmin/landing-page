@@ -33,6 +33,7 @@ import { Chapter, Eyebrow, Frame, PrimaryLink, SecondaryLink, Statement, Title }
 import { useReveals } from "./kit/reveals";
 import { color, display, font, media, motion } from "../../styles/theme";
 import { PROGRAMS, faqSchema } from "../../lib/seo";
+import { START_HREF, START_LABEL } from "../../lib/app";
 
 type Row = {
   id: string;
@@ -431,8 +432,8 @@ export default function Programs() {
                 companies, and we are one.
               </p>
               <div className="actions">
-                <PrimaryLink to="/reserve">
-                  Reserve for $1 <ArrowIcon />
+                <PrimaryLink to={START_HREF}>
+                  {START_LABEL} <ArrowIcon />
                 </PrimaryLink>
                 <SecondaryLink to="/our-story">Read our story</SecondaryLink>
               </div>
