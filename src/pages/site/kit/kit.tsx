@@ -18,6 +18,7 @@ import {
   onDarkActions,
   type Ground,
 } from "./kit.styles";
+import { START_HREF, START_LABEL } from "../../../lib/app";
 
 export function ArrowIcon() {
   return (
@@ -160,7 +161,7 @@ export function PageOpening({
   ground = "ivory",
   labelledBy = "page-title",
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: ReactNode;
   lead?: ReactNode;
   actions?: ReactNode;
@@ -178,7 +179,7 @@ export function PageOpening({
     >
       <Frame className={`opening-grid ${art ? "" : "solo"}`}>
         <div>
-          <Eyebrow>{eyebrow}</Eyebrow>
+          {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
           <Title id={labelledBy} data-lines>
             {title}
           </Title>
@@ -361,8 +362,8 @@ export function Invitation({
           </h2>
           <p>{line}</p>
           <Actions>
-            <PrimaryLink to="/reserve">
-              Reserve for $1 <ArrowIcon />
+            <PrimaryLink to={START_HREF}>
+              {START_LABEL} <ArrowIcon />
             </PrimaryLink>
           </Actions>
         </div>

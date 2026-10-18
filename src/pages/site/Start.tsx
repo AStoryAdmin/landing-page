@@ -1,6 +1,6 @@
 /**
- * Start — the waitlist, as an invitation (Pass 11h: the founder called the
- * old page the weakest design on the site).
+ * /start?intent=demo — the demonstration request (plain /start goes to the app).
+ * Pass 11h layout: the founder called the old page the weakest on the site.
  *
  * A full-height split. Left: a dark photograph (two people talking across a
  * kitchen table) with the title, the three things that happen next on a
@@ -12,7 +12,8 @@
  * the done state); this page only restyles it from the outside. Plan and
  * intent are still read from the URL. Complete without motion.
  */
-import { Link, Navigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import AppDoor from "./AppDoor";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import LeadForm from "../../components/ui/LeadForm";
@@ -362,18 +363,17 @@ export default function Start() {
   const ref = useReveals<HTMLElement>();
   const demo = intent === "demo";
 
-  /* The waitlist became /reserve on 2026-09-29 — $1 to hold a place, or $29
-     to start now. Old links here (ads, emails, bookmarks, the plan buttons'
-     fallback) land there with their plan; only "request a demonstration"
-     still uses this page. */
+  /* A Story is open (2026-10-18): "Start" means making an account in the
+     web app. Old links here (ads, emails, bookmarks) go there; only "request
+     a demonstration" still uses this page. */
   if (!demo) {
-    return <Navigate to={`/reserve${plan ? `?plan=${encodeURIComponent(plan)}` : ""}`} replace />;
+    return <AppDoor door="create-account" path="/start" />;
   }
 
   return (
     <Page ref={ref} aria-labelledby="start-title">
       <EditorialSeo
-        title={demo ? "Request a demonstration" : "Join the A Story waitlist"}
+        title="Request a demonstration"
         path="/start"
         description="Leave your name and phone number. We’ll speak with you about getting started with A Story. No payment is taken."
       />
@@ -391,20 +391,11 @@ export default function Start() {
             {demo ? "For your community or organization" : "A place to begin"}
           </Eyebrow>
           <h1 id="start-title" data-lines>
-            {demo ? (
-              <>
-                Request a <em>demonstration.</em>
-              </>
-            ) : (
-              <>
-                Join the <em>waitlist.</em>
-              </>
-            )}
+            Request a <em>demonstration.</em>
           </h1>
           <p className="lead" data-rise>
-            {demo
-              ? "Tell us how to reach you. We’ll arrange a demonstration around your community or organization."
-              : "We’re opening to a few families at a time. Leave your details and we’ll call you about availability."}
+            Tell us how to reach you. We’ll arrange a demonstration around your
+            community or organization.
           </p>
         </div>
         <ol className="next" data-rise aria-label="What happens next">

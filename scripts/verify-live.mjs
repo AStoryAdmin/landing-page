@@ -16,15 +16,28 @@
  *   - the waitlist is gone from the home page and /reserve is up;
  *   - the build carries a Supabase address, without which sign-up, sign-in
  *     and the live founding counts quietly do nothing.
+ *   - each public page carries its own canonical, at the address that
+ *     answers 200 (with the trailing slash);
+ *   - the doors into the web app (index.html's inline script) ride in every page;
+ *   - old addresses (/experience, /faq, …) still land somewhere.
  * Exits 1 on any failure, so it can gate a script.
+ *
+ * Since 2026-10-18 it checks every page in scripts/site-routes.mjs rather than
+ * a short list, and a local preview works as the origin:
+ *   npm run build && npm run preview -- --port 4173
+ *   npm run verify:live -- http://localhost:4173
  */
+import { canonicalPath, privateRoutes, redirects, routes, staticPages } from './site-routes.mjs';
+
 const origin = (process.argv[2] || 'https://astoryapp.com').replace(/\/$/, '');
 
 const PAGES = [
-    '/', '/reserve/', '/pricing/', '/how-it-works/', '/for-families/', '/questions/',
-    '/terms/', '/privacy/', '/terms.html', '/privacy.html', '/sign-up/', '/sign-in/',
-    '/samples', '/samples/',
+    ...[...routes, ...staticPages].map(canonicalPath),
+    ...privateRoutes.map((r) => canonicalPath(r.path)),
+    '/terms.html', '/privacy.html', '/samples',
 ];
+/* Pages whose canonical is checked: the public React ones. */
+const CANONICAL = new Set(routes.map(canonicalPath));
 
 let failed = 0;
 const fail = (msg) => {
@@ -37,9 +50,21 @@ for (const path of PAGES) {
     const res = await fetch(origin + path, { redirect: 'follow' });
     const body = await res.text();
     if (res.status !== 200) fail(`${path} answered ${res.status}`);
-    else if (body.length < 20_000 && !['/sign-up/', '/sign-in/'].includes(path))
+    else if (body.length < 20_000)
         fail(`${path} is the bare app shell (${body.length} bytes), not the prebuilt page`);
+    else if (CANONICAL.has(path) && !body.includes(`rel="canonical" href="https://astoryapp.com${path}"`))
+        fail(`${path} does not carry its own canonical (https://astoryapp.com${path})`);
+    else if (!path.startsWith('/samples') && !body.includes('"/join/" + m[1]'))
+        fail(`${path} is missing the invitation redirect script (index.html)`);
     else pass(`${path} ${res.status}, ${(body.length / 1024).toFixed(0)} KB`);
+}
+
+for (const from of Object.keys(redirects)) {
+    const res = await fetch(origin + from, { redirect: 'follow' });
+    const body = await res.text();
+    if (res.status !== 200) fail(`old address ${from} answered ${res.status}`);
+    else if (!res.redirected && !body.includes('http-equiv="refresh"')) fail(`old address ${from} does not move on`);
+    else pass(`old address ${from} moves on (${res.redirected ? 'redirect' : 'page'})`);
 }
 
 const home = await (await fetch(origin + '/')).text();

@@ -141,11 +141,6 @@
       "permanent": true
     },
     {
-      "source": "/your-story",
-      "destination": "/for-families#your-own-story",
-      "permanent": true
-    },
-    {
       "source": "/institution",
       "destination": "/care-communities",
       "permanent": true

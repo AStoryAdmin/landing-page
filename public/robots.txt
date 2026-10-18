@@ -5,6 +5,11 @@ Disallow: /p/
 Disallow: /contribute/
 Disallow: /thanks
 Disallow: /__design/
+Disallow: /join
+Disallow: /c/
+Disallow: /sign-in
+Disallow: /sign-up
+Disallow: /account
 
 # Search discovery is independent of training preferences.
 # No GPTBot override existed in the source; that preference is unchanged.
@@ -14,5 +19,10 @@ Disallow: /p/
 Disallow: /contribute/
 Disallow: /thanks
 Disallow: /__design/
+Disallow: /join
+Disallow: /c/
+Disallow: /sign-in
+Disallow: /sign-up
+Disallow: /account
 
 Sitemap: https://astoryapp.com/sitemap.xml

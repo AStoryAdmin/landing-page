@@ -64,6 +64,15 @@ const setLink = (rel: string, href: string) => {
 
 const SCHEMA_ID = "astory-route-schema";
 
+/**
+ * A page's address as we publish it: with a trailing slash. S3 serves
+ * /pricing/ with a 200 whether or not the CloudFront function is attached;
+ * /pricing answers 301 → /pricing/ without it. A canonical must not redirect.
+ * scripts/site-routes.mjs `canonicalPath` is the same rule for the sitemap.
+ */
+export const pageUrl = (path: string) =>
+  `${SITE.url}${path === "/" ? "/" : path.replace(/\/?$/, "/")}`;
+
 export const applySeo = ({
   title,
   description,
@@ -74,7 +83,7 @@ export const applySeo = ({
 }: SeoInput) => {
   if (typeof document === "undefined") return;
 
-  const url = `${SITE.url}${path === "/" ? "" : path}`;
+  const url = pageUrl(path);
   const img = `${SITE.url}${image ?? SITE.ogImage}`;
 
   document.title = title;
@@ -223,7 +232,7 @@ export const breadcrumbSchema = (trail: { name: string; path: string }[]) => ({
     "@type": "ListItem",
     position: i + 1,
     name: item.name,
-    item: `${SITE.url}${item.path === "/" ? "" : item.path}`,
+    item: pageUrl(item.path),
   })),
 });
 

@@ -18,6 +18,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Seo from "../../components/ui/Seo";
+import { prerendering } from "../../lib/app";
 import { color, font } from "../../styles/theme";
 
 const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.replace(/\/$/, "");
@@ -55,9 +56,11 @@ const destination = (): string | null => {
 
 export default function Listen() {
   const [to] = useState(destination);
-  const failed = to === null;
+  /* The prerendered file (scripts/prerender.mjs) shows the "opening" state
+     and never leaves; a real visit is exactly as before. */
+  const failed = to === null && !prerendering();
   useEffect(() => {
-    if (to) window.location.replace(to);
+    if (to && !prerendering()) window.location.replace(to);
   }, [to]);
 
   return (

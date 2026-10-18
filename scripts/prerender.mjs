@@ -24,9 +24,15 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 const PORT = 4179;
 
-import { routes } from './site-routes.mjs';
-// The design page receives a noindex HTML snapshot but never enters the sitemap.
-const ROUTES = [...routes, '/__design/a-story-home-vnext'];
+import { canonicalPath, privateRoutes, redirects, routes } from './site-routes.mjs';
+const SITE = 'https://astoryapp.com';
+// The design page and the private routes receive a noindex HTML snapshot but
+// never enter the sitemap.
+const ROUTES = [
+    ...routes.map((path) => ({ path })),
+    ...privateRoutes,
+    { path: '/__design/a-story-home-vnext' },
+];
 
 const MIME = {
     '.html': 'text/html',
@@ -75,12 +81,20 @@ const context = await browser.newContext({
     viewport: { width: 1280, height: 900 },
     reducedMotion: 'reduce',
 });
+/* Pages that send people on to the web app (index.html's inline script,
+   AppDoor, Listen) check this and stay put, so the snapshot is of the page. */
+await context.addInitScript(() => {
+    window.__PRERENDER = true;
+});
 const page = await context.newPage();
 
-for (const route of ROUTES) {
-    await page.goto(`http://localhost:${PORT}${route}`, {
+for (const { path: route, visit } of ROUTES) {
+    await page.goto(`http://localhost:${PORT}${visit ?? route}`, {
         waitUntil: 'networkidle',
     });
+    if (new URL(page.url()).pathname.replace(/\/$/, '') !== route.replace(/\/$/, '')) {
+        throw new Error(`${route}: the page navigated to ${page.url()} while being prerendered`);
+    }
     await page.waitForTimeout(150);
 
     const raw = await page.evaluate(() => {
@@ -134,4 +148,28 @@ for (const route of ROUTES) {
 await context.close();
 await browser.close();
 server.close();
-console.log(`\n${ROUTES.length} routes written to dist/`);
+
+/* Old addresses (site-routes.mjs `redirects`): a small file at each, so they
+   answer 200 and move on, with or without the CloudFront function (which
+   answers them with a 301 at the edge). */
+for (const [from, target] of Object.entries(redirects)) {
+    const [path, anchor] = target.split('#');
+    const to = canonicalPath(path) + (anchor ? '#' + anchor : '');
+    const html = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A Story</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="${SITE}${canonicalPath(path)}">
+<meta http-equiv="refresh" content="0; url=${to}">
+<script>location.replace(${JSON.stringify(canonicalPath(path))} + location.search + (${JSON.stringify(anchor ? '#' + anchor : '')} || location.hash));</script>
+</head>
+<body><p><a href="${to}">This page has moved.</a></p></body>
+</html>
+`;
+    mkdirSync(join(dist, from), { recursive: true });
+    writeFileSync(join(dist, from, 'index.html'), html);
+}
+
+console.log(`\n${ROUTES.length} routes and ${Object.keys(redirects).length} old addresses written to dist/`);

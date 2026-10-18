@@ -5,21 +5,23 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/gen-seo-files.mjs && tsc -b && vite build",
+    "build": "npm run build:shell && node scripts/prerender.mjs",
+    "build:shell": "node scripts/question-bank.mjs && node scripts/gen-seo-files.mjs && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "assets": "node scripts/brand-assets.mjs",
     "images": "node scripts/optimize-images.mjs",
     "seo": "node scripts/gen-seo-files.mjs",
-    "build:static": "npm run build && node scripts/prerender.mjs",
+    "build:static": "npm run build",
     "prerender": "node scripts/prerender.mjs",
     "a11y": "node scripts/a11y.mjs",
     "shots": "node scripts/shoot.mjs",
     "logo": "node scripts/trace-logo.mjs",
     "social": "node scripts/social-cards.mjs",
     "test:contracts": "node qa/greenfield/lead-contracts.mjs",
+    "test:routing": "node qa/routing/cloudfront.test.mjs",
     "verify:live": "node scripts/verify-live.mjs",
-    "check": "npm run lint && npm run test:contracts && npm run build:static && node qa/definitive/production-contracts.mjs"
+    "check": "npm run lint && npm run test:contracts && npm run test:routing && npm run build && node qa/definitive/production-contracts.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.2",

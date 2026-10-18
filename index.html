@@ -47,6 +47,33 @@
     <link rel="preload" href="/fonts/882b7c150c29f29d.woff2" as="font" type="font/woff2" crossorigin />
     <link href="/fonts/fonts.css" rel="stylesheet" />
 
+    <!-- Doors into the web app, before anything paints (2026-10-18). Invitations
+         (/?ref=CODE, /join?ref=CODE, /join/CODE), contribute links (/c/SLUG) and the
+         site's old sign-in, sign-up, account and start pages go to app.astoryapp.com;
+         www goes to the bare domain. The reservation's own sign-in (?next=/reserve)
+         stays here. deploy/cloudfront-viewer-request.js does the same at the edge;
+         src/pages/site/AppDoor.tsx is the fallback. Skipped while prerendering. -->
+    <script>
+      (function () {
+        try {
+          if (window.__PRERENDER) return;
+          var APP = "https://app.astoryapp.com", l = location, q = new URLSearchParams(l.search);
+          var p = l.pathname.replace(/\/index\.html$/, "/"), ref = q.get("ref") || "", to = "", m;
+          if (l.hostname === "www.astoryapp.com") to = "https://astoryapp.com" + l.pathname + l.search + l.hash;
+          else if ((m = p.match(/^\/join\/([A-Za-z0-9]{6})\/?$/))) to = APP + "/join/" + m[1].toUpperCase();
+          else if (/^\/(join\/?)?$/.test(p) && /^[A-Za-z0-9]{6}$/.test(ref)) to = APP + "/join/" + ref.toUpperCase();
+          else if ((m = p.match(/^\/c\/([A-Za-z0-9_-]{1,80})\/?$/))) to = APP + "/c/" + m[1];
+          else if (!/^\/reserve/.test(q.get("next") || "")) {
+            if (/^\/(sign-in|signin|login)\/?$/.test(p)) to = APP + "/sign-in";
+            else if (/^\/(sign-up|signup)\/?$/.test(p)) to = APP + "/create-account";
+            else if (/^\/account\/?$/.test(p)) to = APP + "/";
+            else if (/^\/start\/?$/.test(p) && q.get("intent") !== "demo") to = APP + "/create-account";
+          }
+          if (to) l.replace(to);
+        } catch (e) {}
+      })();
+    </script>
+
     <!-- First home visit per session: paint the intro's teal ground before React boots, so the
          prerendered page never flashes beneath it. src/pages/site/home/Intro.tsx takes it over. -->
     <style>html.intro body{overflow:hidden}html.intro body::before{content:"";position:fixed;inset:0;z-index:2147483000;background:#0F4A58}</style>
