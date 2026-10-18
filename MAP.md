@@ -53,7 +53,9 @@ Self-hosted Figtree and Source Serif 4 are retained with their licenses. `assets
 
 ## Publishing
 
-astoryapp.com is S3 + CloudFront, published by hand: see `docs/PUBLISHING.md` (build with `build:static`, upload all of `dist/`, the CloudFront rule in `deploy/cloudfront-index-rewrite.js`). After every publish, `npm run verify:live` checks the live site page by page.
+astoryapp.com is S3 + CloudFront: see `docs/PUBLISHING.md` (`npm run build` builds every page, upload all of `dist/`, the CloudFront function in `deploy/cloudfront-viewer-request.js`). Pushes to `main` publish through `.github/workflows/publish.yml` once its AWS variables are set. After every publish, `npm run verify:live` checks the live site page by page.
+
+Added 2026-10-18 (phase 1, `docs/PHASE1-REPORT-2026-10-18.md`): `lib/app.ts` (every door into the web app, app.astoryapp.com, and the one call to action, "Start free"), `pages/site/AppDoor.tsx` (/join, /join/:code, /c/:slug, /account and the old sign-in pages, sent on to the app), the inline script at the top of `index.html` that does the same before the page paints, `scripts/question-bank.mjs` (the question count, from the app's own bank) and `qa/routing/cloudfront.test.mjs`. The site's own /account page is gone; /sign-in and /sign-up stay only for the $1 reservation.
 
 Added 2026-10-03: `pages/site/Listen.tsx` (`/l`, where the listening codes in a printed book land), `kit/MoreWays.tsx` (family calls by link, the dinner table, WhatsApp imports — on Home and How it works), and `BOOK_EDITIONS` in `lib/pricing.ts` (the app's six book editions).
 

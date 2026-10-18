@@ -50,7 +50,7 @@ const COPY: Record<
   { submit: string; reassure: string; heading: string; body: string }
 > = {
   start: {
-    submit: "Join the waitlist",
+    submit: "Send",
     reassure:
       "No payment, and nothing charged. We call once - if it is not for you, say so and that is the end of it.",
     heading: "You’re on the list.",
@@ -153,8 +153,8 @@ const LeadForm = ({
         </p>
         <ol>
           <li>
-            <strong>We call you</strong> when your turn comes round - a person,
-            not a system.
+            <strong>We call you</strong> to find a time - a person, not a
+            system.
           </li>
           <li>
             <strong>We show you how it works</strong> and answer whatever you

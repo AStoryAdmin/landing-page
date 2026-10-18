@@ -292,7 +292,7 @@ export default function PriceLadder({
                       <b>Plans are not sold on the web yet. Two early ways into the same calls.</b>
                     </p>
                     <p>
-                      A founding family pays <b>{founding.price}</b> now and
+                      A founding family pays <b>{founding.price}</b> and
                       starts now, set up by hand, with {founding.discount}% off the
                       first year. Set up in the order families join;{" "}
                       {foundingLine}.

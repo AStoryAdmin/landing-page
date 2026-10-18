@@ -1,12 +1,12 @@
 # A Story — website
 
-React 19 + Vite + TypeScript. 20 prerendered routes, Supabase-backed waitlist.
+React 19 + Vite + TypeScript. Every route prerendered; accounts live in the web app at app.astoryapp.com.
 
 ```
 npm ci
 npm run dev          # local
 npm run lint
-npm run build:static # production build + prerender
+npm run build        # production build: every page prerendered
 ```
 
 Start with **[MAP.md](MAP.md)** — what every live file does and where the facts live.

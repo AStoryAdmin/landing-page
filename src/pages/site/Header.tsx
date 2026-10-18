@@ -209,7 +209,7 @@ export default function Header() {
         </button>
         <nav id="site-navigation" aria-label="Main navigation">
           <div className="gf-nav-links">
-            {[...primary, ...account].map(([label, to]) =>
+            {primary.map(([label, to]) =>
               outsideRouter(to) ? (
                 <a key={to} href={to} onClick={close}>
                   {label}
@@ -278,6 +278,12 @@ export default function Header() {
                 </Link>
               </div>
             </div>
+            {/* Last in the row, beside "Start free": the door for people who already have an account. */}
+            {account.map(([label, to]) => (
+              <a key={to} href={to} onClick={close}>
+                {label}
+              </a>
+            ))}
           </div>
           <a className="gf-button" href={START_HREF} onClick={close}>
             {START_LABEL} <ArrowIcon />
