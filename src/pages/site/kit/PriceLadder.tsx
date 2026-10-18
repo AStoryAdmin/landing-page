@@ -211,10 +211,16 @@ export default function PriceLadder({
       $ground={ground}
       $tight={!title}
       id={id}
-      aria-labelledby={title ? `${id}-title` : undefined}
-      aria-label={title ? undefined : "What A Story costs"}
+      aria-labelledby={`${id}-title`}
     >
       <Frame>
+        {/* Without the visible title (on Pricing, under the page's h1) the
+            section still needs its h2, or the rungs' h3s skip a level. */}
+        {!title && (
+          <h2 id={`${id}-title`} className="sr-only">
+            What A Story costs
+          </h2>
+        )}
         {title && (
           <SplitHead>
             <div>

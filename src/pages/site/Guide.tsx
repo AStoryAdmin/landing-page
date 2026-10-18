@@ -39,7 +39,9 @@ const PICTURED = ["33", "23", "30", "21"];
 const Article = styled(Chapter)`
   padding: clamp(64px, 8vw, 120px) 0 clamp(80px, 9vw, 140px);
   .back {
-    display: inline-flex;
+    /* Its own line: inline, it sat on one baseline with the eyebrow after it. */
+    display: flex;
+    width: fit-content;
     align-items: center;
     min-height: 44px;
     margin-bottom: 28px;

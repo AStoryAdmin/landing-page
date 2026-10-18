@@ -129,6 +129,7 @@ const Opening = styled(Chapter)`
   .marks a {
     display: inline-flex;
     align-items: center;
+    min-height: 44px;
     border-radius: 4px;
     transition: transform ${motion.base};
   }

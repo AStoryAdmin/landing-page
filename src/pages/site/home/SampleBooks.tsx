@@ -200,7 +200,7 @@ const Section = styled(Chapter)`
       margin-top: 0;
     }
     .open {
-      min-height: 40px;
+      min-height: 44px;
     }
     .card p {
       max-width: 52ch;

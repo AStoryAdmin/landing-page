@@ -247,8 +247,8 @@ const Page = styled.section`
   .field .with-toggle button {
     position: absolute;
     right: 0;
-    bottom: 8px;
-    min-height: 36px;
+    bottom: 4px;
+    min-height: 44px;
     padding: 0 10px;
     border: 0;
     background: transparent;
@@ -272,6 +272,7 @@ const Page = styled.section`
     display: flex;
     align-items: center;
     gap: 10px;
+    min-height: 44px;
     width: fit-content;
     font: 400 16px/1.4 ${font.body};
     color: ${color.body};
@@ -361,6 +362,7 @@ const Page = styled.section`
   }
   .quiet button,
   .quiet a {
+    min-height: 44px;
     padding: 4px 0;
     border: 0;
     background: none;

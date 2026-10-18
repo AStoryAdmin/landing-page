@@ -161,7 +161,9 @@ const Answers = styled(Chapter)`
   }
   .search {
     position: relative;
-    flex: 1 1 220px;
+    /* Wide enough for the whole placeholder (it was cut to "Search - try privacy, t"). */
+    flex: 1 1 300px;
+    min-width: min(300px, 100%);
     display: flex;
     align-items: center;
   }
@@ -459,7 +461,7 @@ export default function Questions() {
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search - try privacy, books or calls"
+                placeholder="Search: privacy, books, calls"
               />
             </label>
           </div>

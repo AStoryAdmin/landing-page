@@ -22,7 +22,7 @@ export default function YourStory() {
       <EditorialSeo
         title="Your own story - record the life you’re living now"
         path="/your-story"
-        description="You don’t have to be old to have a story. Talk or write about the life you’re living now - the first apartment, the friends, the years that go fast - and keep it private until you choose."
+        description="You don’t have to be old to have a story. Talk or write about the life you’re living now - the first apartment, the friends - and keep it private."
       />
       <AudiencePage
         eyebrow="Your own story"

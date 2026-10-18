@@ -33,7 +33,10 @@ const text = async (t, size = 52, serif = false, tint = brand.chocolate) =>
   })
     .png()
     .toBuffer();
-for (const item of all) {
+/* `npm run social -- programs` renders only the named cards. */
+const only = process.argv.slice(2);
+const list = only.length ? all.filter((item) => only.includes(item.og)) : all;
+for (const item of list) {
   const photo = await sharp(`public/mission/${item.photo}-1200.webp`)
     .resize(542, 530, { fit: "inside" })
     .toBuffer({ resolveWithObject: true });
@@ -69,5 +72,5 @@ for (const item of all) {
     .toFile(`public/og/${item.og}.jpg`);
 }
 console.log(
-  `Rendered ${all.length} page-specific social images with local licensed fonts.`,
+  `Rendered ${list.length} page-specific social images with local licensed fonts.`,
 );

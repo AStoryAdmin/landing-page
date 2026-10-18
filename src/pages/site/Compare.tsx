@@ -166,7 +166,7 @@ export default function Compare() {
       <EditorialSeo
         title="How A Story is different - more than a memoir"
         path="/compare"
-        description="A Story compared with Storyworth, Remento, Storii, Meminto, Spomen and Heirloom: phone calls that follow up, every family member's version kept side by side, and an archive that keeps growing."
+        description="A Story beside Storyworth, Remento, Storii, Meminto, Spomen and Heirloom: calls that follow up, every family member's version, an archive that keeps growing."
       />
       <CompareOpening />
 

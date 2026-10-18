@@ -479,7 +479,7 @@ export const HeaderShell = styled.header`
     .gf-mobile-more a {
       display: flex;
       align-items: center;
-      min-height: 40px;
+      min-height: 44px;
       font-size: 15px;
       color: ${color.ivory};
       text-decoration: none;
@@ -597,7 +597,7 @@ export const FooterShell = styled.footer`
   .gf-footer-links a {
     display: flex;
     align-items: center;
-    min-height: 40px;
+    min-height: 44px;
     width: fit-content;
     font: 400 15px/1.3 ${font.body};
     color: ${color.ivory};

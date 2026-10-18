@@ -144,7 +144,7 @@ const Call = styled.div`
     margin: 5cqw 0 1cqw;
     text-align: center;
   }
-  .who h4 {
+  .who .scr-h4 {
     font: 700 5.6cqw/1.2 ${font.body};
     color: ${color.primary};
   }
@@ -316,7 +316,7 @@ const Call = styled.div`
     font-size: 2.6cqw;
     letter-spacing: 0;
   }
-  .saved h5 {
+  .saved .scr-h5 {
     margin: 2.4cqw 0 1cqw;
     font: 700 5cqw/1.2 ${font.body};
     color: ${color.primary};
@@ -433,7 +433,7 @@ export function CallScreen({
         </span>
       </div>
       <div className="who">
-        <h4>{title}</h4>
+        <div className="scr-h4">{title}</div>
         <p>{chapter}</p>
       </div>
       <div className={`talk${played ? " is-played" : ""}`}>
@@ -494,7 +494,7 @@ export function CallScreen({
       {played && saved && (
         <div className="saved">
           <small>Saved to {teller}’s archive</small>
-          <h5>{title}</h5>
+          <div className="scr-h5">{title}</div>
           <p>
             {chapter} · a card, every word, and a thread to pick up next call
           </p>
@@ -556,7 +556,7 @@ const Memory = styled.div`
     font: 500 3cqw/1.2 ${font.body};
     color: ${color.bodyMuted};
   }
-  h4 {
+  .scr-h4 {
     margin: 3cqw 0 2cqw;
     text-align: center;
     font: 700 6cqw/1.15 ${font.body};
@@ -584,7 +584,7 @@ const Memory = styled.div`
     gap: 2.2cqw;
     padding-top: 3cqw;
   }
-  .versions h5 {
+  .versions .scr-h5 {
     font: 700 3.4cqw/1.2 ${font.body};
     color: ${color.primary};
   }
@@ -716,7 +716,7 @@ export function MemoryScreen({
             </Chip>
           ))}
         </div>
-        <h4>{title}</h4>
+        <div className="scr-h4">{title}</div>
         <div className="told">
           <Avatar $bg={color.primary}>{teller.initial}</Avatar>
           <p>
@@ -724,7 +724,7 @@ export function MemoryScreen({
           </p>
         </div>
         <div className="versions">
-          {voices.length > 0 && <h5>Everyone’s version</h5>}
+          {voices.length > 0 && <div className="scr-h5">Everyone’s version</div>}
           {voices.map((v, i) => (
             <div className="slot" key={v.name}>
               <span className="waiting">Invited · {v.name.split(",")[0]}</span>
@@ -840,7 +840,7 @@ const Home = styled.div`
     background: ${color.paperPure};
     box-shadow: 0 1px 0 ${color.primaryLine};
   }
-  .question h5 {
+  .question .scr-h5 {
     font: 700 3.6cqw/1.2 ${font.body};
     color: ${color.accent};
   }
@@ -927,7 +927,7 @@ export function HomeScreen({
           ))}
         </div>
         <div className="question">
-          <h5>A little question for today,</h5>
+          <div className="scr-h5">A little question for today,</div>
           <p>{question}</p>
           <span>
             <I d="play" size="3cqw" /> Tap to listen
@@ -975,7 +975,7 @@ const Incoming = styled.div`
     height: 22cqw;
     width: auto;
   }
-  h5 {
+  .scr-h5 {
     margin-top: 6cqw;
     font: 400 8cqw/1.1 ${font.display};
     color: ${color.ivory};
@@ -1032,7 +1032,7 @@ export function IncomingScreen({
         <div className="mark">
           <Logo tone="dark" variant="mark" height={80} />
         </div>
-        <h5>A Story</h5>
+        <div className="scr-h5">A Story</div>
         <p>is calling · {when}</p>
         <p className="q">“{question}”</p>
       </div>
@@ -1060,7 +1060,7 @@ const Archive = styled.div`
   position: absolute;
   inset: 0;
   padding: 13cqw 5cqw 0;
-  h4 {
+  .scr-h4 {
     text-align: center;
     font: 700 4.6cqw/1.2 ${font.body};
     margin-bottom: 4cqw;
@@ -1140,7 +1140,7 @@ const Archive = styled.div`
     object-fit: cover;
     border-radius: 2.6cqw;
   }
-  .card h5 {
+  .card .scr-h5 {
     font: 700 3.8cqw/1.2 ${font.body};
     margin: 1.4cqw 0 0.8cqw;
   }
@@ -1171,7 +1171,7 @@ export function ArchiveScreen({
 }) {
   return (
     <Archive>
-      <h4>The Archive</h4>
+      <div className="scr-h4">The Archive</div>
       <div className="profile">
         <div className="who">
           <Avatar $bg={color.primary}>{owner[0]}</Avatar>
@@ -1201,7 +1201,7 @@ export function ArchiveScreen({
         <AppPhoto id={memory.photo} />
         <div>
           <Chip $dot={color.teal}>Family</Chip>
-          <h5>{memory.title}</h5>
+          <div className="scr-h5">{memory.title}</div>
           <p>{memory.date}</p>
           <div className="stack">
             {["S", "L", "B"].map((x, i) => (

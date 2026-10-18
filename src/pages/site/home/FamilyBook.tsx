@@ -997,7 +997,10 @@ const Scene = styled.section`
       order: -1;
       flex-basis: 100%;
     }
+    /* Each stop shares the rail's width (about 40 x 44 on a 390 phone)
+       rather than shrinking to its 9px diamond. */
     .rail button {
+      flex: 1 1 0;
       min-width: 0;
       font-size: 0;
     }

@@ -97,6 +97,21 @@ const GlobalStyle = createGlobalStyle`
     text-wrap: balance;
   }
 
+  /* Titles inside the drawn app screens (pages/site/app/screens.tsx). They
+     were h4 and h5, which broke the page's heading order (2026-10-18 audit);
+     these keep the look those tags gave them. */
+  .scr-h4 {
+    font-family: ${font.body};
+    color: ${color.ink};
+    margin: 0;
+    font-weight: 500;
+    text-wrap: balance;
+  }
+  .scr-h5 {
+    margin-block: 1.67em;
+    font-weight: 700;
+  }
+
   /* Emphasis in a heading is carried by colour, never italic (design.md).
      <em> is italic by browser default, so it is stated once here. */
   h1 em, h2 em, h3 em, h4 em { font-style: normal; }

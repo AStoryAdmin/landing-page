@@ -250,7 +250,7 @@ header.top{width:100%;max-width:1180px;display:flex;flex-wrap:wrap;align-items:f
 .qr{position:absolute;left:11.5cqw;right:10cqw;bottom:10cqw;display:grid;grid-template-columns:17cqw 1fr;gap:4cqw;align-items:center;padding-top:4cqw;border-top:1px solid rgba(60,50,40,.18)}
 .qr .code{width:17cqw;height:17cqw;background:#fff;padding:1.2cqw;box-sizing:border-box;box-shadow:0 0 0 .1cqw rgba(0,0,0,.12)}
 .qr .code svg{width:100%;height:100%;display:block}
-.qr h4{margin:0 0 1cqw;font:700 1.75cqw/1 var(--f-sans);letter-spacing:.24em;text-transform:uppercase;color:var(--terracotta)}
+.qr h3{margin:0 0 1cqw;font:700 1.75cqw/1 var(--f-sans);letter-spacing:.24em;text-transform:uppercase;color:var(--terracotta)}
 .qr p{margin:0;font:400 2.3cqw/1.45 var(--f-body);color:var(--ink)}
 .qr p span{display:block;font:500 1.6cqw/1.6 var(--f-sans);letter-spacing:.12em;color:var(--ink-soft);margin-top:.8cqw;text-transform:uppercase}
 .lessons{counter-reset:l;list-style:none;margin:4cqw 0 0;padding:0;display:flex;flex-direction:column;gap:2.4cqw}
@@ -396,7 +396,7 @@ header.top{width:100%;max-width:1180px;display:flex;flex-wrap:wrap;align-items:f
 .a-stats b{display:block;font:500 22px/1 "Cormorant Garamond",Georgia,serif}
 .a-stats span{font:400 11.5px/1.3 "DM Sans",sans-serif;color:var(--a-soft)}
 .a-group{margin-top:20px}
-.a-group h4{margin:0 0 8px;font:600 11px/1 "DM Sans",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--a-soft)}
+.a-group h3{margin:0 0 8px;font:600 11px/1 "DM Sans",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--a-soft)}
 .aitem{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;background:var(--a-card);border:1px solid var(--a-line);border-radius:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer;color:var(--a-ink);gap:10px}
 .aitem[disabled]{cursor:default;opacity:.85}
 .aitem .t{font:500 17px/1.2 "Cormorant Garamond",Georgia,serif;display:block}
@@ -446,7 +446,7 @@ header.top{width:100%;max-width:1180px;display:flex;flex-wrap:wrap;align-items:f
 .wk-cols{display:grid;grid-template-columns:1fr 31cqw;gap:3.4cqw;margin-top:2.8cqw;min-height:0}
 .wk-text{font:400 2.12cqw/1.48 var(--f-body);min-width:0}
 .wk-text p{margin:0 0 1.2cqw}
-.wk-text h4{margin:2cqw 0 .6cqw;font:500 2.9cqw/1 var(--f-display);border-bottom:1px solid rgba(60,50,40,.18);padding-bottom:.6cqw}
+.wk-text h3{margin:2cqw 0 .6cqw;font:500 2.9cqw/1 var(--f-display);border-bottom:1px solid rgba(60,50,40,.18);padding-bottom:.6cqw}
 .wk-box{background:#f4efe6;border:1px solid rgba(60,50,40,.22);padding:1.6cqw;align-self:start;font-size:1.7cqw}
 .wk-photo{height:24cqw}
 .wk-photo .photo{height:100%}
@@ -761,7 +761,8 @@ header.top .cta-top{order:0;flex:none}
 .sw{width:28px;height:28px}
 .btn{font:600 14px/1 var(--ui-sans);letter-spacing:0;text-transform:none;min-height:44px;padding:0 20px;background:var(--chip)}
 .pos{font:500 14px/1 var(--ui-sans);letter-spacing:0;text-transform:none}
-.dot{height:3px;position:relative}
+.dot{width:24px;height:24px;padding:10px 0;box-sizing:border-box;background-clip:content-box;position:relative}
+.dot,.dot[aria-current="true"]{background-clip:content-box}
 .dot::before{content:"";position:absolute;inset:-20px -1px}
 .sw::before{content:"";position:absolute;inset:-8px -4px}
 /* Covers and endpapers in the printed volume's own cloth, cut from the
@@ -805,6 +806,15 @@ header.top .books{justify-content:flex-start}
   nav.site{flex-wrap:wrap;padding-inline:16px}
   .site-links{order:3;flex-basis:100%;margin:0 -16px;padding:0 16px}
   nav.site .home{margin-right:auto}
+  /* Phones (2026-10-18): the button was position:fixed, but the nav's
+     backdrop-filter makes the nav its containing block, so it sat on top of
+     the links. It stays in the nav row now, and the links wrap instead of
+     running off the edge. */
+  nav.site{position:static}
+  nav.site .cta-top{position:static;box-shadow:none;padding:0 18px;min-height:44px}
+  .wrap{padding-bottom:28px}
+  .site-links{flex-wrap:wrap;overflow:visible;gap:0 18px}
+  .sw::before{inset:-8px}
 }
 </style>
 
@@ -818,7 +828,7 @@ header.top .books{justify-content:flex-start}
     <a href="/our-story">Our story</a>
     <a href="/programs">Programs</a>
   </div>
-  <a class="cta cta-top" href="/reserve">Reserve for $1</a>
+  <a class="cta cta-top" href="https://app.astoryapp.com/create-account">Start free</a>
 </nav>
 <div class="wrap">
   <header class="top">
@@ -856,8 +866,8 @@ header.top .books{justify-content:flex-start}
   </div>
 
   <div class="reserve">
-    <div class="rv-copy"><b>Start your parent’s book for $1.</b><span>$1 holds your place, refunded any time before launch. Or start now as a founding family for $29. Your parent talks, writes, or shares what they already have, and A Story does the shaping.</span></div>
-    <a class="cta" href="/reserve">Reserve for $1</a>
+    <div class="rv-copy"><b>Start your family’s book.</b><span>Free, in your browser at app.astoryapp.com: write, invite the family, and read the book as it grows. No card. Your parent talks, writes, or shares what they already have, and A Story does the shaping.</span></div>
+    <a class="cta" href="https://app.astoryapp.com/create-account">Start free</a>
   </div>
   <p class="hint">Click a page or use ← → to turn. Tap a QR code to see what it opens. <a class="back" href="/how-it-works">How a book is made</a> · <a class="back" href="/">Back to astoryapp.com</a></p>
 </div>
@@ -1006,7 +1016,7 @@ function showArchive(){
   <div class="a-stats">${P.stats.map(([b,s])=>`<div><b>${b}</b><span>${s}</span></div>`).join('')}</div>
   <div class="a-note"><b>Private to the family.</b> ${P.privacy}</div>`;
   ARCHIVE.forEach(([c,items])=>{
-    h += `<div class="a-group"><h4>${c}</h4>`;
+    h += `<div class="a-group"><h3>${c}</h3>`;
     items.forEach(it=>{
       if(it[0]==='little') h += `<button class="aitem" data-go="little"><span><span class="t">${P.littleTitle}</span><span class="y">${P.littleCount} answered</span></span><span class="tag">12 in the book</span></button>`;
       else if(it[0]==='family') h += `<button class="aitem" data-go="family"><span><span class="t">Pages from the family</span><span class="y">${FAMILY.length} voice messages</span></span><span class="tag">In the book</span></button>`;
@@ -1298,9 +1308,9 @@ FACES = [
   <div class="wk-cols">
     <div class="wk-text">
       <p><b>Carolyn Ruth Bennett</b> (née Walsh; born April 23, 1960) is a baker, mother and grandmother from Holland, Michigan. She founded Ruth’s Table, a bakery on Eighth Street named for her mother, and ran it for twenty-five years.</p>
-      <h4>Early life</h4><p>The middle of three children of Frank and Ruth Walsh, she grew up four blocks from Lake Macatawa and danced in the Tulip Time festival as a girl.</p>
-      <h4>Family</h4><p>She married Rick Bennett in 1982. Their daughter Dylan was born in 1984; grandchildren Ellie and Sam followed.</p>
-      <h4>Known for</h4><p>Her Sunday lemon cake, the phrase “finish the parade,” and a rule that phones go in the bread box at dinner.</p>
+      <h3>Early life</h3><p>The middle of three children of Frank and Ruth Walsh, she grew up four blocks from Lake Macatawa and danced in the Tulip Time festival as a girl.</p>
+      <h3>Family</h3><p>She married Rick Bennett in 1982. Their daughter Dylan was born in 1984; grandchildren Ellie and Sam followed.</p>
+      <h3>Known for</h3><p>Her Sunday lemon cake, the phrase “finish the parade,” and a rule that phones go in the bread box at dinner.</p>
     </div>
     <aside class="wk-box">
       <div class="wk-photo">${ph(IMG.beachd,"62% 18%")}</div>
@@ -1545,7 +1555,7 @@ FACES = [
     <div class="notecard kid b"><span class="tape"></span><p>My favorite things about Grandma are her stories and her car.</p><div class="who"><b>Sam · 9</b></div></div>
   </div></div>
   <div class="qr"><button class="qrbtn" data-scan="family" aria-label="Scan this code: hear the family's voice messages" style="width:17cqw">${QR.family}</button>
-  <div><h4>Hear their voices</h4><p>Scan to play the voice messages Dylan, Mark, Ellie and Sam sent in through the contribute link.<span>Audio · 4 messages · 6 min</span></p></div></div>
+  <div><h3>Hear their voices</h3><p>Scan to play the voice messages Dylan, Mark, Ellie and Sam sent in through the contribute link.<span>Audio · 4 messages · 6 min</span></p></div></div>
   ${folio(43)}`},
 /* 43-44 letters back to them */
 {html:`${grain}<div class="pg letter">
@@ -1820,9 +1830,9 @@ endpaper, endpaper,
 /* 7 profile, 8 chart */
 {cls:"profile", html: profilePage({name:"Raymond Ortiz", from:"From the Ortiz family archive, kept with A Story", mono:"RO",
   text:`<p><b>Raymond Ortiz</b> (born March 9, 1951) is an American machinist and the founder of Ortiz Precision, a contract machining company in Grand Rapids, Michigan. He started it in a rented garage in 1983 and sold it to its 140 employees in 2022.</p>
-    <h4>Early life</h4><p>The fourth of six children of a San Antonio auto mechanic, he moved to Michigan in 1974 for a tool and die job, sight unseen.</p>
-    <h4>Business</h4><p>The company made parts for office furniture and, later, medical devices. It came close to closing in 1991 and 2009.</p>
-    <h4>Known for</h4><p>Keeping all 62 employees through the 2009 recession, and paying every employee on Friday by noon for thirty-nine years.</p>`,
+    <h3>Early life</h3><p>The fourth of six children of a San Antonio auto mechanic, he moved to Michigan in 1974 for a tool and die job, sight unseen.</p>
+    <h3>Business</h3><p>The company made parts for office furniture and, later, medical devices. It came close to closing in 1991 and 2009.</p>
+    <h3>Known for</h3><p>Keeping all 62 employees through the 2009 recession, and paying every employee on Friday by noon for thirty-nine years.</p>`,
   rows:[["Born","March 9, 1951<br>San Antonio, Texas"],["Occupation","Machinist; founder, Ortiz Precision (1983–2022)"],["Spouse","Elena Ortiz (m. 1975)"],["Children","Marisol (1977), Tomás (1980)"],["Grandchildren","Maya (2001) and two others"],["Company today","Owned by 140 employees"]]}, 6)},
 {html:`${grain}<div class="pg">
   <span class="kicker">Thirty-nine years in one line</span>
@@ -2184,9 +2194,9 @@ endpaper, endpaper,
 /* 7 profile, 8 history */
 {cls:"profile", html: profilePage({name:"Thomas Kessler", from:"From the Kessler family archive, kept with A Story", mono:"TK",
   text:`<p><b>Thomas J. Kessler</b> (born January 14, 1948) is an American veteran of the Vietnam War and a retired emergency room nurse from Saginaw, Michigan. He served as an Army combat medic in 1968 and 1969, then worked thirty-six years as a nurse.</p>
-    <h4>Early life</h4><p>The son of a foundry worker who had served in the Pacific in World War II, he grew up on Saginaw’s east side.</p>
-    <h4>Service</h4><p>Drafted in 1967, he served a year with an infantry company as a medic, arriving ten days after the Tết Offensive began.</p>
-    <h4>Known for</h4><p>Thirty-six years of night shifts, and saying Danny Alvarez’s name out loud every Memorial Day.</p>`,
+    <h3>Early life</h3><p>The son of a foundry worker who had served in the Pacific in World War II, he grew up on Saginaw’s east side.</p>
+    <h3>Service</h3><p>Drafted in 1967, he served a year with an infantry company as a medic, arriving ten days after the Tết Offensive began.</p>
+    <h3>Known for</h3><p>Thirty-six years of night shifts, and saying Danny Alvarez’s name out loud every Memorial Day.</p>`,
   rows:[["Born","January 14, 1948<br>Saginaw, Michigan"],["Service","U.S. Army, 1967–1969"],["Role","Combat medic"],["Occupation","ER nurse (1972–2008)"],["Spouse","Diane Kessler (m. 1971)"],["Children","Mike (1973), Laura (1976)"]]}, 6)},
 {html:`${grain}<div class="pg">
   <span class="kicker">His life, against history</span>
