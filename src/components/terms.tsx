@@ -453,10 +453,10 @@ const sections: SectionData[] = [
     title: "Governing law",
     content: (
       <Paragraph>
-        These Terms are governed by the laws of the State of Michigan, without
+        These Terms are governed by the laws of the State of Delaware, without
         regard to its conflict-of-laws principles. Subject to the Dispute
         Resolution section below, any claims not subject to arbitration will be
-        brought exclusively in the state or federal courts located in Michigan,
+        brought exclusively in the state or federal courts located in Delaware,
         and you consent to the jurisdiction of those courts.
       </Paragraph>
     ),
@@ -593,7 +593,7 @@ const Terms = () => {
                 },
                 {
                   label: "Disputes go to arbitration.",
-                  text: "In Michigan, individually - with a small-claims and an opt-out route, both spelled out below.",
+                  text: "Under Delaware law, individually - with a small-claims and an opt-out route, both spelled out below.",
                 },
               ]}
               caveat="This summary is here to be read, not to be relied on. Where it and the terms below differ, the terms govern."
