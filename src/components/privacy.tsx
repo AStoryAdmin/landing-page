@@ -94,6 +94,10 @@ const Privacy = () => {
                   text: "Not the person who paid for the gift. They decide who can see, hear or download anything.",
                 },
                 {
+                  label: "Only your family sees it. Not even us.",
+                  text: "Nobody at A Story reads, listens to or looks at your memories, unless you ask us to help or someone reports something.",
+                },
+                {
                   label: "We never sell data.",
                   text: "Not to advertisers, data brokers, insurers, or anyone else. There is no advertising in A Story and no tracking across other apps or websites.",
                 },
@@ -250,6 +254,14 @@ const Privacy = () => {
                     train artificial-intelligence models. They are not a
                     product.
                   </Paragraph>
+                  <Paragraph>
+                    <Bold>Not even our team.</Bold> People at A Story do not
+                    read, listen to or look at your memories, photos, calls or
+                    letters. The only exceptions are when you ask us to, for
+                    example to fix something; when someone reports content and
+                    we must review it; or when the law requires it. Access for
+                    those reasons is limited to the few people who need it.
+                  </Paragraph>
                 </Section>
 
                 <Section id="s5">
@@ -265,7 +277,10 @@ const Privacy = () => {
                     tidy your words, or have the book retold, your voice, your
                     words and any photos you share in that conversation are
                     sent to OpenAI through our own server, so that they can be
-                    transcribed and answered. The app asks your permission
+                    transcribed and answered. OpenAI receives only what the
+                    feature you are using needs, at the moment you use it: it
+                    is not given your archive, your family tree or your
+                    letters, and it keeps nothing as an archive of its own. The app asks your permission
                     before the first time, and you can say no; nothing is sent
                     until you say yes. Text that A Story writes from what you
                     said is shown to you to read and change before it is kept.
