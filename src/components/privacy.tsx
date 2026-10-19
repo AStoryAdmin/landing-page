@@ -35,18 +35,23 @@ const sections = [
   { id: "s4", title: "Your stories, your control" },
   { id: "s5", title: "How we use artificial intelligence" },
   { id: "s6", title: "Consent of the person being recorded" },
-  { id: "s7", title: "How we share information" },
-  { id: "s8", title: "How long we keep your information" },
-  { id: "s9", title: "Security" },
-  { id: "s10", title: "Your privacy rights" },
-  { id: "s11", title: "Children" },
-  { id: "s12", title: "Where your information is stored" },
-  { id: "s13", title: "If someone gave this to you as a gift" },
-  { id: "s14", title: "What your family adds about you, and letters" },
-  { id: "s15", title: "Email we send" },
-  { id: "s16", title: "Changes to this policy" },
-  { id: "s17", title: "Contact us" },
+  { id: "s7", title: "Who we share information with" },
+  { id: "s8", title: "Calls and notifications on your phone" },
+  { id: "s9", title: "How long we keep your information" },
+  { id: "s10", title: "Security" },
+  { id: "s11", title: "Your privacy rights" },
+  { id: "s12", title: "Children" },
+  { id: "s13", title: "Where your information is stored" },
+  { id: "s14", title: "If someone gave this to you as a gift" },
+  { id: "s15", title: "What your family adds about you, and letters" },
+  { id: "s16", title: "Email we send" },
+  { id: "s17", title: "Changes to this policy" },
+  { id: "s18", title: "Contact us" },
 ];
+
+const Mail = () => (
+  <LegalLink href="mailto:contact@astoryapp.com">contact@astoryapp.com</LegalLink>
+);
 
 const Privacy = () => {
   return (
@@ -73,7 +78,7 @@ const Privacy = () => {
             The most precious things a family owns. We treat them that way.
           </HeroSub>
           <LegalMeta>
-            Last updated: October 11, 2026 &middot; A Story Technologies, Inc.
+            Last updated: October 18, 2026 &middot; A Story Technologies, Inc.
           </LegalMeta>
         </CardView>
       </HeroSection>
@@ -90,11 +95,11 @@ const Privacy = () => {
                 },
                 {
                   label: "We never sell data.",
-                  text: "Not to advertisers, data brokers, insurers, or anyone else. There is no version of this where we do.",
+                  text: "Not to advertisers, data brokers, insurers, or anyone else. There is no advertising in A Story and no tracking across other apps or websites.",
                 },
                 {
                   label: "We never train AI on your stories.",
-                  text: "Your recordings are used to build your archive, and for nothing else.",
+                  text: "Your recordings are used to run your archive, and for nothing else. Neither we nor the AI company we use trains models on them.",
                 },
                 {
                   label: "Everyone recorded is asked first.",
@@ -106,7 +111,7 @@ const Privacy = () => {
                 },
                 {
                   label: "You can delete it all.",
-                  text: "Deletion means deletion, including backups, within 30 days.",
+                  text: "Delete your account in the app, or ask us, and it is gone within 30 days.",
                 },
               ]}
               caveat="This summary is here to be read, not to be relied on. Where it and the policy below differ, the policy governs."
@@ -120,12 +125,15 @@ const Privacy = () => {
                   <SectionTitle>Who we are</SectionTitle>
                   <Paragraph>
                     A Story is operated by A Story Technologies, Inc., a
-                    corporation organized under the laws of the State of
-                    Michigan, United States. You can reach us at any time at{" "}
-                    <LegalLink href="mailto:contact@astoryapp.com">
-                      contact@astoryapp.com
-                    </LegalLink>
-                    .
+                    Delaware corporation based in the United States ("A
+                    Story," "we," "us"). We are responsible for the personal
+                    information described in this policy. You can reach us at
+                    any time at <Mail />.
+                  </Paragraph>
+                  <Paragraph>
+                    This policy covers the A Story app for iPhone, our
+                    website at astoryapp.com, and the emails and printed books
+                    that come from them.
                   </Paragraph>
                 </Section>
 
@@ -137,41 +145,76 @@ const Privacy = () => {
                   </Paragraph>
                   <List>
                     <ListItem>
-                      <Bold>Contact and purchase information,</Bold> including
-                      your name, email address, phone number if you give us one,
-                      and the payment details needed to take a payment.
+                      <Bold>Your account.</Bold> Your name, email address and
+                      password, or, if you sign in with Apple, Google or
+                      Facebook, the name and email address that service shares
+                      with us (Apple may give us a private relay address
+                      instead of your real one). We never receive your
+                      password for those services, and we never post anything
+                      to them. You may also add a photo, your birth year and
+                      other details about yourself, and a phone number if you
+                      choose to.
                     </ListItem>
                     <ListItem>
-                      <Bold>The memories themselves</Bold>  - the audio
-                      recordings, transcripts, photographs, and stories that you
-                      and your storyteller share. This is the heart of what we
-                      hold, and we treat it as highly sensitive personal
-                      information.
+                      <Bold>The memories themselves.</Bold> The audio
+                      recordings, transcripts, written memories, photographs
+                      and stories that you and your storyteller share, and the
+                      questions family members send each other. This is the
+                      heart of what we hold, and we treat it as highly
+                      sensitive personal information.
                     </ListItem>
                     <ListItem>
-                      <Bold>Payment information,</Bold> which is processed by
-                      our third-party payment providers. We do not collect or
-                      store full payment card numbers.
+                      <Bold>Your family tree.</Bold> The relatives you add,
+                      with what you know about them (names, relationships,
+                      years, places, photos), and the email addresses of the
+                      people you invite.
+                    </ListItem>
+                    <ListItem>
+                      <Bold>Calls.</Bold> When you talk with A Story or with
+                      family through the app, the audio of the call and its
+                      transcript, and when and how long the call was.
+                    </ListItem>
+                    <ListItem>
+                      <Bold>Your phone.</Bold> The tokens Apple gives us so the
+                      daily call can ring and a question from family can reach
+                      you, a random identifier the app makes for each install,
+                      your time zone (so a call rings at the hour you chose),
+                      the app version and the kind of phone. We do not collect
+                      your location, your contacts or the advertising
+                      identifier.
+                    </ListItem>
+                    <ListItem>
+                      <Bold>Purchases.</Bold> Plans bought in the app are paid
+                      to Apple; we receive which plan you have and when it
+                      renews, never your card. Printed books bought on our
+                      website are paid through Stripe, and we receive your name,
+                      email and the address the book is shipped to. We do not
+                      collect or store full payment card numbers.
                     </ListItem>
                     <ListItem>
                       <Bold>Usage information.</Bold> The app sends us a record
                       of which features are used (for example "a memory was
-                      saved" or "a call started"), with the app version, the
-                      kind of phone and the account it came from. These
-                      records never contain what anyone said, wrote, or
-                      photographed. They go to our own database, not to an
-                      advertising or analytics company. You can turn them off
-                      in the app under Privacy Settings ("Help improve A
+                      saved" or "a call started"), as counts and short labels,
+                      with the app version, the kind of phone and the account
+                      it came from. These records never contain what anyone
+                      said, wrote or photographed. They go to our own database,
+                      not to an advertising or analytics company. You can turn
+                      them off in the app under Privacy ("Help improve A
                       Story").
                     </ListItem>
                     <ListItem>
-                      <Bold>Crash reports.</Bold> When the app crashes on a
-                      phone, a report of the crash (the error, the app version
-                      and the phone model, with your account id so two reports
-                      from one phone can be told apart) goes to Sentry, a
-                      crash-reporting service. It carries no name, no email
-                      and nothing you recorded or wrote. The same "Help
-                      improve A Story" switch turns it off.
+                      <Bold>Crash reports.</Bold> When the app crashes, a
+                      report of the crash (the error, the app version and the
+                      phone model, with your account id so two reports from
+                      one phone can be told apart) goes to Sentry, a
+                      crash-reporting service. It carries no name, no email and
+                      nothing you recorded or wrote. The same "Help improve A
+                      Story" switch turns it off.
+                    </ListItem>
+                    <ListItem>
+                      <Bold>What you tell us.</Bold> Messages you send to
+                      support, feedback you give in the app, and reports you
+                      make about content.
                     </ListItem>
                   </List>
                 </Section>
@@ -180,13 +223,17 @@ const Privacy = () => {
                   <SectionNum>3</SectionNum>
                   <SectionTitle>How we use your information</SectionTitle>
                   <Paragraph>
-                    We use your information to deliver A Story - to
-                    conduct the interviews, build the memory cards and life
-                    timeline, produce your printed book, and host your archive
- - as well as to communicate with you, process
-                    payments, provide customer support, maintain security, and
-                    comply with our legal obligations. We do not sell your
-                    personal information or your family's stories.
+                    We use your information to run A Story: to hold the
+                    conversations, build the memory cards, family tree and
+                    life timeline, ring the daily call, tell you when family
+                    asks you something, produce and ship your printed book,
+                    and host your archive. We also use it to communicate with
+                    you, take payments, provide support, keep the service safe
+                    and working, act on reports, and meet our legal
+                    obligations. We use usage counts and crash reports to find
+                    what is broken and what is used. We do not sell your
+                    personal information or your family's stories, and we do
+                    not use them for advertising.
                   </Paragraph>
                 </Section>
 
@@ -194,13 +241,13 @@ const Privacy = () => {
                   <SectionNum>4</SectionNum>
                   <SectionTitle>Your stories, your control</SectionTitle>
                   <Paragraph>
-                    Your recordings, transcripts, photographs, and stories are
+                    Your recordings, transcripts, photographs and stories are
                     private to the storyteller and the people they choose to
-                    share them with. The storyteller is always the one who
-                    decides where a memory goes - nothing is shared
-                    without their permission. We will never sell your family's
-                    stories, show them to advertisers, or use them to train
-                    outside artificial-intelligence models. They are not a
+                    share them with. The storyteller always decides where a
+                    memory goes; nothing is shared without their permission,
+                    and nothing is ever public. We will never sell your
+                    family's stories, show them to advertisers, or use them to
+                    train artificial-intelligence models. They are not a
                     product.
                   </Paragraph>
                 </Section>
@@ -211,25 +258,26 @@ const Privacy = () => {
                     How we use artificial intelligence
                   </SectionTitle>
                   <Paragraph>
-                    A Story uses artificial intelligence to conduct guided
-                    interviews and to help shape what is shared into a readable
-                    story. The company whose AI does this is OpenAI. When you
-                    talk with A Story, dictate a memory, ask it to tidy your
-                    words, or have the book retold, your voice, your words and
-                    any photos you share in that conversation are sent to
-                    OpenAI through our own server, so that they can be
+                    A Story uses artificial intelligence to hold guided
+                    conversations and to help shape what is shared into a
+                    readable story. The company whose AI does this is OpenAI.
+                    When you talk with A Story, dictate a memory, ask it to
+                    tidy your words, or have the book retold, your voice, your
+                    words and any photos you share in that conversation are
+                    sent to OpenAI through our own server, so that they can be
                     transcribed and answered. The app asks your permission
                     before the first time, and you can say no; nothing is sent
                     until you say yes. Text that A Story writes from what you
                     said is shown to you to read and change before it is kept.
                   </Paragraph>
                   <Paragraph>
-                    We use your content only to provide and improve the A
-                    Story service itself. We do not use your family's stories,
-                    recordings, or transcripts to train third-party or external
-                    artificial-intelligence models, and our agreement with
-                    OpenAI does not allow them to train on it either. Letters
-                    (section 14) are never sent to any AI.
+                    We use your content only to provide the A Story service to
+                    you. We do not use your family's stories, recordings or
+                    transcripts to train artificial-intelligence models, and
+                    OpenAI does not train on data sent through its business
+                    service. OpenAI may keep what it receives for up to 30
+                    days to watch for abuse, and then deletes it. Letters
+                    (section 15) are never sent to any AI.
                   </Paragraph>
                 </Section>
 
@@ -244,9 +292,9 @@ const Privacy = () => {
                     storyteller's consent before recording begins and before
                     their stories are produced into an archive or book. If you
                     set up A Story on behalf of another person, you are
-                    responsible for ensuring that the storyteller, and anyone
-                    else whose voice is recorded, understands and agrees to
-                    being recorded.
+                    responsible for making sure that the storyteller, and
+                    anyone else whose voice is recorded, understands and agrees
+                    to being recorded.
                   </Paragraph>
                   <Paragraph>
                     <Bold>Calls between family.</Bold> When two or more
@@ -276,130 +324,207 @@ const Privacy = () => {
 
                 <Section id="s7">
                   <SectionNum>7</SectionNum>
-                  <SectionTitle>How we share information</SectionTitle>
+                  <SectionTitle>Who we share information with</SectionTitle>
                   <Paragraph>
-                    We share information only with service providers who help us
-                    operate A Story - such as secure cloud hosting, book
-                    printing and fulfillment, payment processing, and analytics
- - and only under agreements that limit their use of it
-                    to providing services to us. We may also disclose
-                    information where we are required to do so by law, or where
-                    we believe in good faith that disclosure is necessary to
-                    protect the rights, property, or safety of our users, the
-                    public, or A Story.
+                    Inside A Story, your memories are shared only with the
+                    family members the storyteller chooses. Outside A Story, we
+                    share information only with the service providers that
+                    help us run it, only as far as each one needs, and only
+                    under agreements that limit their use of it to providing
+                    their service to us:
+                  </Paragraph>
+                  <List>
+                    <ListItem>
+                      <Bold>Supabase</Bold> stores accounts, the archive and
+                      its files, in the United States.
+                    </ListItem>
+                    <ListItem>
+                      <Bold>OpenAI</Bold> transcribes and answers
+                      conversations and helps write memories (section 5).
+                    </ListItem>
+                    <ListItem>
+                      <Bold>Apple</Bold> takes in-app payments, delivers
+                      notifications and calls to your iPhone, and provides
+                      Sign in with Apple. <Bold>Google</Bold> and{" "}
+                      <Bold>Facebook</Bold> provide sign-in, if you choose them.
+                    </ListItem>
+                    <ListItem>
+                      <Bold>RevenueCat</Bold> keeps track of which plan an
+                      account has bought through the App Store.
+                    </ListItem>
+                    <ListItem>
+                      <Bold>Stripe</Bold> takes payment for printed books on
+                      our website.
+                    </ListItem>
+                    <ListItem>
+                      <Bold>Our printing and shipping partners</Bold> receive
+                      the book itself and the name and address it ships to.
+                    </ListItem>
+                    <ListItem>
+                      <Bold>Resend</Bold> sends our email (invitations, the
+                      Sunday note, account email).
+                    </ListItem>
+                    <ListItem>
+                      <Bold>Sentry</Bold> receives crash reports (section 2).
+                    </ListItem>
+                  </List>
+                  <Paragraph>
+                    We may also disclose information where the law requires
+                    it, or where we believe in good faith that disclosure is
+                    necessary to protect the safety of a person, or the rights
+                    and property of our users, the public or A Story. If A
+                    Story is ever part of a merger or sale, your information
+                    would pass to the new owner only under the promises in
+                    this policy, and we would tell you before it did.
                   </Paragraph>
                 </Section>
 
                 <Section id="s8">
                   <SectionNum>8</SectionNum>
-                  <SectionTitle>How long we keep your information</SectionTitle>
+                  <SectionTitle>Calls and notifications on your phone</SectionTitle>
                   <Paragraph>
-                    Because A Story is built to preserve memories for the long
-                    term, we retain your content for as long as your account or
-                    archive remains active. You may request deletion of your
-                    content at any time by contacting us at{" "}
-                    <LegalLink href="mailto:contact@astoryapp.com">
-                      contact@astoryapp.com
-                    </LegalLink>
-                    , or delete your whole account yourself in the app (Menu,
-                    then Account, then Delete account), and we will delete it
-                    within thirty (30) days, except
-                    where we must retain certain information to complete a
-                    transaction, resolve disputes, or comply with legal
-                    obligations, and except for residual copies that are removed
-                    from routine backups in the ordinary course.
-                  </Paragraph>
-                  <Paragraph>
-                    Your archive does not expire when you stop paying. Canceling
-                    a plan, or letting a one-time purchase lapse, returns the
-                    account to the Free tier - the guided AI conversations
-                    stop, and everything else keeps working. We will not delete
-                    an archive or restrict access to material already recorded
-                    because a plan ended.
+                    If you set up a daily call, A Story rings your iPhone like
+                    an ordinary call from "A Story", and it appears in your
+                    Phone app's Recents. If you allow notifications, a
+                    question from family arrives as a notification naming who
+                    asked and showing the question, which can be seen on your
+                    lock screen unless you hide previews in your iPhone's
+                    settings. You can turn off the daily call in the app, and
+                    notifications in your iPhone's Settings, at any time.
+                    Signing out takes your phone off our list.
                   </Paragraph>
                 </Section>
 
                 <Section id="s9">
                   <SectionNum>9</SectionNum>
-                  <SectionTitle>Security</SectionTitle>
+                  <SectionTitle>How long we keep your information</SectionTitle>
                   <Paragraph>
-                    We protect your information using administrative, technical,
-                    and organizational safeguards appropriate to its
-                    sensitivity. Recordings and transcripts are encrypted in
-                    transit and at rest, and access is restricted to personnel
-                    and providers who need it to operate the service. No method
-                    of storage or transmission is perfectly secure, but we work
-                    continually to safeguard the irreplaceable content you trust
-                    us with.
+                    Because A Story is built to keep memories for the long
+                    term, we keep your content for as long as your account or
+                    archive is active. You can delete your whole account
+                    yourself in the app (Menu, then Account, then Delete
+                    account), or ask us at <Mail />, and we will delete it
+                    within thirty (30) days. That includes accounts made with
+                    Apple, Google or Facebook sign-in, and removes what those
+                    services shared with us. We keep only what we must to
+                    complete a transaction, resolve a dispute or meet a legal
+                    obligation (for example, records of payments), and copies
+                    in our backups are erased as those backups expire.
+                  </Paragraph>
+                  <Paragraph>
+                    Memories you added to someone else's story belong to that
+                    story; deleting your account removes your account and your
+                    own story, and we will remove anything else you added if
+                    you ask.
+                  </Paragraph>
+                  <Paragraph>
+                    Your archive does not expire when you stop paying.
+                    Canceling a plan, or letting a one-time purchase lapse,
+                    returns the account to the Free tier: the guided AI
+                    conversations stop, and everything else keeps working. We
+                    will not delete an archive or restrict access to material
+                    already recorded because a plan ended.
                   </Paragraph>
                 </Section>
 
                 <Section id="s10">
                   <SectionNum>10</SectionNum>
-                  <SectionTitle>Your privacy rights</SectionTitle>
+                  <SectionTitle>Security</SectionTitle>
                   <Paragraph>
-                    Subject to applicable law, you may request to access,
-                    correct, delete, or receive a portable copy of your personal
-                    information, and you may opt out of marketing communications
-                    at any time. To exercise these rights, email us at{" "}
-                    <LegalLink href="mailto:contact@astoryapp.com">
-                      contact@astoryapp.com
-                    </LegalLink>
-                    .
-                  </Paragraph>
-                  <Paragraph>
-                    <Bold>California residents.</Bold> Under the California
-                    Consumer Privacy Act, as amended, you have the right to know
-                    what personal information we collect and how we use it, to
-                    request deletion or correction of your personal information,
-                    and to opt out of any "sale" or "sharing" of personal
-                    information. We do not sell or share your personal
-                    information as those terms are defined under California law.
-                  </Paragraph>
-                  <Paragraph>
-                    <Bold>EEA and UK residents.</Bold> Where applicable
-                    data-protection law governs, we process your personal
-                    information on the legal basis of performing our contract
-                    with you, your consent, and our legitimate interests in
-                    operating and improving the service. You have the right to
-                    access, rectify, erase, restrict, or object to processing,
-                    to data portability, and to lodge a complaint with your
-                    local supervisory authority.
+                    We protect your information with administrative,
+                    technical and organizational safeguards suited to how
+                    sensitive it is. Recordings and transcripts are encrypted
+                    in transit and at rest, each family's archive is walled off
+                    from every other in our database, and access is restricted
+                    to the people and providers who need it to run the
+                    service. No method of storage or transmission is perfectly
+                    secure, but we work continually to protect the
+                    irreplaceable things you trust us with, and we will tell
+                    you promptly, as the law requires, if a breach affects your
+                    information.
                   </Paragraph>
                 </Section>
 
                 <Section id="s11">
                   <SectionNum>11</SectionNum>
-                  <SectionTitle>Children</SectionTitle>
+                  <SectionTitle>Your privacy rights</SectionTitle>
                   <Paragraph>
-                    A Story is intended for people aged 13 and older, and we do
-                    not knowingly collect personal information directly from
-                    children under the age of 13. Where a storyteller's memories
-                    naturally mention children or other family members, that
-                    content is treated as part of the storyteller's stories and
-                    is protected under this policy.
+                    Wherever you live, you can ask us to show you, correct,
+                    delete or give you a portable copy of your personal
+                    information, and you can opt out of marketing email at any
+                    time. Write to <Mail />; we will answer within 30 days and
+                    may need to confirm it is really you first. We will not
+                    treat you differently for using any of these rights.
+                  </Paragraph>
+                  <Paragraph>
+                    <Bold>California and other US states.</Bold> Under the
+                    California Consumer Privacy Act, as amended, and the
+                    privacy laws of other states, you have the right to know
+                    what personal information we collect and how we use it, to
+                    access, correct and delete it, and to opt out of any
+                    "sale," "sharing" or targeted advertising. We do not sell
+                    or share personal information, or use it for targeted
+                    advertising, as those terms are defined in those laws, and
+                    we do not use sensitive personal information to infer
+                    things about you. You may use an authorized agent, and if
+                    we decline a request you may appeal by replying to our
+                    answer.
+                  </Paragraph>
+                  <Paragraph>
+                    <Bold>EEA, UK and Swiss residents.</Bold> Where these
+                    data-protection laws apply, we process your personal
+                    information to perform our contract with you, with your
+                    consent (for example, before anything is sent to our AI
+                    provider, and for recordings), and for our legitimate
+                    interests in running and improving a safe service. You have
+                    the right to access, rectify, erase, restrict or object to
+                    processing, to data portability, to withdraw consent at any
+                    time, and to complain to your local supervisory authority.
+                  </Paragraph>
+                  <Paragraph>
+                    We do not track you across other companies' apps or
+                    websites, so there is nothing for "Do Not Track" or Global
+                    Privacy Control signals to switch off; we honor them all
+                    the same.
                   </Paragraph>
                 </Section>
 
                 <Section id="s12">
                   <SectionNum>12</SectionNum>
-                  <SectionTitle>Where your information is stored</SectionTitle>
+                  <SectionTitle>Children</SectionTitle>
                   <Paragraph>
-                    A Story is operated from the United States, and your
-                    information is stored and processed in the United States. If
-                    you access the service from outside the United States, you
-                    understand that your information will be transferred to and
-                    processed in the United States.
+                    A Story accounts are for people aged 13 and older, and we
+                    do not knowingly collect personal information directly
+                    from children under 13. Families naturally talk about
+                    their children, and a child may be heard on a family call
+                    or added to the family tree; that content is part of the
+                    family's archive, protected under this policy, and added by
+                    the adult responsible for it. If you believe a child under
+                    13 has made an account, tell us and we will delete it.
                   </Paragraph>
                 </Section>
 
                 <Section id="s13">
                   <SectionNum>13</SectionNum>
+                  <SectionTitle>Where your information is stored</SectionTitle>
+                  <Paragraph>
+                    A Story is operated from the United States, and your
+                    information is stored and processed in the United States.
+                    If you use A Story from outside the United States, your
+                    information is transferred to and processed in the United
+                    States, where we rely on the safeguards our providers
+                    offer, such as standard contractual clauses, where the law
+                    requires them.
+                  </Paragraph>
+                </Section>
+
+                <Section id="s14">
+                  <SectionNum>14</SectionNum>
                   <SectionTitle>
                     If someone gave this to you as a gift
                   </SectionTitle>
                   <Paragraph>
-                    Most A Story archives are paid for by one person and filled
+                    Many A Story archives are paid for by one person and filled
                     by another. When that happens, the two of you are treated as
                     separate people with separate rights, and the money does not
                     decide who gets what.
@@ -407,9 +532,16 @@ const Privacy = () => {
                   <Paragraph>
                     The person who bought the gift gives us their name, email
                     and payment details, which we use to take the payment, send
-                    them the card and the link, and keep them updated on the
-                    book. That is all we hold about them, and none of it gives
+                    them the gift, and keep them updated on the book. That is
+                    all we hold about them as a buyer, and none of it gives
                     them access to anything you record.
+                  </Paragraph>
+                  <Paragraph>
+                    <Bold>You control your archive.</Bold> You decide whether
+                    the person who gave you the gift can read, hear or download
+                    any of it, and you can change your mind at any time. We may
+                    tell them the gift was opened and, if you order one, that
+                    the book is on its way; nothing about what you said.
                   </Paragraph>
                   <Paragraph>
                     <Bold>Content you bring in from other services.</Bold> You
@@ -425,23 +557,10 @@ const Privacy = () => {
                     it is never used to train models, and it can be removed at
                     any time.
                   </Paragraph>
-                  <Paragraph>
-                    <Bold>You control your archive.</Bold> You decide whether
-                    the person who gave you the gift can read, hear or download
-                    any of it, and you can change your mind at any time. We will
-                    tell them the gift was opened and, if you order one, that
-                    the book is on its way - nothing about what you said.
-                  </Paragraph>
-                  <Paragraph>
-                    We may send either of you occasional messages about A Story
- - no spam, just a note when there is something worth
-                    telling you. You can opt out at any time using the
-                    unsubscribe link or by writing to us.
-                  </Paragraph>
                 </Section>
 
-                <Section id="s14">
-                  <SectionNum>14</SectionNum>
+                <Section id="s15">
+                  <SectionNum>15</SectionNum>
                   <SectionTitle>
                     What your family adds about you, and letters
                   </SectionTitle>
@@ -456,11 +575,20 @@ const Privacy = () => {
                     who added you and the family's organizer look after it.
                     Memories and facts that others add about you are kept with
                     your story and can be corrected, declined or reported from
-                    the app, and we act on reports within a day.
+                    the app, and we act on reports within 24 hours. You can
+                    also block a person, so that they can no longer reach you
+                    through A Story.
+                  </Paragraph>
+                  <Paragraph>
+                    <Bold>Questions from family.</Bold> A question a relative
+                    sends you waits on your Home and, if you allow it, arrives
+                    as a notification (section 8). It is seen only by you and
+                    the person who asked. Your answer goes into your own
+                    story, under your control like any other memory.
                   </Paragraph>
                   <Paragraph>
                     <Bold>Letters.</Bold> A letter is something you write for
-                    one person, by hand, and seal. It is stored apart from your
+                    one person and seal. It is stored apart from your
                     memories, no AI ever reads it, and nobody can open it but
                     the person it is for. You can give it to them at any time.
                     If you have not opened A Story for six months, your sealed
@@ -472,8 +600,8 @@ const Privacy = () => {
                   </Paragraph>
                 </Section>
 
-                <Section id="s15">
-                  <SectionNum>15</SectionNum>
+                <Section id="s16">
+                  <SectionNum>16</SectionNum>
                   <SectionTitle>Email we send</SectionTitle>
                   <Paragraph>
                     Once a week, on Sunday, we email the people on a story a
@@ -483,34 +611,33 @@ const Privacy = () => {
                     memory it became, never as a call or a transcript. The
                     email is on by default for everyone with an account, and
                     one tap at the foot of any copy turns it off, as does the
-                    switch in the app under Privacy Settings. Beyond that we
-                    send the emails an account needs (confirming your address,
-                    resetting a password, an invitation somebody sent you) and
-                    nothing else.
-                  </Paragraph>
-                </Section>
-
-                <Section id="s16">
-                  <SectionNum>16</SectionNum>
-                  <SectionTitle>Changes to this policy</SectionTitle>
-                  <Paragraph>
-                    We may update this policy from time to time. When we do, we
-                    will post the revised version here with a new "Last updated"
-                    date, and we will notify you of material changes by email or
-                    through the app before they take effect.
+                    switch in the app under Privacy. Beyond that we send the
+                    emails an account needs (confirming your address,
+                    resetting a password, an invitation somebody sent you, a
+                    book order) and nothing else.
                   </Paragraph>
                 </Section>
 
                 <Section id="s17">
                   <SectionNum>17</SectionNum>
+                  <SectionTitle>Changes to this policy</SectionTitle>
+                  <Paragraph>
+                    We may update this policy from time to time. When we do, we
+                    will post the revised version here with a new "Last
+                    updated" date, and we will tell you about material changes
+                    by email or in the app before they take effect. We will
+                    never apply a change that weakens these promises to
+                    memories already recorded without asking you first.
+                  </Paragraph>
+                </Section>
+
+                <Section id="s18">
+                  <SectionNum>18</SectionNum>
                   <SectionTitle>Contact us</SectionTitle>
                   <Paragraph>
-                    If you have any questions about this policy or your privacy,
-                    please email us at{" "}
-                    <LegalLink href="mailto:contact@astoryapp.com">
-                      contact@astoryapp.com
-                    </LegalLink>
-                    . We respond to every message.
+                    If you have any questions about this policy or your
+                    privacy, or want to use any of your rights, email us at{" "}
+                    <Mail />. We answer every message.
                   </Paragraph>
                 </Section>
               </div>

@@ -55,9 +55,8 @@ const sections: SectionData[] = [
     title: "Who we are",
     content: (
       <Paragraph>
-        The service is provided by A Story Technologies, Inc., a corporation
-        organized under the laws of the State of Michigan ("A Story," "we,"
-        "us"). You can contact us at{" "}
+        The service is provided by A Story Technologies, Inc., a Delaware
+        corporation ("A Story," "we," "us"). You can contact us at{" "}
         <LegalLink href="mailto:contact@astoryapp.com">
           contact@astoryapp.com
         </LegalLink>
@@ -83,10 +82,11 @@ const sections: SectionData[] = [
     title: "What we provide",
     content: (
       <Paragraph>
-        A Story is a memory-keeping service: a warm, AI-guided experience that
-        interviews a loved one, records their memories, and turns them into
-        memory cards on a life timeline, a private digital archive, and, when
-        you choose, a printed memory book. The specific features available, the
+        A Story is a memory-keeping service for families: guided conversations
+        with A Story, a daily call that rings like a phone call, calls between
+        relatives, written memories, a shared family tree, questions family
+        send each other, sealed letters, a private archive, and, when you
+        choose, a printed memory book. The specific features available, the
         plans we offer, and the details of any printed book order are described
         at the time of purchase and form part of these Terms.
       </Paragraph>
@@ -99,11 +99,11 @@ const sections: SectionData[] = [
     content: (
       <>
         <Paragraph>
-          Most people who tell their story to A Story never create an account
- - they open the link they were given and talk. Where an account
-          does exist, you are responsible for the accuracy of the information
-          you provide and for keeping your credentials secure, and for activity
-          that occurs under it.
+          You can make an account with your email address, or sign in with
+          Apple, Google or Facebook. Somebody invited onto a single family call
+          can join from a link without an account. You are responsible for the
+          accuracy of the information you provide, for keeping your sign-in
+          secure, and for activity that occurs under your account.
         </Paragraph>
         <Paragraph>
           Please notify us promptly at{" "}
@@ -185,13 +185,24 @@ const sections: SectionData[] = [
         <Paragraph>
           A Story is free to use at its Free tier, and offers paid plans that
           lift the limit on AI-guided conversations. Individual and Family are
-          annual subscriptions that renew until canceled; Express is a one-time
-          purchase covering roughly thirty days and does not renew. Every
-          account begins on the Free tier, at no charge and without a card;
-          there is no free trial of the paid plans. The Individual, Family and
+          annual subscriptions and Monthly is a monthly subscription, each
+          renewing at the price shown until canceled; Express is a one-time
+          purchase covering thirty days and does not renew. Every account
+          begins on the Free tier, at no charge and without a card; there is no
+          free trial of the paid plans. The Individual, Family and
           Express plans include a printed book as described on the Pricing page,
           with shipping charged separately; on other plans a printed book is
           purchased separately.
+        </Paragraph>
+        <Paragraph>
+          <Bold>Buying in the app.</Bold> Plans bought in the iPhone app are
+          paid to Apple and charged to your Apple account. A subscription
+          renews automatically unless you turn renewal off at least 24 hours
+          before the end of the current period, in your Apple account's
+          subscription settings; deleting the app does not cancel it. Refunds
+          for App Store purchases are decided by Apple under its own policies,
+          and we will help you ask for one. Restore purchases, on the Plans
+          screen, brings a plan back on a new phone.
         </Paragraph>
         <Paragraph>{OFFER_TERMS}</Paragraph>
         <Paragraph>
@@ -207,13 +218,14 @@ const sections: SectionData[] = [
           because a package has ended.
         </Paragraph>
         <Paragraph>
-          <Bold>Gifts that go unused.</Bold> If the person you bought it for
-          does not use it, write to us at{" "}
+          <Bold>Gifts that go unused.</Bold> If you bought A Story on our
+          website for someone who does not use it, write to us at{" "}
           <LegalLink href="mailto:contact@astoryapp.com">
             contact@astoryapp.com
           </LegalLink>{" "}
           and we will refund you. We would rather return the money than have a
-          gift sit there unopened, and we do not put a deadline on this.
+          gift sit there unopened, and we do not put a deadline on this. For a
+          gift bought through the App Store, we will help you ask Apple.
         </Paragraph>
         <Paragraph>
           <Bold>If you started under an earlier offer.</Bold> Where you began
@@ -238,36 +250,127 @@ const sections: SectionData[] = [
     id: "s10",
     title: "App store terms",
     content: (
-      <Paragraph>
-        If you download A Story from the Apple App Store, you acknowledge that
-        these Terms are between you and A Story only, and not with Apple, and
-        that Apple is not responsible for the app or its content. Apple has no
-        obligation to furnish any maintenance or support for the app, and is not
-        responsible for addressing any claims relating to the app. Apple and its
-        subsidiaries are third-party beneficiaries of these Terms and may
-        enforce them against you. When you download the app from Google Play,
-        the applicable Google Play terms also apply. You agree to comply with
-        all applicable third-party terms when using the app.
-      </Paragraph>
+      <>
+        <Paragraph>
+          If you download A Story from the Apple App Store, these Terms are
+          between you and A Story only, not with Apple, and A Story, not Apple,
+          is responsible for the app and its content. We grant you a
+          non-transferable license to use the app on Apple-branded devices you
+          own or control, as the App Store's Usage Rules allow. Apple has no
+          obligation to provide maintenance or support for the app. If the app
+          fails to meet a warranty that applies to it, you may tell Apple, and
+          Apple will refund the purchase price, if any; beyond that, Apple has
+          no warranty obligation. A Story, not Apple, is responsible for
+          addressing any claims about the app, including product liability,
+          failure to meet legal or regulatory requirements, consumer
+          protection, and claims that the app infringes someone's intellectual
+          property. You confirm that you are not in a country under a U.S.
+          embargo and are not on a U.S. government list of prohibited parties.
+          Apple and its subsidiaries are third-party beneficiaries of these
+          Terms and may enforce them against you.
+        </Paragraph>
+        <Paragraph>
+          You agree to comply with any third-party terms that apply when you
+          use the app, including your mobile carrier's.
+        </Paragraph>
+      </>
     ),
   },
   {
     num: 11,
     id: "s11",
-    title: "Acceptable use",
+    title: "Family content, reporting and blocking",
     content: (
-      <Paragraph>
-        You agree not to misuse the service - for example, by attempting
-        to disrupt or interfere with it, accessing it unlawfully or without
-        authorization, reverse-engineering it except where permitted by law, or
-        using it to upload content that is illegal or that infringes the rights
-        of others.
-      </Paragraph>
+      <>
+        <Paragraph>
+          A Story is shared among family, so what you add can be seen by the
+          people the storyteller chooses. There is no tolerance for abusive,
+          hateful, harassing, sexually explicit or otherwise objectionable
+          content, or for abusive users. You may not use A Story to harass or
+          threaten anyone, to record someone who has not agreed, to impersonate
+          anyone, to add false or harmful claims about a real person, or to
+          upload anything illegal or that infringes someone else's rights.
+        </Paragraph>
+        <Paragraph>
+          A memory, photo or detail that someone else added can be reported from
+          the app,
+          and any person can be blocked, so that they can no longer reach you
+          through A Story. We review reports within 24 hours, and we may remove
+          content and suspend or close the account of anyone who breaks these
+          rules.
+        </Paragraph>
+      </>
     ),
   },
   {
     num: 12,
     id: "s12",
+    title: "Conversations, calls and AI",
+    content: (
+      <>
+        <Paragraph>
+          A Story's conversations, transcripts, summaries and retellings are
+          made with artificial intelligence. They can mishear, misremember or
+          get a name, place or date wrong, so A Story shows you what it wrote
+          before it is kept, and you can change or remove it at any time. AI
+          output is not professional, medical, legal or financial advice.
+        </Paragraph>
+        <Paragraph>
+          The daily call rings at the time you choose and can be turned off at
+          any time. A Story is not a telephone service and cannot be used to
+          call emergency services.
+        </Paragraph>
+      </>
+    ),
+  },
+  {
+    num: 13,
+    id: "s13",
+    title: "Letters",
+    content: (
+      <Paragraph>
+        A sealed letter is opened only by the person it is written for. If you
+        do not open A Story for six months, your sealed letters pass to the
+        trusted person you named, or, if you named nobody, to the closest
+        relative with an account in your family, as the Privacy Policy
+        describes. By writing a letter, you ask us to do this. You can change
+        your trusted person or delete a letter at any time before then.
+      </Paragraph>
+    ),
+  },
+  {
+    num: 14,
+    id: "s14",
+    title: "Acceptable use",
+    content: (
+      <Paragraph>
+        You agree not to misuse the service, for example by attempting to
+        disrupt or interfere with it, accessing it unlawfully or without
+        authorization, reading another family's archive, reverse-engineering
+        it except where the law allows, or using automated means to collect
+        anything from it.
+      </Paragraph>
+    ),
+  },
+  {
+    num: 15,
+    id: "s15",
+    title: "Ending your account",
+    content: (
+      <Paragraph>
+        You can stop using A Story at any time, and delete your account in the
+        app (Menu, then Account, then Delete account) or by writing to us; the
+        Privacy Policy says what is deleted and when. Ask for an export first
+        if you want a copy. We may suspend or close an account that breaks
+        these Terms, after telling you why where we can, and if we ever close
+        the service itself we will give you at least 90 days' notice and a
+        way to download everything your family recorded.
+      </Paragraph>
+    ),
+  },
+  {
+    num: 16,
+    id: "s16",
     title: "Our intellectual property",
     content: (
       <Paragraph>
@@ -280,8 +383,8 @@ const sections: SectionData[] = [
     ),
   },
   {
-    num: 13,
-    id: "s13",
+    num: 17,
+    id: "s17",
     title: "Third-party services",
     content: (
       <Paragraph>
@@ -293,8 +396,8 @@ const sections: SectionData[] = [
     ),
   },
   {
-    num: 14,
-    id: "s14",
+    num: 18,
+    id: "s18",
     title: "Disclaimers",
     content: (
       <Paragraph>
@@ -308,8 +411,8 @@ const sections: SectionData[] = [
     ),
   },
   {
-    num: 15,
-    id: "s15",
+    num: 19,
+    id: "s19",
     title: "Limitation of liability",
     content: (
       <>
@@ -332,8 +435,8 @@ const sections: SectionData[] = [
     ),
   },
   {
-    num: 16,
-    id: "s16",
+    num: 20,
+    id: "s20",
     title: "Indemnification",
     content: (
       <Paragraph>
@@ -345,8 +448,8 @@ const sections: SectionData[] = [
     ),
   },
   {
-    num: 17,
-    id: "s17",
+    num: 21,
+    id: "s21",
     title: "Governing law",
     content: (
       <Paragraph>
@@ -359,8 +462,8 @@ const sections: SectionData[] = [
     ),
   },
   {
-    num: 18,
-    id: "s18",
+    num: 22,
+    id: "s22",
     title: "Dispute resolution and arbitration",
     content: (
       <>
@@ -399,21 +502,22 @@ const sections: SectionData[] = [
     ),
   },
   {
-    num: 19,
-    id: "s19",
+    num: 23,
+    id: "s23",
     title: "Changes to these terms",
     content: (
       <Paragraph>
         We may update these Terms from time to time. When we do, we will post
-        the revised version here with a new "Last updated" date. Your continued
-        use of the service after changes take effect means you accept the
-        updated Terms.
+        the revised version here with a new "Last updated" date, and we will
+        tell you about material changes by email or in the app before they take
+        effect. Your continued use of the service after changes take effect
+        means you accept the updated Terms.
       </Paragraph>
     ),
   },
   {
-    num: 20,
-    id: "s20",
+    num: 24,
+    id: "s24",
     title: "Contact us",
     content: (
       <Paragraph>
@@ -450,7 +554,7 @@ const Terms = () => {
           <HeroTitle>Terms of Service</HeroTitle>
           <HeroSub>The agreement between you and A Story.</HeroSub>
           <LegalMeta>
-            Last updated: September 29, 2026 &middot; A Story Technologies, Inc.
+            Last updated: October 18, 2026 &middot; A Story Technologies, Inc.
           </LegalMeta>
         </CardView>
       </HeroSection>
