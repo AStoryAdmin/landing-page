@@ -16,7 +16,7 @@
  */
 import { useId, useMemo, useState, type FormEvent } from "react";
 import styled from "styled-components";
-import { requestDemo, demoMailto, DEMO_EMAIL, INSTITUTION_KINDS } from "../../lib/demoRequest";
+import { requestDemo, DEMO_EMAIL, INSTITUTION_KINDS } from "../../lib/demoRequest";
 import { looksLikeEmail } from "../../lib/leads";
 import { track } from "../../lib/analytics";
 import { ArrowIcon } from "./kit/kit";
@@ -443,8 +443,7 @@ export default function DemoBooking({ initialKind = "" }: { initialKind?: string
         {busy ? "Sending…" : "Book a demo"} <ArrowIcon />
       </PrimaryButton>
       <p className="fine" id={`${uid}-fine`}>
-        It goes straight to Daniel, our co-founder. No payment, and no mailing list. Rather write?{" "}
-        <a href={demoMailto({ organization })}>{DEMO_EMAIL}</a>
+        No payment, and no mailing list. We use these details only to arrange the demo.
       </p>
     </Form>
   );
