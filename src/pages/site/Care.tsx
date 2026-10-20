@@ -32,8 +32,8 @@ export default function Care() {
         lead="The work they did. The music in the house. The way they made Sunday lunch. Give those stories somewhere to stay - and give the people caring for them a way to learn them."
         actions={
           <>
-            <PrimaryLink to="/start?intent=demo">
-              Request a demonstration <ArrowIcon />
+            <PrimaryLink to="/organizations?for=care#book">
+              Book a demo <ArrowIcon />
             </PrimaryLink>
             <SecondaryLink to="/care-communities#begin-title">
               Planning participation
@@ -111,8 +111,8 @@ export default function Care() {
           "How families are invited, and when",
         ]}
         beginAction={
-          <PrimaryLink to="/start?intent=demo">
-            Talk through a program <ArrowIcon />
+          <PrimaryLink to="/organizations?for=care#book">
+            Book a demo <ArrowIcon />
           </PrimaryLink>
         }
       />

@@ -10,7 +10,7 @@ export const groups = [
       },
       {
         q: "Can I sign up today?",
-        a: "We are opening to a few families at a time. Reserve a place for $1 by 2 November and hold 15% off your first year, or become one of 25 founding families for $29 and start now, with one of us on your first call. Founding places go in the order families join. Both are refundable.",
+        a: "We are opening to a few families at a time. Reserve a place for $1 by 2 November and hold 15% off your first year, refundable any time before launch. All 25 founding places are filled.",
       },
       {
         q: "Does my family member need to install an app?",
@@ -65,7 +65,7 @@ export const groups = [
       },
       {
         q: "How does giving A Story work?",
-        a: "You help set up an archive for your relative and choose a good time for the first call. There is no gift card, code, or redemption process. Express is the one-time plan; the annual and monthly plans renew. Reserve for $1 to hold your place, or start now as a founding family.",
+        a: "You help set up an archive for your relative and choose a good time for the first call. There is no gift card, code, or redemption process. Express is the one-time plan; the annual and monthly plans renew. Reserve for $1 to hold your place.",
       },
     ],
   },

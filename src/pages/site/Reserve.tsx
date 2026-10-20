@@ -641,7 +641,7 @@ export default function Reserve() {
       return (
         <>
           <p className="small">
-            All {FOUNDING_PLACES} founding places are taken. Join the list for the next group - or reserve for{" "}
+            All {FOUNDING_PLACES} founding places are filled. Join the list for the next group - or reserve for{" "}
             {OFFERS.reserve.price} and hold your place for launch.
           </p>
           {waitlistAction("next")}
@@ -805,7 +805,7 @@ export default function Reserve() {
         <p className="tag">
           {isFounding
             ? !foundingOpen
-              ? `All ${FOUNDING_PLACES} taken · list open`
+              ? `All ${FOUNDING_PLACES} filled · list open`
               : `Open now · ${placesLine}`
             : discountOpen
               ? `The easy yes · ends ${RESERVE_DEADLINE_LABEL}`
@@ -875,9 +875,17 @@ export default function Reserve() {
   return (
     <>
       <EditorialSeo
-        title={`${founding.places} founding families - start A Story now for ${founding.price}`}
+        title={
+          founding.open
+            ? `${founding.places} founding families - start A Story now for ${founding.price}`
+            : `Reserve A Story for ${reserve.price}`
+        }
         path="/reserve"
-        description={`A Story opens to ${founding.places} founding families before launch: ${founding.price}, set up with you by hand, one of us on your first call, half off your first year, refundable until that call. Or hold a place for ${reserve.price}.`}
+        description={
+          founding.open
+            ? `A Story opens to ${founding.places} founding families before launch: ${founding.price}, set up with you by hand, one of us on your first call, half off your first year, refundable until that call. Or hold a place for ${reserve.price}.`
+            : `All ${founding.places} founding places are filled. ${reserve.price} holds your place in line for launch, ${reserve.discount}% off your first year if you reserve by ${RESERVE_DEADLINE_LABEL}, refundable any time before launch.`
+        }
       />
 
       {/* While founding places remain, the page leads with them (header);
@@ -921,7 +929,7 @@ export default function Reserve() {
               Hold your place <em>for a dollar.</em>
             </>
           }
-          lead={`A Story calls someone you love and asks about their life. All ${founding.places} founding places are taken; reserve for ${reserve.price} and we tell you the moment it is your turn.`}
+          lead={`A Story calls someone you love and asks about their life. All ${founding.places} founding places are filled; reserve for ${reserve.price} and we tell you the moment it is your turn.`}
           actions={
             <>
               <PrimaryAnchor
@@ -1013,7 +1021,10 @@ export default function Reserve() {
               <p className="d">
                 There is a birthday coming, or a question you have been meaning to ask for years. Founding
                 families start before launch, with one of us beside you for the first call, at half price for
-                the year. There are {founding.places} places, and they go in the order families join.
+                the year.{" "}
+                {foundingOpen
+                  ? `There are ${founding.places} places, and they go in the order families join.`
+                  : `All ${founding.places} places are filled; the list for the next group is free.`}
               </p>
             </div>
           </div>

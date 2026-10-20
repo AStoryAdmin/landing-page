@@ -43,7 +43,7 @@ const groups = [
         "/care-communities",
         "Know the person behind the care.",
       ],
-      ["Organizations", "/organizations", "Keep the knowledge people carry."],
+      ["Institutions", "/organizations", "Colleges, libraries, companies. Book a demo."],
       ["Your own story", "/your-story", "Your life belongs here too."],
       [
         "Get in touch",

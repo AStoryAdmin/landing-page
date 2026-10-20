@@ -369,6 +369,10 @@ export default function Start() {
   if (!demo) {
     return <Navigate to={`/reserve${plan ? `?plan=${encodeURIComponent(plan)}` : ""}`} replace />;
   }
+  /* Since 2026-10-20 a demo is booked on /organizations (DemoBooking.tsx),
+     which emails Daniel; the form below only wrote a row nobody was told
+     about. Old links still arrive here, so they are sent on. */
+  if (demo) return <Navigate to="/organizations#book" replace />;
 
   return (
     <Page ref={ref} aria-labelledby="start-title">

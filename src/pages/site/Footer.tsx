@@ -51,7 +51,7 @@ export default function Footer() {
             <div>
               <h2>Also for</h2>
               <Link to="/care-communities">Care communities</Link>
-              <Link to="/organizations">Organizations</Link>
+              <Link to="/organizations">Institutions</Link>
               <Link to="/your-story">Your own story</Link>
             </div>
             <div>
