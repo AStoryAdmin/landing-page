@@ -78,7 +78,7 @@ const Opening = styled(Chapter)`
     object-fit: cover;
   }
   .concierge small {
-    font: 600 11px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -133,13 +133,17 @@ const Answers = styled(Chapter)`
       0 0 0 1px ${color.primaryLine},
       0 20px 40px -30px rgba(42, 31, 24, 0.5);
   }
+  /* Wide screens: the pills sit in the toolbar row as if unwrapped. */
+  .pills {
+    display: contents;
+  }
   .pill {
-    min-height: 40px;
+    min-height: 44px;
     padding: 0 18px;
     border: 0;
     border-radius: 999px;
     background: transparent;
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: ${color.primaryMid};
@@ -183,6 +187,38 @@ const Answers = styled(Chapter)`
   summary:focus-visible {
     outline: 2px solid ${color.accent};
     outline-offset: 3px;
+  }
+  /* Phones (2026-10-15 audit): the six filters wrapped to one per line and
+     stuck to the top, covering nearly half the screen while reading. Here
+     they are one swipeable line above the search, and do not stick. */
+  ${media.md} {
+    .tools {
+      position: relative;
+      top: auto;
+      flex-wrap: nowrap;
+      flex-direction: column;
+      align-items: stretch;
+      border-radius: 22px;
+    }
+    .pills {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin: 0 -10px;
+      padding: 0 10px;
+    }
+    .pills::-webkit-scrollbar {
+      display: none;
+    }
+    .pill {
+      flex: none;
+      white-space: nowrap;
+    }
+    .search {
+      flex: none;
+    }
   }
   section {
     display: grid;
@@ -387,25 +423,27 @@ export default function Questions() {
       <Answers $ground="ivory" aria-label="Answers">
         <Frame>
           <div className="tools" role="group" aria-label="Filter the answers">
-            <button
-              type="button"
-              className="pill"
-              aria-pressed={topic === null}
-              onClick={() => setTopic(null)}
-            >
-              All
-            </button>
-            {groups.map((g) => (
+            <div className="pills">
               <button
-                key={g.title}
                 type="button"
                 className="pill"
-                aria-pressed={topic === g.title}
-                onClick={() => setTopic(topic === g.title ? null : g.title)}
+                aria-pressed={topic === null}
+                onClick={() => setTopic(null)}
               >
-                {g.title}
+                All
               </button>
-            ))}
+              {groups.map((g) => (
+                <button
+                  key={g.title}
+                  type="button"
+                  className="pill"
+                  aria-pressed={topic === g.title}
+                  onClick={() => setTopic(topic === g.title ? null : g.title)}
+                >
+                  {g.title}
+                </button>
+              ))}
+            </div>
             <label className="search">
               <span className="sr-only">Find an answer</span>
               <svg

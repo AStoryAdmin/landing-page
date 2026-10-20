@@ -5,7 +5,7 @@ export const CardView = styled.div`
   margin: auto;
 `;
 export const Label = styled.p`
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin-bottom: 22px;

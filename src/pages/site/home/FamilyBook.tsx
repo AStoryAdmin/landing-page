@@ -8,12 +8,13 @@
  *
  * - It arrives CLOSED — teal cloth, a gold-foil frame and title, the way the
  *   printed volume actually looks (mission CP02) — and opens itself when it
- *   comes into view (or on "Open the book"). Behind the cover: an endpaper
- *   with the dedication (as on the printed cover, coverbook.pdf), then a title page.
- * - Each spread is a memory laid out like the app's memory page: a print with
- *   photo corners and a caption on the left; on the right the date, tags,
- *   the teller's own words with a drop cap, and a second family member's
- *   line beneath — a documentary, not a diary.
+ *   comes into view (or on "Open the book"). Behind the cover: the real
+ *   book's endpaper (the A Story mark on cloth, as /samples prints it), then
+ *   a title page in the sample books' style carrying the dedication.
+ * - Each spread is one memory, kept light (2026-10-15): a large print with
+ *   photo corners on the left; on the right a chapter line, the title, the
+ *   teller's words set big with a drop cap, and one other voice hung at the
+ *   foot — a documentary, not a diary.
  * - The last spread is the mission's ending (CM06, CM09): the family's years
  *   as a contact sheet with an empty frame for what's next — "Today belongs
  *   here too" — and "The story keeps going. Because so do you."
@@ -29,7 +30,6 @@ import {
   useRef,
   useState,
   type KeyboardEvent,
-  type ReactNode,
 } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -46,6 +46,7 @@ import {
 } from "../kit/kit.styles";
 import { riseLines, useScene, gsap } from "../../../lib/scrollMotion";
 import { color, display, font, media } from "../../../styles/theme";
+import { clothBoard, clothLayer } from "../kit/cloth";
 
 type Entry = (typeof SPREADS)[number];
 const N = SPREADS.length;
@@ -53,24 +54,6 @@ const N = SPREADS.length;
 const LAST = N + 2;
 const LEAVES = LAST; // leaf k turns from spread k to k+1
 const LABELS = ["Cover", "Title", ...SPREADS.map((s) => s.year), "Next"];
-const ROMAN = [
-  "i",
-  "ii",
-  "iii",
-  "iv",
-  "v",
-  "vi",
-  "vii",
-  "viii",
-  "ix",
-  "x",
-  "xi",
-  "xii",
-  "xiii",
-  "xiv",
-  "xv",
-  "xvi",
-];
 /** How long a page takes to turn; the moving leaf stays on top for this long. */
 const TURN_MS = 1100;
 
@@ -159,18 +142,7 @@ const Scene = styled.section`
     top: 0;
     bottom: 0;
     width: 50%;
-    background:
-      repeating-linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.03) 0 1px,
-        transparent 1px 3px
-      ),
-      repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.04) 0 1px,
-        transparent 1px 3px
-      ),
-      ${color.teal};
+    ${clothBoard("15cqw")}
     box-shadow: 0 2px 0 color-mix(in srgb, ${color.teal} 55%, ${color.black});
   }
   .board.r {
@@ -266,13 +238,7 @@ const Scene = styled.section`
     width: calc(100% + 1.6cqw);
     height: calc(100% + 2.8cqw);
     border-radius: 8px 0 0 8px;
-    background:
-      repeating-linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.03) 0 1px,
-        transparent 1px 3px
-      ),
-      ${color.teal};
+    ${clothBoard("15cqw")}
   }
   .leaf .face.back.inside .endpaper {
     inset: 1.4cqw 0.2cqw 1.4cqw 1.4cqw;
@@ -289,24 +255,17 @@ const Scene = styled.section`
     padding: 5.5cqw 4.4cqw 4.6cqw 5.2cqw;
     display: flex;
     flex-direction: column;
-    background:
-      linear-gradient(90deg, rgba(0, 0, 0, 0.24), transparent 7%),
-      repeating-linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.03) 0 1px,
-        transparent 1px 3px
-      ),
-      repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.04) 0 1px,
-        transparent 1px 3px
-      ),
-      ${color.teal};
+    /* The printed volume's own cloth (kit/cloth.ts). */
+    ${clothBoard("15cqw")}
     color: ${color.ivory};
+    /* The bevel of a cloth-covered board. */
+    box-shadow:
+      inset 0 0 0 0.25cqw rgba(255, 255, 255, 0.04),
+      inset 0 0 3cqw rgba(0, 0, 0, 0.18);
   }
   .cover-art h3 {
-    font: 600 2.6cqw/1.05 ${font.body};
-    letter-spacing: 0.06em;
+    font: 700 2.6cqw/1.05 ${font.body};
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     color: ${color.ivory};
   }
@@ -375,6 +334,9 @@ const Scene = styled.section`
   }
   .open-btn {
     position: absolute;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     left: 5.2cqw;
     bottom: 8.4cqw;
     padding: 1.1cqw 2.4cqw;
@@ -392,93 +354,112 @@ const Scene = styled.section`
   }
 
   /* ── Endpaper and title page ── */
-  /* The inside cover carries the dedication, as on the printed volume. */
+  /* The inside cover is the real book's endpaper (2026-10-15, founder: "we
+     need that texture"): the A Story mark repeated across cloth in the cover
+     colour, as /samples prints it, on the same cloth as the cover.
+     Nothing written on it; the dedication moved to the title page. */
   .endpaper {
     position: absolute;
     inset: 0;
-    display: grid;
-    place-items: center;
-    padding: 6cqw;
-    background: color-mix(in srgb, ${color.teal} 90%, ${color.black});
-    text-align: center;
-    color: ${color.ivory};
+    overflow: hidden;
+    background: ${color.teal};
   }
-  .dedication small {
-    font: 500 0.95cqw/1 ${font.body};
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: color-mix(in srgb, ${color.ivory} 70%, transparent);
+  .endpaper::before,
+  .endpaper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
   }
-  .dedication .rule {
-    display: block;
-    width: 3cqw;
-    height: 1px;
-    margin: 1.2cqw auto;
-    background: ${color.gold};
+  .endpaper::before {
+    background: ${color.ivory};
+    opacity: 0.11;
+    -webkit-mask: url("/book-objects/a-mark.png") 0 0 / 4cqw 4.4cqw space;
+    mask: url("/book-objects/a-mark.png") 0 0 / 4cqw 4.4cqw space;
   }
-  .dedication b {
-    display: block;
-    font: italic 400 3.6cqw/1.1 ${font.display};
-    color: ${color.gold};
+  .endpaper::after {
+    ${clothLayer("15cqw")}
   }
-  .dedication p {
-    margin: 1.8cqw auto 0;
-    max-width: 30ch;
-    font: italic 400 1.35cqw/1.55 ${font.display};
-    color: color-mix(in srgb, ${color.ivory} 82%, transparent);
-  }
+  /* The title page, set like the sample books': the mark, the series in
+     tracked capitals, the family's name large, the years, the dedication. */
   .title-page {
     position: absolute;
     inset: 0;
     display: grid;
     align-content: center;
     justify-items: center;
-    gap: 1.8cqw;
-    padding: 6cqw;
+    padding: 6cqw 5cqw;
     text-align: center;
   }
+  .title-page .a-mark {
+    width: 3.6cqw;
+    height: 4cqw;
+    background: ${color.teal};
+    -webkit-mask: url("/book-objects/a-mark.png") center / contain no-repeat;
+    mask: url("/book-objects/a-mark.png") center / contain no-repeat;
+  }
   .title-page small {
-    font: 600 1cqw/1 ${font.body};
+    margin-top: 2.4cqw;
+    font: 600 0.95cqw/1 ${font.body};
     letter-spacing: 0.34em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
   }
   .title-page h3 {
-    font: 400 4.4cqw/1.05 ${font.display};
+    margin-top: 1.4cqw;
+    font: 400 4.8cqw/1 ${font.display};
+    letter-spacing: -0.01em;
     color: ${color.primary};
   }
+  .title-page .years {
+    margin-top: 1.2cqw;
+    font: italic 400 1.5cqw/1.3 ${font.display};
+    color: ${color.primaryMid};
+  }
   .title-page .orn {
-    width: 8cqw;
+    width: 6cqw;
     height: 1px;
+    margin: 3.2cqw 0 2.6cqw;
     background: ${color.goldDeep};
   }
-  .title-page p {
-    font: italic 400 1.7cqw/1.4 ${font.display};
+  .title-page .for {
+    font: 600 0.9cqw/1 ${font.body};
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: ${color.accentText};
+  }
+  .title-page .ded {
+    margin-top: 1cqw;
+    font: italic 400 2.4cqw/1.15 ${font.display};
+    color: ${color.teal};
+  }
+  .title-page .why {
+    margin-top: 1cqw;
+    max-width: 24ch;
+    font: italic 400 1.4cqw/1.45 ${font.display};
     color: ${color.primaryMid};
-    max-width: 26ch;
   }
 
   /* ── Memory spreads ── */
+  /* Lighter since 2026-10-15 ("the Hartley demo deserves the best, but its
+     content should not be dense"): no running heads, no tag chips, no boxed
+     second voice. Left: the print, large. Right: a chapter line, the title,
+     the words set big enough to read from across the room, and one other
+     voice hung at the foot. The rhythm of the sample books, not the app. */
   .photo-page,
   .text-page,
   .end-page {
     position: absolute;
     inset: 0;
-    padding: 5cqw 4.6cqw 3.4cqw;
+    padding: 5cqw 4.8cqw 3.2cqw;
     display: flex;
     flex-direction: column;
-  }
-  .running {
-    display: flex;
-    justify-content: space-between;
-    font: italic 400 1.1cqw/1 ${font.display};
-    color: ${color.bodyMuted};
-    letter-spacing: 0.04em;
   }
   .folio {
     margin-top: auto;
     text-align: center;
-    font: italic 400 1.15cqw/1 ${font.display};
+    font: 400 1.05cqw/1 ${font.display};
+    font-variant-numeric: oldstyle-nums;
     color: ${color.bodyMuted};
   }
   .print {
@@ -487,8 +468,8 @@ const Scene = styled.section`
     display: grid;
     place-items: center;
     align-content: center;
-    gap: 1.6cqw;
-    padding: 1.6cqw 0;
+    gap: 1.8cqw;
+    padding: 0.6cqw 0 1.2cqw;
   }
   .print figure {
     position: relative;
@@ -503,7 +484,7 @@ const Scene = styled.section`
   }
   .print img {
     max-width: 100%;
-    max-height: 30cqw;
+    max-height: 40cqw;
     width: auto;
     height: auto;
     min-height: 0;
@@ -542,93 +523,63 @@ const Scene = styled.section`
     text-align: center;
   }
 
-  .meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.8cqw;
-    margin-top: 3cqw;
-    font: 500 1.1cqw/1 ${font.body};
-    color: ${color.bodyMuted};
-  }
-  .meta span + span {
-    padding: 0.5cqw 1.1cqw;
-    border-radius: 99px;
-    background: ${color.paperPure};
-    box-shadow: inset 0 0 0 1px ${color.primaryLine};
-  }
-  .meta span + span::before {
-    content: "";
-    display: inline-block;
-    width: 0.7cqw;
-    height: 0.7cqw;
-    margin-right: 0.6cqw;
-    border-radius: 50%;
-    background: ${color.teal};
-    vertical-align: 0.05em;
-  }
-  .meta span:last-child::before {
-    background: ${color.accent};
+  .chapter {
+    margin-top: 1.4cqw;
+    font: 600 0.95cqw/1 ${font.body};
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: ${color.accentText};
   }
   .title {
-    margin-top: 2.2cqw;
-    font: 400 3.2cqw/1.1 ${font.display};
-    letter-spacing: -0.01em;
+    margin-top: 1.6cqw;
+    font: 400 4.2cqw/1.05 ${font.display};
+    letter-spacing: -0.015em;
     color: ${color.primary};
   }
   .rule {
     width: 5cqw;
     height: 1px;
-    margin: 2cqw 0;
+    margin: 2.2cqw 0;
     background: ${color.goldDeep};
   }
   .words {
-    font: 400 1.62cqw/1.55 ${font.display};
+    font: 400 2.3cqw/1.45 ${font.display};
     color: ${color.primary};
   }
   .words::first-letter {
     float: left;
-    margin: 0.25cqw 0.8cqw 0 0;
-    font: 400 4.6cqw/0.8 ${font.display};
+    margin: 0.3cqw 0.9cqw 0 0;
+    font: 400 6.6cqw/0.8 ${font.display};
     color: ${color.teal};
   }
   .by {
     margin-top: 1.6cqw;
-    font: 600 1cqw/1.3 ${font.body};
-    letter-spacing: 0.14em;
+    font: 600 0.95cqw/1.3 ${font.body};
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: ${color.bodyMuted};
+  }
+  /* The second voice: hung at the foot of the page, a gold rule beside it. */
+  .also {
+    margin: auto 0 0;
+    padding: 0.2cqw 0 0.2cqw 1.8cqw;
+    border-left: 2px solid ${color.warmGold};
+  }
+  .also p {
+    font: italic 400 2cqw/1.35 ${font.display};
+    color: ${color.teal};
+  }
+  .also cite {
+    display: block;
+    margin-top: 0.8cqw;
+    font: 600 0.95cqw/1.2 ${font.body};
+    font-style: normal;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
-  .also {
-    display: flex;
-    gap: 1.2cqw;
-    align-items: flex-start;
-    margin-top: 2.6cqw;
-    padding: 1.6cqw 1.8cqw;
-    border-radius: 1.4cqw;
-    background: color-mix(in srgb, ${color.sand} 45%, ${color.paperPure});
-  }
-  .also i {
-    display: grid;
-    place-items: center;
-    flex: none;
-    width: 3cqw;
-    height: 3cqw;
-    border-radius: 50%;
-    background: ${color.primary};
-    color: ${color.ivory};
-    font: 600 1.2cqw/1 ${font.body};
-    font-style: normal;
-  }
-  .also b {
-    display: block;
-    font: 600 1cqw/1.2 ${font.body};
-    color: ${color.bodyMuted};
-    margin-bottom: 0.4cqw;
-  }
-  .also p {
-    font: italic 400 1.45cqw/1.4 ${font.display};
-    color: ${color.primary};
+  .text-page .folio {
+    margin-top: 2.4cqw;
   }
 
   /* ── The ending ── */
@@ -740,6 +691,7 @@ const Scene = styled.section`
     align-self: flex-start;
     display: inline-flex;
     align-items: center;
+    min-height: 44px;
     gap: 1cqw;
     margin-top: 3.4cqw;
     padding: 1.4cqw 2.4cqw;
@@ -804,6 +756,8 @@ const Scene = styled.section`
     justify-items: center;
     gap: 10px;
     min-width: 44px;
+    min-height: 44px;
+    align-content: end;
     padding: 0;
     border: 0;
     background: none;
@@ -926,29 +880,51 @@ const Scene = styled.section`
     .single .title-page {
       padding: 8cqw 8cqw 6cqw;
     }
-    .single .running,
+    /* The endpaper alone is a band, not a whole page of pattern. */
+    .single > div.ep {
+      aspect-ratio: 3 / 1;
+    }
+    .single .endpaper::before {
+      -webkit-mask-size: 8cqw 8.8cqw;
+      mask-size: 8cqw 8.8cqw;
+    }
     .single .folio,
     .single .by,
-    .single .meta,
-    .single .also b,
+    .single .chapter,
+    .single .also cite,
+    .single .title-page small,
+    .single .title-page .for,
     .single .sheet figcaption {
       font-size: 2.6cqw;
     }
     .single .title,
     .single .title-page h3 {
-      font-size: 7cqw;
+      font-size: 8cqw;
+    }
+    .single .title-page .a-mark {
+      width: 7cqw;
+      height: 8cqw;
     }
     .single .words {
-      font-size: 3.6cqw;
+      font-size: 4.2cqw;
+    }
+    .single .words::first-letter {
+      font-size: 11cqw;
     }
     .single .also p,
     .single .print figcaption,
     .single .held,
     .single .not-end,
     .single .today,
-    .single .title-page p,
-    .single .dedication p {
-      font-size: 3.6cqw;
+    .single .title-page .years,
+    .single .title-page .why {
+      font-size: 3.8cqw;
+    }
+    .single .title-page .ded {
+      font-size: 5.4cqw;
+    }
+    .single .print img {
+      max-height: 80cqw;
     }
     .single .end-page h3 {
       font-size: 10cqw;
@@ -958,13 +934,13 @@ const Scene = styled.section`
     }
     .single .begin,
     .single .open-btn {
-      font-size: 3cqw;
-      padding: 3cqw 5cqw;
+      min-height: 44px;
+      font-size: max(13px, 3cqw);
+      padding: 0 5cqw;
     }
-    .single .also i {
-      width: 7cqw;
-      height: 7cqw;
-      font-size: 3cqw;
+    .single .open-btn {
+      display: inline-flex;
+      align-items: center;
     }
     /* One page wide here, not two: the cover's cqw sizes double. */
     .single .cover-art {
@@ -973,8 +949,7 @@ const Scene = styled.section`
     .single .cover-art h3 {
       font-size: 5.6cqw;
     }
-    .single .cover-art .date,
-    .single .dedication small {
+    .single .cover-art .date {
       font-size: 2.2cqw;
     }
     .single .cover-art .names {
@@ -1006,9 +981,6 @@ const Scene = styled.section`
       left: 10cqw;
       bottom: 17cqw;
     }
-    .single .dedication b {
-      font-size: 8cqw;
-    }
     .scrub {
       flex-wrap: wrap;
       justify-content: center;
@@ -1026,15 +998,6 @@ const Scene = styled.section`
     }
   }
 `;
-
-function Running({ left, right }: { left: ReactNode; right: ReactNode }) {
-  return (
-    <p className="running">
-      <span>{left}</span>
-      <span>{right}</span>
-    </p>
-  );
-}
 
 function CoverPage({ onOpen }: { onOpen?: () => void }) {
   return (
@@ -1068,39 +1031,29 @@ function CoverPage({ onOpen }: { onOpen?: () => void }) {
 }
 
 function Endpaper() {
-  return (
-    <div className="endpaper">
-      <div className="dedication">
-        <small>Dedicated to</small>
-        <span className="rule" />
-        <b>Walt &amp; Ruth</b>
-        <p>
-          For the porch steps, the workbench, and every story you told twice.
-          Thank you for always being our home.
-        </p>
-      </div>
-    </div>
-  );
+  return <div className="endpaper" aria-hidden="true" />;
 }
 
 function TitlePage() {
   return (
     <div className="title-page">
-      <small>A Story</small>
+      <span className="a-mark" aria-hidden="true" />
+      <small>Moments &amp; Memories</small>
       <h3>The Hartley Family</h3>
+      <span className="years">1952 - still being written</span>
       <span className="orn" />
-      <p>
-        In their own words, and in each other’s. Told in calls, kept by
-        everyone.
-      </p>
+      <span className="for">For</span>
+      <p className="ded">Walt &amp; Ruth</p>
+      <p className="why">Who sat on the porch steps and told every story twice.</p>
     </div>
   );
 }
 
+const CHAPTER = ["One", "Two", "Three", "Four", "Five", "Six", "Seven"];
+
 function PhotoPage({ e, n }: { e: Entry; n: number }) {
   return (
     <div className="photo-page">
-      <Running left="The Hartley family" right={e.year} />
       <div className="print">
         <figure style={{ ["--tilt" as string]: `${n % 2 ? 0.9 : -0.8}deg` }}>
           <Picture
@@ -1115,7 +1068,7 @@ function PhotoPage({ e, n }: { e: Entry; n: number }) {
         </figure>
         <figcaption>{e.caption}</figcaption>
       </div>
-      <p className="folio">{ROMAN[n * 2]}</p>
+      <p className="folio">{n * 2 + 6}</p>
     </div>
   );
 }
@@ -1123,25 +1076,18 @@ function PhotoPage({ e, n }: { e: Entry; n: number }) {
 function TextPage({ e, n }: { e: Entry; n: number }) {
   return (
     <div className="text-page">
-      <Running left={e.title} right="A Story" />
-      <p className="meta">
-        <span>{e.date}</span>
-        {e.tags.map((t) => (
-          <span key={t}>{t}</span>
-        ))}
+      <p className="chapter">
+        Chapter {CHAPTER[n]} · {e.date}
       </p>
       <h3 className="title">{e.title}</h3>
       <span className="rule" />
       <p className="words">{e.words}</p>
       <p className="by">{e.by}</p>
-      <div className="also">
-        <i aria-hidden="true">{e.also.initial}</i>
-        <div>
-          <b>{e.also.name} remembers</b>
-          <p>“{e.also.quote}”</p>
-        </div>
-      </div>
-      <p className="folio">{ROMAN[n * 2 + 1]}</p>
+      <blockquote className="also">
+        <p>“{e.also.quote}”</p>
+        <cite>{e.also.name}</cite>
+      </blockquote>
+      <p className="folio">{n * 2 + 7}</p>
     </div>
   );
 }
@@ -1149,7 +1095,6 @@ function TextPage({ e, n }: { e: Entry; n: number }) {
 function EndLeft() {
   return (
     <div className="end-page">
-      <Running left="The Hartley family" right="1952 - " />
       <div className="sheet">
         {SPREADS.map((s) => (
           <figure key={s.year}>
@@ -1278,9 +1223,9 @@ export default function FamilyBook() {
             </Statement>
           </div>
           <p className="lead">
-            The mistake is thinking a life becomes worth recording only when
-            it’s nearly over. You’re already living the part you’ll miss later.
-            Open one family’s archive - 1952 to this morning.
+            Don’t wait for the last chapter to start the book. You’re living
+            the part you’ll miss most. Open one family’s - seventy years,
+            still being written.
           </p>
         </SplitHead>
 
@@ -1340,7 +1285,7 @@ export default function FamilyBook() {
           {/* Narrow: one spread, stacked. */}
           <div className="single" aria-live="polite" key={spread}>
             {spread > 0 && (
-              <div>
+              <div className={spread === 1 ? "ep" : undefined}>
                 <LeftPage s={spread} />
               </div>
             )}
@@ -1391,10 +1336,9 @@ export default function FamilyBook() {
 
         <div className="print-line">
           <p>
-            Some chapters deserve to leave the screen. When one is ready, make
-            it a volume - <b>a Classic Hardcover comes with every plan</b>, or
-            print it at home free. Printed editions from {BOOK.from}. The archive
-            keeps growing after the book is printed.
+            One day it leaves the screen. <b>A Classic Hardcover comes with
+            every plan</b> - or print it at home, free. Printed editions from{" "}
+            {BOOK.from}.
           </p>
           <div className="links">
             {/* /samples is a page in public/, outside the router: a plain anchor. */}

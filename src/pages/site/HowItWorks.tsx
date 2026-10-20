@@ -34,7 +34,7 @@ import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { DEPTHS, SCENARIOS } from "../../lib/demoScripts";
 import { BOOK } from "../../lib/pricing";
-import CallTrio from "./app/CallTrio";
+import CallStills from "./home/Listen";
 import { AppShot, Phone } from "./app/Phone";
 import { CallScreen, IncomingScreen } from "./app/screens";
 import { ArrowIcon, Invitation, PageOpening, Picture, Print } from "./kit/kit";
@@ -53,7 +53,6 @@ import {
   Statement,
   TextAnchor,
   TextLink,
-  grounds,
 } from "./kit/kit.styles";
 import { color, display, font, media } from "../../styles/theme";
 
@@ -97,7 +96,7 @@ const Soon = styled.span`
   padding: 3px 8px;
   border: 1px solid currentColor;
   border-radius: 2px;
-  font: 600 11px/1.2 ${font.body};
+  font: 600 13px/1.2 ${font.body};
   letter-spacing: 0.1em;
   text-transform: uppercase;
   vertical-align: middle;
@@ -223,7 +222,8 @@ const Walk = styled(Chapter)`
   }
   .step {
     position: relative;
-    min-height: 74vh;
+    /* 74vh made five steps 3.7 screens on a laptop (2026-10-14). */
+    min-height: 50svh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -287,7 +287,7 @@ const Walk = styled(Chapter)`
     border-radius: 99px;
     background: ${color.paperPure};
     box-shadow: inset 0 0 0 1px ${color.primaryLine};
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -364,7 +364,7 @@ function Walkthrough() {
         <div className="walk">
           <div className="sticky" aria-hidden="true">
             <Phone
-              width="min(360px, calc((100vh - 200px) * 0.4756))"
+              width="min(360px, calc((100svh - 200px) * 0.4756))"
               lightStatus={DARK_TOP.includes(on)}
             >
               {STEPS.map((_, n) => (
@@ -409,87 +409,7 @@ function Walkthrough() {
 
 /* ── 2. The call, played ───────────────────────────────────────────────── */
 
-const Listen = styled.section`
-  --ink: ${grounds.teal.ink};
-  --muted: ${grounds.teal.muted};
-  --line: ${grounds.teal.line};
-  --mark: ${grounds.teal.mark};
-  --label: ${grounds.teal.label};
-  background: ${color.teal};
-  color: ${color.ivory};
-  padding: calc(clamp(96px, 11vw, 176px) * var(--sy)) 0
-    calc(clamp(80px, 9vw, 140px) * var(--sy));
-  .lead {
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.55 ${font.body};
-    color: var(--muted);
-    max-width: 42ch;
-  }
-`;
 
-/* ── Three moves worth noticing (was "Want every word?") ──────────────── */
-
-/*
- * The complete annotated transcripts were a long wall of text under the
- * player; the founder asked to keep only the point. Each call turns on one
- * move — the three cards name it, quote the words it turned on, and say in a
- * line what happened (the scenario's own `watch` line).
- */
-const MOVES = [
-  {
-    id: "faith",
-    move: "Hears the aside",
-    detail: "Even the winter she wouldn’t look at Father Dolan.",
-  },
-  {
-    id: "childhood",
-    move: "Takes the no",
-    detail:
-      "I’d rather not go into what she had, if that’s all right with you.",
-  },
-  { id: "love", move: "Follows the detail", detail: "All but one." },
-];
-
-const Moves = styled(Chapter)`
-  .moves {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(16px, 2vw, 28px);
-    margin-top: clamp(32px, 4vw, 56px);
-  }
-  .move {
-    padding: clamp(24px, 2.6vw, 36px);
-    border-top: 2px solid ${color.teal};
-    background: ${color.paperPure};
-  }
-  .move small {
-    font: 600 12px/1.3 ${font.body};
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: ${color.teal};
-  }
-  .move blockquote {
-    margin: 16px 0;
-    font: italic 400 ${display.sm} / 1.35 ${font.display};
-    color: ${color.primary};
-  }
-  .move blockquote mark {
-    color: inherit;
-    background: linear-gradient(
-        color-mix(in srgb, ${color.warmGold} 55%, transparent),
-        color-mix(in srgb, ${color.warmGold} 55%, transparent)
-      )
-      0 90% / 100% 0.35em no-repeat;
-  }
-  .move p {
-    font: 400 16px/1.55 ${font.body};
-    color: ${color.bodyMuted};
-  }
-  ${media.md} {
-    .moves {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-`;
 
 /* ── Share the family's code ────────────────────────────────────────────── */
 
@@ -652,7 +572,7 @@ const Depth = styled.section`
     display: grid;
     grid-template-columns: 120px minmax(0, 1fr);
     gap: clamp(20px, 3vw, 48px);
-    margin-top: clamp(48px, 6vw, 88px);
+    margin-top: calc(clamp(36px, 4.4vw, 88px) * var(--sy));
   }
   /* The gauge: surface to depth. */
   .gauge {
@@ -661,8 +581,8 @@ const Depth = styled.section`
     flex-direction: column;
     justify-content: space-between;
     padding: 6px 0;
-    font: 600 11px/1 ${font.body};
-    letter-spacing: 0.2em;
+    font: 600 13px/1 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
   }
   .gauge::before {
@@ -725,7 +645,7 @@ const Depth = styled.section`
     gap: 4px 12px;
   }
   .rung b {
-    font: 600 12px/1.2 ${font.body};
+    font: 600 13px/1.2 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.teal};
@@ -748,7 +668,7 @@ const Depth = styled.section`
     color: ${color.accentText};
   }
   .bottom {
-    margin-top: clamp(40px, 5vw, 64px);
+    margin-top: calc(clamp(28px, 3.6vw, 64px) * var(--sy));
     text-align: center;
     font: italic 400 ${display.sm} / 1.4 ${font.display};
     color: ${color.ivory};
@@ -779,7 +699,7 @@ const Receives = styled(Chapter)`
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(20px, 3vw, 48px);
-    margin-top: clamp(40px, 5vw, 72px);
+    margin-top: calc(clamp(32px, 4vw, 72px) * var(--sy));
   }
   .obj {
     display: flex;
@@ -788,7 +708,7 @@ const Receives = styled(Chapter)`
   .stage {
     display: grid;
     place-items: start center;
-    height: clamp(420px, 38vw, 560px);
+    height: clamp(300px, min(38vw, 50svh), 560px);
     overflow: hidden;
     padding-top: 28px;
     border-radius: 22px;
@@ -815,7 +735,7 @@ const Receives = styled(Chapter)`
     margin-bottom: 12px;
     padding-bottom: 10px;
     border-bottom: 1px solid ${color.primaryLineStrong};
-    font: 600 11px/1.2 ${font.body};
+    font: 600 13px/1.2 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -832,7 +752,7 @@ const Receives = styled(Chapter)`
   .sheet time {
     display: block;
     margin-bottom: 3px;
-    font: 600 10.5px/1.2 ${font.body};
+    font: 600 13px/1.2 ${font.body};
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -867,7 +787,7 @@ const Receives = styled(Chapter)`
     align-items: center;
     gap: 10px;
     margin-top: 24px;
-    font: 600 12px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: ${color.primary};
@@ -880,7 +800,7 @@ const Receives = styled(Chapter)`
     border-radius: 50%;
     background: ${color.teal};
     color: ${color.ivory};
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     font-style: normal;
     letter-spacing: 0;
   }
@@ -898,7 +818,7 @@ const Receives = styled(Chapter)`
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     gap: clamp(32px, 6vw, 110px);
     align-items: start;
-    margin-top: clamp(64px, 8vw, 120px);
+    margin-top: calc(clamp(44px, 6vw, 120px) * var(--sy));
   }
   .family ul {
     list-style: none;
@@ -934,7 +854,7 @@ const Receives = styled(Chapter)`
   .family li small {
     display: block;
     margin-top: 4px;
-    font: 600 12px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     color: ${color.accentText};
   }
   ${media.lg} {
@@ -1034,8 +954,6 @@ const Volume = styled(Chapter)`
 `;
 
 export default function HowItWorks() {
-  const listen = useReveals<HTMLElement>();
-  const moves = useReveals<HTMLElement>();
   const scan = useReveals<HTMLElement>();
   const depth = useReveals<HTMLElement>();
   const receives = useReveals<HTMLElement>();
@@ -1083,47 +1001,15 @@ export default function HowItWorks() {
 
       <Walkthrough />
 
-      <Listen ref={listen} id="calls" aria-labelledby="calls-title">
-        <Frame>
-          <SplitHead>
-            <div>
-              <Eyebrow>Watch a call</Eyebrow>
-              <Statement id="calls-title" $size="xl" data-lines>
-                Good listening changes the next <em>question.</em>
-              </Statement>
-            </div>
-            <p className="lead" data-rise>
-              Every question comes from the app’s own bank. Each call turns on a
-              different move - pick one and watch.
-            </p>
-          </SplitHead>
-          <CallTrio />
-        </Frame>
-      </Listen>
-
-      <Moves ref={moves} $ground="paper" $tight aria-labelledby="moves-title">
-        <Frame>
-          <Statement id="moves-title" $size="md" data-lines>
-            Three calls, three <em>moves.</em>
-          </Statement>
-          <div className="moves">
-            {MOVES.map((m) => {
-              const s = SCENARIOS.find((x) => x.id === m.id)!;
-              return (
-                <article key={m.id} className="move" data-rise>
-                  <small>
-                    {s.teller} · {m.move}
-                  </small>
-                  <blockquote>
-                    “<mark>{m.detail}</mark>”
-                  </blockquote>
-                  <p>{s.watch}</p>
-                </article>
-              );
-            })}
-          </div>
-        </Frame>
-      </Moves>
+      <CallStills
+        id="calls"
+        more={false}
+        title={
+          <>
+            Good listening changes the next <em>question.</em>
+          </>
+        }
+      />
 
       <Depth ref={depth} aria-labelledby="depth-title">
         <Frame>

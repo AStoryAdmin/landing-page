@@ -287,9 +287,11 @@ function coverTexture(stack: (HTMLImageElement | null)[]) {
     }
     g.restore();
   };
-  put(stack[0], 300, 470, 380, -5.5);
-  put(stack[1], 120, 610, 330, 4);
-  put(stack[2], 430, 760, 400, -2.5);
+  /* Kept above the foot line (y = h - 214): the third print used to run
+     over "Family is everything to us." and the mark. */
+  put(stack[0], 330, 420, 340, -5.5);
+  put(stack[1], 130, 560, 300, 4);
+  put(stack[2], 440, 660, 350, -2.5);
 
   /* The foot: the family's line on the left, the mark on the right. */
   g.fillStyle = "rgba(243,235,221,0.35)";

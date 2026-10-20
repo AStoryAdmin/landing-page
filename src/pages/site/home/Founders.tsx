@@ -131,7 +131,7 @@ export default function Founders() {
     <Scene ref={ref} aria-labelledby="founders-title">
       <Frame className="grid">
         <div className="photo">
-          <Picture id="12" alt="" sizes="(max-width: 860px) 92vw, 46vw" />
+          <Picture id="02" alt="" sizes="(max-width: 860px) 92vw, 46vw" />
         </div>
         <div>
           <Eyebrow>Why we started</Eyebrow>
@@ -139,14 +139,9 @@ export default function Founders() {
             The conversations we thought <em>could wait.</em>
           </h2>
           <p className="letter">
-            Two of my uncles had strokes within months of each other. They lived
- - I want to say that first, because what follows is not a story
-            about dying.
-          </p>
-          <p className="letter">
-            I did not know how my grandparents met. I had never thought to ask.
-            So I started building A Story: someone to ask, time to listen, and a
-            place for a family to keep the answers.
+            When two of my uncles had strokes, I realised I didn’t know how my
+            grandparents met. I had never thought to ask. So we built someone
+            who would.
           </p>
           <div className="sign">
             <i aria-hidden="true">D</i>

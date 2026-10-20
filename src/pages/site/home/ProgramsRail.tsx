@@ -28,9 +28,7 @@ const Rail = styled.div`
   border-bottom: 1px solid ${color.primaryLine};
 
   .label {
-    font: 600 11px/1.4 ${font.body};
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    font: 500 15px/1.4 ${font.body};
     color: ${color.bodyMuted};
     white-space: nowrap;
   }
@@ -69,6 +67,16 @@ const Rail = styled.div`
       margin-left: 0;
     }
   }
+  /* Phones: 32px badges sit two to a line instead of one per line, which
+     took a whole screen before the first chapter. NVIDIA minimum is 30px. */
+  ${media.sm} {
+    .marks img {
+      height: 32px;
+    }
+    .marks span span {
+      padding: 7px;
+    }
+  }
   ${media.motion} {
     .more {
       transition: none;
@@ -85,7 +93,7 @@ export default function ProgramsRail() {
         role="img"
         aria-label="NVIDIA Inception program member, AssemblyAI Startup Program, Cartesia Startups grant recipient"
       >
-        <ProgramMarks height={34} />
+        <ProgramMarks height={48} />
       </span>
       <Link className="more" to="/programs">
         What these are <ArrowIcon />

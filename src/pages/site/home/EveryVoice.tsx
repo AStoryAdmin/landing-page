@@ -133,7 +133,7 @@ const Scene = styled.section`
     margin-top: 12px;
     padding-top: 10px;
     border-top: 1px solid ${color.primaryLine};
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: ${color.accentText};

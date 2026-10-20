@@ -32,7 +32,6 @@ import {
   START,
 } from "../../lib/pricing";
 import { anyCheckoutLive, buyLabel, checkoutFor } from "../../lib/checkout";
-import { FOUNDING_FOR, OFFERS, RESERVE_DEADLINE_LABEL } from "../../lib/founding";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
@@ -93,7 +92,7 @@ const Plans = styled(Chapter)`
     color: ${color.primary};
   }
   .plan .tag {
-    font: 600 11px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: ${color.goldOnLight};
@@ -204,8 +203,7 @@ const Plans = styled(Chapter)`
   }
 
   .decide {
-    position: sticky;
-    bottom: 16px;
+    position: relative;
     z-index: 5;
     display: flex;
     justify-content: space-between;
@@ -222,6 +220,10 @@ const Plans = styled(Chapter)`
     --action-hover: ${color.paperPure};
     --focus: ${color.gold};
     --focus-halo: ${color.night};
+  }
+  .decide.float {
+    position: sticky;
+    bottom: 16px;
   }
   .decide strong {
     display: block;
@@ -449,15 +451,18 @@ const Book = styled(Chapter)`
     justify-self: center;
     filter: drop-shadow(0 40px 36px rgba(42, 31, 24, 0.35));
   }
-  .book-price {
+  /* Scoped under .book so the .book p body rule below cannot shrink it. */
+  .book .book-price {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
-    gap: 16px;
+    gap: 4px 16px;
+    max-width: none;
     margin: 28px 0 10px;
     font: 400 ${display.lg} / 1 ${font.display};
     color: ${color.primary};
   }
-  .book-price span {
+  .book .book-price span {
     font: 400 17px/1.4 ${font.body};
     color: ${color.bodyMuted};
   }
@@ -485,8 +490,8 @@ const Book = styled(Chapter)`
     box-shadow: 0 1px 2px rgba(42, 31, 24, 0.06);
   }
   .editions .badge {
-    font: 600 11px/1 ${font.body};
-    letter-spacing: 0.2em;
+    font: 600 13px/1 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
     min-height: 11px;
@@ -701,7 +706,14 @@ const ROWS: { label: string; cells: [string, string?][]; yes?: boolean }[] = [
 ];
 
 export default function Pricing() {
-  const [selected, setSelected] = useState("individual");
+  const [selected, setPlan] = useState("individual");
+  /* The decision bar floats only once a plan has been chosen by hand: before
+     that it sat over the plan cards on a laptop and hid their prices. */
+  const [chosen, setChosen] = useState(false);
+  const setSelected = (id: string) => {
+    setPlan(id);
+    setChosen(true);
+  };
   const selectedId = selected;
   const name =
     PLANS.find((x) => x.id === selected)?.name ??
@@ -878,13 +890,13 @@ export default function Pricing() {
             </p>
           </Compare>
 
-          <div className="decide" aria-live="polite">
+          <div className={`decide${chosen ? " float" : ""}`} aria-live="polite">
             <div>
               <strong>{name}</strong>
               <small>
                 {anyCheckoutLive()
                   ? "Continue with your selected plan."
-                  : `Before launch: reserve for ${OFFERS.reserve.price} by ${RESERVE_DEADLINE_LABEL} and hold ${OFFERS.reserve.discount}% off this plan's first year - or, for ${FOUNDING_FOR.families}, put your name down for a founding place.`}
+                  : "Before launch: reserve for $1 by 2 November and hold 15% off this plan's first year, or start now as a founding family."}
               </small>
             </div>
             <PrimaryAnchor

@@ -124,8 +124,8 @@ const Sheet = styled.dialog`
     text-align: center;
   }
   .tag {
-    font: 600 11px/1.4 ${font.body};
-    letter-spacing: 0.18em;
+    font: 600 13px/1.4 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
@@ -179,7 +179,7 @@ const Sheet = styled.dialog`
     display: flex;
     justify-content: space-between;
     gap: 12px;
-    font: 600 11px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -385,7 +385,7 @@ export default function CheckoutDetails({
             </h2>
             <p id={`${uid}-lead`}>
               {founding
-                ? "So we know whose name is down. Then you pay through Stripe."
+                ? "So we can set up your first call by hand. Then you pay through Stripe."
                 : "So your place has a name on it. Then you pay through Stripe."}
             </p>
             <span className="orn" aria-hidden="true">
@@ -452,7 +452,7 @@ export default function CheckoutDetails({
             </PrimaryButton>
             <p className="fine">
               Apple Pay, Google Pay or card, through Stripe.{" "}
-              {founding ? "Refunded in full if you are not picked - and if you are, too." : "Refunded any time before launch."}
+              {founding ? "Refunded any time before the first call." : "Refunded any time before launch."}
             </p>
           </form>
         </div>

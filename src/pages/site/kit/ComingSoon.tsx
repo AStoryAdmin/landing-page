@@ -10,6 +10,9 @@
  * 180 days before release — and every pre-order there is one more number to
  * show), put the listing URL in APP_STORE_URL and this becomes a link.
  *
+ * Until then it is a plain line, not a pill (2026-10-15 audit): a bordered
+ * pill beside two real buttons read as a third button that did nothing.
+ *
  * It takes its colours from the ground it stands on (--ink, --label), so the
  * same pill works on the night opening and on ivory.
  */
@@ -25,7 +28,7 @@ const Pill = styled.span`
   padding: 10px 18px 10px 14px;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--ink, ${color.primary}) 30%, transparent);
-  font: 600 12px/1 ${font.body};
+  font: 600 13px/1 ${font.body};
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink, ${color.primary});
@@ -38,6 +41,22 @@ const Pill = styled.span`
   }
   b {
     font-weight: 600;
+    color: var(--label, ${color.accentText});
+  }
+`;
+
+/** Not a link yet: said quietly, so nothing looks pressable that is not. */
+const Note = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font: 400 15px/1.4 ${font.body};
+  color: var(--muted, ${color.bodyMuted});
+
+  svg {
+    width: 16px;
+    height: 16px;
     color: var(--label, ${color.accentText});
   }
 `;
@@ -55,8 +74,8 @@ export default function ComingSoon({ className }: { className?: string }) {
       <PhoneIcon /> Pre-order on the <b>App Store</b>
     </Pill>
   ) : (
-    <Pill className={className}>
-      <PhoneIcon /> Coming soon on the <b>App Store</b>
-    </Pill>
+    <Note className={className}>
+      <PhoneIcon /> Coming soon to the App Store
+    </Note>
   );
 }

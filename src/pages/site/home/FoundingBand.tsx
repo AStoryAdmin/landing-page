@@ -8,24 +8,10 @@
  * worth saying (foundingStatus.ts); there is no countdown and no date. The
  * dollar stays beside it for anyone who is not ready.
  *
- * Once the places are taken, or the date passes, it says so and offers the
- * dollar.
- *
- * Since 2026-10-14 the places are a new group for Hope College families,
- * until Wednesday 21 October, as applications: ten families are picked
- * and go free, the rest are refunded (lib/founding.ts, "Hope College").
+ * Once the twenty-five are taken it says so and offers the dollar.
  */
 import styled from "styled-components";
-import {
-  FOUNDING_DEADLINE_DAY,
-  FOUNDING_FOR,
-  FOUNDING_PICK,
-  FOUNDING_PLACES,
-  FULL_PRICE,
-  INCLUDES,
-  OFFERS,
-  foundingClosedLine,
-} from "../../../lib/founding";
+import { FOUNDING_BALANCE, FOUNDING_PLACES, FULL_PRICE, OFFERS } from "../../../lib/founding";
 import { useReveals } from "../kit/reveals";
 import { ArrowIcon } from "../kit/kit";
 import { useFoundingStatus } from "../kit/foundingStatus";
@@ -73,7 +59,7 @@ const Section = styled(Chapter)`
     letter-spacing: -0.03em;
   }
   .price span {
-    font: 600 12px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.gold};
@@ -125,21 +111,19 @@ export default function FoundingBand() {
     <Section ref={reveal} $ground="night" aria-labelledby="founding-band-title">
       <Frame className="row">
         <div data-rise>
-          <Eyebrow>Founding families · {FOUNDING_FOR.short} · {open ? line : foundingClosedLine()}</Eyebrow>
+          <Eyebrow>Founding families · {open ? line : `all ${FOUNDING_PLACES} taken`}</Eyebrow>
           {open ? (
             <>
               <Statement id="founding-band-title" $size="lg">
-                {FOUNDING_FOR.families}: {FOUNDING_PLACES} places, <em>{FOUNDING_PICK} go free.</em>
+                Twenty-five families start <em>now.</em>
               </Statement>
               <p className="lead">
-                The first founding group is closed. For Hope's family weekend, {FOUNDING_PLACES}{" "}
-                {FOUNDING_FOR.families} can put their name down for {founding.price} by {FOUNDING_DEADLINE_DAY}. We
-                pick {FOUNDING_PICK} and set them up free, by hand, with one of us on the first call. Everyone else
-                gets the {founding.price} back, in full.
+                Before launch, we set A Story up by hand for {FOUNDING_PLACES} families - with one of us on your
+                first call.
               </p>
               <Actions className="acts">
                 <PrimaryLink to="/reserve#founding">
-                  Put my name down for {founding.price} <ArrowIcon />
+                  Start now for {founding.price} <ArrowIcon />
                 </PrimaryLink>
                 <SecondaryLink to="/reserve">Or hold a place for {reserve.price}</SecondaryLink>
               </Actions>
@@ -147,7 +131,7 @@ export default function FoundingBand() {
           ) : (
             <>
               <Statement id="founding-band-title" $size="lg">
-                The {FOUNDING_FOR.short} places <em>are closed.</em>
+                The founding places <em>are taken.</em>
               </Statement>
               <p className="lead">
                 Thank you. A dollar still holds your place for launch, and comes off your first year.
@@ -164,17 +148,12 @@ export default function FoundingBand() {
           <Plate className="card" data-rise>
             <p className="price">
               <b>{founding.price}</b>
-              <span>once · {FOUNDING_FOR.families} · comes back to you either way</span>
+              <span>once · refundable until your first call</span>
             </p>
             <p className="then">
-              Picked, your first year is free - <s>{FULL_PRICE.individual}</s> $0 - and the {founding.price} is
-              refunded. Not picked, the {founding.price} is refunded too.
+              Then half off your first year - <s>{FULL_PRICE.individual}</s> {founding.individual}, and the{" "}
+              {founding.price} counts, so {FOUNDING_BALANCE.individual} more whenever you choose.
             </p>
-            <ul>
-              {INCLUDES.founding.map((f) => (
-                <li key={f}>{f}</li>
-              ))}
-            </ul>
           </Plate>
         )}
       </Frame>

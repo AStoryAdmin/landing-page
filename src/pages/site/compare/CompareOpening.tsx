@@ -157,11 +157,11 @@ const Opening = styled.section`
   }
   .voice b {
     display: block;
-    font: 600 12px/1.2 ${font.body};
+    font: 600 13px/1.2 ${font.body};
     color: ${color.primary};
   }
   .voice small {
-    font: 500 11px/1.2 ${font.body};
+    font: 500 13px/1.2 ${font.body};
     color: ${color.accentText};
   }
   .voice p {
@@ -178,8 +178,8 @@ const Opening = styled.section`
     align-items: center;
     gap: 14px;
     white-space: nowrap;
-    font: 600 11px/1 ${font.body};
-    letter-spacing: 0.26em;
+    font: 600 13px/1 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.gold};
   }

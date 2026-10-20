@@ -241,8 +241,8 @@ const Band = styled.section`
     display: grid;
   }
   .next-label {
-    font: 600 11px/1 ${font.body};
-    letter-spacing: 0.2em;
+    font: 600 13px/1 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
     padding-bottom: 14px;

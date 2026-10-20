@@ -294,8 +294,8 @@ const Cover = styled.div`
     border-radius: 999px;
     background: color-mix(in srgb, ${ROOM} 55%, transparent);
     backdrop-filter: blur(6px);
-    font: 600 11px/1 ${font.body};
-    letter-spacing: 0.2em;
+    font: 600 13px/1 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.onDarkMuted};
     cursor: pointer;

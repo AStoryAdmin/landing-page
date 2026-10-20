@@ -12,9 +12,7 @@ import EveryVoice from "./home/EveryVoice";
 import FamilyBook from "./home/FamilyBook";
 import Founders from "./home/Founders";
 import StepOne from "./home/StepOne";
-import EasiestWay from "./home/EasiestWay";
 import FoundingBand from "./home/FoundingBand";
-import WhereWeSit from "./home/WhereWeSit";
 
 /**
  * Pass 11. The homepage carries the whole idea once, in the order a visitor
@@ -76,10 +74,8 @@ export default function Home() {
       <SampleBooks />
       <Listen />
       <EveryVoice />
-      <EasiestWay />
       <Founders />
       <FoundingBand />
-      <WhereWeSit />
       <Invitation />
     </>
   );

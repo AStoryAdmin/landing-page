@@ -93,12 +93,12 @@ export const EVERYDAY = [
  * comes back with the story A Story caught behind it.
  */
 export const QUIET = {
-  photo: "21",
-  alt: "Hands packing a lunchbox at a kitchen counter",
-  date: "Tue, 6 Sep 2022",
-  title: "Apple slices, facing up",
-  teller: "Sarah",
-  told: "Mia’s first week of school. She’d only eat them if the peel faced up - ‘so they can see out.’",
+  photo: "18",
+  alt: "A couple on a porch watching the rain, 1960",
+  date: "Sunday, June 1960",
+  title: "The day he stayed",
+  teller: "Ruth",
+  told: "He was leaving for Detroit that morning. It rained, the bus never came, and he never went.",
 } as const;
 
 /** The collaboration example: one memory, started in a call, finished by the family. */
@@ -202,7 +202,7 @@ export const SPREADS = [
     alt: "Mia and Sarah looking at the moon through a bedroom window",
     caption: "Mia at the bedroom window",
     words:
-      "At bedtime, Mia asked where the moon goes in the daytime. I began explaining the sky, but she shook her head. She wanted to know who keeps it company while we can't see it. Writing this down before I forget how she said it.",
+      "Mia asked where the moon goes in the daytime. Not where, she said - who keeps it company while we can’t see it. Writing it down before I forget how she said it.",
     by: "Sarah · written the same night",
     also: {
       name: "Grandma Ruth",

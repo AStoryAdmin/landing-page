@@ -17,7 +17,7 @@ import styled from "styled-components";
 import { introReleased } from "./introSignal";
 import { ArrowIcon, Picture } from "../kit/kit";
 import { Link } from "react-router-dom";
-import { FOUNDING_DEADLINE_LABEL, FOUNDING_FOR, FOUNDING_PICK, OFFERS } from "../../../lib/founding";
+import { OFFERS } from "../../../lib/founding";
 import { useFoundingStatus } from "../kit/foundingStatus";
 import { Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
 import {
@@ -117,7 +117,9 @@ const Scene = styled.section`
     flex-wrap: wrap;
     align-items: center;
     gap: 6px 12px;
-    margin-top: 22px;
+    width: fit-content;
+    min-height: 44px;
+    margin-top: 12px;
     font: 500 15px/1.45 ${font.body};
     color: ${color.onDarkMuted};
     text-decoration: none;
@@ -259,11 +261,8 @@ export default function Hero() {
             </div>
             {founding.open && (
               <Link className="hero-founding" to="/reserve#founding">
-                <span>
-                  Founding families: {founding.line} for {FOUNDING_FOR.short} until {FOUNDING_DEADLINE_LABEL},{" "}
-                  {FOUNDING_PICK} go free.
-                </span>
-                <b>Put my name down for {OFFERS.founding.price}</b>
+                <span>Founding families: {founding.line}, open now.</span>
+                <b>Start now for {OFFERS.founding.price}</b>
               </Link>
             )}
           </div>

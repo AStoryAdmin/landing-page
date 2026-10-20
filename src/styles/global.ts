@@ -97,6 +97,10 @@ const GlobalStyle = createGlobalStyle`
     text-wrap: balance;
   }
 
+  /* Emphasis in a heading is carried by colour, never italic (design.md).
+     <em> is italic by browser default, so it is stated once here. */
+  h1 em, h2 em, h3 em, h4 em { font-style: normal; }
+
   p { margin: 0; text-wrap: pretty; }
   figure { margin: 0; }
   main { min-width: 0; }

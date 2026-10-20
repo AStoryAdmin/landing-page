@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { foundingIsOpen, foundingPlacesLine, type FoundingTaken } from "../../../lib/founding";
+import { OFFERS, foundingLeft, foundingPlacesLine, type FoundingTaken } from "../../../lib/founding";
 
 /**
- * The founding offer's state for pages outside /reserve: open or not (by
- * count and by date), and "25 new places" / "18 of 25 left". The count
- * module (and supabase-js with it) is imported lazily, after the page has
- * painted, so the homepage's first load does not carry it. Until it
- * answers, the line is "25 new places", which is true; it is never a
- * made-up number.
+ * The founding offer's state for pages outside /reserve: open or not, and
+ * "25 places" / "18 of 25 left". The count module (and supabase-js with it)
+ * is imported lazily, after the page has painted, so the homepage's first
+ * load does not carry it. Until it answers, the line is "25 places", which
+ * is true; it is never a made-up number.
  */
 export function useFoundingStatus(): { open: boolean; line: string } {
   const [taken, setTaken] = useState<FoundingTaken | null>(null);
@@ -25,5 +24,5 @@ export function useFoundingStatus(): { open: boolean; line: string } {
       live = false;
     };
   }, []);
-  return { open: foundingIsOpen(taken), line: foundingPlacesLine(taken) };
+  return { open: OFFERS.founding.open && foundingLeft(taken) !== 0, line: foundingPlacesLine(taken) };
 }

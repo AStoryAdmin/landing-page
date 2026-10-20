@@ -16,8 +16,6 @@
 import styled from "styled-components";
 import { PLANS } from "../../../lib/pricing";
 import { ArrowIcon } from "../kit/kit";
-import { AppShot, Phone } from "../app/Phone";
-import { IncomingScreen } from "../app/screens";
 import {
   Actions,
   Frame,
@@ -34,20 +32,32 @@ const STEPS = [
   {
     n: "I",
     who: "You",
+    shot: "home",
+    /* Rose's home screen: the question for her and "Talk with A Story". */
+    at: "50% 47%",
+    ground: "light",
     title: "Set it up once.",
-    text: "A couple of minutes on their phone or tablet, and the hour A Story should ring. You can do it while they’re in the next room.",
+    text: "Two minutes on their phone. Pick the hour A Story calls.",
   },
   {
     n: "II",
     who: "Them",
+    shot: "talk",
+    /* The call itself: A Story's question and "Listening - just start talking". */
+    at: "50% 66%",
+    ground: "dark",
     title: "They answer the phone.",
-    text: "No typing, nothing to open or save. Twenty minutes is a real conversation, and the next call picks up where the last one stopped.",
+    text: "Nothing to type, open or save. They just talk.",
   },
   {
     n: "III",
     who: "Everyone",
+    shot: "archive",
+    /* The archive: Rose's book, +5 memories this month, the family's additions waiting. */
+    at: "50% 9%",
+    ground: "sand",
     title: "The family keeps it.",
-    text: "Invite anyone to read, correct and add their own memories. Inviting fifteen people costs the same as inviting nobody.",
+    text: "Everyone reads, adds and remembers - free.",
   },
 ];
 
@@ -76,28 +86,44 @@ const Scene = styled.section`
   li {
     padding: calc(32px * var(--sy)) clamp(20px, 3vw, 48px) 0 0;
   }
-  /* Each step shown in the app itself, on a soft card, set down at a slight angle. */
+  /*
+   * Each step shown on the app's real screen, cropped to the part that proves
+   * it (2026-10-14). The drawn phones ran their screens off the card; the
+   * third, a long scrolling archive, rendered blank. Now each screen sits on a
+   * field of its own colour - ivory for you, chocolate for the call, sand for
+   * the family - with nothing drawn around it.
+   */
   .shot {
     display: grid;
-    place-items: center;
-    margin-bottom: calc(28px * var(--sy));
-    padding: calc(30px * var(--sy)) 0 0;
+    place-items: end center;
+    height: clamp(260px, min(34vw, 42svh), 520px);
+    margin-bottom: calc(26px * var(--sy));
+    padding: calc(26px * var(--sy)) 9% 0;
     border-radius: 6px;
-    background: radial-gradient(
-      ellipse at 50% 100%,
-      color-mix(in srgb, ${color.gold} 26%, ${color.ivory}),
-      transparent 70%
-    );
     overflow: hidden;
-    /* Height-aware (2026-10-14): 40vw alone made each card 512px on a
-       1280x720 laptop, before a word of the step was visible. */
-    height: clamp(260px, min(40vw, 42svh), 580px);
-    padding-inline: 4%;
-    /* Zoomed in: the phone runs off the bottom of the card, so the screen reads large. */
-    mask-image: linear-gradient(#000 82%, transparent);
+    background: ${color.ivoryDeep};
   }
-  .shot > * {
-    align-self: start;
+  .shot[data-ground="dark"] {
+    background: ${color.primary};
+  }
+  .shot[data-ground="sand"] {
+    background: ${color.sand};
+  }
+  .shot figure {
+    width: 100%;
+    max-width: 330px;
+    height: 100%;
+    margin: 0;
+    border-radius: 16px 16px 0 0;
+    overflow: hidden;
+    background: ${color.paperPure};
+    box-shadow: 0 0 0 1px color-mix(in srgb, ${color.primary} 14%, transparent);
+  }
+  .shot img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   li + li {
     padding-left: clamp(20px, 3vw, 48px);
@@ -112,7 +138,7 @@ const Scene = styled.section`
     color: ${color.accent};
   }
   .n small {
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -187,17 +213,18 @@ export default function StepOne() {
         <ol>
           {STEPS.map((s) => (
             <li key={s.n}>
-              <div className="shot">
-                <Phone width="min(380px, 100%)" lightStatus={s.n !== "III"}>
-                  {s.n === "I" && <AppShot name="home" />}
-                  {s.n === "II" && (
-                    <IncomingScreen
-                      when="Tuesday, 10:00"
-                      question="What did the garage smell like when you were fixing things?"
-                    />
-                  )}
-                  {s.n === "III" && <AppShot name="archive" scroll />}
-                </Phone>
+              <div className="shot" data-ground={s.ground}>
+                <figure>
+                  <img
+                    src={`/app/${s.shot}.webp`}
+                    alt=""
+                    width={860}
+                    height={1050}
+                    loading="lazy"
+                    decoding="async"
+                    style={{ objectPosition: s.at }}
+                  />
+                </figure>
               </div>
               <p className="n">
                 <span aria-hidden="true">{s.n}</span>

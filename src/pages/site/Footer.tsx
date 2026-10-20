@@ -20,7 +20,7 @@ export default function Footer() {
       <div className="gf-width">
         <div className="gf-footer-top">
           <div>
-            <Logo tone="dark" height={42} />
+            <Logo tone="dark" height={56} />
             <p className="footer-line">
               <span className="nb">Not a memoir to finish - </span>
               <br />
@@ -29,14 +29,6 @@ export default function Footer() {
             <p className="footer-contact">
               <a href={CONTACT.general}>{SITE.email}</a>
             </p>
-            <div className="footer-credential">
-              <Link
-                to="/programs"
-                aria-label="A Story is a member of the NVIDIA Inception program, the AssemblyAI Startup Program, and a Cartesia Startups grant recipient"
-              >
-                <ProgramMarks height={34} />
-              </Link>
-            </div>
           </div>
           <div className="gf-footer-links">
             <div>
@@ -70,6 +62,15 @@ export default function Footer() {
               <Link to="/terms">Terms</Link>
             </div>
           </div>
+        </div>
+        <div className="footer-credential">
+          <p className="footer-programs">Startup programs &amp; grants</p>
+          <Link
+            to="/programs"
+            aria-label="A Story is a member of the NVIDIA Inception program, the AssemblyAI Startup Program, and a Cartesia Startups grant recipient"
+          >
+            <ProgramMarks height={48} />
+          </Link>
         </div>
         <div className="gf-footer-bottom">
           <p>

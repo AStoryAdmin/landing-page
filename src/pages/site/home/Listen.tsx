@@ -1,51 +1,51 @@
 /**
- * Listen — the mechanism, as three exchanges you can read in a glance.
+ * Listen — three calls, each told the way the lake-monster scene tells a
+ * memory (EveryVoice): one object in the middle, the voices arriving around it.
  *
- * Hallmark redesign, 2026-10-14. This replaced ThreeCalls on the home page.
- * That scene put three tall phones side by side, each behind a Play button,
- * and the point — good listening changes the next question — only surfaced
- * a minute into an animation. On a 16" laptop it cost two full screens and
- * most visitors never pressed play.
+ * History. 2026-10-14 it replaced the three-phone player (still unused in
+ * app/CallTrio.tsx); first as a transcript (too much like a document), then as
+ * a photograph with a large quote (better, but static). The founder asked for
+ * it to work like the lake monster, and that is the right model: there the
+ * family's notes gather round the memory; here the call's own three turns
+ * gather round the photograph it is about —
  *
- * The point is three sentences long, so it is set as three sentences: what A
- * Story asked, what the person said (with the thing they let slip marked),
- * and what A Story asked next because of it. Each behaviour is one tab. No
- * device chrome, no autoplay; the whole exchange is on screen at once.
+ *   A Story asks      (top left)    the question
+ *   Rosa answers      (right)       her answer, the words she let slip marked
+ *   A Story follows   (bottom left) the reply that goes after those words
  *
- * The full phone demo is unchanged and still lives on How it works
- * (app/CallTrio.tsx), which shares the CALLS table below so the two can never
- * quote different turns. Every quoted line comes from `demoScripts.ts`; never
- * paraphrase. The voice layer is labelled as in development, as
- * demoScripts.ts requires.
+ * 2026-10-15: the ask note went; the lead line already says what was asked,
+ * and two notes read at a glance where three read as a transcript.
+ *
+ * The notes land one after another each time a call is chosen, so the
+ * exchange plays in order without anyone pressing play. Pick Rosa, Errol or
+ * Joan. Under 1024px the notes stack beneath the photograph.
+ *
+ * Every quoted line comes from `demoScripts.ts`, never paraphrased;
+ * `app/calls.ts` names the turns and the slipped words. The voice layer is
+ * labelled as in development, as demoScripts.ts requires.
  */
-import { useId, useRef, useState, type KeyboardEvent } from "react";
+import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import styled from "styled-components";
 import { SCENARIOS } from "../../../lib/demoScripts";
 import { CALLS } from "../app/calls";
-import { ArrowIcon } from "../kit/kit";
-import {
-  Frame,
-  SplitHead,
-  Statement,
-  TextLink,
-  grounds,
-} from "../kit/kit.styles";
+import { ArrowIcon, Picture } from "../kit/kit";
+import { Frame, Statement, TextLink, grounds } from "../kit/kit.styles";
 import { riseLines, useScene } from "../../../lib/scrollMotion";
-import { color, display, font, media, motion } from "../../../styles/theme";
+import { color, font, media, motion } from "../../../styles/theme";
 
-/** The three exchanges, resolved once from the shared table. */
-const EXCHANGES = CALLS.map((c) => {
+const CALL = CALLS.map((c) => {
   const s = SCENARIOS.find((x) => x.id === c.id)!;
   const answer = s.script[c.answer].text;
   const at = answer.indexOf(c.detail);
+  const [name, about] = s.cover.attribution.split(" - ");
   return {
     id: c.id,
+    photo: c.photo,
     behaviour: c.behaviour,
     teller: s.teller,
-    chapter: s.chapter,
-    who: s.cover.attribution,
-    watch: s.watch,
-    ask: s.script[c.ask].text,
+    name,
+    about,
+    lead: s.cover.lead,
     before: at < 0 ? answer : answer.slice(0, at),
     detail: at < 0 ? "" : c.detail,
     after: at < 0 ? "" : answer.slice(at + c.detail.length),
@@ -58,138 +58,190 @@ const Scene = styled.section`
   --ink: ${grounds.teal.ink};
   --focus: ${grounds.teal.focus};
   --focus-halo: ${grounds.teal.focusHalo};
-  --muted: ${grounds.teal.muted};
-  --line: ${grounds.teal.line};
   --mark: ${grounds.teal.mark};
   --label: ${grounds.teal.label};
+  --muted: ${grounds.teal.muted};
   background: ${color.teal};
   color: ${color.ivory};
-  padding: calc(clamp(72px, 8vw, 132px) * var(--sy)) 0
-    calc(clamp(64px, 7vw, 112px) * var(--sy));
+  padding: calc(clamp(72px, 8vw, 132px) * var(--sy)) 0;
+  overflow: hidden;
 
-  .head {
-    margin-bottom: calc(clamp(32px, 4vw, 64px) * var(--sy));
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 20px 48px;
+  }
+  .top h2 {
+    max-width: 21ch;
   }
   .lead {
-    font: 400 clamp(1.05rem, 1rem + 0.3vw, 1.25rem) / 1.55 ${font.body};
-    color: var(--muted);
-    max-width: 42ch;
+    margin-top: 14px;
+    font: 400 clamp(1.05rem, 1rem + 0.3vw, 1.2rem) / 1.55 ${font.body};
+    color: ${color.onDarkMuted};
+    max-width: 52ch;
   }
 
-  .body {
-    display: grid;
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 2.2fr);
-    gap: clamp(28px, 4vw, 72px);
-    align-items: start;
-  }
-
-  /* ── The three behaviours ─────────────────────────────────────────── */
+  /* The three calls. */
   [role="tablist"] {
-    display: grid;
-    gap: 2px;
-    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
   }
   [role="tab"] {
-    display: grid;
-    gap: 4px;
-    width: 100%;
-    padding: 18px 4px 18px 0;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    min-height: 48px;
+    padding: 12px 20px;
     border: 0;
-    border-bottom: 1px solid var(--line);
-    background: none;
-    text-align: left;
-    color: var(--muted);
+    border-radius: 999px;
+    background: color-mix(in srgb, ${color.ivory} 9%, transparent);
+    font: 400 16px/1.2 ${font.body};
+    color: ${color.onDarkMuted};
+    white-space: nowrap;
     cursor: pointer;
-    transition: color ${motion.base};
+    transition:
+      background-color ${motion.base},
+      color ${motion.base};
   }
   [role="tab"] b {
-    font: 400 clamp(1.15rem, 1rem + 0.45vw, 1.45rem) / 1.15 ${font.display};
-    letter-spacing: -0.01em;
-  }
-  [role="tab"] small {
-    font: 500 13px/1.3 ${font.body};
-    letter-spacing: 0.02em;
-    opacity: 0.85;
+    font: 500 18px/1.2 ${font.display};
+    color: ${color.ivory};
   }
   [role="tab"][aria-selected="true"] {
-    color: ${color.ivory};
+    background: ${color.sand};
+    color: ${color.primary};
   }
   [role="tab"][aria-selected="true"] b {
-    color: ${color.sand};
+    color: ${color.primary};
   }
-  @media (hover: hover) {
-    [role="tab"]:hover {
-      color: ${color.ivory};
+  @media (hover: hover) and (pointer: fine) {
+    [role="tab"][aria-selected="false"]:hover {
+      background: color-mix(in srgb, ${color.ivory} 16%, transparent);
     }
+  }
+  [role="tab"]:active {
+    transform: scale(0.98);
   }
 
-  /* ── The exchange ─────────────────────────────────────────────────── */
-  .exchange {
+  /* The table: the photograph in the middle, the turns laid round it. */
+  .stage {
     position: relative;
     display: grid;
-    gap: calc(clamp(18px, 2.2vw, 30px) * var(--sy));
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    animation: listen-in 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    place-items: center;
+    /* Height-aware: the photograph and all three turns in one laptop screen. */
+    min-height: clamp(440px, 54svh, 580px);
+    margin-top: calc(clamp(20px, 2.4vw, 40px) * var(--sy));
   }
-  @keyframes listen-in {
+  .print {
+    position: relative;
+    z-index: 1;
+    width: min(280px, 22vw, 34svh);
+    margin: 0;
+    padding: 12px 12px 0;
+    background: ${color.paperPure};
+    transform: rotate(-1.5deg);
+    box-shadow: 0 30px 60px -28px rgba(0, 0, 0, 0.7);
+  }
+  .print .window {
+    aspect-ratio: 4 / 4.6;
+    overflow: hidden;
+    background: ${color.primary};
+  }
+  .print img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(0.12) saturate(0.92);
+  }
+  .print figcaption {
+    padding: 12px 4px 16px;
+    font: italic 400 16px/1.35 ${font.display};
+    color: ${color.primaryMid};
+    text-align: center;
+  }
+
+  .note {
+    position: absolute;
+    z-index: 2;
+    width: min(380px, 31vw);
+    padding: 18px 22px 20px;
+    background: ${color.paperPure};
+    color: ${color.primary};
+    border-top: 3px solid var(--tint);
+    border-radius: 2px 2px 6px 6px;
+    box-shadow:
+      0 1px 1px rgba(0, 0, 0, 0.08),
+      0 30px 54px -26px rgba(0, 0, 0, 0.6);
+    animation: note-in 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .note.answer {
+    --tint: ${color.accent};
+    right: 0;
+    top: 8%;
+    rotate: 1.6deg;
+  }
+  .note.follow {
+    --tint: ${color.warmGold};
+    left: 2%;
+    top: 30%;
+    rotate: -1.6deg;
+    animation-delay: 420ms;
+  }
+  @keyframes note-in {
     from {
       opacity: 0;
-      transform: translateY(8px);
+      translate: 0 18px;
     }
   }
-  .turn {
+  .note header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .note i {
     display: grid;
-    grid-template-columns: 9.5rem minmax(0, 1fr);
-    gap: 4px clamp(16px, 2vw, 32px);
-    align-items: baseline;
-  }
-  .who {
-    font: 600 11px/1.4 ${font.body};
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--label);
-  }
-  .who span {
-    display: block;
-    margin-top: 6px;
-    font: 500 12px/1.35 ${font.body};
-    letter-spacing: 0.02em;
-    text-transform: none;
-    color: var(--muted);
-  }
-  .turn p {
-    margin: 0;
-    font-family: ${font.display};
-    text-wrap: pretty;
-  }
-  .ask p {
-    font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
-    line-height: 1.45;
-    color: var(--muted);
-  }
-  .answer p {
-    font-size: ${display.sm};
-    line-height: 1.35;
+    flex: none;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font: 600 14px/1 ${font.body};
+    font-style: normal;
     color: ${color.ivory};
+    background: var(--tint);
   }
-  /* The thing they let slip: marked the way a reader would mark it. */
-  .answer mark {
+  .note b {
+    display: block;
+    font: 600 15px/1.2 ${font.body};
+    color: ${color.primary};
+  }
+  .note small {
+    display: block;
+    margin-top: 2px;
+    font: 500 13px/1.3 ${font.body};
+    color: ${color.bodyMuted};
+  }
+  .note p {
+    font: 400 17px/1.5 ${font.display};
+    color: ${color.primary};
+  }
+  /* Her words are hers: set in the italic the site keeps for what people say. */
+  .note.answer p {
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.45;
+  }
+  .note mark {
+    color: inherit;
     background: linear-gradient(
-        transparent 62%,
-        color-mix(in srgb, ${color.warmGold} 42%, transparent) 62%
+        color-mix(in srgb, ${color.warmGold} 50%, transparent),
+        color-mix(in srgb, ${color.warmGold} 50%, transparent)
       )
-      no-repeat;
-    color: ${color.sand};
-  }
-  .follow p {
-    font-size: ${display.sm};
-    line-height: 1.35;
-    color: ${color.sand};
-  }
-  .follow .who {
-    color: ${color.sand};
+      0 88% / 100% 0.42em no-repeat;
   }
 
   .foot {
@@ -197,51 +249,72 @@ const Scene = styled.section`
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 16px 32px;
-    margin-top: calc(clamp(32px, 4vw, 56px) * var(--sy));
-    padding-top: 20px;
-    border-top: 1px solid var(--line);
-  }
-  .kept {
-    font: 500 13px/1.5 ${font.body};
-    letter-spacing: 0.02em;
-    color: var(--muted);
+    gap: 12px 32px;
+    margin-top: calc(clamp(20px, 2.4vw, 40px) * var(--sy));
+    font: 400 14px/1.5 ${font.body};
+    color: ${color.onDarkMuted};
   }
 
+  ${media.lg} {
+    .stage {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 18px;
+      min-height: 0;
+    }
+    .print {
+      align-self: center;
+      width: min(280px, 72vw);
+      margin-bottom: 10px;
+    }
+    .note {
+      position: static;
+      width: 100%;
+      max-width: 560px;
+      rotate: 0deg;
+    }
+    .note.answer {
+      align-self: flex-end;
+    }
+  }
   ${media.md} {
-    .body {
-      grid-template-columns: minmax(0, 1fr);
+    [role="tablist"] {
+      width: 100%;
     }
-    /* Stacked single-line rows: three labels side by side wrapped onto two
-       lines each at phone width, and a control should never wrap. */
     [role="tab"] {
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: baseline;
-      gap: 12px;
-      padding: 13px 0;
+      flex: 1 1 auto;
+      justify-content: center;
+      padding: 12px 14px;
     }
-    [role="tab"] b,
-    [role="tab"] small {
-      white-space: nowrap;
-    }
-    [role="tab"] b {
-      font-size: 1.1rem;
-    }
-    [role="tab"] small {
-      font-size: 12px;
-    }
-    .turn {
-      grid-template-columns: minmax(0, 1fr);
+    [role="tab"] span {
+      display: none;
     }
   }
   ${media.motion} {
-    .exchange {
+    .note {
       animation: none;
     }
   }
 `;
 
-export default function Listen() {
+type Props = {
+  /** Anchor id; How it works keeps its old #calls links. */
+  id?: string;
+  title?: ReactNode;
+  /** Home links on to How it works; How it works has nowhere further to go. */
+  more?: boolean;
+};
+
+export default function Listen({
+  id = "listen",
+  title = (
+    <>
+      Three calls. Nobody changes the <em>subject.</em>
+    </>
+  ),
+  more = true,
+}: Props) {
   const uid = useId();
   const [active, setActive] = useState(0);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -249,38 +322,30 @@ export default function Listen() {
     riseLines(root.querySelector("h2")!);
   });
 
-  /* Arrow keys move between the behaviours, as a tab list should. */
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
-    const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[
-      e.key
-    ];
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
     if (!step) return;
     e.preventDefault();
-    const next = (active + step + EXCHANGES.length) % EXCHANGES.length;
+    const next = (active + step + CALL.length) % CALL.length;
     setActive(next);
     tabs.current[next]?.focus({ preventScroll: true });
   };
 
-  const x = EXCHANGES[active];
+  const c = CALL[active];
   return (
-    <Scene ref={ref} id="listen" aria-labelledby="listen-title">
+    <Scene ref={ref} id={id} aria-labelledby={`${uid}-title`}>
       <Frame>
-        <SplitHead className="head">
-          <Statement id="listen-title" $size="lg">
-            Three calls. Nobody changes the <em>subject.</em>
-          </Statement>
-          <p className="lead">
-            Some stories only appear because somebody asks twice. Here is the
-            moment in each call where A Story drops its own question and goes
-            after what was said.
-          </p>
-        </SplitHead>
-
-        <div className="body">
+        <div className="top">
+          <div>
+            <Statement id={`${uid}-title`} $size="lg">
+              {title}
+            </Statement>
+            <p className="lead">{c.lead}</p>
+          </div>
           <div role="tablist" aria-label="Three calls" onKeyDown={onKey}>
-            {EXCHANGES.map((e, i) => (
+            {CALL.map((x, i) => (
               <button
-                key={e.id}
+                key={x.id}
                 ref={(el) => {
                   tabs.current[i] = el;
                 }}
@@ -292,54 +357,59 @@ export default function Listen() {
                 tabIndex={active === i ? 0 : -1}
                 onClick={() => setActive(i)}
               >
-                <b>{e.behaviour}</b>
-                <small>
-                  {e.teller} · {e.chapter}
-                </small>
+                <b>{x.teller}</b>
+                <span>{x.behaviour.toLowerCase()}</span>
               </button>
             ))}
           </div>
+        </div>
 
-          <div
-            role="tabpanel"
-            id={`${uid}-panel`}
-            aria-labelledby={`${uid}-tab-${active}`}
-          >
-            <ol key={x.id} className="exchange">
-              <li className="turn ask">
-                <span className="who">A Story asks</span>
-                <p>{x.ask}</p>
-              </li>
-              <li className="turn answer">
-                <span className="who">
-                  {x.teller}
-                  <span>{x.who}</span>
-                </span>
-                <p>
-                  {x.before}
-                  {x.detail && <mark>{x.detail}</mark>}
-                  {x.after}
-                </p>
-              </li>
-              <li className="turn follow">
-                <span className="who">
-                  A Story follows
-                  <span>{x.method}</span>
-                </span>
-                <p>{x.follow}</p>
-              </li>
-            </ol>
+        <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-tab-${active}`}>
+          <div className="stage" key={c.id}>
+            <figure className="print">
+              <div className="window">
+                <Picture id={c.photo} alt="" sizes="300px" />
+              </div>
+              <figcaption>
+                {c.name}, {c.about}
+              </figcaption>
+            </figure>
+
+            <article className="note answer">
+              <header>
+                <i aria-hidden="true">{c.teller[0]}</i>
+                <div>
+                  <b>{c.name}</b>
+                  <small>{c.about}</small>
+                </div>
+              </header>
+              <p>
+                “{c.before}
+                {c.detail && <mark>{c.detail}</mark>}
+                {c.after}”
+              </p>
+            </article>
+
+            <article className="note follow">
+              <header>
+                <i aria-hidden="true">A</i>
+                <div>
+                  <b>A Story follows</b>
+                  <small>{c.method}</small>
+                </div>
+              </header>
+              <p>{c.follow}</p>
+            </article>
           </div>
         </div>
 
         <div className="foot">
-          <p className="kept">
-            Kept from every call: the card and the transcript. Voice · in
-            development.
-          </p>
-          <TextLink to="/how-it-works#calls">
-            Watch a whole call <ArrowIcon />
-          </TextLink>
+          <span>Kept from every call: the card and the transcript. Voice · in development.</span>
+          {more && (
+            <TextLink to="/how-it-works">
+              How a call works <ArrowIcon />
+            </TextLink>
+          )}
         </div>
       </Frame>
     </Scene>

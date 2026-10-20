@@ -80,8 +80,10 @@ const Article = styled(Chapter)`
     cursor: pointer;
   }
   .lead-image {
-    margin-top: clamp(40px, 5vw, 72px);
-    max-width: 980px;
+    margin-top: calc(clamp(40px, 5vw, 72px) * var(--sy));
+    /* The photographs are 4:3; capped by height too, so one is never taller
+       than a laptop window (the laptop rule, design.md). */
+    max-width: min(980px, calc(76svh * 4 / 3));
   }
   .body {
     display: grid;
@@ -98,14 +100,15 @@ const Article = styled(Chapter)`
   }
   nav small {
     margin-bottom: 8px;
-    font: 600 12px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
   nav a {
     display: block;
-    padding: 8px 0;
+    min-height: 44px;
+    padding: 11px 0;
     font: 400 15px/1.4 ${font.body};
     color: ${color.body};
     text-decoration: none;

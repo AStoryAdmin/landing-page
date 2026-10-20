@@ -130,8 +130,8 @@ const Moment = styled(Chapter)`
     box-shadow: inset 0 0 0 1px ${color.onDarkLine};
   }
   .voices small {
-    font: 600 11px/1.3 ${font.body};
-    letter-spacing: 0.18em;
+    font: 600 13px/1.3 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.gold};
   }

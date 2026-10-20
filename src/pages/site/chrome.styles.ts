@@ -223,8 +223,8 @@ export const HeaderShell = styled.header`
   .more-groups h2,
   .gf-mobile-more h2 {
     margin-bottom: 8px;
-    font: 600 11px/1.4 ${font.body};
-    letter-spacing: 0.18em;
+    font: 600 13px/1.4 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
@@ -286,8 +286,8 @@ export const HeaderShell = styled.header`
     transform: scale(1.04);
   }
   .more-feature small {
-    font: 600 11px/1 ${font.body};
-    letter-spacing: 0.18em;
+    font: 600 13px/1 ${font.body};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.gold};
   }
@@ -297,7 +297,7 @@ export const HeaderShell = styled.header`
   }
   .more-feature span {
     margin-top: 10px;
-    font: 600 12px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
@@ -314,7 +314,7 @@ export const HeaderShell = styled.header`
     color: ${color.ivory};
     box-shadow: inset 0 0 0 1px
       color-mix(in srgb, ${color.ivory} 18%, transparent);
-    font: 600 11.5px/1 ${font.body};
+    font: 600 13px/1 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     text-decoration: none;
@@ -543,11 +543,30 @@ export const FooterShell = styled.footer`
    * destination - and it is held to NVIDIA's rules: their own artwork at its
    * own colours, smaller than our logo above it, with clear space of its own.
    */
+  /* Badges at 48px under a 56px logo: legible, and never larger than the
+     A Story logo beside them, as NVIDIA's badge rules require. */
+  .footer-programs {
+    margin: 0;
+    font: 500 14px/1.4 ${font.body};
+    color: ${color.onDarkMuted};
+  }
   .footer-credential {
-    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 24px;
+    margin-top: clamp(40px, 4.4vw, 64px);
     --line: ${color.onDarkLine};
     --muted: ${color.onDarkMuted};
     --ink: ${color.ivory};
+  }
+  ${media.sm} {
+    .footer-credential img {
+      height: 32px;
+    }
+    .footer-credential span span {
+      padding: 7px;
+    }
   }
   .footer-credential a {
     display: inline-flex;
@@ -614,7 +633,7 @@ export const FooterShell = styled.footer`
      */
     flex: 0 0 100%;
     margin-top: 10px;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.6;
     color: ${color.onDarkFaint};
   }
