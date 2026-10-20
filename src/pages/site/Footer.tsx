@@ -27,7 +27,7 @@ export default function Footer() {
               <i>A Story</i> to keep, and to carry on.
             </p>
             <p className="footer-contact">
-              <a href={CONTACT.general}>{SITE.email}</a>
+              <Link to="/contact">Contact us</Link> · <a href={CONTACT.general}>{SITE.email}</a>
             </p>
           </div>
           <div className="gf-footer-links">
@@ -57,6 +57,7 @@ export default function Footer() {
             <div>
               <h2>Company</h2>
               <Link to="/our-story">Our story</Link>
+              <Link to="/contact">Contact</Link>
               <Link to="/programs">Programs &amp; grants</Link>
               <Link to="/privacy">Privacy</Link>
               <Link to="/terms">Terms</Link>

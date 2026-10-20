@@ -47,8 +47,8 @@ const groups = [
       ["Your own story", "/your-story", "Your life belongs here too."],
       [
         "Get in touch",
-        "mailto:contact@astoryapp.com",
-        "A conversation with our team.",
+        "/contact",
+        "Write to Daniel, our co-founder.",
       ],
     ],
   },

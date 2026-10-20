@@ -1,5 +1,4 @@
 import { getSupabase, isSupabaseConfigured } from "./supabase";
-import { SITE } from "./seo";
 
 /**
  * An institution books a demo, and Daniel gets an email.
@@ -65,8 +64,8 @@ export const demoMailto = (r: Partial<DemoRequest>) => {
     .filter(Boolean)
     .join("\n");
   return (
-    `mailto:${DEMO_EMAIL}?cc=${encodeURIComponent(SITE.email)}` +
-    `&subject=${encodeURIComponent(`Demo request${r.organization ? `: ${r.organization}` : ""}`)}` +
+    `mailto:${DEMO_EMAIL}` +
+    `?subject=${encodeURIComponent(`Demo request${r.organization ? `: ${r.organization}` : ""}`)}` +
     `&body=${encodeURIComponent(body)}`
   );
 };
@@ -84,6 +83,41 @@ export async function requestDemo(r: DemoRequest): Promise<DemoResult> {
     /* Saved but not emailed: someone will still see the row, but the person
        is not told "it is in Daniel's inbox" when it is not. */
     if (!data.emailed) return { ok: false, fallbackMailto };
+    return { ok: true, emailed: true };
+  } catch {
+    return { ok: false, fallbackMailto };
+  }
+}
+
+/**
+ * The contact form (/contact), added 2026-10-20: the same function and the
+ * same inbox, `type: "contact"`. "Get in touch" used to be a mailto to
+ * contact@astoryapp.com - the click that loses people (see lib/leads.ts).
+ */
+export type ContactMessage = {
+  name: string;
+  email: string;
+  topic?: string;
+  message: string;
+  organization?: string;
+  source: string;
+  website?: string;
+};
+
+export const contactMailto = (m: Partial<ContactMessage>) =>
+  `mailto:${DEMO_EMAIL}?subject=${encodeURIComponent(`Hello from astoryapp.com${m.topic ? ` - ${m.topic}` : ""}`)}` +
+  (m.message ? `&body=${encodeURIComponent(m.message)}` : "");
+
+export async function sendMessage(m: ContactMessage): Promise<DemoResult> {
+  const fallbackMailto = contactMailto(m);
+  const supabase = getSupabase();
+  if (!supabase || !isSupabaseConfigured) return { ok: false, fallbackMailto };
+  try {
+    const { data, error } = await supabase.functions.invoke("demo-request", { body: { ...m, type: "contact" } });
+    if (error || !data?.ok || !data.emailed) {
+      console.error("[contact] message failed:", error ?? data);
+      return { ok: false, fallbackMailto };
+    }
     return { ok: true, emailed: true };
   } catch {
     return { ok: false, fallbackMailto };

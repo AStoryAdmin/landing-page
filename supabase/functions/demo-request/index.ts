@@ -10,6 +10,10 @@
  * person who asked, so answering is one click.
  * ─────────────────────────────────────────────────────────────────────────
  *
+ * Since the same day it also carries the website's contact form (/contact,
+ * `type: "contact"`): a message from anyone, to the same inbox, so
+ * "contact us" reaches a person instead of opening Outlook.
+ *
  * The recipient is fixed on the server. The browser chooses what is said,
  * never who it is sent to, so this cannot be used to mail anyone else. A
  * hidden "website" field catches the simplest bots; lengths are capped.
@@ -56,6 +60,10 @@ const json = (status: number, body: unknown) =>
 
 /** What the form sends. Everything but name, email and organization is optional. */
 type Request = {
+  /** "demo" (the default) or "contact". */
+  type?: string;
+  topic?: string;
+  message?: string;
   name?: string;
   email?: string;
   phone?: string;
@@ -90,11 +98,17 @@ Deno.serve(async (req) => {
      Answer as if it worked, so the script learns nothing. */
   if (clip(body.website, 200)) return json(200, { ok: true, emailed: false });
 
+  const contact = body.type === "contact";
   const name = clip(body.name, 120);
   const email = clip(body.email, 200).toLowerCase();
   const organization = clip(body.organization, 200);
-  if (!name || !organization || !looksLikeEmail(email)) {
-    return json(400, { ok: false, error: "Name, organization and a work email are needed." });
+  const topic = clip(body.topic, 80);
+  const message = clip(body.message, 6000);
+  if (contact ? !name || !message || !looksLikeEmail(email) : !name || !organization || !looksLikeEmail(email)) {
+    return json(400, {
+      ok: false,
+      error: contact ? "Name, email and a message are needed." : "Name, organization and a work email are needed.",
+    });
   }
   const phone = clip(body.phone, 40);
   const role = clip(body.role, 120);
@@ -102,7 +116,7 @@ Deno.serve(async (req) => {
   const size = clip(body.size, 80);
   const timezone = clip(body.timezone, 80);
   const note = clip(body.note, 4000);
-  const source = clip(body.source, 80) || "organizations:demo";
+  const source = clip(body.source, 80) || (contact ? "contact" : "organizations:demo");
   const times = (Array.isArray(body.times) ? body.times : []).map((t) => clip(t, 80)).filter(Boolean).slice(0, 6);
 
   /* The row: the same table every other lead lands in, so the list stays one
@@ -110,7 +124,9 @@ Deno.serve(async (req) => {
      phone column, as lib/leads.ts does. */
   const [first, ...rest] = name.split(/\s+/);
   const detail = [
-    `Organization: ${organization}`,
+    topic && `Topic: ${topic}`,
+    message && `Message: ${message}`,
+    organization && `Organization: ${organization}`,
     role && `Role: ${role}`,
     kind && `Type: ${kind}`,
     size && `People: ${size}`,
@@ -120,7 +136,7 @@ Deno.serve(async (req) => {
     .filter(Boolean)
     .join(" · ");
   const core = { first_name: first, last_name: rest.join(" "), email, phone };
-  let row = await db.from("waitlist_signups").insert({ ...core, gift_for: organization, note: detail, source });
+  let row = await db.from("waitlist_signups").insert({ ...core, gift_for: organization || topic, note: detail, source });
   if (row.error && ["42703", "PGRST204"].includes(row.error.code ?? "")) {
     row = await db
       .from("waitlist_signups")
@@ -131,6 +147,8 @@ Deno.serve(async (req) => {
 
   /* The email. Plain enough to read on a phone, with every answer in it. */
   const lines: [string, string][] = [
+    ["Topic", topic],
+    ["Message", message],
     ["Name", name],
     ["Email", email],
     ["Phone", phone],
@@ -147,7 +165,9 @@ Deno.serve(async (req) => {
   const text = filled.map(([k, v]) => `${k}: ${v}`).join("\n") + "\n\nReply to this email to answer them.";
   const html =
     `<div style="font-family:-apple-system,Segoe UI,sans-serif;font-size:15px;line-height:1.5;color:#2A1F18">` +
-    `<p style="font-size:18px;margin:0 0 16px"><b>${esc(organization)}</b> would like a demo.</p>` +
+    (contact
+      ? `<p style="font-size:18px;margin:0 0 16px"><b>${esc(name)}</b> wrote through astoryapp.com.</p>`
+      : `<p style="font-size:18px;margin:0 0 16px"><b>${esc(organization)}</b> would like a demo.</p>`) +
     `<table cellpadding="6" style="border-collapse:collapse">` +
     filled
       .map(
@@ -170,7 +190,9 @@ Deno.serve(async (req) => {
         from: FROM,
         to: [TO],
         reply_to: email,
-        subject: `Demo request: ${organization}`,
+        subject: contact
+          ? `Website message${topic ? ` (${topic})` : ""}: ${name}`
+          : `Demo request: ${organization}`,
         text,
         html,
       }),
