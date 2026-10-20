@@ -38,7 +38,6 @@ import EditorialSeo from "../../components/ui/EditorialSeo";
 import {
   FOUNDING_BALANCE,
   FOUNDING_GROUP,
-  FOUNDING_PLACES,
   FULL_PRICE,
   INCLUDES,
   OFFERS,
@@ -570,7 +569,7 @@ export default function Reserve() {
       return (
         <>
           <p className="small">
-            All {FOUNDING_PLACES} founding places are filled - thank you. A dollar still holds your place for
+            The founding places are filled - thank you. A dollar still holds your place for
             launch, and comes off your first year.
           </p>
           <SecondaryAnchor
@@ -742,7 +741,7 @@ export default function Reserve() {
         <p className="tag">
           {isFounding
             ? !foundingOpen
-              ? `All ${FOUNDING_PLACES} filled`
+              ? "Filled"
               : `Open now · ${placesLine}`
             : discountOpen
               ? `The easy yes · ends ${RESERVE_DEADLINE_LABEL}`
@@ -821,7 +820,7 @@ export default function Reserve() {
         description={
           founding.open
             ? `A Story opens to ${founding.places} founding families before launch: ${founding.price}, set up with you by hand, one of us on your first call, half off your first year, refundable until that call. Or hold a place for ${reserve.price}.`
-            : `All ${founding.places} founding places are filled. ${reserve.price} holds your place in line for launch, ${reserve.discount}% off your first year if you reserve by ${RESERVE_DEADLINE_LABEL}, refundable any time before launch.`
+            : `The founding places are filled. ${reserve.price} holds your place in line for launch, ${reserve.discount}% off your first year if you reserve by ${RESERVE_DEADLINE_LABEL}, refundable any time before launch.`
         }
       />
 
@@ -866,7 +865,7 @@ export default function Reserve() {
               Hold your place <em>for a dollar.</em>
             </>
           }
-          lead={`A Story calls someone you love and asks about their life. All ${founding.places} founding places are filled; reserve for ${reserve.price} and we tell you the moment it is your turn.`}
+          lead={`A Story calls someone you love and asks about their life. The founding places are filled; reserve for ${reserve.price} and we tell you the moment it is your turn.`}
           actions={
             <>
               <PrimaryAnchor
@@ -961,7 +960,7 @@ export default function Reserve() {
                 the year.{" "}
                 {foundingOpen
                   ? `There are ${founding.places} places, and they go in the order families join.`
-                  : `All ${founding.places} places are filled.`}
+                  : "The founding places are filled."}
               </p>
             </div>
           </div>

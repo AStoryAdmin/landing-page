@@ -313,7 +313,9 @@ export const INCLUDES: Record<OfferId, string[]> = {
         'Refunded any time before launch, no questions',
     ],
     founding: [
-        `One of ${FOUNDING_PLACES} families who start now, before launch`,
+        OFFERS.founding.open
+            ? `One of ${FOUNDING_PLACES} families who start now, before launch`
+            : 'One of the families who start now, before launch',
         'We write within a working day and set it up with you, by hand',
         'Your first month of guided calls, from the first call',
         'One of us there for that first call',
