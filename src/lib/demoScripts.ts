@@ -3,7 +3,7 @@
  *
  * ─────────────────────────────────────────────────────────────────────────
  * THE QUESTIONS COME FROM THE APP'S OWN BANK — phone-app-main's
- * src/data/interview.js, 504 questions across the eleven chapters in
+ * src/data/interview.js, 547 questions across the eleven chapters in
  * src/data/eras.js. Each question turn carries the `source` id it came from,
  * so any line here can be checked in one grep. Turns with no `source` are
  * follow-ups rather than questions: the bank gives every question a `followUp`
