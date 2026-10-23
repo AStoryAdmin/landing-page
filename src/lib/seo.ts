@@ -17,7 +17,9 @@ export const SITE = {
       /\/$/,
       "",
     ) ?? "https://astoryapp.com",
-  email: "contact@astoryapp.com",
+  /* daniel@ since 2026-10-20: the founder asked that the site's contact
+     reach him directly. The legal pages keep contact@ as the notice address. */
+  email: "daniel@astoryapp.com",
   tagline: "Your Family’s Living Memories",
   ogImage: "/og/home.jpg",
   twitter: "@astoryapp",

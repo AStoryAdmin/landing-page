@@ -126,7 +126,7 @@ export const checkoutFor = (id: string): string =>
  * being collected is identical, and a second form is a second thing to keep
  * true. `/start` reads the intent and changes what it promises.
  */
-export const DEMO_HREF = '/start?intent=demo';
+export const DEMO_HREF = '/organizations#book';
 
 /**
  * What the site's call to action says, and where it goes.

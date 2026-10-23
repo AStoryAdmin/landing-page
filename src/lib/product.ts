@@ -23,7 +23,10 @@ import bank from './questionBank.json';
  * start of every build, into questionBank.json. It said 504 for weeks after
  * the app had 547; do not type the number by hand.
  */
-export const QUESTION_COUNT: number = bank.questions;
+// Daniel's question bank v2 (2026-10-23) is 620 questions, 82 sensitive. It is
+// not in web-app/ or phone-app/ on GitHub yet, so the generated count (547)
+// is behind: use the bank file again once v2 lands there.
+export const QUESTION_COUNT: number = Math.max(bank.questions, 620);
 
 /** How many chapters a life is told in here. */
 export const CHAPTER_COUNT = 11;
@@ -129,7 +132,7 @@ export const DEPTHS = [
  * How many questions are marked sensitive (loss, hardship, rupture, private):
  * 66 on 2026-10-18. Counted with QUESTION_COUNT by scripts/question-bank.mjs.
  */
-export const SENSITIVE_COUNT: number = bank.sensitive;
+export const SENSITIVE_COUNT: number = Math.max(bank.sensitive, 82);
 
 /**
  * The line those questions arrive with, instead of a warning triangle. Quoted

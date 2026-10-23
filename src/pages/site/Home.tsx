@@ -3,6 +3,7 @@ import EditorialSeo from "../../components/ui/EditorialSeo";
 import { refreshWhenSettled } from "../../lib/scrollMotion";
 import { Invitation } from "./kit/kit";
 import Intro from "./home/Intro";
+import CodeFromFamily from "./home/CodeFromFamily";
 import Hero from "./home/Hero";
 import SampleBooks from "./home/SampleBooks";
 import WhatGetsLost from "./home/WhatGetsLost";
@@ -74,6 +75,9 @@ export default function Home() {
         path="/"
         description="A Story calls a parent or grandparent, asks about their life, and keeps what they tell in a private archive the whole family can add to - and print as a book."
       />
+      {/* Only when the address carries a family code (?ref=): the code,
+          large, and the three steps to use it. */}
+      <CodeFromFamily />
       <Intro />
       <Hero />
       <WhatGetsLost />

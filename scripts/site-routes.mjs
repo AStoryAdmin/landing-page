@@ -20,12 +20,12 @@ export const staticPages = ['/samples'];
    own title) but stay out of the sitemap: noindex, or doors that send people
    on to the web app. `visit` is the address the prerender opens, where the
    snapshot should show a different state from the bare path:
-   - /start shows the demonstration form (plain /start goes to the app);
+   - /start is the door to the app (a demo is booked on /organizations);
    - /sign-in and /sign-up show the reservation's own form, the one state in
      which someone stays on them (anything else goes to the app);
    - /l shows "Opening the recording…" rather than "This code didn't open". */
 export const privateRoutes = [
-    { path: '/start', visit: '/start?intent=demo' },
+    { path: '/start' },
     { path: '/sign-in', visit: '/sign-in?next=/reserve' },
     { path: '/sign-up', visit: '/sign-up?next=/reserve' },
     { path: '/account' },

@@ -270,7 +270,11 @@ export const OFFERS: Record<OfferId, Offer> = {
         places: FOUNDING_PLACES,
         /* Live since 2026-10-01. Stripe: "A Story — Founding Family", $29. */
         link: 'https://buy.stripe.com/fZu4gB3P72GM9EkgSFe7m01',
-        open: true,
+        /* Closed by hand on 2026-10-20 (user): the twenty-five are filled.
+           Every page says "filled" and leads with the dollar, which stays
+           open. Switch the Stripe link off too, so an old bookmark cannot
+           pay for a place that is not there. */
+        open: false,
         meta: 'founding_requested_at',
     },
 };
@@ -309,7 +313,9 @@ export const INCLUDES: Record<OfferId, string[]> = {
         'Refunded any time before launch, no questions',
     ],
     founding: [
-        `One of ${FOUNDING_PLACES} families who start now, before launch`,
+        OFFERS.founding.open
+            ? `One of ${FOUNDING_PLACES} families who start now, before launch`
+            : 'One of the families who start now, before launch',
         'We write within a working day and set it up with you, by hand',
         'Your first month of guided calls, from the first call',
         'One of us there for that first call',
@@ -322,7 +328,9 @@ export const INCLUDES: Record<OfferId, string[]> = {
 export const WHY_PAY = [
     {
         t: 'It holds a price we will not offer again',
-        d: `${OFFERS.founding.discount}% off the first year for founding families, ${OFFERS.reserve.discount}% for everyone who reserves by ${RESERVE_DEADLINE_LABEL}.`,
+        d: OFFERS.founding.open
+            ? `${OFFERS.founding.discount}% off the first year for founding families, ${OFFERS.reserve.discount}% for everyone who reserves by ${RESERVE_DEADLINE_LABEL}.`
+            : `${OFFERS.reserve.discount}% off the first year for everyone who reserves by ${RESERVE_DEADLINE_LABEL}.`,
     },
     {
         t: 'None of it is a fee',
@@ -330,7 +338,9 @@ export const WHY_PAY = [
     },
     {
         t: 'It is yours back if you ask',
-        d: 'The dollar, any time before launch. The $29, any time before your first call. Write to us and it is refunded.',
+        d: OFFERS.founding.open
+            ? 'The dollar, any time before launch. The $29, any time before your first call. Write to us and it is refunded.'
+            : 'The dollar, any time before launch. Write to us and it is refunded.',
     },
     {
         t: 'It is how we know you mean it',

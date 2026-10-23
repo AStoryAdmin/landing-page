@@ -12,7 +12,7 @@
  * the done state); this page only restyles it from the outside. Plan and
  * intent are still read from the URL. Complete without motion.
  */
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
 import AppDoor from "./AppDoor";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
@@ -369,6 +369,10 @@ export default function Start() {
   if (!demo) {
     return <AppDoor door="create-account" path="/start" />;
   }
+  /* Since 2026-10-20 a demo is booked on /organizations (DemoBooking.tsx),
+     which emails Daniel; the form below only wrote a row nobody was told
+     about. Old links still arrive here, so they are sent on. */
+  if (demo) return <Navigate to="/organizations#book" replace />;
 
   return (
     <Page ref={ref} aria-labelledby="start-title">

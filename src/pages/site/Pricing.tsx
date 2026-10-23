@@ -949,7 +949,7 @@ export default function Pricing() {
                   ? "No card. Make your account in your browser and begin today."
                   : isCheckoutLive(selectedId)
                     ? "Continue with your selected plan."
-                    : `Everyone starts on Free. ${name} is not sold on the web yet.`}
+                    : "Before launch: reserve for $1 by 2 November and hold 15% off this plan's first year."}
               </small>
             </div>
             <div className="decide-actions">
@@ -1034,7 +1034,7 @@ export default function Pricing() {
               <summary>Care communities and organizations</summary>
               <p>
                 Program pricing is quoted individually.{" "}
-                <TextLink to="/start?intent=demo">Talk with us</TextLink> about
+                <TextLink to="/organizations#book">Book a demo</TextLink> to talk about
                 participants, consent and access.
               </p>
             </details>

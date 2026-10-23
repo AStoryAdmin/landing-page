@@ -10,7 +10,7 @@ export const groups = [
       },
       {
         q: "Can I sign up today?",
-        a: "Yes. Start free at app.astoryapp.com: make an account in your browser, with no card. Plans with A Story doing the calling are not sold on the web yet; the Pricing page says how to reserve one.",
+        a: "Yes. Start free at app.astoryapp.com: make an account in your browser, with no card. The plans where A Story makes the calls open to a few families at a time: reserve one for $1 by 2 November and hold 15% off your first year, refundable any time before launch.",
       },
       {
         q: "Does my family member need to install an app?",
@@ -69,7 +69,7 @@ export const groups = [
       },
       {
         q: "How does giving A Story work?",
-        a: "You help set up an archive for your relative and choose a good time for the first call. There is no gift card, code, or redemption process. Express is the one-time plan; the annual and monthly plans renew.",
+        a: "You help set up an archive for your relative and choose a good time for the first call. There is no gift card, code, or redemption process. Express is the one-time plan; the annual and monthly plans renew. Reserve for $1 to hold your place.",
       },
     ],
   },

@@ -72,7 +72,7 @@ export default function Listen() {
           {failed ? (
             <>
               Try scanning it again, a little closer. If it still won’t play, write to{" "}
-              <a href="mailto:contact@astoryapp.com">contact@astoryapp.com</a> and we’ll help.
+              <a href="mailto:daniel@astoryapp.com">daniel@astoryapp.com</a> and we’ll help.
             </>
           ) : (
             "The voice that told this memory, in a moment."

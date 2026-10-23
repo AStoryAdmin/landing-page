@@ -38,7 +38,6 @@ import EditorialSeo from "../../components/ui/EditorialSeo";
 import {
   FOUNDING_BALANCE,
   FOUNDING_GROUP,
-  FOUNDING_PLACES,
   FULL_PRICE,
   INCLUDES,
   OFFERS,
@@ -50,11 +49,9 @@ import {
   isOfferLive,
   reserveDiscountOpen,
   offerCheckoutUrl,
-  waitlistLabel,
   type OfferId,
-  type WaitFor,
 } from "../../lib/founding";
-import { joinFoundingWaitlist, markOffer, useAccount, useReferralCode } from "../../lib/auth";
+import { markOffer, useAccount, useReferralCode } from "../../lib/auth";
 import { useFoundingTaken } from "../../lib/foundingCount";
 import { track } from "../../lib/analytics";
 import { SITE } from "../../lib/seo";
@@ -497,75 +494,6 @@ export default function Reserve() {
   }, [paidId, account, paidClaimed]);
   const isIn = Boolean(justPaid || account?.reservedAt || account?.foundingRequestedAt);
 
-  /* The founding waitlist (founding.ts, "Waitlist"). Someone signed out is
-     sent to make an account with ?wait= on the way back, and is put on the
-     list when they arrive — the same pattern as ?paid=. */
-  const waitParam: WaitFor | null = params.get("wait") ? "next" : null;
-  const [waitBusy, setWaitBusy] = useState(false);
-  const [waitError, setWaitError] = useState<string | null>(null);
-  useEffect(() => {
-    if (!waitParam || !account || account.foundingRequestedAt || account.foundingWaitlist) return;
-    void joinFoundingWaitlist(waitParam, account.foundingWaitlistAt);
-  }, [waitParam, account]);
-  const joinWait = async (w: WaitFor) => {
-    if (!account || waitBusy) return;
-    setWaitError(null);
-    setWaitBusy(true);
-    const res = await joinFoundingWaitlist(w, account.foundingWaitlistAt);
-    setWaitBusy(false);
-    if (!res.ok) return setWaitError(res.error);
-    track("founding_waitlist", { week: String(w) });
-  };
-  const waitlistAction = (w: WaitFor) => {
-    const label = waitlistLabel();
-    /* Short on the button — pill labels do not wrap, and a week's full name
-       pushed the card past a phone's edge. The line above says which. */
-    const join = "Ask for a place";
-    if (account?.foundingWaitlist) {
-      return (
-        <div className="done" role="status">
-          <h3>You are in line for {label}.</h3>
-          <p>
-            Nothing is charged. When a place opens, or we add another group, we write to{" "}
-            <strong>{account.email}</strong> in the order families joined.
-          </p>
-        </div>
-      );
-    }
-    if (account === undefined) return null;
-    if (!account) {
-      return (
-        <>
-          <PrimaryLink
-            to={signUpHref(`/reserve?wait=${w}`)}
-            onClick={() => track("offer_click", { offer: "founding_waitlist", week: String(w), mode: "signup" })}
-          >
-            {join} <ArrowIcon />
-          </PrimaryLink>
-          <p className="small">
-            For {label}. Free, and nothing is charged - the account is so we know where to write.
-          </p>
-        </>
-      );
-    }
-    return (
-      <>
-        <PrimaryButton type="button" onClick={() => joinWait(w)} disabled={waitBusy}>
-          {waitBusy ? "Saving…" : join} <ArrowIcon />
-        </PrimaryButton>
-        {waitError && (
-          <p className="error" role="alert">
-            {waitError}
-          </p>
-        )}
-        <p className="small">
-          For {label}. Free, and nothing is charged. We write to {account.email} when a place opens, in the order
-          families joined.
-        </p>
-      </>
-    );
-  };
-
   /* Sign-up carries the referral code on, so a sister who came through her
      brother's link is recorded as his (profiles.referred_by). */
   const signUpHref = (next: string) =>
@@ -626,7 +554,7 @@ export default function Reserve() {
       );
     }
     /* Before "closed", so someone who took the last place still sees their
-       place rather than the waitlist. */
+       place rather than the closed card. */
     if (id === "founding" && claimedAt(id)) {
       return (
         <div className="done" role="status">
@@ -641,10 +569,18 @@ export default function Reserve() {
       return (
         <>
           <p className="small">
-            All {FOUNDING_PLACES} founding places are taken. Join the list for the next group - or reserve for{" "}
-            {OFFERS.reserve.price} and hold your place for launch.
+            The founding places are filled - thank you. A dollar still holds your place for
+            launch, and comes off your first year.
           </p>
-          {waitlistAction("next")}
+          <SecondaryAnchor
+            href={openingHref}
+            onClick={(e) => {
+              track("offer_click", { offer: "reserve", from: "founding_filled" });
+              gate(e, "reserve", openingHref);
+            }}
+          >
+            Reserve for {OFFERS.reserve.price} instead
+          </SecondaryAnchor>
         </>
       );
     }
@@ -805,7 +741,7 @@ export default function Reserve() {
         <p className="tag">
           {isFounding
             ? !foundingOpen
-              ? `All ${FOUNDING_PLACES} taken · list open`
+              ? "Filled"
               : `Open now · ${placesLine}`
             : discountOpen
               ? `The easy yes · ends ${RESERVE_DEADLINE_LABEL}`
@@ -875,9 +811,17 @@ export default function Reserve() {
   return (
     <>
       <EditorialSeo
-        title={`${founding.places} founding families - start A Story now for ${founding.price}`}
+        title={
+          founding.open
+            ? `${founding.places} founding families - start A Story now for ${founding.price}`
+            : `Reserve A Story for ${reserve.price}`
+        }
         path="/reserve"
-        description={`${founding.places} founding families start A Story's calls now for ${founding.price}: set up by hand, half off the first year, refundable. Or hold a place for ${reserve.price}.`}
+        description={
+          founding.open
+            ? `A Story opens to ${founding.places} founding families before launch: ${founding.price}, set up with you by hand, one of us on your first call, half off your first year, refundable until that call. Or hold a place for ${reserve.price}.`
+            : `The founding places are filled. ${reserve.price} holds your place in line for launch, ${reserve.discount}% off your first year if you reserve by ${RESERVE_DEADLINE_LABEL}, refundable any time before launch.`
+        }
       />
 
       {/* While founding places remain, the page leads with them (header);
@@ -921,7 +865,7 @@ export default function Reserve() {
               Hold your place <em>for a dollar.</em>
             </>
           }
-          lead={`Anyone can start A Story free in a browser. The calls are what a plan adds, and plans are not on sale yet. All ${founding.places} founding places are taken; reserve for ${reserve.price} and we tell you the day plans go on sale.`}
+          lead={`Anyone can start A Story free in a browser. The calls come with a plan, and the founding places are filled: reserve for ${reserve.price} and we tell you the moment it is your turn.`}
           actions={
             <>
               <PrimaryAnchor
@@ -1013,7 +957,10 @@ export default function Reserve() {
               <p className="d">
                 There is a birthday coming, or a question you have been meaning to ask for years. Founding
                 families start before launch, with one of us beside you for the first call, at half price for
-                the year. There are {founding.places} places, and they go in the order families join.
+                the year.{" "}
+                {foundingOpen
+                  ? `There are ${founding.places} places, and they go in the order families join.`
+                  : "The founding places are filled."}
               </p>
             </div>
           </div>

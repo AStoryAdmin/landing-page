@@ -100,7 +100,7 @@ const Contribute = () => {
     const supabase = getSupabase();
     if (!supabase) {
       setError(
-        "Uploads are unavailable right now. Please email contact@astoryapp.com.",
+        "Uploads are unavailable right now. Please email daniel@astoryapp.com.",
       );
       return;
     }
@@ -155,7 +155,7 @@ const Contribute = () => {
     if (!supabase) {
       setSending(false);
       setError(
-        "We could not reach the server. Please email contact@astoryapp.com.",
+        "We could not reach the server. Please email daniel@astoryapp.com.",
       );
       return;
     }

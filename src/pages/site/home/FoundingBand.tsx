@@ -111,7 +111,7 @@ export default function FoundingBand() {
     <Section ref={reveal} $ground="night" aria-labelledby="founding-band-title">
       <Frame className="row">
         <div data-rise>
-          <Eyebrow>Founding families · {open ? line : `all ${FOUNDING_PLACES} taken`}</Eyebrow>
+          <Eyebrow>Founding families · {open ? line : "filled"}</Eyebrow>
           {open ? (
             <>
               <Statement id="founding-band-title" $size="lg">
@@ -131,7 +131,7 @@ export default function FoundingBand() {
           ) : (
             <>
               <Statement id="founding-band-title" $size="lg">
-                The founding places <em>are taken.</em>
+                The founding places <em>are filled.</em>
               </Statement>
               <p className="lead">
                 Thank you. A dollar still holds your place for launch, and comes off your first year.
