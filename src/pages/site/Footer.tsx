@@ -68,7 +68,7 @@ export default function Footer() {
           <p className="footer-programs">Startup programs &amp; grants</p>
           <Link
             to="/programs"
-            aria-label="A Story is a member of the NVIDIA Inception program, the AssemblyAI Startup Program, and a Cartesia Startups grant recipient"
+            aria-label="A Story is a member of NVIDIA Inception, Google for Startups, the AssemblyAI Startup Program and the Deepgram Startup Program, and a Cartesia Startups grant recipient"
           >
             <ProgramMarks height={48} />
           </Link>

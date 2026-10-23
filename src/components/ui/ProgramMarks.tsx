@@ -2,9 +2,11 @@ import styled from "styled-components";
 import InceptionBadge from "./InceptionBadge";
 import cartesiaBoxed from "../../assets/partners/cartesia-startups-lockup-boxed.svg";
 import aaiBoxed from "../../assets/partners/assemblyai-startup-program-lockup-boxed.svg";
+import googleBoxed from "../../assets/partners/google-for-startups-lockup-boxed.svg";
+import deepgramBoxed from "../../assets/partners/deepgram-startup-program-lockup-boxed.svg";
 
 /**
- * The three startup programs A Story belongs to, in one row. NVIDIA's badge
+ * The startup programs A Story belongs to, in one row. NVIDIA's badge
  * is their artwork exactly as issued; the AssemblyAI and Cartesia badges are
  * built in the same 216-unit frame (a white card under a black keyline, with
  * transparent clear space), so at one height the three read as a set and
@@ -14,7 +16,9 @@ import aaiBoxed from "../../assets/partners/assemblyai-startup-program-lockup-bo
  * "supported by" or "partner".
  */
 const BOXED = [
+  { src: googleBoxed, alt: "Google for Startups", ratio: 721.084 / 216 },
   { src: aaiBoxed, alt: "AssemblyAI Startup Program", ratio: 1077.226 / 216 },
+  { src: deepgramBoxed, alt: "Deepgram Startup Program", ratio: 1036.008 / 216 },
   { src: cartesiaBoxed, alt: "Cartesia Startups grant recipient", ratio: 1089.578 / 216 },
 ];
 
