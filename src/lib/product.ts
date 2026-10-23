@@ -16,7 +16,7 @@
  */
 
 /** Every question in the bank, across every chapter. */
-export const QUESTION_COUNT = 547;
+export const QUESTION_COUNT = 620;
 
 /** How many chapters a life is told in here. */
 export const CHAPTER_COUNT = 11;
@@ -119,15 +119,15 @@ export const DEPTHS = [
 ];
 
 /**
- * How many questions are marked sensitive — loss (15), hardship (22), rupture
- * (11), private (18). Counted straight off the app's bank:
+ * How many questions are marked sensitive — loss (18), hardship (33), rupture
+ * (12), private (19). Counted straight off the app's bank (question bank v2):
  *
  *   grep -c 'sensitive: "' phone-app-main/src/data/interview.js
  *
  * This said 62 for a while, which was true of an older CSV. If the bank grows,
  * re-run the grep rather than guessing.
  */
-export const SENSITIVE_COUNT = 66;
+export const SENSITIVE_COUNT = 82;
 
 /**
  * The line those questions arrive with, instead of a warning triangle. Quoted

@@ -3,7 +3,7 @@
  *
  * ─────────────────────────────────────────────────────────────────────────
  * THE QUESTIONS COME FROM THE APP'S OWN BANK — phone-app-main's
- * src/data/interview.js, 547 questions across the eleven chapters in
+ * src/data/interview.js, 620 questions across the eleven chapters in
  * src/data/eras.js. Each question turn carries the `source` id it came from,
  * so any line here can be checked in one grep. Turns with no `source` are
  * follow-ups rather than questions: the bank gives every question a `followUp`
@@ -487,7 +487,7 @@ const childhood: Scenario = {
             source: 'child-over-head',
             method: 'What a child was allowed to hear',
             stay: 'Rung four, and it is about the year rather than the illness. What the adults let him overhear is a different question from what the diagnosis was, and he never said no to this one.',
-            text: 'What did the adults say over your head that year, in the lower voice?',
+            text: 'What did the grown-ups whisper about that year, that you weren’t meant to hear?',
             delay: 2700,
         },
         {

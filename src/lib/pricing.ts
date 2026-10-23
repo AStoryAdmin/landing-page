@@ -102,7 +102,7 @@ export const PLANS: Plan[] = [
             'The one most people want. A year is long enough that nobody feels chased, and ' +
             'ninety minutes a month is a whole life told properly rather than a highlight reel.',
         features: [
-            'All 547 questions, every chapter',
+            'All 620 questions, every chapter',
             'Unlimited photo uploads',
             'Invite the whole family to read and contribute, free',
         ],
@@ -124,7 +124,7 @@ export const PLANS: Plan[] = [
             'than one person is the whole point of this, and it costs less than buying the ' +
             'plans separately.',
         features: [
-            'All 547 questions, every chapter',
+            'All 620 questions, every chapter',
             'Unlimited photo uploads',
             'One shared archive - invite anyone to read and contribute, free',
         ],
@@ -144,7 +144,7 @@ export const PLANS: Plan[] = [
             'diagnosis. Nothing renews, which also makes it the straightforward one to give ' +
             'as a present.',
         features: [
-            'All 547 questions, every chapter',
+            'All 620 questions, every chapter',
             'Unlimited photo uploads',
             'One storyteller',
         ],
