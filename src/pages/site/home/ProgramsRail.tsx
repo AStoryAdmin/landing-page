@@ -91,7 +91,7 @@ export default function ProgramsRail() {
       <span
         className="marks"
         role="img"
-        aria-label="NVIDIA Inception program member, AssemblyAI Startup Program, Cartesia Startups grant recipient"
+        aria-label="NVIDIA Inception program member, Google for Startups, AssemblyAI Startup Program, Deepgram Startup Program, Cartesia Startups grant recipient"
       >
         <ProgramMarks height={48} />
       </span>

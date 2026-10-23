@@ -187,7 +187,9 @@ export const organizationSchema = () => ({
 export const PROGRAMS = {
   memberships: [
     { program: "NVIDIA Inception", host: "NVIDIA", url: "https://www.nvidia.com/en-us/startups/" },
+    { program: "Google for Startups", host: "Google", url: "https://startup.google.com" },
     { program: "AssemblyAI Startup Program", host: "AssemblyAI", url: "https://www.assemblyai.com" },
+    { program: "Deepgram Startup Program", host: "Deepgram", url: "https://deepgram.com/startups" },
   ],
   awards: ["Cartesia Startups grant recipient"],
   faq: [
@@ -198,6 +200,14 @@ export const PROGRAMS = {
     {
       q: "Is A Story in the AssemblyAI Startup Program?",
       a: "Yes. A Story is a member of the AssemblyAI Startup Program. AssemblyAI builds speech AI models that transcribe and understand spoken audio.",
+    },
+    {
+      q: "Is A Story in Google for Startups?",
+      a: "Yes. A Story is a member of Google for Startups, Google’s program for early-stage companies.",
+    },
+    {
+      q: "Is A Story in the Deepgram Startup Program?",
+      a: "Yes. A Story is a member of the Deepgram Startup Program. Deepgram builds speech-to-text and voice AI models.",
     },
     {
       q: "Did A Story receive a Cartesia grant?",

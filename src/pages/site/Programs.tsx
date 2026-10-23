@@ -12,6 +12,10 @@
  * card per program - one verb each, build, hear, answer, the badge, and one
  * sentence on why a family archive belongs there. Then the plain questions.
  *
+ * Cut down 2026-10-23, when Google for Startups and Deepgram joined: the
+ * founder asked for a brief page. The night band, the giant verbs and the
+ * question block are gone; one list holds the five.
+ *
  * The founder asked for the missions to be shown big and a little grand
  * (2026-10-15). Grand is allowed in A Story's own voice; the programs' side
  * stays a paraphrase of what each program is for, never a quotation.
@@ -27,21 +31,20 @@ import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import InceptionBadge from "../../components/ui/InceptionBadge";
 import aaiBoxed from "../../assets/partners/assemblyai-startup-program-lockup-boxed.svg";
+import googleBoxed from "../../assets/partners/google-for-startups-lockup-boxed.svg";
+import deepgramBoxed from "../../assets/partners/deepgram-startup-program-lockup-boxed.svg";
 import cartesiaBoxed from "../../assets/partners/cartesia-startups-lockup-boxed.svg";
 import { ArrowIcon, Invitation } from "./kit/kit";
-import { Chapter, Eyebrow, Frame, PrimaryLink, SecondaryLink, Statement, Title } from "./kit/kit.styles";
+import { Chapter, Eyebrow, Frame, Title } from "./kit/kit.styles";
 import { useReveals } from "./kit/reveals";
 import { color, display, font, media, motion } from "../../styles/theme";
 import { PROGRAMS, faqSchema } from "../../lib/seo";
-import { START_HREF, START_LABEL } from "../../lib/app";
 
 type Row = {
   id: string;
   name: string;
   status: string;
   mark: ReactNode;
-  /** One verb: what the program is about, in A Story's terms. */
-  word: string;
   /** Why A Story belongs in it - one sentence, A Story's voice. */
   fit: ReactNode;
   href: string;
@@ -54,7 +57,6 @@ const ROWS: Row[] = [
     name: "NVIDIA Inception",
     status: "Member since October 2026",
     mark: <InceptionBadge height={48} />,
-    word: "Build.",
     fit: (
       <>
         The most important thing AI will ever do is the oldest thing people do: <b>keep a family’s stories.</b>
@@ -64,11 +66,23 @@ const ROWS: Row[] = [
     host: "nvidia.com",
   },
   {
+    id: "google-title",
+    name: "Google for Startups",
+    status: "Member",
+    mark: <img src={googleBoxed} alt="Google for Startups" width={160} height={48} />,
+    fit: (
+      <>
+        A family is spread across cities and years. <b>The archive has to be there whenever someone thinks to ask.</b>
+      </>
+    ),
+    href: "https://startup.google.com",
+    host: "startup.google.com",
+  },
+  {
     id: "assemblyai-title",
     name: "AssemblyAI Startup Program",
     status: "Member",
     mark: <img src={aaiBoxed} alt="AssemblyAI Startup Program" width={239} height={48} />,
-    word: "Hear.",
     fit: (
       <>
         A grandmother says a name once, in an accent seventy years old. <b>If it isn’t heard, it’s gone.</b>
@@ -78,11 +92,23 @@ const ROWS: Row[] = [
     host: "assemblyai.com",
   },
   {
+    id: "deepgram-title",
+    name: "Deepgram Startup Program",
+    status: "Member",
+    mark: <img src={deepgramBoxed} alt="Deepgram Startup Program" width={230} height={48} />,
+    fit: (
+      <>
+        An old voice on a phone line is quiet and slow. <b>Every word of it belongs on the page.</b>
+      </>
+    ),
+    href: "https://deepgram.com/startups",
+    host: "deepgram.com",
+  },
+  {
     id: "cartesia-title",
     name: "Cartesia Startups",
     status: "Grant recipient",
     mark: <img src={cartesiaBoxed} alt="Cartesia Startups" width={242} height={48} />,
-    word: "Answer.",
     fit: (
       <>
         For people who will never download an app, the only screen is a voice. <b>It has to sound like someone listening.</b>
@@ -182,54 +208,28 @@ const Opening = styled(Chapter)`
   }
 `;
 
-/* ── The idea, on night ─────────────────────────────────────────────────── */
-
-const Idea = styled(Chapter)`
-  text-align: center;
-  h2 {
-    max-width: 19ch;
-    margin-inline: auto;
-  }
-  p {
-    max-width: 50ch;
-    margin: calc(clamp(20px, 2.4vw, 32px) * var(--sy)) auto 0;
-    font: 400 clamp(1.1rem, 1rem + 0.4vw, 1.35rem) / 1.55 ${font.body};
-    color: var(--muted);
-  }
-`;
-
 /* ── The missions: one row per program ───────────────────────────────────── */
 
 const Ledger = styled(Chapter)`
-  /* Three cards side by side (2026-10-15): one verb, the badge, the name,
-     one sentence. The long two-column rows read as a document. */
+  /* One row per program (2026-10-23): badge, name and status, one line, the
+     way out. Five cards side by side were too narrow; five bands too long. */
   ol {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(16px, 2vw, 28px);
     margin: 0;
     padding: 0;
     list-style: none;
+    border-top: 1px solid ${color.primaryLine};
   }
   li {
-    display: flex;
-    flex-direction: column;
-    padding: clamp(28px, 3vw, 44px);
-    background: ${color.paperPure};
-    border-radius: 6px;
-    box-shadow: 0 24px 48px -36px rgba(42, 31, 24, 0.45);
-  }
-  .word {
-    font: 400 clamp(3rem, 1.6rem + 3.4vw, 5.2rem) / 0.95 ${font.display};
-    letter-spacing: -0.03em;
-    color: var(--ink);
-  }
-  .mark {
-    margin-top: calc(clamp(20px, 2.4vw, 32px) * var(--sy));
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr) auto;
+    gap: 8px clamp(24px, 3vw, 48px);
+    align-items: center;
+    padding: calc(clamp(18px, 2vw, 26px) * var(--sy)) 0;
+    border-bottom: 1px solid ${color.primaryLine};
   }
   .mark img {
     display: block;
-    height: 48px;
+    height: 44px;
     width: auto;
     max-width: 100%;
   }
@@ -237,37 +237,32 @@ const Ledger = styled(Chapter)`
     padding: 0;
   }
   h3 {
-    margin-top: 22px;
-    /* Two lines held for every name, so the cards stay in line. */
-    min-height: 2.4em;
-    display: flex;
-    align-items: flex-end;
     font: 400 ${display.sm} / 1.2 ${font.display};
     color: var(--ink);
   }
   .status {
-    margin-top: 4px;
+    margin-left: 10px;
     font: 500 15px/1.3 ${font.body};
     color: var(--label);
   }
   .fit {
-    flex: 1;
-    margin-top: 18px;
-    font: 400 clamp(1.1rem, 1rem + 0.3vw, 1.3rem) / 1.45 ${font.display};
-    color: var(--ink);
+    margin-top: 6px;
+    max-width: 62ch;
+    font: 400 17px/1.5 ${font.body};
+    color: var(--muted);
   }
   .fit b {
     font-weight: 400;
-    color: var(--label);
+    color: var(--ink);
   }
   .out {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     min-height: 44px;
-    margin-top: 16px;
     font: 600 15px/1.3 ${font.body};
     color: var(--ink);
+    white-space: nowrap;
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 5px;
@@ -282,54 +277,10 @@ const Ledger = styled(Chapter)`
     font: 400 14px/1.55 ${font.body};
     color: var(--muted);
   }
-  ${media.lg} {
-    ol {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-`;
-
-/* ── What it means, the questions, the plain line ────────────────────────── */
-
-const Means = styled(Chapter)`
-  .grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
-    gap: clamp(32px, 6vw, 110px);
-  }
-  .grid h2 {
-    font: 400 ${display.sm} / 1.2 ${font.display};
-    color: var(--ink);
-  }
-  .plain {
-    margin-top: 14px;
-    font: 400 17px/1.6 ${font.body};
-    color: var(--muted);
-    max-width: 36ch;
-  }
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 28px;
-  }
-  dl {
-    display: grid;
-    gap: 26px;
-    margin: 0;
-  }
-  dt {
-    font: 400 clamp(1.1rem, 1rem + 0.3vw, 1.25rem) / 1.35 ${font.display};
-    color: var(--ink);
-  }
-  dd {
-    margin: 8px 0 0;
-    font: 400 16px/1.6 ${font.body};
-    color: var(--muted);
-  }
   ${media.md} {
-    .grid {
+    li {
       grid-template-columns: minmax(0, 1fr);
+      align-items: start;
     }
   }
 `;
@@ -338,15 +289,13 @@ export default function Programs() {
   // The one page that stood still (2026-10-16): it now arrives the way the
   // other secondary routes do - headlines line by line, blocks in order.
   const opening = useReveals<HTMLElement>();
-  const idea = useReveals<HTMLElement>();
   const ledger = useReveals<HTMLElement>();
-  const means = useReveals<HTMLElement>();
   return (
     <>
       <EditorialSeo
         title="Programs & grants"
         path="/programs"
-        description="A Story is a member of the NVIDIA Inception program, the AssemblyAI Startup Program, and a Cartesia Startups grant recipient."
+        description="A Story is a member of NVIDIA Inception, Google for Startups, the AssemblyAI Startup Program and the Deepgram Startup Program, and a Cartesia Startups grant recipient."
         schema={[faqSchema(PROGRAMS.faq)]}
       />
 
@@ -358,15 +307,21 @@ export default function Programs() {
               In very good <em>company.</em>
             </Title>
             <p className="lead" data-rise>
-              A Story is a young company, and three of the programs shaping AI and voice have taken it in: NVIDIA Inception,
-              the AssemblyAI Startup Program, and a Cartesia Startups grant.
+              Five programs for companies building with AI and voice have taken A Story in. None of them is an
+              endorsement, an investment or a partnership.
             </p>
             <nav className="marks" aria-label="Programs on this page" data-rise>
               <a href="#inception-title" aria-label="NVIDIA Inception">
                 <InceptionBadge height={40} />
               </a>
+              <a href="#google-title" aria-label="Google for Startups">
+                <img src={googleBoxed} alt="" width={134} height={40} />
+              </a>
               <a href="#assemblyai-title" aria-label="AssemblyAI Startup Program">
                 <img src={aaiBoxed} alt="" width={199} height={40} />
+              </a>
+              <a href="#deepgram-title" aria-label="Deepgram Startup Program">
+                <img src={deepgramBoxed} alt="" width={192} height={40} />
               </a>
               <a href="#cartesia-title" aria-label="Cartesia Startups">
                 <img src={cartesiaBoxed} alt="" width={202} height={40} />
@@ -386,31 +341,19 @@ export default function Programs() {
         </Frame>
       </Opening>
 
-      <Idea ref={idea} $ground="night" aria-labelledby="programs-idea">
-        <Frame>
-          <Statement id="programs-idea" $size="xl" data-lines>
-            The future of AI is being built now. Its oldest job is <em>keeping a family’s voice.</em>
-          </Statement>
-          <p data-rise>
-            Three programs for the companies building with AI and voice have taken A Story in. Here is what each one
-            is for, and why a family archive belongs in it.
-          </p>
-        </Frame>
-      </Idea>
-
-      <Ledger ref={ledger} $ground="ivory" $tight aria-label="The three programs" data-nosnippet>
+      <Ledger ref={ledger} $ground="ivory" $tight aria-label="The five programs" data-nosnippet>
         <Frame>
           <ol>
             {ROWS.map((r) => (
               <li key={r.id} data-rise>
-                {/* The verb rises out of its card a beat after the card lands. */}
-                <p className="word" aria-hidden="true" data-lines="0.18">
-                  {r.word}
-                </p>
                 <div className="mark">{r.mark}</div>
-                <h3 id={r.id}>{r.name}</h3>
-                <p className="status">{r.status}</p>
-                <p className="fit">{r.fit}</p>
+                <div>
+                  <h3 id={r.id}>
+                    {r.name}
+                    <span className="status">{r.status}</span>
+                  </h3>
+                  <p className="fit">{r.fit}</p>
+                </div>
                 <a className="out" href={r.href} target="_blank" rel="noopener noreferrer">
                   {r.host} <ArrowIcon />
                 </a>
@@ -422,34 +365,6 @@ export default function Programs() {
           </p>
         </Frame>
       </Ledger>
-
-      <Means ref={means} $ground="sand" aria-labelledby="programs-answers">
-        <Frame>
-          <div className="grid">
-            <div data-rise>
-              <h2 id="programs-answers">Questions, answered plainly</h2>
-              <p className="plain">
-                None of these is an endorsement, an investment, or a partnership. They are programs for young
-                companies, and we are one.
-              </p>
-              <div className="actions">
-                <PrimaryLink to={START_HREF}>
-                  {START_LABEL} <ArrowIcon />
-                </PrimaryLink>
-                <SecondaryLink to="/our-story">Read our story</SecondaryLink>
-              </div>
-            </div>
-            <dl data-rise>
-              {PROGRAMS.faq.map(({ q, a }) => (
-                <div key={q}>
-                  <dt>{q}</dt>
-                  <dd>{a}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </Frame>
-      </Means>
 
       <Invitation />
     </>
