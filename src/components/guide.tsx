@@ -13,14 +13,14 @@ import {
 } from "../lib/seo";
 import { Chapter, Width, Kicker } from "./ui/narrative.styles";
 import { Actions, Button, ButtonEl } from "./ui/primitives";
-import { color, font, media } from "../styles/theme";
+import { color, font, media, type } from "../styles/theme";
 const Layout = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 240px) minmax(0, 760px);
   gap: 7%;
   justify-content: center;
   aside {
-    font-size: 0.9375rem;
+    font-size: 16px;
   }
   aside a {
     display: block;
@@ -32,7 +32,7 @@ const Layout = styled.div`
     text-decoration: underline;
   }
   aside > p {
-    font-size: 0.8125rem;
+    font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     margin: 32px 0 12px;
@@ -74,7 +74,7 @@ const Layout = styled.div`
     font: 400 1.25rem/1.6 ${font.display};
   }
   .example strong {
-    font: 500 0.8125rem ${font.body};
+    font: 500 ${type.label} ${font.body};
     letter-spacing: 0.1em;
     display: block;
     margin-bottom: 14px;
@@ -85,7 +85,7 @@ const Layout = styled.div`
     padding-top: 32px;
   }
   .share-note {
-    font-size: 0.9375rem;
+    font-size: 16px;
     overflow-wrap: anywhere;
   }
   .question {
@@ -111,7 +111,7 @@ const Layout = styled.div`
     text-underline-offset: 4px;
   }
   .source {
-    font-size: 0.9375rem;
+    font-size: 16px;
   }
   ${media.md} {
     grid-template-columns: 1fr;

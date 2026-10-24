@@ -44,7 +44,7 @@ import {
   SplitText,
   useScene,
 } from "../../../lib/scrollMotion";
-import { color, font, media, motion } from "../../../styles/theme";
+import { color, font, media, motion, type } from "../../../styles/theme";
 
 const CALL = CALLS.map((c) => {
   const s = SCENARIOS.find((x) => x.id === c.id)!;
@@ -91,7 +91,7 @@ const Scene = styled.section`
   }
   .lead {
     margin-top: 14px;
-    font: 400 clamp(1.1rem, 1.02rem + 0.35vw, 1.35rem) / 1.55 ${font.text};
+    font: 400 ${type.lead} / 1.5 ${font.text};
     color: ${color.onDarkMuted};
     max-width: 52ch;
   }
@@ -100,10 +100,10 @@ const Scene = styled.section`
     display: block;
     width: 100%;
     margin-bottom: 10px;
-    font: 600 12px/1.3 ${font.ui};
-    letter-spacing: 0.16em;
+    font: 600 ${type.label} / 1.3 ${font.ui};
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: ${color.gold};
+    color: ${color.goldOnTeal};
   }
 
   /* The three calls. */
@@ -121,8 +121,8 @@ const Scene = styled.section`
     border: 0;
     border-radius: 999px;
     background: color-mix(in srgb, ${color.ivory} 9%, transparent);
-    font: 400 16px/1.2 ${font.body};
-    color: ${color.onDarkMuted};
+    font: 400 ${type.ui} / 1.2 ${font.body};
+    color: ${color.onDark};
     white-space: nowrap;
     cursor: pointer;
     transition:
@@ -131,7 +131,7 @@ const Scene = styled.section`
       transform ${motion.press};
   }
   [role="tab"] b {
-    font: 500 18px/1.2 ${font.display};
+    font: 500 21px/1.2 ${font.display};
     color: ${color.ivory};
   }
   [role="tab"][aria-selected="true"] {
@@ -183,7 +183,7 @@ const Scene = styled.section`
   }
   .print figcaption {
     padding: 12px 4px 16px;
-    font: italic 400 16px/1.35 ${font.display};
+    font: italic 400 19px/1.35 ${font.display};
     color: ${color.primaryMid};
     text-align: center;
   }
@@ -232,7 +232,7 @@ const Scene = styled.section`
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    font: 500 17px/1 ${font.display};
+    font: 500 20px/1 ${font.display};
     font-style: normal;
     color: ${color.primary};
     background: ${color.paperPure};
@@ -243,23 +243,23 @@ const Scene = styled.section`
   }
   .note b {
     display: block;
-    font: 600 15px/1.2 ${font.body};
+    font: 600 ${type.ui} / 1.2 ${font.body};
     color: ${color.primary};
   }
   .note small {
     display: block;
     margin-top: 2px;
-    font: 500 13px/1.3 ${font.body};
-    color: ${color.bodyMuted};
+    font: 500 ${type.label} / 1.3 ${font.body};
+    color: ${color.body};
   }
   .note p {
-    font: 400 17px/1.5 ${font.display};
+    font: 400 ${type.read} / 1.5 ${font.display};
     color: ${color.primary};
   }
   /* Her words are hers: set in the italic the site keeps for what people say. */
   .note.answer p {
     font-style: italic;
-    font-size: 19px;
+    font-size: clamp(1.25rem, 1.15rem + 0.3vw, 1.5rem);
     line-height: 1.45;
   }
   .note mark {
@@ -304,8 +304,8 @@ const Scene = styled.section`
     justify-content: space-between;
     gap: 12px 32px;
     margin-top: calc(clamp(20px, 2.4vw, 40px) * var(--sy));
-    font: 400 14px/1.5 ${font.body};
-    color: ${color.onDarkMuted};
+    font: 400 ${type.note} / 1.5 ${font.body};
+    color: ${color.onDark};
   }
 
   ${media.lg} {

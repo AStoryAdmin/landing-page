@@ -67,6 +67,7 @@ import {
   media,
   motion,
   shadow,
+  type,
 } from "../../styles/theme";
 
 const Plans = styled(Chapter)`
@@ -114,14 +115,14 @@ const Plans = styled(Chapter)`
     color: ${color.primary};
   }
   .plan .tag {
-    font: 600 13px/1.3 ${font.body};
+    font: 600 ${type.label} / 1.3 ${font.body};
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: ${color.goldOnLight};
   }
   .who {
     margin-top: 8px;
-    font: 400 16px/1.45 ${font.text};
+    font: 400 ${type.read} / 1.45 ${font.text};
     color: ${color.bodyMuted};
   }
   .price {
@@ -131,7 +132,7 @@ const Plans = styled(Chapter)`
     font-variant-numeric: lining-nums;
   }
   .period {
-    font: 500 15px/1.4 ${font.text};
+    font: 500 ${type.read} / 1.4 ${font.text};
     color: ${color.bodyMuted};
   }
   .meter {
@@ -143,7 +144,7 @@ const Plans = styled(Chapter)`
   }
   .meter-note {
     margin-top: 6px;
-    font: italic 400 16px/1.45 ${font.display};
+    font: italic 400 ${type.read} / 1.45 ${font.display};
     color: ${color.primaryMid};
   }
   ul {
@@ -154,7 +155,7 @@ const Plans = styled(Chapter)`
   li {
     position: relative;
     padding: 6px 0 6px 22px;
-    font: 400 15px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.body};
   }
   li::before {
@@ -173,13 +174,13 @@ const Plans = styled(Chapter)`
   .bundle p {
     padding: 14px 0 0;
     border-top: 1px solid ${color.primaryLine};
-    font: 500 15px/1.45 ${font.text};
+    font: 500 ${type.read} / 1.45 ${font.text};
     color: ${color.primary};
   }
   .bundle small {
     display: block;
     margin-top: 4px;
-    font: 400 13.5px/1.45 ${font.body};
+    font: 400 ${type.note} / 1.45 ${font.body};
     color: ${color.bodyMuted};
   }
   .choose {
@@ -222,7 +223,7 @@ const Plans = styled(Chapter)`
     color: ${color.primary};
   }
   .other span {
-    font: 400 15px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.bodyMuted};
   }
 
@@ -254,7 +255,7 @@ const Plans = styled(Chapter)`
     font: 400 ${display.sm} / 1.2 ${font.display};
   }
   .decide small {
-    font: 400 15px/1.4 ${font.text};
+    font: 400 ${type.read} / 1.4 ${font.text};
     color: ${color.onDarkMuted};
   }
   .decide-actions {
@@ -269,7 +270,7 @@ const Plans = styled(Chapter)`
     display: inline-block;
     padding: 12px 0;
     background: none;
-    font: 500 15px/1.4 ${font.body};
+    font: 500 ${type.ui} / 1.4 ${font.body};
     color: ${color.ivory};
     text-decoration: underline;
     text-decoration-thickness: 1px;
@@ -281,7 +282,7 @@ const Plans = styled(Chapter)`
   }
   .all-plans {
     margin-top: 18px;
-    font: 400 15px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.bodyMuted};
   }
   ${media.lg} {
@@ -385,7 +386,7 @@ const Compare = styled.div`
     border-bottom: 1px solid ${color.primaryLine};
     text-align: left;
     vertical-align: top;
-    font: 400 15px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.body};
   }
   tbody tr:last-child > * {
@@ -393,7 +394,7 @@ const Compare = styled.div`
   }
   tbody th {
     width: 20%;
-    font: 600 13px/1.4 ${font.body};
+    font: 600 ${type.label} / 1.4 ${font.body};
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -419,7 +420,7 @@ const Compare = styled.div`
     color: ${color.primary};
   }
   thead button small {
-    font: 500 13px/1.3 ${font.body};
+    font: 500 ${type.label} / 1.3 ${font.body};
     color: ${color.bodyMuted};
   }
   thead button:focus-visible {
@@ -435,7 +436,7 @@ const Compare = styled.div`
   }
   td strong {
     display: block;
-    font: 600 15px/1.4 ${font.body};
+    font: 600 ${type.ui} / 1.4 ${font.body};
     color: ${color.primary};
   }
   /*
@@ -456,7 +457,7 @@ const Compare = styled.div`
   }
   .note {
     margin-top: 12px;
-    font: 400 14px/1.5 ${font.body};
+    font: 400 ${type.note} / 1.5 ${font.body};
     color: ${color.bodyMuted};
   }
   ${media.md} {
@@ -486,7 +487,7 @@ const Forever = styled(Chapter)`
   }
   .stops {
     margin-top: clamp(40px, 5vw, 64px);
-    font: 400 18px/1.7 ${font.text};
+    font: 400 ${type.read} / 1.7 ${font.text};
     color: ${color.body};
     max-width: 62ch;
   }
@@ -509,7 +510,7 @@ const Forever = styled(Chapter)`
   }
   details p {
     padding-bottom: 20px;
-    font: 400 17px/1.65 ${font.text};
+    font: 400 ${type.read} / 1.65 ${font.text};
     color: ${color.body};
   }
   /* The two questions side by side across the width, not a half column. */
@@ -563,11 +564,11 @@ const Book = styled(Chapter)`
     color: ${color.primary};
   }
   .book .book-price span {
-    font: 400 17px/1.4 ${font.text};
+    font: 400 ${type.read} / 1.4 ${font.text};
     color: ${color.bodyMuted};
   }
   .book p {
-    font: 400 18px/1.65 ${font.text};
+    font: 400 ${type.read} / 1.65 ${font.text};
     color: ${color.body};
     max-width: 44ch;
   }
@@ -590,7 +591,7 @@ const Book = styled(Chapter)`
     box-shadow: 0 1px 2px rgba(42, 31, 24, 0.06);
   }
   .editions .badge {
-    font: 600 13px/1 ${font.body};
+    font: 600 ${type.label} / 1 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -613,7 +614,7 @@ const Book = styled(Chapter)`
   }
   .editions .tag {
     margin-top: 10px;
-    font: italic 400 17px/1.45 ${font.display};
+    font: italic 400 ${type.read} / 1.45 ${font.display};
     color: ${color.primaryMid};
   }
   .editions ul {
@@ -630,7 +631,7 @@ const Book = styled(Chapter)`
     background: none;
     box-shadow: none;
     position: relative;
-    font: 400 15px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.body};
   }
   .editions ul li::before {
@@ -644,7 +645,7 @@ const Book = styled(Chapter)`
   }
   .editions .when {
     margin-top: 16px;
-    font: 500 13px/1.4 ${font.body};
+    font: 500 ${type.label} / 1.4 ${font.body};
     color: ${color.bodyMuted};
   }
   /* One full-width line under the editions (it sat alone on a half row). */
@@ -652,7 +653,7 @@ const Book = styled(Chapter)`
     margin-top: clamp(24px, 3vw, 36px);
     padding-top: 20px;
     border-top: 1px solid ${color.primaryLineStrong};
-    font: 400 17px/1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: ${color.body};
   }
   ${media.lg} {
@@ -705,7 +706,7 @@ const Sheet = styled.div`
     border-left: 1px solid ${color.primaryLine};
   }
   .k {
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -725,7 +726,7 @@ const Sheet = styled.div`
   .l {
     margin-top: 12px;
     max-width: 30ch;
-    font: 400 clamp(1.02rem, 0.98rem + 0.2vw, 1.2rem) / 1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.body};
   }
   .foot {
@@ -737,7 +738,7 @@ const Sheet = styled.div`
     margin: 0 clamp(22px, 2.6vw, 48px);
     padding: 16px 0 clamp(22px, 2.2vw, 34px);
     border-top: 1px solid ${color.primaryLine};
-    font: 400 15px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.body};
   }
   /* A 44px target, the underline where it was (jury 2 R2 N3). */
@@ -746,7 +747,7 @@ const Sheet = styled.div`
     align-items: center;
     min-height: 44px;
     padding: 0;
-    font: 600 14px/1.3 ${font.ui};
+    font: 600 ${type.note} / 1.3 ${font.ui};
     color: ${color.primary};
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, ${color.gold} 80%, transparent);

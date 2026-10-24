@@ -39,6 +39,7 @@ import {
   motion,
   radius,
   shadow,
+  type,
 } from "../../../styles/theme";
 import { chocolateCloth, tealCloth } from "./cloth";
 
@@ -114,10 +115,11 @@ export const grounds: Record<Ground, GroundTokens> = {
     bg: color.teal,
     ink: color.onDark,
     text: color.onDark,
-    muted: color.onDarkMuted,
+    /* Small text on teal needs 7:1 (type floor, 2026-10-24). */
+    muted: color.onTealMuted,
     line: color.onDarkLine,
     mark: color.gold,
-    label: color.gold,
+    label: color.goldOnTeal,
     focus: color.gold,
     focusHalo: color.teal,
   },
@@ -205,7 +207,7 @@ export const Eyebrow = styled.p`
   align-items: center;
   gap: 12px;
   margin: 0 0 clamp(18px, 2vw, 28px);
-  font: 600 12px/1.4 ${font.ui};
+  font: 600 ${type.label} / 1.4 ${font.ui};
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--label, ${color.accentText});
@@ -262,15 +264,15 @@ export const Quote = styled.blockquote`
 `;
 /** The paragraph that follows a statement: EB Garamond, the full ink. */
 export const Lead = styled.p`
-  font: 400 clamp(1.25rem, 1.1rem + 0.42vw, 1.55rem) / 1.5 ${font.text};
+  font: 400 ${type.lead} / 1.5 ${font.text};
   color: var(--text, ${color.body});
-  max-width: 46ch;
+  max-width: 50ch;
   text-wrap: pretty;
 `;
 export const Body = styled.p`
-  font: 400 clamp(1.125rem, 1.08rem + 0.16vw, 1.25rem) / 1.6 ${font.text};
+  font: 400 ${type.read} / 1.58 ${font.text};
   color: var(--text, ${color.body});
-  max-width: 62ch;
+  max-width: 66ch;
   text-wrap: pretty;
   & + & {
     margin-top: 0.9em;
@@ -278,7 +280,7 @@ export const Body = styled.p`
 `;
 /** Small print that is still meant to be read: Montserrat 14px, quiet. */
 export const Note = styled.p`
-  font: 400 14px/1.55 ${font.ui};
+  font: 400 ${type.note} / 1.55 ${font.ui};
   color: var(--muted, ${color.bodyMuted});
 `;
 
@@ -365,7 +367,7 @@ const actionBase = css`
   min-height: 52px;
   padding: 0 28px;
   border-radius: ${radius.pill};
-  font: 600 16px/1.2 ${font.ui};
+  font: 600 ${type.ui} / 1.2 ${font.ui};
   letter-spacing: 0.005em;
   text-transform: none;
   text-decoration: none;
@@ -497,7 +499,7 @@ export const SecondaryAnchor = styled.a`
 const textLink = css`
   display: inline;
   padding-block: 12px;
-  font: 600 15px/1.45 ${font.ui};
+  font: 600 ${type.note} / 1.45 ${font.ui};
   color: var(--ink, ${color.primary});
   text-decoration-line: underline;
   text-decoration-thickness: 1px;

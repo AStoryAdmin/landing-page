@@ -35,7 +35,7 @@ const List = styled.div`
     font-size: 1.0625rem;
   }
   small {
-    font-size: 0.8125rem;
+    font-size: 14px;
     display: block;
     color: ${color.bodyMuted};
     margin-bottom: 12px;

@@ -35,7 +35,7 @@ import {
   Statement,
   TextLink,
 } from "./kit/kit.styles";
-import { color, curve, display, font, media } from "../../styles/theme";
+import { color, curve, display, font, media, type } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
 
 /* ── The reasons ───────────────────────────────────────────────────────── */
@@ -70,7 +70,7 @@ const Reasons = styled(Chapter)`
   }
   .kicker {
     margin-top: 22px;
-    font: 600 13px/1.3 ${font.body};
+    font: 600 ${type.label} / 1.3 ${font.body};
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--label);
@@ -88,7 +88,7 @@ const Reasons = styled(Chapter)`
   }
   article > p:not(.kicker) {
     margin: 12px 0 10px;
-    font: 400 clamp(1.05rem, 1rem + 0.2vw, 1.2rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--ink);
   }
   article > div:last-child {
@@ -311,7 +311,7 @@ const Occasions = styled(Chapter)`
     padding: 16px 0 0;
   }
   .occ small {
-    font: italic 400 15px/1.3 ${font.display};
+    font: italic 400 20px / 1.3 ${font.display};
     letter-spacing: 0;
     text-transform: none;
     color: ${color.bodyMuted};

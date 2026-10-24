@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "./ui/Logo";
-import { color, font, media, space } from "../styles/theme";
+import { color, font, media, space, type } from "../styles/theme";
 import { SITE } from "../lib/seo";
 const Root = styled.footer`
   padding: 48px ${space.gutter} 24px;
@@ -23,7 +23,7 @@ const Root = styled.footer`
   .brand p {
     color: ${color.onDarkMuted};
     max-width: 27ch;
-    font: 400 1.2rem/1.4 ${font.display};
+    font: 400 ${type.read} / 1.4 ${font.display};
   }
   .links {
     display: grid;
@@ -32,7 +32,7 @@ const Root = styled.footer`
     padding: 32px 0;
   }
   h2 {
-    font: 500 0.8125rem/1.4 ${font.body};
+    font: 500 ${type.label} / 1.4 ${font.body};
     color: ${color.gold};
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -58,7 +58,7 @@ const Root = styled.footer`
     border-top: 1px solid ${color.onDarkLine};
     padding-top: 24px;
     color: ${color.onDarkMuted};
-    font-size: 0.8125rem;
+    font-size: 14px;
     line-height: 1.5;
   }
   ${media.md} {

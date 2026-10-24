@@ -4,7 +4,7 @@
  * 2026-10-20 when the contact form arrived, so the two cannot drift.
  */
 import styled from "styled-components";
-import { color, font, media, motion } from "../../../styles/theme";
+import { color, font, media, motion, type } from "../../../styles/theme";
 
 /* States (2026-10-23): hover darkens the rule, focus draws a gold rule under
    it without changing the field's size, invalid turns it red, valid (a
@@ -29,7 +29,7 @@ export const Form = styled.form`
     justify-content: space-between;
     gap: 12px;
     padding: 0;
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -144,7 +144,7 @@ export const Form = styled.form`
     padding: 0 16px;
     border: 1px solid ${color.primaryLineStrong};
     border-radius: 999px;
-    font: 500 15px/1 ${font.ui};
+    font: 500 ${type.ui} / 1 ${font.ui};
     color: ${color.primary};
     transition:
       background-color ${motion.fast},
@@ -162,7 +162,7 @@ export const Form = styled.form`
   }
   .hint {
     margin-top: 10px;
-    font: 400 14px/1.5 ${font.body};
+    font: 400 ${type.note} / 1.5 ${font.body};
     color: ${color.bodyMuted};
   }
   .trap {
@@ -176,14 +176,14 @@ export const Form = styled.form`
     padding: 12px 14px;
     border-left: 2px solid ${color.error};
     background: color-mix(in srgb, ${color.error} 7%, ${color.paperPure});
-    font: 400 15px/1.5 ${font.body};
+    font: 400 ${type.note} / 1.5 ${font.body};
     color: ${color.error};
   }
   .go {
     justify-self: start;
   }
   .fine {
-    font: 400 14px/1.55 ${font.body};
+    font: 400 ${type.note} / 1.55 ${font.body};
     color: ${color.bodyMuted};
   }
   ${media.sm} {
@@ -204,7 +204,7 @@ export const Done = styled.div`
   }
   p {
     margin-top: 14px;
-    font: 400 19px/1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
     max-width: 46ch;
   }

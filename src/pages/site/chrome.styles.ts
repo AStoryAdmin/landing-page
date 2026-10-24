@@ -29,6 +29,7 @@ import {
   media,
   motion,
   shadow,
+  type,
 } from "../../styles/theme";
 import { A_PATTERN, CLOTH_CHOCOLATE } from "./kit/cloth";
 
@@ -154,7 +155,7 @@ export const HeaderShell = styled.header`
     background: none;
     border: 0;
     color: ${color.onDarkMuted};
-    font: 500 clamp(14px, 0.3vw + 9.5px, 17px) / 1 ${font.ui};
+    font: 500 clamp(16px, 0.2vw + 13.3px, 18px) / 1 ${font.ui};
     letter-spacing: 0.01em;
     text-decoration: none;
     white-space: nowrap;
@@ -253,7 +254,7 @@ export const HeaderShell = styled.header`
   .more-groups h2,
   .gf-mobile-more h2 {
     margin-bottom: 8px;
-    font: 600 12px/1.4 ${font.ui};
+    font: 600 ${type.label} / 1.4 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -273,13 +274,13 @@ export const HeaderShell = styled.header`
   }
   .more-groups strong {
     display: block;
-    font: 600 20px/1.2 ${font.display};
+    font: 600 22px/1.15 ${font.display};
     color: ${color.primary};
   }
   .more-groups small {
     display: block;
     margin-top: 2px;
-    font: 400 13px/1.45 ${font.ui};
+    font: 400 ${type.note} / 1.45 ${font.ui};
     color: ${color.bodyMuted};
   }
   .more-feature {
@@ -320,7 +321,7 @@ export const HeaderShell = styled.header`
     }
   }
   .more-feature small {
-    font: 600 12px/1 ${font.ui};
+    font: 600 ${type.label} / 1 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.gold};
@@ -331,7 +332,7 @@ export const HeaderShell = styled.header`
   }
   .more-feature span {
     margin-top: 10px;
-    font: 600 14px/1 ${font.ui};
+    font: 600 ${type.note} / 1 ${font.ui};
   }
 
   /* The one action: the ivory pill, as the app's buttons on the cloth. */
@@ -344,7 +345,7 @@ export const HeaderShell = styled.header`
     border-radius: 999px;
     background: ${color.onDark};
     color: ${color.chocolate};
-    font: 600 clamp(14px, 0.3vw + 9.5px, 17px) / 1 ${font.ui};
+    font: 600 clamp(16px, 0.2vw + 13.3px, 18px) / 1 ${font.ui};
     letter-spacing: 0.01em;
     text-decoration: none;
     white-space: nowrap;
@@ -391,7 +392,7 @@ export const HeaderShell = styled.header`
       background: none;
       border: 0;
       color: inherit;
-      font: 500 15px/1 ${font.ui};
+      font: 500 ${type.ui} / 1 ${font.ui};
       cursor: pointer;
       position: relative;
       z-index: 2;
@@ -512,7 +513,7 @@ export const HeaderShell = styled.header`
       display: flex;
       align-items: center;
       min-height: 44px;
-      font: 500 15px/1.3 ${font.ui};
+      font: 500 ${type.ui} / 1.3 ${font.ui};
       color: ${color.onDarkMuted};
       text-decoration: none;
     }
@@ -561,12 +562,12 @@ export const FooterShell = styled.footer`
   .footer-line {
     margin-top: 18px;
     max-width: 30ch;
-    font: 400 18px/1.45 ${font.text};
+    font: 400 ${type.read} / 1.45 ${font.text};
     color: ${color.onDarkMuted};
   }
   .footer-contact {
     margin-top: 10px;
-    font: 400 15px/1.6 ${font.ui};
+    font: 400 ${type.note} / 1.6 ${font.ui};
   }
   .footer-contact a {
     display: inline-flex;
@@ -592,7 +593,7 @@ export const FooterShell = styled.footer`
   }
   .gf-footer-links h2,
   .gf-footer-fold h2 {
-    font: 600 12px/1.4 ${font.ui};
+    font: 600 ${type.label} / 1.4 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.gold};
@@ -604,7 +605,7 @@ export const FooterShell = styled.footer`
     align-items: center;
     min-height: 44px;
     width: fit-content;
-    font: 400 15px/1.3 ${font.ui};
+    font: 400 ${type.ui} / 1.3 ${font.ui};
     color: ${color.onDarkMuted};
     text-decoration: none;
     transition: color ${motion.base};
@@ -673,7 +674,7 @@ export const FooterShell = styled.footer`
   }
   .footer-programs {
     margin: 0;
-    font: 600 12px/1.4 ${font.ui};
+    font: 600 ${type.label} / 1.4 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.onDarkMuted};
@@ -710,7 +711,7 @@ export const FooterShell = styled.footer`
     display: none;
     align-items: center;
     gap: 6px;
-    font: 600 13px/1.3 ${font.ui};
+    font: 600 ${type.note} / 1.3 ${font.ui};
     color: ${color.chocolate};
   }
   .footer-plate-more svg {
@@ -780,7 +781,7 @@ export const FooterShell = styled.footer`
     margin-top: clamp(36px, 3.6vw, 56px);
     padding-top: 18px;
     border-top: 1px solid ${color.nightLine};
-    font: 400 13px/1.6 ${font.ui};
+    font: 400 ${type.note} / 1.6 ${font.ui};
   }
   .footer-legal {
     padding-block: 12px;
@@ -792,7 +793,7 @@ export const FooterShell = styled.footer`
    * at the foot of the site, in the smallest voice the page has.
    */
   .footer-trademark {
-    color: ${color.onDarkFaint};
+    color: ${color.onDarkMuted};
   }
   .footer-about {
     display: inline;

@@ -21,7 +21,7 @@ import { PLANS } from "../../lib/pricing";
 import { Picture } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import { Eyebrow } from "./kit/kit.styles";
-import { color, display, font, media, motion } from "../../styles/theme";
+import { color, display, font, media, motion, type } from "../../styles/theme";
 
 const Page = styled.section`
   display: grid;
@@ -77,7 +77,7 @@ const Page = styled.section`
   }
   .lead {
     margin-top: 24px;
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.body};
+    font: 400 ${type.read} / 1.6 ${font.body};
     color: ${color.onDarkMuted};
     max-width: 38ch;
   }
@@ -104,7 +104,7 @@ const Page = styled.section`
     gap: 18px;
     align-items: start;
     padding: 12px 0;
-    font: 400 17px/1.5 ${font.body};
+    font: 400 ${type.read} / 1.5 ${font.body};
     color: ${color.ivory};
   }
   .next li b {
@@ -115,7 +115,7 @@ const Page = styled.section`
     border-radius: 50%;
     background: ${color.night};
     box-shadow: inset 0 0 0 1px ${color.gold};
-    font: italic 400 15px/1 ${font.display};
+    font: italic 400 20px / 1 ${font.display};
     color: ${color.gold};
   }
   .motto {
@@ -169,7 +169,7 @@ const Page = styled.section`
     margin-bottom: 30px;
   }
   .card-head small {
-    font: 600 13px/1 ${font.body};
+    font: 600 ${type.label} / 1 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -209,11 +209,11 @@ const Page = styled.section`
     padding: 12px 16px;
     border-radius: 999px;
     background: ${color.ivory};
-    font: 500 15px/1.3 ${font.body};
+    font: 500 ${type.ui} / 1.3 ${font.body};
     color: ${color.primary};
   }
   .selection a {
-    font: 600 13px/1 ${font.body};
+    font: 600 ${type.ui} / 1 ${font.body};
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -227,7 +227,7 @@ const Page = styled.section`
   .card label {
     display: grid;
     gap: 6px;
-    font: 600 13px/1.3 ${font.body};
+    font: 600 ${type.label} / 1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -271,7 +271,7 @@ const Page = styled.section`
     border-radius: 999px;
     background: ${color.primary};
     color: ${color.ivory};
-    font: 600 13px/1 ${font.body};
+    font: 600 ${type.ui} / 1 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     cursor: pointer;
@@ -318,13 +318,13 @@ const Page = styled.section`
   }
   .card form > p:last-child {
     text-align: center;
-    font: italic 400 16px/1.5 ${font.display};
+    font: italic 400 ${type.read} / 1.5 ${font.display};
     color: ${color.primaryMid};
   }
   .privacy {
     margin-top: 22px;
     text-align: center;
-    font: 500 13px/1.5 ${font.body};
+    font: 500 ${type.note} / 1.5 ${font.body};
   }
   .privacy a {
     color: ${color.bodyMuted};

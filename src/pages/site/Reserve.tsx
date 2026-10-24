@@ -77,7 +77,7 @@ import {
   Statement,
   onDarkActions,
 } from "./kit/kit.styles";
-import { color, display, font, media, shadow } from "../../styles/theme";
+import { color, display, font, media, shadow, type } from "../../styles/theme";
 
 /* The offer card's own rules: shared by the cards on the ivory page and by
    the $1 card that lies on the cloth in the opening (jury 1 #6). */
@@ -99,7 +99,7 @@ const cardRules = css`
     --action-hover: ${color.night};
   }
   .tag {
-    font: 600 13px/1 ${font.body};
+    font: 600 ${type.label} / 1 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -111,7 +111,7 @@ const cardRules = css`
   }
   .who {
     margin-top: 10px;
-    font: 400 17px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.bodyMuted};
   }
   .price {
@@ -126,7 +126,7 @@ const cardRules = css`
     color: ${color.primary};
   }
   .price span {
-    font: 600 13px/1 ${font.body};
+    font: 600 ${type.label} / 1 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -152,7 +152,7 @@ const cardRules = css`
     gap: 12px;
   }
   .held dt {
-    font: 400 15px/1.4 ${font.text};
+    font: 400 ${type.read} / 1.4 ${font.text};
     color: ${color.bodyMuted};
   }
   .held dd {
@@ -163,7 +163,7 @@ const cardRules = css`
     white-space: nowrap;
   }
   .held s {
-    font: 400 15px/1 ${font.text};
+    font: 400 18px / 1 ${font.text};
     color: ${color.bodyMuted};
   }
   .held dd b {
@@ -172,7 +172,7 @@ const cardRules = css`
   }
   .held p.f {
     margin-top: 12px;
-    font: italic 400 16px/1.45 ${font.display};
+    font: italic 400 ${type.read} / 1.45 ${font.display};
     color: ${color.primaryMid};
   }
   ul.inc {
@@ -188,7 +188,7 @@ const cardRules = css`
     display: grid;
     grid-template-columns: 14px 1fr;
     gap: 14px;
-    font: 400 17px/1.45 ${font.text};
+    font: 400 ${type.read} / 1.45 ${font.text};
     color: ${color.body};
   }
   ul.inc li::before {
@@ -210,7 +210,7 @@ const cardRules = css`
     width: 100%;
   }
   .small {
-    font: 400 14px/1.5 ${font.body};
+    font: 400 ${type.note} / 1.5 ${font.body};
     color: ${color.bodyMuted};
   }
   .done {
@@ -224,13 +224,13 @@ const cardRules = css`
   }
   .done p {
     margin-top: 8px;
-    font: 400 16px/1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
   }
   .error {
     padding: 12px 14px;
     border-left: 2px solid ${color.error};
-    font: 400 15px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.error};
   }
   .share {
@@ -249,7 +249,7 @@ const cardRules = css`
     flex: 1 1 280px;
     padding: 14px 16px;
     background: ${color.ivory};
-    font: 400 15px/1.4 ${font.text};
+    font: 400 ${type.read} / 1.4 ${font.text};
     color: ${color.primary};
     overflow-wrap: anywhere;
   }
@@ -268,7 +268,7 @@ const cardRules = css`
   .fit legend {
     padding: 0;
     margin-bottom: 12px;
-    font: 500 16px/1.45 ${font.text};
+    font: 500 ${type.read} / 1.45 ${font.text};
     color: ${color.primary};
   }
   .choices {
@@ -298,12 +298,12 @@ const cardRules = css`
     padding: 10px 18px;
     border: 1px solid ${color.primaryLine};
     background: ${color.paperPure};
-    font: 500 15px/1.3 ${font.text};
+    font: 500 18px / 1.3 ${font.text};
     color: ${color.body};
   }
   .choice span small {
     white-space: nowrap;
-    font: 400 14px/1.3 ${font.body};
+    font: 400 ${type.note} / 1.3 ${font.body};
     color: ${color.bodyMuted};
   }
   .choice input:checked + span {
@@ -367,7 +367,7 @@ const HeroCard = styled.div`
     margin-top: 18px;
     padding-top: 16px;
     border-top: 1px solid ${color.primaryLine};
-    font: 400 14px/1.55 ${font.body};
+    font: 400 ${type.note} / 1.55 ${font.body};
     color: ${color.bodyMuted};
   }
   /* A 44px target inside a 14px line (jury 2 R2 N3): the padding grows the
@@ -406,7 +406,7 @@ const Next = styled(Chapter)`
   .then + p {
     margin-top: 16px;
     max-width: 46ch;
-    font: 400 17px/1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: ${color.bodyMuted};
   }
   ul {
@@ -429,7 +429,7 @@ const Next = styled(Chapter)`
     color: ${color.primary};
   }
   li p {
-    font: 400 17px/1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
   }
   ${media.md} {
@@ -472,7 +472,7 @@ const Offers = styled(Chapter)`
   }
   .why-in li p {
     margin-top: 10px;
-    font: 400 17px/1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted);
   }
   ${media.lg} {
@@ -488,14 +488,14 @@ const Offers = styled(Chapter)`
   .filled {
     margin: 20px 0 0;
     text-align: center;
-    font: 400 17px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.bodyMuted};
   }
   ${cardRules};
   .signin {
     margin-top: 28px;
     text-align: center;
-    font: 500 15px/1.5 ${font.text};
+    font: 500 ${type.read} / 1.5 ${font.text};
     color: ${color.bodyMuted};
   }
   .signin a {
@@ -528,7 +528,7 @@ const Why = styled(Chapter)`
   }
   .four p {
     margin-top: 12px;
-    font: 400 17px/1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted);
   }
   ${media.lg} {
@@ -558,7 +558,7 @@ const Which = styled(Chapter)`
   }
   .two p.d {
     margin-top: 12px;
-    font: 400 18px/1.65 ${font.text};
+    font: 400 ${type.read} / 1.65 ${font.text};
     color: var(--muted);
     max-width: 48ch;
   }
@@ -578,7 +578,7 @@ const Closing = styled(Chapter)`
   }
   p.lead {
     margin: 22px auto 0;
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted);
     max-width: 46ch;
   }

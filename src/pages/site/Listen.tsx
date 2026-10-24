@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Seo from "../../components/ui/Seo";
 import { prerendering } from "../../lib/app";
-import { color, font } from "../../styles/theme";
+import { color, font, type } from "../../styles/theme";
 
 const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.replace(/\/$/, "");
 
@@ -36,7 +36,7 @@ const Page = styled.div`
   }
   p {
     margin-top: 12px;
-    font: 400 17px/1.6 ${font.body};
+    font: 400 ${type.read} / 1.6 ${font.body};
     color: ${color.bodyMuted};
     max-width: 36ch;
     margin-inline: auto;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { color, font } from "../styles/theme";
+import { color, font, type } from "../styles/theme";
 
 export const Page = styled.main`
   min-height: 100vh;
@@ -217,7 +217,7 @@ export const ErrorMsg = styled.p`
 `;
 
 export const Note = styled.p`
-  font-size: 14px;
+  font-size: ${type.note};
   color: ${color.bodyMuted};
   text-align: center;
   margin: 0;
@@ -243,7 +243,7 @@ export const Centered = styled.main`
     color: ${color.primary};
   }
   p {
-    font-size: 18px;
+    font-size: ${type.read};
     max-width: 45ch;
     line-height: 1.6;
   }

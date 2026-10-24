@@ -22,6 +22,7 @@ import {
   media,
   motion,
   shadow,
+  type,
 } from "../../styles/theme";
 
 const STARTERS = [
@@ -64,7 +65,7 @@ const Cards = styled.ul`
     pointer-events: none;
   }
   small {
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -152,7 +153,7 @@ const Index = styled(Chapter)`
     outline-offset: 4px;
   }
   .cat {
-    font: 600 13px/1.4 ${font.body};
+    font: 600 ${type.label} / 1.4 ${font.body};
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -164,7 +165,7 @@ const Index = styled(Chapter)`
   }
   .entry p {
     margin-top: 10px;
-    font: 400 16px/1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: ${color.body};
     max-width: 62ch;
   }
@@ -207,7 +208,7 @@ const Index = styled(Chapter)`
   }
   .topics p {
     margin-top: 4px;
-    font: 400 15px/1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
   }
   ${media.md} {

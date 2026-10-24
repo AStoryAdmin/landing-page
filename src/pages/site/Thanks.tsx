@@ -10,7 +10,7 @@ import Seo from "../../components/ui/Seo";
 import { CONTACT } from "../../lib/contact";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import { Chapter, Frame, PrimaryLink, TextAnchor } from "./kit/kit.styles";
-import { color, display, font, media } from "../../styles/theme";
+import { color, display, font, media, type } from "../../styles/theme";
 
 const Steps = styled(Chapter)`
   padding-top: 0;
@@ -41,7 +41,7 @@ const Steps = styled(Chapter)`
     margin-bottom: 10px;
   }
   p {
-    font: 400 17px/1.6 ${font.body};
+    font: 400 ${type.read} / 1.6 ${font.body};
     color: ${color.body};
   }
   .after {
@@ -53,7 +53,7 @@ const Steps = styled(Chapter)`
   }
   .note {
     margin-top: 24px;
-    font: 400 15px/1.55 ${font.body};
+    font: 400 ${type.note} / 1.55 ${font.body};
     color: ${color.bodyMuted};
   }
   ${media.md} {

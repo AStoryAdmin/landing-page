@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { color, font } from "../styles/theme";
+import { color, font, type } from "../styles/theme";
 
 export const Page = styled.main`
   min-height: 100vh;
@@ -62,7 +62,7 @@ export const Name = styled.h1`
 export const Intro = styled.p`
   max-width: 520px;
   margin: 14px auto 0;
-  font-size: 18px;
+  font-size: ${type.read};
   line-height: 1.6;
   color: ${color.bodyMuted};
 `;
@@ -110,13 +110,13 @@ export const MemoryTitle = styled.h2`
 `;
 
 export const Period = styled.p`
-  font-size: 14px;
+  font-size: ${type.note};
   color: ${color.bodyMuted};
   margin: 4px 0 0;
 `;
 
 export const MemoryText = styled.p`
-  font-size: 18px;
+  font-size: ${type.read};
   line-height: 1.7;
   color: ${color.ink};
   margin: 14px 0 0;
@@ -144,7 +144,7 @@ export const Testimonial = styled.blockquote`
 export const TestimonialText = styled.p`
   font-family: ${font.display};
   font-style: italic;
-  font-size: 19px;
+  font-size: ${type.read};
   line-height: 1.6;
   color: ${color.ink};
   margin: 0;
@@ -152,7 +152,7 @@ export const TestimonialText = styled.p`
 `;
 
 export const TestimonialWho = styled.footer`
-  font-size: 14px;
+  font-size: ${type.note};
   color: ${color.bodyMuted};
   margin-top: 12px;
 `;
@@ -175,7 +175,7 @@ export const Footer = styled.div`
   text-align: center;
   margin-top: 56px;
   color: ${color.bodyMuted};
-  font-size: 14px;
+  font-size: ${type.note};
 
   b {
     color: ${color.accent};
@@ -203,7 +203,7 @@ export const Centered = styled.main`
     color: ${color.primary};
   }
   p {
-    font-size: 18px;
+    font-size: ${type.read};
     max-width: 45ch;
     line-height: 1.6;
   }

@@ -75,7 +75,7 @@ const Desk = styled.div`
     font-size: 1.0625rem;
   }
   .stamp {
-    font-size: 0.8125rem;
+    font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }

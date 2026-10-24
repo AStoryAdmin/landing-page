@@ -1,39 +1,47 @@
 import { useEffect } from "react";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { refreshWhenSettled } from "../../lib/scrollMotion";
+import { OTHER_PLANS } from "../../lib/pricing";
+import { Invitation } from "./kit/kit";
 import CodeFromFamily from "./home/CodeFromFamily";
-import OpenBook from "./home/OpenBook";
-import Everyday from "./home/Everyday";
-import ThreeSteps from "./home/ThreeSteps";
-import CallBecomes from "./home/CallBecomes";
-import Witnesses from "./home/Witnesses";
-import Close from "./home/Close";
+import Hero from "./home/Hero";
+import WhatGetsLost from "./home/WhatGetsLost";
+import EveryVoice from "./home/EveryVoice";
+import FamilyBook from "./home/FamilyBook";
+
+const monthly = OTHER_PLANS.find((p) => p.id === "monthly")!;
+/** "$19.99/mo" -> "$19.99": the cheapest way in to the calls, said once. */
+const monthlyPrice = monthly.price.replace(/\/mo$/, "");
 
 /**
- * Phase 2 (2026-10-23): the book on the bench. The home page now lives in
- * the web app's world and says each thing once, in six sections, about
- * seven screens at 1920x1080 (it was seventeen):
+ * Home, 2026-10-24: back to the past version's best (commit bd23f2f), at
+ * Bao's ruling - "the home page is much stronger in the past ver. look for
+ * the best feature in the last build and integrate here. this web looks too
+ * ai" (docs/PHASE2-DIRECTION-2026-10-24-HOME.md). The past compositions,
+ * imagery, motion and interactions, inside today's brand (the app's fonts,
+ * the chocolate bookcloth with the faint A for the dark rooms) and today's
+ * type floor ("i despised the small text everywhere"). Each idea once:
  *
- *   1. OpenBook     the family book open on the cloth: three prints on the
- *                   endpaper, the opening line and the two doors on the
- *                   title page, Bond asleep at its foot.
- *   2. Everyday     the photo wall, with the milestones folded into it.
- *   3. ThreeSteps   how it works: you install the app on their iPhone, they
- *                   answer the call in it, the family keeps it (replaces
- *                   StepOne).
- *   4. CallBecomes  one memory in the app, in her words and in the book,
- *                   with the three sample books (replaces Proof,
- *                   FamilyBook and SampleBooks).
- *   5. Witnesses    the family adds what they remember, and the privacy
- *                   promise in /privacy's words (replaces EveryVoice, the
- *                   One-life band and FamilyLoop).
- *   6. Close        the price in one line, the two doors, where to next
- *                   (replaces PriceLadder and the Invitation on Home).
+ *   1. Hero          the Sunday-dinner photograph filling the window; "Every
+ *                    life holds a story worth keeping."; the two doors and
+ *                    the honest small print (iPhone app, private beta).
+ *   2. WhatGetsLost  the milestone pile you can touch; "It's the everyday."
+ *                    in a scatter of prints on the cloth, with the three
+ *                    things that slip away; "A Story exists to catch what
+ *                    the photograph can't", with how it works in a sentence.
+ *   3. EveryVoice    one memory, the family's versions flying into it, then
+ *                    "One life. Many witnesses." on the cloth.
+ *   4. FamilyBook    the Hartleys' book (a sample) to open and turn, cover to
+ *                    today; the way to the three sample books on /samples.
+ *   5. Invitation    the site's close on the cloth, with the one price line.
  *
- * Cut from Home: the five-second intro cover (Intro.tsx), "Your story isn't
- * behind you", the founders teaser (Our story is in the menu), Listen (it
- * stays on How it works) and every second statement of the same promise.
- * The direction is docs/PHASE2-DIRECTION-2026-10-23.md.
+ * Left out, and why: the intro cover (Intro.tsx; it held the page for five
+ * seconds); StepOne (Bao: "horrible"); ThreeSteps (a row of three equal
+ * cards, which read generic beside the past rooms - the catch says how it
+ * works in one sentence); Proof, Listen and SampleBooks (the memory, the
+ * book and the /samples link already show the product once); FamilyLoop
+ * (the same idea as EveryVoice); Founders (Our story owns it, and it reused
+ * the wedding print); the price ladder (the price is said once, below).
  */
 export default function Home() {
   // Arrivals measure the page; re-measure once fonts and images land.
@@ -48,12 +56,18 @@ export default function Home() {
       {/* Only when the address carries a family code (?ref=): the code,
           large, and the three steps to use it. */}
       <CodeFromFamily />
-      <OpenBook />
-      <Everyday />
-      <ThreeSteps />
-      <CallBecomes />
-      <Witnesses />
-      <Close />
+      <Hero />
+      <WhatGetsLost />
+      <EveryVoice />
+      <FamilyBook />
+      <Invitation
+        title={
+          <>
+            Start the family’s book <em>today.</em>
+          </>
+        }
+        line={`Free in your browser, with no card: the archive, the writing and the whole family. The calls are from ${monthlyPrice} a month and ring in the A Story app on your parent’s iPhone, now in private beta.`}
+      />
     </>
   );
 }

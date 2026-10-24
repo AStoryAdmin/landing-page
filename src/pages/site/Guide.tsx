@@ -31,7 +31,7 @@ import {
   PrimaryLink,
   Title,
 } from "./kit/kit.styles";
-import { color, curve, display, font, media } from "../../styles/theme";
+import { color, curve, display, font, media, type } from "../../styles/theme";
 
 /**
  * Guides whose photograph carries the subject; the others read better
@@ -73,14 +73,14 @@ const Head = styled(Chapter)`
     align-items: center;
     min-height: 44px;
     margin-bottom: 28px;
-    font: 500 15px/1 ${font.ui};
+    font: 500 ${type.ui} / 1 ${font.ui};
     color: var(--muted);
     text-underline-offset: 5px;
   }
   /* Article titles are long (60-70 characters): a smaller display size on
      a wider measure keeps them to two lines on a desktop. */
   h1 {
-    max-width: 30ch;
+    max-width: 38ch;
     font-size: clamp(2rem, 1.2rem + 2.1vw, 3.6rem);
   }
   .thesis {
@@ -97,7 +97,7 @@ const Head = styled(Chapter)`
     margin-top: 24px;
     padding-top: 18px;
     border-top: 1px solid var(--line);
-    font: 400 15px/1.5 ${font.ui};
+    font: 400 ${type.note} / 1.5 ${font.ui};
     color: var(--muted);
   }
   .byline button {
@@ -105,7 +105,7 @@ const Head = styled(Chapter)`
     padding: 0;
     border: 0;
     background: none;
-    font: 600 15px/1 ${font.ui};
+    font: 600 ${type.ui} / 1 ${font.ui};
     color: var(--ink);
     text-decoration: underline;
     text-underline-offset: 5px;
@@ -146,7 +146,7 @@ const Article = styled(Chapter)`
   }
   nav small {
     margin-bottom: 8px;
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -155,7 +155,7 @@ const Article = styled(Chapter)`
     display: block;
     min-height: 44px;
     padding: 11px 0;
-    font: 400 15px/1.4 ${font.ui};
+    font: 400 ${type.ui} / 1.4 ${font.ui};
     color: ${color.body};
     text-decoration: none;
     border-top: 1px solid ${color.primaryLine};
@@ -199,7 +199,7 @@ const Article = styled(Chapter)`
     background: ${color.ivoryDeep};
   }
   .view p {
-    font: 400 clamp(1.1rem, 1.05rem + 0.2vw, 1.25rem) / 1.65 ${font.text};
+    font: 400 ${type.read} / 1.65 ${font.text};
     color: ${color.body};
   }
   .view p + p {
@@ -210,7 +210,7 @@ const Article = styled(Chapter)`
   }
   .source {
     margin-top: 24px;
-    font: 400 15px/1.6 ${font.ui};
+    font: 400 ${type.note} / 1.6 ${font.ui};
     color: ${color.bodyMuted};
   }
   .closing {

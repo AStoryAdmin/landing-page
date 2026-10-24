@@ -29,24 +29,31 @@ export const color = {
   controlBorder: "#86766A",
   accent: palette.terracotta,
   accentHover: "#963E1A",
-  accentText: "#9E4420",
+  /** Deepened 2026-10-24 (type floor): 7.5:1 on ivory for small labels. */
+  accentText: "#7E3315",
   accentWash: "#EFDFD0",
   accentLine: "rgba(184, 81, 38, 0.28)",
   /** The app's highlight on paper: the key phrase of a headline ("worth keeping"). */
   ochre: "#BF7F1A",
-  /** Ochre deep enough for small text on ivory (4.6:1). */
-  ochreText: "#8A5A0F",
+  /** Ochre deep enough for small text on ivory (7.2:1, 2026-10-24). */
+  ochreText: "#664612",
   gold: palette.brass,
   goldDeep: "#D8AE4D",
   goldWash: `color-mix(in srgb, ${palette.brass} 20%, ${palette.ivory})`,
   goldText: palette.brass,
-  goldOnLight: "#765014",
+  goldOnLight: "#664612",
+  /** Brass light enough for small text on the teal ground (7:1, 2026-10-24). */
+  goldOnTeal: "#F2D98F",
+  /** Muted ivory for small text on the teal ground (7.3:1, 2026-10-24). */
+  onTealMuted: "#E6DDCF",
   /** The book's foil: hairline frames and rules on the ivory page. */
   foil: "rgba(201, 161, 90, 0.55)",
   ink: palette.chocolate,
   body: "#2A2320",
-  bodyMuted: "#685848",
-  faint: "#786655",
+  /* Muted inks deepened 2026-10-24 (type floor): small text needs 7:1.
+     bodyMuted is 8.1:1 on ivory, 7.4:1 on sand; faint 7.5:1 on ivory. */
+  bodyMuted: "#514236",
+  faint: "#56473A",
   ivory: palette.ivory,
   /** The laid paper of the book's pages (the signed-out title page). */
   paper: "#FBF8F1",
@@ -54,7 +61,7 @@ export const color = {
   ivoryDeep: "#E9DECC",
   onDark: "#F6F0E6",
   onDarkMuted: "#DCD0C0",
-  onDarkFaint: "#CDBCA8",
+  onDarkFaint: "#D9CCBA",
   onDarkLine: "rgba(246, 240, 230, 0.22)",
   live: "#817347",
   error: "#AC3023",
@@ -111,12 +118,28 @@ export const type = {
   d3: "clamp(1.9rem, 1.3rem + 1.8vw, 3rem)",
   d4: "clamp(1.4rem, 1.2rem + 0.9vw, 2rem)",
   d5: "1.375rem",
-  lead: "clamp(1.25rem, 1.1rem + 0.4vw, 1.5rem)",
-  base: "clamp(1rem, 0.96rem + 0.12vw, 1.0625rem)",
-  sm: "1rem",
-  xs: "0.9375rem",
-  caption: "0.8125rem",
-  eyebrow: "0.75rem",
+  /*
+   * The type floor (Bao, 2026-10-24): "care less about the length and more
+   * about the readability. i despised the small text everywhere". Every role
+   * below is the smallest that role may be set; nothing on the site is set
+   * under 14px. EB Garamond has a small x-height, so reading text sits at
+   * 20px+ on a desktop and 18px on a phone.
+   */
+  /** A lead or intro paragraph: 21px phone, ~24px at 1366, 28px on a big display. */
+  lead: "clamp(1.3125rem, 1.15rem + 0.45vw, 1.75rem)",
+  /** Running / reading text: 18px phone, 20px+ from 1366, 22px on a big display. */
+  read: "clamp(1.125rem, 1.0625rem + 0.25vw, 1.375rem)",
+  base: "clamp(1.125rem, 1.0625rem + 0.25vw, 1.375rem)",
+  /** Secondary lines, notes, card descriptions, form help, footer links: 16px+. */
+  note: "clamp(1rem, 0.95rem + 0.15vw, 1.125rem)",
+  sm: "clamp(1rem, 0.95rem + 0.15vw, 1.125rem)",
+  /** Buttons and the header nav: 16px+. */
+  ui: "clamp(1rem, 0.95rem + 0.12vw, 1.125rem)",
+  xs: "1rem",
+  /** Labels, kickers, captions, chips, table heads, legal meta: 14px+. */
+  label: "clamp(0.875rem, 0.8rem + 0.12vw, 1rem)",
+  caption: "clamp(0.9375rem, 0.88rem + 0.1vw, 1rem)",
+  eyebrow: "clamp(0.875rem, 0.8rem + 0.12vw, 1rem)",
 } as const;
 
 /**

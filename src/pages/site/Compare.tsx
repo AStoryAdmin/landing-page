@@ -34,17 +34,17 @@ import {
   Statement,
   onDarkActions,
 } from "./kit/kit.styles";
-import { color, display, font, media } from "../../styles/theme";
+import { color, display, font, media, type } from "../../styles/theme";
 
 const Matrix = styled(Chapter)`
   .lead {
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted);
     max-width: 44ch;
   }
   .note {
     margin-top: 14px;
-    font: 400 13px/1.55 ${font.body};
+    font: 400 ${type.note} / 1.55 ${font.body};
     color: ${color.bodyMuted};
   }
 `;
@@ -64,7 +64,7 @@ const Moment = styled(Chapter)`
   }
   .then {
     margin-top: 22px;
-    font: 400 19px/1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted);
     max-width: 34ch;
   }
@@ -86,10 +86,10 @@ const Moment = styled(Chapter)`
     box-shadow: inset 0 0 0 1px ${color.onDarkLine};
   }
   .voices small {
-    font: 600 13px/1.3 ${font.body};
+    font: 600 ${type.label} / 1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: ${color.gold};
+    color: ${color.goldOnTeal};
   }
   .voices q {
     font: italic 400 ${display.sm} / 1.35 ${font.display};

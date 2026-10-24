@@ -7,7 +7,7 @@
  */
 import styled from "styled-components";
 import type { Level, Row } from "../../../lib/landscape";
-import { color, font, media } from "../../../styles/theme";
+import { color, font, media, type } from "../../../styles/theme";
 
 const Card = styled.div`
   border-radius: 20px;
@@ -38,14 +38,14 @@ const Card = styled.div`
   thead th {
     padding: 26px 16px 22px;
     border-bottom: 1px solid ${color.primaryLineStrong};
-    font: 500 15px/1.2 ${font.text};
+    font: 500 18px / 1.2 ${font.text};
     color: ${color.primaryMid};
   }
   tbody th {
     width: var(--label-w, 38%);
     padding-left: clamp(18px, 2vw, 28px);
     text-align: left;
-    font: 400 16.5px/1.45 ${font.text};
+    font: 400 ${type.read} / 1.45 ${font.text};
     color: ${color.primary};
   }
   .us {
@@ -98,8 +98,8 @@ const Legend = styled.p`
   margin-top: 18px;
   padding-left: 14px;
   border-left: 2px solid ${color.primaryLine};
-  font: italic 400 16px/1.4 ${font.display};
-  color: ${color.primaryMid};
+  font: italic 400 ${type.read} / 1.4 ${font.display};
+  color: ${color.bodyMuted};
   span {
     display: inline-flex;
     align-items: center;
@@ -109,7 +109,7 @@ const Legend = styled.p`
     color: ${color.teal};
   }
   .m1 {
-    color: ${color.accent};
+    color: ${color.accentText};
     font: 600 18px/1 ${font.body};
     font-style: normal;
   }

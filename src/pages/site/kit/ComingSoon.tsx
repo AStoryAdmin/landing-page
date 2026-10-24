@@ -18,7 +18,7 @@
  * same pill works on the night opening and on ivory.
  */
 import styled from "styled-components";
-import { color, font } from "../../../styles/theme";
+import { color, font, type } from "../../../styles/theme";
 
 export const APP_STORE_URL = "";
 
@@ -29,7 +29,7 @@ const Pill = styled.span`
   padding: 10px 18px 10px 14px;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--ink, ${color.primary}) 30%, transparent);
-  font: 600 13px/1 ${font.body};
+  font: 600 ${type.label} / 1 ${font.body};
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink, ${color.primary});
@@ -52,7 +52,7 @@ const Note = styled.span`
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  font: 400 15px/1.4 ${font.body};
+  font: 400 ${type.ui} / 1.4 ${font.body};
   color: var(--muted, ${color.bodyMuted});
 
   svg {

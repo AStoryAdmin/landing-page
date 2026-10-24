@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { font } from "../../styles/theme";
+import { font, type } from "../../styles/theme";
 import InceptionBadge from "./InceptionBadge";
 
 const Credit = styled.span`
@@ -10,10 +10,10 @@ const Credit = styled.span`
   .credit-copy {
     display: grid;
     gap: 4px;
-    font: 400 12px/1.4 ${font.body};
+    font: 400 ${type.label} / 1.4 ${font.body};
   }
   .credit-name {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
   }
 `;

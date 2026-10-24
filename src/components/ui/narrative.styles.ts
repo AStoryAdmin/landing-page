@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { color, font, media, space } from "../../styles/theme";
+import { color, font, media, space, type } from "../../styles/theme";
 
 export const Chapter = styled.section<{ $tone?: "paper" | "dark" | "brown" }>`
   padding: calc(clamp(64px, 7vw, 112px) * var(--sy)) ${space.gutter};
@@ -29,7 +29,7 @@ export const Width = styled.div`
   min-width: 0;
 `;
 export const Kicker = styled.p`
-  font: 500 0.8125rem/1.4 ${font.body};
+  font: 500 ${type.label} / 1.4 ${font.body};
   text-transform: uppercase;
   letter-spacing: 0.15em;
   margin-bottom: 24px;

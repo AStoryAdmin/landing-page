@@ -37,7 +37,7 @@ import cartesiaBoxed from "../../assets/partners/cartesia-startups-lockup-boxed.
 import { ArrowIcon, Invitation, PageOpening } from "./kit/kit";
 import { Chapter, Frame } from "./kit/kit.styles";
 import { useReveals } from "./kit/reveals";
-import { color, display, font, media, shadow } from "../../styles/theme";
+import { color, display, font, media, shadow, type } from "../../styles/theme";
 import { PROGRAMS, faqSchema } from "../../lib/seo";
 
 type Row = {
@@ -241,13 +241,13 @@ const Ledger = styled(Chapter)`
   }
   .status {
     margin-left: 10px;
-    font: 500 15px/1.3 ${font.text};
+    font: 500 18px / 1.3 ${font.text};
     color: var(--label);
   }
   .fit {
     margin-top: 6px;
     max-width: 62ch;
-    font: 400 17px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: var(--muted);
   }
   .out {
@@ -255,7 +255,7 @@ const Ledger = styled(Chapter)`
     align-items: center;
     gap: 8px;
     min-height: 44px;
-    font: 600 15px/1.3 ${font.body};
+    font: 600 ${type.ui} / 1.3 ${font.body};
     color: var(--ink);
     white-space: nowrap;
     text-decoration: underline;
@@ -269,7 +269,7 @@ const Ledger = styled(Chapter)`
   .fine {
     margin-top: 24px;
     max-width: 80ch;
-    font: 400 14px/1.55 ${font.body};
+    font: 400 ${type.note} / 1.55 ${font.body};
     color: var(--muted);
   }
   ${media.md} {

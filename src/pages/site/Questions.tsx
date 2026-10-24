@@ -35,6 +35,7 @@ import {
   media,
   motion,
   shadow,
+  type,
 } from "../../styles/theme";
 
 const Opening = styled(Chapter)`
@@ -88,7 +89,7 @@ const Opening = styled(Chapter)`
       0 0 0 4px color-mix(in srgb, ${color.gold} 60%, transparent);
   }
   .concierge small {
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -107,7 +108,7 @@ const Opening = styled(Chapter)`
     padding: 0 18px;
     border-radius: 999px;
     background: ${color.chocolate};
-    font: 600 15px/1 ${font.ui};
+    font: 600 ${type.ui} / 1 ${font.ui};
     color: ${color.onDark};
     text-decoration: none;
     transition:
@@ -167,7 +168,7 @@ const Answers = styled(Chapter)`
     padding: 0 12px;
     border: 0;
     background: transparent;
-    font: 500 15px/1 ${font.ui};
+    font: 500 ${type.ui} / 1 ${font.ui};
     color: ${color.bodyMuted};
     text-decoration: underline;
     text-decoration-color: transparent;
@@ -209,7 +210,7 @@ const Answers = styled(Chapter)`
     border: 0;
     border-radius: 999px;
     background: ${color.ivory};
-    font: 400 16px/1 ${font.text};
+    font: 400 18px / 1 ${font.text};
     color: ${color.primary};
   }
   .search input:focus-visible,
@@ -268,7 +269,7 @@ const Answers = styled(Chapter)`
   .gh small {
     display: block;
     margin-top: 8px;
-    font: 500 13px/1.3 ${font.body};
+    font: 500 ${type.label} / 1.3 ${font.body};
     color: ${color.bodyMuted};
   }
   .items {
@@ -331,7 +332,7 @@ const Answers = styled(Chapter)`
   }
   details p {
     padding: 0 26px 24px;
-    font: 400 17px/1.7 ${font.text};
+    font: 400 ${type.read} / 1.7 ${font.text};
     color: ${color.body};
     max-width: 62ch;
   }

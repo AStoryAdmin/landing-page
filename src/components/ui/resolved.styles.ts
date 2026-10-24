@@ -39,7 +39,7 @@ export const EditorialTitle = styled(SectionTitle)`
   letter-spacing: -0.035em;
 `;
 export const Eyebrow = styled.p`
-  font: 600 0.875rem/1.5 ${font.body};
+  font: 600 ${type.note} / 1.5 ${font.body};
   margin-bottom: 20px;
   color: inherit;
 `;
@@ -112,7 +112,7 @@ export const FieldLabel = styled.label`
     background: ${color.paperPure};
     color: ${color.ink};
     border-radius: 10px;
-    font: 400 1.0625rem/1.5 ${font.body};
+    font: 400 ${type.read} / 1.5 ${font.body};
     min-height: 48px;
   }
   textarea {

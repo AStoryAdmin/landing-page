@@ -36,7 +36,7 @@ import {
   Statement,
   type Ground,
 } from "./kit.styles";
-import { color, display, font, media } from "../../../styles/theme";
+import { color, display, font, media, type } from "../../../styles/theme";
 
 const individual = PLANS.find((p) => p.id === "individual")!;
 const family = PLANS.find((p) => p.id === "family")!;
@@ -68,13 +68,13 @@ const Section = styled(Chapter)`
     align-items: baseline;
     justify-content: space-between;
     gap: 12px;
-    font: 600 12px/1.4 ${font.ui};
+    font: 600 ${type.label} / 1.4 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--label, ${color.accentText});
   }
   .k small {
-    font: 500 13px/1.4 ${font.body};
+    font: 500 ${type.label} / 1.4 ${font.body};
     letter-spacing: 0;
     text-transform: none;
     color: var(--muted, ${color.bodyMuted});
@@ -100,13 +100,13 @@ const Section = styled(Chapter)`
   /* The unit in the interface face, at its own spacing: inheriting the
      figure's tracking crushed "no card, no clock" (2026-10-23 review). */
   .price span {
-    font: 400 15px/1.4 ${font.ui};
+    font: 400 ${type.ui} / 1.4 ${font.ui};
     letter-spacing: normal;
     color: var(--muted, ${color.bodyMuted});
   }
   .line {
     margin-top: 14px;
-    font: 400 19px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: var(--muted, ${color.body});
     max-width: 34ch;
   }
@@ -114,7 +114,7 @@ const Section = styled(Chapter)`
      the old per-plan lists that said every price a second time. */
   .more {
     margin-top: 12px;
-    font: 400 15px/1.5 ${font.body};
+    font: 400 ${type.note} / 1.5 ${font.body};
     color: var(--muted, ${color.bodyMuted});
     max-width: 40ch;
   }
@@ -128,7 +128,7 @@ const Section = styled(Chapter)`
     border-top: 1px solid var(--line, ${color.primaryLine});
   }
   .early p {
-    font: 400 15px/1.5 ${font.body};
+    font: 400 ${type.note} / 1.5 ${font.body};
     color: var(--muted, ${color.body});
   }
   .early p + p {

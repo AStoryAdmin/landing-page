@@ -17,7 +17,7 @@ import type { ReactNode } from "react";
 import styled from "styled-components";
 import { useReveals } from "../kit/reveals";
 import { Chapter, Frame } from "../kit/kit.styles";
-import { color, display, font, media } from "../../../styles/theme";
+import { color, display, font, media, type } from "../../../styles/theme";
 
 const Steps = styled.ul`
   margin: 0;
@@ -38,7 +38,7 @@ const Steps = styled.ul`
     color: var(--ink);
   }
   span {
-    font: 400 clamp(1rem, 0.96rem + 0.2vw, 1.15rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--text, var(--muted));
   }
   ${media.sm} {
@@ -83,7 +83,7 @@ const Band = styled(Chapter)`
   }
   h2 {
     margin-bottom: clamp(16px, 2vw, 24px);
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--label);
@@ -167,7 +167,7 @@ const Begin = styled(Chapter)`
   }
   .card > div > p {
     margin: 16px 0 28px;
-    font: 400 clamp(1.05rem, 1rem + 0.3vw, 1.3rem) / 1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: ${color.body};
     max-width: 42ch;
   }
@@ -182,7 +182,7 @@ const Begin = styled(Chapter)`
     gap: 14px;
     padding: 16px 0;
     border-top: 1px solid ${color.primaryLine};
-    font: 400 clamp(1.05rem, 1rem + 0.25vw, 1.25rem) / 1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.primary};
   }
   ul li:last-child {

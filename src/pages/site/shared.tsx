@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { mission } from "../../lib/mission";
 import Logo from "../../components/ui/Logo";
-import { color, font } from "../../styles/theme";
+import { color, font, type } from "../../styles/theme";
 export function Wordmark({ light = false }: { light?: boolean }) {
   return <Logo height={44} tone={light ? "dark" : "light"} />;
 }
@@ -14,7 +14,7 @@ const Figure = styled.figure`
     border-radius: 5px;
   }
   figcaption {
-    font: 400 14px/1.5 ${font.body};
+    font: 400 ${type.note} / 1.5 ${font.body};
     color: ${color.bodyMuted};
     margin-top: 12px;
   }

@@ -11,7 +11,7 @@
 import styled from "styled-components";
 import { SWITCH } from "../../../lib/landscape";
 import { PageOpening } from "../kit/kit";
-import { color, display, font, media, shadow } from "../../../styles/theme";
+import { color, display, font, media, shadow, type } from "../../../styles/theme";
 
 const Leaf = styled.div`
   position: relative;
@@ -32,7 +32,7 @@ const Leaf = styled.div`
     position: relative;
   }
   h2 {
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -52,7 +52,7 @@ const Leaf = styled.div`
   }
   p {
     margin-top: 6px;
-    font: 400 clamp(1rem, 0.96rem + 0.2vw, 1.15rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
   }
   ${media.motion} {

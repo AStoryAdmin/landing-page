@@ -42,7 +42,7 @@ const Stage = styled.div`
     background: none;
     color: ${color.ink};
     cursor: pointer;
-    font-size: 0.9375rem;
+    font-size: 16px;
   }
   .switch button[aria-pressed="true"] {
     border-color: ${color.accent};

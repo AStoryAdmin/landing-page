@@ -20,7 +20,7 @@ const Table = styled.div<{ $spread: boolean }>`
   }
   .print figcaption {
     padding: 8px 2px 0;
-    font-size: 0.8125rem;
+    font-size: 14px;
   }
   .primary {
     width: 34%;
@@ -138,7 +138,7 @@ const Table = styled.div<{ $spread: boolean }>`
       padding: 6px;
     }
     .print figcaption {
-      font-size: 0.75rem;
+      font-size: 14px;
     }
   }
   ${media.motion} {

@@ -17,7 +17,7 @@ import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { mission } from "../../../lib/mission";
 import { useReveals } from "./reveals";
-import { color, display, font, media, motion, shadow } from "../../../styles/theme";
+import { color, display, font, media, motion, shadow, type } from "../../../styles/theme";
 import {
   Actions,
   Chapter,
@@ -297,7 +297,7 @@ const Opening = styled(Chapter)`
      case, 14px, the ground's muted ink. */
   .opening-note {
     margin-top: 18px;
-    font: 400 14px/1.55 ${font.ui};
+    font: 400 ${type.note} / 1.55 ${font.ui};
     color: var(--muted);
     max-width: 52ch;
   }
@@ -583,7 +583,7 @@ const Band = styled(Chapter)`
     display: grid;
   }
   .next-label {
-    font: 600 12px/1 ${font.ui};
+    font: 600 ${type.label} / 1 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--label);
@@ -616,7 +616,7 @@ const Band = styled(Chapter)`
   .next span span {
     display: block;
     margin-top: 4px;
-    font: 400 14px/1.45 ${font.ui};
+    font: 400 ${type.note} / 1.45 ${font.ui};
     color: var(--muted);
   }
   .next svg {

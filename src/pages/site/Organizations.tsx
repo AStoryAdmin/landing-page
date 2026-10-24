@@ -38,7 +38,7 @@ import {
 } from "./kit/kit.styles";
 import DemoBooking from "./DemoBooking";
 import { DEMO_EMAIL, INSTITUTION_KINDS } from "../../lib/demoRequest";
-import { color, display, font, media } from "../../styles/theme";
+import { color, display, font, media, type } from "../../styles/theme";
 
 const WHO = [
   {
@@ -146,7 +146,7 @@ const Strip = styled.ul`
   small {
     display: block;
     margin-top: 22px;
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--label);
@@ -158,7 +158,7 @@ const Strip = styled.ul`
   }
   p {
     margin-top: 8px;
-    font: 400 clamp(1rem, 0.96rem + 0.2vw, 1.15rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--text);
   }
   ${media.lg} {
@@ -212,7 +212,7 @@ const Program = styled(Chapter)`
   .lead {
     margin-top: 16px;
     max-width: 46ch;
-    font: 400 clamp(1.05rem, 1rem + 0.3vw, 1.3rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
   }
   ul {
@@ -232,12 +232,12 @@ const Program = styled(Chapter)`
     border-bottom: 1px solid var(--line);
   }
   li p {
-    font: 400 17px/1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted);
   }
   .foot {
     margin-top: 22px;
-    font: 400 16px/1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted);
   }
   .foot a {
@@ -288,14 +288,14 @@ const Book = styled(Chapter)`
   .side li span {
     display: block;
     margin-top: 4px;
-    font: 400 16px/1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
   }
   .side .write {
     margin-top: 10px;
     padding-top: 20px;
     border-top: 1px solid var(--line);
-    font: 400 16px/1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
   }
   .side .write a {
@@ -318,7 +318,7 @@ const Book = styled(Chapter)`
   }
   .card-head small {
     display: block;
-    font: 600 13px/1.3 ${font.body};
+    font: 600 ${type.label} / 1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};

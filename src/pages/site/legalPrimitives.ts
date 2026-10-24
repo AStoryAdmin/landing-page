@@ -1,4 +1,4 @@
-import { color, font, media, motion, space } from "../../styles/theme";
+import { color, font, media, motion, space, type } from "../../styles/theme";
 import styled from "styled-components";
 /* The rail (240px) and the reading column (about 68 characters of EB
    Garamond at 19px) side by side; the hero's left edge is the rail's. */
@@ -7,7 +7,7 @@ export const CardView = styled.div`
   margin: auto;
 `;
 export const Label = styled.p`
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin-bottom: 22px;
@@ -36,7 +36,7 @@ export const HeroSub = styled.p`
   max-width: 50ch;
 `;
 export const LegalMeta = styled.p`
-  font-size: 13px;
+  font-size: ${type.label};
   margin-top: 18px;
 `;
 export const BodySection = styled.div`
@@ -60,7 +60,7 @@ export const LegalContent = styled.div`
   /* The short version: on the same edge as the sections, no box. */
   .gf-legal-summary {
     padding: 8px 0 32px;
-    font-size: 19px;
+    font-size: ${type.read};
     line-height: 1.6;
   }
   .gf-legal-summary h2 {
@@ -83,7 +83,7 @@ export const LegalContent = styled.div`
   }
   .gf-legal-summary small {
     display: block;
-    font: 400 14px/1.55 ${font.ui};
+    font: 400 ${type.note} / 1.55 ${font.ui};
     color: ${color.bodyMuted};
   }
 
@@ -110,7 +110,7 @@ export const LegalContent = styled.div`
   }
   .gf-legal-rail-h {
     margin: 0 0 8px;
-    font: 600 12px/1.4 ${font.ui};
+    font: 600 ${type.label} / 1.4 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -129,7 +129,7 @@ export const LegalContent = styled.div`
     min-height: 44px;
     padding: 11px 0;
     box-sizing: border-box;
-    font: 400 14px/1.45 ${font.ui};
+    font: 400 ${type.note} / 1.45 ${font.ui};
     color: ${color.body};
     text-decoration: none;
     transition: color ${motion.base};
@@ -208,7 +208,7 @@ export const LegalContent = styled.div`
   }
 `;
 export const Notice = styled.p`
-  font-size: 19px;
+  font-size: ${type.read};
   line-height: 1.6;
   padding: 24px 0;
   border-top: 1px solid ${color.primaryLineStrong};
@@ -224,7 +224,7 @@ export const Section = styled.section`
 export const SectionNum = styled.span`
   display: block;
   margin-bottom: 8px;
-  font: 600 13px/1 ${font.ui};
+  font: 600 ${type.label} / 1 ${font.ui};
   letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
   color: ${color.accentText};
@@ -238,7 +238,7 @@ export const SectionTitle = styled.h2`
   margin-bottom: 20px;
 `;
 export const Paragraph = styled.p`
-  font-size: 19px;
+  font-size: ${type.read};
   line-height: 1.6;
   margin-bottom: 18px;
 `;
@@ -247,7 +247,7 @@ export const List = styled.ul`
   margin: 20px 0;
 `;
 export const ListItem = styled.li`
-  font-size: 19px;
+  font-size: ${type.read};
   line-height: 1.6;
   margin-bottom: 12px;
 `;

@@ -27,7 +27,7 @@ import {
   Statement,
 } from "./kit/kit.styles";
 import { BeginCard, QuoteBand, RuledSteps } from "./rooms/Rooms";
-import { color, font, media } from "../../styles/theme";
+import { color, font, media, type } from "../../styles/theme";
 
 const Know = styled(Chapter)`
   .row {
@@ -53,7 +53,7 @@ const Know = styled(Chapter)`
   .words > p {
     margin: 18px 0 clamp(22px, 2.4vw, 34px);
     max-width: 44ch;
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.35rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
   }
   ${media.lg} {

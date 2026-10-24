@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { sampleMemory } from "../../lib/sampleMemory";
-import { color, font } from "../../styles/theme";
+import { color, font, type } from "../../styles/theme";
 import { ButtonEl } from "../ui/primitives";
 
 const Voices = styled.div<{ $dark: boolean }>`
@@ -20,7 +20,7 @@ const Voices = styled.div<{ $dark: boolean }>`
   }
   cite {
     display: block;
-    font: 500 0.875rem/1.55 ${font.body};
+    font: 500 ${type.note} / 1.55 ${font.body};
     margin-top: 12px;
     color: ${({ $dark }) => ($dark ? color.gold : color.bodyMuted)};
   }
@@ -55,7 +55,7 @@ const Record = styled.article`
   cite {
     display: block;
     margin-top: 12px;
-    font: 500 0.875rem/1.5 ${font.body};
+    font: 500 ${type.note} / 1.5 ${font.body};
   }
 `;
 export function SharedRecord() {

@@ -21,12 +21,16 @@
  * It is an illustration, not a link: the site has nowhere to open it.
  */
 import styled from "styled-components";
-import { app, color, font } from "../../../styles/theme";
+import { app, color, font, type } from "../../../styles/theme";
 
 const Card = styled.article`
   --card: ${app.card};
   --ink: ${app.ink};
-  --ink-soft: ${app.inkSoft};
+  /* The app's soft ink and sage are 5:1 on the card; the site's type floor
+     (2026-10-24) asks 7:1 for anything under 18px, so the drawn card sets
+     its small print a step deeper. */
+  --ink-soft: #4e463f;
+  --sage-text: #36503b;
   --accent: ${color.accent};
   --support: ${app.support};
   --book-display: "Cormorant Garamond", ${font.display};
@@ -79,7 +83,7 @@ const Card = styled.article`
     border-radius: 999px;
     background: rgba(42, 35, 32, 0.72);
     color: #fff;
-    font: 600 11px/1.4 var(--font-ui);
+    font: 600 ${type.label} / 1.4 var(--font-ui);
   }
   .body {
     display: flex;
@@ -104,8 +108,8 @@ const Card = styled.article`
     padding: 0 9px;
     border-radius: 999px;
     background: var(--book-sage-bg);
-    color: var(--book-sage);
-    font: 600 13px/1.2 var(--font-ui);
+    color: var(--sage-text);
+    font: 600 ${type.label} / 1.2 var(--font-ui);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -132,17 +136,17 @@ const Card = styled.article`
     text-wrap: balance;
   }
   .date {
-    font: 600 13px/1.2 var(--font-ui);
+    font: 600 ${type.label} / 1.2 var(--font-ui);
     color: var(--ink-soft);
     letter-spacing: 0.03em;
   }
   .date.dated {
-    color: var(--accent);
+    color: ${color.accentText};
   }
   .excerpt {
     font-family: var(--book-body);
     font-style: italic;
-    font-size: 17.5px;
+    font-size: 20px;
     line-height: 1.45;
     color: var(--ink);
     display: -webkit-box;
@@ -193,7 +197,7 @@ const Card = styled.article`
   }
   /* Who told it, in words, in the folio line. */
   .told {
-    font: 500 13px/1.3 var(--font-ui);
+    font: 500 ${type.label} / 1.3 var(--font-ui);
     color: var(--ink-soft);
     white-space: nowrap;
   }
@@ -212,7 +216,7 @@ const Card = styled.article`
       font-size: 22px;
     }
     .excerpt {
-      font-size: 16px;
+      font-size: 18px;
       -webkit-line-clamp: 2;
     }
   }

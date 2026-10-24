@@ -20,7 +20,7 @@
 import styled from "styled-components";
 import { useReveals } from "./reveals";
 import { Chapter, Eyebrow, Frame, Statement, type Ground } from "./kit.styles";
-import { color, display, font, media } from "../../../styles/theme";
+import { color, display, font, media, type } from "../../../styles/theme";
 
 const Section = styled(Chapter)`
   .head {
@@ -39,7 +39,7 @@ const Section = styled(Chapter)`
     border-top: 1px solid var(--line, ${color.primaryLine});
   }
   .three .k {
-    font: 600 12px/1 ${font.ui};
+    font: 600 ${type.label} / 1 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     /* accentText, not the ground's mark: terracotta is 4.2:1 on ivory, under
@@ -53,12 +53,12 @@ const Section = styled(Chapter)`
   }
   .three p {
     margin-top: 12px;
-    font: 400 19px/1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted, ${color.bodyMuted});
   }
   .also {
     margin-top: clamp(32px, 4vw, 52px);
-    font: 400 19px/1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted, ${color.bodyMuted});
     max-width: 70ch;
   }

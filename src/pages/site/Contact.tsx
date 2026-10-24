@@ -31,7 +31,7 @@ import {
   TextAnchor,
 } from "./kit/kit.styles";
 import { Done, Form } from "./kit/form.styles";
-import { color, curve, display, font, media, shadow } from "../../styles/theme";
+import { color, curve, display, font, media, shadow, type } from "../../styles/theme";
 
 const TOPICS = [
   "A question",
@@ -88,7 +88,7 @@ const Reader = styled.figure`
     color: var(--ink);
   }
   span {
-    font: 400 15px/1.5 ${font.ui};
+    font: 400 ${type.note} / 1.5 ${font.ui};
     color: var(--muted);
   }
 `;
@@ -112,7 +112,7 @@ const Body = styled(Chapter)`
     border-bottom: 1px solid var(--line);
   }
   .address small {
-    font: 600 12px/1.3 ${font.body};
+    font: 600 ${type.label} / 1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--label);
@@ -137,7 +137,7 @@ const Body = styled(Chapter)`
     gap: 12px;
   }
   .address p {
-    font: 400 16px/1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
   }
   .doors {
@@ -158,12 +158,12 @@ const Body = styled(Chapter)`
   }
   .doors b {
     display: block;
-    font: 400 19px/1.3 ${font.display};
+    font: 400 20px / 1.3 ${font.display};
   }
   .doors span {
     display: block;
     margin-top: 4px;
-    font: 400 15px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: var(--muted);
   }
   .doors svg {
@@ -189,7 +189,7 @@ const Body = styled(Chapter)`
   }
   .card-head small {
     display: block;
-    font: 600 12px/1.3 ${font.body};
+    font: 600 ${type.label} / 1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};

@@ -24,6 +24,17 @@
  * page turns; narrow screens, and reduced motion, show one spread at a time
  * and start already open, so nothing is hidden behind a gesture.
  * Content: `homeExamples.ts` (SPREADS). Price: `pricing.ts`.
+ *
+ * 2026-10-24: back on Home from the past build (bd23f2f) at Bao's request,
+ * with these changes. The type floor: every label in the book is 14px or
+ * more and the words 20px or more (18px on a phone), and the book is as
+ * large as the window allows so it still reads as a book. The words are set
+ * in EB Garamond, the book's reading face; captions under prints in Caveat.
+ * The headline is new ("Your story isn't behind you" was a not-X-but-Y
+ * line) and there is no eyebrow. The print line no longer promises a
+ * hardcover with every plan: print at home free, printed editions from
+ * pricing.ts. The foil-gradient title and the glow are gone (no gradient
+ * text). The Hartleys are a sample family, and the page says so.
  */
 import {
   useEffect,
@@ -36,7 +47,6 @@ import { SPREADS } from "../../../lib/homeExamples";
 import { BOOK } from "../../../lib/pricing";
 import { ArrowIcon, Picture } from "../kit/kit";
 import {
-  Eyebrow,
   Frame,
   SplitHead,
   Statement,
@@ -44,16 +54,33 @@ import {
   TextLink,
 } from "../kit/kit.styles";
 import { riseLines, useScene, gsap } from "../../../lib/scrollMotion";
-import { color, display, font, media } from "../../../styles/theme";
+import { color, curve, display, font, media, motion } from "../../../styles/theme";
 import { clothBoard, clothLayer } from "../kit/cloth";
 import { START_HREF, START_LABEL } from "../../../lib/app";
 
-type Entry = (typeof SPREADS)[number];
+/*
+ * The pages as Home shows them: US spelling ("Mom" in the 1952 spread), and
+ * two lines reworded so no page turns on a not-X-but-Y contrast (house
+ * style, 2026-10-24): the canoe trip is told as Dan's version against Sam's,
+ * and Mia's question as two questions.
+ */
+const WORDS: Record<string, string> = {
+  "1998":
+    "Sam says we were lost. I say we took the long way round the lake, and I’d do it again.",
+  "2019":
+    "Mia asked where the moon goes in the daytime. Then she asked who keeps it company while we can’t see it. Writing it down before I forget how she said it.",
+};
+const PAGES = SPREADS.map((e) => ({
+  ...e,
+  words: WORDS[e.year] ?? e.words,
+  also: { ...e.also, quote: e.also.quote.replace(/\bMum\b/g, "Mom") },
+}));
+type Entry = (typeof PAGES)[number];
 const N = SPREADS.length;
 /** Spreads: 0 closed, 1 endpaper + title page, 2…N+1 the memories, N+2 the ending. */
 const LAST = N + 2;
 const LEAVES = LAST; // leaf k turns from spread k to k+1
-const LABELS = ["Cover", "Title", ...SPREADS.map((s) => s.year), "Next"];
+const LABELS = ["Cover", "Title", ...PAGES.map((s) => s.year), "Next"];
 /** How long a page takes to turn; the moving leaf stays on top for this long. */
 const TURN_MS = 1100;
 
@@ -78,7 +105,7 @@ const Scene = styled.section`
   overflow: hidden;
 
   .lead {
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.body};
+    font: 400 clamp(1.25rem, 1.08rem + 0.4vw, 1.6rem) / 1.5 ${font.text};
     color: ${color.body};
     max-width: 44ch;
   }
@@ -92,7 +119,7 @@ const Scene = styled.section`
      scales the entire volume down together — the open book always fits. */
   .stage {
     position: relative;
-    width: min(1160px, 100%, calc(60svh * 1.5));
+    width: min(1240px, 100%, calc((100svh - 210px) * 1.5));
     margin: 0 auto;
   }
   /* The shadow the book casts on the table; it widens as the book opens. */
@@ -111,8 +138,8 @@ const Scene = styled.section`
     );
     filter: blur(10px);
     transition:
-      left ${TURN_MS}ms ease,
-      right ${TURN_MS}ms ease;
+      left ${TURN_MS}ms ${curve.move},
+      right ${TURN_MS}ms ${curve.move};
   }
   .stage.closed::after {
     --shadow-l: 26%;
@@ -128,7 +155,7 @@ const Scene = styled.section`
     padding: 1.4%;
     perspective: 2800px;
     container-type: inline-size;
-    transition: transform ${TURN_MS}ms cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: transform ${TURN_MS}ms ${curve.move};
   }
   .stage.closed .book {
     transform: translateX(-25%);
@@ -210,7 +237,7 @@ const Scene = styled.section`
        (--lift, written by the scene below); the turn itself stays a
        transition, and starts from wherever the lift has got to. */
     transform: rotateY(var(--lift, 0deg));
-    transition: transform ${TURN_MS}ms cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: transform ${TURN_MS}ms ${curve.move};
     cursor: pointer;
   }
   /* While scroll is driving the lift, the transition must not chase it. */
@@ -272,21 +299,21 @@ const Scene = styled.section`
       inset 0 0 3cqw rgba(0, 0, 0, 0.18);
   }
   .cover-art h3 {
-    font: 700 2.6cqw/1.05 ${font.body};
+    font: 700 2.6cqw/1.05 ${font.ui};
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: ${color.ivory};
   }
   .cover-art .date {
     margin-top: 0.8cqw;
-    font: 500 0.95cqw/1 ${font.body};
-    letter-spacing: 0.22em;
+    font: 500 max(14px, 0.95cqw) / 1 ${font.ui};
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: color-mix(in srgb, ${color.ivory} 70%, transparent);
   }
   .cover-art .names {
     margin-top: 2.6cqw;
-    font: italic 400 2.2cqw/1 ${font.display};
+    font: italic 600 max(20px, 2.2cqw) / 1 ${font.display};
     color: ${color.gold};
   }
   .cover-stack {
@@ -333,11 +360,11 @@ const Scene = styled.section`
     gap: 2cqw;
   }
   .cover-foot p {
-    font: italic 400 1.7cqw/1.2 ${font.display};
+    font: italic 500 max(18px, 1.8cqw) / 1.2 ${font.display};
     color: ${color.ivory};
   }
   .cover-foot .mark {
-    font: 400 1.4cqw/1 ${font.display};
+    font: 600 max(18px, 1.5cqw) / 1 ${font.display};
     color: ${color.gold};
   }
   .open-btn {
@@ -352,13 +379,19 @@ const Scene = styled.section`
     border-radius: 99px;
     background: transparent;
     color: ${color.ivory};
-    font: 600 1.1cqw/1 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    font: 600 16px/1 ${font.ui};
     cursor: pointer;
+    transition:
+      background-color ${motion.base},
+      transform ${motion.press};
   }
-  .open-btn:hover {
-    background: color-mix(in srgb, ${color.warmGold} 18%, transparent);
+  @media (hover: hover) and (pointer: fine) {
+    .open-btn:hover {
+      background: color-mix(in srgb, ${color.warmGold} 18%, transparent);
+    }
+  }
+  .open-btn:active {
+    transform: scale(0.97);
   }
 
   /* ── Endpaper and title page ── */
@@ -408,20 +441,20 @@ const Scene = styled.section`
   }
   .title-page small {
     margin-top: 2.4cqw;
-    font: 600 0.95cqw/1 ${font.body};
-    letter-spacing: 0.34em;
+    font: 600 max(14px, 0.95cqw) / 1 ${font.ui};
+    letter-spacing: 0.24em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
   }
   .title-page h3 {
     margin-top: 1.4cqw;
-    font: 400 4.8cqw/1 ${font.display};
+    font: 600 4.8cqw/1 ${font.display};
     letter-spacing: -0.01em;
     color: ${color.primary};
   }
   .title-page .years {
     margin-top: 1.2cqw;
-    font: italic 400 1.5cqw/1.3 ${font.display};
+    font: italic 400 max(17px, 1.5cqw) / 1.3 ${font.text};
     color: ${color.primaryMid};
   }
   .title-page .orn {
@@ -431,20 +464,20 @@ const Scene = styled.section`
     background: ${color.goldDeep};
   }
   .title-page .for {
-    font: 600 0.9cqw/1 ${font.body};
-    letter-spacing: 0.3em;
+    font: 600 max(14px, 0.9cqw) / 1 ${font.ui};
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
   .title-page .ded {
     margin-top: 1cqw;
-    font: italic 400 2.4cqw/1.15 ${font.display};
+    font: italic 600 max(22px, 2.4cqw) / 1.15 ${font.display};
     color: ${color.teal};
   }
   .title-page .why {
     margin-top: 1cqw;
     max-width: 24ch;
-    font: italic 400 1.4cqw/1.45 ${font.display};
+    font: italic 400 max(17px, 1.5cqw) / 1.45 ${font.text};
     color: ${color.primaryMid};
   }
 
@@ -466,7 +499,7 @@ const Scene = styled.section`
   .folio {
     margin-top: auto;
     text-align: center;
-    font: 400 1.05cqw/1 ${font.display};
+    font: 400 max(14px, 1.05cqw) / 1 ${font.text};
     font-variant-numeric: oldstyle-nums;
     color: ${color.bodyMuted};
   }
@@ -526,22 +559,22 @@ const Scene = styled.section`
     transform: rotate(270deg);
   }
   .print figcaption {
-    font: italic 400 1.5cqw/1.2 ${font.display};
-    color: ${color.primaryMid};
+    font: 500 max(20px, 2.1cqw) / 1.1 ${font.script};
+    color: ${color.primary};
     text-align: center;
   }
 
   .chapter {
     margin-top: 1.4cqw;
-    font: 600 0.95cqw/1 ${font.body};
-    letter-spacing: 0.3em;
+    font: 600 max(14px, 0.95cqw) / 1.3 ${font.ui};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
   .title {
     margin-top: 1.6cqw;
-    font: 400 4.2cqw/1.05 ${font.display};
-    letter-spacing: -0.015em;
+    font: 600 4.2cqw/1.05 ${font.display};
+    letter-spacing: -0.01em;
     color: ${color.primary};
   }
   .rule {
@@ -551,20 +584,18 @@ const Scene = styled.section`
     background: ${color.goldDeep};
   }
   .words {
-    font: 400 2.3cqw/1.45 ${font.display};
-    color: ${color.primary};
+    font: 400 max(20px, 2.3cqw) / 1.45 ${font.text};
+    color: ${color.body};
   }
   .words::first-letter {
     float: left;
     margin: 0.3cqw 0.9cqw 0 0;
-    font: 400 6.6cqw/0.8 ${font.display};
+    font: 600 6.6cqw/0.8 ${font.display};
     color: ${color.teal};
   }
   .by {
     margin-top: 1.6cqw;
-    font: 600 0.95cqw/1.3 ${font.body};
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    font: 500 max(14px, 1.05cqw) / 1.3 ${font.ui};
     color: ${color.bodyMuted};
   }
   /* The second voice: hung at the foot of the page, a gold rule beside it. */
@@ -574,16 +605,14 @@ const Scene = styled.section`
     border-left: 2px solid ${color.warmGold};
   }
   .also p {
-    font: italic 400 2cqw/1.35 ${font.display};
+    font: italic 500 max(18px, 2cqw) / 1.35 ${font.display};
     color: ${color.teal};
   }
   .also cite {
     display: block;
     margin-top: 0.8cqw;
-    font: 600 0.95cqw/1.2 ${font.body};
+    font: 600 max(14px, 1.05cqw) / 1.2 ${font.ui};
     font-style: normal;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
     color: ${color.accentText};
   }
   .text-page .folio {
@@ -616,7 +645,7 @@ const Scene = styled.section`
   }
   .sheet figcaption {
     margin-top: 0.7cqw;
-    font: 500 1cqw/1 ${font.body};
+    font: 500 max(14px, 1.1cqw) / 1 ${font.ui};
     color: ${color.bodyMuted};
   }
   .sheet .next .thumb {
@@ -626,8 +655,8 @@ const Scene = styled.section`
     box-shadow: none;
     outline: 1px dashed ${color.accent};
     outline-offset: -1px;
-    color: ${color.accent};
-    font: 300 3cqw/1 ${font.body};
+    color: ${color.accentText};
+    font: 300 3cqw/1 ${font.ui};
   }
   .sheet .next figcaption {
     color: ${color.accentText};
@@ -636,63 +665,39 @@ const Scene = styled.section`
   .today {
     padding-top: 1.4cqw;
     border-top: 1px solid ${color.primaryLine};
-    font: 400 1.9cqw/1.2 ${font.display};
+    font: 600 max(19px, 2cqw) / 1.2 ${font.display};
     color: ${color.primary};
   }
   .today b {
     font-weight: 600;
-    color: ${color.accent};
+    color: ${color.accentText};
   }
   .end-page.right {
     justify-content: center;
     padding-inline: 5.4cqw;
   }
   .end-page .held {
-    font: italic 400 1.8cqw/1.5 ${font.display};
+    font: italic 400 max(18px, 1.8cqw) / 1.5 ${font.text};
     color: ${color.primaryMid};
   }
   .end-page .not-end {
     margin-top: 2cqw;
-    font: 400 1.8cqw/1.4 ${font.display};
+    font: 400 max(18px, 1.8cqw) / 1.4 ${font.text};
     color: ${color.primary};
   }
   .end-page h3 {
     margin-top: 2.4cqw;
-    font: 400 5.2cqw/1.02 ${font.display};
+    font: 600 5.2cqw/1.02 ${font.display};
     letter-spacing: -0.02em;
     color: ${color.primary};
   }
   .end-page h3 em {
     font-style: normal;
-    font-weight: 500;
-    color: ${color.accent};
-    background: linear-gradient(
-        100deg,
-        ${color.accent} 40%,
-        ${color.warmGold} 50%,
-        ${color.accent} 60%
-      )
-      0 0 / 250% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    padding-bottom: 0.14em;
-    margin-bottom: -0.14em;
-    -webkit-text-fill-color: transparent;
-  }
-  .stage.at-end .end-page h3 em {
-    animation: foil 2.6s 0.9s ease-in-out;
-  }
-  @keyframes foil {
-    from {
-      background-position: 100% 0;
-    }
-    to {
-      background-position: 0 0;
-    }
+    color: ${color.accentText};
   }
   .end-page .because {
     margin-top: 1.6cqw;
-    font: italic 400 2.4cqw/1.2 ${font.display};
+    font: italic 500 max(20px, 2.4cqw) / 1.2 ${font.display};
     color: ${color.primaryMid};
   }
   .end-page .begin {
@@ -703,30 +708,31 @@ const Scene = styled.section`
     gap: 1cqw;
     margin-top: 3.4cqw;
     padding: 1.4cqw 2.4cqw;
+    border-radius: 99px;
     background: ${color.primary};
-    color: ${color.ivory};
-    font: 600 1.25cqw/1 ${font.body};
+    color: ${color.onDark};
+    font: 600 16px/1 ${font.ui};
     text-decoration: none;
+    transition:
+      background-color ${motion.base},
+      transform ${motion.press};
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .end-page .begin:hover {
+      background: ${color.chocolateDeep};
+    }
+  }
+  .end-page .begin:active {
+    transform: scale(0.97);
   }
   .end-page .begin svg {
-    width: 1.4cqw;
-    height: 1.4cqw;
+    width: 18px;
+    height: 18px;
   }
   .end-page .begin:focus-visible {
     outline: 3px solid ${color.accent};
     outline-offset: 3px;
   }
-  .stage.at-end .book {
-    animation: glow 2.4s ease-out;
-  }
-  @keyframes glow {
-    30% {
-      filter: drop-shadow(
-        0 0 2.4cqw color-mix(in srgb, ${color.warmGold} 55%, transparent)
-      );
-    }
-  }
-
   /* ── The timeline under the book ── */
   .scrub {
     display: flex;
@@ -756,7 +762,7 @@ const Scene = styled.section`
     bottom: 7px;
     height: 1px;
     background: ${color.teal};
-    transition: width ${TURN_MS}ms cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: width ${TURN_MS}ms ${curve.move};
   }
   .rail button {
     position: relative;
@@ -770,10 +776,10 @@ const Scene = styled.section`
     border: 0;
     background: none;
     cursor: pointer;
-    font: italic 400 17px/1 ${font.display};
+    font: italic 400 18px/1 ${font.text};
     font-variant-numeric: lining-nums;
     color: ${color.bodyMuted};
-    transition: color 300ms;
+    transition: color ${motion.base};
   }
   .rail button::after {
     content: "";
@@ -785,9 +791,9 @@ const Scene = styled.section`
     transform: rotate(45deg);
     border-radius: 1px;
     transition:
-      background 300ms,
-      border-color 300ms,
-      transform 300ms;
+      background-color ${motion.base},
+      border-color ${motion.base},
+      transform ${motion.base};
   }
   .rail button.passed::after {
     border-color: ${color.teal};
@@ -813,6 +819,17 @@ const Scene = styled.section`
     background: ${color.paperPure};
     color: ${color.primary};
     cursor: pointer;
+    transition:
+      border-color ${motion.base},
+      transform ${motion.press};
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .turn:not(:disabled):hover {
+      border-color: ${color.primary};
+    }
+  }
+  .turn:not(:disabled):active {
+    transform: scale(0.95);
   }
   .turn:disabled {
     opacity: 0.35;
@@ -843,13 +860,9 @@ const Scene = styled.section`
     border-top: 1px solid ${color.primaryLineStrong};
   }
   .print-line p {
-    font: 400 ${display.sm} / 1.35 ${font.display};
+    font: 600 ${display.sm} / 1.3 ${font.display};
     color: ${color.primary};
     max-width: 44ch;
-  }
-  .print-line b {
-    font-weight: 500;
-    color: ${color.accentText};
   }
   .print-line .links {
     display: flex;
@@ -903,33 +916,48 @@ const Scene = styled.section`
     .single .title-page small,
     .single .title-page .for,
     .single .sheet figcaption {
-      font-size: 2.6cqw;
+      font-size: max(14px, 2.8cqw);
     }
     .single .title,
     .single .title-page h3 {
-      font-size: 8cqw;
+      font-size: max(30px, 8.4cqw);
     }
     .single .title-page .a-mark {
       width: 7cqw;
       height: 8cqw;
     }
     .single .words {
-      font-size: 4.2cqw;
+      font-size: max(18px, 4.6cqw);
     }
     .single .words::first-letter {
-      font-size: 11cqw;
+      font-size: 12cqw;
     }
     .single .also p,
-    .single .print figcaption,
     .single .held,
     .single .not-end,
     .single .today,
     .single .title-page .years,
     .single .title-page .why {
-      font-size: 3.8cqw;
+      font-size: max(17px, 4.2cqw);
+    }
+    .single .print figcaption {
+      font-size: max(22px, 5.4cqw);
     }
     .single .title-page .ded {
-      font-size: 5.4cqw;
+      font-size: max(24px, 5.8cqw);
+    }
+    /* Pages with words grow with them on a phone, rather than clip. */
+    .single > div.flow {
+      aspect-ratio: auto;
+    }
+    .single > div.flow > .text-page,
+    .single > div.flow > .end-page,
+    .single > div.flow > .title-page {
+      position: relative;
+      inset: auto;
+    }
+    .single > div.flow > .text-page .also {
+      margin-top: 8cqw;
     }
     .single .print img {
       max-height: 80cqw;
@@ -942,9 +970,9 @@ const Scene = styled.section`
     }
     .single .begin,
     .single .open-btn {
-      min-height: 44px;
-      font-size: max(13px, 3cqw);
-      padding: 0 5cqw;
+      min-height: 48px;
+      font-size: 16px;
+      padding: 0 22px;
     }
     .single .open-btn {
       display: inline-flex;
@@ -958,7 +986,7 @@ const Scene = styled.section`
       font-size: 5.6cqw;
     }
     .single .cover-art .date {
-      font-size: 2.2cqw;
+      font-size: max(14px, 2.6cqw);
     }
     .single .cover-art .names {
       margin-top: 5cqw;
@@ -980,10 +1008,10 @@ const Scene = styled.section`
       height: 34cqw;
     }
     .single .cover-foot p {
-      font-size: 3.6cqw;
+      font-size: max(17px, 4cqw);
     }
     .single .cover-foot .mark {
-      font-size: 3cqw;
+      font-size: max(17px, 3.6cqw);
     }
     .single .open-btn {
       left: 10cqw;
@@ -1107,7 +1135,7 @@ function EndLeft() {
   return (
     <div className="end-page">
       <div className="sheet">
-        {SPREADS.map((s) => (
+        {PAGES.map((s) => (
           <figure key={s.year}>
             <div className="thumb">
               <img
@@ -1159,12 +1187,12 @@ function RightPage({ s, onOpen }: { s: number; onOpen?: () => void }) {
   if (s === 0) return <CoverPage onOpen={onOpen} />;
   if (s === 1) return <TitlePage />;
   if (s === LAST) return <EndRight />;
-  return <TextPage e={SPREADS[s - 2]} n={s - 2} />;
+  return <TextPage e={PAGES[s - 2]} n={s - 2} />;
 }
 function LeftPage({ s }: { s: number }) {
   if (s === 1) return <Endpaper />;
   if (s === LAST) return <EndLeft />;
-  if (s >= 2) return <PhotoPage e={SPREADS[s - 2]} n={s - 2} />;
+  if (s >= 2) return <PhotoPage e={PAGES[s - 2]} n={s - 2} />;
   return null;
 }
 
@@ -1278,16 +1306,13 @@ export default function FamilyBook() {
     <Scene ref={ref} id="book" aria-labelledby="book-title">
       <Frame>
         <SplitHead>
-          <div>
-            <Eyebrow>Not a memoir</Eyebrow>
-            <Statement id="book-title" $size="xl">
-              Your story isn’t behind you. <em>You’re still inside it.</em>
-            </Statement>
-          </div>
+          <Statement id="book-title" $size="xl">
+            Seventy years, <em>still being written.</em>
+          </Statement>
           <p className="lead">
-            Don’t wait for the last chapter to start the book. You’re living
-            the part you’ll miss most. Open one family’s - seventy years,
-            still being written.
+            A sample family’s book, the Hartleys’. Each page is a memory one of
+            them told on a call, with what someone else in the family
+            remembers beside it. Turn the pages.
           </p>
         </SplitHead>
 
@@ -1299,7 +1324,7 @@ export default function FamilyBook() {
               tabIndex={0}
               role="group"
               aria-roledescription="book"
-              aria-label={`The Hartley family archive - ${label}. Use the arrow keys to turn the page.`}
+              aria-label={`The Hartley family's book, a sample - ${label}. Use the arrow keys to turn the page.`}
               onKeyDown={onKey}
             >
               <span className="board r" />
@@ -1344,11 +1369,11 @@ export default function FamilyBook() {
           {/* Narrow: one spread, stacked. */}
           <div className="single" aria-live="polite" key={spread}>
             {spread > 0 && (
-              <div className={spread === 1 ? "ep" : undefined}>
+              <div className={spread === 1 ? "ep" : spread === LAST ? "flow" : undefined}>
                 <LeftPage s={spread} />
               </div>
             )}
-            <div>
+            <div className={spread > 0 ? "flow" : undefined}>
               <RightPage s={spread} onOpen={() => go(1)} />
             </div>
           </div>
@@ -1395,9 +1420,8 @@ export default function FamilyBook() {
 
         <div className="print-line">
           <p>
-            One day it leaves the screen. <b>A Classic Hardcover comes with
-            every plan</b> - or print it at home, free. Printed editions from{" "}
-            {BOOK.from}.
+            One day it leaves the screen. Print it at home for free, or order
+            a printed edition from {BOOK.from}.
           </p>
           <div className="links">
             {/* /samples is a page in public/, outside the router: a plain anchor. */}

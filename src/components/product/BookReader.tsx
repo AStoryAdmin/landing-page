@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import styled, { keyframes } from "styled-components";
 import MissionPhoto from "../ui/MissionPhoto";
 import { QuietButton } from "../ui/resolved.styles";
-import { color, font, media, shadow } from "../../styles/theme";
+import { color, font, media, shadow, type } from "../../styles/theme";
 import { sampleMemory } from "../../lib/sampleMemory";
 
 const forwardTurn = keyframes`from { opacity: .55; transform: translateX(8px); } to { opacity: 1; transform: translateX(0); }`;
@@ -102,7 +102,7 @@ const Paper = styled.article<{ $reading: boolean; $backward: boolean }>`
     margin: 16px 0 24px;
   }
   p {
-    font: 400 1.1875rem/1.65 ${font.display};
+    font: 400 ${type.read} / 1.65 ${font.display};
     margin-top: 22px;
   }
   figure {
@@ -111,7 +111,7 @@ const Paper = styled.article<{ $reading: boolean; $backward: boolean }>`
   cite {
     display: block;
     margin-top: 8px;
-    font: 500 0.875rem/1.5 ${font.body};
+    font: 500 ${type.note} / 1.5 ${font.body};
   }
   blockquote {
     margin: 0 0 24px;

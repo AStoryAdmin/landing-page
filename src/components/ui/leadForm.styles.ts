@@ -40,7 +40,7 @@ export const Field = styled.label<{ $onDark?: boolean }>`
   gap: 6px;
 
   > span {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: ${weight.semibold};
     letter-spacing: 0.015em;
     text-transform: none;

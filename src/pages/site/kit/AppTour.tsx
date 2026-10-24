@@ -20,7 +20,7 @@
  * about forty per cent less height.
  */
 import styled from "styled-components";
-import { color, display, font, media } from "../../../styles/theme";
+import { color, display, font, media, type } from "../../../styles/theme";
 
 export type TourStop = {
   /** public/app/<shot>.webp */
@@ -67,7 +67,7 @@ const Row = styled.ul<{ $n: number }>`
   }
   .k {
     margin-top: 22px;
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--label, ${color.accentText});
@@ -82,7 +82,7 @@ const Row = styled.ul<{ $n: number }>`
   p.d {
     margin-top: 8px;
     max-width: 30ch;
-    font: 400 17px/1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted, ${color.bodyMuted});
   }
   ${media.md} {

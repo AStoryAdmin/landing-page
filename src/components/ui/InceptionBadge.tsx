@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { color, font, radius } from "../../styles/theme";
+import { color, font, radius, type } from "../../styles/theme";
 import badgeColor from "../../assets/partners/nvidia-inception-program-badge-rgb-for-screen.svg";
 import badgeMono from "../../assets/partners/nvidia-inception-program-badge-rgb-1c-blk-for-screen.svg";
 
@@ -49,7 +49,7 @@ const Engraved = styled.span`
   padding: 10px 16px;
   border: 1px solid var(--line, ${color.primaryLineStrong});
   border-radius: ${radius.sm};
-  font: 400 13px/1.3 ${font.body};
+  font: 400 ${type.label} / 1.3 ${font.body};
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted, ${color.bodyMuted});

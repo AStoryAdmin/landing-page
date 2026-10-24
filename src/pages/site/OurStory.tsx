@@ -31,7 +31,7 @@ import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { ArrowIcon } from "./kit/kit";
 import { Frame, PrimaryLink, SecondaryLink } from "./kit/kit.styles";
-import { color, display, font, media } from "../../styles/theme";
+import { color, display, font, media, type } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
 import { DEMO_EMAIL } from "../../lib/demoRequest";
 import { riseLines, useScene } from "../../lib/scrollMotion";
@@ -80,7 +80,7 @@ const Bench = styled.section`
   .lead {
     margin-top: clamp(20px, 2.2vw, 32px);
     max-width: 40ch;
-    font: 400 clamp(1.1rem, 1rem + 0.4vw, 1.35rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.onDarkMuted};
   }
   .who {
@@ -88,7 +88,7 @@ const Bench = styled.section`
     flex-wrap: wrap;
     gap: 10px 26px;
     margin-top: clamp(22px, 2.4vw, 34px);
-    font: 500 14px/1.4 ${font.body};
+    font: 500 ${type.note} / 1.4 ${font.body};
     color: ${color.onDarkFaint};
   }
   .who a {
@@ -248,7 +248,7 @@ const Sheet = styled.article<{ $tilt: number }>`
   .sign small {
     display: block;
     margin-top: 8px;
-    font: 600 12px/1.3 ${font.body};
+    font: 600 ${type.label} / 1.3 ${font.body};
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -256,7 +256,7 @@ const Sheet = styled.article<{ $tilt: number }>`
   .sign .cred {
     margin-top: 6px;
     max-width: 42ch;
-    font: 400 14px/1.45 ${font.body};
+    font: 400 ${type.note} / 1.45 ${font.body};
     color: ${color.bodyMuted};
   }
   .sign a {
@@ -264,7 +264,7 @@ const Sheet = styled.article<{ $tilt: number }>`
     align-items: center;
     min-height: 44px;
     padding: 0 2px;
-    font: 500 14px/1 ${font.body};
+    font: 500 ${type.note} / 1 ${font.body};
     color: ${color.bodyMuted};
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, ${color.gold} 70%, transparent);
@@ -290,7 +290,7 @@ const Sheet = styled.article<{ $tilt: number }>`
   }
 
   p.body {
-    font: 400 clamp(1.12rem, 1rem + 0.4vw, 1.36rem) / 1.66 ${font.text};
+    font: 400 ${type.read} / 1.66 ${font.text};
     color: ${color.primary};
   }
   p.body + p.body {
@@ -369,7 +369,7 @@ const WhyNow = styled.section`
   dd {
     margin: 14px 0 0;
     max-width: 38ch;
-    font: 400 clamp(1.05rem, 1rem + 0.25vw, 1.25rem) / 1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.body};
   }
   /* Each source is a 44px target (jury 2 R2 N3). */
@@ -378,7 +378,7 @@ const WhyNow = styled.section`
     align-items: center;
     min-height: 44px;
     padding: 0;
-    font: 500 14px/1.4 ${font.body};
+    font: 500 ${type.note} / 1.4 ${font.body};
     color: ${color.bodyMuted};
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, ${color.gold} 70%, transparent);
@@ -442,12 +442,12 @@ const Close = styled.section`
   p {
     margin-top: clamp(18px, 2vw, 28px);
     max-width: 42ch;
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.bodyMuted};
   }
   p.write {
     margin-top: 14px;
-    font: 400 15px/1.55 ${font.body};
+    font: 400 ${type.note} / 1.55 ${font.body};
   }
   p.write a {
     display: inline-block;

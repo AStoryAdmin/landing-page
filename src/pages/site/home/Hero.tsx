@@ -1,44 +1,43 @@
 /**
- * The first screen. It must answer three things before any scrolling
- * (design-brief §3): why this exists — the headline, the company's own
- * opening line (mission.md; not to be rewritten); what it is — one sentence;
- * and what to do — one primary action and one way to see the product.
+ * The first screen (2026-10-24, back from the past home, bd23f2f, at Bao's
+ * request: "the home page is much stronger in the past ver").
  *
- * Photograph 27 is the thing A Story is trying to catch: someone mid-story at
- * dinner, everyone listening, nobody writing it down. It earns a full-bleed
- * crop (registry cropMode permits controlled crops for openings). No caption:
- * the photograph and the headline say the same thing, so a caption would
- * only narrate what is already visible.
+ * Photograph 27 fills the window under the bar: someone mid-story at Sunday
+ * dinner, everyone listening, nobody writing it down - the thing A Story is
+ * trying to catch. The headline is the app's own line ("Every life holds a
+ * story worth keeping.", Bao 2026-10-23), then one sentence on what A Story
+ * is, the two doors, and the honest small print: the calls ring in the A
+ * Story iPhone app, in private beta, which the parent installs.
  *
- * The headline is set in Source Serif, as on the namecard and in the app's
- * onboarding, with one word in brass — the word the whole product answers.
+ * Type floor (Bao, 2026-10-24: "i despised the small text everywhere"): the
+ * sentence is EB Garamond at 20px or more (18px on a phone), the small print
+ * 16px, the buttons 16px.
+ *
+ * Motion: the photograph settles from a slight scale, the headline rises by
+ * line and the rest follows, about a second and a half, with nothing waiting
+ * on a 5-second cover (Intro.tsx stays off Home). Scrolling away, the
+ * photograph drifts slower than the page. Under reduced motion the screen is
+ * simply there.
  */
 import styled from "styled-components";
-import { introReleased } from "./introSignal";
 import { ArrowIcon, Picture } from "../kit/kit";
 import { Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
-import {
-  gsap,
-  openMasks,
-  SplitText,
-  useScene,
-} from "../../../lib/scrollMotion";
-import { color, display, font, media } from "../../../styles/theme";
+import { gsap, openMasks, SplitText, useScene } from "../../../lib/scrollMotion";
+import { color, font, media } from "../../../styles/theme";
 import { START_HREF, START_LABEL } from "../../../lib/app";
+import { OFFERS } from "../../../lib/founding";
 
 const Scene = styled.section`
-  --ink: ${color.ivory};
+  --ink: ${color.onDark};
   --focus: ${color.gold};
-  --focus-halo: ${color.night};
+  --focus-halo: ${color.chocolateDeep};
   --mark: ${color.gold};
   position: relative;
-  /* The header floats over the photograph on this route only. */
-  margin-top: calc(-1 * var(--nav-total));
-  min-height: max(100svh, 680px);
+  min-height: max(calc(100svh - var(--nav-total, 88px)), 640px);
   display: flex;
   align-items: flex-end;
-  color: ${color.ivory};
-  background: ${color.primary};
+  color: ${color.onDark};
+  background: ${color.chocolate};
   overflow: hidden;
   ${onDarkActions};
 
@@ -49,10 +48,9 @@ const Scene = styled.section`
   }
   .hero-photo img {
     width: 100%;
-    height: 118%;
+    height: 116%;
     object-fit: cover;
-    object-position: 50% 38%;
-    will-change: transform;
+    object-position: 50% 34%;
   }
   /* Legibility comes from the brand chocolate, never a neutral black wash. */
   .hero-photo::after {
@@ -62,64 +60,72 @@ const Scene = styled.section`
     background:
       linear-gradient(
         to top,
-        color-mix(in srgb, ${color.primary} 94%, transparent) 0%,
-        color-mix(in srgb, ${color.primary} 55%, transparent) 38%,
-        transparent 68%
+        color-mix(in srgb, ${color.chocolateInk} 96%, transparent) 0%,
+        color-mix(in srgb, ${color.chocolateInk} 70%, transparent) 34%,
+        color-mix(in srgb, ${color.chocolateInk} 12%, transparent) 64%,
+        transparent 80%
       ),
       linear-gradient(
-        to bottom,
-        color-mix(in srgb, ${color.black} 50%, transparent),
-        transparent 22%
+        to right,
+        color-mix(in srgb, ${color.chocolateInk} 55%, transparent),
+        transparent 62%
       );
   }
 
   .hero-body {
     position: relative;
-    padding-bottom: clamp(72px, 9vw, 132px);
+    padding: clamp(96px, 14svh, 180px) 0 clamp(56px, 8svh, 112px);
   }
   h1 {
-    font: 400 ${display.hero} / 0.98 ${font.display};
-    letter-spacing: -0.03em;
-    color: ${color.ivory};
-    max-width: 20ch;
-    margin: 0 0 clamp(28px, 3vw, 44px) -0.03em;
+    margin: 0 0 clamp(22px, 2.6vw, 40px) -0.02em;
+    font: 600 clamp(3.2rem, 1.1rem + 5.4vw, 9.5rem) / 0.98 ${font.display};
+    letter-spacing: -0.02em;
+    color: ${color.onDark};
+    max-width: 22ch;
+    text-wrap: balance;
   }
   h1 em {
-    white-space: nowrap;
     font-style: normal;
+    white-space: nowrap;
     color: ${color.gold};
   }
-  .hero-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: clamp(24px, 4vw, 72px);
-    align-items: end;
-  }
   .hero-lead {
-    font: 400 clamp(1.15rem, 1rem + 0.45vw, 1.4rem) / 1.5 ${font.body};
-    color: ${color.ivory};
+    font: 400 clamp(1.25rem, 1.05rem + 0.5vw, 1.75rem) / 1.5 ${font.text};
+    color: ${color.onDark};
     max-width: 40ch;
+    text-wrap: pretty;
   }
   .hero-actions {
     display: flex;
-    gap: 16px 32px;
+    gap: 14px 32px;
     align-items: center;
     flex-wrap: wrap;
-    margin-top: 30px;
+    margin-top: clamp(26px, 2.6vw, 40px);
+  }
+  /* The text door on the photograph: ivory, 16px. */
+  .hero-actions a + a {
+    font-size: 16px;
+    color: ${color.onDark};
+  }
+  .hero-small {
+    margin-top: clamp(20px, 2vw, 28px);
+    max-width: 52ch;
+    font: 400 16px/1.6 ${font.ui};
+    color: ${color.onDarkMuted};
   }
 
-  /* The founding offer's line under the actions (2026-10-09 to 2026-10-16)
-     moved into the price ladder (kit/PriceLadder.tsx), where the dollar, the
-     founding place and the plans are explained once, side by side. */
-
-
   ${media.md} {
-    min-height: max(100svh, 620px);
     .hero-photo img {
-      object-position: 42% 30%;
+      object-position: 70% 30%;
     }
-    .hero-row {
-      grid-template-columns: minmax(0, 1fr);
+    .hero-body {
+      padding-top: clamp(220px, 34svh, 320px);
+    }
+    h1 {
+      font-size: clamp(2.5rem, 10.2vw, 3.6rem);
+    }
+    .hero-lead {
+      font-size: 18px;
     }
     .hero-actions a:first-child {
       flex: 1 1 100%;
@@ -131,73 +137,34 @@ export default function Hero() {
   const ref = useScene<HTMLElement>((root) => {
     const photo = root.querySelector(".hero-photo img");
     const title = root.querySelector("h1")!;
-    const rest = root.querySelectorAll(".hero-row > *");
-    gsap.set(rest, { opacity: 0, y: 24 });
-    gsap.set(photo, { scale: 1.18 });
-    // Lines are held down until the intro cover starts lifting. A re-split
-    // (font swap, resize) builds a fresh tween, so keep only the latest.
-    let released = false;
-    let disposed = false;
-    let entrance: gsap.Context | undefined;
-    let rise: gsap.core.Tween | undefined;
+    const rest = root.querySelectorAll(".hero-lead, .hero-actions, .hero-small");
+    gsap.fromTo(photo, { scale: 1.12 }, { scale: 1, duration: 2.4, ease: "house-out" });
+    gsap.fromTo(
+      rest,
+      { autoAlpha: 0, y: 24 },
+      { autoAlpha: 1, y: 0, duration: 1.1, ease: "house-out", stagger: 0.08, delay: 0.45 },
+    );
     SplitText.create(title, {
       type: "lines",
       mask: "lines",
       autoSplit: true,
       onSplit: (split) => {
         openMasks(split.masks);
-        return (rise = gsap.from(split.lines, {
+        return gsap.from(split.lines, {
           yPercent: 110,
-          duration: 1.3,
-          ease: "expo.out",
-          stagger: 0.1,
-          paused: !released,
-        }));
-      },
-    });
-    introReleased.then(() => {
-      if (disposed) return;
-      released = true;
-      rise?.play();
-      entrance = gsap.context(() => {
-        gsap.to(photo, { scale: 1, duration: 2.4, ease: "expo.out" });
-        gsap.to(rest, {
-          opacity: 1,
-          y: 0,
           duration: 1.2,
-          ease: "expo.out",
-          stagger: 0.08,
-          delay: 0.45,
+          ease: "house-out",
+          stagger: 0.1,
+          delay: 0.1,
         });
-      }, root);
-    });
-    // Leaving: the photograph drifts slower than the page, the words go first.
-    gsap.to(".hero-photo img", {
-      yPercent: 12,
-      ease: "none",
-      scrollTrigger: {
-        trigger: root,
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
       },
     });
-    gsap.to(".hero-body", {
-      yPercent: -18,
-      opacity: 0.2,
+    // Leaving: the photograph drifts slower than the page.
+    gsap.to(photo, {
+      yPercent: 10,
       ease: "none",
-      scrollTrigger: {
-        trigger: root,
-        start: "35% top",
-        end: "bottom top",
-        scrub: true,
-      },
+      scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: true },
     });
-    // Navigation can unmount the hero before the intro promise resolves.
-    return () => {
-      disposed = true;
-      entrance?.kill(false);
-    };
   });
 
   return (
@@ -205,30 +172,33 @@ export default function Hero() {
       <div className="hero-photo">
         <Picture
           id="27"
-          alt="Someone telling a story at a dinner table while everyone listens, around 1980"
+          alt="A grandfather telling a story at Sunday dinner while the whole family listens, around 1980"
           sizes="100vw"
           priority
         />
       </div>
       <Frame className="hero-body">
         <h1 id="hero-title">
-          Most of a life goes <em>undocumented.</em>
+          Every life holds a story <em>worth keeping.</em>
         </h1>
-        <div className="hero-row">
-          <div>
-            <p className="hero-lead">
-              A Story calls someone you love, listens, and follows up the way
-              someone who knows them would. What they say becomes a private
-              archive the whole family can add to.
-            </p>
-            <div className="hero-actions">
-              <PrimaryLink to={START_HREF}>
-                {START_LABEL} <ArrowIcon />
-              </PrimaryLink>
-              <TextLink to="/#listen">Hear a conversation</TextLink>
-            </div>
-          </div>
+        <p className="hero-lead">
+          A Story is an AI biographer that calls your parents and grandparents,
+          asks about their lives, and keeps what they tell in a private book the
+          whole family can add to.
+        </p>
+        <div className="hero-actions">
+          <PrimaryLink to={START_HREF}>
+            {START_LABEL} <ArrowIcon />
+          </PrimaryLink>
+          <TextLink to="/reserve">
+            Reserve for {OFFERS.reserve.price} <ArrowIcon />
+          </TextLink>
         </div>
+        <p className="hero-small">
+          Start free in your browser, no card. The calls ring in the A Story app
+          on your parent’s iPhone, now in private beta. Reserve, and we email you
+          when the calls open.
+        </p>
       </Frame>
     </Scene>
   );

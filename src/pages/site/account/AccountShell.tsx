@@ -18,7 +18,7 @@ import { CODE_LEN } from "../../../lib/auth";
 import { Picture } from "../kit/kit";
 import { useReveals } from "../kit/reveals";
 import { Eyebrow } from "../kit/kit.styles";
-import { color, display, font, media, motion } from "../../../styles/theme";
+import { color, display, font, media, motion, type } from "../../../styles/theme";
 
 const Page = styled.section`
   display: grid;
@@ -72,7 +72,7 @@ const Page = styled.section`
   }
   .lead {
     margin-top: 24px;
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.body};
+    font: 400 ${type.read} / 1.6 ${font.body};
     color: ${color.onDarkMuted};
     max-width: 40ch;
   }
@@ -99,7 +99,7 @@ const Page = styled.section`
     gap: 18px;
     align-items: start;
     padding: 12px 0;
-    font: 400 17px/1.5 ${font.body};
+    font: 400 ${type.read} / 1.5 ${font.body};
     color: ${color.ivory};
   }
   .next li b {
@@ -110,7 +110,7 @@ const Page = styled.section`
     border-radius: 50%;
     background: ${color.night};
     box-shadow: inset 0 0 0 1px ${color.gold};
-    font: italic 400 15px/1 ${font.display};
+    font: italic 400 20px / 1 ${font.display};
     color: ${color.gold};
   }
   .motto {
@@ -167,7 +167,7 @@ const Page = styled.section`
     margin-bottom: 30px;
   }
   .card-head small {
-    font: 600 13px/1 ${font.body};
+    font: 600 ${type.label} / 1 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -179,7 +179,7 @@ const Page = styled.section`
   }
   .card-head p {
     margin-top: 12px;
-    font: 400 16px/1.55 ${font.body};
+    font: 400 ${type.read} / 1.55 ${font.body};
     color: ${color.bodyMuted};
   }
   .card-head .orn {
@@ -214,7 +214,7 @@ const Page = styled.section`
     gap: 6px;
   }
   .field > span {
-    font: 600 13px/1.3 ${font.body};
+    font: 600 ${type.label} / 1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -242,7 +242,7 @@ const Page = styled.section`
     position: relative;
   }
   .field .with-toggle input {
-    padding-right: 72px;
+    padding-right: 96px;
   }
   .field .with-toggle button {
     position: absolute;
@@ -252,8 +252,8 @@ const Page = styled.section`
     padding: 0 10px;
     border: 0;
     background: transparent;
-    font: 600 13px/1 ${font.body};
-    letter-spacing: 0.16em;
+    font: 600 ${type.ui} / 1 ${font.body};
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: ${color.accentText};
     cursor: pointer;
@@ -264,8 +264,11 @@ const Page = styled.section`
     text-align: center;
     font-variant-numeric: tabular-nums;
   }
-  .hint {
-    font: 400 14px/1.5 ${font.body};
+  .hint,
+  .field > span.hint {
+    font: 400 ${type.note} / 1.5 ${font.body};
+    letter-spacing: 0;
+    text-transform: none;
     color: ${color.bodyMuted};
   }
   .check {
@@ -287,7 +290,7 @@ const Page = styled.section`
     padding: 12px 14px;
     border-left: 2px solid ${color.error};
     background: color-mix(in srgb, ${color.error} 7%, ${color.paperPure});
-    font: 400 15px/1.5 ${font.body};
+    font: 400 ${type.note} / 1.5 ${font.body};
     color: ${color.error};
   }
   .error a {
@@ -309,8 +312,8 @@ const Page = styled.section`
     border-radius: 999px;
     background: ${color.primary};
     color: ${color.ivory};
-    font: 600 13px/1 ${font.body};
-    letter-spacing: 0.16em;
+    font: 600 ${type.ui} / 1 ${font.body};
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     text-decoration: none;
     cursor: pointer;
@@ -354,6 +357,21 @@ const Page = styled.section`
     outline-offset: 4px;
   }
 
+  /* A laptop screen: the type floor (2026-10-24) made the card taller, so
+     on a short desktop window the air around it comes in instead, and the
+     whole sign-in still fits one screen. */
+  @media (min-width: 1025px) and (max-height: 860px) {
+    .desk {
+      padding-block: 32px;
+    }
+    .card {
+      padding-block: 32px;
+    }
+    form {
+      gap: 14px;
+    }
+  }
+
   .quiet {
     display: flex;
     flex-wrap: wrap;
@@ -366,8 +384,8 @@ const Page = styled.section`
     padding: 4px 0;
     border: 0;
     background: none;
-    font: 600 14px/1.4 ${font.body};
-    color: ${color.primaryMid};
+    font: 600 ${type.ui} / 1.4 ${font.body};
+    color: ${color.primary};
     text-decoration: underline;
     text-underline-offset: 4px;
     cursor: pointer;
@@ -380,7 +398,7 @@ const Page = styled.section`
   .legal,
   .switch {
     text-align: center;
-    font: 500 14px/1.55 ${font.body};
+    font: 500 ${type.note} / 1.55 ${font.body};
     color: ${color.bodyMuted};
   }
   .legal a,
@@ -393,7 +411,7 @@ const Page = styled.section`
   }
   .reassure {
     text-align: center;
-    font: italic 400 16px/1.5 ${font.display};
+    font: italic 400 ${type.read} / 1.5 ${font.display};
     color: ${color.primaryMid};
   }
 
@@ -407,14 +425,14 @@ const Page = styled.section`
     border-block: 1px solid ${color.primaryLine};
   }
   dl.details dt {
-    font: 600 13px/1.9 ${font.body};
+    font: 600 ${type.note} / 1.9 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
   }
   dl.details dd {
     margin: 0;
-    font: 400 18px/1.5 ${font.display};
+    font: 400 ${type.read} / 1.5 ${font.display};
     color: ${color.primary};
     overflow-wrap: anywhere;
   }

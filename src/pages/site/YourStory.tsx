@@ -37,7 +37,7 @@ import {
   TextLink,
 } from "./kit/kit.styles";
 import { START_HREF, START_LABEL } from "../../lib/app";
-import { color, display, font, media } from "../../styles/theme";
+import { color, display, font, media, type } from "../../styles/theme";
 
 /* The opening's object: three snapshots dropped on the cloth. */
 const Snaps = styled.div`
@@ -94,7 +94,7 @@ const Wall = styled(Chapter)`
   small {
     display: block;
     margin-top: 22px;
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -107,7 +107,7 @@ const Wall = styled(Chapter)`
   p {
     margin-top: 8px;
     max-width: 40ch;
-    font: 400 clamp(1.02rem, 0.98rem + 0.2vw, 1.2rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
   }
   ${media.md} {
@@ -162,7 +162,7 @@ const Kept = styled(Chapter)`
   }
   .note {
     margin-top: 18px;
-    font: 400 14px/1.5 ${font.ui};
+    font: 400 ${type.note} / 1.5 ${font.ui};
     color: var(--muted);
   }
   ol {
@@ -179,7 +179,7 @@ const Kept = styled(Chapter)`
   ol p {
     margin-top: 8px;
     max-width: 40ch;
-    font: 400 clamp(1.02rem, 0.98rem + 0.2vw, 1.2rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--text);
   }
   .free {
@@ -187,7 +187,7 @@ const Kept = styled(Chapter)`
     padding-top: 22px;
     border-top: 1px solid var(--line);
     max-width: 46ch;
-    font: 400 clamp(1.02rem, 0.98rem + 0.2vw, 1.2rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--text);
   }
   .free b {

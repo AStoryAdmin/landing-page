@@ -24,7 +24,7 @@ import { AppShot, Phone } from "../app/Phone";
 import { Print, Invitation } from "./kit";
 import { useReveals } from "./reveals";
 import { Actions, Chapter, Eyebrow, Frame, Title, onDarkActions } from "./kit.styles";
-import { color, display, font, media } from "../../../styles/theme";
+import { color, display, font, media, type } from "../../../styles/theme";
 
 export type Moment = {
   photo: string;
@@ -132,7 +132,7 @@ const Moments = styled(Chapter)`
   }
   p {
     margin-top: 12px;
-    font: 400 19px/1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--text);
     max-width: 46ch;
     text-wrap: pretty;
@@ -268,7 +268,7 @@ const InApp = styled(Chapter)`
   li span {
     display: block;
     margin-top: 6px;
-    font: 400 18px/1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted);
   }
   ${media.md} {
@@ -344,7 +344,7 @@ const Begin = styled(Chapter)`
   }
   .card > div > p {
     margin: 16px 0 28px;
-    font: 400 19px/1.6 ${font.text};
+    font: 400 ${type.read} / 1.6 ${font.text};
     color: ${color.body};
     max-width: 42ch;
   }
@@ -359,7 +359,7 @@ const Begin = styled(Chapter)`
     gap: 14px;
     padding: 16px 0;
     border-top: 1px solid ${color.primaryLine};
-    font: 400 19px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.primary};
   }
   /*

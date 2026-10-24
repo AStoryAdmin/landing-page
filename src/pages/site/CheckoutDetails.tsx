@@ -31,7 +31,7 @@ import { looksLikeEmail, looksLikePhone, submitLead } from "../../lib/leads";
 import { track } from "../../lib/analytics";
 import { ArrowIcon } from "./kit/kit";
 import { PrimaryButton } from "./kit/kit.styles";
-import { color, display, font, media, motion } from "../../styles/theme";
+import { color, display, font, media, motion, type } from "../../styles/theme";
 
 export type CheckoutIntent = {
   /** "reserve" or "founding" — kept loose so this file does not own the offer list. */
@@ -127,7 +127,7 @@ const Sheet = styled.dialog`
     text-align: center;
   }
   .tag {
-    font: 600 13px/1.4 ${font.body};
+    font: 600 ${type.label} / 1.4 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -144,7 +144,7 @@ const Sheet = styled.dialog`
   header p {
     margin: 12px auto 0;
     max-width: 36ch;
-    font: 400 16px/1.55 ${font.body};
+    font: 400 ${type.read} / 1.55 ${font.body};
     color: ${color.bodyMuted};
   }
   .orn {
@@ -182,7 +182,7 @@ const Sheet = styled.dialog`
     display: flex;
     justify-content: space-between;
     gap: 12px;
-    font: 600 13px/1.3 ${font.body};
+    font: 600 ${type.label} / 1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -212,14 +212,14 @@ const Sheet = styled.dialog`
     border-bottom-color: ${color.error};
   }
   .hint {
-    font: 400 14px/1.5 ${font.body};
+    font: 400 ${type.note} / 1.5 ${font.body};
     color: ${color.bodyMuted};
   }
   .error {
     padding: 12px 14px;
     border-left: 2px solid ${color.error};
     background: color-mix(in srgb, ${color.error} 7%, ${color.paperPure});
-    font: 400 15px/1.5 ${font.body};
+    font: 400 ${type.note} / 1.5 ${font.body};
     color: ${color.error};
   }
 
@@ -230,7 +230,7 @@ const Sheet = styled.dialog`
   }
   .fine {
     text-align: center;
-    font: 400 13px/1.55 ${font.body};
+    font: 400 ${type.note} / 1.55 ${font.body};
     color: ${color.bodyMuted};
   }
 

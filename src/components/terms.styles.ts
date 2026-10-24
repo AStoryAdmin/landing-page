@@ -12,7 +12,7 @@ export const Label = styled.span`
   text-transform: uppercase;
   color: ${color.accentText};
   font-family: ${font.body};
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: 4px;
   margin-bottom: 16px;
@@ -64,7 +64,7 @@ export const Notice = styled.div`
   padding: 20px 24px;
   margin-bottom: 40px;
   font-family: ${font.body};
-  font-size: 15px;
+  font-size: 16px;
   color: ${color.body};
   line-height: 1.65;
 `;
@@ -127,7 +127,7 @@ export const Section = styled.section`
 export const SectionNum = styled.span`
   display: block;
   font-family: ${font.body};
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 1.2px;
   text-transform: uppercase;

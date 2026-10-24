@@ -87,7 +87,7 @@ const AppBody = styled.div`
     font-size: 1rem;
   }
   .greeting small {
-    font-size: 0.8125rem;
+    font-size: 14px;
     color: ${color.accentText};
   }
   .greeting p {
@@ -97,7 +97,7 @@ const AppBody = styled.div`
     display: flex;
     justify-content: space-between;
     gap: 6px;
-    font-size: 0.8125rem;
+    font-size: 14px;
     text-align: center;
   }
   .week span {
@@ -123,7 +123,7 @@ const AppBody = styled.div`
     gap: 9px;
   }
   .entry-pair button {
-    font-size: 0.8125rem;
+    font-size: 14px;
     min-height: 62px;
     justify-content: center;
     text-align: center;

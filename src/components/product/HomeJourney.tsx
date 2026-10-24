@@ -56,11 +56,11 @@ const Theater = styled.div`
     border-top: 1px solid ${color.primaryLineStrong};
     margin-top: 32px;
     padding-top: 20px;
-    font-size: 0.9375rem;
+    font-size: 16px;
   }
   .annotation span {
     display: block;
-    font-size: 0.8125rem;
+    font-size: 14px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin-bottom: 8px;
@@ -124,12 +124,12 @@ const StepTabs = styled.div`
     color: ${color.accentText};
   }
   button span {
-    font-size: 0.8125rem;
+    font-size: 14px;
     margin-right: 12px;
   }
   ${media.sm} {
     button {
-      font-size: 0.9375rem;
+      font-size: 16px;
       padding: 14px 5px;
     }
     button span {

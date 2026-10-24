@@ -43,7 +43,7 @@ import {
   TextAnchor,
   TextLink,
 } from "./kit/kit.styles";
-import { color, display, font, media, shadow } from "../../styles/theme";
+import { color, display, font, media, shadow, type } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
 
 const love = SCENARIOS.find((s) => s.id === "love")!;
@@ -73,7 +73,7 @@ const Slip = styled.figure`
     flex-wrap: wrap;
     align-items: center;
     gap: 6px 14px;
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -113,7 +113,7 @@ const Slip = styled.figure`
     margin-top: clamp(22px, 2.4vw, 34px);
     padding-top: 16px;
     border-top: 1px solid ${color.primaryLine};
-    font: 400 15px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.bodyMuted};
   }
   figcaption b {
@@ -199,7 +199,7 @@ const Moments = styled(Chapter)`
   }
   .who {
     padding-top: 0.55em;
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -212,7 +212,7 @@ const Moments = styled(Chapter)`
   li p:not(.who) {
     margin-top: 8px;
     max-width: 40ch;
-    font: 400 clamp(1.05rem, 1rem + 0.25vw, 1.25rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
   }
   /* What one call leaves: the card, and the typed sheet laid under it. */
@@ -223,7 +223,7 @@ const Moments = styled(Chapter)`
     padding-top: 6px;
   }
   .leaves > p.label {
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -246,7 +246,7 @@ const Moments = styled(Chapter)`
   }
   .sheet-head {
     margin-bottom: 10px;
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -254,19 +254,19 @@ const Moments = styled(Chapter)`
   .sheet p:not(.sheet-head) {
     padding: 10px 0;
     border-top: 1px solid ${color.primaryLine};
-    font: 400 17px/1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.primary};
   }
   .sheet time {
     display: block;
     margin-bottom: 2px;
-    font: 500 13px/1.3 ${font.ui};
+    font: 500 ${type.label} / 1.3 ${font.ui};
     color: ${color.bodyMuted};
   }
   .kept {
     margin-top: 22px;
     max-width: 48ch;
-    font: 400 15px/1.55 ${font.ui};
+    font: 400 ${type.note} / 1.55 ${font.ui};
     color: ${color.bodyMuted};
   }
   ${media.lg} {
@@ -391,7 +391,7 @@ const Ways = styled(Chapter)`
   }
   small {
     display: block;
-    font: 600 12px/1.3 ${font.ui};
+    font: 600 ${type.label} / 1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -403,7 +403,7 @@ const Ways = styled(Chapter)`
   }
   p {
     margin-top: 10px;
-    font: 400 17px/1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
   }
   ${media.lg} {
