@@ -327,10 +327,10 @@ export const INCLUDES: Record<OfferId, string[]> = {
 /** "Why pay anything at all?" — the objection a dollar raises, answered. */
 export const WHY_PAY = [
     {
-        t: `${OFFERS.reserve.discount}% off, until ${RESERVE_DEADLINE_LABEL}`,
+        t: 'It holds your price',
         d: OFFERS.founding.open
             ? `${OFFERS.founding.discount}% off the first year for founding families, ${OFFERS.reserve.discount}% for everyone who reserves by ${RESERVE_DEADLINE_LABEL}.`
-            : `${OFFERS.reserve.discount}% off the first year for everyone who reserves by ${RESERVE_DEADLINE_LABEL}.`,
+            : `${OFFERS.reserve.discount}% off your first year, for every family that reserves by ${RESERVE_DEADLINE_LABEL}.`,
     },
     {
         t: 'It comes off your plan',

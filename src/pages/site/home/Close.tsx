@@ -32,7 +32,7 @@ const monthlyPrice = monthly.price.replace(/\/mo$/, "");
 const NEXT = [
   { to: "/pricing", title: "Pricing", hint: "Every plan, and what each one includes." },
   { to: "/how-it-works", title: "How it works", hint: "The call, the memory, the book." },
-  { to: "/our-story", title: "Our story", hint: "Why we started, in our own words." },
+  { to: "/our-story", title: "Our story", hint: "Built by Daniel Hoang Nguyen and Bao Vo." },
 ];
 
 const Section = styled.section`

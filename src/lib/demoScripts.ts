@@ -198,7 +198,7 @@ const faith: Scenario = {
         {
             role: 'ai',
             depth: 2,
-            method: 'Follow the aside, not the answer',
+            method: 'It follows the aside',
             stay: 'She answered the question in her first sentence and then added eight words to the end of it. A question list takes the answer and moves on. The eight words are the thing she actually put in front of me.',
             text: 'Rosa - you slipped something in at the end there. The winter she wouldn’t look at Father Dolan. I’d much rather stay with that than move on. What happened that winter?',
             delay: 2700,
@@ -655,7 +655,7 @@ const love: Scenario = {
         {
             role: 'ai',
             depth: 2,
-            method: 'Follow the aside, not the answer',
+            method: 'It follows the aside',
             stay: '“All but one” means she has counted them, and that somewhere there is a decision she once made about a letter. That is worth more than the whole courtship - and she is the one who put it on the table.',
             text: 'All but one. So you’ve counted them. What happened to the one, Joan?',
             delay: 2700,

@@ -643,7 +643,7 @@ export default function OurStory() {
               from="Bao"
               name="Bao Vo"
               role="Co-founder, COO & CTO"
-              cred="MS ECE, University of Michigan, doctoral fellow. Led go-to-market for four biotech startups."
+              cred="MS ECE, University of Michigan, doctoral fellow. Market-entry strategy for four biotech startups."
               photo="/our-story/bao-320.webp"
               link="https://www.linkedin.com/in/gbaovo/"
               tilt={0.45}
@@ -701,12 +701,19 @@ export default function OurStory() {
               <dd>
                 Americans turn 65 every day, through 2027.{" "}
                 <a
-                  href="https://protectedincome.org/peak65/"
+                  href="https://www.limraconsumer.com/peak65/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   Alliance for Lifetime Income, Peak 65
                 </a>
+              </dd>
+            </div>
+            <div data-why>
+              <dt>Voice AI</dt>
+              <dd>
+                Can now hold an unhurried conversation, ask a follow-up about
+                what it just heard, and know when to stop.
               </dd>
             </div>
           </dl>

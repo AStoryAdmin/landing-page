@@ -171,14 +171,14 @@ export const OTHER_PLANS = [
         id: 'free' as const,
         label: 'Free',
         price: '$0',
-        sub: 'One ten-minute conversation on iPhone to begin, then three questions a day and unlimited writing',
+        sub: 'One ten-minute conversation in the iPhone beta to begin, then three questions a day and unlimited writing',
     },
 ];
 
 /** Everyone starts here, including people who never pay. */
 export const START = {
     headline: 'Every account starts on Free',
-    detail: 'No card and no time limit. One ten-minute conversation with A Story on iPhone to begin, then three guided questions a day and unlimited writing for as long as you like. A plan adds A Story doing the calling.',
+    detail: 'No card and no time limit. One ten-minute conversation with A Story, once your family is in the iPhone beta, then three guided questions a day and unlimited writing for as long as you like. A plan adds A Story doing the calling.',
     /** The /pricing opening line, as one sentence (no "Free - No card" seam). */
     lead: 'Every account starts on Free, with no card and no time limit. Inviting family, writing and reading never cost extra, however many people join. Prices are in US dollars, and the calls ring in the A Story iPhone app, in a private beta.',
 } as const;
@@ -187,13 +187,13 @@ export const START = {
 export const FREE_TIER = {
     headline: 'Free, for as long as you like',
     blurb:
-        'One ten-minute conversation with A Story on iPhone to begin, then ' +
+        'One ten-minute conversation with A Story, once your family is in the iPhone beta, then ' +
         'three guided questions a day, writing in your own words without limit, the whole ' +
-        'family invited free, and a printed book whenever you want one. What Free does not ' +
+        'family invited free, and the whole book to print at home. What Free does not ' +
         'include is A Story calling you after that first time - that is the part with a real ' +
         'cost behind it.',
     includes: [
-        'One ten-minute conversation with A Story on iPhone, to begin',
+        'One ten-minute conversation with A Story, once your family is in the iPhone beta',
         'Three guided questions a day',
         'Unlimited writing in your own words',
         'Unlimited family members reading and contributing',
@@ -261,7 +261,7 @@ export const BOOK_EDITIONS: BookEdition[] = [
         price: '$39',
         extra: '$29',
         tagline: 'A paperback for every sibling’s shelf.',
-        includes: ['Matte softcover, full colour inside', 'Every memory and every photograph'],
+        includes: ['Matte softcover, full color inside', 'Every memory and every photograph'],
         delivery: 'Ships in 7-10 days, once ordering opens',
     },
     {
@@ -270,7 +270,7 @@ export const BOOK_EDITIONS: BookEdition[] = [
         price: '$69',
         extra: '$49',
         tagline: 'The book, bound to last.',
-        includes: ['Case-bound hardcover with the keepsake cover', 'Heavy paper, full colour throughout'],
+        includes: ['Case-bound hardcover with the keepsake cover', 'Heavy paper, full color throughout'],
         delivery: 'Ships in 7-10 days, once ordering opens',
     },
     {

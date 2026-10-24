@@ -20,6 +20,12 @@ for(const route of [...routes,...privateRoutes.map(r=>r.path),'/__design/a-story
  if(social){const path=new URL(social[1]||social[2]).pathname;references++;try{await access('dist'+path);}catch{failures.push({route,asset:path});}}
 }
 assert.deepEqual(failures,[],'Every prerendered asset and social image exists');
+/* A /src/ path works on the dev server and nowhere else: the /samples footer
+   shipped five broken partner logos that way (2026-10-24). */
+for(const page of ['samples',...routes.map(r=>r==='/'?'':r.slice(1))]){
+ const html=await readFile(`dist/${page?page+'/':''}index.html`,'utf8');
+ assert(!/(?:src|href)="\/src\//.test(html),`${page||'/'}: no /src/ path in the built page`);
+}
 assert.equal(Object.keys(redirects).length,6);
 for(const from of Object.keys(redirects)) await access(`dist${from}/index.html`);
 /* Until 2026-10-18 this also required pricing.ts, product.ts, checkout.ts and
