@@ -1,0 +1,26 @@
+version: 1
+# AWS Amplify build for astoryapp.com (2026-10-24).
+# The build prerenders every page in headless Chromium (scripts/prerender.mjs),
+# so each page answers with its own HTML and title. Amplify's image has no
+# browser, so it is installed here with the libraries it needs. If that still
+# fails, the site deploys anyway without the snapshots (the app renders in the
+# browser), and the log says so loudly.
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+        - npx playwright install chromium || echo "WARNING playwright browser download failed"
+        - (dnf install -y nss atk at-spi2-atk cups-libs libdrm libxkbcommon libXcomposite libXdamage libXrandr libXext libXfixes mesa-libgbm pango alsa-lib || yum install -y nss atk at-spi2-atk cups-libs libdrm libxkbcommon libXcomposite libXdamage libXrandr libXext libXfixes mesa-libgbm pango alsa-lib) || echo "WARNING browser libraries not installed"
+    build:
+      commands:
+        - npm run build:shell
+        - node scripts/prerender.mjs || echo "WARNING prerender failed - deploying the app shell without page snapshots"
+  artifacts:
+    baseDirectory: dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - /root/.cache/ms-playwright/**/*
