@@ -22,7 +22,8 @@
  *
  * Every quoted line comes from `demoScripts.ts`, never paraphrased;
  * `app/calls.ts` names the turns and the slipped words. The voice layer is
- * labelled as in development, as demoScripts.ts requires.
+ * labelled as in development, as demoScripts.ts requires - once, by the page
+ * that holds this band (How it works, under its four moments).
  */
 import {
   useEffect,
@@ -539,17 +540,15 @@ export default function Listen({
           </div>
         </div>
 
-        <div className="foot">
-          <span>
-            Kept from every call: the card and the transcript. Voice · in
-            development.
-          </span>
-          {more && (
+        {/* What every call keeps, and that voice clips are in development, is
+            said once, under How it works' four moments (jury 1 R2 #4). */}
+        {more && (
+          <div className="foot">
             <TextLink to="/how-it-works">
               How a call works <ArrowIcon />
             </TextLink>
-          )}
-        </div>
+          </div>
+        )}
       </Frame>
     </Scene>
   );

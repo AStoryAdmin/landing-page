@@ -1,4 +1,10 @@
-import { getSupabase, isSupabaseConfigured } from "./supabase";
+/*
+ * supabase-js (about 53 KB gzipped) loads only when a form is sent, never
+ * with the page: every route that shows a form (/contact, /our-story,
+ * /organizations, /reserve) used to preload it through this file (round 3,
+ * jury 2 N4).
+ */
+const loadSupabase = () => import("./supabase");
 import { CONTACT } from "./contact";
 
 /**
@@ -115,6 +121,7 @@ export async function submitLead(lead: Lead): Promise<LeadResult> {
       ? CONTACT.gift
       : CONTACT.waitlist;
   try {
+    const { getSupabase, isSupabaseConfigured } = await loadSupabase();
     const supabase = getSupabase();
     if (!supabase || !isSupabaseConfigured) {
       return {

@@ -19,6 +19,7 @@ import EditorialSeo from "../../components/ui/EditorialSeo";
 import { ArrowIcon, Invitation, PageOpening, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import {
+  Actions,
   Chapter,
   Frame,
   PrimaryLink,
@@ -65,9 +66,42 @@ const Know = styled(Chapter)`
   }
 `;
 
-/* On a phone the title takes the full measure, so it keeps to two lines
-   (jury 2 U7). */
+/*
+ * On a phone the title takes the full measure, so it keeps to two lines
+ * (jury 2 U7).
+ *
+ * Fix round 3 (2026-10-24, jury 2 R2: CLS 0.088 at 1920). The title used to
+ * wrap freely, so while Cormorant was still loading the fallback serif set it
+ * on four lines, then it fell to two and the whole sheet jumped. On a wide
+ * screen the title is now two set lines, sized to the sheet (its container),
+ * so it takes the same height in either face; the sheet and the print hang
+ * from the top of the row, so a lead that grows a line moves nothing above it.
+ */
 const Fit = styled.div`
+  display: contents;
+  @media (min-width: 861px) {
+    section[data-variant="letter"] .opening-grid:not(.solo) {
+      align-items: start;
+    }
+    section[data-variant="letter"] .opening-sheet {
+      container-type: inline-size;
+    }
+    section[data-variant="letter"] .opening-sheet h1 {
+      max-width: none;
+      font-size: min(11.8cqi, 7rem);
+      overflow-x: clip;
+      overflow-clip-margin: 0.25em;
+    }
+    section[data-variant="letter"] .opening-sheet h1 .ln {
+      display: block;
+      white-space: nowrap;
+    }
+  }
+  @media (max-width: 640px) {
+    ${Actions} > a {
+      flex: 1 1 100%;
+    }
+  }
   @media (max-width: 860px) {
     section[data-variant] .opening-grid h1 {
       max-width: none;
@@ -95,7 +129,10 @@ export default function Care() {
           flip
           title={
             <>
-              Every resident has a life <em>worth knowing.</em>
+              <span className="ln">Every resident has</span>{" "}
+              <span className="ln">
+                a life <em>worth knowing.</em>
+              </span>
             </>
           }
           lead="The work they did. The music in the house. The way they made Sunday lunch. Give those stories somewhere to stay, and give the people caring for them a way to learn them."

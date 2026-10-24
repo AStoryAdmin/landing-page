@@ -121,12 +121,18 @@ export const Form = styled.form`
     flex-wrap: wrap;
     gap: 8px;
   }
+  /* A block-level box, so the hidden input covers the whole 44px pill (as
+     an inline label it measured 41px, jury 2 N3). */
   .chip {
     position: relative;
+    display: inline-flex;
   }
   .chip input {
     position: absolute;
     inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
     opacity: 0;
     min-height: 0;
     cursor: pointer;

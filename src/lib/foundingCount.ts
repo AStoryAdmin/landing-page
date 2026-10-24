@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { getSupabase } from './supabase';
 import type { FoundingTaken } from './founding';
 
 /**
@@ -16,6 +15,8 @@ import type { FoundingTaken } from './founding';
  * imports this file lazily (FoundingNote) for the same reason.
  */
 export async function fetchFoundingTaken(): Promise<FoundingTaken | null> {
+    /* supabase-js loads after the page, not with it (round 3, jury 2 N4). */
+    const { getSupabase } = await import('./supabase');
     const supabase = getSupabase();
     if (!supabase) return null;
     const { data, error } = await supabase.rpc('founding_places_by_cohort');

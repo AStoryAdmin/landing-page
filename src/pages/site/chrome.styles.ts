@@ -107,15 +107,18 @@ export const HeaderShell = styled.header`
     display: inline-flex;
     flex: none;
   }
+  /* The link keeps a 44px target while the bar condenses: only the drawing
+     inside it shrinks (round 3, jury 2 N3: the scaled link measured 40px). */
   .gf-nav-inner > span a {
-    transform-origin: left center;
-    transition: transform ${motion.slow};
+    min-height: 44px;
   }
   .gf-nav-inner > span svg {
     height: clamp(34px, 1vw + 19px, 46px);
     width: auto;
+    transform-origin: left center;
+    transition: transform ${motion.slow};
   }
-  &.is-condensed .gf-nav-inner > span a {
+  &.is-condensed .gf-nav-inner > span svg {
     transform: scale(0.9);
   }
   /* The rooms sit in the middle of the room the wordmark and the actions leave. */
@@ -518,7 +521,7 @@ export const HeaderShell = styled.header`
     nav,
     &,
     .gf-nav-inner,
-    .gf-nav-inner > span a {
+    .gf-nav-inner > span svg {
       transition: none !important;
     }
   }
@@ -651,12 +654,21 @@ export const FooterShell = styled.footer`
     padding: 4px 0 18px;
   }
 
-  /* The five program marks: one 48px row on a single cream plate. */
+  /*
+   * The five program marks on one cream plate (round 3, jury 1 #5: never one
+   * mark alone on a row). The plate is sized from the footer's width:
+   *   - one row, 40-48px, where the five fit with their clear space;
+   *   - three and two where they don't (the narrow three on top);
+   *   - two by two on a phone, NVIDIA at its 30px digital minimum, with
+   *     "What each one is" in the sixth cell.
+   * Each badge keeps NVIDIA's clear space (0.22 of 48px a side).
+   */
   .footer-credential {
+    container-type: inline-size;
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 14px clamp(24px, 3vw, 48px);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
     margin-top: clamp(40px, 4vw, 64px);
   }
   .footer-programs {
@@ -668,10 +680,13 @@ export const FooterShell = styled.footer`
   }
   .footer-plate {
     display: block;
-    padding: 6px clamp(10px, 1.2vw, 20px);
+    width: fit-content;
+    max-width: 100%;
+    padding: 6px 20px;
     border-radius: 4px;
     background: ${color.paper};
     box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.55);
+    color: ${color.chocolate};
     text-decoration: none;
     transition: transform ${motion.press};
   }
@@ -679,18 +694,89 @@ export const FooterShell = styled.footer`
     transform: scale(0.99);
   }
   .footer-marks {
+    /* 20.49 = the five marks' widths over their height; 106px their clear
+       space; 40px the plate's padding. */
+    --mark-h: min(48px, calc((100cqw - 146px) / 20.49));
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
   }
+  .footer-marks img {
+    height: var(--mark-h) !important;
+    width: auto;
+  }
+  .footer-plate-more {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    font: 600 13px/1.3 ${font.ui};
+    color: ${color.chocolate};
+  }
+  .footer-plate-more svg {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    transition: transform ${motion.base};
+  }
+  ${media.hover} {
+    .footer-plate:hover .footer-plate-more svg {
+      transform: translateX(3px);
+    }
+  }
+  @container (max-width: 965px) {
+    .footer-marks {
+      /* The first row (NVIDIA, Google, AssemblyAI) sets the height. */
+      --mark-h: min(48px, calc((100cqw - 104px) / 10.64));
+      flex-wrap: wrap;
+    }
+    .footer-marks > span:nth-child(n + 4) {
+      order: 2;
+    }
+    .footer-marks::after {
+      content: "";
+      order: 1;
+      flex-basis: 100%;
+      height: 0;
+    }
+  }
+  @container (max-width: 440px) {
+    .footer-plate {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: center;
+      justify-items: center;
+      gap: 10px 8px;
+      width: 100%;
+      padding: 12px 10px;
+    }
+    .footer-marks {
+      display: contents;
+    }
+    .footer-marks::after {
+      content: none;
+    }
+    .footer-marks > span,
+    .footer-marks > span:nth-child(n + 4) {
+      order: 0;
+      max-width: 100%;
+      padding: 0 !important;
+    }
+    .footer-marks > span:first-child {
+      padding: 7px !important;
+    }
+    .footer-marks img {
+      height: 30px !important;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    .footer-plate-more {
+      display: inline-flex;
+    }
+  }
 
-  /* One legal line, and the note about the examples beside it. */
+  /* One legal line; the note about the examples closes it, inline. */
   .gf-footer-bottom {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-    gap: 8px 48px;
     margin-top: clamp(36px, 3.6vw, 56px);
     padding-top: 18px;
     border-top: 1px solid ${color.nightLine};
@@ -709,41 +795,41 @@ export const FooterShell = styled.footer`
     color: ${color.onDarkFaint};
   }
   .footer-about {
-    max-width: 420px;
+    display: inline;
   }
   .footer-about summary {
+    /* A 44px target that does not open up the line it sits in. */
+    display: inline-block;
+    padding-block: 12px;
+    margin-block: -12px;
+    line-height: 20px;
     cursor: pointer;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    color: ${color.onDarkMuted};
-    transition: color ${motion.base};
+    list-style: none;
+    color: ${color.onDark};
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+    text-underline-offset: 3px;
+    white-space: nowrap;
+    transition: text-decoration-color ${motion.base};
+  }
+  .footer-about summary::-webkit-details-marker {
+    display: none;
   }
   ${media.hover} {
     .footer-about summary:hover {
-      color: ${color.onDark};
+      text-decoration-color: currentColor;
     }
   }
   .footer-about p {
+    display: block;
+    max-width: 62ch;
+    margin-top: 8px;
     line-height: 1.6;
-    padding-bottom: 12px;
+    color: ${color.onDarkMuted};
   }
   ${media.lg} {
     .gf-footer-top {
       grid-template-columns: minmax(0, 1fr);
-    }
-  }
-  ${media.md} {
-    .footer-credential {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .gf-footer-bottom {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .footer-about summary {
-      justify-content: flex-start;
     }
   }
   ${media.sm} {
@@ -756,31 +842,6 @@ export const FooterShell = styled.footer`
     }
     .gf-footer-fold {
       display: block;
-    }
-    .footer-plate {
-      width: 100%;
-      padding: 8px;
-    }
-    /* Five marks on a phone: NVIDIA's square-ish seal across the top, then
-       two and two, each scaled to its cell (no lone mark on a row). */
-    .footer-marks {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      justify-items: center;
-      gap: 2px 6px;
-    }
-    .footer-marks > span:first-child {
-      grid-column: 1 / -1;
-    }
-    .footer-marks > span {
-      padding: 5px !important;
-      max-width: 100%;
-    }
-    .footer-marks img {
-      height: 36px !important;
-      width: auto;
-      max-width: 100%;
-      object-fit: contain;
     }
   }
 `;

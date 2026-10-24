@@ -277,7 +277,14 @@ const Call = styled.div`
         color-mix(in srgb, ${color.warmGold} 70%, transparent)
       )
       0 100% / var(--lit, 100%) 0.9cqw no-repeat;
-    transition: background-size 900ms 700ms ease;
+    /* The house entrance curve, under 300ms (round 3, jury 2 P2: it was
+       900ms ease after a 700ms wait). */
+    transition: background-size 280ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    mark {
+      transition: none;
+    }
   }
   .talk.is-played mark {
     --lit: 0%;

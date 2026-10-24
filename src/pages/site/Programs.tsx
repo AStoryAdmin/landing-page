@@ -145,16 +145,24 @@ const ROWS: Row[] = [
 /* ── Opening's object: the five marks, set large on a cream plate ──────── */
 
 const Plate = styled.div`
+  /* Three and two (round 3, jury 1 #5: NVIDIA sat alone on the top row):
+     NVIDIA, Google and AssemblyAI, then Deepgram and Cartesia. The height
+     comes from the plate's width so the first row always fits (10.64 = the
+     three marks' widths over their height); one column on a phone. */
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  container-type: inline-size;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-items: center;
-  gap: clamp(26px, 3vw, 48px) clamp(20px, 3vw, 56px);
-  width: min(100%, 720px);
+  align-content: center;
+  justify-content: center;
+  /* Half a gap each side of the line break: one gap between the rows. */
+  gap: clamp(13px, 1.5vw, 22px) clamp(18px, 2vw, 32px);
+  width: min(100%, 820px);
   padding: clamp(30px, 3.4vw, 60px);
   background: ${color.paperPure};
   box-shadow: ${shadow.lie};
+  --gap-x: clamp(18px, 2vw, 32px);
   &::before {
     content: "";
     position: absolute;
@@ -162,23 +170,39 @@ const Plate = styled.div`
     border: 1px solid ${color.foil};
     pointer-events: none;
   }
+  &::after {
+    content: "";
+    order: 1;
+    flex-basis: 100%;
+    height: 0;
+  }
   > * {
     position: relative;
   }
+  > span {
+    display: flex;
+  }
+  > span:nth-child(n + 4) {
+    order: 2;
+  }
   img {
     display: block;
-    height: clamp(44px, 3.6vw, 64px);
+    height: clamp(30px, calc((100cqw - 2 * var(--gap-x) - 4px) / 10.64), 64px);
     width: auto;
     max-width: 100%;
-  }
-  > span:first-child {
-    grid-column: 1 / -1;
   }
   > span > span {
     padding: 0;
   }
   ${media.sm} {
-    grid-template-columns: minmax(0, 1fr);
+    flex-direction: column;
+    row-gap: clamp(26px, 3vw, 44px);
+    &::after {
+      content: none;
+    }
+    img {
+      height: 44px;
+    }
   }
 `;
 

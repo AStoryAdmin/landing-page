@@ -380,13 +380,6 @@ header.top{width:100%;max-width:1180px;display:flex;flex-wrap:wrap;align-items:f
 .turn.q .who{color:var(--a-acc)}
 .turn p{margin:0;font:400 15px/1.55 "DM Sans",sans-serif}
 .turn.q p{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-size:18px;line-height:1.35}
-.voice{background:var(--a-card);border:1px solid var(--a-line);border-radius:18px;padding:18px}
-.vrow{display:flex;align-items:center;gap:14px}
-.play{width:48px;height:48px;border-radius:50%;border:0;background:var(--a-acc);color:#fff;cursor:pointer;flex:none;display:grid;place-items:center}
-.play svg{width:18px;height:18px}
-.wave{flex:1;display:flex;align-items:center;gap:2px;height:44px}
-.wave i{flex:1;background:#dcc6ae;border-radius:2px;min-width:2px}
-.wave i.on{background:var(--a-acc)}
 .vtime{font:500 12px/1 "DM Sans",sans-serif;color:var(--a-soft);font-variant-numeric:tabular-nums;margin-top:10px;display:flex;justify-content:space-between}
 .vquote{font:italic 400 21px/1.35 "Cormorant Garamond",Georgia,serif;margin:16px 0 4px;color:var(--a-ink)}
 .vdemo{font:400 12px/1.4 "DM Sans",sans-serif;color:var(--a-soft);margin-top:10px}
@@ -404,7 +397,6 @@ header.top{width:100%;max-width:1180px;display:flex;flex-wrap:wrap;align-items:f
 .aitem .tag{font:600 9.5px/1 "DM Sans",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--a-acc);background:#f6e3d3;padding:6px 8px;border-radius:99px;white-space:nowrap}
 .aitem .tag.off{color:var(--a-soft);background:#efe7da}
 .msg{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center;background:var(--a-card);border:1px solid var(--a-line);border-radius:16px;padding:12px;margin-bottom:10px}
-.msg .play{width:44px;height:44px}
 .msg b{font:500 14px/1.2 "DM Sans",sans-serif;display:block}
 .msg span{font:400 12.5px/1.4 "DM Sans",sans-serif;color:var(--a-soft)}
 .ph-brand{text-align:center;padding:16px 0 4px;font:500 18px/1 "Cormorant Garamond",Georgia,serif;color:var(--a-soft)}
@@ -1001,9 +993,9 @@ header.top .books{display:flex;flex-direction:column;gap:8px;width:auto;max-widt
 .gf-header.is-tucked .gf-nav-inner { transform: translateY(calc(var(--bar-d) / 2)); }
 .gf-header .gf-nav-inner { position: relative; width: var(--frame); margin: auto; height: var(--bar-h); display: flex; align-items: center; gap: 24px; }
 .gf-header .gf-nav-inner > span { display: inline-flex; flex: 0 0 auto; }
-.gf-header .gf-nav-inner > span a { transform-origin: left center; transition: transform 280ms cubic-bezier(0.23, 1, 0.32, 1); }
-.gf-header .gf-nav-inner > span svg { height: clamp(34px, 19px + 1vw, 46px); width: auto; }
-.gf-header.is-condensed .gf-nav-inner > span a { transform: scale(0.9); }
+.gf-header .gf-nav-inner > span a { min-height: 44px; }
+.gf-header .gf-nav-inner > span svg { height: clamp(34px, 19px + 1vw, 46px); width: auto; transform-origin: left center; transition: transform 280ms cubic-bezier(0.23, 1, 0.32, 1); }
+.gf-header.is-condensed .gf-nav-inner > span svg { transform: scale(0.9); }
 .gf-header nav { flex: 1 1 0%; min-width: 0px; display: flex; align-items: center; gap: 24px; }
 .gf-header .gf-nav-links { margin-inline: auto; display: flex; align-items: center; gap: clamp(14px, 1.7vw, 34px); }
 .gf-header .gf-nav-right { display: flex; align-items: center; gap: clamp(16px, 1.6vw, 28px); }
@@ -1076,7 +1068,7 @@ header.top .books{display:flex;flex-direction:column;gap:8px;width:auto;max-widt
 .gf-header .gf-mobile-more a { display: flex; align-items: center; min-height: 44px; font: 500 15px / 1.3 Montserrat, "Segoe UI", system-ui, -apple-system, sans-serif; color: rgb(220, 208, 192); text-decoration: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-.gf-header nav, .gf-header, .gf-header .gf-nav-inner, .gf-header .gf-nav-inner > span a { transition: none !important; }
+.gf-header nav, .gf-header, .gf-header .gf-nav-inner, .gf-header .gf-nav-inner > span svg { transition: none !important; }
 }
 .gf-footer { background-color: rgb(59, 41, 29); background-image: linear-gradient(rgba(43, 33, 22, 0.42), rgba(43, 33, 22, 0.42)), url("/brand/cloth-chocolate.webp"); background-size: auto, 512px 512px; --focus: #EBC86A; --focus-halo: #3B291D; position: relative; color: rgb(220, 208, 192); padding: clamp(56px, 5vw, 96px) 0px 28px; }
 .gf-footer::before { content: ""; position: absolute; left: 0px; right: 0px; top: 0px; height: 1px; background: color-mix(in srgb, rgb(235, 200, 106) 30%, transparent 70%); }
@@ -1102,38 +1094,49 @@ header.top .books{display:flex;flex-direction:column;gap:8px;width:auto;max-widt
 .gf-footer .gf-footer-fold summary svg { width: 20px; height: 20px; transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); }
 .gf-footer .gf-footer-fold details[open] summary svg { transform: rotate(180deg); }
 .gf-footer .gf-footer-fold .fold-body { display: grid; grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr); gap: 8px 20px; padding: 4px 0px 18px; }
-.gf-footer .footer-credential { display: flex; flex-wrap: wrap; align-items: center; gap: 14px clamp(24px, 3vw, 48px); margin-top: clamp(40px, 4vw, 64px); }
+.gf-footer .footer-credential { container-type: inline-size; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-top: clamp(40px, 4vw, 64px); }
 .gf-footer .footer-programs { margin: 0px; font: 600 12px / 1.4 Montserrat, "Segoe UI", system-ui, -apple-system, sans-serif; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(220, 208, 192); }
-.gf-footer .footer-plate { display: block; padding: 6px clamp(10px, 1.2vw, 20px); border-radius: 4px; background: rgb(251, 248, 241); box-shadow: rgba(0, 0, 0, 0.55) 0px 10px 24px -14px; text-decoration: none; transition: transform 120ms cubic-bezier(0.23, 1, 0.32, 1); }
+.gf-footer .footer-plate { display: block; width: fit-content; max-width: 100%; padding: 6px 20px; border-radius: 4px; background: rgb(251, 248, 241); box-shadow: rgba(0, 0, 0, 0.55) 0px 10px 24px -14px; color: rgb(74, 51, 39); text-decoration: none; transition: transform 120ms cubic-bezier(0.23, 1, 0.32, 1); }
 .gf-footer .footer-plate:active { transform: scale(0.99); }
-.gf-footer .footer-marks { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; }
-.gf-footer .gf-footer-bottom { display: grid; grid-template-columns: minmax(0px, 1fr) auto; align-items: start; gap: 8px 48px; margin-top: clamp(36px, 3.6vw, 56px); padding-top: 18px; border-top: 1px solid rgba(246, 240, 230, 0.16); font: 400 13px / 1.6 Montserrat, "Segoe UI", system-ui, -apple-system, sans-serif; }
+.gf-footer .footer-marks { --mark-h: min(48px, calc((100cqw - 146px) / 20.49)); display: flex; flex-wrap: nowrap; align-items: center; justify-content: center; }
+.gf-footer .footer-marks img { height: var(--mark-h) !important; width: auto; }
+.gf-footer .footer-plate-more { display: none; align-items: center; gap: 6px; font: 600 13px / 1.3 Montserrat, "Segoe UI", system-ui, -apple-system, sans-serif; color: rgb(74, 51, 39); }
+.gf-footer .footer-plate-more svg { width: 16px; height: 16px; flex: 0 0 auto; transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); }
+@media (hover: hover) and (pointer: fine) {
+.gf-footer .footer-plate:hover .footer-plate-more svg { transform: translateX(3px); }
+}
+@container (max-width: 965px) {
+.gf-footer .footer-marks { --mark-h: min(48px, calc((100cqw - 104px) / 10.64)); flex-wrap: wrap; }
+.gf-footer .footer-marks > span:nth-child(n+4) { order: 2; }
+.gf-footer .footer-marks::after { content: ""; order: 1; flex-basis: 100%; height: 0px; }
+}
+@container (max-width: 440px) {
+.gf-footer .footer-plate { display: grid; grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr); place-items: center; gap: 10px 8px; width: 100%; padding: 12px 10px; }
+.gf-footer .footer-marks { display: contents; }
+.gf-footer .footer-marks::after { content: none; }
+.gf-footer .footer-marks > span, .gf-footer .footer-marks > span:nth-child(n+4) { order: 0; max-width: 100%; padding: 0px !important; }
+.gf-footer .footer-marks > span:first-child { padding: 7px !important; }
+.gf-footer .footer-marks img { max-width: 100%; object-fit: contain; height: 30px !important; }
+.gf-footer .footer-plate-more { display: inline-flex; }
+}
+.gf-footer .gf-footer-bottom { margin-top: clamp(36px, 3.6vw, 56px); padding-top: 18px; border-top: 1px solid rgba(246, 240, 230, 0.16); font: 400 13px / 1.6 Montserrat, "Segoe UI", system-ui, -apple-system, sans-serif; }
 .gf-footer .footer-legal { padding-block: 12px; max-width: 120ch; color: rgb(220, 208, 192); }
 .gf-footer .footer-trademark { color: rgb(205, 188, 168); }
-.gf-footer .footer-about { max-width: 420px; }
-.gf-footer .footer-about summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; justify-content: flex-end; color: rgb(220, 208, 192); transition: color 200ms cubic-bezier(0.23, 1, 0.32, 1); }
+.gf-footer .footer-about { display: inline; }
+.gf-footer .footer-about summary { display: inline-block; padding-block: 12px; margin-block: -12px; line-height: 20px; cursor: pointer; list-style: none; color: rgb(246, 240, 230); text-decoration: underline color-mix(in srgb, currentcolor 40%, transparent 60%); text-underline-offset: 3px; white-space: nowrap; transition: text-decoration-color 200ms cubic-bezier(0.23, 1, 0.32, 1); }
+.gf-footer .footer-about summary::-webkit-details-marker { display: none; }
 @media (hover: hover) and (pointer: fine) {
-.gf-footer .footer-about summary:hover { color: rgb(246, 240, 230); }
+.gf-footer .footer-about summary:hover { text-decoration-color: currentcolor; }
 }
-.gf-footer .footer-about p { line-height: 1.6; padding-bottom: 12px; }
+.gf-footer .footer-about p { display: block; max-width: 62ch; margin-top: 8px; line-height: 1.6; color: rgb(220, 208, 192); }
 @media (max-width: 1024px) {
 .gf-footer .gf-footer-top { grid-template-columns: minmax(0px, 1fr); }
-}
-@media (max-width: 860px) {
-.gf-footer .footer-credential { flex-direction: column; align-items: flex-start; }
-.gf-footer .gf-footer-bottom { grid-template-columns: minmax(0px, 1fr); }
-.gf-footer .footer-about summary { justify-content: flex-start; }
 }
 @media (max-width: 640px) {
 .gf-footer { padding-top: 48px; }
 .gf-footer .gf-footer-top { gap: 28px; }
 .gf-footer .gf-footer-links { display: none; }
 .gf-footer .gf-footer-fold { display: block; }
-.gf-footer .footer-plate { width: 100%; padding: 8px; }
-.gf-footer .footer-marks { display: grid; grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr); justify-items: center; gap: 2px 6px; }
-.gf-footer .footer-marks > span:first-child { grid-column: 1 / -1; }
-.gf-footer .footer-marks > span { max-width: 100%; padding: 5px !important; }
-.gf-footer .footer-marks img { width: auto; max-width: 100%; object-fit: contain; height: 36px !important; }
 }
 .dUsuZr { display: inline-flex; align-items: center; padding: calc(10.56px); }
 .dUsuZr img { height: 48px; width: auto; }
@@ -1224,8 +1227,64 @@ html.fonts-wait #stageHost,html.fonts-wait .notes,html.fonts-wait .buy{opacity:0
   .scrub{width:100%}
 }
 @media (prefers-reduced-motion:reduce){.book,.leaf,.single .face,#stageHost,.notes,.buy{transition:none}}
+
+/* ---------- round 3 (2026-10-24): the last fixes from the four juries ----------
+   - The bench holds its final height from the first paint: the swatch row
+     and, on a phone, the book's square are reserved before the script fills
+     them (CLS 0.27 on a throttled phone, jury 2 N2).
+   - Cover swatches are 44px targets with the 32px dot drawn inside.
+   - "Start free" is the site's primary button (kit PrimaryAnchor: chocolate,
+     52px, a plain arrow that steps forward), not a pill with a gold disc.
+   - The panel moves in beside a closed book (see railShift in the script).
+   - The scanned view is a plain sheet, not a drawn phone, and shows the
+     summary and the transcript only. */
+.swatch-row{min-height:44px;gap:0;margin-inline:-6px}
+.sw{width:44px;height:44px;padding:6px;border:0;border-radius:50%;background-clip:content-box;box-shadow:none;box-sizing:border-box}
+.sw::before{content:"";position:absolute;inset:6px;border-radius:50%;border:1px solid rgba(243,235,221,.35);pointer-events:none}
+.sw[aria-pressed="true"]::after{inset:0;border:1.5px solid var(--gold-ui)}
+.sw:focus-visible{outline:2px solid var(--gold-ui);outline-offset:0}
+@media (max-width:760px){#stageHost:empty{width:100%;max-width:620px;aspect-ratio:1/1}}
+
+.reserve .cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px 0 28px;border:1px solid transparent;border-radius:999px;background:var(--choc);color:#F6F0E6;font:600 16px/1.2 var(--ui-sans);letter-spacing:.005em;white-space:nowrap;transition:background-color 200ms var(--house-out),transform 120ms var(--house-out)}
+.reserve .cta svg{width:18px;height:18px;padding:0;border-radius:0;background:none;color:currentColor;transform:none;transition:transform 200ms var(--house-out)}
+@media (hover:hover){.reserve .cta:hover{background:#3B291D;color:#F6F0E6}.reserve .cta:hover svg{background:none;transform:translateX(3px)}}
+.reserve .cta:active{transform:scale(.97)}
+.reserve .cta:focus-visible{outline:2px solid #9E4420;outline-offset:3px;box-shadow:0 0 0 3px #FFFDF8}
+@media (max-width:760px){.reserve .cta{align-self:stretch;width:100%}}
+
+@media (min-width:1501px){
+  .rail .intro,.rail header.top,.rail .swatches,.rail .notes{transform:translateX(var(--rail-shift,0px));transition:transform 600ms cubic-bezier(.77,0,.175,1)}
+  .wrap.rail-still .rail .intro,.wrap.rail-still .rail header.top,.wrap.rail-still .rail .swatches,.wrap.rail-still .rail .notes{transition:none}
+}
+
+.scan{background:rgba(20,16,12,.6)}
+.phone{width:min(640px,100%);height:min(860px,calc(100svh - 32px));border-radius:14px;box-shadow:0 30px 80px -24px rgba(0,0,0,.6)}
+.ph-bar{padding:12px 14px 6px 22px}
+.ph-x{width:44px;height:44px;font-size:22px}
+.ph-body{padding:6px 28px 28px}
+.ph-back{min-height:44px;padding:0;margin-bottom:6px}
+.atab{min-height:44px;padding:0 18px}
+.msgs{list-style:none;margin:0;padding:0}
+.msg{display:block;padding:14px 16px}
+.msg span{display:block;margin-top:4px}
+.rd-h{margin:4px 0 18px;font:600 12px/1.4 "Montserrat",system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--a-acc)}
+.ph-body .rd-t{margin:22px 0 10px;font:500 30px/1.12 "Cormorant Garamond",Georgia,serif;color:var(--a-ink)}
+.ph-body h4.rd-t{font-size:26px}
+.ph-body h5.rd-t,.ph-body h6.rd-t{font-size:22px}
+.ph-body .rd-t:first-of-type{margin-top:0}
+.ph-body .rd-k{margin:18px 0 4px;font:600 12px/1.4 "Montserrat",system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--a-soft)}
+.ph-body .rd-k + .rd-k{margin-top:0}
+.ph-body .rd-p{font:400 19px/1.6 "EB Garamond",Georgia,serif;margin:0 0 12px;color:var(--a-ink)}
+.ph-body .rd-k + .rd-p{margin-top:0}
+.rd-hr{border:0;border-top:1px solid var(--a-line);margin:26px 0}
+@media (max-width:760px){
+  .scan{padding:12px}
+  .phone{height:calc(100svh - 24px)}
+  .ph-body{padding:6px 20px 24px}
+}
+@media (prefers-reduced-motion:reduce){.rail .intro,.rail header.top,.rail .swatches,.rail .notes,.reserve .cta,.reserve .cta svg{transition:none}}
 </style>
-<header class="gf-header"><div class="gf-nav-inner"><span><a aria-label="A Story - home" class="sc-bdDsiv cGzzaR" href="/"><svg viewBox="0 0 920 290" aria-hidden="true" focusable="false"><g transform="scale(0.5)"><path d="M 199 4.7 C 191.7 7.6, 187.4 14.5, 177.1 39.7 C 173.4 48.9, 163.6 73.2, 155.3 93.5 C 147.1 113.9, 133.7 147.6, 125.5 168.5 C 64.4 325.1, 45.1 371.2, 13.4 436.9 C 8.2 447.6, 4 456.7, 4 457.2 C 4 458.4, 34 458.2, 40.2 456.9 C 53.1 454.2, 67.9 444.1, 75 433.1 C 78.2 428.1, 79.6 424.8, 99 379 C 105.2 364.4, 110.4 352.3, 110.6 352.1 C 110.8 351.9, 112.4 352.7, 114.2 353.8 C 122 358.4, 140.9 359.6, 156.2 356.4 C 170.4 353.4, 179.1 353.9, 188 358.1 C 192.1 360.1, 198 364, 201 366.7 C 208.5 373.5, 211.4 373.5, 219.7 366.3 C 229.1 358.1, 237.6 354.5, 247.5 354.6 C 251.9 354.6, 259.2 355.4, 263.8 356.4 C 279.4 359.7, 299.1 358.3, 306.7 353.3 C 308 352.4, 309.2 351.9, 309.3 352.1 C 310.1 353.4, 314.8 364.3, 327.2 393.5 C 343.4 431.9, 344.2 433.4, 353 442.1 C 360.3 449.3, 368.5 453.9, 378.5 456.5 C 385 458.1, 416 458.7, 416 457.2 C 416 456.7, 411.6 447.1, 406.1 435.9 C 374.7 371, 348.5 307.9, 292.9 164.2 C 286 146.4, 256.9 73.8, 244.6 43.7 C 231.6 12, 227.5 5.8, 218.6 4.3 C 215 3.7, 211 6.4, 211 9.5 C 211 12, 209.6 11.2, 208 7.7 C 206.5 4.5, 202.8 3.2, 199 4.7 M 209 27.3 C 209 28.5, 207.9 35.6, 206.4 43 C 204.1 55.4, 200.9 69, 183.9 139 C 180.7 152.5, 174.2 179.4, 169.5 198.8 C 164.8 218.2, 160.5 235, 159.9 236.1 C 158.9 238, 159.1 238.1, 161.2 237.5 C 162.4 237.1, 164.7 236.1, 166.2 235.4 C 172.8 232, 185.4 235.4, 199.2 244.3 C 206.9 249.2, 207.9 251, 208.7 261.9 C 209 266.9, 209.6 271.3, 210 271.5 C 210.4 271.7, 211 267.6, 211.4 262.2 C 212.2 250.8, 213 249.2, 220.8 244.3 C 234.6 235.4, 247.2 232, 253.8 235.4 C 255.3 236.1, 257.5 237.1, 258.8 237.5 C 261.1 238.2, 261.1 238.1, 259.7 234.8 C 258.9 233, 257.7 229, 257.1 226 C 255.9 221.1, 248.4 189.7, 233.8 129.5 C 231.1 118, 226.1 97.7, 222.9 84.5 C 217 60.4, 211 31.4, 211 27.3 C 211 26, 210.6 25, 210 25 C 209.5 25, 209 26, 209 27.3 M 161.8 258.3 C 146.5 264.8, 138.8 278.5, 140.4 296.2 C 142.1 315, 152.1 326, 177.5 337 C 192.4 343.4, 196.7 345.7, 201.1 349.7 C 205.2 353.4, 209 359.6, 209 362.5 C 209 363.3, 209.5 364, 210 364 C 210.6 364, 211 363.3, 211 362.5 C 211 359.6, 214.8 353.4, 218.9 349.7 C 223.4 345.6, 228 343.1, 242.4 337 C 269.9 325.4, 279.6 313.4, 279.4 291.5 C 279.3 275.9, 273.5 266, 260.8 259.3 C 255.9 256.7, 254.7 256.5, 244 256.5 C 229.8 256.5, 228.5 257.1, 220.5 267.9 C 211.5 280, 208.5 280, 199.5 267.9 C 191.9 257.6, 190.1 256.7, 177.5 256.3 C 168.7 256, 166.8 256.2, 161.8 258.3" fill="#F6F0E6" fill-rule="evenodd"></path><path d="M 175.5 273.2 L 174.4 274.1 174.3 297.8 C 174.1 318.5, 174.2 321.6, 174.9 322.8 C 176.3 325.5, 179.3 325.8, 181.4 323.5 L 182.6 322.3 182.6 298.5 L 182.6 274.8 181.4 273.5 C 180 272, 177.2 271.9, 175.5 273.2 M 238.9 273.8 L 237.7 274.8 237.7 297.7 C 237.7 321.9, 237.7 321.5, 239.9 322.7 C 241.6 323.6, 242.9 323.4, 244.4 321.9 L 245.8 320.5 245.8 297.8 L 245.8 275.1 244.7 274 C 243.2 272.5, 240.7 272.4, 238.9 273.8 M 223.1 279.6 L 221.8 280.6 221.8 305.5 C 221.8 319.2, 221.9 330.8, 222.1 331.2 C 222.9 333.5, 226.8 333.8, 228.9 331.8 L 230 330.8 230 305.9 L 230 280.9 228.8 279.7 C 227.3 278.2, 224.8 278.2, 223.1 279.6 M 191.2 282.1 L 190 283.3 190 307.4 L 190 331.6 191.5 333 C 192.8 334.3, 193.2 334.4, 194.7 334.2 C 198.4 333.6, 198.2 334.8, 198.2 307.5 L 198.2 283.1 197.1 282 C 195.5 280.5, 192.8 280.6, 191.2 282.1 M 159.7 284.3 C 158.5 285.2, 158.5 285.3, 158.4 295.8 L 158.2 306.3 159.4 307.7 C 160.4 308.8, 161 309.1, 162.6 309.1 C 164.2 309.1, 164.9 308.8, 165.8 307.7 L 167 306.3 166.8 295.8 L 166.7 285.2 165.5 284.3 C 163.9 283.1, 161.1 283.1, 159.7 284.3 M 207.1 284.5 L 205.9 285.7 205.9 313.9 L 205.9 342.1 207.1 343.3 C 207.9 344.1, 208.8 344.5, 210 344.5 C 211.2 344.5, 212.1 344.1, 212.9 343.3 L 214.1 342.1 214.1 313.9 L 214.1 285.7 212.9 284.5 C 212.1 283.7, 211.2 283.4, 210 283.4 C 208.8 283.4, 207.9 283.7, 207.1 284.5 M 254.6 284.5 C 253.5 285.6, 253.5 285.9, 253.5 296.4 C 253.6 306.3, 253.6 307.3, 254.5 308.1 C 255.8 309.5, 258.9 309.4, 260.5 307.9 L 261.7 306.8 261.7 296.3 L 261.7 285.7 260.5 284.5 C 258.9 282.9, 256.1 282.9, 254.6 284.5" fill="#E0A03F" fill-rule="evenodd"></path></g><path transform="translate(-486 -76)" d="M 773.5 98.1 C 738.7 102.8, 718 123.2, 718 152.9 C 718 169.9, 722.2 181.2, 731.8 190.2 C 741.5 199.3, 752.8 203.7, 781 209.5 C 810.6 215.5, 820.9 219.7, 829.5 229.2 C 838.4 239.1, 840.8 257.7, 834.7 270.2 C 827.5 284.8, 813.5 292, 792 292 C 766.6 292, 753.4 283.9, 740.1 260.3 C 731.1 244.4, 726.7 240.9, 719 243.4 C 704.4 248.1, 714.9 274.8, 736.8 288.8 C 753.1 299.2, 766.1 302.5, 791 302.5 C 811.6 302.5, 818.6 301.2, 832.6 294.4 C 853.3 284.6, 864.3 268.4, 864.2 248.3 C 864.1 230.8, 859.7 219.8, 848.9 209.6 C 838.4 199.7, 826.9 195.1, 794.3 188 C 756.1 179.7, 745.2 171.2, 744.2 148.9 C 743.6 135.4, 745.3 129.9, 752.6 122.1 C 762.9 110.9, 778.1 106.3, 796.1 108.8 C 813.7 111.3, 823.5 118.9, 833.2 137.5 C 840.5 151.6, 843.4 154.5, 850.1 154.5 C 864.5 154.5, 864.6 135.2, 850.4 120 C 841.6 110.6, 826.6 102.8, 810.9 99.5 C 801.7 97.5, 782.8 96.8, 773.5 98.1 M 915.2 134.7 C 914.7 135.7, 914 139, 913.6 142 C 912.3 152.2, 907 160.7, 900.3 163.6 C 898.4 164.4, 893.6 165, 889.1 165 C 880.2 165, 878 166.2, 878 170.9 C 878 175.4, 879.5 176, 890.7 176 L 901 176 901 220.8 C 901.1 269.9, 901.7 277, 906.6 286 C 913.2 298.1, 923.5 303.4, 939 302.8 C 951 302.4, 957.5 299.5, 964.9 291.4 C 971.8 283.8, 976.3 269.7, 972.8 266.2 C 970.2 263.6, 965 265.4, 965 268.9 C 965 272.6, 960.6 279.1, 956.6 281.5 C 947.3 287, 936.5 285.4, 931 277.9 C 926.4 271.5, 925.9 265.2, 926.2 218.5 L 926.5 176.5 947.2 176.2 C 967 176, 968 175.9, 969.1 173.9 C 970.3 171.6, 969.5 166.9, 967.7 165.8 C 967 165.4, 957.4 165, 946.3 165 L 926.1 165 925.8 149.3 L 925.5 133.5 920.8 133.2 C 917.1 133, 915.9 133.3, 915.2 134.7 M 1046.2 163 C 1018.5 166.8, 995.4 187.8, 989.5 214.5 C 986.9 226, 987.8 243.9, 991.4 254.5 C 1001.6 284.5, 1028.6 303, 1061.7 303 C 1081.1 303, 1094.7 297.5, 1107.6 284.6 C 1146.1 246.1, 1126.7 176, 1074.5 164.7 C 1065.1 162.6, 1053.8 162, 1046.2 163 M 1156.6 171 C 1149.5 174.3, 1143.3 177.5, 1142.8 178.2 C 1141 181.2, 1142 184, 1146.1 186.7 C 1153.2 191.4, 1153 189.7, 1153 240.5 C 1153 290.9, 1153.2 289.1, 1146.5 294.3 C 1143.7 296.5, 1143 297.8, 1143.2 299.8 L 1143.5 302.5 1165.7 302.8 C 1186.6 303, 1187.9 302.9, 1188.4 301.2 C 1189.4 298.3, 1188.2 296.4, 1183.9 293.6 C 1176.5 288.7, 1176.8 290.8, 1177.2 246.3 C 1177.6 208.3, 1177.7 206.2, 1179.8 199.8 C 1183.9 187.5, 1191.4 180.7, 1201.1 180.6 C 1207.3 180.5, 1210.6 182.9, 1214.7 190.6 C 1218.5 197.8, 1221.2 200, 1225.7 200 C 1233.8 200, 1237.5 195, 1236.8 185.1 C 1235.9 172.4, 1226.6 165.4, 1211 165.6 C 1195.8 165.8, 1184.2 172.9, 1177.7 185.9 L 1175 191.4 1175 180.1 C 1175 168.4, 1174.1 165, 1171.2 165.1 C 1170.3 165.1, 1163.7 167.8, 1156.6 171 M 1250.2 166.2 C 1247.7 168.7, 1248.9 171.8, 1254 176 C 1258.1 179.4, 1260 182.3, 1264 190.4 C 1274.5 212.3, 1316 304.9, 1316 306.4 C 1316 309, 1306.7 328, 1302.3 334.6 C 1288.1 355.5, 1275.4 355.9, 1266.1 335.8 C 1261.6 326, 1258.1 323.2, 1251.6 324.4 C 1244.1 325.8, 1241 334.3, 1245 342.4 C 1250.3 353.4, 1262.5 360.2, 1277 360.3 C 1293.8 360.4, 1305.1 352, 1317.2 330.5 C 1319.7 326.1, 1336.1 290.8, 1353.6 252 C 1384.3 184.3, 1385.7 181.3, 1390.8 176.2 C 1396.3 170.6, 1396.6 170, 1395 166.9 C 1394 165.1, 1392.7 165, 1378 165 C 1364.9 165, 1361.9 165.3, 1360.6 166.6 C 1358.3 168.8, 1358.6 169.6, 1362.7 172.7 C 1369.7 178.1, 1371 179.7, 1371 183.4 C 1371 186.3, 1332.5 278.4, 1330 281.2 C 1329 282.5, 1288 184.9, 1288 181.1 C 1288 178.8, 1288.9 176.7, 1291 174.3 C 1294.5 170.4, 1294.8 167.5, 1292.1 166 C 1289.2 164.5, 1251.7 164.7, 1250.2 166.2 M 1040.4 173.8 C 1021.7 180.3, 1012 199.3, 1013.3 227.3 C 1015 267.2, 1038.3 295.8, 1067.2 293.8 C 1089.9 292.1, 1104.1 270.1, 1102.7 238.5 C 1101.3 206.5, 1087.5 181.9, 1066.5 174.1 C 1059.4 171.4, 1047.6 171.3, 1040.4 173.8" fill="#EBC86A" fill-rule="evenodd"></path></svg></a></span><button class="gf-menu-toggle" aria-controls="site-navigation" aria-expanded="false">Menu <i aria-hidden="true"></i></button><nav id="site-navigation" aria-label="Main navigation"><div class="gf-nav-links"><a href="/how-it-works">How it works</a><a href="/samples" aria-current="page">Sample books</a><a href="/for-families">For families</a><a href="/pricing">Pricing</a><a href="/our-story">Our story</a><div class="more-wrap"><button class="more-toggle" aria-expanded="false" aria-controls="more-panel">More <svg class="more-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5 7 5 5 5-5"></path></svg></button><div id="more-panel" class="more-panel" hidden=""><div class="more-groups"><div><h2>Explore</h2><a href="/compare"><strong>How A Story is different</strong><small>Memoir products, family archives, and us.</small></a><a href="/questions"><strong>Questions &amp; answers</strong><small>The practical things, explained.</small></a><a href="/guides"><strong>Conversation guides</strong><small>A good place to begin.</small></a><a href="/privacy"><strong>Privacy</strong><small>Their story belongs to them.</small></a></div><div><h2>Also for</h2><a href="/care-communities"><strong>Care communities</strong><small>Know the person behind the care.</small></a><a href="/organizations"><strong>Institutions</strong><small>Colleges, libraries, companies. Book a demo.</small></a><a href="/your-story"><strong>Your own story</strong><small>Your life belongs here too.</small></a><a href="/contact"><strong>Get in touch</strong><small>Write to Daniel, our co-founder.</small></a></div></div><a class="more-feature" href="/our-story"><img alt="" loading="lazy" src="/mission/31-640.webp"><small>Our story</small><b>Why two founders started asking.</b><span>Read the letter →</span></a></div></div></div><div class="gf-nav-right"><a class="gf-signin" href="https://app.astoryapp.com/sign-in">Sign in</a><a class="gf-button" href="https://app.astoryapp.com/create-account">Start free <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.6"></path></svg></a></div><div class="gf-mobile-more"><div><h2>Explore</h2><a href="/compare">How A Story is different</a><a href="/questions">Questions &amp; answers</a><a href="/guides">Conversation guides</a><a href="/privacy">Privacy</a></div><div><h2>Also for</h2><a href="/care-communities">Care communities</a><a href="/organizations">Institutions</a><a href="/your-story">Your own story</a><a href="/contact">Get in touch</a></div></div></nav></div></header>
+<header class="gf-header"><div class="gf-nav-inner"><span><a aria-label="A Story - home" class="sc-bdDsiv cGzzaR" href="/" data-discover="true"><svg viewBox="0 0 920 290" aria-hidden="true" focusable="false"><g transform="scale(0.5)"><path d="M 199 4.7 C 191.7 7.6, 187.4 14.5, 177.1 39.7 C 173.4 48.9, 163.6 73.2, 155.3 93.5 C 147.1 113.9, 133.7 147.6, 125.5 168.5 C 64.4 325.1, 45.1 371.2, 13.4 436.9 C 8.2 447.6, 4 456.7, 4 457.2 C 4 458.4, 34 458.2, 40.2 456.9 C 53.1 454.2, 67.9 444.1, 75 433.1 C 78.2 428.1, 79.6 424.8, 99 379 C 105.2 364.4, 110.4 352.3, 110.6 352.1 C 110.8 351.9, 112.4 352.7, 114.2 353.8 C 122 358.4, 140.9 359.6, 156.2 356.4 C 170.4 353.4, 179.1 353.9, 188 358.1 C 192.1 360.1, 198 364, 201 366.7 C 208.5 373.5, 211.4 373.5, 219.7 366.3 C 229.1 358.1, 237.6 354.5, 247.5 354.6 C 251.9 354.6, 259.2 355.4, 263.8 356.4 C 279.4 359.7, 299.1 358.3, 306.7 353.3 C 308 352.4, 309.2 351.9, 309.3 352.1 C 310.1 353.4, 314.8 364.3, 327.2 393.5 C 343.4 431.9, 344.2 433.4, 353 442.1 C 360.3 449.3, 368.5 453.9, 378.5 456.5 C 385 458.1, 416 458.7, 416 457.2 C 416 456.7, 411.6 447.1, 406.1 435.9 C 374.7 371, 348.5 307.9, 292.9 164.2 C 286 146.4, 256.9 73.8, 244.6 43.7 C 231.6 12, 227.5 5.8, 218.6 4.3 C 215 3.7, 211 6.4, 211 9.5 C 211 12, 209.6 11.2, 208 7.7 C 206.5 4.5, 202.8 3.2, 199 4.7 M 209 27.3 C 209 28.5, 207.9 35.6, 206.4 43 C 204.1 55.4, 200.9 69, 183.9 139 C 180.7 152.5, 174.2 179.4, 169.5 198.8 C 164.8 218.2, 160.5 235, 159.9 236.1 C 158.9 238, 159.1 238.1, 161.2 237.5 C 162.4 237.1, 164.7 236.1, 166.2 235.4 C 172.8 232, 185.4 235.4, 199.2 244.3 C 206.9 249.2, 207.9 251, 208.7 261.9 C 209 266.9, 209.6 271.3, 210 271.5 C 210.4 271.7, 211 267.6, 211.4 262.2 C 212.2 250.8, 213 249.2, 220.8 244.3 C 234.6 235.4, 247.2 232, 253.8 235.4 C 255.3 236.1, 257.5 237.1, 258.8 237.5 C 261.1 238.2, 261.1 238.1, 259.7 234.8 C 258.9 233, 257.7 229, 257.1 226 C 255.9 221.1, 248.4 189.7, 233.8 129.5 C 231.1 118, 226.1 97.7, 222.9 84.5 C 217 60.4, 211 31.4, 211 27.3 C 211 26, 210.6 25, 210 25 C 209.5 25, 209 26, 209 27.3 M 161.8 258.3 C 146.5 264.8, 138.8 278.5, 140.4 296.2 C 142.1 315, 152.1 326, 177.5 337 C 192.4 343.4, 196.7 345.7, 201.1 349.7 C 205.2 353.4, 209 359.6, 209 362.5 C 209 363.3, 209.5 364, 210 364 C 210.6 364, 211 363.3, 211 362.5 C 211 359.6, 214.8 353.4, 218.9 349.7 C 223.4 345.6, 228 343.1, 242.4 337 C 269.9 325.4, 279.6 313.4, 279.4 291.5 C 279.3 275.9, 273.5 266, 260.8 259.3 C 255.9 256.7, 254.7 256.5, 244 256.5 C 229.8 256.5, 228.5 257.1, 220.5 267.9 C 211.5 280, 208.5 280, 199.5 267.9 C 191.9 257.6, 190.1 256.7, 177.5 256.3 C 168.7 256, 166.8 256.2, 161.8 258.3" fill="#F6F0E6" fill-rule="evenodd"></path><path d="M 175.5 273.2 L 174.4 274.1 174.3 297.8 C 174.1 318.5, 174.2 321.6, 174.9 322.8 C 176.3 325.5, 179.3 325.8, 181.4 323.5 L 182.6 322.3 182.6 298.5 L 182.6 274.8 181.4 273.5 C 180 272, 177.2 271.9, 175.5 273.2 M 238.9 273.8 L 237.7 274.8 237.7 297.7 C 237.7 321.9, 237.7 321.5, 239.9 322.7 C 241.6 323.6, 242.9 323.4, 244.4 321.9 L 245.8 320.5 245.8 297.8 L 245.8 275.1 244.7 274 C 243.2 272.5, 240.7 272.4, 238.9 273.8 M 223.1 279.6 L 221.8 280.6 221.8 305.5 C 221.8 319.2, 221.9 330.8, 222.1 331.2 C 222.9 333.5, 226.8 333.8, 228.9 331.8 L 230 330.8 230 305.9 L 230 280.9 228.8 279.7 C 227.3 278.2, 224.8 278.2, 223.1 279.6 M 191.2 282.1 L 190 283.3 190 307.4 L 190 331.6 191.5 333 C 192.8 334.3, 193.2 334.4, 194.7 334.2 C 198.4 333.6, 198.2 334.8, 198.2 307.5 L 198.2 283.1 197.1 282 C 195.5 280.5, 192.8 280.6, 191.2 282.1 M 159.7 284.3 C 158.5 285.2, 158.5 285.3, 158.4 295.8 L 158.2 306.3 159.4 307.7 C 160.4 308.8, 161 309.1, 162.6 309.1 C 164.2 309.1, 164.9 308.8, 165.8 307.7 L 167 306.3 166.8 295.8 L 166.7 285.2 165.5 284.3 C 163.9 283.1, 161.1 283.1, 159.7 284.3 M 207.1 284.5 L 205.9 285.7 205.9 313.9 L 205.9 342.1 207.1 343.3 C 207.9 344.1, 208.8 344.5, 210 344.5 C 211.2 344.5, 212.1 344.1, 212.9 343.3 L 214.1 342.1 214.1 313.9 L 214.1 285.7 212.9 284.5 C 212.1 283.7, 211.2 283.4, 210 283.4 C 208.8 283.4, 207.9 283.7, 207.1 284.5 M 254.6 284.5 C 253.5 285.6, 253.5 285.9, 253.5 296.4 C 253.6 306.3, 253.6 307.3, 254.5 308.1 C 255.8 309.5, 258.9 309.4, 260.5 307.9 L 261.7 306.8 261.7 296.3 L 261.7 285.7 260.5 284.5 C 258.9 282.9, 256.1 282.9, 254.6 284.5" fill="#E0A03F" fill-rule="evenodd"></path></g><path transform="translate(-486 -76)" d="M 773.5 98.1 C 738.7 102.8, 718 123.2, 718 152.9 C 718 169.9, 722.2 181.2, 731.8 190.2 C 741.5 199.3, 752.8 203.7, 781 209.5 C 810.6 215.5, 820.9 219.7, 829.5 229.2 C 838.4 239.1, 840.8 257.7, 834.7 270.2 C 827.5 284.8, 813.5 292, 792 292 C 766.6 292, 753.4 283.9, 740.1 260.3 C 731.1 244.4, 726.7 240.9, 719 243.4 C 704.4 248.1, 714.9 274.8, 736.8 288.8 C 753.1 299.2, 766.1 302.5, 791 302.5 C 811.6 302.5, 818.6 301.2, 832.6 294.4 C 853.3 284.6, 864.3 268.4, 864.2 248.3 C 864.1 230.8, 859.7 219.8, 848.9 209.6 C 838.4 199.7, 826.9 195.1, 794.3 188 C 756.1 179.7, 745.2 171.2, 744.2 148.9 C 743.6 135.4, 745.3 129.9, 752.6 122.1 C 762.9 110.9, 778.1 106.3, 796.1 108.8 C 813.7 111.3, 823.5 118.9, 833.2 137.5 C 840.5 151.6, 843.4 154.5, 850.1 154.5 C 864.5 154.5, 864.6 135.2, 850.4 120 C 841.6 110.6, 826.6 102.8, 810.9 99.5 C 801.7 97.5, 782.8 96.8, 773.5 98.1 M 915.2 134.7 C 914.7 135.7, 914 139, 913.6 142 C 912.3 152.2, 907 160.7, 900.3 163.6 C 898.4 164.4, 893.6 165, 889.1 165 C 880.2 165, 878 166.2, 878 170.9 C 878 175.4, 879.5 176, 890.7 176 L 901 176 901 220.8 C 901.1 269.9, 901.7 277, 906.6 286 C 913.2 298.1, 923.5 303.4, 939 302.8 C 951 302.4, 957.5 299.5, 964.9 291.4 C 971.8 283.8, 976.3 269.7, 972.8 266.2 C 970.2 263.6, 965 265.4, 965 268.9 C 965 272.6, 960.6 279.1, 956.6 281.5 C 947.3 287, 936.5 285.4, 931 277.9 C 926.4 271.5, 925.9 265.2, 926.2 218.5 L 926.5 176.5 947.2 176.2 C 967 176, 968 175.9, 969.1 173.9 C 970.3 171.6, 969.5 166.9, 967.7 165.8 C 967 165.4, 957.4 165, 946.3 165 L 926.1 165 925.8 149.3 L 925.5 133.5 920.8 133.2 C 917.1 133, 915.9 133.3, 915.2 134.7 M 1046.2 163 C 1018.5 166.8, 995.4 187.8, 989.5 214.5 C 986.9 226, 987.8 243.9, 991.4 254.5 C 1001.6 284.5, 1028.6 303, 1061.7 303 C 1081.1 303, 1094.7 297.5, 1107.6 284.6 C 1146.1 246.1, 1126.7 176, 1074.5 164.7 C 1065.1 162.6, 1053.8 162, 1046.2 163 M 1156.6 171 C 1149.5 174.3, 1143.3 177.5, 1142.8 178.2 C 1141 181.2, 1142 184, 1146.1 186.7 C 1153.2 191.4, 1153 189.7, 1153 240.5 C 1153 290.9, 1153.2 289.1, 1146.5 294.3 C 1143.7 296.5, 1143 297.8, 1143.2 299.8 L 1143.5 302.5 1165.7 302.8 C 1186.6 303, 1187.9 302.9, 1188.4 301.2 C 1189.4 298.3, 1188.2 296.4, 1183.9 293.6 C 1176.5 288.7, 1176.8 290.8, 1177.2 246.3 C 1177.6 208.3, 1177.7 206.2, 1179.8 199.8 C 1183.9 187.5, 1191.4 180.7, 1201.1 180.6 C 1207.3 180.5, 1210.6 182.9, 1214.7 190.6 C 1218.5 197.8, 1221.2 200, 1225.7 200 C 1233.8 200, 1237.5 195, 1236.8 185.1 C 1235.9 172.4, 1226.6 165.4, 1211 165.6 C 1195.8 165.8, 1184.2 172.9, 1177.7 185.9 L 1175 191.4 1175 180.1 C 1175 168.4, 1174.1 165, 1171.2 165.1 C 1170.3 165.1, 1163.7 167.8, 1156.6 171 M 1250.2 166.2 C 1247.7 168.7, 1248.9 171.8, 1254 176 C 1258.1 179.4, 1260 182.3, 1264 190.4 C 1274.5 212.3, 1316 304.9, 1316 306.4 C 1316 309, 1306.7 328, 1302.3 334.6 C 1288.1 355.5, 1275.4 355.9, 1266.1 335.8 C 1261.6 326, 1258.1 323.2, 1251.6 324.4 C 1244.1 325.8, 1241 334.3, 1245 342.4 C 1250.3 353.4, 1262.5 360.2, 1277 360.3 C 1293.8 360.4, 1305.1 352, 1317.2 330.5 C 1319.7 326.1, 1336.1 290.8, 1353.6 252 C 1384.3 184.3, 1385.7 181.3, 1390.8 176.2 C 1396.3 170.6, 1396.6 170, 1395 166.9 C 1394 165.1, 1392.7 165, 1378 165 C 1364.9 165, 1361.9 165.3, 1360.6 166.6 C 1358.3 168.8, 1358.6 169.6, 1362.7 172.7 C 1369.7 178.1, 1371 179.7, 1371 183.4 C 1371 186.3, 1332.5 278.4, 1330 281.2 C 1329 282.5, 1288 184.9, 1288 181.1 C 1288 178.8, 1288.9 176.7, 1291 174.3 C 1294.5 170.4, 1294.8 167.5, 1292.1 166 C 1289.2 164.5, 1251.7 164.7, 1250.2 166.2 M 1040.4 173.8 C 1021.7 180.3, 1012 199.3, 1013.3 227.3 C 1015 267.2, 1038.3 295.8, 1067.2 293.8 C 1089.9 292.1, 1104.1 270.1, 1102.7 238.5 C 1101.3 206.5, 1087.5 181.9, 1066.5 174.1 C 1059.4 171.4, 1047.6 171.3, 1040.4 173.8" fill="#EBC86A" fill-rule="evenodd"></path></svg></a></span><button class="gf-menu-toggle" aria-controls="site-navigation" aria-expanded="false">Menu <i aria-hidden="true"></i></button><nav id="site-navigation" aria-label="Main navigation"><div class="gf-nav-links"><a href="/how-it-works" data-discover="true">How it works</a><a href="/samples" aria-current="page">Sample books</a><a href="/for-families" data-discover="true">For families</a><a href="/pricing" data-discover="true">Pricing</a><a href="/our-story" data-discover="true">Our story</a><div class="more-wrap"><button class="more-toggle" aria-expanded="false" aria-controls="more-panel">More <svg class="more-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m5 7 5 5 5-5"></path></svg></button><div id="more-panel" class="more-panel" hidden=""><div class="more-groups"><div><h2>Explore</h2><a href="/compare" data-discover="true"><strong>How A Story is different</strong><small>Memoir products, family archives, and us.</small></a><a href="/questions" data-discover="true"><strong>Questions &amp; answers</strong><small>The practical things, explained.</small></a><a href="/guides" data-discover="true"><strong>Conversation guides</strong><small>A good place to begin.</small></a><a href="/privacy" data-discover="true"><strong>Privacy</strong><small>Their story belongs to them.</small></a></div><div><h2>Also for</h2><a href="/care-communities" data-discover="true"><strong>Care communities</strong><small>Know the person behind the care.</small></a><a href="/organizations" data-discover="true"><strong>Institutions</strong><small>Colleges, libraries, companies. Book a demo.</small></a><a href="/your-story" data-discover="true"><strong>Your own story</strong><small>Your life belongs here too.</small></a><a href="/contact" data-discover="true"><strong>Get in touch</strong><small>Write to Daniel, our co-founder.</small></a></div></div><a class="more-feature" href="/our-story" data-discover="true"><img alt="" loading="lazy" src="/mission/31-640.webp"><small>Our story</small><b>Why two founders started asking.</b><span>Read the letter →</span></a></div></div></div><div class="gf-nav-right"><a class="gf-signin" href="https://app.astoryapp.com/sign-in">Sign in</a><a class="gf-button" href="https://app.astoryapp.com/create-account">Start free <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.6"></path></svg></a></div><div class="gf-mobile-more"><div><h2>Explore</h2><a href="/compare" data-discover="true">How A Story is different</a><a href="/questions" data-discover="true">Questions &amp; answers</a><a href="/guides" data-discover="true">Conversation guides</a><a href="/privacy" data-discover="true">Privacy</a></div><div><h2>Also for</h2><a href="/care-communities" data-discover="true">Care communities</a><a href="/organizations" data-discover="true">Institutions</a><a href="/your-story" data-discover="true">Your own story</a><a href="/contact" data-discover="true">Get in touch</a></div></div></nav></div></header>
 <main class="wrap" id="main">
   <div class="rail">
     <div class="intro">
@@ -1277,7 +1336,7 @@ html.fonts-wait #stageHost,html.fonts-wait .notes,html.fonts-wait .buy{opacity:0
     </div>
   </div>
 </main>
-<footer class="gf-footer"><div class="gf-width"><div class="gf-footer-top"><div><a aria-label="A Story - home" class="sc-bdDsiv cPXpB" href="/"><svg viewBox="0 0 920 290" aria-hidden="true" focusable="false"><g transform="scale(0.5)"><path d="M 199 4.7 C 191.7 7.6, 187.4 14.5, 177.1 39.7 C 173.4 48.9, 163.6 73.2, 155.3 93.5 C 147.1 113.9, 133.7 147.6, 125.5 168.5 C 64.4 325.1, 45.1 371.2, 13.4 436.9 C 8.2 447.6, 4 456.7, 4 457.2 C 4 458.4, 34 458.2, 40.2 456.9 C 53.1 454.2, 67.9 444.1, 75 433.1 C 78.2 428.1, 79.6 424.8, 99 379 C 105.2 364.4, 110.4 352.3, 110.6 352.1 C 110.8 351.9, 112.4 352.7, 114.2 353.8 C 122 358.4, 140.9 359.6, 156.2 356.4 C 170.4 353.4, 179.1 353.9, 188 358.1 C 192.1 360.1, 198 364, 201 366.7 C 208.5 373.5, 211.4 373.5, 219.7 366.3 C 229.1 358.1, 237.6 354.5, 247.5 354.6 C 251.9 354.6, 259.2 355.4, 263.8 356.4 C 279.4 359.7, 299.1 358.3, 306.7 353.3 C 308 352.4, 309.2 351.9, 309.3 352.1 C 310.1 353.4, 314.8 364.3, 327.2 393.5 C 343.4 431.9, 344.2 433.4, 353 442.1 C 360.3 449.3, 368.5 453.9, 378.5 456.5 C 385 458.1, 416 458.7, 416 457.2 C 416 456.7, 411.6 447.1, 406.1 435.9 C 374.7 371, 348.5 307.9, 292.9 164.2 C 286 146.4, 256.9 73.8, 244.6 43.7 C 231.6 12, 227.5 5.8, 218.6 4.3 C 215 3.7, 211 6.4, 211 9.5 C 211 12, 209.6 11.2, 208 7.7 C 206.5 4.5, 202.8 3.2, 199 4.7 M 209 27.3 C 209 28.5, 207.9 35.6, 206.4 43 C 204.1 55.4, 200.9 69, 183.9 139 C 180.7 152.5, 174.2 179.4, 169.5 198.8 C 164.8 218.2, 160.5 235, 159.9 236.1 C 158.9 238, 159.1 238.1, 161.2 237.5 C 162.4 237.1, 164.7 236.1, 166.2 235.4 C 172.8 232, 185.4 235.4, 199.2 244.3 C 206.9 249.2, 207.9 251, 208.7 261.9 C 209 266.9, 209.6 271.3, 210 271.5 C 210.4 271.7, 211 267.6, 211.4 262.2 C 212.2 250.8, 213 249.2, 220.8 244.3 C 234.6 235.4, 247.2 232, 253.8 235.4 C 255.3 236.1, 257.5 237.1, 258.8 237.5 C 261.1 238.2, 261.1 238.1, 259.7 234.8 C 258.9 233, 257.7 229, 257.1 226 C 255.9 221.1, 248.4 189.7, 233.8 129.5 C 231.1 118, 226.1 97.7, 222.9 84.5 C 217 60.4, 211 31.4, 211 27.3 C 211 26, 210.6 25, 210 25 C 209.5 25, 209 26, 209 27.3 M 161.8 258.3 C 146.5 264.8, 138.8 278.5, 140.4 296.2 C 142.1 315, 152.1 326, 177.5 337 C 192.4 343.4, 196.7 345.7, 201.1 349.7 C 205.2 353.4, 209 359.6, 209 362.5 C 209 363.3, 209.5 364, 210 364 C 210.6 364, 211 363.3, 211 362.5 C 211 359.6, 214.8 353.4, 218.9 349.7 C 223.4 345.6, 228 343.1, 242.4 337 C 269.9 325.4, 279.6 313.4, 279.4 291.5 C 279.3 275.9, 273.5 266, 260.8 259.3 C 255.9 256.7, 254.7 256.5, 244 256.5 C 229.8 256.5, 228.5 257.1, 220.5 267.9 C 211.5 280, 208.5 280, 199.5 267.9 C 191.9 257.6, 190.1 256.7, 177.5 256.3 C 168.7 256, 166.8 256.2, 161.8 258.3" fill="#F6F0E6" fill-rule="evenodd"></path><path d="M 175.5 273.2 L 174.4 274.1 174.3 297.8 C 174.1 318.5, 174.2 321.6, 174.9 322.8 C 176.3 325.5, 179.3 325.8, 181.4 323.5 L 182.6 322.3 182.6 298.5 L 182.6 274.8 181.4 273.5 C 180 272, 177.2 271.9, 175.5 273.2 M 238.9 273.8 L 237.7 274.8 237.7 297.7 C 237.7 321.9, 237.7 321.5, 239.9 322.7 C 241.6 323.6, 242.9 323.4, 244.4 321.9 L 245.8 320.5 245.8 297.8 L 245.8 275.1 244.7 274 C 243.2 272.5, 240.7 272.4, 238.9 273.8 M 223.1 279.6 L 221.8 280.6 221.8 305.5 C 221.8 319.2, 221.9 330.8, 222.1 331.2 C 222.9 333.5, 226.8 333.8, 228.9 331.8 L 230 330.8 230 305.9 L 230 280.9 228.8 279.7 C 227.3 278.2, 224.8 278.2, 223.1 279.6 M 191.2 282.1 L 190 283.3 190 307.4 L 190 331.6 191.5 333 C 192.8 334.3, 193.2 334.4, 194.7 334.2 C 198.4 333.6, 198.2 334.8, 198.2 307.5 L 198.2 283.1 197.1 282 C 195.5 280.5, 192.8 280.6, 191.2 282.1 M 159.7 284.3 C 158.5 285.2, 158.5 285.3, 158.4 295.8 L 158.2 306.3 159.4 307.7 C 160.4 308.8, 161 309.1, 162.6 309.1 C 164.2 309.1, 164.9 308.8, 165.8 307.7 L 167 306.3 166.8 295.8 L 166.7 285.2 165.5 284.3 C 163.9 283.1, 161.1 283.1, 159.7 284.3 M 207.1 284.5 L 205.9 285.7 205.9 313.9 L 205.9 342.1 207.1 343.3 C 207.9 344.1, 208.8 344.5, 210 344.5 C 211.2 344.5, 212.1 344.1, 212.9 343.3 L 214.1 342.1 214.1 313.9 L 214.1 285.7 212.9 284.5 C 212.1 283.7, 211.2 283.4, 210 283.4 C 208.8 283.4, 207.9 283.7, 207.1 284.5 M 254.6 284.5 C 253.5 285.6, 253.5 285.9, 253.5 296.4 C 253.6 306.3, 253.6 307.3, 254.5 308.1 C 255.8 309.5, 258.9 309.4, 260.5 307.9 L 261.7 306.8 261.7 296.3 L 261.7 285.7 260.5 284.5 C 258.9 282.9, 256.1 282.9, 254.6 284.5" fill="#E0A03F" fill-rule="evenodd"></path></g><path transform="translate(-486 -76)" d="M 773.5 98.1 C 738.7 102.8, 718 123.2, 718 152.9 C 718 169.9, 722.2 181.2, 731.8 190.2 C 741.5 199.3, 752.8 203.7, 781 209.5 C 810.6 215.5, 820.9 219.7, 829.5 229.2 C 838.4 239.1, 840.8 257.7, 834.7 270.2 C 827.5 284.8, 813.5 292, 792 292 C 766.6 292, 753.4 283.9, 740.1 260.3 C 731.1 244.4, 726.7 240.9, 719 243.4 C 704.4 248.1, 714.9 274.8, 736.8 288.8 C 753.1 299.2, 766.1 302.5, 791 302.5 C 811.6 302.5, 818.6 301.2, 832.6 294.4 C 853.3 284.6, 864.3 268.4, 864.2 248.3 C 864.1 230.8, 859.7 219.8, 848.9 209.6 C 838.4 199.7, 826.9 195.1, 794.3 188 C 756.1 179.7, 745.2 171.2, 744.2 148.9 C 743.6 135.4, 745.3 129.9, 752.6 122.1 C 762.9 110.9, 778.1 106.3, 796.1 108.8 C 813.7 111.3, 823.5 118.9, 833.2 137.5 C 840.5 151.6, 843.4 154.5, 850.1 154.5 C 864.5 154.5, 864.6 135.2, 850.4 120 C 841.6 110.6, 826.6 102.8, 810.9 99.5 C 801.7 97.5, 782.8 96.8, 773.5 98.1 M 915.2 134.7 C 914.7 135.7, 914 139, 913.6 142 C 912.3 152.2, 907 160.7, 900.3 163.6 C 898.4 164.4, 893.6 165, 889.1 165 C 880.2 165, 878 166.2, 878 170.9 C 878 175.4, 879.5 176, 890.7 176 L 901 176 901 220.8 C 901.1 269.9, 901.7 277, 906.6 286 C 913.2 298.1, 923.5 303.4, 939 302.8 C 951 302.4, 957.5 299.5, 964.9 291.4 C 971.8 283.8, 976.3 269.7, 972.8 266.2 C 970.2 263.6, 965 265.4, 965 268.9 C 965 272.6, 960.6 279.1, 956.6 281.5 C 947.3 287, 936.5 285.4, 931 277.9 C 926.4 271.5, 925.9 265.2, 926.2 218.5 L 926.5 176.5 947.2 176.2 C 967 176, 968 175.9, 969.1 173.9 C 970.3 171.6, 969.5 166.9, 967.7 165.8 C 967 165.4, 957.4 165, 946.3 165 L 926.1 165 925.8 149.3 L 925.5 133.5 920.8 133.2 C 917.1 133, 915.9 133.3, 915.2 134.7 M 1046.2 163 C 1018.5 166.8, 995.4 187.8, 989.5 214.5 C 986.9 226, 987.8 243.9, 991.4 254.5 C 1001.6 284.5, 1028.6 303, 1061.7 303 C 1081.1 303, 1094.7 297.5, 1107.6 284.6 C 1146.1 246.1, 1126.7 176, 1074.5 164.7 C 1065.1 162.6, 1053.8 162, 1046.2 163 M 1156.6 171 C 1149.5 174.3, 1143.3 177.5, 1142.8 178.2 C 1141 181.2, 1142 184, 1146.1 186.7 C 1153.2 191.4, 1153 189.7, 1153 240.5 C 1153 290.9, 1153.2 289.1, 1146.5 294.3 C 1143.7 296.5, 1143 297.8, 1143.2 299.8 L 1143.5 302.5 1165.7 302.8 C 1186.6 303, 1187.9 302.9, 1188.4 301.2 C 1189.4 298.3, 1188.2 296.4, 1183.9 293.6 C 1176.5 288.7, 1176.8 290.8, 1177.2 246.3 C 1177.6 208.3, 1177.7 206.2, 1179.8 199.8 C 1183.9 187.5, 1191.4 180.7, 1201.1 180.6 C 1207.3 180.5, 1210.6 182.9, 1214.7 190.6 C 1218.5 197.8, 1221.2 200, 1225.7 200 C 1233.8 200, 1237.5 195, 1236.8 185.1 C 1235.9 172.4, 1226.6 165.4, 1211 165.6 C 1195.8 165.8, 1184.2 172.9, 1177.7 185.9 L 1175 191.4 1175 180.1 C 1175 168.4, 1174.1 165, 1171.2 165.1 C 1170.3 165.1, 1163.7 167.8, 1156.6 171 M 1250.2 166.2 C 1247.7 168.7, 1248.9 171.8, 1254 176 C 1258.1 179.4, 1260 182.3, 1264 190.4 C 1274.5 212.3, 1316 304.9, 1316 306.4 C 1316 309, 1306.7 328, 1302.3 334.6 C 1288.1 355.5, 1275.4 355.9, 1266.1 335.8 C 1261.6 326, 1258.1 323.2, 1251.6 324.4 C 1244.1 325.8, 1241 334.3, 1245 342.4 C 1250.3 353.4, 1262.5 360.2, 1277 360.3 C 1293.8 360.4, 1305.1 352, 1317.2 330.5 C 1319.7 326.1, 1336.1 290.8, 1353.6 252 C 1384.3 184.3, 1385.7 181.3, 1390.8 176.2 C 1396.3 170.6, 1396.6 170, 1395 166.9 C 1394 165.1, 1392.7 165, 1378 165 C 1364.9 165, 1361.9 165.3, 1360.6 166.6 C 1358.3 168.8, 1358.6 169.6, 1362.7 172.7 C 1369.7 178.1, 1371 179.7, 1371 183.4 C 1371 186.3, 1332.5 278.4, 1330 281.2 C 1329 282.5, 1288 184.9, 1288 181.1 C 1288 178.8, 1288.9 176.7, 1291 174.3 C 1294.5 170.4, 1294.8 167.5, 1292.1 166 C 1289.2 164.5, 1251.7 164.7, 1250.2 166.2 M 1040.4 173.8 C 1021.7 180.3, 1012 199.3, 1013.3 227.3 C 1015 267.2, 1038.3 295.8, 1067.2 293.8 C 1089.9 292.1, 1104.1 270.1, 1102.7 238.5 C 1101.3 206.5, 1087.5 181.9, 1066.5 174.1 C 1059.4 171.4, 1047.6 171.3, 1040.4 173.8" fill="#EBC86A" fill-rule="evenodd"></path></svg></a><p class="footer-line">A Story calls someone you love, listens, and keeps what they say in a private archive the whole family can add to.</p><p class="footer-contact"><a href="mailto:daniel@astoryapp.com?subject=Hello%20from%20astoryapp.com">daniel@astoryapp.com</a></p></div><nav class="gf-footer-links" aria-label="Site"><div><h2>The product</h2><a href="/how-it-works">How it works</a><a href="/samples">Sample books</a><a href="/pricing">Pricing</a><a href="/reserve">Reserve for $1</a><a href="/compare">Compare</a></div><div><h2>Who it’s for</h2><a href="/for-families">Families</a><a href="/care-communities">Care communities</a><a href="/organizations">Institutions</a><a href="/your-story">Your own story</a></div><div><h2>Help</h2><a href="/guides">Conversation guides</a><a href="/questions">Questions &amp; answers</a><a href="/contact">Contact</a><a href="mailto:daniel@astoryapp.com?subject=Hello%20from%20astoryapp.com">Write to us</a></div><div><h2>Company</h2><a href="/our-story">Our story</a><a href="/programs">Programs &amp; grants</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></nav><nav class="gf-footer-fold" aria-label="Site"><details><summary>Explore A Story<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 8 5 5 5-5" stroke="currentColor" stroke-width="1.6"></path></svg></summary><div class="fold-body"><div><h2>The product</h2><a href="/how-it-works">How it works</a><a href="/samples">Sample books</a><a href="/pricing">Pricing</a><a href="/reserve">Reserve for $1</a><a href="/compare">Compare</a></div><div><h2>Who it’s for</h2><a href="/for-families">Families</a><a href="/care-communities">Care communities</a><a href="/organizations">Institutions</a><a href="/your-story">Your own story</a></div></div></details><details><summary>Help and company<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 8 5 5 5-5" stroke="currentColor" stroke-width="1.6"></path></svg></summary><div class="fold-body"><div><h2>Help</h2><a href="/guides">Conversation guides</a><a href="/questions">Questions &amp; answers</a><a href="/contact">Contact</a><a href="mailto:daniel@astoryapp.com?subject=Hello%20from%20astoryapp.com">Write to us</a></div><div><h2>Company</h2><a href="/our-story">Our story</a><a href="/programs">Programs &amp; grants</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div></details></nav></div><div class="footer-credential"><p class="footer-programs">Startup programs &amp; grants</p><a class="footer-plate" aria-label="Startup programs and grants: A Story is a member of NVIDIA Inception, Google for Startups, the AssemblyAI Startup Program and the Deepgram Startup Program, and a Cartesia Startups grant recipient" href="/programs"><span class="sc-kLEbdv cEvRbw footer-marks"><span class="sc-ezjfOt dUsuZr"><img alt="NVIDIA Inception Program member" width="111" height="48" decoding="async" src="/partners/nvidia-inception-program-badge-rgb-for-screen.svg"></span><span class="boxed"><img alt="Google for Startups" width="160" height="48" decoding="async" src="/partners/google-for-startups-lockup-boxed.svg"></span><span class="boxed"><img alt="AssemblyAI Startup Program" width="239" height="48" decoding="async" src="/partners/assemblyai-startup-program-lockup-boxed.svg"></span><span class="boxed"><img alt="Deepgram Startup Program" width="230" height="48" decoding="async" src="/partners/deepgram-startup-program-lockup-boxed.svg"></span><span class="boxed"><img alt="Cartesia Startups grant recipient" width="242" height="48" decoding="async" src="/partners/cartesia-startups-lockup-boxed.svg"></span></span></a></div><div class="gf-footer-bottom"><p class="footer-legal">© 2026 A Story Technologies, Inc. <span class="footer-trademark">NVIDIA, the NVIDIA logo, and NVIDIA Inception are trademarks and/or registered trademarks of NVIDIA Corporation in the U.S. and other countries.</span></p><details class="footer-about"><summary>About the examples</summary><p>Photographs are AI-generated illustrations. Names and conversations in the demonstrations are fictional, not customer testimonials.</p></details></div></div></footer>
+<footer class="gf-footer"><div class="gf-width"><div class="gf-footer-top"><div><a aria-label="A Story - home" class="sc-bdDsiv cPXpB" href="/" data-discover="true"><svg viewBox="0 0 920 290" aria-hidden="true" focusable="false"><g transform="scale(0.5)"><path d="M 199 4.7 C 191.7 7.6, 187.4 14.5, 177.1 39.7 C 173.4 48.9, 163.6 73.2, 155.3 93.5 C 147.1 113.9, 133.7 147.6, 125.5 168.5 C 64.4 325.1, 45.1 371.2, 13.4 436.9 C 8.2 447.6, 4 456.7, 4 457.2 C 4 458.4, 34 458.2, 40.2 456.9 C 53.1 454.2, 67.9 444.1, 75 433.1 C 78.2 428.1, 79.6 424.8, 99 379 C 105.2 364.4, 110.4 352.3, 110.6 352.1 C 110.8 351.9, 112.4 352.7, 114.2 353.8 C 122 358.4, 140.9 359.6, 156.2 356.4 C 170.4 353.4, 179.1 353.9, 188 358.1 C 192.1 360.1, 198 364, 201 366.7 C 208.5 373.5, 211.4 373.5, 219.7 366.3 C 229.1 358.1, 237.6 354.5, 247.5 354.6 C 251.9 354.6, 259.2 355.4, 263.8 356.4 C 279.4 359.7, 299.1 358.3, 306.7 353.3 C 308 352.4, 309.2 351.9, 309.3 352.1 C 310.1 353.4, 314.8 364.3, 327.2 393.5 C 343.4 431.9, 344.2 433.4, 353 442.1 C 360.3 449.3, 368.5 453.9, 378.5 456.5 C 385 458.1, 416 458.7, 416 457.2 C 416 456.7, 411.6 447.1, 406.1 435.9 C 374.7 371, 348.5 307.9, 292.9 164.2 C 286 146.4, 256.9 73.8, 244.6 43.7 C 231.6 12, 227.5 5.8, 218.6 4.3 C 215 3.7, 211 6.4, 211 9.5 C 211 12, 209.6 11.2, 208 7.7 C 206.5 4.5, 202.8 3.2, 199 4.7 M 209 27.3 C 209 28.5, 207.9 35.6, 206.4 43 C 204.1 55.4, 200.9 69, 183.9 139 C 180.7 152.5, 174.2 179.4, 169.5 198.8 C 164.8 218.2, 160.5 235, 159.9 236.1 C 158.9 238, 159.1 238.1, 161.2 237.5 C 162.4 237.1, 164.7 236.1, 166.2 235.4 C 172.8 232, 185.4 235.4, 199.2 244.3 C 206.9 249.2, 207.9 251, 208.7 261.9 C 209 266.9, 209.6 271.3, 210 271.5 C 210.4 271.7, 211 267.6, 211.4 262.2 C 212.2 250.8, 213 249.2, 220.8 244.3 C 234.6 235.4, 247.2 232, 253.8 235.4 C 255.3 236.1, 257.5 237.1, 258.8 237.5 C 261.1 238.2, 261.1 238.1, 259.7 234.8 C 258.9 233, 257.7 229, 257.1 226 C 255.9 221.1, 248.4 189.7, 233.8 129.5 C 231.1 118, 226.1 97.7, 222.9 84.5 C 217 60.4, 211 31.4, 211 27.3 C 211 26, 210.6 25, 210 25 C 209.5 25, 209 26, 209 27.3 M 161.8 258.3 C 146.5 264.8, 138.8 278.5, 140.4 296.2 C 142.1 315, 152.1 326, 177.5 337 C 192.4 343.4, 196.7 345.7, 201.1 349.7 C 205.2 353.4, 209 359.6, 209 362.5 C 209 363.3, 209.5 364, 210 364 C 210.6 364, 211 363.3, 211 362.5 C 211 359.6, 214.8 353.4, 218.9 349.7 C 223.4 345.6, 228 343.1, 242.4 337 C 269.9 325.4, 279.6 313.4, 279.4 291.5 C 279.3 275.9, 273.5 266, 260.8 259.3 C 255.9 256.7, 254.7 256.5, 244 256.5 C 229.8 256.5, 228.5 257.1, 220.5 267.9 C 211.5 280, 208.5 280, 199.5 267.9 C 191.9 257.6, 190.1 256.7, 177.5 256.3 C 168.7 256, 166.8 256.2, 161.8 258.3" fill="#F6F0E6" fill-rule="evenodd"></path><path d="M 175.5 273.2 L 174.4 274.1 174.3 297.8 C 174.1 318.5, 174.2 321.6, 174.9 322.8 C 176.3 325.5, 179.3 325.8, 181.4 323.5 L 182.6 322.3 182.6 298.5 L 182.6 274.8 181.4 273.5 C 180 272, 177.2 271.9, 175.5 273.2 M 238.9 273.8 L 237.7 274.8 237.7 297.7 C 237.7 321.9, 237.7 321.5, 239.9 322.7 C 241.6 323.6, 242.9 323.4, 244.4 321.9 L 245.8 320.5 245.8 297.8 L 245.8 275.1 244.7 274 C 243.2 272.5, 240.7 272.4, 238.9 273.8 M 223.1 279.6 L 221.8 280.6 221.8 305.5 C 221.8 319.2, 221.9 330.8, 222.1 331.2 C 222.9 333.5, 226.8 333.8, 228.9 331.8 L 230 330.8 230 305.9 L 230 280.9 228.8 279.7 C 227.3 278.2, 224.8 278.2, 223.1 279.6 M 191.2 282.1 L 190 283.3 190 307.4 L 190 331.6 191.5 333 C 192.8 334.3, 193.2 334.4, 194.7 334.2 C 198.4 333.6, 198.2 334.8, 198.2 307.5 L 198.2 283.1 197.1 282 C 195.5 280.5, 192.8 280.6, 191.2 282.1 M 159.7 284.3 C 158.5 285.2, 158.5 285.3, 158.4 295.8 L 158.2 306.3 159.4 307.7 C 160.4 308.8, 161 309.1, 162.6 309.1 C 164.2 309.1, 164.9 308.8, 165.8 307.7 L 167 306.3 166.8 295.8 L 166.7 285.2 165.5 284.3 C 163.9 283.1, 161.1 283.1, 159.7 284.3 M 207.1 284.5 L 205.9 285.7 205.9 313.9 L 205.9 342.1 207.1 343.3 C 207.9 344.1, 208.8 344.5, 210 344.5 C 211.2 344.5, 212.1 344.1, 212.9 343.3 L 214.1 342.1 214.1 313.9 L 214.1 285.7 212.9 284.5 C 212.1 283.7, 211.2 283.4, 210 283.4 C 208.8 283.4, 207.9 283.7, 207.1 284.5 M 254.6 284.5 C 253.5 285.6, 253.5 285.9, 253.5 296.4 C 253.6 306.3, 253.6 307.3, 254.5 308.1 C 255.8 309.5, 258.9 309.4, 260.5 307.9 L 261.7 306.8 261.7 296.3 L 261.7 285.7 260.5 284.5 C 258.9 282.9, 256.1 282.9, 254.6 284.5" fill="#E0A03F" fill-rule="evenodd"></path></g><path transform="translate(-486 -76)" d="M 773.5 98.1 C 738.7 102.8, 718 123.2, 718 152.9 C 718 169.9, 722.2 181.2, 731.8 190.2 C 741.5 199.3, 752.8 203.7, 781 209.5 C 810.6 215.5, 820.9 219.7, 829.5 229.2 C 838.4 239.1, 840.8 257.7, 834.7 270.2 C 827.5 284.8, 813.5 292, 792 292 C 766.6 292, 753.4 283.9, 740.1 260.3 C 731.1 244.4, 726.7 240.9, 719 243.4 C 704.4 248.1, 714.9 274.8, 736.8 288.8 C 753.1 299.2, 766.1 302.5, 791 302.5 C 811.6 302.5, 818.6 301.2, 832.6 294.4 C 853.3 284.6, 864.3 268.4, 864.2 248.3 C 864.1 230.8, 859.7 219.8, 848.9 209.6 C 838.4 199.7, 826.9 195.1, 794.3 188 C 756.1 179.7, 745.2 171.2, 744.2 148.9 C 743.6 135.4, 745.3 129.9, 752.6 122.1 C 762.9 110.9, 778.1 106.3, 796.1 108.8 C 813.7 111.3, 823.5 118.9, 833.2 137.5 C 840.5 151.6, 843.4 154.5, 850.1 154.5 C 864.5 154.5, 864.6 135.2, 850.4 120 C 841.6 110.6, 826.6 102.8, 810.9 99.5 C 801.7 97.5, 782.8 96.8, 773.5 98.1 M 915.2 134.7 C 914.7 135.7, 914 139, 913.6 142 C 912.3 152.2, 907 160.7, 900.3 163.6 C 898.4 164.4, 893.6 165, 889.1 165 C 880.2 165, 878 166.2, 878 170.9 C 878 175.4, 879.5 176, 890.7 176 L 901 176 901 220.8 C 901.1 269.9, 901.7 277, 906.6 286 C 913.2 298.1, 923.5 303.4, 939 302.8 C 951 302.4, 957.5 299.5, 964.9 291.4 C 971.8 283.8, 976.3 269.7, 972.8 266.2 C 970.2 263.6, 965 265.4, 965 268.9 C 965 272.6, 960.6 279.1, 956.6 281.5 C 947.3 287, 936.5 285.4, 931 277.9 C 926.4 271.5, 925.9 265.2, 926.2 218.5 L 926.5 176.5 947.2 176.2 C 967 176, 968 175.9, 969.1 173.9 C 970.3 171.6, 969.5 166.9, 967.7 165.8 C 967 165.4, 957.4 165, 946.3 165 L 926.1 165 925.8 149.3 L 925.5 133.5 920.8 133.2 C 917.1 133, 915.9 133.3, 915.2 134.7 M 1046.2 163 C 1018.5 166.8, 995.4 187.8, 989.5 214.5 C 986.9 226, 987.8 243.9, 991.4 254.5 C 1001.6 284.5, 1028.6 303, 1061.7 303 C 1081.1 303, 1094.7 297.5, 1107.6 284.6 C 1146.1 246.1, 1126.7 176, 1074.5 164.7 C 1065.1 162.6, 1053.8 162, 1046.2 163 M 1156.6 171 C 1149.5 174.3, 1143.3 177.5, 1142.8 178.2 C 1141 181.2, 1142 184, 1146.1 186.7 C 1153.2 191.4, 1153 189.7, 1153 240.5 C 1153 290.9, 1153.2 289.1, 1146.5 294.3 C 1143.7 296.5, 1143 297.8, 1143.2 299.8 L 1143.5 302.5 1165.7 302.8 C 1186.6 303, 1187.9 302.9, 1188.4 301.2 C 1189.4 298.3, 1188.2 296.4, 1183.9 293.6 C 1176.5 288.7, 1176.8 290.8, 1177.2 246.3 C 1177.6 208.3, 1177.7 206.2, 1179.8 199.8 C 1183.9 187.5, 1191.4 180.7, 1201.1 180.6 C 1207.3 180.5, 1210.6 182.9, 1214.7 190.6 C 1218.5 197.8, 1221.2 200, 1225.7 200 C 1233.8 200, 1237.5 195, 1236.8 185.1 C 1235.9 172.4, 1226.6 165.4, 1211 165.6 C 1195.8 165.8, 1184.2 172.9, 1177.7 185.9 L 1175 191.4 1175 180.1 C 1175 168.4, 1174.1 165, 1171.2 165.1 C 1170.3 165.1, 1163.7 167.8, 1156.6 171 M 1250.2 166.2 C 1247.7 168.7, 1248.9 171.8, 1254 176 C 1258.1 179.4, 1260 182.3, 1264 190.4 C 1274.5 212.3, 1316 304.9, 1316 306.4 C 1316 309, 1306.7 328, 1302.3 334.6 C 1288.1 355.5, 1275.4 355.9, 1266.1 335.8 C 1261.6 326, 1258.1 323.2, 1251.6 324.4 C 1244.1 325.8, 1241 334.3, 1245 342.4 C 1250.3 353.4, 1262.5 360.2, 1277 360.3 C 1293.8 360.4, 1305.1 352, 1317.2 330.5 C 1319.7 326.1, 1336.1 290.8, 1353.6 252 C 1384.3 184.3, 1385.7 181.3, 1390.8 176.2 C 1396.3 170.6, 1396.6 170, 1395 166.9 C 1394 165.1, 1392.7 165, 1378 165 C 1364.9 165, 1361.9 165.3, 1360.6 166.6 C 1358.3 168.8, 1358.6 169.6, 1362.7 172.7 C 1369.7 178.1, 1371 179.7, 1371 183.4 C 1371 186.3, 1332.5 278.4, 1330 281.2 C 1329 282.5, 1288 184.9, 1288 181.1 C 1288 178.8, 1288.9 176.7, 1291 174.3 C 1294.5 170.4, 1294.8 167.5, 1292.1 166 C 1289.2 164.5, 1251.7 164.7, 1250.2 166.2 M 1040.4 173.8 C 1021.7 180.3, 1012 199.3, 1013.3 227.3 C 1015 267.2, 1038.3 295.8, 1067.2 293.8 C 1089.9 292.1, 1104.1 270.1, 1102.7 238.5 C 1101.3 206.5, 1087.5 181.9, 1066.5 174.1 C 1059.4 171.4, 1047.6 171.3, 1040.4 173.8" fill="#EBC86A" fill-rule="evenodd"></path></svg></a><p class="footer-line">A Story calls someone you love, listens, and keeps what they say in a private archive the whole family can add to.</p><p class="footer-contact"><a href="mailto:daniel@astoryapp.com?subject=Hello%20from%20astoryapp.com">daniel@astoryapp.com</a></p></div><nav class="gf-footer-links" aria-label="Site"><div><h2>The product</h2><a href="/how-it-works" data-discover="true">How it works</a><a href="/samples">Sample books</a><a href="/pricing" data-discover="true">Pricing</a><a href="/reserve" data-discover="true">Reserve for $1</a><a href="/compare" data-discover="true">Compare</a></div><div><h2>Who it’s for</h2><a href="/for-families" data-discover="true">Families</a><a href="/care-communities" data-discover="true">Care communities</a><a href="/organizations" data-discover="true">Institutions</a><a href="/your-story" data-discover="true">Your own story</a></div><div><h2>Help</h2><a href="/guides" data-discover="true">Conversation guides</a><a href="/questions" data-discover="true">Questions &amp; answers</a><a href="/contact" data-discover="true">Contact</a><a href="mailto:daniel@astoryapp.com?subject=Hello%20from%20astoryapp.com">Write to us</a></div><div><h2>Company</h2><a href="/our-story" data-discover="true">Our story</a><a href="/programs" data-discover="true">Programs &amp; grants</a><a href="/privacy" data-discover="true">Privacy</a><a href="/terms" data-discover="true">Terms</a></div></nav><nav class="gf-footer-fold" aria-label="Site"><details><summary>Explore A Story<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 8 5 5 5-5" stroke="currentColor" stroke-width="1.6"></path></svg></summary><div class="fold-body"><div><h2>The product</h2><a href="/how-it-works" data-discover="true">How it works</a><a href="/samples">Sample books</a><a href="/pricing" data-discover="true">Pricing</a><a href="/reserve" data-discover="true">Reserve for $1</a><a href="/compare" data-discover="true">Compare</a></div><div><h2>Who it’s for</h2><a href="/for-families" data-discover="true">Families</a><a href="/care-communities" data-discover="true">Care communities</a><a href="/organizations" data-discover="true">Institutions</a><a href="/your-story" data-discover="true">Your own story</a></div></div></details><details><summary>Help and company<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 8 5 5 5-5" stroke="currentColor" stroke-width="1.6"></path></svg></summary><div class="fold-body"><div><h2>Help</h2><a href="/guides" data-discover="true">Conversation guides</a><a href="/questions" data-discover="true">Questions &amp; answers</a><a href="/contact" data-discover="true">Contact</a><a href="mailto:daniel@astoryapp.com?subject=Hello%20from%20astoryapp.com">Write to us</a></div><div><h2>Company</h2><a href="/our-story" data-discover="true">Our story</a><a href="/programs" data-discover="true">Programs &amp; grants</a><a href="/privacy" data-discover="true">Privacy</a><a href="/terms" data-discover="true">Terms</a></div></div></details></nav></div><div class="footer-credential"><p class="footer-programs">Startup programs &amp; grants</p><a class="footer-plate" aria-label="Startup programs and grants: A Story is a member of NVIDIA Inception, Google for Startups, the AssemblyAI Startup Program and the Deepgram Startup Program, and a Cartesia Startups grant recipient" href="/programs" data-discover="true"><span class="sc-kLEbdv cEvRbw footer-marks"><span class="sc-ezjfOt dUsuZr"><img alt="NVIDIA Inception Program member" width="111" height="48" decoding="async" src="/partners/nvidia-inception-program-badge-rgb-for-screen.svg"></span><span class="boxed"><img alt="Google for Startups" width="160" height="48" decoding="async" src="/partners/google-for-startups-lockup-boxed.svg"></span><span class="boxed"><img alt="AssemblyAI Startup Program" width="239" height="48" decoding="async" src="/partners/assemblyai-startup-program-lockup-boxed.svg"></span><span class="boxed"><img alt="Deepgram Startup Program" width="230" height="48" decoding="async" src="/partners/deepgram-startup-program-lockup-boxed.svg"></span><span class="boxed"><img alt="Cartesia Startups grant recipient" width="242" height="48" decoding="async" src="/partners/cartesia-startups-lockup-boxed.svg"></span></span><span class="footer-plate-more" aria-hidden="true">What each one is<svg viewBox="0 0 20 20" fill="none"><path d="M3 10h13m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.6"></path></svg></span></a></div><div class="gf-footer-bottom"><div class="footer-legal">© 2026 A Story Technologies, Inc. <span class="footer-trademark">NVIDIA, the NVIDIA logo, and NVIDIA Inception are trademarks and/or registered trademarks of NVIDIA Corporation in the U.S. and other countries.</span> <details class="footer-about"><summary>About the examples</summary><p>Photographs are AI-generated illustrations. Names and conversations in the demonstrations are fictional, not customer testimonials.</p></details></div></div></div></footer>
 
 
 <div class="scan" id="scan" hidden role="dialog" aria-modal="true" aria-label="What opens when you scan">
@@ -1344,7 +1403,7 @@ const deepPage = (k, n) => {
     <div class="lessonbox"><div class="ll">The lesson ${P.she} carries</div><div class="lt">${m.lesson}</div>${m.lessonVi?`<div class="lv">${m.lessonVi}</div>`:''}</div>
     <div class="passed">${m.passed.map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('')}</div>
   </div>
-  <div class="strip">${qrBtn(k, m.video?'voice':'summary')}<div><div class="tabs">${m.video?'Video · ':''}Full transcript</div><p>${m.video?`Scan to watch ${P.name} tell this story.`:`Scan to read the whole conversation and hear ${P.name} tell it.`}</p><span class="rec">Recorded ${m.rec} · ${m.mins} min</span></div></div>
+  <div class="strip">${qrBtn(k, 'summary')}<div><div class="tabs">Full transcript</div><p>Scan to read the whole conversation.</p><span class="rec">Recorded ${m.rec} · ${m.mins} min</span></div></div>
   ${folio(n)}`;
 };
 const littlePage = (items, n, title, note) => `${grain}<div class="pg little">
@@ -1393,34 +1452,59 @@ const backCover = (fam, q) => ({cls:"cover nogutter", html:`<div class="linen"><
 
 /* ---------- the scanned view (shared by all three books) ---------- */
 const scanEl = document.getElementById('scan'), phBody = document.getElementById('phBody');
-let lastFocus = null, playTimer = null;
-const PLAY = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg>`;
-const PAUSE = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>`;
+let lastFocus = null;
 const BRAND = `<div class="ph-brand"><span class="ph-logo"></span>A Story<small>Your Family’s Living Memories</small></div>`;
-function bars(seed){ let h='',s=seed; for(let i=0;i<46;i++){ s=(s*9301+49297)%233280; const v=.25+.75*Math.abs(Math.sin(i*.55+seed))*(.55+.45*s/233280); h+=`<i style="height:${Math.round(v*100)}%"></i>`;} return h; }
+/* Round 3: no voice player and no waveform here. Clips in the storyteller's
+   own voice are in development, so a scan opens the summary and the transcript. */
 function openScan(key, tab){
   lastFocus = document.activeElement; scanEl.hidden = false; setPhLabel('Sample · what this code opens');
   key==='archive' ? showArchive() : key==='little' ? showLittle() : key==='family' ? showFamily() : showMem(key, tab||'summary');
   document.getElementById('phClose').focus();
 }
-function setPhLabel(t){ const el=document.getElementById('phLabel'); if(el) el.innerHTML='<i></i>'+t; }
+function setPhLabel(t){ const el=document.getElementById('phLabel'); if(el) el.innerHTML='<i></i>'+t; scanEl.setAttribute('aria-label', t.replace(/^Sample · /,'')); }
 const escH = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* "Read in large type" (round 3, jury 2 N5): the open pages set as text on a
+   plain sheet, keeping their structure. A page's headings stay headings (one
+   level under the sheet's own), its small labels stay labels (a date stays
+   paired with its answer), and its paragraphs and list rows stay apart. */
+const READ_LABEL = '.kicker,.pill,.qlabel,.lab,.dlabel,.src,.mmeta,.who,.tag,.rec,.tabs,.pf,.y,.d,.cap,.cv-date,.ll,.agreed';
+function readBlocks(root){
+  const out = [], txt = e => (e.innerText||'').replace(/\s+/g,' ').trim();
+  const ownText = e => [...e.childNodes].some(n => n.nodeType===3 && n.textContent.trim());
+  const walk = el => { for(const c of el.children){
+    if(c.matches('.num,.layers')) continue;
+    const t = c.tagName;
+    if(/^H[1-6]$/.test(t)){ const v = txt(c); if(v) out.push(['h', v, Math.min(6, +t[1]+1)]); }
+    else if(c.matches(READ_LABEL) || (getComputedStyle(c).textTransform==='uppercase' && txt(c).length < 60)){ const v = txt(c); if(v) out.push(['k', v]); }
+    else if(c.matches('.voices') || (t==='LI' && !ownText(c) && c.children.length)){ const v = [...c.children].map(txt).filter(Boolean).join(' · '); if(v) out.push(['p', v]); }
+    else if(t==='P' || t==='LI' || t==='BLOCKQUOTE' || t==='Q' || ownText(c)){ const v = txt(c); if(v) out.push(['p', v]); }
+    else walk(c);
+  }};
+  walk(root); return out;
+}
 function readPage(){
   const list = mode==='single' ? [face] : cur===0 ? [0] : cur===N ? [FACES.length-1] : [2*cur-1, 2*cur];
   const d = document.createElement('div');
-  d.style.cssText = 'position:absolute;left:-9999px;top:0;width:380px'; d.innerHTML = list.map(i=>FACES[i].html).join('');
-  d.querySelectorAll('.qrbtn,svg,.folio,.paper-grain,.linen,.bevel').forEach(e=>e.remove());
-  document.body.appendChild(d); const t = d.innerText; d.remove();
-  const paras = t.split(/\n+/).map(s=>s.trim()).filter(Boolean);
-  lastFocus = document.activeElement; stopPlay(); scanEl.hidden = false; setPhLabel('This page, in large type');
+  d.style.cssText = 'position:absolute;left:-9999px;top:0;width:380px';
+  document.body.appendChild(d);
+  const pages = list.map(i => {
+    const f = document.createElement('div'); f.innerHTML = FACES[i].html;
+    f.querySelectorAll('.qrbtn,svg,img,.folio,.paper-grain,.linen,.bevel').forEach(e=>e.remove());
+    d.appendChild(f); return readBlocks(f);
+  });
+  d.remove();
+  /* The pages' top heading level becomes h3, under the sheet's h2, with no level skipped. */
+  const lv = pages.flat().filter(b => b[0]==='h').map(b => b[2]), shift = lv.length ? 3 - Math.min(...lv) : 0;
+  pages.forEach(b => b.forEach(x => { if(x[0]==='h') x[2] = Math.min(6, x[2] + shift); }));
+  lastFocus = document.activeElement; scanEl.hidden = false; setPhLabel('This page, in large type');
   const first = list[0], lastI = list[list.length-1];
-  phBody.innerHTML = `<div class="rd-h">${first===0?'Front cover':first===FACES.length-1?'Back cover':list.length>1?'Pages '+first+' and '+lastI:'Page '+first}</div>` + (paras.length?paras.map(p=>`<p class="rd-p">${escH(p)}</p>`).join(''):'<p class="rd-p">This page is a photograph.</p>') + BRAND;
+  const head = first===0?'Front cover':first===FACES.length-1?'Back cover':list.length>1?'Pages '+first+' and '+lastI:'Page '+first;
+  const html = pages.map(b => b.length ? b.map(([k,v,l]) => k==='h' ? `<h${l} class="rd-t">${escH(v)}</h${l}>` : k==='k' ? `<p class="rd-k">${escH(v)}</p>` : `<p class="rd-p">${escH(v)}</p>`).join('') : '<p class="rd-p">This page is a photograph.</p>').join('<hr class="rd-hr">');
+  phBody.innerHTML = `<h2 class="rd-h">${head}</h2>` + html + BRAND;
   phBody.scrollTop = 0; document.getElementById('phClose').focus();
 }
-function closeScan(){ stopPlay(); scanEl.hidden = true; if(lastFocus) lastFocus.focus(); }
-function stopPlay(){ clearInterval(playTimer); playTimer=null; }
+function closeScan(){ scanEl.hidden = true; if(lastFocus) lastFocus.focus(); }
 function showArchive(){
-  stopPlay();
   let h = `<div class="a-kicker">The archive</div><h2 class="a-h">${P.full}</h2>
   <div class="a-meta" style="color:var(--a-soft);font-weight:400">${P.line}</div>
   <div class="a-stats">${P.stats.map(([b,s])=>`<div><b>${b}</b><span>${s}</span></div>`).join('')}</div>
@@ -1438,7 +1522,6 @@ function showArchive(){
   phBody.innerHTML = h + BRAND; phBody.scrollTop = 0;
 }
 function showLittle(){
-  stopPlay();
   phBody.innerHTML = `<button class="ph-back" data-go="archive">← Archive</button>
   <span class="a-pill">${P.littleTitle}</span><h2 class="a-h">A question a day</h2><div class="a-meta">${P.littleCount} answered · about a minute each</div>
   <div class="a-note" style="margin-top:16px">One small question each morning. When an answer sounds like the start of a story, A Story asks if ${P.she} would like to tell more.</div>
@@ -1447,18 +1530,17 @@ function showLittle(){
   phBody.scrollTop = 0;
 }
 function showFamily(){
-  stopPlay();
   phBody.innerHTML = `<button class="ph-back" data-go="archive">← Archive</button>
   <span class="a-pill">From the family</span><h2 class="a-h">Pages from the family</h2><div class="a-meta">${FAMILY.length} voice messages</div>
   <div class="a-note" style="margin-top:16px">These came in through the contribute link. <b>No account, nothing to sign up for.</b></div>
-  ${FAMILY.map(([n,r,t],i)=>`<div class="msg"><button class="play" aria-label="Play ${n}'s message" data-fake="${i}">${PLAY}</button><div><b>${n} · ${r}</b><span>Voice message · ${t}</span></div></div>`).join('')}
-  <p class="vdemo">Sample book: audio plays in the real archive.</p>${BRAND}`;
+  <ul class="msgs">${FAMILY.map(([n,r,t])=>`<li class="msg"><b>${n} · ${r}</b><span>Voice message · ${t}</span></li>`).join('')}</ul>
+  <p class="vdemo">Sample book. Playing messages here is in development.</p>${BRAND}`;
   phBody.scrollTop = 0;
 }
 function showMem(k, tab){
-  stopPlay();
   const m = MEM[k];
-  const tabs = [["summary","Summary"],["transcript","Full transcript"],["voice","Voice highlight"]];
+  if(tab!=='transcript') tab='summary';
+  const tabs = [["summary","Summary"],["transcript","Full transcript"]];
   let panel = '';
   if(tab==='summary'){
     panel = `${m.table?`<div class="a-note" style="margin-top:0"><b>Around the table.</b> ${m.table}</div>`:''}<div class="a-lab">Story</div><p class="a-p">${m.summary}</p>
@@ -1469,11 +1551,6 @@ function showMem(k, tab){
   } else if(tab==='transcript'){
     panel = `<div class="a-lab">Conversation · ${m.mins} min · excerpt</div>` + m.transcript.map(([w,t])=>`<div class="turn ${w==='q'?'q':'a'}"><div class="who">${spk(w)[0]}</div><p>${t}</p></div>`).join('')
       + (m.deepQ?`<div class="a-lab" style="margin-top:18px">Going deeper</div><div class="turn q"><div class="who">${P.third?'Maya':'A Story'}</div><p>${m.deepQ}</p></div><div class="turn a"><div class="who">${P.name}</div><p>${m.deepA}</p></div>`:'');
-  } else {
-    panel = `<div class="voice"><div class="vrow"><button class="play" id="vplay" aria-label="Play voice highlight">${PLAY}</button><div class="wave" id="wave">${bars(m.mins*37)}</div></div>
-      <div class="vtime"><span id="vcur">0:00</span><span>${m.voice.len}</span></div>
-      <div class="vquote">“${m.voice.quote}”</div></div>
-      <p class="vdemo">Sample book: in the real archive this plays ${P.name}’s own recording${m.video?', and the video of the telling':''}.</p>`;
   }
   phBody.innerHTML = `<button class="ph-back" data-go="archive">← Archive</button>
     <span class="a-pill">${m.ch}</span><h2 class="a-h">${m.title}</h2><div class="a-meta">${m.when||m.year+' · age '+m.age}</div>
@@ -1482,20 +1559,9 @@ function showMem(k, tab){
     <div class="a-foot">Chapter: ${m.ch} · Recorded ${m.rec} · Asked by ${m.asked}</div>${BRAND}`;
   phBody.scrollTop = 0;
 }
-function fakePlay(btn, waveEl, curEl, len){
-  if(playTimer){ stopPlay(); btn.innerHTML = PLAY; return; }
-  const [mm,ss] = len.split(':').map(Number), total = mm*60+ss, demo = Math.min(total, 12);
-  const bs = waveEl ? [...waveEl.children] : []; let t = 0; btn.innerHTML = PAUSE;
-  playTimer = setInterval(()=>{ t += .1; const f = Math.min(t/demo,1);
-    bs.forEach((b,i)=>b.classList.toggle('on', i/bs.length < f));
-    if(curEl){ const s = Math.round(f*total); curEl.textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; }
-    if(f>=1){ stopPlay(); btn.innerHTML = PLAY; } }, 100);
-}
 phBody.addEventListener('click', e => {
   const go = e.target.closest('[data-go]'); if(go){ const g = go.dataset.go; g==='archive'?showArchive():g==='little'?showLittle():g==='family'?showFamily():showMem(g,'summary'); return; }
   const t = e.target.closest('.atab'); if(t){ showMem(t.dataset.mem, t.dataset.t); return; }
-  const v = e.target.closest('#vplay'); if(v){ const k = phBody.querySelector('.atab').dataset.mem; fakePlay(v, document.getElementById('wave'), document.getElementById('vcur'), MEM[k].voice.len); return; }
-  const f = e.target.closest('[data-fake]'); if(f){ fakePlay(f, null, null, '0:08'); }
 });
 document.getElementById('phClose').onclick = closeScan;
 scanEl.addEventListener('click', e => { if(e.target === scanEl) closeScan(); });
@@ -1809,7 +1875,7 @@ FACES = [
   <div class="body">${MEM.m8.story.map((p,i)=>`<p${i===0?' class="drop"':''}>${p}</p>`).join('')}</div>
   <div class="worldbox"><b>Meanwhile, in the world</b>Apollo 11 landed that afternoon. More than half a billion people watched.</div>
   </div>
-  <div class="mini-strip">${qrBtn('m8','voice')}<span><b>The lesson</b>“${MEM.m8.lesson}”</span></div>
+  <div class="mini-strip">${qrBtn('m8','transcript')}<span><b>The lesson</b>“${MEM.m8.lesson}”</span></div>
   ${folio(16)}`},
 /* 18 little questions II */
 {cls:"littlebg", html: littlePage(LITTLE.slice(6,12), 17, "Little questions, later on", "By January the little questions had turned reflective. Notice the first one. It led to the conversation on page 38.")},
@@ -1860,7 +1926,7 @@ FACES = [
   ])}
   <div class="kept"><div class="ll">What the family kept</div><div class="lt">${MEM.m10.lesson}</div><div class="agreed">Agreed by all four, at the table</div></div>
   </div>
-  <div class="mini-strip">${qrBtn('m10','transcript')}<span><b>Hear all four voices</b>22 min, recorded on a phone in the middle of the table.</span></div>
+  <div class="mini-strip">${qrBtn('m10','transcript')}<span><b>All four voices</b>22 min, recorded on a phone in the middle of the table.</span></div>
   ${folio(27)}`},
 /* 29-30 m5, 31-32 m6 */
 {cls:"mem", html: storyPage('m5',28)}, {cls:"mem", html: deepPage('m5',29)},
@@ -1931,7 +1997,7 @@ FACES = [
   </div>
   <div class="lessonbox" style="margin-top:2.4cqw"><div class="ll">The lesson she carries</div><div class="lt">${MEM.m9.lesson}</div></div>
   </div>
-  <div class="strip">${qrBtn('m9','voice')}<div><div class="tabs">Full transcript</div><p>Scan to hear this part of the conversation, pause and all.</p><span class="rec">Recorded Feb 3, 2026 · 34 min</span></div></div>
+  <div class="strip">${qrBtn('m9','transcript')}<div><div class="tabs">Full transcript</div><p>Scan to read this part of the conversation in full.</p><span class="rec">Recorded Feb 3, 2026 · 34 min</span></div></div>
   ${folio(39)}`},
 /* 39 Ellie asked */
 {cls:"msg-pg", html:`${grain}<div class="pg">
@@ -1942,7 +2008,7 @@ FACES = [
     <div class="bub me"><span class="who">Carolyn · voice reply · 1:52</span><p>Yes, honey. March 1989. Your mom had pneumonia and they kept her at Holland Hospital for six nights. I slept in the chair. Grandpa brought me clothes and a thermos of coffee every morning.</p><p>I learned that being scared and being brave happen at the same time. You don’t get to wait for one to finish. And Ellie, she was fine. She’s your mother. She still hates hospitals.</p></div>
     <div class="bub them"><span class="who">Ellie · 10:41 pm</span><p>Okay that’s actually really scary. Love you.</p></div>
   </div></div>
-  <div class="mini-strip">${qrBtn('m11','voice')}<span><b>The lesson</b>“${MEM.m11.lesson}”</span></div>
+  <div class="mini-strip">${qrBtn('m11','transcript')}<span><b>The lesson</b>“${MEM.m11.lesson}”</span></div>
   ${folio(40)}`},
 /* 40 what she passes on */
 {html:`${grain}<div class="pg passon">
@@ -1964,8 +2030,8 @@ FACES = [
     <div class="notecard kid"><span class="tape"></span><p>Grandma C, we are on card 214!! Next is the green jello one. I am NOT eating it.</p><div class="who"><b>Ellie · 12</b></div></div>
     <div class="notecard kid b"><span class="tape"></span><p>My favorite things about Grandma are her stories and her car.</p><div class="who"><b>Sam · 9</b></div></div>
   </div></div>
-  <div class="qr"><button class="qrbtn" data-scan="family" aria-label="Scan this code: hear the family's voice messages" style="width:17cqw">${QR.family}</button>
-  <div><h3>Hear their voices</h3><p>Scan to play the voice messages Dylan, Mark, Ellie and Sam sent in through the contribute link.<span>Audio · 4 messages · 6 min</span></p></div></div>
+  <div class="qr"><button class="qrbtn" data-scan="family" aria-label="Scan this code: see the family's messages" style="width:17cqw">${QR.family}</button>
+  <div><h3>Their messages</h3><p>Scan to see the messages Dylan, Mark, Ellie and Sam sent in through the contribute link.<span>4 messages</span></p></div></div>
   ${folio(43)}`},
 /* 43-44 letters back to them */
 {html:`${grain}<div class="pg letter">
@@ -2053,7 +2119,7 @@ NOTES = [
   ["Layflat binding","The book opens completely flat, so a photo can run across the center fold with nothing lost."],
   ["Proof of who someone was","The story, then why she kept every painting, then how Dylan does the same for her kids."],
   ["Around the table","Four family members recorded together. They disagree, they laugh, and Ellie learns where a family tradition comes from."],
-  ["Audio and video QR codes","In a real book, any phone camera opens her telling the story. Here, tap the code."],
+  ["QR codes","In a real book, any phone camera opens that story in the family’s archive. Here, tap the code."],
   ["Work & making a living","Business lessons get passed down too."],
   ["Imported from her notebook","Families photograph old notebooks and recipe cards. A Story dates them and links them to the memories they belong to."],
   ["Already shared","Upload a Facebook, Instagram or X download, a diary-app export, phone notes and photos, or photograph a paper diary. A Story finds what was already a memory, dates it, and asks only about what was left out."],
@@ -2319,7 +2385,7 @@ endpaper, endpaper,
   ])}
   <div class="lessonbox" style="margin-top:2.4cqw"><div class="ll">The lesson he carries</div><div class="lt">Tell your people the bad news first.</div></div>
   </div>
-  <div class="strip">${qrBtn('rlive','voice')}<div><div class="tabs">Full transcript</div><p>Scan to hear Raymond tell it, pause and all.</p><span class="rec">Recorded Oct 9, 2025 · 44 min</span></div></div>
+  <div class="strip">${qrBtn('rlive','transcript')}<div><div class="tabs">Full transcript</div><p>Scan to read the whole conversation.</p><span class="rec">Recorded Oct 9, 2025 · 44 min</span></div></div>
   ${folio(17)}`},
 /* 19-22 */
 {cls:"mem", html: storyPage('r2',18)}, {cls:"mem", html: deepPage('r2',19)},
@@ -2350,7 +2416,7 @@ endpaper, endpaper,
   ])}
   <div class="kept"><div class="ll">What the family kept</div><div class="lt">The company was never only ours.</div><div class="agreed">Agreed by all five, at the table</div></div>
   </div>
-  <div class="mini-strip">${qrBtn('rtable','transcript')}<span><b>Hear all five voices</b>31 min, a phone in the middle of the table.</span></div>
+  <div class="mini-strip">${qrBtn('rtable','transcript')}<span><b>All five voices</b>31 min, a phone in the middle of the table.</span></div>
   ${folio(23)}`},
 /* 25-26 r5 */
 {cls:"mem", html: storyPage('r5',24)}, {cls:"mem", html: deepPage('r5',25)},
@@ -2650,7 +2716,7 @@ endpaper, endpaper,
   ])}
   <div class="lessonbox" style="margin-top:2.4cqw"><div class="ll">The lesson he carries</div><div class="lt">Silence protects you for a while. Then it costs the people who love you.</div></div>
   </div>
-  <div class="strip">${qrBtn('vlive','voice')}<div><div class="tabs">Full transcript</div><p>Scan to hear Tom tell it, pause and all.</p><span class="rec">Recorded Nov 2, 2025 · 58 min</span></div></div>
+  <div class="strip">${qrBtn('vlive','transcript')}<div><div class="tabs">Full transcript</div><p>Scan to read the whole conversation.</p><span class="rec">Recorded Nov 2, 2025 · 58 min</span></div></div>
   ${folio(15)}`},
 /* 17-18 calendar layflat */
 {cls:"layflat route", html:`${grain}<div class="spanphoto">${calSVG}</div>
@@ -2713,7 +2779,7 @@ endpaper, endpaper,
   ])}
   <div class="kept"><div class="ll">What the family kept</div><div class="lt">We go with him.</div><div class="agreed">Agreed by all four, at the table</div></div>
   </div>
-  <div class="mini-strip">${qrBtn('vtable','transcript')}<span><b>Hear all four voices</b>33 min, a phone in the middle of the table.</span></div>
+  <div class="mini-strip">${qrBtn('vtable','transcript')}<span><b>All four voices</b>33 min, a phone in the middle of the table.</span></div>
   ${folio(25)}`},
 /* 27-28 telling it */
 {cls:"mem", html: storyPage('v5',26)}, {cls:"mem", html: deepPage('v5',27)},
@@ -2838,8 +2904,24 @@ function buildSingle(){
   });
   renderSingle(0);
 }
+/* From 1501px the families and colours sit beside the book. A closed book
+   shows one cover in the middle of the space an open spread needs, which left
+   a gap of about 480px between the cover and the panel at 2560 (jury 1 #6).
+   While the book is closed the panel moves in beside the cover, and it moves
+   back out, on the house curve, as the book opens. */
+function railShift(instant){
+  const w = document.querySelector('.wrap'), bench = document.querySelector('.bench'); if(!w || !bench) return;
+  let shift = 0;
+  if(mode==='book' && (cur===0 || cur===N) && document.documentElement.clientWidth > 1500){
+    const P = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--P')) || 0;
+    shift = -Math.max(0, Math.round((bench.clientWidth - P) / 2));
+  }
+  if(instant){ w.classList.add('rail-still'); requestAnimationFrame(()=>requestAnimationFrame(()=>w.classList.remove('rail-still'))); }
+  w.style.setProperty('--rail-shift', shift + 'px');
+}
 function render(instant){
   const book = document.getElementById('book'); if(!book) return;
+  railShift(instant);
   book.classList.toggle('closed-front', cur===0);
   book.classList.toggle('closed-back', cur===N);
   book.querySelectorAll('.leaf').forEach(leaf => {
@@ -2916,7 +2998,7 @@ function setCover(i){
   document.getElementById('swName').textContent = c.n;
   [...swWrap.children].forEach((b,j)=>b.setAttribute('aria-pressed', j===i));
 }
-COVERS.forEach((c,i)=>{ const b=document.createElement('button'); b.className='sw'; b.style.background=c.c; b.title=c.n; b.setAttribute('aria-label', c.n+' cover');
+COVERS.forEach((c,i)=>{ const b=document.createElement('button'); b.className='sw'; b.style.backgroundColor=c.c; b.title=c.n; b.setAttribute('aria-label', c.n+' cover');
   b.onclick=()=>{ setCover(i); if(mode==='book' && cur!==0 && cur!==N) go(0); if(mode==='single' && face!==0 && face!==FACES.length-1) goFace(0); };
   swWrap.appendChild(b); });
 
@@ -2946,6 +3028,7 @@ function layout(){
     if(mode==='single' && want==='book') cur = Math.floor((face+1)/2);
     mode = want; want==='book' ? buildBook() : buildSingle();
   }
+  railShift(true);
 }
 /* Show the bench once its faces are in (or after 2s, whichever is first). */
 (function(){

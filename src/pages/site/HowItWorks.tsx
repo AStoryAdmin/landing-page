@@ -31,6 +31,7 @@ import CallStills from "./home/Listen";
 import MemoryCard from "./app/MemoryCard";
 import { ArrowIcon, Invitation, PageOpening, Picture } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
+import { PhonePairs } from "./rooms/phonePairs";
 import {
   Chapter,
   Frame,
@@ -118,6 +119,13 @@ const Slip = styled.figure`
   figcaption b {
     font-weight: 500;
     color: ${color.primary};
+  }
+  /* On a phone the question is a statement, not a headline: 24px, three
+     lines (jury 2 R2 U7, taste-skill's statement rule). */
+  ${media.sm} {
+    blockquote {
+      font-size: 1.5rem;
+    }
   }
   ${media.motion} {
     transform: none;
@@ -425,11 +433,13 @@ const Volume = styled(Chapter)`
     max-width: 1100px;
     height: auto;
   }
+  /* Running text, not a statement: six lines of display serif read as a
+     headline (taste-skill statement rule). */
   .price {
     margin: 22px 0 28px;
-    font: 400 ${display.sm} / 1.4 ${font.display};
-    color: ${color.primary};
-    max-width: 30ch;
+    font: 400 clamp(1.15rem, 1.05rem + 0.35vw, 1.4rem) / 1.55 ${font.text};
+    color: ${color.body};
+    max-width: 44ch;
   }
   .links {
     display: flex;
@@ -455,24 +465,26 @@ export default function HowItWorks() {
         path="/how-it-works"
         description="Set it up once. A Story calls in its iPhone app, listens and follows what they actually say. See a sample call, then what the family keeps."
       />
-      <PageOpening
-        variant="object"
-        title={
-          <>
-            A Story does the <em>asking.</em>
-          </>
-        }
-        lead="You set it up once and choose the hour. A Story calls, asks about their life and follows whatever they say. For now the calls ring through the A Story app on iPhone, in a private beta. Writing, the family archive and the book work in any browser today."
-        actions={
-          <>
-            <PrimaryLink to={START_HREF}>
-              {START_LABEL} <ArrowIcon />
-            </PrimaryLink>
-            <SecondaryAnchor href="#calls">See a sample call</SecondaryAnchor>
-          </>
-        }
-        object={<CallSlip />}
-      />
+      <PhonePairs>
+        <PageOpening
+          variant="object"
+          title={
+            <>
+              A Story does the <em>asking.</em>
+            </>
+          }
+          lead="You set it up once and choose the hour. A Story calls, asks about their life and follows whatever they say. For now the calls ring through the A Story app on iPhone, in a private beta. Writing, the family archive and the book work in any browser today."
+          actions={
+            <>
+              <PrimaryLink to={START_HREF}>
+                {START_LABEL} <ArrowIcon />
+              </PrimaryLink>
+              <SecondaryAnchor href="#calls">See a sample call</SecondaryAnchor>
+            </>
+          }
+          object={<CallSlip />}
+        />
+      </PhonePairs>
 
       <FourMoments />
 

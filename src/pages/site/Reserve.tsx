@@ -370,10 +370,12 @@ const HeroCard = styled.div`
     font: 400 14px/1.55 ${font.body};
     color: ${color.bodyMuted};
   }
+  /* A 44px target inside a 14px line (jury 2 R2 N3): the padding grows the
+     hit area, the negative margin keeps the line where it was. */
   .card-foot a {
     display: inline-block;
-    padding: 8px 2px;
-    margin: -8px 0;
+    padding: 12px 4px;
+    margin: -12px -4px;
     color: ${color.primary};
     text-decoration: underline;
     text-underline-offset: 4px;
@@ -497,6 +499,9 @@ const Offers = styled(Chapter)`
     color: ${color.bodyMuted};
   }
   .signin a {
+    display: inline-block;
+    padding: 11px 4px;
+    margin: -11px -4px;
     color: ${color.primary};
     text-underline-offset: 4px;
   }

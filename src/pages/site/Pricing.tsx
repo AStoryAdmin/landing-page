@@ -48,6 +48,7 @@ import {
 import { QUESTION_COUNT } from "../../lib/product";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
+import { PhonePairs } from "./rooms/phonePairs";
 import {
   Chapter,
   Frame,
@@ -739,9 +740,12 @@ const Sheet = styled.div`
     font: 400 15px/1.5 ${font.text};
     color: ${color.body};
   }
+  /* A 44px target, the underline where it was (jury 2 R2 N3). */
   .foot a {
-    display: inline-block;
-    padding: 10px 0;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0;
     font: 600 14px/1.3 ${font.ui};
     color: ${color.primary};
     text-decoration: underline;
@@ -769,8 +773,18 @@ const Sheet = styled.div`
   }
 `;
 
+/*
+ * One opening price for the calls, the same as Home's close (fix round 3,
+ * jury 1 R2 #9): "Calls from $19.99 a month". The yearly plan and Express
+ * stay in view as the other ways in. Every figure is read from pricing.ts.
+ */
+const monthly = OTHER_PLANS.find((p) => p.id === "monthly")!;
+/** "$19.99/mo" -> "$19.99" */
+const monthlyPrice = monthly.price.replace(/\/mo$/, "");
+
 function PriceCard() {
   const individual = PLANS.find((p) => p.id === "individual")!;
+  const express = PLANS.find((p) => p.id === "express")!;
   return (
     <Sheet>
       <ul className="cols" aria-label="What A Story costs">
@@ -783,14 +797,14 @@ function PriceCard() {
           </p>
         </li>
         <li>
-          <p className="k">The calls</p>
+          <p className="k">The calls, from</p>
           <p className="p">
-            {individual.price}
-            <small>a year</small>
+            {monthlyPrice}
+            <small>a month</small>
           </p>
           <p className="l">
-            For one storyteller: {individual.meter.toLowerCase()}. Every plan is
-            side by side below.
+            Or {individual.price} a year for one storyteller, or{" "}
+            {express.price} once for 30 days. Every plan is side by side below.
           </p>
         </li>
         <li>
@@ -972,27 +986,29 @@ export default function Pricing() {
         path="/pricing"
         description="Compare Individual, Family, Express, Monthly and Free: the call minutes, which plans include a hardcover, and what stays yours whatever you choose."
       />
-      <PageOpening
-        variant="wide"
-        title={
-          <>
-            Free to start. Pay for <em>calls.</em>
-          </>
-        }
-        lead="Every account starts on Free, with no card and no time limit. Inviting family, writing and reading never cost extra."
-        actions={
-          <>
-            <PrimaryAnchor href={START_HREF}>
-              {START_LABEL} <ArrowIcon />
-            </PrimaryAnchor>
-            <SecondaryLink to="/reserve">
-              Reserve for {OFFERS.reserve.price}
-            </SecondaryLink>
-          </>
-        }
-        note="Prices in US dollars. The calls ring in the A Story iPhone app, in a private beta."
-        object={<PriceCard />}
-      />
+      <PhonePairs>
+        <PageOpening
+          variant="wide"
+          title={
+            <>
+              Free to start. Pay for <em>calls.</em>
+            </>
+          }
+          lead={`No card and no time limit. Calls from ${monthlyPrice} a month, and inviting family, writing and reading never cost extra.`}
+          actions={
+            <>
+              <PrimaryAnchor href={START_HREF}>
+                {START_LABEL} <ArrowIcon />
+              </PrimaryAnchor>
+              <SecondaryLink to="/reserve">
+                Reserve for {OFFERS.reserve.price}
+              </SecondaryLink>
+            </>
+          }
+          note="Prices in US dollars. The calls ring in the A Story iPhone app, in a private beta."
+          object={<PriceCard />}
+        />
+      </PhonePairs>
 
       <Plans ref={plans} $ground="ivory" aria-label="Plans">
         <Frame>

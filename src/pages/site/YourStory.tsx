@@ -12,20 +12,30 @@
  * size, never upscaled), then how it works beside the line to remember, and
  * what Free includes. The library's contemporary set (41-52); plan facts
  * come from pricing.ts.
+ *
+ * Fix round 3 (2026-10-24, jury 1 R2 #7): Care and this page shared one
+ * mirrored template - a band of a big quote beside ruled rows, then a
+ * "free + ticked checklist" section. Care keeps those. This page now closes
+ * on its own room: on the teal of the conversation, what a memory from these
+ * years looks like once it is kept - the app's own memory card (a labelled
+ * sample) - beside the three ways in, and what Free covers in one line. The
+ * site's closing Invitation follows with the one action.
  */
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { FREE_TIER } from "../../lib/pricing";
+import MemoryCard from "./app/MemoryCard";
 import { ArrowIcon, Invitation, PageOpening, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
+import { PhonePairs } from "./rooms/phonePairs";
 import {
   Chapter,
   Frame,
   PrimaryLink,
   SecondaryLink,
   Statement,
+  TextLink,
 } from "./kit/kit.styles";
-import { BeginCard, QuoteBand } from "./rooms/Rooms";
 import { START_HREF, START_LABEL } from "../../lib/app";
 import { color, display, font, media } from "../../styles/theme";
 
@@ -110,6 +120,187 @@ const Wall = styled(Chapter)`
   }
 `;
 
+/*
+ * Kept: what one of these years looks like in the app. The card is the
+ * app's (app/MemoryCard.tsx), filled with a sample memory and said to be a
+ * sample; the photograph is library S07, used nowhere else on the site.
+ */
+const Kept = styled(Chapter)`
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(40px, 6vw, 140px);
+    align-items: center;
+    margin-top: calc(clamp(32px, 4vw, 64px) * var(--sy));
+  }
+  /* Two lines at every width (taste-skill headline rule). */
+  h2 {
+    max-width: 27ch;
+  }
+  ${media.sm} {
+    h2 {
+      font-size: 1.85rem;
+    }
+  }
+  /* The print the memory was made from, and the card the app keeps for it,
+     laid over the print's corner. */
+  .stack {
+    position: relative;
+    padding-bottom: clamp(90px, 9vw, 180px);
+  }
+  .stack > figure {
+    width: min(80%, 720px);
+  }
+  .card {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    width: min(76%, 600px);
+    transform: rotate(-0.8deg);
+    box-shadow: 0 40px 70px -40px rgba(0, 0, 0, 0.7);
+  }
+  .note {
+    margin-top: 18px;
+    font: 400 14px/1.5 ${font.ui};
+    color: var(--muted);
+  }
+  ol {
+    display: grid;
+    gap: clamp(24px, 2.6vw, 40px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  h3 {
+    font: 500 ${display.sm} / 1.2 ${font.display};
+    color: var(--ink);
+  }
+  ol p {
+    margin-top: 8px;
+    max-width: 40ch;
+    font: 400 clamp(1.02rem, 0.98rem + 0.2vw, 1.2rem) / 1.55 ${font.text};
+    color: var(--text);
+  }
+  .free {
+    margin-top: clamp(28px, 3vw, 44px);
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    max-width: 46ch;
+    font: 400 clamp(1.02rem, 0.98rem + 0.2vw, 1.2rem) / 1.55 ${font.text};
+    color: var(--text);
+  }
+  .free b {
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .free a {
+    margin-top: 6px;
+  }
+  ${media.lg} {
+    .row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .stack {
+      max-width: 720px;
+    }
+  }
+  ${media.sm} {
+    .stack {
+      padding-bottom: 0;
+    }
+    .stack > figure {
+      width: 92%;
+    }
+    .card {
+      position: relative;
+      width: 100%;
+      margin-top: -36px;
+    }
+  }
+  ${media.motion} {
+    .card {
+      transform: none;
+    }
+  }
+`;
+
+const WAYS: [string, string][] = [
+  [
+    "Talk, or write.",
+    "A guided conversation in the A Story app that follows what you say, or type a memory when you’d rather.",
+  ],
+  [
+    "Add what the camera saw.",
+    "Photos, a place, a date. The story behind them is the part only you have.",
+  ],
+  [
+    "Share it, or don’t.",
+    "Private until you invite someone. Friends and family can add their own versions.",
+  ],
+];
+
+const lower = (t: string) => t.charAt(0).toLowerCase() + t.slice(1);
+
+function KeptRoom() {
+  const ref = useReveals<HTMLElement>();
+  return (
+    <Kept ref={ref} $ground="teal" aria-labelledby="kept-title">
+      <Frame>
+        <Statement id="kept-title" $size="lg" data-lines>
+          Future you will want to know <em>what this felt like.</em>
+        </Statement>
+        <div className="row">
+          <div data-rise="settle">
+            <div className="stack">
+              <Print
+                id="S07"
+                alt="Three friends at the rail of a ferry, crossing on a grey summer day"
+                ratio="4 / 3"
+                tilt={-1.4}
+                sizes="(max-width: 640px) 86vw, (max-width: 1024px) 70vw, 34vw"
+              />
+              <MemoryCard
+              className="card"
+              memory={{
+                photo: "/mission/S07-640.webp",
+                chapter: "Growing up",
+                title: "The ferry, the last summer",
+                date: "August 2023 · at 27",
+                words:
+                  "Sam stood at the rail the whole way over and said he’d never leave the coast. He was the first one of us to go.",
+                people: ["Maya", "Sam", "Leah"],
+                teller: "Maya",
+              }}
+              />
+            </div>
+            <p className="note">A sample memory, as the app keeps it.</p>
+          </div>
+          <div>
+            <ol>
+              {WAYS.map(([t, d]) => (
+                <li key={t} data-rise>
+                  <h3>{t}</h3>
+                  <p>{d}</p>
+                </li>
+              ))}
+            </ol>
+            <p className="free" data-rise>
+              <b>{FREE_TIER.headline}:</b> {lower(FREE_TIER.includes[1])},{" "}
+              {lower(FREE_TIER.includes[2])} and the whole family invited.
+              Guided calls are the only paid part.
+              <br />
+              <TextLink to="/pricing">
+                What Free includes <ArrowIcon />
+              </TextLink>
+            </p>
+          </div>
+        </div>
+      </Frame>
+    </Kept>
+  );
+}
+
 const YEARS = [
   {
     photo: "46",
@@ -143,46 +334,48 @@ export default function YourStory() {
         path="/your-story"
         description="You don’t have to be old to have a story. Talk or write about the life you’re living now - the first apartment, the friends - and keep it private."
       />
-      <PageOpening
-        title={
-          <>
-            You don’t have to be old to have <em>a story.</em>
-          </>
-        }
-        lead="The first apartment. The group of friends. The year everything changed. Keep it while it’s still happening, in your own words, on your own time."
-        actions={
-          <>
-            <PrimaryLink to={START_HREF}>
-              {START_LABEL} <ArrowIcon />
-            </PrimaryLink>
-            <SecondaryLink to="/how-it-works">See how it works</SecondaryLink>
-          </>
-        }
-        object={
-          <Snaps>
-            <Print
-              id="45"
-              alt="Friends talking late at night on a living-room floor"
-              sizes="(max-width: 860px) 56vw, 26vw"
-              tilt={-2.2}
-              priority
-            />
-            <Print
-              id="42"
-              alt="A private snapshot: two friends taking a selfie"
-              sizes="(max-width: 860px) 36vw, 16vw"
-              tilt={2.6}
-            />
-            <Print
-              id="44"
-              alt="Building furniture in a first apartment"
-              sizes="(max-width: 860px) 48vw, 23vw"
-              tilt={-0.8}
-              caption="The first place, 2024"
-            />
-          </Snaps>
-        }
-      />
+      <PhonePairs>
+        <PageOpening
+          title={
+            <>
+              You don’t have to be old to have <em>a story.</em>
+            </>
+          }
+          lead="The first apartment. The group of friends. The year everything changed. Keep it while it’s still happening, in your own words, on your own time."
+          actions={
+            <>
+              <PrimaryLink to={START_HREF}>
+                {START_LABEL} <ArrowIcon />
+              </PrimaryLink>
+              <SecondaryLink to="/how-it-works">See how it works</SecondaryLink>
+            </>
+          }
+          object={
+            <Snaps>
+              <Print
+                id="45"
+                alt="Friends talking late at night on a living-room floor"
+                sizes="(max-width: 860px) 56vw, 26vw"
+                tilt={-2.2}
+                priority
+              />
+              <Print
+                id="42"
+                alt="A private snapshot: two friends taking a selfie"
+                sizes="(max-width: 860px) 36vw, 16vw"
+                tilt={2.6}
+              />
+              <Print
+                id="44"
+                alt="Building furniture in a first apartment"
+                sizes="(max-width: 860px) 48vw, 23vw"
+                tilt={-0.8}
+                caption="The first place, 2024"
+              />
+            </Snaps>
+          }
+        />
+      </PhonePairs>
 
       <Wall ref={wall} $ground="ivory" aria-labelledby="years-title">
         <Frame>
@@ -208,42 +401,7 @@ export default function YourStory() {
         </Frame>
       </Wall>
 
-      <QuoteBand
-        quote={
-          <>
-            Future you will want to know <b>what this felt like.</b>
-          </>
-        }
-        title="Five minutes, on the walk home"
-        ground="teal"
-        flip
-        steps={[
-          [
-            "Talk, or write.",
-            "A guided conversation in the A Story app that follows what you say, or type a memory when you’d rather.",
-          ],
-          [
-            "Add what the camera saw.",
-            "Photos, a place, a date. The story behind them is the part only you have.",
-          ],
-          [
-            "Share it, or don’t.",
-            "Private until you invite someone. Friends and family can add their own versions.",
-          ],
-        ]}
-      />
-
-      <BeginCard
-        id="begin-title"
-        title={FREE_TIER.headline + "."}
-        body="Guided calls are the only paid part. Everything else is yours to keep, for as long as you like."
-        checklist={FREE_TIER.includes.slice(0, 4)}
-        action={
-          <PrimaryLink to={START_HREF}>
-            {START_LABEL} <ArrowIcon />
-          </PrimaryLink>
-        }
-      />
+      <KeptRoom />
 
       <Invitation />
     </>

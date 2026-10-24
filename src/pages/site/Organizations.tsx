@@ -26,6 +26,7 @@ import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { ArrowIcon, PageOpening, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
+import { PhonePairs } from "./rooms/phonePairs";
 import {
   Chapter,
   Frame,
@@ -241,7 +242,7 @@ const Program = styled(Chapter)`
   }
   .foot a {
     display: inline-block;
-    padding: 8px 0;
+    padding: 9px 0;
     color: var(--ink);
     font-weight: 600;
     text-underline-offset: 4px;
@@ -352,42 +353,44 @@ export default function Organizations() {
         path="/organizations"
         description="Colleges, care communities, libraries and organizations can use A Story to record the people they were built by, in their own words. Book a thirty-minute demo."
       />
-      <PageOpening
-        variant="wide"
-        title={
-          <>
-            The people who made the <em>place.</em>
-          </>
-        }
-        lead="A Story calls the people your institution was built by, and asks about their lives with follow-up questions that listen. The calls ring in the A Story iPhone app, in a private beta. You keep their words, and a book when you want one."
-        actions={
-          <>
-            <PrimaryAnchor href="#book">
-              Book a demo <ArrowIcon />
-            </PrimaryAnchor>
-            <SecondaryAnchor href="#how">How a program runs</SecondaryAnchor>
-          </>
-        }
-        object={
-          <Strip aria-label="Who it is for">
-            {WHO.map((w, i) => (
-              <li key={w.kind}>
-                <Print
-                  id={w.photo}
-                  alt={w.alt}
-                  ratio="4 / 5"
-                  tilt={[-1.4, 0.9, -0.7, 1.2][i]}
-                  sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 24vw"
-                  priority={i < 2}
-                />
-                <small>{w.kind}</small>
-                <h2>{w.title}</h2>
-                <p>{w.body}</p>
-              </li>
-            ))}
-          </Strip>
-        }
-      />
+      <PhonePairs>
+        <PageOpening
+          variant="wide"
+          title={
+            <>
+              The people who made the <em>place.</em>
+            </>
+          }
+          lead="A Story calls the people your institution was built by, and asks about their lives with follow-up questions that listen. The calls ring in the A Story iPhone app, in a private beta. You keep their words, and a book when you want one."
+          actions={
+            <>
+              <PrimaryAnchor href="#book">
+                Book a demo <ArrowIcon />
+              </PrimaryAnchor>
+              <SecondaryAnchor href="#how">How a program runs</SecondaryAnchor>
+            </>
+          }
+          object={
+            <Strip aria-label="Who it is for">
+              {WHO.map((w, i) => (
+                <li key={w.kind}>
+                  <Print
+                    id={w.photo}
+                    alt={w.alt}
+                    ratio="4 / 5"
+                    tilt={[-1.4, 0.9, -0.7, 1.2][i]}
+                    sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 24vw"
+                    priority={i < 2}
+                  />
+                  <small>{w.kind}</small>
+                  <h2>{w.title}</h2>
+                  <p>{w.body}</p>
+                </li>
+              ))}
+            </Strip>
+          }
+        />
+      </PhonePairs>
 
       <div ref={reveal}>
         <Line $ground="night" $tight aria-label="In one line">

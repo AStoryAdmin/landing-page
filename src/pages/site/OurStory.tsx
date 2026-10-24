@@ -372,10 +372,12 @@ const WhyNow = styled.section`
     font: 400 clamp(1.05rem, 1rem + 0.25vw, 1.25rem) / 1.5 ${font.text};
     color: ${color.body};
   }
+  /* Each source is a 44px target (jury 2 R2 N3). */
   dd a {
-    display: inline-block;
-    margin-top: 4px;
-    padding: 6px 0;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0;
     font: 500 14px/1.4 ${font.body};
     color: ${color.bodyMuted};
     text-decoration: underline;

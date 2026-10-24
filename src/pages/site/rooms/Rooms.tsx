@@ -5,8 +5,9 @@
  * three photographs, a drawn phone with an old app screen, a night quote and
  * a checklist. Jury 1 (#5, #9, #10, #24) asked for each page to be its own
  * room on the cloth, with every photograph a cornered print at no more than
- * its own size. These are the pieces they share; each page composes them
- * differently.
+ * its own size. These are the pieces they shared; since fix round 3
+ * (2026-10-24, jury 1 R2 #7) only Care uses them, and Your story closes on a
+ * room of its own (the memory card over its print, on teal).
  *
  *   <RuledSteps steps={[[title, line], …]} />   ruled rows, no numerals
  *   <QuoteBand quote title steps ground flip />  one line to remember, beside three rows

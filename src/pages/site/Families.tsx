@@ -10,11 +10,15 @@
  *
  * Pass 11e (founder: "children gifting it to grandparents on special
  * occasions, or how they use it together"): two new rooms open the page —
- * the OCCASIONS it is given for, as a row of cards, and USING IT TOGETHER,
- * once on the old app screens, now said in words (2026-10-23: the old
- * screens are retired and the redesigned app could not be captured). The gift reason moved
- * up into the occasions. The opening and occasion photographs use the
- * generated assets documented in docs/image-prompts.md.
+ * the OCCASIONS it is given for, as a row of cards, and USING IT TOGETHER.
+ * The gift reason moved up into the occasions. The opening and occasion
+ * photographs use the generated assets documented in docs/image-prompts.md.
+ *
+ * Fix round 3 (2026-10-24, jury 1 #1): "Better together" had lost its
+ * pictures and was ~600px of paper for 45 words. Its three facts (group calls,
+ * the family tree and its code, who told what) now live in the "More than one
+ * version" reason, and the last reason has a print of its own (library 15,
+ * used nowhere else) in place of the text plate, so every reason is a print.
  *
  * `#your-own-story` is linked from the header and a legacy redirect.
  */
@@ -27,7 +31,6 @@ import { useReveals } from "./kit/reveals";
 import {
   Chapter,
   Frame,
-  Plate,
   PrimaryLink,
   Statement,
   TextLink,
@@ -53,7 +56,8 @@ const Reasons = styled(Chapter)`
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: clamp(28px, 2.6vw, 56px);
     margin-top: clamp(36px, 4vw, 64px);
-    align-items: start;
+    /* Rows stretch, so every "where next" link sits on one line. */
+    align-items: stretch;
   }
   article {
     display: flex;
@@ -111,7 +115,7 @@ type ReasonCard = {
   title: ReactNode;
   text: string;
   action: ReactNode;
-  photo?: { id: string; alt: string };
+  photo: { id: string; alt: string; focus?: string };
 };
 
 const REASONS: ReasonCard[] = [
@@ -159,7 +163,7 @@ const REASONS: ReasonCard[] = [
         “We were all there. We remember it <em>differently.</em>”
       </>
     ),
-    text: "Invite the family at no extra cost. Each account is kept in the teller’s name, beside the others, and nobody’s version replaces anybody else’s.",
+    text: "Invite the family at no extra cost. Anyone joins the family tree with a six-letter code, and up to four iPhones can share one call in the app. Each version is kept in the teller’s name, and nobody’s replaces anybody else’s.",
     action: (
       <TextLink to="/how-it-works">
         See what the family adds <ArrowIcon />
@@ -183,6 +187,11 @@ const REASONS: ReasonCard[] = [
         Guides for remembering someone <ArrowIcon />
       </TextLink>
     ),
+    photo: {
+      id: "15",
+      alt: "Someone in their armchair by the lamp, an evening at home in 1986",
+      focus: "36% 50%",
+    },
   },
 ];
 
@@ -198,20 +207,13 @@ function ReasonsRoom() {
           {REASONS.map((r) => (
             <article key={r.kicker} id={r.id} data-rise>
               <div className="art">
-                {r.photo ? (
-                  <Print
-                    id={r.photo.id}
-                    alt={r.photo.alt}
-                    ratio="4 / 5"
-                    sizes="(max-width: 640px) 90vw, (max-width: 1280px) 45vw, 22vw"
-                  />
-                ) : (
-                  <Keepsake aria-label="What a family can keep">
-                    <span>A photograph.</span>
-                    <span>The thing they always said.</span>
-                    <span>Your version of that day.</span>
-                  </Keepsake>
-                )}
+                <Print
+                  id={r.photo.id}
+                  alt={r.photo.alt}
+                  ratio="4 / 5"
+                  focus={r.photo.focus}
+                  sizes="(max-width: 640px) 90vw, (max-width: 1280px) 45vw, 22vw"
+                />
               </div>
               <p className="kicker">{r.kicker}</p>
               <h3>{r.title}</h3>
@@ -224,27 +226,6 @@ function ReasonsRoom() {
     </Reasons>
   );
 }
-
-const Keepsake = styled(Plate)`
-  aspect-ratio: 4 / 5.3;
-  box-sizing: border-box;
-  background: ${color.paperPure};
-  display: grid;
-  align-content: center;
-  gap: 18px;
-  padding: clamp(24px, 2.4vw, 44px);
-  span {
-    font: italic 500 ${display.sm} / 1.25 ${font.display};
-    color: ${color.primary};
-  }
-  span + span {
-    padding-top: 18px;
-    border-top: 1px solid ${color.primaryLine};
-  }
-  span:last-child {
-    color: ${color.accent};
-  }
-`;
 
 /** Express is the plan the pricing file itself calls the straightforward gift. */
 const express = PLANS.find((p) => p.id === "express")!;
@@ -350,10 +331,12 @@ const Occasions = styled(Chapter)`
     padding-top: 24px;
     border-top: 1px solid var(--line);
   }
+  /* Running text, not a statement: four lines of display serif read as a
+     headline (taste-skill statement rule). */
   .gift p {
-    font: 400 ${display.sm} / 1.4 ${font.display};
+    font: 400 clamp(1.15rem, 1.05rem + 0.35vw, 1.4rem) / 1.55 ${font.text};
     color: ${color.primary};
-    max-width: 44ch;
+    max-width: 52ch;
   }
   .gift b {
     font-weight: 500;
@@ -370,55 +353,6 @@ const Occasions = styled(Chapter)`
     .occ {
       flex: 0 0 min(260px, 70vw);
       scroll-snap-align: start;
-    }
-  }
-`;
-
-/* ── Using it together ─────────────────────────────────────────────────── */
-
-const TOGETHER = [
-  {
-    shot: "group-call",
-    title: "Call it together.",
-    line: "Up to four iPhones on one call in the A Story app: the grandkids in three cities, Grandma at home. A Story keeps what’s said.",
-  },
-  {
-    shot: "memory",
-    title: "Read it back together.",
-    line: "Every memory keeps the words, the photographs and who told it.",
-  },
-  {
-    shot: "family-tree",
-    title: "Everyone on the tree.",
-    line: "Parents, partners, children and cousins on one family tree. Anyone can join with a six-letter code.",
-  },
-];
-
-const Together = styled(Chapter)`
-  .cols {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(20px, 3vw, 56px);
-    margin-top: calc(clamp(32px, 4vw, 72px) * var(--sy));
-  }
-  .col {
-    padding-top: 18px;
-    border-top: 1px solid ${color.primaryLineStrong};
-  }
-  h3 {
-    font: 400 ${display.md} / 1.15 ${font.display};
-    color: ${color.primary};
-  }
-  .col p {
-    margin-top: 10px;
-    font: 400 17px/1.55 ${font.text};
-    color: ${color.body};
-    max-width: 30ch;
-  }
-  ${media.md} {
-    .cols {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 56px;
     }
   }
 `;
@@ -468,30 +402,15 @@ function OccasionsRoom() {
   );
 }
 
-function TogetherRoom() {
-  const ref = useReveals<HTMLElement>();
-  return (
-    <Together ref={ref} $ground="ivory" $tight aria-labelledby="together-title">
-      <Frame>
-        <Statement id="together-title" $size="lg" data-lines>
-          Better <em>together.</em>
-        </Statement>
-        <div className="cols">
-          {TOGETHER.map((t) => (
-            <div key={t.shot} className="col" data-rise>
-              <h3>{t.title}</h3>
-              <p>{t.line}</p>
-            </div>
-          ))}
-        </div>
-      </Frame>
-    </Together>
-  );
-}
-
 /* On a phone the title takes the full measure, so it keeps to two lines
    (jury 2 U7). */
 const Fit = styled.div`
+  /* The opening print fills its column from the first paint. Centred and
+     shrink-to-fit, it was laid out at ~465px before its image arrived and
+     then jumped to ~1020px: CLS 0.22 at 1920 (fix round 3). */
+  section[data-variant="object"] .opening-object > figure {
+    width: 100%;
+  }
   @media (max-width: 860px) {
     section[data-variant] .opening-grid h1 {
       max-width: none;
@@ -546,8 +465,6 @@ export default function Families() {
       </Fit>
 
       <OccasionsRoom />
-      <TogetherRoom />
-
       <ReasonsRoom />
 
       <Invitation />

@@ -90,13 +90,32 @@ const Cards = styled.ul`
     }
   }
 `;
+/*
+ * On a phone the title is set as two lines (fix round 3). Free, it took one
+ * line in Cormorant but two in the fallback serif while the font loaded, and
+ * the question cards under it jumped 43px (CLS 0.12 at 390).
+ */
+const PhoneTitle = styled.div`
+  display: contents;
+  ${media.sm} {
+    h1 .ln {
+      display: block;
+    }
+  }
+`;
+
 const TURNS = ["-1.2deg", "0.8deg", "-0.5deg", "1.1deg"];
 
 const Index = styled(Chapter)`
   .head {
     margin-bottom: clamp(36px, 4vw, 64px);
   }
-  a.entry {
+  /*
+   * Every row has one anatomy (fix round 3, jury 1 R2 #8): a kicker, the
+   * title and one line, and an arrow. The guides are links; the last two rows
+   * open in place, so their arrow turns down and, once open, up.
+   */
+  .entry {
     display: grid;
     grid-template-columns: minmax(0, 0.45fr) minmax(0, 1fr) auto;
     gap: clamp(16px, 4vw, 64px);
@@ -105,31 +124,30 @@ const Index = styled(Chapter)`
     border-top: 1px solid ${color.primaryLineStrong};
     text-decoration: none;
     color: inherit;
+    cursor: pointer;
   }
   /* The entry's own words slide a little under the pointer: transform only. */
-  a.entry > * {
+  .entry > * {
     transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1);
   }
-  a.entry h3 {
+  .entry h3 {
     transition: color 160ms cubic-bezier(0.23, 1, 0.32, 1);
   }
-  a.entry:last-of-type {
-    border-bottom: 1px solid ${color.primaryLineStrong};
-  }
   @media (hover: hover) and (pointer: fine) {
-    a.entry:hover > * {
+    .entry:hover > * {
       transform: translateX(12px);
     }
-    a.entry:hover h3 {
+    .entry:hover h3 {
       color: ${color.accentText};
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    a.entry > * {
+    .entry > *,
+    summary.entry svg {
       transition: none;
     }
   }
-  a.entry:focus-visible {
+  .entry:focus-visible {
     outline: 3px solid ${color.accent};
     outline-offset: 4px;
   }
@@ -155,27 +173,27 @@ const Index = styled(Chapter)`
     height: 20px;
     color: ${color.accent};
   }
-  details {
-    margin-top: clamp(48px, 5vw, 80px);
-    border-top: 1px solid ${color.primaryLineStrong};
+  summary.entry {
+    list-style: none;
   }
-  details + details {
-    margin-top: 0;
+  summary.entry::-webkit-details-marker {
+    display: none;
+  }
+  summary.entry svg {
+    rotate: 90deg;
+    transition: rotate 240ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  details[open] summary.entry svg {
+    rotate: -90deg;
   }
   details:last-of-type {
     border-bottom: 1px solid ${color.primaryLineStrong};
   }
-  summary {
-    min-height: 68px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    font: 400 ${display.sm} / 1.3 ${font.display};
-    color: ${color.primary};
-  }
-  summary:focus-visible {
-    outline: 3px solid ${color.accent};
-    outline-offset: 4px;
+  /* The longest title keeps to two lines at 390 (taste-skill headline rule). */
+  ${media.sm} {
+    .entry h3 {
+      font-size: 1.25rem;
+    }
   }
   .topics {
     display: grid;
@@ -215,26 +233,31 @@ export default function Guides() {
         path="/guides"
         description="Practical ways to begin family conversations, name the faces in photographs and make room for different recollections."
       />
-      <PageOpening
-        variant="wide"
-        title={
-          <>
-            A place to <em>begin.</em>
-          </>
-        }
-        lead="Four questions you could ask tonight, and short guides for the conversations that take more care."
-        note="Ask one, then follow the detail they choose to share."
-        object={
-          <Cards aria-label="Questions to begin with">
-            {STARTERS.map(([topic, question], i) => (
-              <li key={topic} style={{ ["--turn" as string]: TURNS[i] }}>
-                <small>{topic}</small>
-                <p>“{question}”</p>
-              </li>
-            ))}
-          </Cards>
-        }
-      />
+      <PhoneTitle>
+        <PageOpening
+          variant="wide"
+          title={
+            <>
+              <span className="ln">A place</span>{" "}
+              <span className="ln">
+                to <em>begin.</em>
+              </span>
+            </>
+          }
+          lead="Four questions you could ask tonight, and short guides for the conversations that take more care."
+          note="Ask one, then follow the detail they choose to share."
+          object={
+            <Cards aria-label="Questions to begin with">
+              {STARTERS.map(([topic, question], i) => (
+                <li key={topic} style={{ ["--turn" as string]: TURNS[i] }}>
+                  <small>{topic}</small>
+                  <p>“{question}”</p>
+                </li>
+              ))}
+            </Cards>
+          }
+        />
+      </PhoneTitle>
 
       <Index ref={index} $ground="paper" aria-labelledby="index-title">
         <Frame>
@@ -260,7 +283,17 @@ export default function Guides() {
           ))}
 
           <details>
-            <summary>The eleven chapters of a life</summary>
+            <summary className="entry">
+              <span className="cat">Planning a longer story</span>
+              <div>
+                <h3>The eleven chapters of a life</h3>
+                <p>
+                  From where the family started to looking back: the chapters A
+                  Story moves through, one at a time.
+                </p>
+              </div>
+              <ArrowIcon />
+            </summary>
             <div className="topics">
               {CHAPTERS.map((c) => (
                 <div key={c.name}>
@@ -271,7 +304,17 @@ export default function Guides() {
             </div>
           </details>
           <details>
-            <summary>Letting a conversation deepen at their pace</summary>
+            <summary className="entry">
+              <span className="cat">Pacing</span>
+              <div>
+                <h3>Letting a conversation deepen at their pace</h3>
+                <p>
+                  Five steps, from an easy warm-up to what they would say now.
+                  Go deeper only when they want to.
+                </p>
+              </div>
+              <ArrowIcon />
+            </summary>
             <div className="topics">
               {DEPTHS.map((d) => (
                 <div key={d.level}>

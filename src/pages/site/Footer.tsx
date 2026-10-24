@@ -17,7 +17,9 @@ import { FooterShell } from "./chrome.styles";
  * Round 2 (jury 1 #11, jury 2 U4):
  *   - four balanced columns of four or five rooms; Start free and Sign in
  *     left, they are in the header on every page;
- *   - the program marks at one 48px row on a single cream plate;
+ *   - the program marks on a single cream plate: one row where it fits,
+ *     three and two below that, two by two with a sixth "what each one is"
+ *     cell on a phone (round 3: never one mark alone on a row);
  *   - one legal line (the company and NVIDIA's attribution together);
  *   - on a phone the rooms fold into two groups, so the footer is about one
  *     screen instead of two and a half;
@@ -140,22 +142,32 @@ export default function Footer() {
             aria-label="Startup programs and grants: A Story is a member of NVIDIA Inception, Google for Startups, the AssemblyAI Startup Program and the Deepgram Startup Program, and a Cartesia Startups grant recipient"
           >
             <ProgramMarks height={48} className="footer-marks" />
+            {/* On a phone the five marks sit two by two; this fills the
+                sixth cell, so no mark is left alone on a row. */}
+            <span className="footer-plate-more" aria-hidden="true">
+              What each one is
+              <svg viewBox="0 0 20 20" fill="none">
+                <path d="M3 10h13m-5-5 5 5-5 5" stroke="currentColor" strokeWidth="1.6" />
+              </svg>
+            </span>
           </Link>
         </div>
 
+        {/* One legal line, with the note about the examples inline at its
+            end (round 3, jury 1 #5: it floated alone on the right). */}
         <div className="gf-footer-bottom">
-          <p className="footer-legal">
+          <div className="footer-legal">
             © {new Date().getFullYear()} A Story Technologies, Inc.{" "}
-            <span className="footer-trademark">{nvidia}</span>
-          </p>
-          <details className="footer-about">
-            <summary>About the examples</summary>
-            <p>
-              Photographs are AI-generated illustrations. Names and
-              conversations in the demonstrations are fictional, not customer
-              testimonials.
-            </p>
-          </details>
+            <span className="footer-trademark">{nvidia}</span>{" "}
+            <details className="footer-about">
+              <summary>About the examples</summary>
+              <p>
+                Photographs are AI-generated illustrations. Names and
+                conversations in the demonstrations are fictional, not
+                customer testimonials.
+              </p>
+            </details>
+          </div>
         </div>
       </div>
     </FooterShell>

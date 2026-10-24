@@ -1,10 +1,24 @@
 import styled from "styled-components";
-import { color, font, media } from "../../styles/theme";
 import type { ReactNode } from "react";
 import useActiveSection from "../../hooks/useActiveSection";
+
+/*
+ * Privacy and Terms (round 3, jury 1 #15 and #3): the reading text is EB
+ * Garamond, the summary and every section share one left edge, and the
+ * contents are a real list. On a wide window they stand in a rail beside the
+ * text (it follows the reader and marks the section in view); below 1025px
+ * they fold into one "Contents" disclosure above the sections. The grid and
+ * every style live on `LegalContent` (legalPrimitives.ts), the one box that
+ * holds the notice, the summary and the sections.
+ */
+const Contents = styled.div`
+  display: contents;
+`;
+
 export function LegalLayout({ children }: { children: ReactNode }) {
-  return <Layout>{children}</Layout>;
+  return <Contents>{children}</Contents>;
 }
+
 export function PlainSummary({
   intro,
   points,
@@ -15,8 +29,8 @@ export function PlainSummary({
   caveat: string;
 }) {
   return (
-    <aside className="gf-legal-summary" aria-label="Plain-English summary">
-      <h2>The short version.</h2>
+    <aside className="gf-legal-summary" aria-labelledby="legal-short">
+      <h2 id="legal-short">The short version.</h2>
       <p>{intro}</p>
       <ul>
         {points.map((p) => (
@@ -29,6 +43,33 @@ export function PlainSummary({
     </aside>
   );
 }
+
+function Entries({
+  sections,
+  active,
+}: {
+  sections: { id: string; title: string }[];
+  active?: string;
+}) {
+  return (
+    <ol>
+      {sections.map((s, i) => (
+        <li key={s.id}>
+          <a
+            href={"#" + s.id}
+            aria-current={active === s.id ? "true" : undefined}
+          >
+            <span className="n" aria-hidden="true">
+              {i + 1}
+            </span>
+            {s.title}
+          </a>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 export function TableOfContents({
   sections,
 }: {
@@ -36,90 +77,26 @@ export function TableOfContents({
 }) {
   const active = useActiveSection(sections.map((s) => s.id));
   return (
-    <details className="gf-legal-contents">
-      <summary>Find a section</summary>
-      <nav aria-label="On this page">
-        <ol>
-          {sections.map((s) => (
-            <li key={s.id}>
-              <a
-                href={"#" + s.id}
-                aria-current={active === s.id ? "true" : undefined}
-              >
-                {s.title}
-              </a>
-            </li>
-          ))}
-        </ol>
+    <>
+      <nav className="gf-legal-rail" aria-labelledby="legal-contents">
+        <p className="gf-legal-rail-h" id="legal-contents">
+          Contents
+        </p>
+        <Entries sections={sections} active={active} />
       </nav>
-    </details>
+      <details className="gf-legal-contents">
+        <summary>
+          <span>
+            Contents <small>{sections.length} sections</small>
+          </span>
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="m5 8 5 5 5-5" stroke="currentColor" strokeWidth="1.6" />
+          </svg>
+        </summary>
+        <nav aria-label="Contents">
+          <Entries sections={sections} />
+        </nav>
+      </details>
+    </>
   );
 }
-
-const Layout = styled.div`
-  color: ${color.ink};
-  background: ${color.ivory};
-  .gf-legal-summary {
-    margin: 8px 0 35px;
-    padding: 32px 38px;
-    background: ${color.paper};
-    border: 1px solid ${color.primaryLine};
-    border-radius: 2px;
-    font-size: 18px;
-    line-height: 1.6;
-  }
-  .gf-legal-summary h2 {
-    font: 400 34px/1.2 ${font.display};
-    margin-bottom: 18px;
-  }
-  .gf-legal-summary ul {
-    padding-left: 22px;
-  }
-  .gf-legal-summary li {
-    margin: 12px 0;
-  }
-  .gf-legal-summary small {
-    display: block;
-    font-size: 14px;
-    color: ${color.bodyMuted};
-  }
-  .gf-legal-contents {
-    margin-bottom: 30px;
-    border-block: 1px solid ${color.primaryLineStrong};
-    padding: 18px 0;
-  }
-  .gf-legal-contents summary {
-    display: flex;
-    align-items: center;
-    min-height: 44px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 18px;
-  }
-  .gf-legal-contents ol {
-    columns: 2;
-    column-gap: 40px;
-    padding-left: 24px;
-  }
-  .gf-legal-contents li {
-    break-inside: avoid;
-    margin: 0 0 2px;
-    font-size: 16px;
-  }
-  .gf-legal-contents a {
-    display: inline-block;
-    padding: 10px 0;
-    text-underline-offset: 4px;
-  }
-  .gf-legal-contents a[aria-current="true"] {
-    color: ${color.accentText};
-  }
-  ${media.sm} {
-    .gf-legal-summary {
-      padding: 25px;
-    }
-    .gf-legal-contents ol {
-      columns: 1;
-    }
-  }
-`;
