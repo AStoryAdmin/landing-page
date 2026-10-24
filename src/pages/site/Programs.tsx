@@ -35,7 +35,7 @@ import googleBoxed from "../../assets/partners/google-for-startups-lockup-boxed.
 import deepgramBoxed from "../../assets/partners/deepgram-startup-program-lockup-boxed.svg";
 import cartesiaBoxed from "../../assets/partners/cartesia-startups-lockup-boxed.svg";
 import { ArrowIcon, Invitation } from "./kit/kit";
-import { Chapter, Eyebrow, Frame, Title } from "./kit/kit.styles";
+import { Chapter, Frame, Title } from "./kit/kit.styles";
 import { useReveals } from "./kit/reveals";
 import { color, display, font, media, motion } from "../../styles/theme";
 import { PROGRAMS, faqSchema } from "../../lib/seo";
@@ -59,7 +59,8 @@ const ROWS: Row[] = [
     mark: <InceptionBadge height={48} />,
     fit: (
       <>
-        The most important thing AI will ever do is the oldest thing people do: <b>keep a family’s stories.</b>
+        The most important thing AI will ever do is the oldest thing people do:{" "}
+        <b>keep a family’s stories.</b>
       </>
     ),
     href: "https://www.nvidia.com/en-us/startups/",
@@ -69,10 +70,18 @@ const ROWS: Row[] = [
     id: "google-title",
     name: "Google for Startups",
     status: "Member",
-    mark: <img src={googleBoxed} alt="Google for Startups" width={160} height={48} />,
+    mark: (
+      <img
+        src={googleBoxed}
+        alt="Google for Startups"
+        width={160}
+        height={48}
+      />
+    ),
     fit: (
       <>
-        A family is spread across cities and years. <b>The archive has to be there whenever someone thinks to ask.</b>
+        A family is spread across cities and years.{" "}
+        <b>The archive has to be there whenever someone thinks to ask.</b>
       </>
     ),
     href: "https://startup.google.com",
@@ -82,10 +91,18 @@ const ROWS: Row[] = [
     id: "assemblyai-title",
     name: "AssemblyAI Startup Program",
     status: "Member",
-    mark: <img src={aaiBoxed} alt="AssemblyAI Startup Program" width={239} height={48} />,
+    mark: (
+      <img
+        src={aaiBoxed}
+        alt="AssemblyAI Startup Program"
+        width={239}
+        height={48}
+      />
+    ),
     fit: (
       <>
-        A grandmother says a name once, in an accent seventy years old. <b>If it isn’t heard, it’s gone.</b>
+        A grandmother says a name once, in an accent seventy years old.{" "}
+        <b>It has to be heard right the first time.</b>
       </>
     ),
     href: "https://www.assemblyai.com",
@@ -95,23 +112,39 @@ const ROWS: Row[] = [
     id: "deepgram-title",
     name: "Deepgram Startup Program",
     status: "Member",
-    mark: <img src={deepgramBoxed} alt="Deepgram Startup Program" width={230} height={48} />,
+    mark: (
+      <img
+        src={deepgramBoxed}
+        alt="Deepgram Startup Program"
+        width={230}
+        height={48}
+      />
+    ),
     fit: (
       <>
-        An old voice on a phone line is quiet and slow. <b>Every word of it belongs on the page.</b>
+        An old voice on a phone line is quiet and slow.{" "}
+        <b>Every word of it belongs on the page.</b>
       </>
     ),
-    href: "https://deepgram.com/startups",
+    href: "https://deepgram.com/startup-program",
     host: "deepgram.com",
   },
   {
     id: "cartesia-title",
     name: "Cartesia Startups",
     status: "Grant recipient",
-    mark: <img src={cartesiaBoxed} alt="Cartesia Startups" width={242} height={48} />,
+    mark: (
+      <img
+        src={cartesiaBoxed}
+        alt="Cartesia Startups"
+        width={242}
+        height={48}
+      />
+    ),
     fit: (
       <>
-        For people who will never download an app, the only screen is a voice. <b>It has to sound like someone listening.</b>
+        For people who will never download an app, the only screen is a voice.{" "}
+        <b>It has to sound like someone listening.</b>
       </>
     ),
     href: "https://cartesia.ai",
@@ -119,14 +152,11 @@ const ROWS: Row[] = [
   },
 ];
 
-/** NVIDIA's approved description of the program, kept as their fine print. */
-const NVIDIA_ABOUT =
-  "The NVIDIA Inception program is designed to help startups accelerate innovation and growth. Members get access to the latest developer resources and training, exclusive pricing on NVIDIA hardware and software, and exposure to the venture capital community.";
-
 /* ── Opening: the promise on the left, the grant card on the right ──────── */
 
 const Opening = styled(Chapter)`
-  padding: calc(clamp(72px, 9vw, 150px) * var(--sy)) 0 calc(clamp(56px, 6vw, 104px) * var(--sy));
+  padding: calc(clamp(72px, 9vw, 150px) * var(--sy)) 0
+    calc(clamp(56px, 6vw, 104px) * var(--sy));
   .grid {
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
@@ -140,7 +170,7 @@ const Opening = styled(Chapter)`
   }
   .lead {
     margin-top: calc(clamp(20px, 2.4vw, 36px) * var(--sy));
-    font: 400 clamp(1.1rem, 1rem + 0.4vw, 1.35rem) / 1.55 ${font.body};
+    font: 400 clamp(1.1rem, 1rem + 0.4vw, 1.35rem) / 1.55 ${font.text};
     color: var(--ink);
     max-width: 40ch;
   }
@@ -242,13 +272,13 @@ const Ledger = styled(Chapter)`
   }
   .status {
     margin-left: 10px;
-    font: 500 15px/1.3 ${font.body};
+    font: 500 15px/1.3 ${font.text};
     color: var(--label);
   }
   .fit {
     margin-top: 6px;
     max-width: 62ch;
-    font: 400 17px/1.5 ${font.body};
+    font: 400 17px/1.5 ${font.text};
     color: var(--muted);
   }
   .fit b {
@@ -299,34 +329,17 @@ export default function Programs() {
         schema={[faqSchema(PROGRAMS.faq)]}
       />
 
-      <Opening ref={opening} $ground="ivory" aria-labelledby="programs-title">
+      <Opening ref={opening} $ground="cloth" aria-labelledby="programs-title">
         <Frame className="grid">
           <div>
-            <Eyebrow>Programs &amp; grants</Eyebrow>
             <Title id="programs-title" data-lines>
               In very good <em>company.</em>
             </Title>
             <p className="lead" data-rise>
-              Five programs for companies building with AI and voice have taken A Story in. None of them is an
-              endorsement, an investment or a partnership.
+              Five programs for companies building with AI and voice have taken
+              A Story in. None of them is an endorsement, an investment or a
+              partnership.
             </p>
-            <nav className="marks" aria-label="Programs on this page" data-rise>
-              <a href="#inception-title" aria-label="NVIDIA Inception">
-                <InceptionBadge height={40} />
-              </a>
-              <a href="#google-title" aria-label="Google for Startups">
-                <img src={googleBoxed} alt="" width={134} height={40} />
-              </a>
-              <a href="#assemblyai-title" aria-label="AssemblyAI Startup Program">
-                <img src={aaiBoxed} alt="" width={199} height={40} />
-              </a>
-              <a href="#deepgram-title" aria-label="Deepgram Startup Program">
-                <img src={deepgramBoxed} alt="" width={192} height={40} />
-              </a>
-              <a href="#cartesia-title" aria-label="Cartesia Startups">
-                <img src={cartesiaBoxed} alt="" width={202} height={40} />
-              </a>
-            </nav>
           </div>
           <figure className="card" data-rise data-drift="4">
             <img
@@ -336,12 +349,20 @@ export default function Programs() {
               height={1600}
               decoding="async"
             />
-            <figcaption>Cartesia’s grant-recipient card for A Story.</figcaption>
+            <figcaption>
+              Cartesia’s grant-recipient card for A Story.
+            </figcaption>
           </figure>
         </Frame>
       </Opening>
 
-      <Ledger ref={ledger} $ground="ivory" $tight aria-label="The five programs" data-nosnippet>
+      <Ledger
+        ref={ledger}
+        $ground="ivory"
+        $tight
+        aria-label="The five programs"
+        data-nosnippet
+      >
         <Frame>
           <ol>
             {ROWS.map((r) => (
@@ -354,15 +375,17 @@ export default function Programs() {
                   </h3>
                   <p className="fit">{r.fit}</p>
                 </div>
-                <a className="out" href={r.href} target="_blank" rel="noopener noreferrer">
+                <a
+                  className="out"
+                  href={r.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {r.host} <ArrowIcon />
                 </a>
               </li>
             ))}
           </ol>
-          <p className="fine" data-rise>
-            {NVIDIA_ABOUT}
-          </p>
         </Frame>
       </Ledger>
 

@@ -67,7 +67,7 @@ const Row = styled.ul<{ $n: number }>`
   }
   .k {
     margin-top: 22px;
-    font: 600 13px/1.3 ${font.body};
+    font: 600 12px/1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--label, ${color.accentText});
@@ -82,7 +82,7 @@ const Row = styled.ul<{ $n: number }>`
   p.d {
     margin-top: 8px;
     max-width: 30ch;
-    font: 400 15px/1.55 ${font.body};
+    font: 400 17px/1.55 ${font.text};
     color: var(--muted, ${color.bodyMuted});
   }
   ${media.md} {

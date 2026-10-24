@@ -15,7 +15,9 @@ import { LAKE_MONSTER as M } from "../../../lib/homeExamples";
 import { gsap, useScene } from "../../../lib/scrollMotion";
 import { avatarTints } from "../app/tokens";
 import { Picture } from "../kit/kit";
-import { Eyebrow, Frame } from "../kit/kit.styles";
+import { Frame } from "../kit/kit.styles";
+import { chocolateCloth } from "../kit/cloth";
+import { HOUSE_OUT } from "../our-story/motion";
 import { color, display, font, media } from "../../../styles/theme";
 
 const VOICES = [
@@ -42,13 +44,7 @@ const Opening = styled.section`
   --mark: ${color.gold};
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(
-      ellipse 55% 70% at 75% 50%,
-      color-mix(in srgb, ${color.warmGold} 14%, ${color.night}),
-      transparent 70%
-    ),
-    ${color.night};
+  ${chocolateCloth};
   color: ${color.ivory};
   padding: clamp(64px, 8vw, 128px) 0 clamp(80px, 9vw, 140px);
 
@@ -78,7 +74,7 @@ const Opening = styled.section`
     margin-top: clamp(22px, 2.4vw, 32px);
     padding-top: 22px;
     border-top: 1px solid ${color.nightLine};
-    font: 400 18px/1.6 ${font.body};
+    font: 400 18px/1.6 ${font.text};
     color: ${color.onDarkMuted};
     max-width: 40ch;
   }
@@ -220,24 +216,24 @@ export default function CompareOpening() {
       .from(".opening-copy > *", {
         y: 30,
         opacity: 0,
-        duration: 1.1,
-        ease: "expo.out",
-        stagger: 0.1,
+        duration: 0.8,
+        ease: HOUSE_OUT,
+        stagger: 0.08,
       })
       .from(
         ".print",
-        { scale: 0.9, opacity: 0, duration: 1.1, ease: "expo.out" },
+        { scale: 0.96, opacity: 0, duration: 0.9, ease: HOUSE_OUT },
         0.2,
       )
       .from(
         ".voice",
         {
-          scale: 0.85,
-          y: 20,
+          scale: 0.96,
+          y: 16,
           opacity: 0,
-          duration: 0.7,
-          ease: "back.out(1.8)",
-          stagger: 0.18,
+          duration: 0.6,
+          ease: HOUSE_OUT,
+          stagger: 0.12,
         },
         0.7,
       )
@@ -248,14 +244,13 @@ export default function CompareOpening() {
     <Opening ref={ref} aria-labelledby="compare-title">
       <Frame className="grid">
         <div className="opening-copy">
-          <Eyebrow>How A Story is different</Eyebrow>
           <h1 id="compare-title">
-            More than a memoir. A family’s whole <em>story.</em>
+            The whole family’s <em>story.</em>
           </h1>
           <p className="lead">
             Most products help one storyteller finish a book. A Story keeps
-            everyone’s version of the same moment - side by side, and still
-            growing.
+            everyone’s version of the same moment, side by side, and keeps
+            growing after the book is printed.
           </p>
         </div>
         <div

@@ -75,24 +75,57 @@ const WHO = [
 ] as const;
 
 const STEPS = [
-  ["A thirty-minute demo.", "We show a real call and a real archive, and ask about your people and what you want to keep."],
-  ["You choose who takes part.", "A list of names and phone numbers, or an invitation people sign up through. Consent comes first."],
-  ["A Story makes the calls.", "Guided conversations that follow what each person actually says, at the hour they pick."],
-  ["You keep the archive.", "Voices, transcripts and photographs in one place, and a book or an anniversary volume when you want one."],
+  [
+    "A thirty-minute demo.",
+    "We show a real call and a real archive, and ask about your people and what you want to keep.",
+  ],
+  [
+    "You choose who takes part.",
+    "A list of names and phone numbers, or an invitation people sign up through. Consent comes first.",
+  ],
+  [
+    "A Story makes the calls.",
+    "Guided conversations that follow what each person actually says, at the hour they pick.",
+  ],
+  [
+    "You keep the archive.",
+    "Memories, transcripts and photographs in one place, and a book or an anniversary volume when you want one.",
+  ],
 ] as const;
 
 const DECIDE = [
-  ["Who takes part", "And how they are invited - a list from you, or a link they sign up through."],
-  ["Who can listen", "A private archive, the participants' own families, or the public. Set per program."],
-  ["Consent", "Each person agrees before their first call, and can stop at any time."],
-  ["What is published", "Nothing leaves the archive unless you and the person both say so."],
+  [
+    "Who takes part",
+    "And how they are invited - a list from you, or a link they sign up through.",
+  ],
+  [
+    "Who can listen",
+    "A private archive, the participants' own families, or the public. Set per program.",
+  ],
+  [
+    "Consent",
+    "Each person agrees before their first call, and can stop at any time.",
+  ],
+  [
+    "What is published",
+    "Nothing leaves the archive unless you and the person both say so.",
+  ],
 ] as const;
 
 const NEXT = [
-  ["You send this form.", "It goes to Daniel, our co-founder, not a sales queue."],
-  ["Daniel writes back.", "Within a working day, to confirm one of the times you picked."],
-  ["Thirty minutes together.", "A live call, a real archive, and your questions."],
-  ["Start small.", "Most programs begin with one class, one floor or one team."],
+  ["You send this form.", "It goes to Daniel, our co-founder and CEO."],
+  [
+    "Daniel writes back.",
+    "Within a working day, to confirm one of the times you picked.",
+  ],
+  [
+    "Thirty minutes together.",
+    "A live call, a real archive, and your questions.",
+  ],
+  [
+    "Start small.",
+    "A program can begin with one class, one floor or one team.",
+  ],
 ] as const;
 
 /* A thin band of the three things an institution asks first. */
@@ -194,7 +227,7 @@ const Who = styled(Chapter)`
     margin-top: 26px;
     padding-top: 16px;
     border-top: 1px solid var(--line);
-    font: 600 12px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--label);
@@ -210,7 +243,7 @@ const Who = styled(Chapter)`
   }
   article p:last-child {
     margin-top: 10px;
-    font: 400 17px/1.6 ${font.body};
+    font: 400 17px/1.6 ${font.text};
     color: var(--muted);
   }
   ${media.lg} {
@@ -301,7 +334,7 @@ const How = styled(Chapter)`
   }
   li p {
     margin-top: 6px;
-    font: 400 17px/1.6 ${font.body};
+    font: 400 17px/1.6 ${font.text};
     color: var(--muted);
     max-width: 52ch;
   }
@@ -341,7 +374,7 @@ const Decide = styled(Chapter)`
   }
   .cell p {
     margin-top: 8px;
-    font: 400 17px/1.6 ${font.body};
+    font: 400 17px/1.6 ${font.text};
     color: var(--muted);
   }
   .foot {
@@ -351,7 +384,7 @@ const Decide = styled(Chapter)`
     align-items: baseline;
     gap: 12px 32px;
     margin-top: clamp(28px, 3vw, 40px);
-    font: 400 17px/1.6 ${font.body};
+    font: 400 17px/1.6 ${font.text};
     color: var(--muted);
   }
   .foot p {
@@ -424,14 +457,14 @@ const Book = styled(Chapter)`
   .side li span {
     display: block;
     margin-top: 4px;
-    font: 400 16px/1.55 ${font.body};
+    font: 400 16px/1.55 ${font.text};
     color: var(--muted);
   }
   .side .write {
     margin-top: 10px;
     padding-top: 20px;
     border-top: 1px solid var(--line);
-    font: 400 16px/1.55 ${font.body};
+    font: 400 16px/1.55 ${font.text};
     color: var(--muted);
   }
   .side .write a {
@@ -452,7 +485,7 @@ const Book = styled(Chapter)`
   }
   .card-head small {
     display: block;
-    font: 600 12px/1.3 ${font.body};
+    font: 600 13px/1.3 ${font.body};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -485,17 +518,16 @@ export default function Organizations() {
       <EditorialSeo
         title="A Story for institutions - book a demo"
         path="/organizations"
-        description="Colleges, care communities, libraries and organizations use A Story to record the people they were built by, in their own voices. Book a thirty-minute demo."
+        description="Colleges, care communities, libraries and organizations can use A Story to record the people they were built by, in their own words. Book a thirty-minute demo."
       />
       <PageOpening
         ground="night"
-        eyebrow="For institutions"
         title={
           <>
-            The people who made the place, <em>in their own words.</em>
+            The people who made the <em>place.</em>
           </>
         }
-        lead="A Story calls the people your institution was built by - alumni, residents, long-serving staff, founders - and asks about their lives, with follow-up questions that listen. You keep their voices, and a book when you want one."
+        lead="A Story calls the people your institution was built by - alumni, residents, long-serving staff, founders - and asks about their lives, with follow-up questions that listen. You keep their words, in their own voice, and a book when you want one."
         actions={
           <>
             <PrimaryAnchor href="#book">
@@ -530,15 +562,17 @@ export default function Organizations() {
           <Frame>
             <SplitHead>
               <div>
-                <Eyebrow>Who it is for</Eyebrow>
                 <Statement id="who-title" $size="lg">
                   Every place has people <em>worth hearing.</em>
                 </Statement>
               </div>
-              <Lead>The calls are the same for everyone. What you keep, and who it is for, is yours to decide.</Lead>
+              <Lead>
+                The calls are the same for everyone. What you keep, and who it
+                is for, is yours to decide.
+              </Lead>
             </SplitHead>
             <div className="grid">
-              {WHO.map((w, i) => (
+              {WHO.map((w) => (
                 <article key={w.kind} data-rise>
                   <div className="window">
                     <div>
@@ -549,10 +583,7 @@ export default function Organizations() {
                       />
                     </div>
                   </div>
-                  <p className="n">
-                    <b>{["i", "ii", "iii", "iv"][i]}</b>
-                    {w.kind}
-                  </p>
+                  <p className="n">{w.kind}</p>
                   <Heading>{w.title}</Heading>
                   <p>{w.body}</p>
                 </article>
@@ -565,12 +596,18 @@ export default function Organizations() {
           <Frame>
             <span className="orn" aria-hidden="true" />
             <p data-rise>
-              <span>A record keeps what happened.</span> <em>A voice keeps why.</em>
+              <span>A record keeps what happened.</span>{" "}
+              <em>A voice keeps why.</em>
             </p>
           </Frame>
         </Line>
 
-        <How $ground="paper" id="how" aria-labelledby="how-title" style={{ scrollMarginTop: 80 }}>
+        <How
+          $ground="paper"
+          id="how"
+          aria-labelledby="how-title"
+          style={{ scrollMarginTop: 80 }}
+        >
           <Frame className="grid">
             <div className="stage" data-rise aria-hidden="true">
               <Phone width="min(320px, 84%)">
@@ -578,7 +615,6 @@ export default function Organizations() {
               </Phone>
             </div>
             <div>
-              <Eyebrow>How a program runs</Eyebrow>
               <Statement id="how-title" $size="lg">
                 From a demo to an archive, <em>in four steps.</em>
               </Statement>
@@ -606,8 +642,9 @@ export default function Organizations() {
                 </Statement>
               </div>
               <Lead>
-                A private working archive and a public anniversary volume need different decisions. We make them with
-                you, before anyone is called.
+                A private working archive and a public anniversary volume need
+                different decisions. We make them with you, before anyone is
+                called.
               </Lead>
             </SplitHead>
             <div className="cells">
@@ -622,18 +659,23 @@ export default function Organizations() {
             </div>
             <div className="foot">
               <p>
-                Pricing is quoted for each program, by how many people take part and whether you want printed books.
-                We tell you on the demo, not after it.
+                Pricing is quoted for each program, by how many people take part
+                and whether you want printed books. We tell you on the demo, not
+                after it.
               </p>
               <Link to="/privacy">How we handle privacy</Link>
             </div>
           </Frame>
         </Decide>
 
-        <Book $ground="ivory" id="book" aria-labelledby="book-title" style={{ scrollMarginTop: 80 }}>
+        <Book
+          $ground="ivory"
+          id="book"
+          aria-labelledby="book-title"
+          style={{ scrollMarginTop: 80 }}
+        >
           <Frame className="row">
             <div className="side" data-rise>
-              <Eyebrow>Book a demo</Eyebrow>
               <Statement id="book-title" $size="lg">
                 Thirty minutes, <em>with a founder.</em>
               </Statement>

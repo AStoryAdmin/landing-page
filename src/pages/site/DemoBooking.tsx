@@ -15,14 +15,24 @@
  * rest is optional and says so.
  */
 import { useId, useMemo, useState, type FormEvent } from "react";
-import { requestDemo, DEMO_EMAIL, INSTITUTION_KINDS } from "../../lib/demoRequest";
+import {
+  requestDemo,
+  DEMO_EMAIL,
+  INSTITUTION_KINDS,
+} from "../../lib/demoRequest";
 import { looksLikeEmail } from "../../lib/leads";
 import { track } from "../../lib/analytics";
 import { ArrowIcon } from "./kit/kit";
 import { PrimaryButton, TextAnchor } from "./kit/kit.styles";
 import { Done, Form } from "./kit/form.styles";
 
-const SIZES = ["Under 10", "10 - 50", "50 - 200", "200 or more", "Not sure yet"] as const;
+const SIZES = [
+  "Under 10",
+  "10 - 50",
+  "50 - 200",
+  "200 or more",
+  "Not sure yet",
+] as const;
 const PARTS = ["Morning", "Midday", "Afternoon"] as const;
 
 /** The next eight weekdays, starting two working days from today. */
@@ -38,12 +48,22 @@ const upcomingDays = (now = new Date()): string[] => {
       skip -= 1;
       continue;
     }
-    out.push(d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }));
+    out.push(
+      d.toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      }),
+    );
   }
   return out;
 };
 
-export default function DemoBooking({ initialKind = "" }: { initialKind?: string }) {
+export default function DemoBooking({
+  initialKind = "",
+}: {
+  initialKind?: string;
+}) {
   const uid = useId();
   const days = useMemo(() => upcomingDays(), []);
   const timezone = useMemo(() => {
@@ -66,7 +86,9 @@ export default function DemoBooking({ initialKind = "" }: { initialKind?: string
   const [note, setNote] = useState("");
   const [website, setWebsite] = useState("");
 
-  const [invalid, setInvalid] = useState<"name" | "email" | "organization" | null>(null);
+  const [invalid, setInvalid] = useState<
+    "name" | "email" | "organization" | null
+  >(null);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const [fallback, setFallback] = useState<string | null>(null);
@@ -77,7 +99,13 @@ export default function DemoBooking({ initialKind = "" }: { initialKind?: string
   /* "Tue, Oct 27 - morning or afternoon", one line per day, in the order shown. */
   const times = days
     .filter((d) => picked.includes(d))
-    .map((d) => (parts.length ? `${d} - ${PARTS.filter((p) => parts.includes(p)).join(" or ").toLowerCase()}` : d));
+    .map((d) =>
+      parts.length
+        ? `${d} - ${PARTS.filter((p) => parts.includes(p))
+            .join(" or ")
+            .toLowerCase()}`
+        : d,
+    );
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -105,7 +133,10 @@ export default function DemoBooking({ initialKind = "" }: { initialKind?: string
     setBusy(false);
     if (result.ok) {
       setDone(true);
-      track("demo_requested", { kind: kind || "unspecified", size: size || "unspecified" });
+      track("demo_requested", {
+        kind: kind || "unspecified",
+        size: size || "unspecified",
+      });
       return;
     }
     setFallback(result.fallbackMailto);
@@ -117,9 +148,10 @@ export default function DemoBooking({ initialKind = "" }: { initialKind?: string
       <Done role="status">
         <h3>Thank you. It is with Daniel now.</h3>
         <p>
-          Daniel, our co-founder, will write to <strong>{email.trim()}</strong> within a working day to confirm a
-          time{times.length ? " from the ones you picked" : ""}. If it is sooner than that, write to{" "}
-          <a href={`mailto:${DEMO_EMAIL}`}>{DEMO_EMAIL}</a>.
+          Daniel, our co-founder, will write to <strong>{email.trim()}</strong>{" "}
+          within a working day to confirm a time
+          {times.length ? " from the ones you picked" : ""}. If it is sooner
+          than that, write to <a href={`mailto:${DEMO_EMAIL}`}>{DEMO_EMAIL}</a>.
         </p>
       </Done>
     );
@@ -128,9 +160,18 @@ export default function DemoBooking({ initialKind = "" }: { initialKind?: string
   return (
     <Form onSubmit={submit} noValidate aria-describedby={`${uid}-fine`}>
       <div className="two">
-        <label className="field" htmlFor={`${uid}-name`} data-invalid={invalid === "name"}>
+        <label
+          className="field"
+          htmlFor={`${uid}-name`}
+          data-invalid={invalid === "name"}
+        >
           <span>Your name</span>
-          <input id={`${uid}-name`} autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} />
+          <input
+            id={`${uid}-name`}
+            autoComplete="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </label>
         <label className="field" htmlFor={`${uid}-role`}>
           <span>
@@ -144,7 +185,11 @@ export default function DemoBooking({ initialKind = "" }: { initialKind?: string
             onChange={(e) => setRole(e.target.value)}
           />
         </label>
-        <label className="field" htmlFor={`${uid}-org`} data-invalid={invalid === "organization"}>
+        <label
+          className="field"
+          htmlFor={`${uid}-org`}
+          data-invalid={invalid === "organization"}
+        >
           <span>Institution</span>
           <input
             id={`${uid}-org`}
@@ -157,14 +202,22 @@ export default function DemoBooking({ initialKind = "" }: { initialKind?: string
           <span>
             What kind <small>optional</small>
           </span>
-          <select id={`${uid}-kind`} value={kind} onChange={(e) => setKind(e.target.value)}>
+          <select
+            id={`${uid}-kind`}
+            value={kind}
+            onChange={(e) => setKind(e.target.value)}
+          >
             <option value="">Choose one</option>
             {INSTITUTION_KINDS.map((k) => (
               <option key={k}>{k}</option>
             ))}
           </select>
         </label>
-        <label className="field" htmlFor={`${uid}-email`} data-invalid={invalid === "email"}>
+        <label
+          className="field"
+          htmlFor={`${uid}-email`}
+          data-invalid={invalid === "email"}
+        >
           <span>Work email</span>
           <input
             id={`${uid}-email`}
@@ -197,7 +250,12 @@ export default function DemoBooking({ initialKind = "" }: { initialKind?: string
         <div className="chips">
           {SIZES.map((s) => (
             <label className="chip" key={s}>
-              <input type="radio" name={`${uid}-size`} checked={size === s} onChange={() => setSize(s)} />
+              <input
+                type="radio"
+                name={`${uid}-size`}
+                checked={size === s}
+                onChange={() => setSize(s)}
+              />
               <span>{s}</span>
             </label>
           ))}
@@ -211,7 +269,11 @@ export default function DemoBooking({ initialKind = "" }: { initialKind?: string
         <div className="chips">
           {days.map((d) => (
             <label className="chip" key={d}>
-              <input type="checkbox" checked={picked.includes(d)} onChange={() => toggle(picked, setPicked, d)} />
+              <input
+                type="checkbox"
+                checked={picked.includes(d)}
+                onChange={() => toggle(picked, setPicked, d)}
+              />
               <span>{d}</span>
             </label>
           ))}
@@ -225,14 +287,19 @@ export default function DemoBooking({ initialKind = "" }: { initialKind?: string
         <div className="chips">
           {PARTS.map((p) => (
             <label className="chip" key={p}>
-              <input type="checkbox" checked={parts.includes(p)} onChange={() => toggle(parts, setParts, p)} />
+              <input
+                type="checkbox"
+                checked={parts.includes(p)}
+                onChange={() => toggle(parts, setParts, p)}
+              />
               <span>{p}</span>
             </label>
           ))}
         </div>
         <p className="hint">
-          Thirty minutes on a video call{timezone ? `, in your time (${timezone.replace(/_/g, " ")})` : ""}. We
-          confirm one of these by email.
+          Thirty minutes on a video call
+          {timezone ? `, in your time (${timezone.replace(/_/g, " ")})` : ""}.
+          We confirm one of these by email.
         </p>
       </fieldset>
 
@@ -250,7 +317,12 @@ export default function DemoBooking({ initialKind = "" }: { initialKind?: string
 
       <label className="trap" aria-hidden="true">
         Website
-        <input tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
+        <input
+          tabIndex={-1}
+          autoComplete="off"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+        />
       </label>
 
       {invalid && (
@@ -264,16 +336,23 @@ export default function DemoBooking({ initialKind = "" }: { initialKind?: string
       )}
       {fallback && (
         <p className="error" role="alert">
-          That did not go through on our side. <TextAnchor href={fallback}>Send it by email instead</TextAnchor> -
+          That did not go through on our side.{" "}
+          <TextAnchor href={fallback}>Send it by email instead</TextAnchor> -
           everything you wrote is already in it.
         </p>
       )}
 
-      <PrimaryButton className="go" type="submit" disabled={busy}>
+      <PrimaryButton
+        className="go"
+        type="submit"
+        disabled={busy}
+        aria-busy={busy || undefined}
+      >
         {busy ? "Sending…" : "Book a demo"} <ArrowIcon />
       </PrimaryButton>
       <p className="fine" id={`${uid}-fine`}>
-        No payment, and no mailing list. We use these details only to arrange the demo.
+        No payment, and no mailing list. We use these details only to arrange
+        the demo.
       </p>
     </Form>
   );

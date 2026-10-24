@@ -58,7 +58,7 @@ export default function Care() {
             photo: "11",
             alt: "Hands holding playing cards at a kitchen table",
             eyebrow: "An invitation",
-            title: "Start with what they want to tell.",
+            title: "Start with what they choose.",
             body: "A familiar photograph, recipe or song can open a conversation. It is an invitation, never a test of what someone remembers - they choose what to share and when to stop.",
           },
           {
@@ -103,7 +103,7 @@ export default function Care() {
         }
         beginEyebrow="Before you begin"
         beginTitle="Make participation comfortable."
-        beginBody="Begin with a small program shaped around the residents and families who want to take part. Community pricing is quoted individually. A Story records personal stories; it is not a clinical assessment or treatment."
+        beginBody="Begin with a small program shaped around the residents and families who want to take part. Community pricing is quoted individually. A Story records personal stories. It is not a clinical assessment or treatment."
         checklist={[
           "Who will help with installation, introductions and support",
           "Consent - and who may read or contribute",

@@ -6,6 +6,10 @@
 import styled from "styled-components";
 import { color, font, media, motion } from "../../../styles/theme";
 
+/* States (2026-10-23): hover darkens the rule, focus draws a gold rule under
+   it without changing the field's size, invalid turns it red, valid (a
+   filled field the browser accepts) settles it to the ink. 150ms. */
+
 export const Form = styled.form`
   display: grid;
   gap: 26px;
@@ -25,7 +29,7 @@ export const Form = styled.form`
     justify-content: space-between;
     gap: 12px;
     padding: 0;
-    font: 600 13px/1.3 ${font.body};
+    font: 600 12px/1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.bodyMuted};
@@ -46,9 +50,11 @@ export const Form = styled.form`
     border-bottom: 1px solid ${color.primaryLineStrong};
     border-radius: 0;
     background: transparent;
-    font: 400 20px/1.3 ${font.display};
-    color: ${color.primary};
-    transition: border-color ${motion.slow};
+    font: 400 20px/1.3 ${font.text};
+    color: ${color.body};
+    transition:
+      border-color ${motion.fast},
+      box-shadow ${motion.fast};
   }
   select {
     appearance: none;
@@ -69,14 +75,36 @@ export const Form = styled.form`
     font-style: italic;
     opacity: 0.75;
   }
+  ${media.hover} {
+    input:hover,
+    select:hover,
+    textarea:hover {
+      border-bottom-color: ${color.controlBorder};
+    }
+  }
+  /* Focus: the gold rule is a shadow under the 1px line, so nothing moves. */
   input:focus,
   select:focus,
   textarea:focus {
     outline: none;
-    border-bottom: 2px solid ${color.gold};
+    border-bottom-color: ${color.goldDeep};
+    box-shadow: 0 1px 0 ${color.goldDeep};
   }
-  .field[data-invalid="true"] input {
+  input:not(:placeholder-shown):valid,
+  textarea:not(:placeholder-shown):valid {
+    border-bottom-color: ${color.primary};
+  }
+  input:disabled,
+  select:disabled,
+  textarea:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .field[data-invalid="true"] input,
+  .field[data-invalid="true"] textarea,
+  .field[data-invalid="true"] select {
     border-bottom-color: ${color.error};
+    box-shadow: 0 1px 0 ${color.error};
   }
   fieldset {
     margin: 0;
@@ -110,11 +138,12 @@ export const Form = styled.form`
     padding: 0 16px;
     border: 1px solid ${color.primaryLineStrong};
     border-radius: 999px;
-    font: 500 15px/1 ${font.body};
+    font: 500 15px/1 ${font.ui};
     color: ${color.primary};
     transition:
-      background ${motion.slow},
-      border-color ${motion.slow};
+      background-color ${motion.fast},
+      border-color ${motion.fast},
+      color ${motion.fast};
   }
   .chip input:checked + span {
     background: ${color.primary};
@@ -164,12 +193,12 @@ export const Form = styled.form`
 
 export const Done = styled.div`
   h3 {
-    font: 400 clamp(1.6rem, 1.3rem + 1vw, 2.2rem) / 1.15 ${font.display};
+    font: 600 clamp(1.7rem, 1.35rem + 1vw, 2.4rem) / 1.12 ${font.display};
     color: ${color.primary};
   }
   p {
     margin-top: 14px;
-    font: 400 17px/1.6 ${font.body};
+    font: 400 19px/1.55 ${font.text};
     color: ${color.body};
     max-width: 46ch;
   }

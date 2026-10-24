@@ -5,7 +5,7 @@
  * four days. They are the product's strongest demonstrations (they stay, in
  * demoScripts.ts, on How it works) but a first-time visitor doesn't see
  * themselves in them. The founder asked for the people buyers actually are:
- * a mum keeping what her daughter says, a grandpa who only tells stories with
+ * a mom keeping what her daughter says, a grandpa who only tells stories with
  * a screwdriver in his hand, two old friends who disagree about a canoe trip.
  * Everything here is one fictional family so the examples add up.
  *
@@ -117,7 +117,7 @@ export const LAKE_MONSTER = {
     {
       name: "Sarah",
       initial: "S",
-      role: "Lily’s mum",
+      role: "Lily’s mom",
       kind: "12 photos",
       quote:
         "She didn’t sleep. She kept watch at the tent door with a flashlight.",
@@ -155,7 +155,7 @@ export const SPREADS = [
     alt: "Two people on the porch steps of a new home, 1952",
     caption: "Walt & Ruth, Elm Street",
     words:
-      "We had one chair and a crate, so we sat on the steps. Every evening that first summer, till the streetlights came on. The neighbours thought we couldn’t afford furniture. We couldn’t.",
+      "We had one chair and a crate, so we sat on the steps. Every evening that first summer, till the streetlights came on. The neighbors thought we couldn’t afford furniture. We couldn’t.",
     by: "Grandma Ruth · told in a call",
     also: {
       name: "Dan",

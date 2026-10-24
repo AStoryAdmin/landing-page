@@ -10,10 +10,13 @@ import { FooterShell } from "./chrome.styles";
 import { APP, START_HREF, START_LABEL } from "../../lib/app";
 
 /**
- * The back of the namecard, at the foot of every page. The explanation that
+ * The back board, at the foot of every page (phase 2, 2026-10-23): the
+ * cloth, quiet. The wordmark at an ordinary size, one plain line of what A
+ * Story does, the way to write to us, the rooms, the five program badges,
+ * and a colophon with the company's legal name. The explanation that the
  * photographs and people in the examples are illustrative lives here once,
- * behind a toggle, instead of under every image — the pages read as a family
- * archive, and the honesty is still one click away.
+ * behind a toggle. The namecard slogans left on 2026-10-23 (review: a
+ * slogan said at the foot of every page reads as a tell).
  */
 export default function Footer() {
   return (
@@ -21,11 +24,10 @@ export default function Footer() {
       <div className="gf-width">
         <div className="gf-footer-top">
           <div>
-            <Logo tone="dark" height={56} />
+            <Logo tone="dark" height={48} />
             <p className="footer-line">
-              <span className="nb">Not a memoir to finish - </span>
-              <br />
-              <i>A Story</i> to keep, and to carry on.
+              A Story calls someone you love, listens, and keeps what they
+              say in a private archive the whole family can add to.
             </p>
             <p className="footer-contact">
               <Link to="/contact">Contact us</Link> · <a href={CONTACT.general}>{SITE.email}</a>
@@ -71,14 +73,11 @@ export default function Footer() {
             to="/programs"
             aria-label="A Story is a member of NVIDIA Inception, Google for Startups, the AssemblyAI Startup Program and the Deepgram Startup Program, and a Cartesia Startups grant recipient"
           >
-            <ProgramMarks height={48} />
+            <ProgramMarks height={40} />
           </Link>
         </div>
         <div className="gf-footer-bottom">
-          <p>
-            © {new Date().getFullYear()} A Story · A story of you, by you, and
-            yours
-          </p>
+          <p>© {new Date().getFullYear()} A Story Technologies, Inc.</p>
           <details className="footer-about">
             <summary>About the examples</summary>
             <p>

@@ -19,7 +19,7 @@ import { AppShot, Phone } from "../app/Phone";
 import { Picture, Invitation } from "./kit";
 import { useReveals } from "./reveals";
 import { Actions, Chapter, Eyebrow, Frame, Title } from "./kit.styles";
-import { color, display, font, media } from "../../../styles/theme";
+import { color, curve, display, font, media } from "../../../styles/theme";
 
 export type Moment = {
   photo: string;
@@ -60,7 +60,7 @@ const Opening = styled(Chapter)`
   }
   .lead {
     margin-top: clamp(22px, 2.4vw, 32px);
-    font: 400 clamp(1.15rem, 1.02rem + 0.45vw, 1.4rem) / 1.55 ${font.body};
+    font: 400 clamp(1.25rem, 1.1rem + 0.42vw, 1.55rem) / 1.5 ${font.text};
     color: var(--muted);
     max-width: 42ch;
   }
@@ -162,7 +162,7 @@ const Moments = styled(Chapter)`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 400ms ${curve.out};
   }
   @media (hover: hover) and (pointer: fine) {
     .card:hover img {
@@ -191,7 +191,7 @@ const Moments = styled(Chapter)`
   }
   .card p {
     margin-top: 12px;
-    font: 400 17px/1.62 ${font.body};
+    font: 400 19px/1.6 ${font.text};
     color: ${color.body};
     max-width: 46ch;
   }
@@ -265,7 +265,7 @@ const InApp = styled(Chapter)`
   li span {
     display: block;
     margin-top: 6px;
-    font: 400 16px/1.6 ${font.body};
+    font: 400 18px/1.6 ${font.text};
     color: var(--muted);
   }
   ${media.md} {
@@ -341,7 +341,7 @@ const Begin = styled(Chapter)`
   }
   .card > div > p {
     margin: 16px 0 28px;
-    font: 400 17px/1.65 ${font.body};
+    font: 400 19px/1.6 ${font.text};
     color: ${color.body};
     max-width: 42ch;
   }
@@ -356,7 +356,7 @@ const Begin = styled(Chapter)`
     gap: 14px;
     padding: 16px 0;
     border-top: 1px solid ${color.primaryLine};
-    font: 400 17px/1.5 ${font.body};
+    font: 400 19px/1.5 ${font.text};
     color: ${color.primary};
   }
   /*

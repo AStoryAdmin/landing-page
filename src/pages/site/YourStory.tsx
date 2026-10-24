@@ -100,7 +100,7 @@ export default function YourStory() {
         }
         beginEyebrow="Before you begin"
         beginTitle={FREE_TIER.headline + "."}
-        beginBody="Not a trial that runs out. Guided calls are the only paid part - everything else is yours to keep."
+        beginBody="Guided calls are the only paid part. Everything else is yours to keep, for as long as you like."
         checklist={FREE_TIER.includes.slice(0, 4)}
         beginAction={
           <PrimaryLink to={START_HREF}>

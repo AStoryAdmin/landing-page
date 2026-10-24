@@ -88,6 +88,47 @@ const Offers = styled(Chapter)`
     margin-inline: auto;
     align-items: stretch;
   }
+  /* Founding places filled (2026-10-23, YC audit S10): one card, and one
+     line saying so - never the $29 place offered as a choice. */
+  .solo-row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    gap: clamp(36px, 5vw, 110px);
+    align-items: center;
+  }
+  .why-in ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(20px, 2.4vw, 40px);
+    margin: clamp(28px, 3vw, 44px) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .why-in li {
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .why-in li p {
+    margin-top: 10px;
+    font: 400 17px/1.6 ${font.text};
+    color: var(--muted);
+  }
+  ${media.lg} {
+    .solo-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  ${media.sm} {
+    .why-in ul {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .filled {
+    margin: 20px 0 0;
+    text-align: center;
+    font: 400 17px/1.5 ${font.text};
+    color: ${color.bodyMuted};
+  }
   .offer {
     display: flex;
     flex-direction: column;
@@ -117,7 +158,7 @@ const Offers = styled(Chapter)`
   }
   .who {
     margin-top: 10px;
-    font: 400 17px/1.5 ${font.body};
+    font: 400 17px/1.5 ${font.text};
     color: ${color.bodyMuted};
   }
   .price {
@@ -158,7 +199,7 @@ const Offers = styled(Chapter)`
     gap: 12px;
   }
   .held dt {
-    font: 400 15px/1.4 ${font.body};
+    font: 400 15px/1.4 ${font.text};
     color: ${color.bodyMuted};
   }
   .held dd {
@@ -169,7 +210,7 @@ const Offers = styled(Chapter)`
     white-space: nowrap;
   }
   .held s {
-    font: 400 15px/1 ${font.body};
+    font: 400 15px/1 ${font.text};
     color: ${color.bodyMuted};
   }
   .held dd b {
@@ -194,7 +235,7 @@ const Offers = styled(Chapter)`
     display: grid;
     grid-template-columns: 14px 1fr;
     gap: 14px;
-    font: 400 17px/1.45 ${font.body};
+    font: 400 17px/1.45 ${font.text};
     color: ${color.body};
   }
   ul.inc li::before {
@@ -230,13 +271,13 @@ const Offers = styled(Chapter)`
   }
   .done p {
     margin-top: 8px;
-    font: 400 16px/1.55 ${font.body};
+    font: 400 16px/1.55 ${font.text};
     color: ${color.body};
   }
   .error {
     padding: 12px 14px;
     border-left: 2px solid ${color.error};
-    font: 400 15px/1.5 ${font.body};
+    font: 400 15px/1.5 ${font.text};
     color: ${color.error};
   }
   .share {
@@ -255,7 +296,7 @@ const Offers = styled(Chapter)`
     flex: 1 1 280px;
     padding: 14px 16px;
     background: ${color.ivory};
-    font: 400 15px/1.4 ${font.body};
+    font: 400 15px/1.4 ${font.text};
     color: ${color.primary};
     overflow-wrap: anywhere;
   }
@@ -274,7 +315,7 @@ const Offers = styled(Chapter)`
   .fit legend {
     padding: 0;
     margin-bottom: 12px;
-    font: 500 16px/1.45 ${font.body};
+    font: 500 16px/1.45 ${font.text};
     color: ${color.primary};
   }
   .choices {
@@ -304,7 +345,7 @@ const Offers = styled(Chapter)`
     padding: 10px 18px;
     border: 1px solid ${color.primaryLine};
     background: ${color.paperPure};
-    font: 500 15px/1.3 ${font.body};
+    font: 500 15px/1.3 ${font.text};
     color: ${color.body};
   }
   .choice span small {
@@ -325,7 +366,7 @@ const Offers = styled(Chapter)`
   .signin {
     margin-top: 28px;
     text-align: center;
-    font: 500 15px/1.5 ${font.body};
+    font: 500 15px/1.5 ${font.text};
     color: ${color.bodyMuted};
   }
   .signin a {
@@ -355,7 +396,7 @@ const Why = styled(Chapter)`
   }
   .four p {
     margin-top: 12px;
-    font: 400 17px/1.6 ${font.body};
+    font: 400 17px/1.6 ${font.text};
     color: var(--muted);
   }
   ${media.lg} {
@@ -385,7 +426,7 @@ const Which = styled(Chapter)`
   }
   .two p.d {
     margin-top: 12px;
-    font: 400 18px/1.65 ${font.body};
+    font: 400 18px/1.65 ${font.text};
     color: var(--muted);
     max-width: 48ch;
   }
@@ -405,7 +446,7 @@ const Closing = styled(Chapter)`
   }
   p.lead {
     margin: 22px auto 0;
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.body};
+    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.text};
     color: var(--muted);
     max-width: 46ch;
   }
@@ -416,7 +457,14 @@ const Closing = styled(Chapter)`
 
 const COPY: Record<
   OfferId,
-  { pay: string; claim: string; signUp: string; claimed: string; paid: string; paidBody: string }
+  {
+    pay: string;
+    claim: string;
+    signUp: string;
+    claimed: string;
+    paid: string;
+    paidBody: string;
+  }
 > = {
   reserve: {
     pay: `Reserve for ${OFFERS.reserve.price}`,
@@ -442,7 +490,8 @@ export default function Reserve() {
   const account = useAccount();
   const code = useReferralCode(account?.id);
   const paid = params.get("paid");
-  const justPaid: OfferId | null = paid === "reserve" || paid === "founding" ? paid : null;
+  const justPaid: OfferId | null =
+    paid === "reserve" || paid === "founding" ? paid : null;
   const ref = (params.get("ref") ?? "").toUpperCase().slice(0, 6);
   const reveal = useReveals<HTMLElement>();
 
@@ -468,7 +517,8 @@ export default function Reserve() {
   };
 
   const claimedAt = (id: OfferId) =>
-    (id === "reserve" ? account?.reservedAt : account?.foundingRequestedAt) ?? null;
+    (id === "reserve" ? account?.reservedAt : account?.foundingRequestedAt) ??
+    null;
 
   /* The two true limits (see the banner in lib/founding.ts). The founding
      card closes by itself when the twenty-five are taken; its count only
@@ -481,7 +531,8 @@ export default function Reserve() {
   const [iphone, setIphone] = useState<"yes" | "no" | null>(null);
   const discountOpen = reserveDiscountOpen();
   const deadline = deadlineLine();
-  const isOpen = (id: OfferId) => (id === "founding" ? foundingOpen : OFFERS[id].open);
+  const isOpen = (id: OfferId) =>
+    id === "founding" ? foundingOpen : OFFERS[id].open;
   const live = (id: OfferId) => isOpen(id) && isOfferLive(id);
 
   /* Back from Stripe and signed in: write the place onto the account, so the
@@ -490,9 +541,15 @@ export default function Reserve() {
   const paidClaimed = paidId ? claimedAt(paidId) : null;
   useEffect(() => {
     if (!paidId || !account || paidClaimed) return;
-    void markOffer(OFFERS[paidId].meta, null, paidId === "founding" ? FOUNDING_GROUP : null);
+    void markOffer(
+      OFFERS[paidId].meta,
+      null,
+      paidId === "founding" ? FOUNDING_GROUP : null,
+    );
   }, [paidId, account, paidClaimed]);
-  const isIn = Boolean(justPaid || account?.reservedAt || account?.foundingRequestedAt);
+  const isIn = Boolean(
+    justPaid || account?.reservedAt || account?.foundingRequestedAt,
+  );
 
   /* Sign-up carries the referral code on, so a sister who came through her
      brother's link is recorded as his (profiles.referred_by). */
@@ -503,7 +560,11 @@ export default function Reserve() {
     if (!account || busy) return;
     setError(null);
     setBusy(id);
-    const res = await markOffer(OFFERS[id].meta, claimedAt(id), id === "founding" ? FOUNDING_GROUP : null);
+    const res = await markOffer(
+      OFFERS[id].meta,
+      claimedAt(id),
+      id === "founding" ? FOUNDING_GROUP : null,
+    );
     setBusy(null);
     if (!res.ok) return setError({ id, msg: res.error });
     track("offer_claimed_free", { offer: id });
@@ -535,7 +596,8 @@ export default function Reserve() {
           <div className="done" role="status">
             <h3>{copy.paid}</h3>
             <p>
-              {id === "founding" && "We will write within a working day to set up your first call. "}
+              {id === "founding" &&
+                "We will write within a working day to set up your first call. "}
               {copy.paidBody}
             </p>
           </div>
@@ -545,8 +607,8 @@ export default function Reserve() {
                 Now make your account <ArrowIcon />
               </PrimaryLink>
               <p className="small">
-                Use the email you just paid with - that is how your place finds you. It is the same account
-                you will sign into in the app.
+                Use the email you just paid with - that is how your place finds
+                you. It is the same account you will sign into in the app.
               </p>
             </>
           )}
@@ -560,7 +622,8 @@ export default function Reserve() {
         <div className="done" role="status">
           <h3>{copy.claimed}</h3>
           <p>
-            We will write to <strong>{account?.email}</strong> within a working day to set up your first call.
+            We will write to <strong>{account?.email}</strong> within a working
+            day to set up your first call.
           </p>
         </div>
       );
@@ -569,13 +632,16 @@ export default function Reserve() {
       return (
         <>
           <p className="small">
-            The founding places are filled - thank you. A dollar still holds your place for
-            launch, and comes off your first year.
+            The founding places are filled - thank you. A dollar still holds
+            your place for launch, and comes off your first year.
           </p>
           <SecondaryAnchor
             href={openingHref}
             onClick={(e) => {
-              track("offer_click", { offer: "reserve", from: "founding_filled" });
+              track("offer_click", {
+                offer: "reserve",
+                from: "founding_filled",
+              });
               gate(e, "reserve", openingHref);
             }}
           >
@@ -610,14 +676,21 @@ export default function Reserve() {
           {iphone === "no" && (
             <>
               <p className="small" role="status">
-                Before launch, A Story can only ring an iPhone - on other phones it reminds them to write instead,
-                which is not what a founding place is for. A dollar holds your place and
-                {discountOpen ? ` ${OFFERS.reserve.discount}% off` : " the price"} instead.
+                Before launch, A Story can only ring an iPhone - on other phones
+                it reminds them to write instead, which is not what a founding
+                place is for. A dollar holds your place and
+                {discountOpen
+                  ? ` ${OFFERS.reserve.discount}% off`
+                  : " the price"}{" "}
+                instead.
               </p>
               <SecondaryAnchor
                 href={openingHref}
                 onClick={(e) => {
-                  track("offer_click", { offer: "reserve", from: "founding_fit" });
+                  track("offer_click", {
+                    offer: "reserve",
+                    from: "founding_fit",
+                  });
                   gate(e, "reserve", openingHref);
                 }}
               >
@@ -635,15 +708,21 @@ export default function Reserve() {
             <PrimaryAnchor
               href={offerCheckoutUrl(id, account)}
               onClick={(e) => {
-                track("offer_click", { offer: id, cohort: FOUNDING_GROUP, signedIn: Boolean(account) });
+                track("offer_click", {
+                  offer: id,
+                  cohort: FOUNDING_GROUP,
+                  signedIn: Boolean(account),
+                });
                 gate(e, id, offerCheckoutUrl(id, account));
               }}
             >
               {copy.pay} <ArrowIcon />
             </PrimaryAnchor>
             <p className="small">
-              Apple Pay, Google Pay or card, through Stripe. Refunded any time before the first call.
-              {account?.reservedAt && " Your dollar still comes off your first year."}
+              Apple Pay, Google Pay or card, through Stripe. Refunded any time
+              before the first call.
+              {account?.reservedAt &&
+                " Your dollar still comes off your first year."}
             </p>
           </>
         );
@@ -668,7 +747,9 @@ export default function Reserve() {
           >
             {copy.pay} <ArrowIcon />
           </PrimaryAnchor>
-          <p className="small">Apple Pay, Google Pay or card, through Stripe.</p>
+          <p className="small">
+            Apple Pay, Google Pay or card, through Stripe.
+          </p>
         </>
       );
     }
@@ -697,7 +778,8 @@ export default function Reserve() {
             {copy.signUp} <ArrowIcon />
           </PrimaryLink>
           <p className="small">
-            Free while payment opens - we email you the {offer.price} link, and your place counts from today.
+            Free while payment opens - we email you the {offer.price} link, and
+            your place counts from today.
           </p>
         </>
       );
@@ -707,15 +789,21 @@ export default function Reserve() {
         <div className="done" role="status">
           <h3>{copy.claimed}</h3>
           <p>
-            Nothing has been charged. We will email <strong>{account.email}</strong> the {offer.price} link when
-            payment opens, in the order places were taken.
+            Nothing has been charged. We will email{" "}
+            <strong>{account.email}</strong> the {offer.price} link when payment
+            opens, in the order places were taken.
           </p>
         </div>
       );
     }
     return (
       <>
-        <PrimaryButton type="button" onClick={() => claim(id)} disabled={busy !== null}>
+        <PrimaryButton
+          type="button"
+          onClick={() => claim(id)}
+          disabled={busy !== null}
+          aria-busy={busy === id || undefined}
+        >
           {busy === id ? "Saving…" : copy.claim} <ArrowIcon />
         </PrimaryButton>
         {error?.id === id && (
@@ -723,14 +811,20 @@ export default function Reserve() {
             {error.msg}
           </p>
         )}
-        <p className="small">Free while payment opens. We will email {account.email} the {offer.price} link.</p>
+        <p className="small">
+          Free while payment opens. We will email {account.email} the{" "}
+          {offer.price} link.
+        </p>
       </>
     );
   };
 
   /* The opening's first action does what the dollar card's does when it can,
      so the quickest path is one tap; otherwise it goes to the cards. */
-  const openingHref = live("reserve") && !justPaid ? offerCheckoutUrl("reserve", account) : "#offers";
+  const openingHref =
+    live("reserve") && !justPaid
+      ? offerCheckoutUrl("reserve", account)
+      : "#offers";
   const { reserve, founding } = OFFERS;
 
   const card = (id: OfferId) => {
@@ -761,23 +855,27 @@ export default function Reserve() {
         </p>
         <div className="held">
           <p className="h">
-            {isFounding ? "Half off your first year" : discountOpen ? `${o.discount}% off your first year` : deadline}
+            {isFounding
+              ? "Half off your first year"
+              : discountOpen
+                ? `${o.discount}% off your first year`
+                : deadline}
           </p>
           {(isFounding || discountOpen) && (
-          <dl>
-            <div>
-              <dt>Individual</dt>
-              <dd>
-                <s>{FULL_PRICE.individual}</s> <b>{o.individual}</b>
-              </dd>
-            </div>
-            <div>
-              <dt>Family · up to three</dt>
-              <dd>
-                <s>{FULL_PRICE.family}</s> <b>{o.family}</b>
-              </dd>
-            </div>
-          </dl>
+            <dl>
+              <div>
+                <dt>Individual</dt>
+                <dd>
+                  <s>{FULL_PRICE.individual}</s> <b>{o.individual}</b>
+                </dd>
+              </div>
+              <div>
+                <dt>Family · up to three</dt>
+                <dd>
+                  <s>{FULL_PRICE.family}</s> <b>{o.family}</b>
+                </dd>
+              </div>
+            </dl>
           )}
           <p className="f">
             {isFounding
@@ -798,7 +896,12 @@ export default function Reserve() {
       </>
     );
     return isFounding ? (
-      <Plate className="offer founding" id="founding" style={{ scrollMarginTop: 96 }} data-rise>
+      <Plate
+        className="offer founding"
+        id="founding"
+        style={{ scrollMarginTop: 96 }}
+        data-rise
+      >
         {body}
       </Plate>
     ) : (
@@ -839,7 +942,12 @@ export default function Reserve() {
           lead={`Anyone can start A Story free in a browser. The calls are what a plan adds, and plans are not on sale yet. Until they are, ${founding.places} families start the calls now, set up by hand, with one of us on the first call. ${founding.price}, which comes off a first year at half price - and refunded if you change your mind before that call.`}
           actions={
             <>
-              <PrimaryAnchor href="#founding" onClick={() => track("offer_click", { offer: "founding", from: "opening" })}>
+              <PrimaryAnchor
+                href="#founding"
+                onClick={() =>
+                  track("offer_click", { offer: "founding", from: "opening" })
+                }
+              >
                 Start now for {founding.price} <ArrowIcon />
               </PrimaryAnchor>
               <SecondaryAnchor
@@ -883,19 +991,54 @@ export default function Reserve() {
         />
       )}
 
-      <Offers ref={reveal} $ground="ivory" id="offers" aria-label="Two ways in" style={{ scrollMarginTop: 80 }}>
+      <Offers
+        ref={reveal}
+        $ground="ivory"
+        id="offers"
+        aria-label="Two ways in"
+        style={{ scrollMarginTop: 80 }}
+      >
         <Frame>
-          <div className="grid">
-            {foundingOpen ? card("founding") : card("reserve")}
-            {foundingOpen ? card("reserve") : card("founding")}
-          </div>
+          {foundingOpen ? (
+            <div className="grid">
+              {card("founding")}
+              {card("reserve")}
+            </div>
+          ) : (
+            <div className="solo-row">
+              <div>
+                {card("reserve")}
+                <p className="filled" data-rise>
+                  The founding places are filled - thank you.
+                </p>
+              </div>
+              <div className="why-in" data-rise>
+                <Statement as="h2" id="why-title" $size="md">
+                  The smallest thing that <em>means</em> something.
+                </Statement>
+                <Lead>
+                  To you, because it holds a price. To us, because it tells us
+                  who to open to first.
+                </Lead>
+                <ul>
+                  {WHY_PAY.map((w) => (
+                    <li key={w.t}>
+                      <Heading>{w.t}</Heading>
+                      <p>{w.d}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
 
           {isIn && shareUrl && (
             <div className="share" data-rise>
               <Heading as="h2">Bring your brothers and sisters in.</Heading>
               <Lead>
-                Anyone who reserves through your link gets the same {reserve.discount}% off - and it is one more
-                person who will read what your parents say.
+                Anyone who reserves through your link gets the same{" "}
+                {reserve.discount}% off - and it is one more person who will
+                read what your parents say.
               </Lead>
               <div className="row">
                 <code>{shareUrl}</code>
@@ -908,90 +1051,117 @@ export default function Reserve() {
 
           {!isIn && account === null && (
             <p className="signin">
-              Already have an account? <Link to="/sign-in?next=/reserve">Sign in</Link>
+              Already have an account?{" "}
+              <Link to="/sign-in?next=/reserve">Sign in</Link>
             </p>
           )}
         </Frame>
       </Offers>
 
-      <Why $ground="paper" aria-labelledby="why-title">
-        <Frame>
-          <SplitHead>
-            <div>
-              <Eyebrow>Why pay anything</Eyebrow>
-              <Statement id="why-title" $size="lg">
-                The smallest thing that <em>means</em> something.
-              </Statement>
-            </div>
-            <Lead>To you, because it holds a price. To us, because it tells us who to open to first.</Lead>
-          </SplitHead>
-          <ul className="four">
-            {WHY_PAY.map((w) => (
-              <li key={w.t}>
-                <Heading>{w.t}</Heading>
-                <p>{w.d}</p>
-              </li>
-            ))}
-          </ul>
-        </Frame>
-      </Why>
+      {foundingOpen && (
+        <Why $ground="paper" aria-labelledby="why-title">
+          <Frame>
+            <SplitHead>
+              <div>
+                <Eyebrow>Why pay anything</Eyebrow>
+                <Statement id="why-title" $size="lg">
+                  The smallest thing that <em>means</em> something.
+                </Statement>
+              </div>
+              <Lead>
+                To you, because it holds a price. To us, because it tells us who
+                to open to first.
+              </Lead>
+            </SplitHead>
+            <ul className="four">
+              {WHY_PAY.map((w) => (
+                <li key={w.t}>
+                  <Heading>{w.t}</Heading>
+                  <p>{w.d}</p>
+                </li>
+              ))}
+            </ul>
+          </Frame>
+        </Why>
+      )}
 
-      <Which $ground="sand" aria-labelledby="which-title">
-        <Frame>
-          <Eyebrow>Which one</Eyebrow>
-          <Statement id="which-title" $size="lg" style={{ marginBottom: "clamp(40px, 5vw, 72px)" }}>
-            Which one <em>is yours?</em>
-          </Statement>
-          <div className="two">
-            <div>
-              <p className="k">{reserve.price}</p>
-              <Heading>Reserve, if you want to be sure of it.</Heading>
-              <p className="d">
-                You like the idea and you want the price, but there is no hurry. A dollar holds both, and we
-                tell you the day plans go on sale. Reserve one for each parent if they live apart.
-              </p>
+      {foundingOpen && (
+        <Which $ground="sand" aria-labelledby="which-title">
+          <Frame>
+            <Eyebrow>Which one</Eyebrow>
+            <Statement
+              id="which-title"
+              $size="lg"
+              style={{ marginBottom: "clamp(40px, 5vw, 72px)" }}
+            >
+              Which one <em>is yours?</em>
+            </Statement>
+            <div className="two">
+              <div>
+                <p className="k">{reserve.price}</p>
+                <Heading>Reserve, if you want to be sure of it.</Heading>
+                <p className="d">
+                  You like the idea and you want the price, but there is no
+                  hurry. A dollar holds both, and we tell you the day plans go
+                  on sale. Reserve one for each parent if they live apart.
+                </p>
+              </div>
+              <div>
+                <p className="k">{founding.price}</p>
+                <Heading>Founding, if you would rather start now.</Heading>
+                <p className="d">
+                  There is a birthday coming, or a question you have been
+                  meaning to ask for years. Founding families start before
+                  launch, with one of us beside you for the first call, at half
+                  price for the year.{" "}
+                  {foundingOpen
+                    ? `There are ${founding.places} places, and they go in the order families join.`
+                    : "The founding places are filled."}
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="k">{founding.price}</p>
-              <Heading>Founding, if you would rather start now.</Heading>
-              <p className="d">
-                There is a birthday coming, or a question you have been meaning to ask for years. Founding
-                families start before launch, with one of us beside you for the first call, at half price for
-                the year.{" "}
-                {foundingOpen
-                  ? `There are ${founding.places} places, and they go in the order families join.`
-                  : "The founding places are filled."}
-              </p>
-            </div>
-          </div>
-        </Frame>
-      </Which>
+          </Frame>
+        </Which>
+      )}
 
       <Closing $ground="night" aria-labelledby="closing-title">
         <Frame>
           <Statement id="closing-title" $size="lg">
-            There is a question in your family <em>nobody has asked yet.</em>
+            The question nobody has <em>asked yet.</em>
           </Statement>
           <p className="lead">
             {foundingOpen
               ? `Twenty-nine dollars has it asked before launch, with one of us on the call (${placesLine}, in the order families join). `
               : ""}
             A dollar puts you in line to have it asked
-            {discountOpen ? `, at ${OFFERS.reserve.discount}% off if you reserve by ${RESERVE_DEADLINE_LABEL}` : ""}.
-            Either way, if the timing turns out wrong, the money comes back.
+            {discountOpen
+              ? `, at ${OFFERS.reserve.discount}% off if you reserve by ${RESERVE_DEADLINE_LABEL}`
+              : ""}
+            . Either way, if the timing turns out wrong, the money comes back.
           </p>
           <Actions className="acts">
             {foundingOpen && (
-              <PrimaryAnchor href="#founding" onClick={() => track("offer_click", { offer: "founding", from: "closing" })}>
+              <PrimaryAnchor
+                href="#founding"
+                onClick={() =>
+                  track("offer_click", { offer: "founding", from: "closing" })
+                }
+              >
                 Start now for {founding.price} <ArrowIcon />
               </PrimaryAnchor>
             )}
             {foundingOpen ? (
-              <SecondaryAnchor href={openingHref} onClick={(e) => gate(e, "reserve", openingHref)}>
+              <SecondaryAnchor
+                href={openingHref}
+                onClick={(e) => gate(e, "reserve", openingHref)}
+              >
                 Or hold a place for {reserve.price}
               </SecondaryAnchor>
             ) : (
-              <PrimaryAnchor href={openingHref} onClick={(e) => gate(e, "reserve", openingHref)}>
+              <PrimaryAnchor
+                href={openingHref}
+                onClick={(e) => gate(e, "reserve", openingHref)}
+              >
                 Reserve for {reserve.price} <ArrowIcon />
               </PrimaryAnchor>
             )}

@@ -50,7 +50,7 @@ const Opening = styled(Chapter)`
   }
   .lead {
     margin-top: 24px;
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.body};
+    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.text};
     color: var(--muted);
     max-width: 40ch;
   }
@@ -181,7 +181,7 @@ const Answers = styled(Chapter)`
     border: 0;
     border-radius: 999px;
     background: ${color.ivory};
-    font: 400 16px/1 ${font.body};
+    font: 400 16px/1 ${font.text};
     color: ${color.primary};
   }
   .search input:focus-visible,
@@ -310,7 +310,7 @@ const Answers = styled(Chapter)`
   }
   details p {
     padding: 0 26px 24px;
-    font: 400 17px/1.7 ${font.body};
+    font: 400 17px/1.7 ${font.text};
     color: ${color.body};
     max-width: 62ch;
   }
@@ -353,7 +353,7 @@ const Still = styled(Chapter)`
   }
   p {
     margin-top: 10px;
-    font: 400 17px/1.6 ${font.body};
+    font: 400 17px/1.6 ${font.text};
     color: ${color.onDarkMuted};
   }
   --action-bg: ${color.ivory};

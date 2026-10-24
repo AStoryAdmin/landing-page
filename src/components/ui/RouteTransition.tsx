@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigationType } from "react-router-dom";
+import { flushSync } from "react-dom";
+import { useLocation, useNavigate, useNavigationType } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { media } from "../../styles/theme";
+import { curve, media } from "../../styles/theme";
 
 /**
  * Moves between routes without the page appearing to scroll.
@@ -15,12 +16,51 @@ import { media } from "../../styles/theme";
  *
  * Links with a hash (`/experience#book`) land on that section instead of the
  * top, which the old version ignored entirely.
+ *
+ * View Transitions (2026-10-23, Bao's Standard 23a). Every in-site link is
+ * a View Transition where the browser has the API: a capture-phase click
+ * listener takes over plain left-clicks on same-origin router links, and
+ * runs the navigation inside `document.startViewTransition`, with the
+ * scroll reset in the same update so the new page is captured at its top.
+ * The header holds still (view-transition-name: site-header); the page
+ * settles away and the next one rises (global.ts). The site uses
+ * BrowserRouter, where `<Link viewTransition>` does nothing, hence the
+ * listener. Without the API, or under reduced motion, the short fade below
+ * still covers the jump.
  */
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: none; }
 `;
+
+/** Set while a View Transition carries the navigation, so the fade stays off. */
+let viaViewTransition = false;
+
+/** Routes served outside the router (a full page load), and files. */
+const OUTSIDE = /^\/(samples|app)(\/|$)|\.[a-z0-9]{2,5}$/i;
+
+function routerHref(event: MouseEvent): string | null {
+  if (
+    event.defaultPrevented ||
+    event.button !== 0 ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey
+  )
+    return null;
+  const a = (event.target as Element | null)?.closest?.("a[href]");
+  if (!(a instanceof HTMLAnchorElement)) return null;
+  if (a.target && a.target !== "_self") return null;
+  if (a.hasAttribute("download") || a.dataset.noTransition !== undefined)
+    return null;
+  const url = new URL(a.href, location.href);
+  if (url.origin !== location.origin || OUTSIDE.test(url.pathname)) return null;
+  /* Same page: an in-page anchor or the page itself, not a route change. */
+  if (url.pathname === location.pathname) return null;
+  return url.pathname + url.search + url.hash;
+}
 
 const Frame = styled.div<{ $animate: boolean }>`
   /*
@@ -30,8 +70,8 @@ const Frame = styled.div<{ $animate: boolean }>`
      * few dozen pixels below the top.
      */
   overflow-anchor: none;
-  animation: ${({ $animate }) => ($animate ? fadeIn : "none")} 280ms
-    cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation: ${({ $animate }) => ($animate ? fadeIn : "none")} 240ms
+    ${curve.out} both;
 
   ${media.motion} {
     animation: none;
@@ -70,6 +110,28 @@ const savedPositions = new Map<string, number>();
 const RouteTransition = ({ children }: { children: React.ReactNode }) => {
   const { pathname, hash, key } = useLocation();
   const navigationType = useNavigationType();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (typeof document.startViewTransition !== "function") return;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    const onClick = (event: MouseEvent) => {
+      if (reduced.matches) return;
+      const href = routerHref(event);
+      if (!href) return;
+      event.preventDefault();
+      viaViewTransition = true;
+      const transition = document.startViewTransition(() => {
+        flushSync(() => navigate(href));
+        if (!href.includes("#")) jumpTo(0);
+      });
+      transition.finished.finally(() => {
+        viaViewTransition = false;
+      });
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, [navigate]);
   const first = useRef(true);
   /* Route arrivals animate; in-page navigation preserves active demos. */
   const [animateKey, setAnimateKey] = useState(pathname);
@@ -192,7 +254,10 @@ const RouteTransition = ({ children }: { children: React.ReactNode }) => {
   }, [pathname, hash, key, navigationType]);
 
   return (
-    <Frame key={animateKey} $animate={animateKey !== initialKey}>
+    <Frame
+      key={animateKey}
+      $animate={animateKey !== initialKey && !viaViewTransition}
+    >
       {children}
     </Frame>
   );

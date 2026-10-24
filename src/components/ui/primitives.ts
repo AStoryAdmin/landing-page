@@ -199,8 +199,8 @@ export const buttonBase = css`
   letter-spacing: 0.02em;
   padding: 12px 24px;
   min-height: 54px;
-  border-radius: 2px;
-  border: 1.5px solid transparent;
+  border-radius: 999px;
+  border: 1px solid transparent;
   text-decoration: none;
   cursor: pointer;
   white-space: normal;
@@ -211,17 +211,24 @@ export const buttonBase = css`
     transform ${motion.fast},
     box-shadow ${motion.base};
 
-  &:hover {
-    transform: none;
-  }
   &:active {
     transform: scale(0.97);
-    transition-duration: 60ms;
+    transition-duration: 120ms;
   }
-  &:disabled {
-    opacity: 0.75;
+  &:focus-visible {
+    outline: 2px solid var(--focus, ${color.accentText});
+    outline-offset: 3px;
+  }
+  &:disabled,
+  &[aria-disabled="true"],
+  &[aria-busy="true"] {
+    opacity: 0.55;
     cursor: not-allowed;
     transform: none;
+    pointer-events: none;
+  }
+  &[aria-busy="true"] {
+    cursor: progress;
   }
 
   ${media.xs} {
@@ -233,42 +240,52 @@ export const buttonVariants = {
   primary: css`
     background: ${color.primary};
     color: ${color.onDark};
-    &:hover {
-      background: ${color.primaryHover};
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background: ${color.primaryHover};
+      }
     }
   `,
   brown: css`
     background: ${color.primary};
     color: ${color.onDark};
     box-shadow: ${shadow.md};
-    &:hover {
-      background: ${color.primaryHover};
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background: ${color.primaryHover};
+      }
     }
   `,
   gold: css`
     background: ${color.gold};
     color: ${color.primaryDeep};
     box-shadow: ${shadow.md};
-    &:hover {
-      background: ${color.goldDeep};
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background: ${color.goldDeep};
+      }
     }
   `,
   outline: css`
     background: transparent;
     color: ${color.primary};
     border-color: ${color.primaryLineStrong};
-    &:hover {
-      background: ${color.primaryWash};
-      border-color: ${color.primary};
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background: ${color.primaryWash};
+        border-color: ${color.primary};
+      }
     }
   `,
   onDark: css`
     background: ${color.ivory};
     color: ${color.primary};
     border-color: ${color.ivory};
-    &:hover {
-      background: ${color.paperPure};
-      border-color: ${color.paperPure};
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background: ${color.paperPure};
+        border-color: ${color.paperPure};
+      }
     }
   `,
   ghost: css`
@@ -277,10 +294,12 @@ export const buttonVariants = {
     padding: 8px 0;
     min-height: 44px;
     border-radius: 0;
-    &:hover {
-      color: ${color.accent};
-      transform: none;
-      gap: 12px;
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: ${color.accent};
+        transform: none;
+        gap: 12px;
+      }
     }
   `,
 } as const;

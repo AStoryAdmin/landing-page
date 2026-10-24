@@ -70,7 +70,7 @@ const Section = styled(Chapter)`
     align-items: baseline;
     justify-content: space-between;
     gap: 12px;
-    font: 600 13px/1.4 ${font.body};
+    font: 600 12px/1.4 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--label, ${color.accentText});
@@ -83,8 +83,8 @@ const Section = styled(Chapter)`
   }
   h3 {
     margin-top: 14px;
-    font: 400 ${display.md} / 1.1 ${font.display};
-    letter-spacing: -0.02em;
+    font: 600 ${display.md} / 1.1 ${font.display};
+    letter-spacing: -0.005em;
     color: var(--ink, ${color.primary});
   }
   /* The figure, in the serif, with its unit beside it in the product voice. */
@@ -94,18 +94,21 @@ const Section = styled(Chapter)`
     align-items: baseline;
     gap: 4px 12px;
     margin-top: 18px;
-    font: 400 ${display.lg} / 1 ${font.display};
-    letter-spacing: -0.03em;
+    font: 600 ${display.lg} / 1 ${font.display};
+    letter-spacing: -0.01em;
     color: var(--ink, ${color.primary});
     font-variant-numeric: lining-nums;
   }
+  /* The unit in the interface face, at its own spacing: inheriting the
+     figure's tracking crushed "no card, no clock" (2026-10-23 review). */
   .price span {
-    font: 400 16px/1.4 ${font.body};
+    font: 400 15px/1.4 ${font.ui};
+    letter-spacing: normal;
     color: var(--muted, ${color.bodyMuted});
   }
   .line {
     margin-top: 14px;
-    font: 400 17px/1.55 ${font.body};
+    font: 400 19px/1.5 ${font.text};
     color: var(--muted, ${color.body});
     max-width: 34ch;
   }
@@ -114,13 +117,14 @@ const Section = styled(Chapter)`
     margin: 18px 0 0;
     padding: 0;
   }
-  li {
+  /* The rungs are list items too: scope the bullet rules to the inner lists. */
+  .rung ul li {
     position: relative;
     padding: 5px 0 5px 20px;
     font: 400 15px/1.5 ${font.body};
     color: var(--muted, ${color.body});
   }
-  li::before {
+  .rung ul li::before {
     content: "";
     position: absolute;
     left: 2px;
@@ -129,7 +133,7 @@ const Section = styled(Chapter)`
     height: 1px;
     background: var(--mark, ${color.accent});
   }
-  li b {
+  .rung ul li b {
     font-weight: 600;
     color: var(--ink, ${color.primary});
   }
@@ -157,9 +161,9 @@ const Section = styled(Chapter)`
     margin-top: calc(clamp(32px, 4vw, 56px) * var(--sy));
     padding-top: 22px;
     border-top: 1px solid var(--line, ${color.primaryLineStrong});
-    font: 400 ${display.sm} / 1.4 ${font.display};
+    font: 400 clamp(1.2rem, 1.1rem + 0.3vw, 1.45rem) / 1.45 ${font.text};
     color: var(--ink, ${color.primary});
-    max-width: 52ch;
+    max-width: 60ch;
     text-wrap: pretty;
   }
   ${media.md} {

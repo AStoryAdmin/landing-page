@@ -72,9 +72,13 @@ export default function SignUp() {
     if (busy) return;
     setError(null);
     if (!name.trim()) return bad("name", "What should we call you?");
-    if (!looksLikeEmail(email)) return bad("email", "That email address doesn’t look quite right.");
+    if (!looksLikeEmail(email))
+      return bad("email", "That email address doesn’t look quite right.");
     if (password.length < MIN_PASSWORD)
-      return bad("password", `Password must be at least ${MIN_PASSWORD} characters.`);
+      return bad(
+        "password",
+        `Password must be at least ${MIN_PASSWORD} characters.`,
+      );
     setInvalid(null);
     setBusy(true);
     const res = await createAccount({
@@ -102,7 +106,8 @@ export default function SignUp() {
     e.preventDefault();
     if (busy) return;
     setError(null);
-    if (code.length < CODE_LEN) return bad("code", `Enter all ${CODE_LEN} digits from the email.`);
+    if (code.length < CODE_LEN)
+      return bad("code", `Enter all ${CODE_LEN} digits from the email.`);
     setInvalid(null);
     setBusy(true);
     const res = await verifySignupCode(email, code);
@@ -145,12 +150,15 @@ export default function SignUp() {
           "Nobody is called until you say so.",
         ]}
         label={stage === "form" ? "Your family’s place" : "One more step"}
-        heading={stage === "form" ? "Create your account." : "Check your email."}
+        heading={
+          stage === "form" ? "Create your account." : "Check your email."
+        }
         intro={
           stage === "code" ? (
             <>
-              We sent a {CODE_LEN}-digit code to <strong>{email.trim().toLowerCase()}</strong>. If it has not
-              come in a minute, look in spam.
+              We sent a {CODE_LEN}-digit code to{" "}
+              <strong>{email.trim().toLowerCase()}</strong>. If it has not come
+              in a minute, look in spam.
             </>
           ) : undefined
         }
@@ -164,7 +172,11 @@ export default function SignUp() {
       >
         {stage === "form" ? (
           <form onSubmit={submit} noValidate>
-            <label className="field" htmlFor={`${uid}-name`} data-invalid={invalid === "name"}>
+            <label
+              className="field"
+              htmlFor={`${uid}-name`}
+              data-invalid={invalid === "name"}
+            >
               <span>Your name</span>
               <input
                 id={`${uid}-name`}
@@ -175,7 +187,11 @@ export default function SignUp() {
                 aria-invalid={invalid === "name"}
               />
             </label>
-            <label className="field" htmlFor={`${uid}-email`} data-invalid={invalid === "email"}>
+            <label
+              className="field"
+              htmlFor={`${uid}-email`}
+              data-invalid={invalid === "email"}
+            >
               <span>Email</span>
               <input
                 id={`${uid}-email`}
@@ -234,23 +250,29 @@ export default function SignUp() {
                 )}
               </p>
             )}
-            <button type="submit" disabled={busy}>
+            <button type="submit" disabled={busy} aria-busy={busy || undefined}>
               {busy ? "Creating your account…" : "Create account"}
             </button>
             <p className="legal">
-              By creating an account you agree to our <Link to="/terms">Terms</Link> and{" "}
+              By creating an account you agree to our{" "}
+              <Link to="/terms">Terms</Link> and{" "}
               <Link to="/privacy">Privacy Policy</Link>.
             </p>
           </form>
         ) : (
           <form onSubmit={confirm} noValidate>
-            <CodeField id={`${uid}-code`} value={code} onChange={setCode} invalid={invalid === "code"} />
+            <CodeField
+              id={`${uid}-code`}
+              value={code}
+              onChange={setCode}
+              invalid={invalid === "code"}
+            />
             {error && (
               <p className="error" role="alert">
                 {error}
               </p>
             )}
-            <button type="submit" disabled={busy}>
+            <button type="submit" disabled={busy} aria-busy={busy || undefined}>
               {busy ? "Checking…" : "Confirm and continue"}
             </button>
             <div className="quiet">

@@ -191,7 +191,7 @@ export const PROGRAMS = {
     { program: "NVIDIA Inception", host: "NVIDIA", url: "https://www.nvidia.com/en-us/startups/" },
     { program: "Google for Startups", host: "Google", url: "https://startup.google.com" },
     { program: "AssemblyAI Startup Program", host: "AssemblyAI", url: "https://www.assemblyai.com" },
-    { program: "Deepgram Startup Program", host: "Deepgram", url: "https://deepgram.com/startups" },
+    { program: "Deepgram Startup Program", host: "Deepgram", url: "https://deepgram.com/startup-program" },
   ],
   awards: ["Cartesia Startups grant recipient"],
   faq: [
@@ -278,7 +278,7 @@ export const founderSchemas = () => [
     "@type": "Person",
     "@id": SITE.url + "/our-story#bao",
     name: "Bao Vo",
-    jobTitle: "Co-founder & COO",
+    jobTitle: "Co-founder, COO & CTO",
     worksFor: { "@id": SITE.url + "/#organization" },
     sameAs: ["https://www.linkedin.com/in/gbaovo/"],
   },

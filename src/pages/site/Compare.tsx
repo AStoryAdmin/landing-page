@@ -30,25 +30,20 @@ import {
 } from "../../lib/landscape";
 import CompareOpening from "./compare/CompareOpening";
 import CompareTable, { CompareLegend } from "./compare/CompareTable";
-import { ArrowIcon, Invitation } from "./kit/kit";
+import { Invitation } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import {
-  Actions,
   Chapter,
-  Eyebrow,
   Frame,
-  PrimaryLink,
-  SecondaryLink,
   SplitHead,
   Statement,
   onDarkActions,
 } from "./kit/kit.styles";
 import { color, display, font, media } from "../../styles/theme";
-import { START_HREF, START_LABEL } from "../../lib/app";
 
 const Matrix = styled(Chapter)`
   .lead {
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.body};
+    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.text};
     color: var(--muted);
     max-width: 44ch;
   }
@@ -67,7 +62,7 @@ const Switch = styled(Chapter)`
   }
   .reason {
     display: grid;
-    grid-template-columns: 56px 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 18px;
     padding: clamp(24px, 2.6vw, 36px);
     border-radius: 20px;
@@ -84,7 +79,7 @@ const Switch = styled(Chapter)`
   }
   .reason p {
     margin-top: 10px;
-    font: 400 16.5px/1.6 ${font.body};
+    font: 400 16.5px/1.6 ${font.text};
     color: ${color.body};
   }
   ${media.md} {
@@ -109,7 +104,7 @@ const Moment = styled(Chapter)`
   }
   .then {
     margin-top: 22px;
-    font: 400 19px/1.6 ${font.body};
+    font: 400 19px/1.6 ${font.text};
     color: var(--muted);
     max-width: 34ch;
   }
@@ -175,13 +170,12 @@ export default function Compare() {
           <SplitHead>
             <div>
               <Statement id="matrix-title" $size="lg" data-lines>
-                What you get with A&nbsp;Story that a memoir{" "}
-                <em>can’t give you.</em>
+                Side by side, feature by <em>feature.</em>
               </Statement>
             </div>
             <p className="lead" data-rise>
-              Memoir products help one person finish a book. A Story keeps the
-              whole family’s story - every voice, still growing.
+              A Story beside the products families most often look at, from each
+              company’s own pages. A dash means the feature isn’t listed.
             </p>
           </SplitHead>
           <div data-rise>
@@ -205,17 +199,13 @@ export default function Compare() {
       <Switch ref={reasons} $ground="sand" aria-labelledby="switch-title">
         <Frame>
           <SplitHead>
-            <div>
-              <Eyebrow>Why families switch</Eyebrow>
-              <Statement id="switch-title" $size="lg" data-lines>
-                Four reasons to choose A&nbsp;Story.
-              </Statement>
-            </div>
+            <Statement id="switch-title" $size="lg" data-lines>
+              Four reasons to choose A&nbsp;Story.
+            </Statement>
           </SplitHead>
           <div className="reasons">
-            {SWITCH.map((r, i) => (
+            {SWITCH.map((r) => (
               <article key={r.title} className="reason" data-rise>
-                <b aria-hidden="true">{String(i + 1).padStart(2, "0")}</b>
                 <div>
                   <h3>{r.title}</h3>
                   <p>{r.body}</p>
@@ -235,12 +225,6 @@ export default function Compare() {
             <p className="then" data-rise>
               A Story keeps all of them attached to the same memory.
             </p>
-            <Actions data-rise>
-              <PrimaryLink to={START_HREF}>
-                {START_LABEL} <ArrowIcon />
-              </PrimaryLink>
-              <SecondaryLink to="/how-it-works">See how it works</SecondaryLink>
-            </Actions>
           </div>
           <ul
             className="voices"

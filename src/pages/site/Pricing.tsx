@@ -40,14 +40,17 @@ import {
 } from "../../lib/pricing";
 import { checkoutFor, isCheckoutLive } from "../../lib/checkout";
 import { START_HREF, START_LABEL } from "../../lib/app";
-import { OFFERS, RESERVE_DEADLINE_LABEL, reserveDiscountOpen } from "../../lib/founding";
+import {
+  OFFERS,
+  RESERVE_DEADLINE_LABEL,
+  reserveDiscountOpen,
+} from "../../lib/founding";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import PriceLadder from "./kit/PriceLadder";
 import { useReveals } from "./kit/reveals";
 import {
   Chapter,
-  Eyebrow,
   Frame,
   PrimaryAnchor,
   SplitHead,
@@ -109,7 +112,7 @@ const Plans = styled(Chapter)`
   }
   .who {
     margin-top: 8px;
-    font: 400 16px/1.45 ${font.body};
+    font: 400 16px/1.45 ${font.text};
     color: ${color.bodyMuted};
   }
   .price {
@@ -119,7 +122,7 @@ const Plans = styled(Chapter)`
     font-variant-numeric: lining-nums;
   }
   .period {
-    font: 500 15px/1.4 ${font.body};
+    font: 500 15px/1.4 ${font.text};
     color: ${color.bodyMuted};
   }
   .meter {
@@ -142,7 +145,7 @@ const Plans = styled(Chapter)`
   li {
     position: relative;
     padding: 6px 0 6px 22px;
-    font: 400 15px/1.5 ${font.body};
+    font: 400 15px/1.5 ${font.text};
     color: ${color.body};
   }
   li::before {
@@ -161,7 +164,7 @@ const Plans = styled(Chapter)`
   .bundle p {
     padding: 14px 0 0;
     border-top: 1px solid ${color.primaryLine};
-    font: 500 15px/1.45 ${font.body};
+    font: 500 15px/1.45 ${font.text};
     color: ${color.primary};
   }
   .bundle small {
@@ -181,10 +184,12 @@ const Plans = styled(Chapter)`
     outline-offset: 4px;
   }
 
-
   .others {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    &.solo {
+      grid-template-columns: minmax(0, 1fr);
+    }
     gap: clamp(16px, 2vw, 28px);
     margin-top: clamp(16px, 2vw, 28px);
   }
@@ -208,7 +213,7 @@ const Plans = styled(Chapter)`
     color: ${color.primary};
   }
   .other span {
-    font: 400 15px/1.5 ${font.body};
+    font: 400 15px/1.5 ${font.text};
     color: ${color.bodyMuted};
   }
 
@@ -240,7 +245,7 @@ const Plans = styled(Chapter)`
     font: 400 ${display.sm} / 1.2 ${font.display};
   }
   .decide small {
-    font: 400 15px/1.4 ${font.body};
+    font: 400 15px/1.4 ${font.text};
     color: ${color.onDarkMuted};
   }
   .decide-actions {
@@ -257,7 +262,7 @@ const Plans = styled(Chapter)`
   }
   .all-plans {
     margin-top: 18px;
-    font: 400 15px/1.5 ${font.body};
+    font: 400 15px/1.5 ${font.text};
     color: ${color.bodyMuted};
   }
   ${media.lg} {
@@ -283,15 +288,63 @@ const Plans = styled(Chapter)`
  * head selects that plan, the same as the cards above.
  */
 const Compare = styled.div`
-  margin-top: clamp(56px, 7vw, 104px);
+  margin-top: clamp(40px, 5vw, 72px);
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 64px;
+    padding: 8px 0;
+    border-top: 1px solid ${color.primaryLineStrong};
+    border-bottom: 1px solid ${color.primaryLineStrong};
+    cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary span {
+    position: relative;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid ${color.primaryLineStrong};
+    transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  summary span::before,
+  summary span::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 14px;
+    height: 1.5px;
+    background: ${color.primary};
+    transform: translate(-50%, -50%);
+  }
+  summary span::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+  details[open] summary span {
+    transform: rotate(45deg);
+  }
+  @media (hover: hover) {
+    summary:hover span {
+      border-color: ${color.primary};
+    }
+  }
+  summary:focus-visible {
+    outline: 2px solid ${color.accentText};
+    outline-offset: 4px;
+  }
   h2 {
     font: 400 ${display.md} / 1.2 ${font.display};
     color: ${color.primary};
   }
-  h2 + p {
-    margin: 10px 0 28px;
-    font: 400 16px/1.6 ${font.body};
-    color: ${color.bodyMuted};
+  details[open] .grid {
+    margin-top: 28px;
   }
   .grid {
     border-radius: 20px;
@@ -313,7 +366,7 @@ const Compare = styled.div`
     border-bottom: 1px solid ${color.primaryLine};
     text-align: left;
     vertical-align: top;
-    font: 400 15px/1.5 ${font.body};
+    font: 400 15px/1.5 ${font.text};
     color: ${color.body};
   }
   tbody tr:last-child > * {
@@ -414,7 +467,7 @@ const Forever = styled(Chapter)`
   }
   .stops {
     margin-top: clamp(40px, 5vw, 64px);
-    font: 400 18px/1.7 ${font.body};
+    font: 400 18px/1.7 ${font.text};
     color: ${color.body};
     max-width: 62ch;
   }
@@ -439,7 +492,7 @@ const Forever = styled(Chapter)`
   }
   .later p {
     margin-top: 8px;
-    font: 400 16px/1.6 ${font.body};
+    font: 400 16px/1.6 ${font.text};
     color: ${color.body};
     max-width: 40ch;
   }
@@ -464,7 +517,7 @@ const Forever = styled(Chapter)`
   }
   details p {
     padding-bottom: 20px;
-    font: 400 17px/1.65 ${font.body};
+    font: 400 17px/1.65 ${font.text};
     color: ${color.body};
   }
   .questions {
@@ -494,10 +547,13 @@ const Book = styled(Chapter)`
     align-items: center;
   }
   .book img {
-    width: min(100%, 420px);
+    width: min(100%, 460px);
     height: auto;
     justify-self: center;
-    filter: drop-shadow(0 40px 36px rgba(42, 31, 24, 0.35));
+    transform: rotate(-2deg);
+    box-shadow:
+      0 2px 3px rgba(42, 31, 24, 0.25),
+      0 40px 60px -30px rgba(42, 31, 24, 0.55);
   }
   /* Scoped under .book so the .book p body rule below cannot shrink it. */
   .book .book-price {
@@ -511,11 +567,11 @@ const Book = styled(Chapter)`
     color: ${color.primary};
   }
   .book .book-price span {
-    font: 400 17px/1.4 ${font.body};
+    font: 400 17px/1.4 ${font.text};
     color: ${color.bodyMuted};
   }
   .book p {
-    font: 400 18px/1.65 ${font.body};
+    font: 400 18px/1.65 ${font.text};
     color: ${color.body};
     max-width: 44ch;
   }
@@ -578,7 +634,7 @@ const Book = styled(Chapter)`
     background: none;
     box-shadow: none;
     position: relative;
-    font: 400 15px/1.5 ${font.body};
+    font: 400 15px/1.5 ${font.text};
     color: ${color.body};
   }
   .editions ul li::before {
@@ -595,14 +651,13 @@ const Book = styled(Chapter)`
     font: 500 13px/1.4 ${font.body};
     color: ${color.bodyMuted};
   }
+  /* One full-width line under the editions (it sat alone on a half row). */
   .members {
-    margin-top: clamp(28px, 3vw, 40px);
-    padding: 20px 24px;
-    border-left: 2px solid ${color.gold};
-    background: ${color.paperPure};
-    font: 400 17px/1.6 ${font.body};
+    margin-top: clamp(24px, 3vw, 36px);
+    padding-top: 20px;
+    border-top: 1px solid ${color.primaryLineStrong};
+    font: 400 17px/1.6 ${font.text};
     color: ${color.body};
-    max-width: 72ch;
   }
   ${media.lg} {
     .editions {
@@ -779,13 +834,12 @@ export default function Pricing() {
         description="Compare Individual, Family, Express, Monthly and Free: the call minutes, which plans include a hardcover, and what stays yours whatever you choose."
       />
       <PageOpening
-        eyebrow="Pricing · USD"
         title={
           <>
-            Everyone starts free. Only the <em>calls</em> are paid for.
+            Free to start. Only <em>calls</em> are paid.
           </>
         }
-        lead={`${START.headline} - ${START.detail} Inviting family, writing and reading are never charged by the person.`}
+        lead={`${START.headline} - ${START.detail} Inviting family, writing and reading are never charged by the person. Prices are in US dollars, and calls ring on iPhone in our private beta.`}
       />
 
       <PriceLadder ground="ivory" title={false} onward={false} early />
@@ -814,7 +868,7 @@ export default function Pricing() {
                 />
                 <div className="plan-top">
                   <h2>{p.name}</h2>
-                  {p.featured && <span className="tag">Most families</span>}
+                  {p.featured && <span className="tag">Recommended</span>}
                 </div>
                 <p className="who">{p.who}</p>
                 <p className="price">{p.price}</p>
@@ -832,15 +886,17 @@ export default function Pricing() {
                 <div className="bundle">
                   <p>
                     {p.book}
-                    <small>Plus the Digital Edition · you pay only the shipping</small>
+                    <small>
+                      Plus the Digital Edition · you pay only the shipping
+                    </small>
                   </p>
                 </div>
               </article>
             ))}
           </div>
 
-          <div className="others">
-            {OTHER_PLANS.map((p) => (
+          <div className="others solo">
+            {OTHER_PLANS.filter((p) => p.id !== "free").map((p) => (
               <div
                 key={p.id}
                 className={`other ${selected === p.id ? "is-selected" : ""}`}
@@ -859,12 +915,7 @@ export default function Pricing() {
                 <b>
                   {p.label} · {p.price}
                 </b>
-                <span>
-                  {p.sub}.{" "}
-                  {p.id === "free"
-                    ? `${FREE_TIER.includes[4]}.`
-                    : "Billed monthly."}
-                </span>
+                <span>{p.sub}. Billed monthly.</span>
               </div>
             ))}
           </div>
@@ -875,70 +926,67 @@ export default function Pricing() {
             photographs.
           </p>
 
-          <Compare aria-labelledby="compare-title">
-            <h2 id="compare-title">Compare every plan</h2>
-            <p>
-              Monthly is {OTHER_PLANS[0].price} with no yearly commitment: 90
-              minutes of guided calls a month and the Digital Edition.
-              Everything else is side by side below.
-            </p>
-            <div
-              className="grid"
-              tabIndex={0}
-              role="region"
-              aria-label="Plan comparison, scrollable"
-            >
-              <table>
-                <thead>
-                  <tr>
-                    <th scope="col">
-                      <span className="sr-only">Plan</span>
-                    </th>
-                    {COLS.map((c) => (
-                      <th
-                        key={c.id}
-                        scope="col"
-                        className={selected === c.id ? "sel" : undefined}
-                      >
-                        <button
-                          type="button"
-                          onClick={() => setSelected(c.id)}
-                          aria-pressed={selected === c.id}
-                        >
-                          <b>{c.name}</b>
-                          <span>{c.price}</span>
-                          <small>{c.period}</small>
-                        </button>
+          <Compare>
+            <details>
+              <summary>
+                <h2 id="compare-title">Compare every plan, side by side</h2>
+                <span aria-hidden="true" />
+              </summary>
+              <div
+                className="grid"
+                tabIndex={0}
+                role="region"
+                aria-label="Plan comparison, scrollable"
+              >
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">
+                        <span className="sr-only">Plan</span>
                       </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {ROWS.map((r) => (
-                    <tr key={r.label}>
-                      <th scope="row">{r.label}</th>
-                      {r.cells.map(([main, sub], i) => (
-                        <td
-                          key={i}
-                          className={
-                            selected === COLS[i].id ? "sel" : undefined
-                          }
+                      {COLS.map((c) => (
+                        <th
+                          key={c.id}
+                          scope="col"
+                          className={selected === c.id ? "sel" : undefined}
                         >
-                          <strong className={r.yes ? "yes" : undefined}>
-                            {r.yes && <YesTick />}
-                            {main}
-                          </strong>
-                          {sub && <span>{sub}</span>}
-                        </td>
+                          <button
+                            type="button"
+                            onClick={() => setSelected(c.id)}
+                            aria-pressed={selected === c.id}
+                          >
+                            <b>{c.name}</b>
+                            <span>{c.price}</span>
+                            <small>{c.period}</small>
+                          </button>
+                        </th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p className="note">
-              {START.headline}. {START.detail}
-            </p>
+                  </thead>
+                  <tbody>
+                    {ROWS.map((r) => (
+                      <tr key={r.label}>
+                        <th scope="row">{r.label}</th>
+                        {r.cells.map(([main, sub], i) => (
+                          <td
+                            key={i}
+                            className={
+                              selected === COLS[i].id ? "sel" : undefined
+                            }
+                          >
+                            <strong className={r.yes ? "yes" : undefined}>
+                              {r.yes && <YesTick />}
+                              {main}
+                            </strong>
+                            {sub && <span>{sub}</span>}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </details>
           </Compare>
 
           <div className={`decide${chosen ? " float" : ""}`} aria-live="polite">
@@ -949,7 +997,7 @@ export default function Pricing() {
                   ? "No card. Make your account in your browser and begin today."
                   : isCheckoutLive(selectedId)
                     ? "Continue with your selected plan."
-                    : "Before launch: reserve for $1 by 2 November and hold 15% off this plan's first year."}
+                    : "Plans open at launch."}
               </small>
             </div>
             <div className="decide-actions">
@@ -980,12 +1028,9 @@ export default function Pricing() {
       <Forever ref={forever} $ground="paper" aria-labelledby="forever-title">
         <Frame>
           <SplitHead>
-            <div>
-              <Eyebrow>What stays yours</Eyebrow>
-              <Statement id="forever-title" $size="xl" data-lines>
-                The app is yours. It does not stop being <em>yours.</em>
-              </Statement>
-            </div>
+            <Statement id="forever-title" $size="lg" data-lines>
+              Stop paying, and it is still <em>yours.</em>
+            </Statement>
           </SplitHead>
           <ul className="kept">
             {FOREVER.kept.map((k) => (
@@ -994,9 +1039,6 @@ export default function Pricing() {
               </li>
             ))}
           </ul>
-          <p className="stops" data-rise>
-            {FOREVER.stops}
-          </p>
 
           <ul className="later" aria-label="For later">
             <li data-rise>
@@ -1018,12 +1060,6 @@ export default function Pricing() {
 
           <div className="questions">
             <details>
-              <summary>Is there a free trial?</summary>
-              <p>
-                No - there is a Free tier that never runs out. {START.detail}
-              </p>
-            </details>
-            <details>
               <summary>What is included in Free?</summary>
               <p>
                 {FREE_TIER.includes.join(". ")}. {FREE_TIER.excludes} are not
@@ -1034,8 +1070,8 @@ export default function Pricing() {
               <summary>Care communities and organizations</summary>
               <p>
                 Program pricing is quoted individually.{" "}
-                <TextLink to="/organizations#book">Book a demo</TextLink> to talk about
-                participants, consent and access.
+                <TextLink to="/organizations#book">Book a demo</TextLink> to
+                talk about participants, consent and access.
               </p>
             </details>
           </div>
@@ -1044,33 +1080,26 @@ export default function Pricing() {
 
       <Book ref={book} $ground="sand" id="book" aria-labelledby="book-title">
         <Frame className="book">
+          {/* The cover of a real sample book (the /samples page), not the
+              product mock-up whose cover still read "Family name". */}
           <img
             data-rise
             data-drift="5"
-            src="/book-objects/closed-1200.webp"
-            srcSet="/book-objects/closed-640.webp 640w, /book-objects/closed-1200.webp 1200w"
-            sizes="(max-width: 860px) 70vw, 420px"
-            width={1200}
-            height={1609}
-            alt="The A Story hardcover book in its teal binding"
+            src="/book-objects/sample-carolyn-720.webp"
+            srcSet="/book-objects/sample-carolyn-360.webp 360w, /book-objects/sample-carolyn-720.webp 720w"
+            sizes="(max-width: 860px) 70vw, 460px"
+            width={720}
+            height={720}
+            alt="The cover of a sample A Story book, Moments & Memories, with family photographs on navy linen"
             loading="lazy"
           />
           <div>
             <Statement id="book-title" $size="lg" data-lines>
-              Printed when a chapter is worth <em>holding.</em>
+              Six ways to hold the <em>book.</em>
             </Statement>
-            <p className="book-price" data-rise>
-              Free <span>to print at home - or six ways to hold it</span>
-            </p>
             <p data-rise>
               From a PDF you print at the library to a linen Heirloom in its
               box, or an editor of ours doing all of it. {BOOK.pages}.
-            </p>
-            <p data-rise>
-              A printed book is Volume I. The archive goes on after it is
-              printed: the family asks the next question, somebody answers,
-              and the next edition has more pages. Print it again whenever
-              you like.
             </p>
             <p data-rise>
               {/* /samples is a page in public/, outside the router: a plain anchor. */}
@@ -1101,8 +1130,8 @@ export default function Pricing() {
             ))}
           </ul>
           <p className="members" data-rise>
-            <strong>With a plan:</strong> {BOOK.members}{" "}
-            {BOOK.allowance}. Ordering opens soon.
+            <strong>With a plan:</strong> {BOOK.members} {BOOK.allowance}.
+            Ordering opens soon.
           </p>
         </Frame>
       </Book>

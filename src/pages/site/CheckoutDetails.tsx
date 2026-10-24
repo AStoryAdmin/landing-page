@@ -92,7 +92,8 @@ const Sheet = styled.dialog`
   .card {
     position: relative;
     margin: 10px;
-    padding: clamp(28px, 5vw, 44px) clamp(22px, 5vw, 44px) clamp(24px, 4vw, 36px);
+    padding: clamp(28px, 5vw, 44px) clamp(22px, 5vw, 44px)
+      clamp(24px, 4vw, 36px);
     border: 1px solid color-mix(in srgb, ${color.gold} 70%, transparent);
     outline: 1px solid color-mix(in srgb, ${color.gold} 32%, transparent);
     outline-offset: 4px;
@@ -111,7 +112,9 @@ const Sheet = styled.dialog`
     background: transparent;
     color: ${color.bodyMuted};
     cursor: pointer;
-    transition: color ${motion.base}, background ${motion.base};
+    transition:
+      color ${motion.base},
+      background ${motion.base};
   }
   @media (hover: hover) {
     .close:hover {
@@ -267,16 +270,19 @@ export default function CheckoutDetails({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [invalid, setInvalid] = useState<"name" | "email" | "phone" | null>(null);
+  const [invalid, setInvalid] = useState<"name" | "email" | "phone" | null>(
+    null,
+  );
   const [problem, setProblem] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   /* An error belongs to the attempt that caused it; typing starts a new one. */
-  const edit = (set: (v: string) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    set(e.target.value);
-    if (problem) setProblem(null);
-    if (invalid) setInvalid(null);
-  };
+  const edit =
+    (set: (v: string) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      set(e.target.value);
+      if (problem) setProblem(null);
+      if (invalid) setInvalid(null);
+    };
 
   /* Open and close the native dialog from the intent, so focus is trapped,
      Escape closes it and the page behind is inert, all by the browser. */
@@ -311,11 +317,15 @@ export default function CheckoutDetails({
     }
     if (!looksLikeEmail(email)) {
       setInvalid("email");
-      return setProblem("That email does not look quite right. It is where your receipt and your place go.");
+      return setProblem(
+        "That email does not look quite right. It is where your receipt and your place go.",
+      );
     }
     if (phone.trim() && !looksLikePhone(phone)) {
       setInvalid("phone");
-      return setProblem("That phone number looks short. Leave it blank if you would rather.");
+      return setProblem(
+        "That phone number looks short. Leave it blank if you would rather.",
+      );
     }
     setInvalid(null);
     setBusy(true);
@@ -371,7 +381,12 @@ export default function CheckoutDetails({
             disabled={busy}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              <path
+                d="M3 3l10 10M13 3L3 13"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
             </svg>
           </button>
 
@@ -394,7 +409,11 @@ export default function CheckoutDetails({
           </header>
 
           <form onSubmit={submit} noValidate>
-            <label className="field" htmlFor={`${uid}-name`} data-invalid={invalid === "name"}>
+            <label
+              className="field"
+              htmlFor={`${uid}-name`}
+              data-invalid={invalid === "name"}
+            >
               <span>Your name</span>
               <input
                 id={`${uid}-name`}
@@ -407,7 +426,11 @@ export default function CheckoutDetails({
                 ref={first}
               />
             </label>
-            <label className="field" htmlFor={`${uid}-email`} data-invalid={invalid === "email"}>
+            <label
+              className="field"
+              htmlFor={`${uid}-email`}
+              data-invalid={invalid === "email"}
+            >
               <span>Email</span>
               <input
                 id={`${uid}-email`}
@@ -422,10 +445,15 @@ export default function CheckoutDetails({
                 required
               />
               <small className="hint" id={`${uid}-email-hint`}>
-                Use this one at checkout and when you make your account - it is how your place finds you.
+                Use this one at checkout and when you make your account - it is
+                how your place finds you.
               </small>
             </label>
-            <label className="field" htmlFor={`${uid}-phone`} data-invalid={invalid === "phone"}>
+            <label
+              className="field"
+              htmlFor={`${uid}-phone`}
+              data-invalid={invalid === "phone"}
+            >
               <span>
                 Phone <small>Optional</small>
               </span>
@@ -447,12 +475,20 @@ export default function CheckoutDetails({
               </p>
             )}
 
-            <PrimaryButton type="submit" className="go" disabled={busy}>
-              {busy ? "Opening Stripe…" : `Continue to pay ${intent.price}`} <ArrowIcon />
+            <PrimaryButton
+              type="submit"
+              className="go"
+              disabled={busy}
+              aria-busy={busy || undefined}
+            >
+              {busy ? "Opening Stripe…" : `Continue to pay ${intent.price}`}{" "}
+              <ArrowIcon />
             </PrimaryButton>
             <p className="fine">
               Apple Pay, Google Pay or card, through Stripe.{" "}
-              {founding ? "Refunded any time before the first call." : "Refunded any time before launch."}
+              {founding
+                ? "Refunded any time before the first call."
+                : "Refunded any time before launch."}
             </p>
           </form>
         </div>

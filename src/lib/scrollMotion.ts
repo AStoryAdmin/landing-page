@@ -21,10 +21,21 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { CustomEase } from "gsap/CustomEase";
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase);
 
-export { gsap, ScrollTrigger, SplitText };
+/*
+ * The house curves (Bao's Standard rule 23; styles/theme.ts `curve`), so
+ * scripted motion lands exactly like the CSS: "house-out" for every
+ * entrance, "house-move" for anything that travels while staying on screen.
+ * They are the default; a tween that names no ease arrives on house-out.
+ */
+CustomEase.create("house-out", "0.23,1,0.32,1");
+CustomEase.create("house-move", "0.77,0,0.175,1");
+gsap.defaults({ ease: "house-out" });
+
+export { gsap, ScrollTrigger, SplitText, CustomEase };
 
 /** Conditions a scene can build against. Keys become booleans on `context.conditions`. */
 export const MOTION = {
@@ -70,7 +81,7 @@ export function riseLines(
   target: Element | Element[],
   vars: { delay?: number; stagger?: number; trigger?: Element | false } = {},
 ) {
-  const { delay = 0, stagger = 0.09, trigger } = vars;
+  const { delay = 0, stagger = 0.08, trigger } = vars;
   return SplitText.create(target, {
     type: "lines",
     mask: "lines",
@@ -78,18 +89,36 @@ export function riseLines(
     onSplit: (split) => {
       openMasks(split.masks);
       return gsap.from(split.lines, {
-        yPercent: 110,
-        duration: 1.2,
-        ease: "expo.out",
+        yPercent: 105,
+        duration: 0.85,
+        ease: "house-out",
         stagger,
         delay,
         scrollTrigger:
           trigger === false
             ? undefined
-            : { trigger: trigger ?? target, start: "top 88%", once: true },
+            : arrival(trigger ?? target, "top 88%"),
       });
     },
   });
+}
+
+/**
+ * The ScrollTrigger for a one-shot arrival. Its start is "top 90%", and if
+ * the page can never scroll that far (a block at the foot of a short page,
+ * or a tall window) the arrival plays at once, so nothing is ever left
+ * hidden waiting for a scroll that cannot happen (Bao's Standard 25).
+ */
+export function arrival(trigger: Element | Element[], start = "top 90%") {
+  return {
+    trigger: Array.isArray(trigger) ? trigger[0] : trigger,
+    start,
+    once: true,
+    onRefresh: (self: ScrollTrigger) => {
+      if (self.start > ScrollTrigger.maxScroll(window) - 2)
+        self.animation?.progress(1);
+    },
+  };
 }
 
 /**

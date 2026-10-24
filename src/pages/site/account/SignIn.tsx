@@ -39,14 +39,15 @@ const HEAD: Record<Stage, { h: string; p: (email: string) => ReactNode }> = {
   },
   forgot: {
     h: "Reset your password.",
-    p: () => `Tell us the email on the account and we will send a ${CODE_LEN}-digit code to it.`,
+    p: () =>
+      `Tell us the email on the account and we will send a ${CODE_LEN}-digit code to it.`,
   },
   reset: {
     h: "Choose a new password.",
     p: (email) => (
       <>
-        If there is an account for <strong>{email}</strong>, a code is on its way. Enter it with the password
-        you want.
+        If there is an account for <strong>{email}</strong>, a code is on its
+        way. Enter it with the password you want.
       </>
     ),
   },
@@ -54,7 +55,8 @@ const HEAD: Record<Stage, { h: string; p: (email: string) => ReactNode }> = {
     h: "One last step.",
     p: (email) => (
       <>
-        This account was never confirmed, so we have sent a fresh code to <strong>{email}</strong>.
+        This account was never confirmed, so we have sent a fresh code to{" "}
+        <strong>{email}</strong>.
       </>
     ),
   },
@@ -143,14 +145,22 @@ export default function SignIn() {
     e.preventDefault();
     if (busy) return;
     setError(null);
-    if (code.length < CODE_LEN) return bad("code", `Enter all ${CODE_LEN} digits from the email.`);
+    if (code.length < CODE_LEN)
+      return bad("code", `Enter all ${CODE_LEN} digits from the email.`);
     if (password.length < MIN_PASSWORD)
-      return bad("password", `Password must be at least ${MIN_PASSWORD} characters.`);
+      return bad(
+        "password",
+        `Password must be at least ${MIN_PASSWORD} characters.`,
+      );
     setInvalid(null);
     setBusy(true);
     const res = await resetPassword(email, code, password);
     setBusy(false);
-    if (!res.ok) return bad(res.error.includes("Password") ? "password" : "code", res.error);
+    if (!res.ok)
+      return bad(
+        res.error.includes("Password") ? "password" : "code",
+        res.error,
+      );
     track("password_reset");
     navigate(next, { replace: true });
   };
@@ -159,7 +169,8 @@ export default function SignIn() {
     e.preventDefault();
     if (busy) return;
     setError(null);
-    if (code.length < CODE_LEN) return bad("code", `Enter all ${CODE_LEN} digits from the email.`);
+    if (code.length < CODE_LEN)
+      return bad("code", `Enter all ${CODE_LEN} digits from the email.`);
     setInvalid(null);
     setBusy(true);
     const res = await verifySignupCode(email, code);
@@ -172,12 +183,20 @@ export default function SignIn() {
   const resend = async () => {
     setError(null);
     setWait(RESEND_WAIT);
-    const res = stage === "confirm" ? await resendSignupCode(email) : await requestPasswordReset(email);
+    const res =
+      stage === "confirm"
+        ? await resendSignupCode(email)
+        : await requestPasswordReset(email);
     if (!res.ok) setError(res.error);
   };
 
   const head = HEAD[stage];
-  const onSubmit = { signin: onSignIn, forgot: onForgot, reset: onReset, confirm: onConfirm }[stage];
+  const onSubmit = {
+    signin: onSignIn,
+    forgot: onForgot,
+    reset: onReset,
+    confirm: onConfirm,
+  }[stage];
   const submitLabel = {
     signin: busy ? "Signing in…" : "Sign in",
     forgot: busy ? "Sending…" : "Send me a code",
@@ -217,7 +236,11 @@ export default function SignIn() {
       >
         <form onSubmit={onSubmit} noValidate>
           {(stage === "signin" || stage === "forgot") && (
-            <label className="field" htmlFor={`${uid}-email`} data-invalid={invalid === "email"}>
+            <label
+              className="field"
+              htmlFor={`${uid}-email`}
+              data-invalid={invalid === "email"}
+            >
               <span>Email</span>
               <input
                 id={`${uid}-email`}
@@ -234,7 +257,12 @@ export default function SignIn() {
             </label>
           )}
           {(stage === "reset" || stage === "confirm") && (
-            <CodeField id={`${uid}-code`} value={code} onChange={setCode} invalid={invalid === "code"} />
+            <CodeField
+              id={`${uid}-code`}
+              value={code}
+              onChange={setCode}
+              invalid={invalid === "code"}
+            />
           )}
           {stage === "signin" && (
             <PasswordField
@@ -262,7 +290,7 @@ export default function SignIn() {
               {error}
             </p>
           )}
-          <button type="submit" disabled={busy}>
+          <button type="submit" disabled={busy} aria-busy={busy || undefined}>
             {submitLabel}
           </button>
           <div className="quiet">

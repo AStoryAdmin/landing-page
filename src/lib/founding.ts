@@ -344,7 +344,7 @@ export const WHY_PAY = [
     },
     {
         t: 'It is how we know you mean it',
-        d: 'We open a few families at a time. Paying something, however small, tells us who to open to first.',
+        d: 'The calls open in the order families reserve. Paying something, however small, tells us who to open to first.',
     },
 ] as const;
 

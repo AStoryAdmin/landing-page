@@ -20,7 +20,16 @@ import { looksLikeEmail } from "../../lib/leads";
 import { track } from "../../lib/analytics";
 import { ArrowIcon, PageOpening, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
-import { Chapter, Eyebrow, Frame, Plate, PrimaryAnchor, PrimaryButton, SecondaryButton, TextAnchor } from "./kit/kit.styles";
+import {
+  Chapter,
+  Eyebrow,
+  Frame,
+  Plate,
+  PrimaryAnchor,
+  PrimaryButton,
+  SecondaryButton,
+  TextAnchor,
+} from "./kit/kit.styles";
 import { Done, Form } from "./kit/form.styles";
 import { color, display, font, media } from "../../styles/theme";
 
@@ -34,9 +43,21 @@ const TOPICS = [
 ] as const;
 
 const DOORS = [
-  ["Booking a demo for an institution?", "Pick a time on the Institutions page.", "/organizations#book"],
-  ["Ready to hold a place?", "Reserve for $1 - it comes off your first year.", "/reserve"],
-  ["A quick question?", "The practical things are answered here.", "/questions"],
+  [
+    "Booking a demo for an institution?",
+    "Pick a time on the Institutions page.",
+    "/organizations#book",
+  ],
+  [
+    "Ready to hold a place?",
+    "Reserve for $1 - it comes off your first year.",
+    "/reserve",
+  ],
+  [
+    "A quick question?",
+    "The practical things are answered here.",
+    "/questions",
+  ],
 ] as const;
 
 const Body = styled(Chapter)`
@@ -78,7 +99,7 @@ const Body = styled(Chapter)`
     gap: 12px;
   }
   .address p {
-    font: 400 16px/1.55 ${font.body};
+    font: 400 16px/1.55 ${font.text};
     color: var(--muted);
   }
   .doors {
@@ -104,7 +125,7 @@ const Body = styled(Chapter)`
   .doors span {
     display: block;
     margin-top: 4px;
-    font: 400 15px/1.5 ${font.body};
+    font: 400 15px/1.5 ${font.text};
     color: var(--muted);
   }
   .doors svg {
@@ -157,7 +178,9 @@ export default function Contact() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [website, setWebsite] = useState("");
-  const [invalid, setInvalid] = useState<"name" | "email" | "message" | null>(null);
+  const [invalid, setInvalid] = useState<"name" | "email" | "message" | null>(
+    null,
+  );
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const [fallback, setFallback] = useState<string | null>(null);
@@ -182,7 +205,14 @@ export default function Contact() {
     setInvalid(null);
     setFallback(null);
     setBusy(true);
-    const result = await sendMessage({ name, email, topic, message, website, source: "contact" });
+    const result = await sendMessage({
+      name,
+      email,
+      topic,
+      message,
+      website,
+      source: "contact",
+    });
     setBusy(false);
     if (result.ok) {
       setDone(true);
@@ -202,19 +232,21 @@ export default function Contact() {
       />
       <PageOpening
         ground="night"
-        eyebrow="Contact"
         title={
           <>
-            Write to us. <em>A person reads every message.</em>
+            A person reads every <em>message.</em>
           </>
         }
-        lead="Messages from this page go straight to Daniel, our co-founder - not a help desk - and are answered within a working day."
+        lead="Messages from this page go straight to Daniel, our co-founder and CEO, and are answered within a working day."
         actions={
           <>
             <PrimaryAnchor href="#write">
               Send a message <ArrowIcon />
             </PrimaryAnchor>
-            <TextAnchor href={`mailto:${DEMO_EMAIL}`} onClick={() => track("contact_mailto")}>
+            <TextAnchor
+              href={`mailto:${DEMO_EMAIL}`}
+              onClick={() => track("contact_mailto")}
+            >
               {DEMO_EMAIL}
             </TextAnchor>
           </>
@@ -229,13 +261,23 @@ export default function Contact() {
         }
       />
 
-      <Body ref={reveal} $ground="ivory" id="write" aria-label="Write to us" style={{ scrollMarginTop: 80 }}>
+      <Body
+        ref={reveal}
+        $ground="ivory"
+        id="write"
+        aria-label="Write to us"
+        style={{ scrollMarginTop: 80 }}
+      >
         <Frame className="row">
           <div className="side" data-rise>
             <Eyebrow>Or write directly</Eyebrow>
             <div className="address">
-              <small>Daniel Nguyen, co-founder and CEO</small>
-              <a className="big" href={`mailto:${DEMO_EMAIL}`} onClick={() => track("contact_mailto")}>
+              <small>Daniel Hoang Nguyen, co-founder and CEO</small>
+              <a
+                className="big"
+                href={`mailto:${DEMO_EMAIL}`}
+                onClick={() => track("contact_mailto")}
+              >
                 {DEMO_EMAIL}
               </a>
               <div className="acts">
@@ -265,8 +307,9 @@ export default function Contact() {
               <Done role="status">
                 <h3>Thank you. It is with Daniel now.</h3>
                 <p>
-                  You will hear back at <strong>{email.trim()}</strong> within a working day. If it cannot wait,
-                  write to <a href={`mailto:${DEMO_EMAIL}`}>{DEMO_EMAIL}</a>.
+                  You will hear back at <strong>{email.trim()}</strong> within a
+                  working day. If it cannot wait, write to{" "}
+                  <a href={`mailto:${DEMO_EMAIL}`}>{DEMO_EMAIL}</a>.
                 </p>
               </Done>
             ) : (
@@ -295,13 +338,20 @@ export default function Contact() {
                     </div>
                     {topic === "Institutions and partnerships" && (
                       <p className="hint">
-                        Booking a demo? <Link to="/organizations#book">Pick a time on the Institutions page</Link>{" "}
+                        Booking a demo?{" "}
+                        <Link to="/organizations#book">
+                          Pick a time on the Institutions page
+                        </Link>{" "}
                         - or write here, either is fine.
                       </p>
                     )}
                   </fieldset>
                   <div className="two">
-                    <label className="field" htmlFor={`${uid}-name`} data-invalid={invalid === "name"}>
+                    <label
+                      className="field"
+                      htmlFor={`${uid}-name`}
+                      data-invalid={invalid === "name"}
+                    >
                       <span>Your name</span>
                       <input
                         id={`${uid}-name`}
@@ -310,7 +360,11 @@ export default function Contact() {
                         onChange={(e) => setName(e.target.value)}
                       />
                     </label>
-                    <label className="field" htmlFor={`${uid}-email`} data-invalid={invalid === "email"}>
+                    <label
+                      className="field"
+                      htmlFor={`${uid}-email`}
+                      data-invalid={invalid === "email"}
+                    >
                       <span>Your email</span>
                       <input
                         id={`${uid}-email`}
@@ -322,7 +376,11 @@ export default function Contact() {
                       />
                     </label>
                   </div>
-                  <label className="field" htmlFor={`${uid}-message`} data-invalid={invalid === "message"}>
+                  <label
+                    className="field"
+                    htmlFor={`${uid}-message`}
+                    data-invalid={invalid === "message"}
+                  >
                     <span>Message</span>
                     <textarea
                       id={`${uid}-message`}
@@ -352,14 +410,23 @@ export default function Contact() {
                   {fallback && (
                     <p className="error" role="alert">
                       That did not go through on our side.{" "}
-                      <TextAnchor href={fallback}>Send it by email instead</TextAnchor> - your message is already in
-                      it.
+                      <TextAnchor href={fallback}>
+                        Send it by email instead
+                      </TextAnchor>{" "}
+                      - your message is already in it.
                     </p>
                   )}
-                  <PrimaryButton className="go" type="submit" disabled={busy}>
+                  <PrimaryButton
+                    className="go"
+                    type="submit"
+                    disabled={busy}
+                    aria-busy={busy || undefined}
+                  >
                     {busy ? "Sending…" : "Send to Daniel"} <ArrowIcon />
                   </PrimaryButton>
-                  <p className="fine">No mailing list. We use your email only to answer you.</p>
+                  <p className="fine">
+                    No mailing list. We use your email only to answer you.
+                  </p>
                 </Form>
               </>
             )}

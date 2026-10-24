@@ -105,8 +105,8 @@ export const PLANS: Plan[] = [
         meter: '90 minutes of guided calls a month',
         meterNote: 'About three calls a week, and they roll on all year',
         blurb:
-            'The one most people want. A year is long enough that nobody feels chased, and ' +
-            'ninety minutes a month is a whole life told properly rather than a highlight reel.',
+            'A year is long enough that nobody feels chased. Ninety minutes a month is time ' +
+            'for a whole life, told properly.',
         features: [
             `All ${QUESTION_COUNT} questions, every chapter`,
             'Unlimited photo uploads',
@@ -267,7 +267,6 @@ export const BOOK_EDITIONS: BookEdition[] = [
         name: 'Classic Hardcover',
         price: '$69',
         extra: '$49',
-        badge: 'Most chosen',
         tagline: 'The book, bound to last.',
         includes: ['Case-bound hardcover with the keepsake cover', 'Heavy paper, full colour, every listening code'],
         delivery: 'Ships in 7-10 days',

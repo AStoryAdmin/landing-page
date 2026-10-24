@@ -38,14 +38,14 @@ const Card = styled.div`
   thead th {
     padding: 26px 16px 22px;
     border-bottom: 1px solid ${color.primaryLineStrong};
-    font: 500 15px/1.2 ${font.body};
+    font: 500 15px/1.2 ${font.text};
     color: ${color.primaryMid};
   }
   tbody th {
     width: var(--label-w, 38%);
     padding-left: clamp(18px, 2vw, 28px);
     text-align: left;
-    font: 400 16.5px/1.45 ${font.body};
+    font: 400 16.5px/1.45 ${font.text};
     color: ${color.primary};
   }
   .us {
@@ -59,7 +59,7 @@ const Card = styled.div`
   }
   .m {
     display: inline-block;
-    font: 400 22px/1 ${font.body};
+    font: 400 22px/1 ${font.text};
   }
   .m2 {
     color: ${color.teal};
@@ -144,10 +144,10 @@ const Cross = () => (
     strokeLinecap="round"
     aria-hidden="true"
   >
-    <path d="M6 6l12 12M18 6L6 18" />
+    <path d="M8 12h8" />
   </svg>
 );
-const SAY = ["No", "Partly", "Yes"];
+const SAY = ["Not listed", "Partly", "Yes"];
 
 function Mark({ v }: { v: Level }) {
   return (
@@ -174,7 +174,7 @@ export function CompareLegend() {
         <span className="m0">
           <Cross />
         </span>
-        no
+        not listed
       </span>
     </Legend>
   );

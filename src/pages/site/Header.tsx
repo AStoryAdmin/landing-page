@@ -53,8 +53,6 @@ const groups = [
 export default function Header() {
   const [open, setOpen] = useState(false),
     [more, setMore] = useState(false),
-    // Decided on first render so the home header never paints ivory first.
-    [overDark, setOverDark] = useState(() => window.location.pathname === "/"),
     [tucked, setTucked] = useState(false),
     [condensed, setCondensed] = useState(false);
   const header = useRef<HTMLElement>(null),
@@ -63,23 +61,15 @@ export default function Header() {
     panel = useRef<HTMLDivElement>(null);
   const location = useLocation();
   /*
-   * Two scroll states. Over the home opening the header is transparent on the
-   * photograph; everywhere past it, the header tucks away while the reader
-   * moves down the page and comes back as soon as they move up. The small
-   * threshold stops a trackpad's jitter from flickering it.
+   * Two scroll states (phase 2: the bar is always the cloth). Past the top
+   * it settles; while the reader moves down it tucks away and comes back as
+   * soon as they move up. The small threshold stops a trackpad's jitter
+   * from flickering it.
    */
-  const home = location.pathname === "/";
   useEffect(() => {
     let last = window.scrollY;
     const check = () => {
       const y = window.scrollY;
-      const hero = document.querySelector('[aria-labelledby="hero-title"]');
-      setOverDark(
-        home &&
-          !!hero &&
-          hero.getBoundingClientRect().bottom >
-            (header.current?.offsetHeight ?? 90),
-      );
       setCondensed(y > 24);
       if (Math.abs(y - last) > 6) {
         setTucked(y > last && y > 240);
@@ -88,12 +78,8 @@ export default function Header() {
     };
     check();
     window.addEventListener("scroll", check, { passive: true });
-    window.addEventListener("resize", check);
-    return () => {
-      window.removeEventListener("scroll", check);
-      window.removeEventListener("resize", check);
-    };
-  }, [home]);
+    return () => window.removeEventListener("scroll", check);
+  }, []);
   useEffect(() => {
     const ro = new ResizeObserver(() =>
       document.documentElement.style.setProperty(
@@ -187,16 +173,15 @@ export default function Header() {
       ref={header}
       className={[
         "gf-header",
-        overDark && !open ? "is-over-dark" : "",
         tucked && !open && !more ? "is-tucked" : "",
-        condensed && !overDark ? "is-condensed" : "",
+        condensed ? "is-condensed" : "",
         open ? "is-open" : "",
       ].join(" ")}
       onFocus={() => setTucked(false)}
     >
       <div className="gf-nav-inner">
         <span onClick={close}>
-          <Wordmark light={overDark || open} />
+          <Wordmark light />
         </span>
         <button
           className="gf-menu-toggle"
@@ -278,16 +263,18 @@ export default function Header() {
                 </Link>
               </div>
             </div>
-            {/* Last in the row, beside "Start free": the door for people who already have an account. */}
+          </div>
+          {/* The door for people who already have an account, beside the one action. */}
+          <div className="gf-nav-right">
             {account.map(([label, to]) => (
-              <a key={to} href={to} onClick={close}>
+              <a key={to} className="gf-signin" href={to} onClick={close}>
                 {label}
               </a>
             ))}
+            <a className="gf-button" href={START_HREF} onClick={close}>
+              {START_LABEL} <ArrowIcon />
+            </a>
           </div>
-          <a className="gf-button" href={START_HREF} onClick={close}>
-            {START_LABEL} <ArrowIcon />
-          </a>
           <div className="gf-mobile-more">
             {groups.map((g) => (
               <div key={g.label}>

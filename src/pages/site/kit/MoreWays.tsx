@@ -39,7 +39,7 @@ const Section = styled(Chapter)`
     border-top: 1px solid var(--line, ${color.primaryLine});
   }
   .three .k {
-    font: 600 13px/1 ${font.body};
+    font: 600 12px/1 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     /* accentText, not the ground's mark: terracotta is 4.2:1 on ivory, under
@@ -53,12 +53,12 @@ const Section = styled(Chapter)`
   }
   .three p {
     margin-top: 12px;
-    font: 400 17px/1.6 ${font.body};
+    font: 400 19px/1.6 ${font.text};
     color: var(--muted, ${color.bodyMuted});
   }
   .also {
     margin-top: clamp(32px, 4vw, 52px);
-    font: 400 17px/1.6 ${font.body};
+    font: 400 19px/1.6 ${font.text};
     color: var(--muted, ${color.bodyMuted});
     max-width: 70ch;
   }

@@ -1,172 +1,190 @@
 /**
- * Header and footer, Pass 10.
+ * Header and footer, phase 2 (2026-10-23): the bench's cloth, as the web
+ * app's top bar.
  *
- * The header used to be an 80px ivory bar plus a teal announcement strip —
- * 112px of chrome permanently over every photograph. Now it is a single thin
- * row that sits transparent over the home opening (`is-over-dark`), steps
- * out of the way while the reader scrolls down (`is-tucked`) and returns the
- * moment they scroll up. The announcement moved into the hero, where it is
- * read once instead of seen on every screen.
+ * The header is a fixed-height bar of the chocolate bookcloth, darker than
+ * the cloth of the page openings and finished by a foil hairline, the way a
+ * book's headband finishes the top of the block. Wordmark left (ivory A,
+ * gold Story, as the app), the rooms in the middle in Montserrat, "Sign in"
+ * and the one ivory pill at the right. It steps out of the way while the
+ * reader scrolls down and returns on the way up; past the top it settles a
+ * little (the wordmark scales, a shadow fades in). Only transform and
+ * opacity move. It is its own View Transition layer, so it holds still
+ * while the page under it changes.
  *
- * Below 1100px the menu is a full-screen brown sheet with the destinations
- * set large, instead of a dropdown list.
+ * Below 1100px the rooms open on a full-screen sheet of the same cloth.
+ *
+ * The footer is the back board: the same cloth, quiet. The wordmark at an
+ * ordinary size, the link columns, the five program badges, and one line
+ * of colophon with the company's legal name.
  */
 import styled from "styled-components";
-import { color, display, font, media, motion } from "../../styles/theme";
+import {
+  color,
+  curve,
+  display,
+  font,
+  media,
+  motion,
+  shadow,
+} from "../../styles/theme";
+import { A_PATTERN, CLOTH_CHOCOLATE } from "./kit/cloth";
+
+/* The bar's cloth: the weave, a shade darker than an opening, no pattern
+   (a 72px band would cut the A in half). */
+const barCloth = `
+  background-color: ${color.chocolateDeep};
+  background-image:
+    linear-gradient(rgba(43, 33, 22, 0.42), rgba(43, 33, 22, 0.42)),
+    ${CLOTH_CHOCOLATE};
+  background-size: auto, 512px 512px;
+`;
 
 export const HeaderShell = styled.header`
   position: sticky;
   top: 0;
   z-index: 100;
-  color: ${color.primary};
-  background: color-mix(in srgb, ${color.ivory} 92%, transparent);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid ${color.primaryLine};
-  /* The namecard's double keyline, under the bar. */
+  view-transition-name: site-header;
+  color: ${color.onDark};
+  ${barCloth};
+  --focus: ${color.gold};
+  --focus-halo: ${color.chocolateDeep};
+  transition: transform ${motion.move};
+  /* The headband: a foil hairline under the bar. */
   &::after {
     content: "";
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -4px;
+    bottom: 0;
     height: 1px;
-    background: color-mix(in srgb, ${color.gold} 32%, transparent);
+    background: color-mix(in srgb, ${color.gold} 34%, transparent);
+    pointer-events: none;
   }
-  &.is-over-dark::after {
-    background: color-mix(in srgb, ${color.gold} 26%, transparent);
+  /* The settled bar's shadow: a layer that fades in, never a repaint of the bar. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: ${shadow.nav};
+    opacity: 0;
+    transition: opacity ${motion.slow};
+    pointer-events: none;
   }
-  transition:
-    transform ${motion.reveal},
-    background 400ms,
-    color 400ms,
-    border-color 400ms;
-
-  &.is-over-dark {
-    color: ${color.ivory};
-    background: transparent;
-    backdrop-filter: none;
-    border-bottom-color: transparent;
+  &.is-condensed::before {
+    opacity: 1;
   }
   &.is-tucked {
     transform: translateY(-100%);
   }
-  /*
-   * Once the reader has left the top, the bar settles: a little shorter, with
-   * the weight of something resting on the page rather than cut into it. It
-   * gives a short screen back sixteen pixels of page, which is most of a line.
-   */
-  &.is-condensed {
-    box-shadow: 0 18px 40px -34px rgba(42, 31, 24, 0.75);
-  }
 
   .gf-nav-inner {
-    width: min(1520px, calc(100% - var(--page-gutter) * 2));
+    position: relative;
+    width: var(--frame);
     margin: auto;
-    min-height: 84px;
+    /* A little taller and larger on a big display, so the bar keeps its
+       weight at 2560 (rem-free: browser zoom scales it with the page). */
+    height: clamp(64px, 2.4vw + 26px, 88px);
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 30px;
-    transition: min-height ${motion.slow};
+    gap: 24px;
   }
-  &.is-condensed .gf-nav-inner {
-    min-height: 68px;
+  .gf-nav-inner > span {
+    display: inline-flex;
+    flex: none;
+  }
+  .gf-nav-inner > span a {
+    transform-origin: left center;
+    transition: transform ${motion.slow};
   }
   .gf-nav-inner > span svg {
-    height: 40px;
+    height: clamp(34px, 1vw + 19px, 46px);
     width: auto;
-    transition: height ${motion.slow};
   }
-  &.is-condensed .gf-nav-inner > span svg {
-    height: 34px;
+  &.is-condensed .gf-nav-inner > span a {
+    transform: scale(0.9);
   }
-  nav,
-  .gf-nav-links {
+  /* The rooms sit in the middle of the room the wordmark and the actions leave. */
+  nav {
+    flex: 1;
+    min-width: 0;
     display: flex;
     align-items: center;
-    gap: clamp(18px, 2.2vw, 34px);
+    gap: 24px;
   }
-  /* Links: the serif, quietly - no capitals, no lozenge (Pass 11k). The page
-     you are on is terracotta with a fine gold rule under the word. */
+  .gf-nav-links {
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 1.7vw, 34px);
+  }
+  .gf-nav-right {
+    display: flex;
+    align-items: center;
+    gap: clamp(16px, 1.6vw, 28px);
+  }
+  /* The rooms: Montserrat, quiet ivory; the room you are in is full ivory
+     with a gold rule under the word. */
   .gf-nav-links > a,
-  .more-toggle {
+  .more-toggle,
+  .gf-signin {
     position: relative;
     min-height: 44px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 0;
     background: none;
     border: 0;
-    color: inherit;
-    font: 400 18px/1 ${font.display};
-    letter-spacing: 0;
-    text-transform: none;
+    color: ${color.onDarkMuted};
+    font: 500 clamp(14px, 0.3vw + 9.5px, 17px) / 1 ${font.ui};
+    letter-spacing: 0.01em;
     text-decoration: none;
     white-space: nowrap;
     cursor: pointer;
-    transition: color 300ms;
-  }
-  /* Five links, More and the pill on one line, down to the phone menu at
-     1100px (a fifth link, "Sample books", broke the labels onto two lines
-     below ~1240px, 2026-10-11). */
-  @media (max-width: 1240px) {
-    nav,
-    .gf-nav-links {
-      gap: 16px;
-    }
-    .gf-nav-links > a,
-    .more-toggle {
-      font-size: 17px;
-    }
+    transition: color ${motion.base};
   }
   .gf-nav-links > a::after {
     content: "";
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 9px;
+    bottom: 10px;
     height: 1px;
     background: ${color.gold};
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 200ms ease-out;
+    transition: transform ${motion.base};
   }
-  .gf-nav-links > a:hover::after {
-    transition: transform 380ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  /* The rule draws in under the word the pointer is on, and withdraws. */
-  @media (hover: hover) {
+  ${media.hover} {
+    .gf-nav-links > a:hover,
+    .more-toggle:hover,
+    .gf-signin:hover {
+      color: ${color.onDark};
+    }
     .gf-nav-links > a:hover::after {
       transform: scaleX(1);
     }
-    .gf-nav-links > a:not([aria-current="page"])::after {
-      transform-origin: right;
-    }
-    .gf-nav-links > a:not([aria-current="page"]):hover::after {
-      transform-origin: left;
-    }
-  }
-  .gf-nav-links > a:hover,
-  .more-toggle:hover {
-    color: ${color.accent};
   }
   .gf-nav-links > a[aria-current="page"] {
-    color: ${color.accent};
+    color: ${color.onDark};
   }
   .gf-nav-links > a[aria-current="page"]::after {
     transform: scaleX(1);
   }
-  &.is-over-dark .gf-nav-links > a:hover,
-  &.is-over-dark .more-toggle:hover,
-  &.is-over-dark .gf-nav-links > a[aria-current="page"] {
-    color: ${color.gold};
+  .gf-nav-links > a:active,
+  .more-toggle:active,
+  .gf-signin:active {
+    opacity: 0.7;
   }
   .more-chevron {
-    width: 15px;
-    height: 15px;
-    opacity: 0.6;
-    transition: transform 250ms;
+    width: 14px;
+    height: 14px;
+    opacity: 0.7;
+    transition: transform ${motion.base};
+  }
+  .more-toggle[aria-expanded="true"] {
+    color: ${color.onDark};
   }
   .more-toggle[aria-expanded="true"] .more-chevron {
     transform: rotate(180deg);
@@ -175,33 +193,28 @@ export const HeaderShell = styled.header`
     position: relative;
   }
 
-  /* The More panel: two columns of rooms and a feature card. */
+  /* The More panel: a leaf of paper laid under the bar, from the word that opened it. */
   .more-panel {
     position: absolute;
-    top: calc(100% + 18px);
-    right: -120px;
+    top: calc(100% + 14px);
+    left: 50%;
     width: min(820px, 92vw);
+    margin-left: calc(min(820px, 92vw) / -2);
     display: grid;
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
     gap: 28px;
     padding: 28px;
-    border-radius: 22px;
-    background: ${color.paperPure};
+    border-radius: 6px;
+    background: ${color.paper};
     color: ${color.primary};
     box-shadow:
       0 0 0 1px ${color.primaryLine},
-      0 40px 80px -40px color-mix(in srgb, ${color.primary} 70%, transparent);
-    /*
-     * The panel belongs to the word that opened it, so it grows from that
-     * corner rather than from its own middle, and it never arrives from
-     * nothing: 0.97 is a panel already the right shape, just not yet set down.
-     * Leaving is quicker than arriving - the reader has already decided.
-     */
-    transform-origin: top right;
+      0 40px 80px -40px rgba(0, 0, 0, 0.6);
+    transform-origin: top center;
     transition:
-      opacity 170ms ease-out,
-      transform 210ms cubic-bezier(0.23, 1, 0.32, 1),
-      display 210ms allow-discrete;
+      opacity 160ms ${curve.out},
+      transform 200ms ${curve.out},
+      display 200ms allow-discrete;
   }
   @starting-style {
     .more-panel:not([hidden]) {
@@ -223,7 +236,7 @@ export const HeaderShell = styled.header`
   .more-groups h2,
   .gf-mobile-more h2 {
     margin-bottom: 8px;
-    font: 600 13px/1.4 ${font.body};
+    font: 600 12px/1.4 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
@@ -232,22 +245,24 @@ export const HeaderShell = styled.header`
     display: block;
     padding: 10px 12px;
     margin: 0 -12px;
-    border-radius: 12px;
+    border-radius: 6px;
     text-decoration: none;
-    transition: background 250ms;
+    transition: background-color ${motion.fast};
   }
-  .more-groups a:hover {
-    background: ${color.ivory};
+  ${media.hover} {
+    .more-groups a:hover {
+      background: ${color.ivory};
+    }
   }
   .more-groups strong {
     display: block;
-    font: 400 18px/1.25 ${font.display};
+    font: 600 20px/1.2 ${font.display};
     color: ${color.primary};
   }
   .more-groups small {
     display: block;
     margin-top: 2px;
-    font: 400 13px/1.4 ${font.body};
+    font: 400 13px/1.45 ${font.ui};
     color: ${color.bodyMuted};
   }
   .more-feature {
@@ -257,9 +272,9 @@ export const HeaderShell = styled.header`
     justify-content: flex-end;
     min-height: 260px;
     padding: 22px;
-    border-radius: 16px;
+    border-radius: 4px;
     overflow: hidden;
-    color: ${color.ivory};
+    color: ${color.onDark};
     text-decoration: none;
     isolation: isolate;
   }
@@ -270,7 +285,7 @@ export const HeaderShell = styled.header`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 400ms ${curve.out};
   }
   .more-feature::before {
     content: "";
@@ -279,72 +294,62 @@ export const HeaderShell = styled.header`
     z-index: -1;
     background: linear-gradient(
       transparent 30%,
-      color-mix(in srgb, ${color.night} 88%, transparent)
+      color-mix(in srgb, ${color.chocolateInk} 88%, transparent)
     );
   }
-  .more-feature:hover img {
-    transform: scale(1.04);
+  ${media.hover} {
+    .more-feature:hover img {
+      transform: scale(1.03);
+    }
   }
   .more-feature small {
-    font: 600 13px/1 ${font.body};
+    font: 600 12px/1 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.gold};
   }
   .more-feature b {
     margin-top: 8px;
-    font: 400 22px/1.2 ${font.display};
+    font: 600 24px/1.15 ${font.display};
   }
   .more-feature span {
     margin-top: 10px;
-    font: 600 13px/1 ${font.body};
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    font: 600 14px/1 ${font.ui};
   }
 
-  /* Reserve for $1: the site's primary pill, a size smaller. */
+  /* The one action: the ivory pill, as the app's buttons on the cloth. */
   .gf-button {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    min-height: 44px;
-    padding: 0 6px 0 20px;
+    gap: 8px;
+    min-height: clamp(44px, 0.8vw + 30px, 52px);
+    padding: 0 clamp(18px, 0.5vw + 12px, 26px);
     border-radius: 999px;
-    background: ${color.primary};
-    color: ${color.ivory};
-    box-shadow: inset 0 0 0 1px
-      color-mix(in srgb, ${color.ivory} 18%, transparent);
-    font: 600 13px/1 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    background: ${color.onDark};
+    color: ${color.chocolate};
+    font: 600 clamp(14px, 0.3vw + 9.5px, 17px) / 1 ${font.ui};
+    letter-spacing: 0.01em;
     text-decoration: none;
     white-space: nowrap;
     transition:
-      background 300ms,
-      color 300ms;
+      background-color ${motion.base},
+      transform ${motion.press};
   }
   .gf-button svg {
-    box-sizing: border-box;
-    width: 32px;
-    height: 32px;
-    padding: 9px;
-    border-radius: 50%;
-    background: ${color.gold};
-    color: ${color.primary};
-    transition: transform ${motion.reveal};
+    width: 16px;
+    height: 16px;
+    transition: transform ${motion.base};
   }
-  .gf-button:hover {
-    background: ${color.night};
+  ${media.hover} {
+    .gf-button:hover {
+      background: ${color.white};
+    }
+    .gf-button:hover svg {
+      transform: translateX(3px);
+    }
   }
-  .gf-button:hover svg {
-    transform: rotate(-45deg);
-  }
-  &.is-over-dark .gf-button {
-    background: ${color.ivory};
-    color: ${color.primary};
-  }
-  &.is-over-dark .gf-button:hover {
-    background: ${color.paperPure};
+  .gf-button:active {
+    transform: scale(0.97);
   }
 
   .gf-menu-toggle,
@@ -354,10 +359,11 @@ export const HeaderShell = styled.header`
 
   ${media.nav} {
     .gf-nav-inner {
-      min-height: 64px;
+      height: 64px;
+      justify-content: space-between;
     }
     .gf-nav-inner > span svg {
-      height: 34px;
+      height: 32px;
     }
     .gf-menu-toggle {
       display: inline-flex;
@@ -368,7 +374,7 @@ export const HeaderShell = styled.header`
       background: none;
       border: 0;
       color: inherit;
-      font: 500 15px/1 ${font.body};
+      font: 500 15px/1 ${font.ui};
       cursor: pointer;
       position: relative;
       z-index: 2;
@@ -386,7 +392,7 @@ export const HeaderShell = styled.header`
       right: 0;
       height: 1.5px;
       background: currentColor;
-      transition: transform 400ms;
+      transition: transform ${motion.base};
     }
     .gf-menu-toggle i::before {
       top: 0;
@@ -400,13 +406,9 @@ export const HeaderShell = styled.header`
     &.is-open .gf-menu-toggle i::after {
       transform: translateY(-4.25px) rotate(-45deg);
     }
-    /* backdrop-filter and transform would both make the header the
-       containing block for the fixed sheet below, clipping it to 64px. */
+    /* A transform on the header would make it the containing block of the
+       fixed sheet below and clip it to the bar. */
     &.is-open {
-      color: ${color.ivory};
-      background: transparent;
-      backdrop-filter: none;
-      border-bottom-color: transparent;
       transform: none;
     }
     &.is-open .gf-nav-inner > span {
@@ -422,132 +424,152 @@ export const HeaderShell = styled.header`
       flex-direction: column;
       align-items: stretch;
       gap: 0;
-      padding: 96px var(--page-gutter) 40px;
-      background: ${color.primary};
-      color: ${color.ivory};
+      padding: 88px var(--page-gutter) 40px;
+      background-color: ${color.chocolate};
+      background-image: ${A_PATTERN}, ${CLOTH_CHOCOLATE};
+      background-size:
+        84px 92px,
+        384px 384px;
+      color: ${color.onDark};
       overflow-y: auto;
-      clip-path: inset(0 0 100% 0);
+      opacity: 0;
+      transform: translateY(-12px);
       visibility: hidden;
       transition:
-        clip-path 700ms cubic-bezier(0.76, 0, 0.24, 1),
-        visibility 0s 700ms;
+        opacity 200ms ${curve.out},
+        transform 240ms ${curve.move},
+        visibility 0s 240ms;
     }
     &.is-open nav {
-      clip-path: inset(0 0 0 0);
+      opacity: 1;
+      transform: none;
       visibility: visible;
-      transition: clip-path 700ms cubic-bezier(0.76, 0, 0.24, 1);
+      transition:
+        opacity 200ms ${curve.out},
+        transform 240ms ${curve.move};
     }
-    .gf-nav-links {
+    .gf-nav-links,
+    .gf-nav-right {
       flex-direction: column;
       align-items: stretch;
       gap: 0;
+      margin: 0;
     }
-    .gf-nav-links > a {
-      font: 400 ${display.md} / 1.1 ${font.display};
-      letter-spacing: -0.01em;
-      text-transform: none;
-      opacity: 1;
-      padding: 14px 0;
+    .gf-nav-links > a,
+    .gf-signin {
+      font: 600 ${display.md} / 1.1 ${font.display};
+      letter-spacing: -0.005em;
+      color: ${color.onDark};
+      padding: 12px 0;
       border-bottom: 1px solid ${color.onDarkLine};
     }
     .gf-nav-links > a::after {
       display: none;
     }
+    .gf-nav-links > a[aria-current="page"] {
+      color: ${color.gold};
+    }
     .more-wrap {
       display: none;
     }
-    .gf-button {
+    .gf-nav-right {
       order: 3;
+    }
+    .gf-button {
       margin-top: 28px;
       min-height: 56px;
-      justify-content: space-between;
-      padding: 0 8px 0 24px;
-      background: ${color.ivory};
-      color: ${color.primary};
-      font-size: 13px;
+      justify-content: center;
+      font-size: 16px;
     }
     .gf-mobile-more {
       order: 2;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 24px;
-      margin-top: 32px;
+      margin-top: 28px;
     }
     .gf-mobile-more h2 {
-      color: ${color.onDarkMuted};
+      color: ${color.gold};
     }
     .gf-mobile-more a {
       display: flex;
       align-items: center;
       min-height: 44px;
-      font-size: 15px;
-      color: ${color.ivory};
+      font: 500 15px/1.3 ${font.ui};
+      color: ${color.onDarkMuted};
       text-decoration: none;
     }
   }
   ${media.motion} {
-    nav {
+    nav,
+    &,
+    .gf-nav-inner > span a {
       transition: none !important;
     }
   }
 `;
 
 /**
- * The footer is the back of the namecard: the night ground, the lockup, and
- * the card's own line — "Not a memoir to finish, A Story to keep, and to
- * carry on." Compact, because the invitation above it already asked; the
- * one disclosure about the examples lives here, once, behind a toggle.
+ * The back board. Quiet: small print in Montserrat, the link headings in
+ * the book's small capitals, the badges at their own height under our
+ * wordmark (NVIDIA's rules: never larger than the A Story logo beside them).
  */
 export const FooterShell = styled.footer`
-  background: ${color.night};
+  ${barCloth};
   --focus: ${color.gold};
-  --focus-halo: ${color.night};
+  --focus-halo: ${color.chocolateDeep};
+  position: relative;
   color: ${color.onDarkMuted};
-  padding: clamp(64px, 7vw, 104px) 0 28px;
-  border-top: 1px solid color-mix(in srgb, ${color.gold} 35%, transparent);
+  padding: clamp(56px, 5vw, 96px) 0 28px;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: color-mix(in srgb, ${color.gold} 30%, transparent);
+  }
 
   .gf-width {
-    width: min(1440px, calc(100% - var(--page-gutter) * 2));
+    width: var(--frame);
     margin: auto;
   }
   .gf-footer-top {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
-    gap: clamp(40px, 6vw, 110px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr);
+    gap: clamp(40px, 6vw, 160px);
   }
   .footer-line {
-    margin-top: 26px;
-    font: 400 ${display.sm} / 1.35 ${font.display};
-    color: ${color.ivory};
-  }
-  .footer-line .nb {
-    white-space: nowrap;
-  }
-  .footer-line i {
-    color: ${color.gold};
+    margin-top: 18px;
+    max-width: 30ch;
+    font: 400 18px/1.45 ${font.text};
+    color: ${color.onDarkMuted};
   }
   .footer-contact {
-    margin-top: 22px;
-    font: 400 15px/1.6 ${font.body};
+    margin-top: 14px;
+    font: 400 14px/1.6 ${font.ui};
   }
   .footer-contact a {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-    color: ${color.ivory};
+    color: ${color.onDark};
+    text-decoration: underline;
+    text-decoration-color: ${color.onDarkLine};
     text-underline-offset: 4px;
+    transition: text-decoration-color ${motion.base};
   }
-  /*
-   * The Inception credential. It sits under the contact line rather than in
-   * the link columns because it is a fact about the company, not a
-   * destination - and it is held to NVIDIA's rules: their own artwork at its
-   * own colours, smaller than our logo above it, with clear space of its own.
-   */
-  /* Badges at 48px under a 56px logo: legible, and never larger than the
-     A Story logo beside them, as NVIDIA's badge rules require. */
+  ${media.hover} {
+    .footer-contact a:hover {
+      text-decoration-color: currentColor;
+    }
+  }
   .footer-programs {
     margin: 0;
-    font: 500 14px/1.4 ${font.body};
+    font: 600 12px/1.4 ${font.ui};
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     color: ${color.onDarkMuted};
   }
   .footer-credential {
@@ -555,10 +577,10 @@ export const FooterShell = styled.footer`
     flex-wrap: wrap;
     align-items: center;
     gap: 8px 24px;
-    margin-top: clamp(40px, 4.4vw, 64px);
+    margin-top: clamp(36px, 4vw, 56px);
     --line: ${color.onDarkLine};
     --muted: ${color.onDarkMuted};
-    --ink: ${color.ivory};
+    --ink: ${color.onDark};
   }
   ${media.sm} {
     .footer-credential img {
@@ -574,14 +596,7 @@ export const FooterShell = styled.footer`
     min-height: 44px;
     text-decoration: none;
     color: ${color.onDarkMuted};
-  }
-  @media (hover: hover) {
-    .footer-credential a:hover {
-      .credit-name {
-        text-decoration: underline;
-        text-underline-offset: 4px;
-      }
-    }
+    border-radius: 4px;
   }
 
   .gf-footer-links {
@@ -590,62 +605,69 @@ export const FooterShell = styled.footer`
     gap: 24px;
   }
   .gf-footer-links h2 {
-    font: italic 400 18px/1.4 ${font.display};
+    font: 600 12px/1.4 ${font.ui};
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     color: ${color.gold};
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
   .gf-footer-links a {
     display: flex;
     align-items: center;
-    min-height: 44px;
+    min-height: 40px;
     width: fit-content;
-    font: 400 15px/1.3 ${font.body};
-    color: ${color.ivory};
+    font: 400 14.5px/1.3 ${font.ui};
+    color: ${color.onDarkMuted};
     text-decoration: none;
-    background: linear-gradient(currentColor, currentColor) 0 80% / 0 1px
-      no-repeat;
-    transition: background-size ${motion.reveal};
+    transition: color ${motion.base};
   }
-  .gf-footer-links a:hover {
-    background-size: 100% 1px;
+  ${media.hover} {
+    .gf-footer-links a:hover {
+      color: ${color.onDark};
+    }
   }
   .gf-footer-bottom {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     flex-wrap: wrap;
-    gap: 16px 32px;
-    margin-top: clamp(48px, 5vw, 72px);
-    padding-top: 20px;
+    gap: 8px 32px;
+    margin-top: clamp(40px, 4vw, 64px);
+    padding-top: 18px;
     border-top: 1px solid ${color.nightLine};
-    font: 400 14px/1.5 ${font.body};
+    font: 400 13px/1.5 ${font.ui};
+  }
+  .gf-footer-bottom > p:first-child {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
   }
   /*
-   * NVIDIA require this attribution wherever their marks appear. It is said
-   * once, at the foot of the site, in the smallest voice the page has - a
-   * colophon line, not a disclaimer stuck under the badge.
+   * NVIDIA require this attribution wherever their marks appear: said once,
+   * at the foot of the site, in the smallest voice the page has.
    */
   .footer-trademark {
-    /*
-     * Its own line under the colophon. A max-width here would defeat that:
-     * max-width is resolved after the flex basis, so a capped item shrinks
-     * back onto the row it was supposed to clear.
-     */
     flex: 0 0 100%;
-    margin-top: 10px;
     font-size: 13px;
     line-height: 1.6;
     color: ${color.onDarkFaint};
   }
 
   .footer-about {
-    max-width: 440px;
+    max-width: 460px;
   }
   .footer-about summary {
     cursor: pointer;
     min-height: 44px;
     display: flex;
     align-items: center;
+    color: ${color.onDarkMuted};
+    transition: color ${motion.base};
+  }
+  ${media.hover} {
+    .footer-about summary:hover {
+      color: ${color.onDark};
+    }
   }
   .footer-about p {
     line-height: 1.6;
@@ -659,7 +681,7 @@ export const FooterShell = styled.footer`
   ${media.sm} {
     .gf-footer-links {
       grid-template-columns: 1fr 1fr;
-      row-gap: 32px;
+      row-gap: 28px;
     }
     .gf-footer-bottom {
       flex-direction: column;

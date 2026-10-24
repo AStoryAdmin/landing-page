@@ -55,8 +55,8 @@ const Bar = styled.div`
     transform: translateY(110%);
     visibility: hidden;
     transition:
-      transform ${motion.reveal},
-      visibility 0s linear 900ms;
+      transform ${motion.move},
+      visibility 0s linear 320ms;
     &[data-shown="true"] {
       transform: none;
       visibility: visible;

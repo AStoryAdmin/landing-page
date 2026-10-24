@@ -42,9 +42,21 @@
     />
     <meta name="twitter:image" content="https://astoryapp.com/og/home.jpg" />
 
-    <!-- Figtree leads product communication; Source Serif 4 supplies editorial emphasis. -->
-    <link rel="preload" href="/fonts/4ba7d3d096695818.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/882b7c150c29f29d.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- The web app's faces (2026-10-23, phase 2: the site is the app's world). Montserrat is the
+         interface, self-hosted from the app (one variable latin file covers 400-700). The book's
+         faces come from Google Fonts, as the app loads them: Cormorant Garamond for every heading
+         (600 and 700 only, so a heading written at 400 or 500 is set at the app's 600), EB Garamond
+         for reading, Caveat for the handwritten captions under prints. fonts.css (Figtree, Source
+         Serif 4) stays linked only for the drawn app screens that still name them; its faces
+         download only where a page uses them. -->
+    <link rel="preload" href="/fonts/montserrat-1.woff2" as="font" type="font/woff2" crossorigin />
+    <link href="/fonts/montserrat.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+      rel="stylesheet"
+    />
     <link href="/fonts/fonts.css" rel="stylesheet" />
 
     <!-- Doors into the web app, before anything paints (2026-10-18). Invitations
@@ -74,21 +86,8 @@
       })();
     </script>
 
-    <!-- First home visit per session: paint the intro's teal ground before React boots, so the
-         prerendered page never flashes beneath it. src/pages/site/home/Intro.tsx takes it over. -->
-    <style>html.intro body{overflow:hidden}html.intro body::before{content:"";position:fixed;inset:0;z-index:2147483000;background:#0F4A58}</style>
-    <script>
-      (function () {
-        try {
-          var d = document.documentElement;
-          if (location.pathname === "/" && !sessionStorage.getItem("astory-intro-seen") &&
-              matchMedia("(prefers-reduced-motion: no-preference)").matches) {
-            d.classList.add("intro");
-            setTimeout(function () { d.classList.remove("intro"); }, 5000);
-          }
-        } catch (e) {}
-      })();
-    </script>
+    <!-- The home intro cover (home/Intro.tsx) was removed from Home on 2026-10-23: it held the
+         page for five seconds every session. The open book on the cloth is the opening now. -->
 
 
   </head>
@@ -98,8 +97,8 @@
          the name, one sentence, and where to write. scripts/prerender.mjs strips
          it from the static snapshots, which carry the whole page without it. -->
     <noscript>
-      <div style="max-width: 36rem; margin: 18vh auto 0; padding: 0 1.5rem; font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #514235; line-height: 1.6;">
-        <p style="margin: 0 0 1rem; font: 400 2.25rem/1.1 'Source Serif 4', Georgia, serif; color: #4A3327; letter-spacing: -0.02em;">A Story</p>
+      <div style="max-width: 36rem; margin: 18vh auto 0; padding: 0 1.5rem; font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif; color: #2A2320; line-height: 1.6;">
+        <p style="margin: 0 0 1rem; font: 600 2.5rem/1.1 'Cormorant Garamond', Georgia, serif; color: #4A3327; letter-spacing: -0.02em;">A Story</p>
         <p style="margin: 0 0 1rem; font-size: 1.125rem;">
           A Story calls someone you love, listens, and keeps what they say in a private archive the whole family can add to, and print as a book.
         </p>

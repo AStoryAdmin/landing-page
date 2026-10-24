@@ -15,7 +15,14 @@
  * 3. How deep it goes — the five rungs as a staircase, not a list.
  * 4. What the family receives — the card, the transcript and the voice as
  *    three objects, then the family adding to it.
- * 5. Built for the person, not the phone — and the book.
+ * 5. The book.
+ *
+ * Phase 2 (2026-10-23): the QR section, "She's not good with these things",
+ * the shared "more ways" block and the family list under the receipts were
+ * cut, and so was the five-rung "it goes deeper" staircase (the calls above
+ * already show the follow-up) - each repeated a beat around it - and the claims were brought in line
+ * with what the product does today (calls on iPhone in the private beta,
+ * voice in development, hardcovers on the plans that include them).
  *
  * The complete annotated transcripts are gone from this page (the founder:
  * too lengthy); three short cards keep the point — the one move each call
@@ -32,24 +39,21 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
-import { DEPTHS, SCENARIOS } from "../../lib/demoScripts";
+import { SCENARIOS } from "../../lib/demoScripts";
 import { BOOK } from "../../lib/pricing";
 import CallStills from "./home/Listen";
 import { AppShot, Phone } from "./app/Phone";
 import { CallScreen, IncomingScreen } from "./app/screens";
 import { ArrowIcon, Invitation, PageOpening, Picture, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
-import MoreWays from "./kit/MoreWays";
 import AppTour, { type TourStop } from "./kit/AppTour";
 import {
   Chapter,
-  Eyebrow,
   Frame,
   Lead,
   PrimaryLink,
   SecondaryLink,
   SplitHead,
-  StackHead,
   Statement,
   TextAnchor,
   TextLink,
@@ -70,7 +74,7 @@ const WAYS_IN: TourStop[] = [
   {
     shot: "write",
     k: "Writing it down",
-    t: "A companion, not a blank page.",
+    t: "A companion for the blank page.",
     d: "A question to answer out loud, another if that one doesn’t fit, and tidying that leaves your words yours.",
   },
   {
@@ -134,17 +138,17 @@ const STEPS = [
   {
     who: "Them",
     title: "Their phone rings.",
-    text: "No app to open, no typing, no password. They answer and talk.",
+    text: "Nothing to type and no password to remember. They answer and talk.",
   },
   {
     who: "A Story",
     title: "It listens, and follows.",
-    text: "Not a questionnaire. It follows what they actually say - or lets go when they say no.",
+    text: "It follows what they actually say, and lets go when they say no.",
   },
   {
     who: "A Story",
     title: "It becomes a memory.",
-    text: "A card to read, every word underneath it, and the voice itself.",
+    text: "A card to read, with every word they said underneath it.",
   },
   {
     who: "Everyone",
@@ -223,8 +227,9 @@ const Walk = styled(Chapter)`
   }
   .step {
     position: relative;
-    /* 74vh made five steps 3.7 screens on a laptop (2026-10-14). */
-    min-height: 50svh;
+    /* 74vh made five steps 3.7 screens on a laptop (2026-10-14); 50svh
+       still made them 2.5 (2026-10-23). */
+    min-height: 36svh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -257,19 +262,19 @@ const Walk = styled(Chapter)`
    * at the lighter chocolates keeps the same recession and stays readable.
    */
   @media (prefers-reduced-motion: no-preference) {
-    .step:not(.on) h3 {
+    .step:not(.on) > h3 {
       color: ${color.primaryLight};
     }
-    .step:not(.on) p {
+    .step:not(.on) > p:not(.num) {
       color: ${color.faint};
     }
-    .step:not(.on) .num b {
+    .step:not(.on) > .num b {
       color: color-mix(in srgb, ${color.accent} 46%, ${color.ivoryDeep});
     }
   }
-  .step h3,
-  .step p,
-  .step .num b {
+  .step > h3,
+  .step > p,
+  .step > .num b {
     transition: color 500ms ease;
   }
   .num {
@@ -293,14 +298,14 @@ const Walk = styled(Chapter)`
     text-transform: uppercase;
     color: ${color.bodyMuted};
   }
-  .step h3 {
+  .step > h3 {
     font: 400 ${display.lg} / 1.05 ${font.display};
     letter-spacing: -0.02em;
     color: ${color.primary};
   }
-  .step p {
+  .step > p:not(.num) {
     margin-top: 16px;
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.55 ${font.body};
+    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.55 ${font.text};
     color: ${color.body};
     max-width: 34ch;
   }
@@ -387,10 +392,7 @@ function Walkthrough() {
                   <span>{s.who}</span>
                 </p>
                 <h3>{s.title}</h3>
-                <p>
-                  {s.text}
-                  {n === 3 && <Soon>Voice · in development</Soon>}
-                </p>
+                <p>{s.text}</p>
                 <div className="mini" aria-hidden="true">
                   <Phone
                     width="min(240px, 70vw)"
@@ -409,289 +411,6 @@ function Walkthrough() {
 }
 
 /* ── 2. The call, played ───────────────────────────────────────────────── */
-
-
-
-/* ── Share the family's code ────────────────────────────────────────────── */
-
-/*
- * Scanning a family's QR code opens their story (Figma: "Hillestor Family's
- * Story" and The Archive, public/app). Shown as two real screens with a scan
- * line passing over the code, and three short steps.
- */
-const Scan = styled(Chapter)`
-  .scan {
-    display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: clamp(32px, 6vw, 110px);
-    align-items: center;
-  }
-  .steps3 {
-    list-style: none;
-    margin: clamp(28px, 3vw, 44px) 0 0;
-    padding: 0;
-    counter-reset: s;
-  }
-  .steps3 li {
-    counter-increment: s;
-    display: grid;
-    grid-template-columns: 44px 1fr;
-    gap: 16px;
-    align-items: baseline;
-    padding: 16px 0;
-    border-top: 1px solid var(--line);
-    font: 400 ${display.sm} / 1.3 ${font.display};
-    color: ${color.primary};
-  }
-  .steps3 li::before {
-    content: counter(s, decimal-leading-zero);
-    font: 400 20px/1 ${font.display};
-    color: ${color.accent};
-  }
-  .pair {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: clamp(12px, 2vw, 32px);
-  }
-  .arrow {
-    display: grid;
-    place-items: center;
-    flex: none;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: ${color.teal};
-    color: ${color.ivory};
-  }
-  .arrow svg {
-    width: 20px;
-    height: 20px;
-  }
-  .qr {
-    position: relative;
-  }
-  /* The camera's scan line, passing over the code. */
-  .qr::after {
-    content: "";
-    position: absolute;
-    left: 18%;
-    right: 18%;
-    top: 24%;
-    height: 2px;
-    background: ${color.accent};
-    box-shadow: 0 0 12px 2px
-      color-mix(in srgb, ${color.accent} 60%, transparent);
-    opacity: 0;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .qr::after {
-      animation: scanline 2.6s ease-in-out infinite;
-    }
-  }
-  @keyframes scanline {
-    0% {
-      top: 24%;
-      opacity: 0;
-    }
-    15% {
-      opacity: 1;
-    }
-    85% {
-      opacity: 1;
-    }
-    100% {
-      top: 52%;
-      opacity: 0;
-    }
-  }
-  ${media.md} {
-    .scan {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .arrow {
-      transform: rotate(90deg);
-    }
-    .pair {
-      flex-direction: column;
-    }
-  }
-`;
-
-/* ── 3. How deep it goes ───────────────────────────────────────────────── */
-
-/*
- * The five rungs drawn as a DESCENT. Pass 11e drew bars of rising height and
- * the founder couldn't read them. Here the section itself deepens as you read
- * down — ivory at the surface, teal at the bottom — and each rung is one real
- * question from the scripts (demoScripts.ts, quoted exactly), stepping further
- * in. A gauge on the left marks surface to depth.
- */
-const RUNGS = [
-  "A way in.",
-  "Back in the room.",
-  "The people in it.",
-  "What it cost.",
-  "What they make of it now.",
-];
-/** One real question per rung: [scenario id, turn index]. */
-const RUNG_QUESTIONS: [string, number][] = [
-  ["childhood", 2],
-  ["faith", 6],
-  ["faith", 10],
-  ["childhood", 10],
-  ["faith", 14],
-];
-
-const Depth = styled.section`
-  --ink: ${color.primary};
-  --mark: ${color.accent};
-  --label: ${color.accentText};
-  position: relative;
-  padding: calc(clamp(96px, 11vw, 176px) * var(--sy)) 0
-    calc(clamp(110px, 12vw, 190px) * var(--sy));
-  /* Two clean tones, not a blend (any ivory→teal blend goes sage in the
-     middle): the lower rungs sink below a curved "surface" into teal. */
-  background: ${color.ivory};
-  overflow: hidden;
-  &::after {
-    content: "";
-    position: absolute;
-    left: -10%;
-    right: -10%;
-    bottom: 0;
-    height: var(--below, 46%);
-    background: ${color.teal};
-    border-radius: 50% 50% 0 0 / 90px 90px 0 0;
-  }
-  > * {
-    position: relative;
-    z-index: 1;
-  }
-  .descent {
-    position: relative;
-    display: grid;
-    grid-template-columns: 120px minmax(0, 1fr);
-    gap: clamp(20px, 3vw, 48px);
-    margin-top: calc(clamp(36px, 4.4vw, 88px) * var(--sy));
-  }
-  /* The gauge: surface to depth. */
-  .gauge {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 6px 0;
-    font: 600 13px/1 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-  }
-  .gauge::before {
-    content: "";
-    position: absolute;
-    left: 5px;
-    top: 26px;
-    bottom: 26px;
-    width: 2px;
-    background: linear-gradient(
-      ${color.warmGold},
-      ${color.warmGold} 40%,
-      ${color.ivory} 60%
-    );
-    border-radius: 2px;
-  }
-  .gauge span {
-    padding-left: 20px;
-  }
-  .gauge span:first-child {
-    color: ${color.primaryMid};
-  }
-  .gauge span:last-child {
-    color: ${color.ivory};
-  }
-  .rungs {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: clamp(14px, 1.6vw, 22px);
-  }
-  .rung {
-    display: grid;
-    grid-template-columns: 64px minmax(0, 1fr);
-    gap: clamp(16px, 2vw, 28px);
-    align-items: center;
-    width: min(760px, 100%);
-    margin-left: calc(var(--i) * clamp(0px, 5vw, 80px));
-    padding: clamp(18px, 2vw, 26px) clamp(20px, 2.4vw, 32px);
-    border-radius: 18px;
-    background: ${color.paperPure};
-    box-shadow: 0 30px 50px -36px rgba(20, 30, 32, 0.7);
-  }
-  .rung .n {
-    display: grid;
-    place-items: center;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: var(--nb);
-    color: var(--nc);
-    font: 400 26px/1 ${font.display};
-    font-variant-numeric: lining-nums;
-  }
-  .rung header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 4px 12px;
-  }
-  .rung b {
-    font: 600 13px/1.2 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: ${color.teal};
-  }
-  .rung header span {
-    font: 400 14px/1.3 ${font.body};
-    color: ${color.bodyMuted};
-  }
-  .rung q {
-    display: block;
-    margin-top: 8px;
-    font: italic 400 clamp(1.1rem, 0.95rem + 0.5vw, 1.4rem) / 1.4
-      ${font.display};
-    color: ${color.primary};
-  }
-  .rung small {
-    display: block;
-    margin-top: 6px;
-    font: 500 13px/1.3 ${font.body};
-    color: ${color.accentText};
-  }
-  .bottom {
-    margin-top: calc(clamp(28px, 3.6vw, 64px) * var(--sy));
-    text-align: center;
-    font: italic 400 ${display.sm} / 1.4 ${font.display};
-    color: ${color.ivory};
-  }
-  ${media.md} {
-    .descent {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .gauge {
-      display: none;
-    }
-    .rung {
-      margin-left: 0;
-      grid-template-columns: 48px minmax(0, 1fr);
-    }
-    .rung .n {
-      width: 48px;
-      height: 48px;
-      font-size: 20px;
-    }
-  }
-`;
 
 /* ── 4. What the family receives ───────────────────────────────────────── */
 
@@ -810,7 +529,7 @@ const Receives = styled(Chapter)`
   }
   .cap {
     margin-top: 10px;
-    font: 400 16px/1.55 ${font.body};
+    font: 400 16px/1.55 ${font.text};
     color: ${color.body};
     max-width: 36ch;
   }
@@ -849,7 +568,7 @@ const Receives = styled(Chapter)`
     font: 600 14px/1 ${font.body};
   }
   .family li p {
-    font: 400 16px/1.5 ${font.body};
+    font: 400 16px/1.5 ${font.text};
     color: ${color.body};
   }
   .family li small {
@@ -866,58 +585,7 @@ const Receives = styled(Chapter)`
   }
 `;
 
-/* ── 5. Built for the person, and the book ─────────────────────────────── */
-
-const Person = styled(Chapter)`
-  .person {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-    gap: clamp(32px, 6vw, 110px);
-    align-items: center;
-  }
-  .quote {
-    font: italic 400 ${display.xl} / 1.05 ${font.display};
-    letter-spacing: -0.02em;
-    color: ${color.primary};
-  }
-  .quote span {
-    display: block;
-    margin-top: 0.2em;
-    font-style: normal;
-    font-weight: 500;
-    color: ${color.accent};
-  }
-  .nos {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .nos li {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 18px 0;
-    border-bottom: 1px solid var(--line);
-    font: 400 ${display.sm} / 1.2 ${font.display};
-    color: ${color.primary};
-  }
-  .nos li::before {
-    content: "";
-    width: 22px;
-    height: 1.5px;
-    background: ${color.accent};
-  }
-  .nos + p {
-    margin-top: 24px;
-    font: 400 17px/1.6 ${font.body};
-    color: ${color.body};
-  }
-  ${media.md} {
-    .person {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-`;
+/* ── 5. The book ─────────────────────────────────────────────────────────── */
 
 const Volume = styled(Chapter)`
   .vol {
@@ -955,11 +623,8 @@ const Volume = styled(Chapter)`
 `;
 
 export default function HowItWorks() {
-  const scan = useReveals<HTMLElement>();
-  const depth = useReveals<HTMLElement>();
   const receives = useReveals<HTMLElement>();
   const waysIn = useReveals<HTMLElement>();
-  const person = useReveals<HTMLElement>();
   const volume = useReveals<HTMLElement>();
 
   return (
@@ -970,13 +635,12 @@ export default function HowItWorks() {
         description="Set it up once. A Story calls, listens and follows what they actually say. Watch a call, then see what the family receives."
       />
       <PageOpening
-        eyebrow="How it works"
         title={
           <>
-            You make time. A Story does the <em>asking.</em>
+            A Story does the <em>asking.</em>
           </>
         }
-        lead="Set it up once. After that their phone rings at the hour they chose, and a patient voice asks about their life - then follows whatever they actually say."
+        lead="You set it up once and choose the hour. Then A Story calls, asks about their life and follows whatever they actually say. Calls ring on iPhone in our private beta. Writing, the family archive and the book work in your browser today."
         actions={
           <>
             <PrimaryLink to={START_HREF}>
@@ -1012,77 +676,15 @@ export default function HowItWorks() {
         }
       />
 
-      <Depth ref={depth} aria-labelledby="depth-title">
-        <Frame>
-          <StackHead>
-            <Statement id="depth-title" $size="lg" data-lines>
-              It goes deeper, one step at a <em>time.</em>
-            </Statement>
-            <Lead data-rise>
-              The interview only goes a step further once the one before has
-              been answered - which is why the last question lands.
-            </Lead>
-          </StackHead>
-          <div className="descent">
-            <p className="gauge" aria-hidden="true">
-              <span>Surface</span>
-              <span>Deep</span>
-            </p>
-            <ol className="rungs">
-              {DEPTHS.map((d, i) => {
-                const [id, turn] = RUNG_QUESTIONS[i];
-                const sc = SCENARIOS.find((x) => x.id === id)!;
-                return (
-                  <li
-                    key={d}
-                    className="rung"
-                    data-rise
-                    style={{
-                      ["--i" as string]: i,
-                      ["--nb" as string]: [
-                        color.sand,
-                        color.sand,
-                        color.warmGold,
-                        color.teal,
-                        color.teal,
-                      ][i],
-                      ["--nc" as string]: i >= 3 ? color.ivory : color.primary,
-                    }}
-                  >
-                    <span className="n" aria-hidden="true">
-                      {i + 1}
-                    </span>
-                    <div>
-                      <header>
-                        <b>{d}</b>
-                        <span>{RUNGS[i]}</span>
-                      </header>
-                      <q>{sc.script[turn].text}</q>
-                      <small>Asked of {sc.teller}</small>
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
-          <p className="bottom" data-rise>
-            By the last step, they’re telling you what it all meant.
-          </p>
-        </Frame>
-      </Depth>
-
       <Receives ref={receives} $ground="sand" aria-labelledby="receives-title">
         <Frame>
           <SplitHead>
-            <div>
-              <Eyebrow>What the family receives</Eyebrow>
-              <Statement id="receives-title" $size="xl" data-lines>
-                A memory to read. Every word underneath. The <em>voice.</em>
-              </Statement>
-            </div>
+            <Statement id="receives-title" $size="lg" data-lines>
+              Each call leaves a memory to <em>read.</em>
+            </Statement>
             <Lead data-rise>
-              The card is organised so it can be found again. It never replaces
-              what was said - the transcript stays underneath it.
+              The card is organized so it can be found again, and the transcript
+              stays underneath it, word for word.
             </Lead>
           </SplitHead>
 
@@ -1144,105 +746,24 @@ export default function HowItWorks() {
               <p className="cap">{love.clip.note}</p>
             </article>
           </div>
-
-          <div className="family">
-            <div data-rise>
-              <Statement as="h3" $size="md">
-                Then the family adds what they <em>know.</em>
-              </Statement>
-              <Lead style={{ marginTop: 16 }}>{love.shared}</Lead>
-            </div>
-            <ul>
-              {love.family.map((f) => (
-                <li key={f.name} data-rise>
-                  <span className="initial" aria-hidden="true">
-                    {f.name.replace(/^(Her|His) \w+ /, "")[0]}
-                  </span>
-                  <div>
-                    <p>
-                      <b>{f.name}</b> {f.text}
-                    </p>
-                    <small>
-                      {f.pending ??
-                        (f.kind === "edit" ? "Invited · can edit" : "Added")}
-                    </small>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
         </Frame>
       </Receives>
 
       <Chapter ref={waysIn} $ground="paper" aria-labelledby="ways-in-title">
         <Frame>
           <SplitHead>
-            <div>
-              <Eyebrow>Everyone else</Eyebrow>
-              <Statement id="ways-in-title" $size="lg" data-lines>
-                Not only the one being asked. <em>Everyone</em> has a way in.
-              </Statement>
-            </div>
+            <Statement id="ways-in-title" $size="lg" data-lines>
+              Everyone in the family has a way <em>in.</em>
+            </Statement>
             <Lead data-rise>
-              The people who know her stories tell their part, the one who writes gets help, and whoever typed it up
-              years ago doesn’t type it twice.
+              The people who know her stories tell their part, the one who
+              writes gets help, and whoever typed it up years ago doesn’t type
+              it twice.
             </Lead>
           </SplitHead>
           <AppTour stops={WAYS_IN} />
         </Frame>
       </Chapter>
-
-      <Scan ref={scan} $ground="ivory" aria-labelledby="scan-title">
-        <Frame className="scan">
-          <div>
-            <Statement id="scan-title" $size="lg" data-lines>
-              One scan, and they’re <em>in the story.</em>
-            </Statement>
-            <ol className="steps3" data-rise>
-              <li>Open Invite in the app: a six-letter family code, a link, or a QR code.</li>
-              <li>They type the code, tap the link, or scan it with their camera.</li>
-              <li>They open your family’s story, read what is there, and add their side.</li>
-            </ol>
-          </div>
-          <div className="pair" data-rise>
-            <div className="qr">
-              <Phone width="min(260px, 40vw)">
-                <AppShot name="qr" />
-              </Phone>
-            </div>
-            <span className="arrow" aria-hidden="true">
-              <ArrowIcon />
-            </span>
-            <Phone width="min(260px, 40vw)">
-              <AppShot name="archive" scroll />
-            </Phone>
-          </div>
-        </Frame>
-      </Scan>
-
-      <Person ref={person} $ground="ivory" aria-labelledby="person-title">
-        <Frame className="person">
-          <div>
-            <h2 id="person-title" className="quote" data-lines>
-              “She’s not good with these things.”
-              <span>Good. Neither is this.</span>
-            </h2>
-          </div>
-          <div data-rise>
-            <ul className="nos">
-              <li>No dashboard</li>
-              <li>No typing</li>
-              <li>No password to remember</li>
-            </ul>
-            <p>
-              The app is installed once - by you, if you like - and after that A
-              Story rings them at the hour they chose.
-            </p>
-          </div>
-        </Frame>
-      </Person>
-
-      <MoreWays ground="sand" />
 
       <Volume ref={volume} $ground="paper" aria-labelledby="volume-title">
         <Frame className="vol">
@@ -1258,10 +779,10 @@ export default function HowItWorks() {
               When a chapter is ready, make it a <em>volume.</em>
             </Statement>
             <p className="price" data-rise>
-              A beautifully bound edition of the stories, photographs and voices
-              that shaped it - <b>a Classic Hardcover comes with every plan</b>,
-              or print it at home free. Printed editions from {BOOK.from}. The
-              archive keeps growing after the book is printed.
+              The stories and photographs, bound as a book. Print it at home
+              free, or order a printed edition from {BOOK.from} once ordering
+              opens. Individual, Family and Express include a Classic Hardcover.
+              The archive keeps growing after the book is printed.
             </p>
             <div className="links" data-rise>
               {/* /samples is a page in public/, outside the router: a plain anchor. */}

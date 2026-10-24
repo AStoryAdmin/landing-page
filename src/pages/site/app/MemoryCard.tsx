@@ -103,7 +103,7 @@ const Card = styled.article`
     border-radius: 999px;
     background: var(--book-sage-bg);
     color: var(--book-sage);
-    font: 600 10.5px/1 var(--font-ui);
+    font: 600 13px/1.2 var(--font-ui);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     white-space: nowrap;

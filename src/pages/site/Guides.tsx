@@ -87,16 +87,29 @@ const Index = styled(Chapter)`
     border-top: 1px solid ${color.primaryLineStrong};
     text-decoration: none;
     color: inherit;
-    transition: padding ${motion.slow};
+  }
+  /* The entry's own words slide a little under the pointer: transform only. */
+  a.entry > * {
+    transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  a.entry h3 {
+    transition: color 160ms ease;
   }
   a.entry:last-of-type {
     border-bottom: 1px solid ${color.primaryLineStrong};
   }
-  a.entry:hover {
-    padding-left: 12px;
+  @media (hover: hover) and (pointer: fine) {
+    a.entry:hover > * {
+      transform: translateX(12px);
+    }
+    a.entry:hover h3 {
+      color: ${color.accentText};
+    }
   }
-  a.entry:hover h3 {
-    color: ${color.accentText};
+  @media (prefers-reduced-motion: reduce) {
+    a.entry > * {
+      transition: none;
+    }
   }
   a.entry:focus-visible {
     outline: 3px solid ${color.accent};
@@ -115,7 +128,7 @@ const Index = styled(Chapter)`
   }
   .entry p {
     margin-top: 10px;
-    font: 400 16px/1.6 ${font.body};
+    font: 400 16px/1.6 ${font.text};
     color: ${color.body};
     max-width: 62ch;
   }
@@ -158,7 +171,7 @@ const Index = styled(Chapter)`
   }
   .topics p {
     margin-top: 4px;
-    font: 400 15px/1.55 ${font.body};
+    font: 400 15px/1.55 ${font.text};
     color: ${color.body};
   }
   ${media.md} {
@@ -186,11 +199,9 @@ export default function Guides() {
         description="Practical ways to begin family conversations, name the faces in photographs and make room for different recollections."
       />
       <PageOpening
-        eyebrow="Conversation guides"
         title={
           <>
-            You don’t need a script for a life. You need a place to{" "}
-            <em>begin.</em>
+            A place to <em>begin.</em>
           </>
         }
         lead="Four questions you could ask tonight, and short guides for the conversations that take more care."

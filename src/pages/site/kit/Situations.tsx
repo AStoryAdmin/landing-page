@@ -41,7 +41,7 @@ const Rows = styled(Chapter)`
     letter-spacing: -0.015em;
   }
   .copy p {
-    font: 400 18px/1.65 ${font.body};
+    font: 400 20px/1.6 ${font.text};
     color: var(--muted);
     max-width: 48ch;
   }
@@ -117,7 +117,7 @@ const Close = styled(Chapter)`
     margin-top: 22px;
   }
   p {
-    font: 400 18px/1.65 ${font.body};
+    font: 400 20px/1.6 ${font.text};
     color: ${color.body};
     max-width: 48ch;
   }

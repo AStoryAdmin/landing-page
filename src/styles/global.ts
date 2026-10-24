@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import {
   color,
+  curve,
   displayBase,
   font,
   layout,
@@ -19,8 +20,16 @@ const GlobalStyle = createGlobalStyle`
   *, *::before, *::after { box-sizing: border-box; }
 
   html {
-    --page-gutter: 80px;
-    --nav-total: 76px;
+    /*
+     * One fluid gutter (2026-10-23, "use the screen"): 20px on a phone, 68px
+     * at 1366, 96px at 1920, 128px from 2560. Frame (kit.styles) spans the
+     * window less these, up to 2080px. Browser zoom changes the CSS viewport
+     * itself, so vw here stays true when Bao zooms out; nothing on the site
+     * sets html { zoom }.
+     */
+    --page-gutter: clamp(20px, 5vw, 128px);
+    --frame: min(${layout.frame}, calc(100% - var(--page-gutter) * 2));
+    --nav-total: clamp(64px, 2.4vw + 26px, 88px);
     /* Type scale and section rhythm; see the note on "display" in theme.ts. */
     --vs: 1;
     --sy: 1;
@@ -32,10 +41,6 @@ const GlobalStyle = createGlobalStyle`
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
   }
-  @media(max-width:1350px) { html { --page-gutter: 56px; } }
-  @media(max-width:1100px) { html { --page-gutter: 40px; } }
-  @media(max-width:860px) { html { --page-gutter: 30px; } }
-  @media(max-width:480px) { html { --page-gutter: 20px; } }
 
   /*
    * Short screens. A laptop is a wide viewport with a short one's height, and
@@ -50,7 +55,28 @@ const GlobalStyle = createGlobalStyle`
   @media (min-width: 1025px) and (max-height: 760px) { html { --vs: 0.83; --sy: 0.66; } }
   @media (min-width: 1025px) and (max-height: 680px) { html { --vs: 0.78; --sy: 0.6; } }
 
-  ${media.nav} { html { --nav-total: 68px; } }
+  ${media.nav} { html { --nav-total: 64px; } }
+
+  /*
+   * Moving between pages (Bao's Standard 23a): every in-site link is a View
+   * Transition (RouteTransition starts it). The header is its own layer and
+   * holds still; the page underneath settles away and the next one rises a
+   * few pixels on the house curve. Cross-document for /samples, which lives
+   * outside the router. Browsers without the API get RouteTransition's fade.
+   */
+  @view-transition { navigation: auto; }
+  ::view-transition-group(root) { animation-duration: 260ms; }
+  ::view-transition-old(root) {
+    animation: 180ms ${curve.out} both vt-leave;
+  }
+  ::view-transition-new(root) {
+    animation: 320ms ${curve.out} 40ms both vt-arrive;
+  }
+  ::view-transition-group(site-header),
+  ::view-transition-old(site-header),
+  ::view-transition-new(site-header) { animation: none; }
+  @keyframes vt-leave { to { opacity: 0; transform: translateY(-6px); } }
+  @keyframes vt-arrive { from { opacity: 0; transform: translateY(10px); } }
 
   /*
    * Loops inside something scrolled out of view stop until it comes back.
@@ -62,6 +88,9 @@ const GlobalStyle = createGlobalStyle`
 
   ${media.motion} {
     html { scroll-behavior: auto; }
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) { animation: none !important; }
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
@@ -89,11 +118,13 @@ const GlobalStyle = createGlobalStyle`
     overflow-anchor: none;
   }
 
+  /* A heading left unstyled is still set like the book: Cormorant, 600. */
   h1, h2, h3, h4 {
-    font-family: ${font.body};
+    font-family: ${font.display};
     color: ${color.ink};
     margin: 0;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: -0.005em;
     text-wrap: balance;
   }
 
@@ -198,18 +229,18 @@ const GlobalStyle = createGlobalStyle`
   .skip-link {
     position: absolute;
     left: 16px;
-    top: -100px;
+    top: 16px;
     z-index: 1000;
+    transform: translateY(calc(-100% - 24px));
     padding: 12px 20px;
     border-radius: ${radius.pill};
     background: ${color.primary};
     color: ${color.onDark};
-    font-size: ${type.sm};
-    font-weight: 600;
+    font: 600 ${type.sm} / 1.2 ${font.ui};
     text-decoration: none;
-    transition: top ${motion.fast};
+    transition: transform ${motion.fast};
   }
-  .skip-link:focus { top: 16px; }
+  .skip-link:focus { transform: none; }
 
   /* Visually hidden but read by screen readers. */
   .sr-only {

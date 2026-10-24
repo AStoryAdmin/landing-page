@@ -1,27 +1,33 @@
-import { gsap, riseLines, useScene } from "../../../lib/scrollMotion";
+import {
+  arrival,
+  gsap,
+  refreshWhenSettled,
+  riseLines,
+  useScene,
+} from "../../../lib/scrollMotion";
 
 /**
- * The shared motion for secondary routes: headlines rise line by line,
- * marked blocks lift in as they arrive, prints open from the bottom. Quicker
- * and quieter than the homepage, which is the one place scenes pin. Mark
- * elements with `data-lines`, `data-rise` and `data-print`.
+ * The shared arrivals for every route (phase 2, 2026-10-23). Mark elements
+ * and the kind of thing they are decides how they arrive, so a page is not
+ * one identical fade-up on every block:
  *
- * Siblings arrive together, in order. Before, every `[data-rise]` carried its
- * own trigger, so a row of four cards — which share a top edge — crossed the
- * line in the same frame and landed as one slab. Grouping them by parent and
- * staggering from the group's own trigger gives the row the left-to-right
- * cascade a reader expects and costs three triggers instead of four.
+ *   data-lines            a headline rises line by line from its mask
+ *                         (`data-lines="0.2"` holds it back 0.2s)
+ *   data-rise             a block lifts in (0.7s). Siblings arrive together
+ *                         as a cascade from one trigger, 60ms apart.
+ *   data-rise="row"       a list row: a shorter lift, a quicker cascade
+ *   data-rise="settle"    a picture or an object: it settles from 3% larger
+ *                         as if laid down on the table (0.9s)
+ *   data-print            a print laid down by hand: it drops the last few
+ *                         pixels and takes its turn (0.9s)
+ *   data-drift="5"        the one scrubbed move: a photograph crossing the
+ *                         window a few per cent slower than the words
  *
- * `data-lines="0.2"` holds the lines back by that many seconds, so a headline
- * inside a block that is itself rising can arrive a beat after its card.
- *
- * `data-drift` (2026-10-16) is the one scrubbed move on these routes: a
- * photograph crosses the window a few per cent slower than the words beside
- * it, so the print reads as an object lying on the page rather than part of
- * it. The amount is in per cent of the element's height (default 5); a
- * negative value moves the other way, for a caption against its photograph.
- * Transform only, and nothing is hidden: at rest the element sits where the
- * layout put it.
+ * All on the house curve ("house-out"), transform and opacity only. Nothing
+ * is hidden in CSS: under reduced motion, in the prerender and without
+ * script every element is simply there. A block whose start the page can
+ * never scroll to (the foot of a short page) arrives at once (`arrival`),
+ * and positions are re-measured once fonts and images settle.
  */
 export function useReveals<T extends HTMLElement>() {
   return useScene<T>((root) => {
@@ -41,30 +47,49 @@ export function useReveals<T extends HTMLElement>() {
     });
 
     groups.forEach((els) => {
+      const kind = els[0].dataset.rise;
+      const many = els.length > 1;
+      const trigger = arrival(els[0]);
+      if (kind === "settle") {
+        gsap.from(els, {
+          opacity: 0,
+          scale: 1.03,
+          duration: 0.9,
+          stagger: many ? 0.08 : 0,
+          clearProps: "transform,opacity",
+          scrollTrigger: trigger,
+        });
+        return;
+      }
       gsap.from(els, {
-        y: els.length > 1 ? 26 : 32,
+        y: kind === "row" ? 12 : many ? 18 : 24,
         opacity: 0,
-        duration: 1.1,
-        ease: "expo.out",
-        stagger: els.length > 1 ? 0.08 : 0,
-        scrollTrigger: { trigger: els[0], start: "top 90%", once: true },
+        duration: kind === "row" ? 0.6 : 0.7,
+        stagger: many ? (kind === "row" ? 0.05 : 0.06) : 0,
+        /* hand the element back to its own CSS (a tilt, a hover lift) */
+        clearProps: "transform,opacity",
+        scrollTrigger: trigger,
       });
     });
 
     /*
-     * A print opens from the bottom edge and settles the last per cent of the
-     * way in, the way a photograph does when it is laid down rather than
-     * switched on. Scale rides the same tween so the two read as one gesture.
+     * A print is laid down rather than switched on: it drops the last few
+     * pixels, takes the last of its turn and its shadow comes with it.
      */
     root.querySelectorAll<HTMLElement>("[data-print]").forEach((el) =>
       gsap.from(el, {
-        clipPath: "inset(100% 0 0 0)",
-        scale: 1.035,
-        duration: 1.4,
-        ease: "expo.inOut",
-        scrollTrigger: { trigger: el, start: "top 88%", once: true },
+        opacity: 0,
+        y: 14,
+        rotation: "-=1.2",
+        scale: 1.02,
+        duration: 0.9,
+        clearProps: "transform,opacity",
+        scrollTrigger: arrival(el),
       }),
     );
+
+    /* Lazy pictures land after the triggers are measured; measure again. */
+    return refreshWhenSettled();
   });
 }
 
