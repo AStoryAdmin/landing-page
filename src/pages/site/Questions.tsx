@@ -3,12 +3,13 @@
  * as the rest of the site (Pass 11g: the founder found this page below the
  * others' quality).
  *
- * - Opening: the title on the left; on the right a small "concierge" card —
- *   a real person to write to — so the page reads as service, not a manual.
- * - Topic pills and a search pill filter together.
- * - Each group is a numbered chapter (roman numeral, serif title) with its
+ * - Opening, on the cloth (2026-10-23, jury 1 #5): the title on the left;
+ *   on the right Daniel, round portrait and all, on a leaf of paper - a real
+ *   person to write to - so the page reads as service, not a manual.
+ * - Sentence-case topic tabs and a search field filter together.
+ * - Each group is a chapter with a serif title (no numerals) and its
  *   answers as quiet cards: serif question, a gold coin that turns + into ×.
- * - A closing band: still wondering? write to us.
+ * - The shared closing band; the person to write to is at the top.
  *
  * Answers come from `faqData.ts` (which reads its figures from pricing.ts and
  * product.ts); the FAQ schema is unchanged.
@@ -24,18 +25,17 @@ import {
 } from "../../lib/seo";
 import { CONTACT } from "../../lib/contact";
 import { groups } from "./faqData";
-import { ArrowIcon, Invitation, Picture } from "./kit/kit";
+import { ArrowIcon, Invitation } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
+import { Chapter, Frame, Title } from "./kit/kit.styles";
 import {
-  Chapter,
-  Eyebrow,
-  Frame,
-  PrimaryAnchor,
-  Title,
-} from "./kit/kit.styles";
-import { color, display, font, media, motion } from "../../styles/theme";
-
-const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
+  color,
+  display,
+  font,
+  media,
+  motion,
+  shadow,
+} from "../../styles/theme";
 
 const Opening = styled(Chapter)`
   padding: clamp(80px, 10vw, 160px) 0 clamp(56px, 6vw, 96px);
@@ -50,42 +50,52 @@ const Opening = styled(Chapter)`
   }
   .lead {
     margin-top: 24px;
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.6 ${font.text};
-    color: var(--muted);
+    font: 400 clamp(1.15rem, 1.05rem + 0.4vw, 1.45rem) / 1.55 ${font.text};
+    color: var(--text);
     max-width: 40ch;
   }
+  /* A real person to write to: Daniel, on a leaf of the book's paper lying
+     on the cloth (jury 1 #20: his round portrait, not a blurred thumbnail). */
   .concierge {
+    position: relative;
     display: grid;
-    grid-template-columns: 64px 1fr;
-    gap: 16px;
+    grid-template-columns: 72px 1fr;
+    gap: 18px;
     align-items: center;
-    padding: 18px;
-    border-radius: 20px;
+    padding: clamp(24px, 2.4vw, 36px);
     background: ${color.paperPure};
-    box-shadow:
-      0 0 0 1px ${color.primaryLine},
-      0 30px 60px -40px rgba(42, 31, 24, 0.5);
+    box-shadow: ${shadow.lie};
+    transform: rotate(0.8deg);
   }
-  .concierge .ph {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    overflow: hidden;
+  .concierge::before {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border: 1px solid ${color.foil};
+    pointer-events: none;
+  }
+  .concierge > * {
+    position: relative;
   }
   .concierge img {
-    width: 100%;
-    height: 100%;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
     object-fit: cover;
+    object-position: 50% 30%;
+    box-shadow:
+      0 0 0 3px ${color.paperPure},
+      0 0 0 4px color-mix(in srgb, ${color.gold} 60%, transparent);
   }
   .concierge small {
-    font: 600 13px/1.3 ${font.body};
+    font: 600 12px/1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
   .concierge p {
-    margin-top: 4px;
-    font: 400 18px/1.3 ${font.display};
+    margin-top: 6px;
+    font: 400 clamp(1.2rem, 1.1rem + 0.4vw, 1.5rem) / 1.3 ${font.display};
     color: ${color.primary};
   }
   .concierge a {
@@ -93,15 +103,33 @@ const Opening = styled(Chapter)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 16px;
-    border-radius: 14px;
-    background: ${color.ivory};
-    font: 600 15px/1 ${font.body};
-    color: ${color.primary};
+    min-height: 48px;
+    padding: 0 18px;
+    border-radius: 999px;
+    background: ${color.chocolate};
+    font: 600 15px/1 ${font.ui};
+    color: ${color.onDark};
     text-decoration: none;
+    transition:
+      background-color ${motion.base},
+      transform ${motion.press};
   }
-  .concierge a:hover {
-    background: ${color.sand};
+  @media (hover: hover) and (pointer: fine) {
+    .concierge a:hover {
+      background: ${color.chocolateDeep};
+    }
+  }
+  .concierge a:active {
+    transform: scale(0.98);
+  }
+  .concierge a:focus-visible {
+    outline: 2px solid ${color.accentText};
+    outline-offset: 3px;
+  }
+  ${media.motion} {
+    .concierge {
+      transform: none;
+    }
   }
   .concierge a svg {
     width: 16px;
@@ -124,40 +152,40 @@ const Answers = styled(Chapter)`
     flex-wrap: wrap;
     align-items: center;
     gap: 10px;
-    padding: 10px;
-    margin-bottom: clamp(48px, 6vw, 88px);
-    border-radius: 28px;
-    background: color-mix(in srgb, ${color.paperPure} 92%, transparent);
-    backdrop-filter: blur(12px);
-    box-shadow:
-      0 0 0 1px ${color.primaryLine},
-      0 20px 40px -30px rgba(42, 31, 24, 0.5);
+    padding: 8px 0;
+    margin-bottom: clamp(36px, 4vw, 64px);
+    background: ${color.ivory};
+    border-bottom: 1px solid ${color.primaryLine};
   }
   /* Wide screens: the pills sit in the toolbar row as if unwrapped. */
   .pills {
     display: contents;
   }
+  /* Sentence-case text tabs, the chosen one underlined (jury 1 #20). */
   .pill {
     min-height: 44px;
-    padding: 0 18px;
+    padding: 0 12px;
     border: 0;
-    border-radius: 999px;
     background: transparent;
-    font: 600 13px/1 ${font.body};
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: ${color.primaryMid};
+    font: 500 15px/1 ${font.ui};
+    color: ${color.bodyMuted};
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 8px;
     cursor: pointer;
     transition:
-      background 250ms,
-      color 250ms;
+      color ${motion.base},
+      text-decoration-color ${motion.base};
   }
-  .pill:hover {
-    background: ${color.ivory};
+  @media (hover: hover) and (pointer: fine) {
+    .pill:hover {
+      color: ${color.primary};
+    }
   }
   .pill[aria-pressed="true"] {
-    background: ${color.primary};
-    color: ${color.ivory};
+    color: ${color.primary};
+    text-decoration-color: ${color.gold};
   }
   .search {
     position: relative;
@@ -200,7 +228,6 @@ const Answers = styled(Chapter)`
       flex-wrap: nowrap;
       flex-direction: column;
       align-items: stretch;
-      border-radius: 22px;
     }
     .pills {
       display: flex;
@@ -234,14 +261,8 @@ const Answers = styled(Chapter)`
     top: 110px;
     align-self: start;
   }
-  .gh b {
-    display: block;
-    font: 400 ${display.md} / 1 ${font.display};
-    color: ${color.accent};
-  }
   .gh h2 {
-    margin-top: 10px;
-    font: 400 ${display.sm} / 1.2 ${font.display};
+    font: 400 ${display.md} / 1.15 ${font.display};
     color: ${color.primary};
   }
   .gh small {
@@ -320,48 +341,11 @@ const Answers = styled(Chapter)`
     color: ${color.primaryMid};
   }
   ${media.md} {
-    .tools {
-      border-radius: 24px;
-    }
     section {
       grid-template-columns: minmax(0, 1fr);
     }
     .gh {
       position: static;
-    }
-  }
-`;
-
-const Still = styled(Chapter)`
-  .card {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 24px 48px;
-    align-items: center;
-    padding: clamp(32px, 4vw, 56px);
-    border-radius: 24px;
-    background: ${color.primary};
-    color: ${color.ivory};
-  }
-  h2 {
-    font: 400 ${display.md} / 1.2 ${font.display};
-    color: ${color.ivory};
-  }
-  h2 em {
-    font-style: normal;
-    color: ${color.gold};
-  }
-  p {
-    margin-top: 10px;
-    font: 400 17px/1.6 ${font.text};
-    color: ${color.onDarkMuted};
-  }
-  --action-bg: ${color.ivory};
-  --action-ink: ${color.primary};
-  --action-hover: ${color.paperPure};
-  ${media.md} {
-    .card {
-      grid-template-columns: minmax(0, 1fr);
     }
   }
 `;
@@ -395,10 +379,9 @@ export default function Questions() {
           faqSchema(groups.flatMap((g) => g.items)),
         ]}
       />
-      <Opening ref={opening} $ground="ivory" aria-labelledby="faq-title">
+      <Opening ref={opening} $ground="cloth" aria-labelledby="faq-title">
         <Frame className="grid">
           <div>
-            <Eyebrow>Questions &amp; answers</Eyebrow>
             <Title id="faq-title" data-lines>
               The practical things, answered <em>plainly.</em>
             </Title>
@@ -408,15 +391,19 @@ export default function Questions() {
             </p>
           </div>
           <aside className="concierge" data-rise aria-label="Talk to a person">
-            <span className="ph">
-              <Picture id="33" alt="" sizes="64px" />
-            </span>
+            <img
+              src="/our-story/daniel-320.webp"
+              alt="Daniel Hoang Nguyen"
+              width={320}
+              height={320}
+              decoding="async"
+            />
             <div>
               <small>Rather ask a person?</small>
-              <p>We answer every email ourselves.</p>
+              <p>Daniel answers every email himself.</p>
             </div>
             <a href={CONTACT.general}>
-              Write to us <ArrowIcon />
+              Write to Daniel <ArrowIcon />
             </a>
           </aside>
         </Frame>
@@ -471,7 +458,6 @@ export default function Questions() {
             return (
               <section key={g.title} aria-labelledby={`group-${n}`}>
                 <div className="gh">
-                  <b aria-hidden="true">{ROMAN[n]}</b>
                   <h2 id={`group-${n}`}>{g.title}</h2>
                   <small>
                     {g.items.length}{" "}
@@ -499,25 +485,6 @@ export default function Questions() {
           )}
         </Frame>
       </Answers>
-
-      <Still $ground="ivory" $tight aria-labelledby="still-title">
-        <Frame>
-          <div className="card">
-            <div>
-              <h2 id="still-title">
-                Still <em>wondering?</em>
-              </h2>
-              <p>
-                Tell us about your family - we’ll answer, and we won’t send you
-                a newsletter.
-              </p>
-            </div>
-            <PrimaryAnchor href={CONTACT.general}>
-              Write to us <ArrowIcon />
-            </PrimaryAnchor>
-          </div>
-        </Frame>
-      </Still>
 
       <Invitation />
     </>

@@ -104,20 +104,41 @@ export function riseLines(
 }
 
 /**
- * The ScrollTrigger for a one-shot arrival. Its start is "top 90%", and if
- * the page can never scroll that far (a block at the foot of a short page,
- * or a tall window) the arrival plays at once, so nothing is ever left
- * hidden waiting for a scroll that cannot happen (Bao's Standard 25).
+ * The guard every one-shot arrival needs (jury 2, B2). Call it from a
+ * ScrollTrigger's onRefresh. It plays the arrival at once when either
+ *   - the block is already on the first screen but below the trigger's
+ *     start line (a "top 90%" start never fires for a block whose top sits
+ *     in the bottom tenth of the window until the reader scrolls), or
+ *   - the page can never scroll far enough to reach the start (a block at
+ *     the foot of a short page, or a tall window).
+ * So nothing is ever left hidden waiting for a scroll (Bao's Standard 25).
+ *
+ *   scrollTrigger: { trigger: el, start: "top 92%", once: true,
+ *                    onRefresh: arriveIfVisible }
+ */
+export function arriveIfVisible(self: ScrollTrigger) {
+  const anim = self.animation;
+  if (!anim || anim.progress() === 1) return;
+  const el = self.trigger as Element | undefined;
+  const rect = el?.getBoundingClientRect();
+  const onScreen = rect ? rect.top < window.innerHeight && rect.bottom > 0 : false;
+  if (onScreen) {
+    anim.play();
+    return;
+  }
+  if (self.start > ScrollTrigger.maxScroll(window) - 2) anim.progress(1);
+}
+
+/**
+ * The ScrollTrigger for a one-shot arrival: start "top 90%", once, and the
+ * arriveIfVisible guard.
  */
 export function arrival(trigger: Element | Element[], start = "top 90%") {
   return {
     trigger: Array.isArray(trigger) ? trigger[0] : trigger,
     start,
     once: true,
-    onRefresh: (self: ScrollTrigger) => {
-      if (self.start > ScrollTrigger.maxScroll(window) - 2)
-        self.animation?.progress(1);
-    },
+    onRefresh: arriveIfVisible,
   };
 }
 

@@ -93,7 +93,7 @@ export const Page = styled.div<PageProps>`
   cursor: pointer;
   transform-style: preserve-3d;
   transform-origin: left center;
-  transition: transform 0.6s ease-in-out;
+  transition: transform 560ms cubic-bezier(0.77, 0, 0.175, 1);
   transform: ${(props) => (props.$isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)")};
 `;
 

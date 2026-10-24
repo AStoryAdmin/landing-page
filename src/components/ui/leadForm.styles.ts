@@ -72,8 +72,8 @@ export const Field = styled.label<{ $onDark?: boolean }>`
       ${({ $onDark }) => ($onDark ? color.onDarkMuted : color.controlBorder)};
     border-radius: 2px;
     transition:
-      border-color 140ms ease,
-      box-shadow 140ms ease;
+      border-color 140ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 140ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   textarea {
@@ -121,8 +121,8 @@ export const Submit = styled.button<{ $onDark?: boolean }>`
   box-shadow: none;
   cursor: pointer;
   transition:
-    filter 160ms ease,
-    opacity 160ms ease;
+    filter 160ms cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 160ms cubic-bezier(0.23, 1, 0.32, 1);
 
   &:hover:not(:disabled) {
     filter: brightness(1.07);

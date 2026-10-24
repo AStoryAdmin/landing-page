@@ -18,7 +18,7 @@ import EditorialSeo from "../../components/ui/EditorialSeo";
 import { DEMO_EMAIL, sendMessage } from "../../lib/demoRequest";
 import { looksLikeEmail } from "../../lib/leads";
 import { track } from "../../lib/analytics";
-import { ArrowIcon, PageOpening, Print } from "./kit/kit";
+import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import {
   Chapter,
@@ -31,7 +31,7 @@ import {
   TextAnchor,
 } from "./kit/kit.styles";
 import { Done, Form } from "./kit/form.styles";
-import { color, display, font, media } from "../../styles/theme";
+import { color, curve, display, font, media, shadow } from "../../styles/theme";
 
 const TOPICS = [
   "A question",
@@ -60,6 +60,39 @@ const DOORS = [
   ],
 ] as const;
 
+/* The opening's object: the person who reads the message (jury 1 #4, #7:
+   Daniel's own round portrait, not a stock kitchen photograph). */
+const Reader = styled.figure`
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  margin: 0;
+  text-align: center;
+  img {
+    width: clamp(150px, 13vw, 220px);
+    height: clamp(150px, 13vw, 220px);
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    box-shadow:
+      0 0 0 5px ${color.paperPure},
+      0 0 0 6px color-mix(in srgb, ${color.gold} 60%, transparent),
+      ${shadow.lie};
+  }
+  p {
+    display: grid;
+    gap: 4px;
+  }
+  b {
+    font: 500 clamp(28px, 2.2vw, 40px) / 1 ${font.script};
+    color: var(--ink);
+  }
+  span {
+    font: 400 15px/1.5 ${font.ui};
+    color: var(--muted);
+  }
+`;
+
 const Body = styled(Chapter)`
   .row {
     display: grid;
@@ -85,13 +118,18 @@ const Body = styled(Chapter)`
     color: var(--label);
   }
   .address a.big {
+    display: inline-block;
+    padding: 8px 0;
     font: 400 ${display.sm} / 1.2 ${font.display};
     color: var(--ink);
     text-decoration: none;
     overflow-wrap: anywhere;
+    transition: color 160ms ${curve.out};
   }
-  .address a.big:hover {
-    color: var(--mark);
+  ${media.hover} {
+    .address a.big:hover {
+      color: var(--mark);
+    }
   }
   .address .acts {
     display: flex;
@@ -131,10 +169,12 @@ const Body = styled(Chapter)`
   .doors svg {
     width: 18px;
     height: 18px;
-    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 240ms ${curve.out};
   }
-  .doors a:hover svg {
-    transform: translateX(4px);
+  ${media.hover} {
+    .doors a:hover svg {
+      transform: translateX(4px);
+    }
   }
   .card {
     background: ${color.paperPure};
@@ -231,7 +271,7 @@ export default function Contact() {
         description="Write to A Story. Messages from this page go straight to Daniel, our co-founder, at daniel@astoryapp.com, and are answered within a working day."
       />
       <PageOpening
-        ground="night"
+        variant="letter"
         title={
           <>
             A person reads every <em>message.</em>
@@ -251,13 +291,20 @@ export default function Contact() {
             </TextAnchor>
           </>
         }
-        media={
-          <Print
-            id="33"
-            alt="Two adults talking across a kitchen table"
-            sizes="(max-width: 1024px) 100vw, 44vw"
-            priority
-          />
+        object={
+          <Reader>
+            <img
+              src="/our-story/daniel-320.webp"
+              alt="Daniel Hoang Nguyen"
+              width={320}
+              height={320}
+              decoding="async"
+            />
+            <p>
+              <b>Daniel Hoang Nguyen</b>
+              <span>Co-founder and CEO. He reads every message.</span>
+            </p>
+          </Reader>
         }
       />
 

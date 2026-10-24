@@ -124,7 +124,7 @@ export const PLANS: Plan[] = [
         period: 'per year',
         monthlyEquivalent: '≈ $19.08/mo',
         meter: '200 minutes a month, shared',
-        meterNote: 'Pooled, so a quiet storyteller never wastes anyone else’s minutes',
+        meterNote: 'Pooled, so minutes one storyteller doesn’t use go to the others',
         blurb:
             'Both parents, or a grandmother and her sister. The same afternoon told by more ' +
             'than one person is the whole point of this, and it costs less than buying the ' +
@@ -171,27 +171,29 @@ export const OTHER_PLANS = [
         id: 'free' as const,
         label: 'Free',
         price: '$0',
-        sub: 'One ten-minute conversation to begin, then three questions a day and unlimited writing',
+        sub: 'One ten-minute conversation on iPhone to begin, then three questions a day and unlimited writing',
     },
 ];
 
 /** Everyone starts here, including people who never pay. */
 export const START = {
     headline: 'Every account starts on Free',
-    detail: 'No card and no clock. One ten-minute conversation with A Story to begin, then three guided questions a day and unlimited writing for as long as you like. A plan adds A Story doing the calling.',
+    detail: 'No card and no time limit. One ten-minute conversation with A Story on iPhone to begin, then three guided questions a day and unlimited writing for as long as you like. A plan adds A Story doing the calling.',
+    /** The /pricing opening line, as one sentence (no "Free - No card" seam). */
+    lead: 'Every account starts on Free, with no card and no time limit. Inviting family, writing and reading never cost extra, however many people join. Prices are in US dollars, and the calls ring in the A Story iPhone app, in a private beta.',
 } as const;
 
 /** What the Free tier actually is, stated plainly rather than as a tease. */
 export const FREE_TIER = {
     headline: 'Free, for as long as you like',
     blurb:
-        'Not a trial that runs out. One ten-minute conversation with A Story to begin, then ' +
+        'One ten-minute conversation with A Story on iPhone to begin, then ' +
         'three guided questions a day, writing in your own words without limit, the whole ' +
         'family invited free, and a printed book whenever you want one. What Free does not ' +
         'include is A Story calling you after that first time - that is the part with a real ' +
         'cost behind it.',
     includes: [
-        'One ten-minute conversation with A Story, to begin',
+        'One ten-minute conversation with A Story on iPhone, to begin',
         'Three guided questions a day',
         'Unlimited writing in your own words',
         'Unlimited family members reading and contributing',
@@ -259,8 +261,8 @@ export const BOOK_EDITIONS: BookEdition[] = [
         price: '$39',
         extra: '$29',
         tagline: 'A paperback for every sibling’s shelf.',
-        includes: ['Matte softcover, full colour inside', 'Every memory, every photograph, the listening codes'],
-        delivery: 'Ships in 7-10 days',
+        includes: ['Matte softcover, full colour inside', 'Every memory and every photograph'],
+        delivery: 'Ships in 7-10 days, once ordering opens',
     },
     {
         id: 'hardcover',
@@ -268,8 +270,8 @@ export const BOOK_EDITIONS: BookEdition[] = [
         price: '$69',
         extra: '$49',
         tagline: 'The book, bound to last.',
-        includes: ['Case-bound hardcover with the keepsake cover', 'Heavy paper, full colour, every listening code'],
-        delivery: 'Ships in 7-10 days',
+        includes: ['Case-bound hardcover with the keepsake cover', 'Heavy paper, full colour throughout'],
+        delivery: 'Ships in 7-10 days, once ordering opens',
     },
     {
         id: 'heirloom',
@@ -283,7 +285,7 @@ export const BOOK_EDITIONS: BookEdition[] = [
             'Archival paper, satin ribbon marker',
             'Presentation box, with a dedication card in your words',
         ],
-        delivery: 'Ships in 2-3 weeks',
+        delivery: 'Ships in 2-3 weeks, once ordering opens',
     },
     {
         id: 'legacy',
@@ -297,7 +299,7 @@ export const BOOK_EDITIONS: BookEdition[] = [
             'A design call with you, and a proof copy before printing',
             'Three Heirloom copies in their boxes, sent to up to three homes',
         ],
-        delivery: 'Ready in 6-8 weeks',
+        delivery: 'Ready in 6-8 weeks, once ordering opens',
     },
 ];
 
@@ -308,7 +310,7 @@ export const BOOK = {
     members:
         'Individual, Family and Express include a Classic Hardcover - or its $69 toward a finer edition - and the Digital Edition. You pay only the shipping. Monthly includes the Digital Edition.',
     allowance: 'One a year on Individual, one a year for each storyteller on Family, one with each Express pass',
-    pages: 'Every page of it - there is no page limit',
+    pages: 'No page limit',
     ships: 'Printed editions ship to the US and Canada, with shipping included when you buy one',
     /** BOOK_ORDERING_OPEN is off in the app until a print company is set up. */
     opens: 'Printed editions open for ordering soon. The whole book can always be saved as a PDF or printed at home, free.',
@@ -335,7 +337,7 @@ export const FOREVER = {
     headline: 'The app is yours. It does not stop being yours.',
     /** True on every plan, including Free, including after a cancellation. */
     kept: [
-        'Keep writing new chapters for as long as you live - unlimited, free, always',
+        'Keep writing new chapters free, for as long as you like',
         'The archive stays open, searchable, and still growing',
         'Everyone you invited keeps their access and keeps contributing',
         'Every recording, transcript and photo stays yours',
@@ -344,8 +346,7 @@ export const FOREVER = {
     ],
     /** What a plan actually buys, rather than what stopping costs. */
     stops:
-        'A plan buys one thing: A Story doing the asking - calling, listening, following up. ' +
-        'Switch it off and that is all that pauses. You carry on writing, the family carries ' +
-        'on adding, the story carries on. Switch it back on whenever there is more you want ' +
-        'drawn out of somebody.',
+        'A plan buys one thing: A Story doing the asking on the calls. Switch it off and only ' +
+        'that pauses. You keep writing and the family keeps adding. Switch it back on whenever ' +
+        'there is more you want to ask.',
 } as const;

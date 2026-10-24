@@ -4,12 +4,12 @@
  * Pass 11j (founder): the page's job is to say why a family should choose
  * A Story over the memoir product they were about to buy. So it is short:
  *
- * 1. Opening — more than a memoir (the lake photograph with four family
- *    versions around it).
+ * 1. Opening — the whole family's story, with the four reasons to choose
+ *    A Story on a leaf on the cloth (2026-10-23; it no longer replays Home's
+ *    lake photograph and witnesses).
  * 2. The table — seven direct competitors, one plain benefit per row, in the
  *    same Quippy-style table as Home (compare/CompareTable).
- * 3. Why families switch — four reasons, each one line of promise and one of
- *    proof.
+ * 3. (The four reasons moved into the opening, 2026-10-23.)
  * 4. One moment does not need one official version — Joan, Paul, the
  *    photograph.
  * 5. The one action.
@@ -22,12 +22,7 @@
  */
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
-import {
-  AS_OF,
-  COMPARE_COLUMNS,
-  COMPARE_ROWS,
-  SWITCH,
-} from "../../lib/landscape";
+import { AS_OF, COMPARE_COLUMNS, COMPARE_ROWS } from "../../lib/landscape";
 import CompareOpening from "./compare/CompareOpening";
 import CompareTable, { CompareLegend } from "./compare/CompareTable";
 import { Invitation } from "./kit/kit";
@@ -51,41 +46,6 @@ const Matrix = styled(Chapter)`
     margin-top: 14px;
     font: 400 13px/1.55 ${font.body};
     color: ${color.bodyMuted};
-  }
-`;
-
-const Switch = styled(Chapter)`
-  .reasons {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(16px, 2vw, 28px);
-  }
-  .reason {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 18px;
-    padding: clamp(24px, 2.6vw, 36px);
-    border-radius: 20px;
-    background: ${color.paperPure};
-    box-shadow: 0 30px 60px -48px rgba(42, 31, 24, 0.6);
-  }
-  .reason b {
-    font: 400 32px/1 ${font.display};
-    color: ${color.accent};
-  }
-  .reason h3 {
-    font: 400 ${display.sm} / 1.25 ${font.display};
-    color: ${color.primary};
-  }
-  .reason p {
-    margin-top: 10px;
-    font: 400 16.5px/1.6 ${font.text};
-    color: ${color.body};
-  }
-  ${media.md} {
-    .reasons {
-      grid-template-columns: minmax(0, 1fr);
-    }
   }
 `;
 
@@ -153,7 +113,6 @@ const Moment = styled(Chapter)`
 
 export default function Compare() {
   const matrix = useReveals<HTMLElement>();
-  const reasons = useReveals<HTMLElement>();
   const moment = useReveals<HTMLElement>();
 
   return (
@@ -195,26 +154,6 @@ export default function Compare() {
           </p>
         </Frame>
       </Matrix>
-
-      <Switch ref={reasons} $ground="sand" aria-labelledby="switch-title">
-        <Frame>
-          <SplitHead>
-            <Statement id="switch-title" $size="lg" data-lines>
-              Four reasons to choose A&nbsp;Story.
-            </Statement>
-          </SplitHead>
-          <div className="reasons">
-            {SWITCH.map((r) => (
-              <article key={r.title} className="reason" data-rise>
-                <div>
-                  <h3>{r.title}</h3>
-                  <p>{r.body}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </Frame>
-      </Switch>
 
       <Moment ref={moment} $ground="teal" aria-labelledby="moment-title">
         <Frame className="grid">

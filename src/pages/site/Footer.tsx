@@ -3,22 +3,85 @@ import { CONTACT } from "../../lib/contact";
 import { SITE } from "../../lib/seo";
 import Logo from "../../components/ui/Logo";
 import ProgramMarks from "../../components/ui/ProgramMarks";
-import {
-  NVIDIA_TRADEMARK_NOTE,
-} from "../../components/ui/InceptionBadge";
+import { NVIDIA_TRADEMARK_NOTE } from "../../components/ui/InceptionBadge";
 import { FooterShell } from "./chrome.styles";
-import { APP, START_HREF, START_LABEL } from "../../lib/app";
 
 /**
  * The back board, at the foot of every page (phase 2, 2026-10-23): the
  * cloth, quiet. The wordmark at an ordinary size, one plain line of what A
- * Story does, the way to write to us, the rooms, the five program badges,
- * and a colophon with the company's legal name. The explanation that the
- * photographs and people in the examples are illustrative lives here once,
- * behind a toggle. The namecard slogans left on 2026-10-23 (review: a
- * slogan said at the foot of every page reads as a tell).
+ * Story does, the address to write to, the rooms, the five program marks,
+ * and one colophon line with the company's legal name. The explanation that
+ * the photographs and people in the examples are illustrative lives here
+ * once, behind a toggle.
+ *
+ * Round 2 (jury 1 #11, jury 2 U4):
+ *   - four balanced columns of four or five rooms; Start free and Sign in
+ *     left, they are in the header on every page;
+ *   - the program marks at one 48px row on a single cream plate;
+ *   - one legal line (the company and NVIDIA's attribution together);
+ *   - on a phone the rooms fold into two groups, so the footer is about one
+ *     screen instead of two and a half;
+ *   - every link is a 44px target.
  */
+type Room = { to: string; label: string; file?: boolean; mail?: boolean };
+const GROUPS: { title: string; rooms: Room[] }[] = [
+  {
+    title: "The product",
+    rooms: [
+      { to: "/how-it-works", label: "How it works" },
+      /* A page in public/, outside the router: a plain anchor. */
+      { to: "/samples", label: "Sample books", file: true },
+      { to: "/pricing", label: "Pricing" },
+      { to: "/reserve", label: "Reserve for $1" },
+      { to: "/compare", label: "Compare" },
+    ],
+  },
+  {
+    title: "Who it’s for",
+    rooms: [
+      { to: "/for-families", label: "Families" },
+      { to: "/care-communities", label: "Care communities" },
+      { to: "/organizations", label: "Institutions" },
+      { to: "/your-story", label: "Your own story" },
+    ],
+  },
+  {
+    title: "Help",
+    rooms: [
+      { to: "/guides", label: "Conversation guides" },
+      { to: "/questions", label: "Questions & answers" },
+      { to: "/contact", label: "Contact" },
+      { to: CONTACT.general, label: "Write to us", mail: true },
+    ],
+  },
+  {
+    title: "Company",
+    rooms: [
+      { to: "/our-story", label: "Our story" },
+      { to: "/programs", label: "Programs & grants" },
+      { to: "/privacy", label: "Privacy" },
+      { to: "/terms", label: "Terms" },
+    ],
+  },
+];
+
+function RoomLink({ room }: { room: Room }) {
+  return room.file || room.mail ? (
+    <a href={room.to}>{room.label}</a>
+  ) : (
+    <Link to={room.to}>{room.label}</Link>
+  );
+}
+
+/** The two folds on a phone: where to look, and who we are. */
+const FOLDS = [
+  { title: "Explore A Story", groups: GROUPS.slice(0, 2) },
+  { title: "Help and company", groups: GROUPS.slice(2) },
+];
+
 export default function Footer() {
+  /* NVIDIA's note opens with its own "© year"; the line already has one. */
+  const nvidia = NVIDIA_TRADEMARK_NOTE.replace(/^©\s*\d{4}\s*/, "");
   return (
     <FooterShell>
       <div className="gf-width">
@@ -30,54 +93,61 @@ export default function Footer() {
               say in a private archive the whole family can add to.
             </p>
             <p className="footer-contact">
-              <Link to="/contact">Contact us</Link> · <a href={CONTACT.general}>{SITE.email}</a>
+              <a href={CONTACT.general}>{SITE.email}</a>
             </p>
           </div>
-          <div className="gf-footer-links">
-            <div>
-              <h2>The product</h2>
-              <Link to="/how-it-works">How it works</Link>
-              {/* A page in public/, outside the router: a plain anchor. */}
-              <a href="/samples">Sample books</a>
-              <Link to="/for-families">For families</Link>
-              <Link to="/pricing">Pricing</Link>
-              <Link to="/compare">Compare</Link>
-              <a href={START_HREF}>{START_LABEL}</a>
-              <a href={APP.signIn}>Sign in</a>
-            </div>
-            <div>
-              <h2>Help</h2>
-              <Link to="/guides">Conversation guides</Link>
-              <Link to="/questions">Questions &amp; answers</Link>
-              <a href={CONTACT.general}>Get in touch</a>
-            </div>
-            <div>
-              <h2>Also for</h2>
-              <Link to="/care-communities">Care communities</Link>
-              <Link to="/organizations">Institutions</Link>
-              <Link to="/your-story">Your own story</Link>
-            </div>
-            <div>
-              <h2>Company</h2>
-              <Link to="/our-story">Our story</Link>
-              <Link to="/contact">Contact</Link>
-              <Link to="/programs">Programs &amp; grants</Link>
-              <Link to="/privacy">Privacy</Link>
-              <Link to="/terms">Terms</Link>
-            </div>
-          </div>
+
+          <nav className="gf-footer-links" aria-label="Site">
+            {GROUPS.map((g) => (
+              <div key={g.title}>
+                <h2>{g.title}</h2>
+                {g.rooms.map((r) => (
+                  <RoomLink key={r.label} room={r} />
+                ))}
+              </div>
+            ))}
+          </nav>
+
+          <nav className="gf-footer-fold" aria-label="Site">
+            {FOLDS.map((f) => (
+              <details key={f.title}>
+                <summary>
+                  {f.title}
+                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="m5 8 5 5 5-5" stroke="currentColor" strokeWidth="1.6" />
+                  </svg>
+                </summary>
+                <div className="fold-body">
+                  {f.groups.map((g) => (
+                    <div key={g.title}>
+                      <h2>{g.title}</h2>
+                      {g.rooms.map((r) => (
+                        <RoomLink key={r.label} room={r} />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </details>
+            ))}
+          </nav>
         </div>
+
         <div className="footer-credential">
           <p className="footer-programs">Startup programs &amp; grants</p>
           <Link
             to="/programs"
-            aria-label="A Story is a member of NVIDIA Inception, Google for Startups, the AssemblyAI Startup Program and the Deepgram Startup Program, and a Cartesia Startups grant recipient"
+            className="footer-plate"
+            aria-label="Startup programs and grants: A Story is a member of NVIDIA Inception, Google for Startups, the AssemblyAI Startup Program and the Deepgram Startup Program, and a Cartesia Startups grant recipient"
           >
-            <ProgramMarks height={40} />
+            <ProgramMarks height={48} className="footer-marks" />
           </Link>
         </div>
+
         <div className="gf-footer-bottom">
-          <p>© {new Date().getFullYear()} A Story Technologies, Inc.</p>
+          <p className="footer-legal">
+            © {new Date().getFullYear()} A Story Technologies, Inc.{" "}
+            <span className="footer-trademark">{nvidia}</span>
+          </p>
           <details className="footer-about">
             <summary>About the examples</summary>
             <p>
@@ -86,7 +156,6 @@ export default function Footer() {
               testimonials.
             </p>
           </details>
-          <p className="footer-trademark">{NVIDIA_TRADEMARK_NOTE}</p>
         </div>
       </div>
     </FooterShell>

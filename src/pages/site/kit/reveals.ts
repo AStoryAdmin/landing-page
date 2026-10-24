@@ -51,19 +51,22 @@ export function useReveals<T extends HTMLElement>() {
       const many = els.length > 1;
       const trigger = arrival(els[0]);
       if (kind === "settle") {
-        gsap.from(els, {
-          opacity: 0,
-          scale: 1.03,
-          duration: 0.9,
+        gsap.fromTo(els, { opacity: 0, scale: 1.03 }, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
           stagger: many ? 0.08 : 0,
           clearProps: "transform,opacity",
           scrollTrigger: trigger,
         });
         return;
       }
-      gsap.from(els, {
-        y: kind === "row" ? 12 : many ? 18 : 24,
-        opacity: 0,
+      /* fromTo, not from: an element whose CSS has an opacity transition
+         (a text link) could otherwise read its own half-faded value as the
+         end state and stay at 0. */
+      gsap.fromTo(els, { y: kind === "row" ? 12 : many ? 18 : 24, opacity: 0 }, {
+        y: 0,
+        opacity: 1,
         duration: kind === "row" ? 0.6 : 0.7,
         stagger: many ? (kind === "row" ? 0.05 : 0.06) : 0,
         /* hand the element back to its own CSS (a tilt, a hover lift) */
@@ -76,17 +79,22 @@ export function useReveals<T extends HTMLElement>() {
      * A print is laid down rather than switched on: it drops the last few
      * pixels, takes the last of its turn and its shadow comes with it.
      */
-    root.querySelectorAll<HTMLElement>("[data-print]").forEach((el) =>
-      gsap.from(el, {
-        opacity: 0,
-        y: 14,
-        rotation: "-=1.2",
-        scale: 1.02,
-        duration: 0.9,
-        clearProps: "transform,opacity",
-        scrollTrigger: arrival(el),
-      }),
-    );
+    root.querySelectorAll<HTMLElement>("[data-print]").forEach((el) => {
+      const turn = Number(gsap.getProperty(el, "rotation")) || 0;
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 14, rotation: turn - 1.2, scale: 1.02 },
+        {
+          opacity: 1,
+          y: 0,
+          rotation: turn,
+          scale: 1,
+          duration: 0.85,
+          clearProps: "transform,opacity",
+          scrollTrigger: arrival(el),
+        },
+      );
+    });
 
     /* Lazy pictures land after the triggers are measured; measure again. */
     return refreshWhenSettled();

@@ -6,9 +6,9 @@
  * empty space, three times, with the hero's badge row out of line. The founder
  * asked for much better content and design.
  *
- * Now the page is built from the two real things it has: the programs' own
- * marks, shown large, and Cartesia's grant-recipient card for A Story, which
- * is the hero's picture. Then, on night, the page's one big idea; then one
+ * Now the page is built from the real thing it has: the programs' own
+ * marks, set large on a cream plate in the opening (2026-10-23, jury 1 #19:
+ * Cartesia's grant card, with its network lines and waveform, is gone). Then, on night, the page's one big idea; then one
  * card per program - one verb each, build, hear, answer, the badge, and one
  * sentence on why a family archive belongs there. Then the plain questions.
  *
@@ -34,10 +34,10 @@ import aaiBoxed from "../../assets/partners/assemblyai-startup-program-lockup-bo
 import googleBoxed from "../../assets/partners/google-for-startups-lockup-boxed.svg";
 import deepgramBoxed from "../../assets/partners/deepgram-startup-program-lockup-boxed.svg";
 import cartesiaBoxed from "../../assets/partners/cartesia-startups-lockup-boxed.svg";
-import { ArrowIcon, Invitation } from "./kit/kit";
-import { Chapter, Frame, Title } from "./kit/kit.styles";
+import { ArrowIcon, Invitation, PageOpening } from "./kit/kit";
+import { Chapter, Frame } from "./kit/kit.styles";
 import { useReveals } from "./kit/reveals";
-import { color, display, font, media, motion } from "../../styles/theme";
+import { color, display, font, media, shadow } from "../../styles/theme";
 import { PROGRAMS, faqSchema } from "../../lib/seo";
 
 type Row = {
@@ -45,7 +45,7 @@ type Row = {
   name: string;
   status: string;
   mark: ReactNode;
-  /** Why A Story belongs in it - one sentence, A Story's voice. */
+  /** What the program is, plainly (jury 4 #11: no slogan beside a partner's name). */
   fit: ReactNode;
   href: string;
   host: string;
@@ -56,13 +56,8 @@ const ROWS: Row[] = [
     id: "inception-title",
     name: "NVIDIA Inception",
     status: "Member since October 2026",
-    mark: <InceptionBadge height={48} />,
-    fit: (
-      <>
-        The most important thing AI will ever do is the oldest thing people do:{" "}
-        <b>keep a family’s stories.</b>
-      </>
-    ),
+    mark: <InceptionBadge height={64} />,
+    fit: <>NVIDIA’s program for startups building with AI.</>,
     href: "https://www.nvidia.com/en-us/startups/",
     host: "nvidia.com",
   },
@@ -78,12 +73,7 @@ const ROWS: Row[] = [
         height={48}
       />
     ),
-    fit: (
-      <>
-        A family is spread across cities and years.{" "}
-        <b>The archive has to be there whenever someone thinks to ask.</b>
-      </>
-    ),
+    fit: <>Google’s program for startups.</>,
     href: "https://startup.google.com",
     host: "startup.google.com",
   },
@@ -101,8 +91,8 @@ const ROWS: Row[] = [
     ),
     fit: (
       <>
-        A grandmother says a name once, in an accent seventy years old.{" "}
-        <b>It has to be heard right the first time.</b>
+        AssemblyAI builds speech-to-text models. Its program is for startups
+        building with voice.
       </>
     ),
     href: "https://www.assemblyai.com",
@@ -122,8 +112,8 @@ const ROWS: Row[] = [
     ),
     fit: (
       <>
-        An old voice on a phone line is quiet and slow.{" "}
-        <b>Every word of it belongs on the page.</b>
+        Deepgram builds speech recognition and voice AI. Its program is for
+        startups building with voice.
       </>
     ),
     href: "https://deepgram.com/startup-program",
@@ -143,8 +133,8 @@ const ROWS: Row[] = [
     ),
     fit: (
       <>
-        For people who will never download an app, the only screen is a voice.{" "}
-        <b>It has to sound like someone listening.</b>
+        Cartesia builds real-time voice models. Its grant is for startups
+        building with voice.
       </>
     ),
     href: "https://cartesia.ai",
@@ -152,89 +142,43 @@ const ROWS: Row[] = [
   },
 ];
 
-/* ── Opening: the promise on the left, the grant card on the right ──────── */
+/* ── Opening's object: the five marks, set large on a cream plate ──────── */
 
-const Opening = styled(Chapter)`
-  padding: calc(clamp(72px, 9vw, 150px) * var(--sy)) 0
-    calc(clamp(56px, 6vw, 104px) * var(--sy));
-  .grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    gap: clamp(36px, 6vw, 110px);
-    align-items: center;
+const Plate = styled.div`
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+  gap: clamp(26px, 3vw, 48px) clamp(20px, 3vw, 56px);
+  width: min(100%, 720px);
+  padding: clamp(30px, 3.4vw, 60px);
+  background: ${color.paperPure};
+  box-shadow: ${shadow.lie};
+  &::before {
+    content: "";
+    position: absolute;
+    inset: clamp(8px, 0.8vw, 14px);
+    border: 1px solid ${color.foil};
+    pointer-events: none;
   }
-  h1 {
-    margin-top: 16px;
-    font-size: ${display.hero};
-    max-width: 14ch;
+  > * {
+    position: relative;
   }
-  .lead {
-    margin-top: calc(clamp(20px, 2.4vw, 36px) * var(--sy));
-    font: 400 clamp(1.1rem, 1rem + 0.4vw, 1.35rem) / 1.55 ${font.text};
-    color: var(--ink);
-    max-width: 40ch;
+  img {
+    display: block;
+    height: clamp(44px, 3.6vw, 64px);
+    width: auto;
+    max-width: 100%;
   }
-  /* The three marks, one line, one height, vertically centred together. */
-  .marks {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 12px 14px;
-    margin-top: calc(clamp(28px, 3.4vw, 48px) * var(--sy));
+  > span:first-child {
+    grid-column: 1 / -1;
   }
-  .marks a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    border-radius: 4px;
-    transition: transform ${motion.base};
-  }
-  /* The NVIDIA badge carries its own clear space; cancel it so the three sit
-     on the same edges. */
-  .marks a:first-child > span {
+  > span > span {
     padding: 0;
   }
-  .marks img {
-    display: block;
-    height: 40px;
-    width: auto;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .marks a:hover {
-      transform: translateY(-2px);
-    }
-  }
-  .card {
-    margin: 0;
-  }
-  .card img {
-    display: block;
-    width: 100%;
-    max-width: min(560px, 66svh);
-    height: auto;
-    margin-left: auto;
-    border-radius: 6px;
-  }
-  .card figcaption {
-    margin-top: 10px;
-    text-align: right;
-    font: 400 14px/1.5 ${font.body};
-    color: var(--muted);
-  }
-  ${media.md} {
-    .grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .card img {
-      margin: 0;
-      max-width: 100%;
-    }
-    .card figcaption {
-      text-align: left;
-    }
-    .marks img {
-      height: 40px;
-    }
+  ${media.sm} {
+    grid-template-columns: minmax(0, 1fr);
   }
 `;
 
@@ -251,7 +195,8 @@ const Ledger = styled(Chapter)`
   }
   li {
     display: grid;
-    grid-template-columns: 250px minmax(0, 1fr) auto;
+    /* The marks are set large in the opening; the rows say what each is. */
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 8px clamp(24px, 3vw, 48px);
     align-items: center;
     padding: calc(clamp(18px, 2vw, 26px) * var(--sy)) 0;
@@ -280,10 +225,6 @@ const Ledger = styled(Chapter)`
     max-width: 62ch;
     font: 400 17px/1.5 ${font.text};
     color: var(--muted);
-  }
-  .fit b {
-    font-weight: 400;
-    color: var(--ink);
   }
   .out {
     display: inline-flex;
@@ -316,9 +257,6 @@ const Ledger = styled(Chapter)`
 `;
 
 export default function Programs() {
-  // The one page that stood still (2026-10-16): it now arrives the way the
-  // other secondary routes do - headlines line by line, blocks in order.
-  const opening = useReveals<HTMLElement>();
   const ledger = useReveals<HTMLElement>();
   return (
     <>
@@ -329,32 +267,22 @@ export default function Programs() {
         schema={[faqSchema(PROGRAMS.faq)]}
       />
 
-      <Opening ref={opening} $ground="cloth" aria-labelledby="programs-title">
-        <Frame className="grid">
-          <div>
-            <Title id="programs-title" data-lines>
-              In very good <em>company.</em>
-            </Title>
-            <p className="lead" data-rise>
-              Five programs for companies building with AI and voice have taken
-              A Story in. None of them is an endorsement, an investment or a
-              partnership.
-            </p>
-          </div>
-          <figure className="card" data-rise data-drift="4">
-            <img
-              src="/brand/partners/cartesia-grant-recipient-astory.png"
-              alt="Cartesia Startups grant recipient: A Story"
-              width={1600}
-              height={1600}
-              decoding="async"
-            />
-            <figcaption>
-              Cartesia’s grant-recipient card for A Story.
-            </figcaption>
-          </figure>
-        </Frame>
-      </Opening>
+      <PageOpening
+        labelledBy="programs-title"
+        title={
+          <>
+            Startup programs <em>and grants.</em>
+          </>
+        }
+        lead="Five programs for companies building with AI and voice have taken A Story in. None of them is an endorsement, an investment or a partnership."
+        object={
+          <Plate aria-label="The five programs’ marks">
+            {ROWS.map((r) => (
+              <span key={r.id}>{r.mark}</span>
+            ))}
+          </Plate>
+        }
+      />
 
       <Ledger
         ref={ledger}
@@ -367,7 +295,6 @@ export default function Programs() {
           <ol>
             {ROWS.map((r) => (
               <li key={r.id} data-rise>
-                <div className="mark">{r.mark}</div>
                 <div>
                   <h3 id={r.id}>
                     {r.name}

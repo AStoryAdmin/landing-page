@@ -14,8 +14,14 @@ import { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { color, font, media } from "../../../styles/theme";
+import { APP } from "../../../lib/app";
 
-const APP_STORE_URL = "https://apps.apple.com/app/id6787438875";
+/*
+ * 2026-10-23: the App Store link (apps.apple.com/app/id6787438875) answered
+ * 404 - the iPhone app is in a private beta, not on the store (jury 4, #13).
+ * The first step now opens the web app's join page with the code filled in
+ * (app.astoryapp.com/join/CODE); the iPhone app is the second way.
+ */
 
 function codeFromSearch(search: string): string {
   const raw = new URLSearchParams(search).get("ref") || "";
@@ -52,11 +58,14 @@ export default function CodeFromFamily() {
         </Row>
         <Steps>
           <li>
-            Get A Story on your phone:{" "}
-            <a href={APP_STORE_URL}>App Store</a>.
+            <a href={APP.join(code)}>Open A Story in your browser</a>, with
+            this code already filled in.
           </li>
-          <li>Open it and tap <b>I have a code from family</b>.</li>
-          <li>Type the six characters above. That puts you in your family&rsquo;s tree, with your place in it.</li>
+          <li>
+            Or, in the A Story iPhone app, tap <b>I have a code from family</b> and
+            type the six characters above.
+          </li>
+          <li>That puts you in your family&rsquo;s tree, with your place in it.</li>
         </Steps>
         <Small>The code works for 30 days. If it has run out, ask whoever sent it for a new one.</Small>
       </Inner>

@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { flushSync } from "react-dom";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useNavigationType } from "react-router-dom";
+import { preloadRoute } from "../../lib/lazyRoute";
 import styled, { keyframes } from "styled-components";
 import { curve, media } from "../../styles/theme";
 
@@ -27,6 +27,21 @@ import { curve, media } from "../../styles/theme";
  * BrowserRouter, where `<Link viewTransition>` does nothing, hence the
  * listener. Without the API, or under reduced motion, the short fade below
  * still covers the jump.
+ *
+ * Fixed 2026-10-23 (jury 2, B1). The first version ran
+ * `flushSync(() => navigate(href))` inside the transition's callback. React
+ * Router runs navigate inside a React transition, so flushSync committed
+ * nothing: the browser captured the OLD page as the "new" one, and on a
+ * route's first visit the lazy chunk then showed a blank fallback with the
+ * footer pulled up. Now, in order:
+ *   1. the route's chunk is loaded first (preloadRoute), so the next render
+ *      is the real page, not a Suspense fallback;
+ *   2. the View Transition starts, and its callback navigates and AWAITS the
+ *      commit (a layout effect keyed on the location resolves it), then
+ *      resets the scroll, so the new snapshot is the new page at its top.
+ * If the chunk takes longer than PRELOAD_WAIT the navigation goes ahead
+ * without a View Transition (the fade covers it), so a slow network never
+ * leaves a click feeling dead.
  */
 
 const fadeIn = keyframes`
@@ -36,6 +51,19 @@ const fadeIn = keyframes`
 
 /** Set while a View Transition carries the navigation, so the fade stays off. */
 let viaViewTransition = false;
+
+/** How long a click waits for a route chunk before navigating without a View Transition. */
+const PRELOAD_WAIT = 700;
+/** The longest a View Transition waits for the new route to commit. */
+const COMMIT_WAIT = 1200;
+
+/** Resolved by RouteTransition's layout effect when the location commits. */
+let commitWaiter: { path: string; resolve: () => void } | null = null;
+const waitForCommit = (path: string) =>
+  new Promise<void>((resolve) => {
+    commitWaiter = { path, resolve };
+    setTimeout(resolve, COMMIT_WAIT);
+  });
 
 /** Routes served outside the router (a full page load), and files. */
 const OUTSIDE = /^\/(samples|app)(\/|$)|\.[a-z0-9]{2,5}$/i;
@@ -120,18 +148,40 @@ const RouteTransition = ({ children }: { children: React.ReactNode }) => {
       const href = routerHref(event);
       if (!href) return;
       event.preventDefault();
-      viaViewTransition = true;
-      const transition = document.startViewTransition(() => {
-        flushSync(() => navigate(href));
-        if (!href.includes("#")) jumpTo(0);
-      });
-      transition.finished.finally(() => {
-        viaViewTransition = false;
-      });
+      const path = new URL(href, location.href).pathname;
+      let started = false;
+      const begin = (ready: boolean) => {
+        if (started) return;
+        started = true;
+        if (!ready) {
+          navigate(href);
+          return;
+        }
+        viaViewTransition = true;
+        const transition = document.startViewTransition(async () => {
+          const committed = waitForCommit(path);
+          navigate(href);
+          await committed;
+          if (!href.includes("#")) jumpTo(0);
+        });
+        transition.finished.finally(() => {
+          viaViewTransition = false;
+        });
+      };
+      void preloadRoute(path).then(() => begin(true));
+      setTimeout(() => begin(false), PRELOAD_WAIT);
     };
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);
   }, [navigate]);
+  /* The commit a running View Transition is waiting for (see above). */
+  useLayoutEffect(() => {
+    if (commitWaiter && commitWaiter.path.replace(/\/$/, "") === pathname.replace(/\/$/, "")) {
+      commitWaiter.resolve();
+      commitWaiter = null;
+    }
+  }, [pathname, key]);
+
   const first = useRef(true);
   /* Route arrivals animate; in-page navigation preserves active demos. */
   const [animateKey, setAnimateKey] = useState(pathname);

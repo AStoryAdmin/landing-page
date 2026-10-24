@@ -11,7 +11,8 @@
  * Pass 11e (founder: "children gifting it to grandparents on special
  * occasions, or how they use it together"): two new rooms open the page —
  * the OCCASIONS it is given for, as a row of cards, and USING IT TOGETHER,
- * shown on the app's real Figma screens (public/app). The gift reason moved
+ * once on the old app screens, now said in words (2026-10-23: the old
+ * screens are retired and the redesigned app could not be captured). The gift reason moved
  * up into the occasions. The opening and occasion photographs use the
  * generated assets documented in docs/image-prompts.md.
  *
@@ -21,18 +22,17 @@ import type { ReactNode } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { PLANS } from "../../lib/pricing";
-import { ArrowIcon, Invitation, PageOpening, Picture, Print } from "./kit/kit";
+import { ArrowIcon, Invitation, PageOpening, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import {
   Chapter,
-  Eyebrow,
   Frame,
   Plate,
   PrimaryLink,
   Statement,
   TextLink,
 } from "./kit/kit.styles";
-import { color, display, font, media } from "../../styles/theme";
+import { color, curve, display, font, media } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
 
 /* ── The reasons ───────────────────────────────────────────────────────── */
@@ -60,25 +60,9 @@ const Reasons = styled(Chapter)`
     flex-direction: column;
     min-width: 0;
   }
+  /* Every photograph here is a print with photo corners (jury 1 #8). */
   .art {
     position: relative;
-    aspect-ratio: 4 / 5;
-    padding: clamp(8px, 0.7vw, 12px);
-    background: ${color.paperPure};
-    box-shadow:
-      0 1px 1px rgba(42, 31, 24, 0.12),
-      0 18px 34px -20px rgba(42, 31, 24, 0.5);
-  }
-  .art .win {
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-  }
-  .art img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
   .kicker {
     margin-top: 22px;
@@ -93,9 +77,10 @@ const Reasons = styled(Chapter)`
     color: var(--ink);
     text-wrap: balance;
   }
+  /* The accent word in the darker rust: 4.5:1 on ivory (jury 2 P4). */
   h3 em {
     font-style: normal;
-    color: var(--mark);
+    color: ${color.accentText};
   }
   article > p:not(.kicker) {
     margin: 12px 0 10px;
@@ -115,7 +100,7 @@ const Reasons = styled(Chapter)`
       grid-template-columns: minmax(0, 1fr);
     }
     .art {
-      aspect-ratio: 4 / 3;
+      max-width: 420px;
     }
   }
 `;
@@ -137,15 +122,15 @@ const REASONS: ReasonCard[] = [
         “I know the story. I’ve never heard <em>their version.</em>”
       </>
     ),
-    text: "You may know where they grew up without knowing what it felt like. Help them set up once, choose a comfortable hour, and let the conversation find its own way.",
+    text: "You may know where they grew up without knowing what it felt like. They install A Story on their iPhone once, you choose a comfortable hour, and the call rings in the app.",
     action: (
       <TextLink to="/how-it-works#calls">
-        Watch a call <ArrowIcon />
+        See a sample call <ArrowIcon />
       </TextLink>
     ),
     photo: {
-      id: "12",
-      alt: "A person on a wall telephone in a hallway, around 1981",
+      id: "09",
+      alt: "Grown-ups talking over the end of a picnic lunch, 1964",
     },
   },
   {
@@ -181,8 +166,8 @@ const REASONS: ReasonCard[] = [
       </TextLink>
     ),
     photo: {
-      id: "23",
-      alt: "Two adults looking through old photographs together",
+      id: "28",
+      alt: "A family laughing together in a living room, 1986",
     },
   },
   {
@@ -214,13 +199,12 @@ function ReasonsRoom() {
             <article key={r.kicker} id={r.id} data-rise>
               <div className="art">
                 {r.photo ? (
-                  <div className="win">
-                    <Picture
-                      id={r.photo.id}
-                      alt={r.photo.alt}
-                      sizes="(max-width: 640px) 90vw, (max-width: 1280px) 45vw, 22vw"
-                    />
-                  </div>
+                  <Print
+                    id={r.photo.id}
+                    alt={r.photo.alt}
+                    ratio="4 / 5"
+                    sizes="(max-width: 640px) 90vw, (max-width: 1280px) 45vw, 22vw"
+                  />
                 ) : (
                   <Keepsake aria-label="What a family can keep">
                     <span>A photograph.</span>
@@ -242,7 +226,7 @@ function ReasonsRoom() {
 }
 
 const Keepsake = styled(Plate)`
-  height: 100%;
+  aspect-ratio: 4 / 5.3;
   box-sizing: border-box;
   background: ${color.paperPure};
   display: grid;
@@ -306,6 +290,9 @@ const OCCASIONS = [
   },
 ];
 
+/** The frieze's prints are laid down by hand: each a little turned. */
+const TILTS = [-1.2, 0.8, -0.6, 1.1, -0.9];
+
 const Occasions = styled(Chapter)`
   .row {
     display: grid;
@@ -331,29 +318,12 @@ const Occasions = styled(Chapter)`
   .occ:nth-child(even) {
     margin-top: 0;
   }
-  .occ .img {
-    position: relative;
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-    background: ${color.ivoryDeep};
-    box-shadow: 0 24px 48px -30px rgba(42, 31, 24, 0.68);
-  }
-  .occ .img::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    box-shadow: inset 0 0 0 1px rgba(42, 31, 24, 0.18);
-    pointer-events: none;
-  }
-  .occ img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  .occ figure {
+    transition: translate 400ms ${curve.out};
   }
   @media (hover: hover) and (pointer: fine) {
-    .occ:hover img {
-      transform: scale(1.035);
+    .occ:hover figure {
+      translate: 0 -4px;
     }
   }
   .occ div + div {
@@ -410,17 +380,17 @@ const TOGETHER = [
   {
     shot: "group-call",
     title: "Call it together.",
-    line: "Up to four phones on one call - the grandkids in three cities, Grandma at home. A Story keeps what’s said.",
+    line: "Up to four iPhones on one call in the A Story app: the grandkids in three cities, Grandma at home. A Story keeps what’s said.",
   },
   {
     shot: "memory",
-    title: "Listen back together.",
+    title: "Read it back together.",
     line: "Every memory keeps the words, the photographs and who told it.",
   },
   {
     shot: "family-tree",
     title: "Everyone on the tree.",
-    line: "Parents, partners, children and cousins on one family tree - and anyone can join with a six-letter code.",
+    line: "Parents, partners, children and cousins on one family tree. Anyone can join with a six-letter code.",
   },
 ];
 
@@ -432,33 +402,11 @@ const Together = styled(Chapter)`
     margin-top: calc(clamp(32px, 4vw, 72px) * var(--sy));
   }
   .col {
-    display: grid;
-    align-content: start;
-    justify-items: center;
-    text-align: center;
-  }
-  /* Real screens, cropped and fading, not drawn phones (2026-10-14) — the
-     same treatment as the home page's app screens. Height-capped for laptops. */
-  .screen {
-    width: min(100%, 290px, calc(48svh * 860 / 1250));
-    aspect-ratio: 860 / 1250;
-    margin: 0;
-    border-radius: 22px;
-    overflow: hidden;
-    background: ${color.paperPure};
-    box-shadow: 0 0 0 1px ${color.primaryLine};
-    mask-image: linear-gradient(#000 80%, transparent);
-  }
-  .screen img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top;
+    padding-top: 18px;
+    border-top: 1px solid ${color.primaryLineStrong};
   }
   h3 {
-    margin-top: 24px;
-    font: 400 ${display.sm} / 1.2 ${font.display};
+    font: 400 ${display.md} / 1.15 ${font.display};
     color: ${color.primary};
   }
   .col p {
@@ -480,8 +428,7 @@ function OccasionsRoom() {
   return (
     <Occasions ref={ref} $ground="sand" aria-labelledby="occasions-title">
       <Frame>
-        <Eyebrow>For the people who have everything</Eyebrow>
-        <Statement id="occasions-title" $size="xl" data-lines>
+        <Statement id="occasions-title" $size="lg" data-lines>
           The gift of a good <em>question.</em>
         </Statement>
         <div
@@ -492,13 +439,13 @@ function OccasionsRoom() {
         >
           {OCCASIONS.map((o) => (
             <article key={o.slot} className="occ" data-rise>
-              <div className="img">
-                <Picture
-                  id={o.photo}
-                  alt={o.alt}
-                  sizes="(max-width: 1024px) 70vw, 18vw"
-                />
-              </div>
+              <Print
+                id={o.photo}
+                alt={o.alt}
+                ratio="4 / 5"
+                tilt={TILTS[OCCASIONS.indexOf(o)]}
+                sizes="(max-width: 1024px) 70vw, 18vw"
+              />
               <div>
                 <small>{o.name}</small>
                 <p>{o.line}</p>
@@ -508,9 +455,9 @@ function OccasionsRoom() {
         </div>
         <div className="gift" data-rise>
           <p>
-            The easiest to give: {express.name}, <b>{express.price}</b> one time
-            - about a month of calls and a Classic Hardcover once printed
-            ordering opens. Nothing renews.
+            The easiest to give: {express.name}, <b>{express.price}</b> one
+            time. About a month of calls in the A Story app, and a Classic
+            Hardcover once printed ordering opens. Nothing renews.
           </p>
           <TextLink to="/pricing">
             Compare plans <ArrowIcon />
@@ -524,25 +471,14 @@ function OccasionsRoom() {
 function TogetherRoom() {
   const ref = useReveals<HTMLElement>();
   return (
-    <Together ref={ref} $ground="ivory" aria-labelledby="together-title">
+    <Together ref={ref} $ground="ivory" $tight aria-labelledby="together-title">
       <Frame>
-        <Eyebrow>Three generations, one phone</Eyebrow>
-        <Statement id="together-title" $size="xl" data-lines>
+        <Statement id="together-title" $size="lg" data-lines>
           Better <em>together.</em>
         </Statement>
         <div className="cols">
           {TOGETHER.map((t) => (
             <div key={t.shot} className="col" data-rise>
-              <figure className="screen">
-                <img
-                  src={`/app/${t.shot}.webp`}
-                  alt=""
-                  width={860}
-                  height={1250}
-                  loading="lazy"
-                  decoding="async"
-                />
-              </figure>
               <h3>{t.title}</h3>
               <p>{t.line}</p>
             </div>
@@ -553,6 +489,26 @@ function TogetherRoom() {
   );
 }
 
+/* On a phone the title takes the full measure, so it keeps to two lines
+   (jury 2 U7). */
+const Fit = styled.div`
+  @media (max-width: 860px) {
+    section[data-variant] .opening-grid h1 {
+      max-width: none;
+    }
+    /* The kit's object+flip column rule outranks its own phone rule, so
+       the opening stays one column here. */
+    section[data-variant][data-flip] .opening-grid:not(.solo) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 480px) {
+    section[data-variant] .opening-grid h1 {
+      font-size: 2.5rem;
+    }
+  }
+`;
+
 export default function Families() {
   return (
     <>
@@ -561,27 +517,33 @@ export default function Families() {
         path="/for-families"
         description="For the questions you want to ask your parents, the life you want to record yourself, and the days your family remembers differently."
       />
-      <PageOpening
-        title={
-          <>
-            The stories <em>between you.</em>
-          </>
-        }
-        lead="Nobody loses the wedding photos. They lose everything around them - the story he tells every Thanksgiving, and why everyone in that photograph is laughing."
-        actions={
-          <PrimaryLink to={START_HREF}>
-            {START_LABEL} <ArrowIcon />
-          </PrimaryLink>
-        }
-        media={
-          <Print
-            id="F01"
-            alt="A grandmother unwrapping an A Story book beside her granddaughter"
-            sizes="(max-width: 860px) 92vw, 44vw"
-            priority
-          />
-        }
-      />
+      <Fit>
+        <PageOpening
+          variant="object"
+          flip
+          title={
+            <>
+              The stories <em>between you.</em>
+            </>
+          }
+          lead="Nobody loses the wedding photos. They lose everything around them - the story he tells every Thanksgiving, and why everyone in that photograph is laughing."
+          actions={
+            <PrimaryLink to={START_HREF}>
+              {START_LABEL} <ArrowIcon />
+            </PrimaryLink>
+          }
+          object={
+            <Print
+              id="F01"
+              alt="A grandmother unwrapping an A Story book beside her granddaughter"
+              sizes="(max-width: 860px) 92vw, 52vw"
+              tilt={-1.4}
+              caption="Her birthday, and the first question"
+              priority
+            />
+          }
+        />
+      </Fit>
 
       <OccasionsRoom />
       <TogetherRoom />

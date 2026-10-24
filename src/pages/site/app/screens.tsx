@@ -170,8 +170,8 @@ const Call = styled.div`
     border-radius: 4.5cqw;
     font: 400 3.7cqw/1.45 ${font.body};
     transition:
-      opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
-      transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+      opacity 600ms cubic-bezier(0.23, 1, 0.32, 1),
+      transform 600ms cubic-bezier(0.23, 1, 0.32, 1);
   }
   /* Played by a scene (CallTrio): turns wait until the playhead reaches them. */
   .talk.is-played .bubble:not(.on) {
@@ -219,7 +219,7 @@ const Call = styled.div`
     }
   }
   .bubble.on {
-    animation: call-in 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    animation: call-in 600ms cubic-bezier(0.23, 1, 0.32, 1);
   }
   @keyframes call-in {
     from {
@@ -293,7 +293,7 @@ const Call = styled.div`
     border-radius: 7cqw;
     background: ${color.paperPure};
     box-shadow: 0 -2cqw 8cqw -2cqw rgba(42, 31, 24, 0.35);
-    animation: call-in 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    animation: call-in 700ms cubic-bezier(0.23, 1, 0.32, 1);
   }
   .saved small {
     display: flex;

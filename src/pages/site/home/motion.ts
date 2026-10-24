@@ -14,7 +14,7 @@
  * view and then stays put. No scrubbed fades, so nothing can be left
  * half-faded where a reader stops.
  */
-import { gsap, openMasks, SplitText } from "../../../lib/scrollMotion";
+import { arriveIfVisible, gsap, openMasks, SplitText } from "../../../lib/scrollMotion";
 
 /** Entrances: fast out of the gate, a long soft landing (registered in lib/scrollMotion.ts). */
 export const OUT = "house-out";
@@ -25,7 +25,17 @@ export const MOVE = "house-move";
 const START = "top 92%";
 
 /**
- * A group of elements rising into place in reading order, 70ms apart.
+ * The ScrollTrigger for a one-shot arrival, with the shared guard
+ * (lib/scrollMotion.ts `arriveIfVisible`, jury 2 B2): a block already on the
+ * first screen, below the start line, plays at once, and so does one the
+ * page can never scroll far enough to reach. Nothing waits hidden for a scroll.
+ */
+export function onArrival(trigger: Element) {
+  return { trigger, start: START, once: true, onRefresh: arriveIfVisible };
+}
+
+/**
+ * A group of elements rising into place in reading order, 70ms apart, in 0.7s.
  * `trigger` is the element whose arrival starts them (default: the first).
  */
 export function arrive(
@@ -35,7 +45,7 @@ export function arrive(
     y = 28,
     delay = 0,
     stagger = 0.07,
-    duration = 0.9,
+    duration = 0.7,
   }: {
     trigger?: Element | null;
     y?: number;
@@ -46,15 +56,24 @@ export function arrive(
 ) {
   const list = Array.from(els);
   if (!list.length) return;
-  return gsap.from(list, {
-    y,
-    opacity: 0,
-    duration,
-    ease: OUT,
-    stagger,
-    delay,
-    scrollTrigger: { trigger: trigger ?? list[0], start: START, once: true },
-  });
+  // fromTo, never from: a text link carries a CSS opacity transition, and
+  // when the scene is rebuilt (a breakpoint change, React's dev double mount)
+  // gsap.from read its opacity mid-transition, about 0, as the end value and
+  // left "Read a sample call" invisible (found 2026-10-23).
+  return gsap.fromTo(
+    list,
+    { y, opacity: 0 },
+    {
+      y: 0,
+      opacity: 1,
+      duration,
+      ease: OUT,
+      stagger,
+      delay,
+      clearProps: "opacity,transform",
+      scrollTrigger: onArrival(trigger ?? list[0]),
+    },
+  );
 }
 
 /**
@@ -73,11 +92,11 @@ export function layDown(
     rotation: (i: number) => (i % 2 ? 3 : -3),
     scale: 0.97,
     opacity: 0,
-    duration: 1.05,
+    duration: 0.85,
     ease: OUT,
     stagger,
     delay,
-    scrollTrigger: trigger === null ? undefined : { trigger: trigger ?? list[0], start: START, once: true },
+    scrollTrigger: trigger === null ? undefined : onArrival(trigger ?? list[0]),
   });
 }
 
@@ -101,7 +120,7 @@ export function lines(
       openMasks(s.masks);
       tween = gsap.from(s.lines, {
         yPercent: 110,
-        duration: 1.1,
+        duration: 0.8,
         ease: OUT,
         stagger: 0.08,
         delay,
@@ -109,7 +128,7 @@ export function lines(
         scrollTrigger:
           trigger === false || paused
             ? undefined
-            : { trigger: trigger ?? el, start: START, once: true },
+            : onArrival(trigger ?? el),
       });
       return tween;
     },
@@ -121,4 +140,28 @@ export function lines(
       tween?.play();
     },
   };
+}
+
+/**
+ * Slips of paper dealt onto the cloth: each comes in from the left, a little
+ * more turned, and settles on its own tilt. Witnesses uses it so the family's
+ * notes arrive differently from the headlines that rise (jury 2, U8).
+ */
+export function deal(
+  els: Element[] | NodeListOf<Element>,
+  { trigger, delay = 0, stagger = 0.09 }: { trigger?: Element | null; delay?: number; stagger?: number } = {},
+) {
+  const list = Array.from(els);
+  if (!list.length) return;
+  return gsap.from(list, {
+    x: -28,
+    y: 10,
+    rotation: "-=3",
+    opacity: 0,
+    duration: 0.65,
+    ease: OUT,
+    stagger,
+    delay,
+    scrollTrigger: onArrival(trigger ?? list[0]),
+  });
 }

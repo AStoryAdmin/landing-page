@@ -13,7 +13,7 @@ const Table = styled.div<{ $spread: boolean }>`
     background: ${color.paperPure};
     box-shadow: 0 4px 12px #3b291d18;
     transition:
-      transform 0.8s cubic-bezier(0.2, 0.7, 0.3, 1),
+      transform 560ms cubic-bezier(0.23, 1, 0.32, 1),
       translate 0.2s;
     border: 0;
     color: ${color.ink};

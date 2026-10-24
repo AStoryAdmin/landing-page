@@ -18,13 +18,15 @@ import Close from "./home/Close";
  *                   endpaper, the opening line and the two doors on the
  *                   title page, Bond asleep at its foot.
  *   2. Everyday     the photo wall, with the milestones folded into it.
- *   3. ThreeSteps   how it works: you set it up, they answer, the family
- *                   keeps it (replaces StepOne).
+ *   3. ThreeSteps   how it works: you install the app on their iPhone, they
+ *                   answer the call in it, the family keeps it (replaces
+ *                   StepOne).
  *   4. CallBecomes  one memory in the app, in her words and in the book,
  *                   with the three sample books (replaces Proof,
  *                   FamilyBook and SampleBooks).
- *   5. Witnesses    the family adds what they remember (replaces EveryVoice,
- *                   the One-life band and FamilyLoop).
+ *   5. Witnesses    the family adds what they remember, and the privacy
+ *                   promise in /privacy's words (replaces EveryVoice, the
+ *                   One-life band and FamilyLoop).
  *   6. Close        the price in one line, the two doors, where to next
  *                   (replaces PriceLadder and the Invitation on Home).
  *
@@ -41,7 +43,7 @@ export default function Home() {
       <EditorialSeo
         title="A Story - Your Family’s Living Memories"
         path="/"
-        description="A Story calls a parent or grandparent, asks about their life, and keeps what they tell in a private archive the whole family can add to - and print as a book."
+        description="A Story is an AI biographer that calls your parents and grandparents, asks about their lives, and keeps what they tell in a private book the whole family can add to."
       />
       {/* Only when the address carries a family code (?ref=): the code,
           large, and the three steps to use it. */}

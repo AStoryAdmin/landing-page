@@ -17,7 +17,7 @@ import styled from "styled-components";
 import { Frame } from "../kit/kit.styles";
 import { Print } from "./bench";
 import { gsap, useScene } from "../../../lib/scrollMotion";
-import { arrive, lines, OUT } from "./motion";
+import { arrive, lines, onArrival, OUT } from "./motion";
 import { color, font, media } from "../../../styles/theme";
 
 /** Where each print sits on the 12-column wall: [column, row] spans and its tilt. */
@@ -138,10 +138,10 @@ export default function Everyday() {
       rotation: (i: number) => (i % 2 ? 3 : -3),
       scale: 0.96,
       opacity: 0,
-      duration: 1,
+      duration: 0.85,
       ease: OUT,
-      stagger: { each: 0.06, from: "random" },
-      scrollTrigger: { trigger: root.querySelector(".grid"), start: "top 78%", once: true },
+      stagger: { each: 0.05, from: "random" },
+      scrollTrigger: onArrival(root.querySelector(".grid") ?? root),
     });
   });
 

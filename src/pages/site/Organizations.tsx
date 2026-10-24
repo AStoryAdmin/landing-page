@@ -24,19 +24,15 @@
 import { Link, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
-import { ArrowIcon, PageOpening, Picture, Print } from "./kit/kit";
+import { ArrowIcon, PageOpening, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
-import { AppShot, Phone } from "./app/Phone";
 import {
   Chapter,
-  Eyebrow,
   Frame,
   Heading,
-  Lead,
   Plate,
   PrimaryAnchor,
   SecondaryAnchor,
-  SplitHead,
   Statement,
 } from "./kit/kit.styles";
 import DemoBooking from "./DemoBooking";
@@ -48,19 +44,19 @@ const WHO = [
     photo: "04",
     alt: "A graduation, 1994",
     kind: "Colleges and universities",
-    title: "Alumni, in their own voices.",
+    title: "Alumni, in their own words.",
     body: "A reunion class, the first women admitted, a department turning fifty. Each graduate is called at an hour they choose, and the archive grows class by class.",
   },
   {
-    photo: "31",
-    alt: "A woman's face, 1958",
+    photo: "18",
+    alt: "An older woman on a porch in the rain, with her son beside her, 1960",
     kind: "Senior living and care",
     title: "Know the person behind the care.",
     body: "Residents tell the stories they want kept, and families add theirs. Staff learn who someone was before they came to you. An invitation to talk, never a memory test.",
   },
   {
-    photo: "32",
-    alt: "A street and building, around 1970",
+    photo: "40",
+    alt: "The bound pages of an A Story volume, close up",
     kind: "Libraries and museums",
     title: "An oral history that keeps going.",
     body: "Firsthand accounts beside the photographs and documents you already hold, with names and dates attached, ready to cite or exhibit.",
@@ -85,7 +81,7 @@ const STEPS = [
   ],
   [
     "A Story makes the calls.",
-    "Guided conversations that follow what each person actually says, at the hour they pick.",
+    "Guided conversations in the A Story iPhone app, now in a private beta, at the hour each person picks. We help everyone set it up.",
   ],
   [
     "You keep the archive.",
@@ -128,137 +124,48 @@ const NEXT = [
   ],
 ] as const;
 
-/* A thin band of the three things an institution asks first. */
-const Facts = styled.div`
-  background: ${color.ivoryDeep};
-  border-bottom: 1px solid ${color.primaryLine};
-  ul {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
+/* The hero's object (jury 1 #4): the four kinds of place as a row of
+   prints on the cloth, each with what A Story keeps there. It replaces the
+   separate "who" room and the trust strip under the hero (jury 1 #17). */
+const Strip = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(24px, 2.6vw, 52px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
   li {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    padding: 22px 12px;
-    font: 600 13px/1.35 ${font.body};
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: ${color.primary};
-    text-align: center;
-  }
-  li + li {
-    border-left: 1px solid ${color.primaryLine};
-  }
-  li::before {
-    content: "";
-    flex: none;
-    width: 7px;
-    height: 7px;
-    border: 1px solid ${color.goldOnLight};
-    transform: rotate(45deg);
-  }
-  ${media.sm} {
-    ul {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    li {
-      justify-content: flex-start;
-      padding: 16px 0;
-    }
-    li + li {
-      border-left: 0;
-      border-top: 1px solid ${color.primaryLine};
-    }
-  }
-`;
-
-const Who = styled(Chapter)`
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(24px, 2.6vw, 44px);
-  }
-  article {
     display: grid;
     align-content: start;
+    min-width: 0;
   }
-  /* One window for every print, so a portrait graduation and a landscape
-     street sit level. The mat and the shadow are the print's. */
-  .window {
-    position: relative;
-    aspect-ratio: 4 / 5;
-    padding: clamp(8px, 0.8vw, 12px);
-    background: ${color.paperPure};
-    box-shadow:
-      0 1px 1px rgba(42, 31, 24, 0.08),
-      0 18px 34px -18px rgba(42, 31, 24, 0.5);
+  li > figure {
+    max-width: 420px;
   }
-  .window > div {
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-  }
-  .window > div::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    box-shadow: inset 0 0 0 1px rgba(42, 31, 24, 0.14);
-  }
-  .window img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  @media (hover: hover) and (pointer: fine) {
-    article:hover .window img {
-      transform: scale(1.04);
-    }
-  }
-  .n {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    margin-top: 26px;
-    padding-top: 16px;
-    border-top: 1px solid var(--line);
-    font: 600 13px/1.3 ${font.body};
+  small {
+    display: block;
+    margin-top: 22px;
+    font: 600 12px/1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--label);
   }
-  .n b {
-    font: italic 400 18px/1 ${font.display};
-    letter-spacing: 0;
-    text-transform: none;
-    color: var(--mark);
-  }
-  h3 {
-    margin-top: 14px;
-  }
-  article p:last-child {
+  h2 {
     margin-top: 10px;
-    font: 400 17px/1.6 ${font.text};
-    color: var(--muted);
+    font: 500 ${display.sm} / 1.2 ${font.display};
+    color: var(--ink);
+  }
+  p {
+    margin-top: 8px;
+    font: 400 clamp(1rem, 0.96rem + 0.2vw, 1.15rem) / 1.55 ${font.text};
+    color: var(--text);
   }
   ${media.lg} {
-    .grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      row-gap: 56px;
-    }
-    .window {
-      aspect-ratio: 4 / 3;
-    }
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 48px;
   }
   ${media.sm} {
-    .grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
+    grid-template-columns: minmax(0, 1fr);
   }
 `;
 
@@ -291,112 +198,61 @@ const Line = styled(Chapter)`
   }
 `;
 
-const How = styled(Chapter)`
+/* How a program runs, and what the institution decides: one room, two
+   columns of ruled rows (no numerals, no thread, no bordered 2x2 grid;
+   jury 1 #10, jury 2 U5). */
+const Program = styled(Chapter)`
   .grid {
     display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    gap: clamp(40px, 6vw, 110px);
-    align-items: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(40px, 6vw, 140px);
+    align-items: start;
   }
-  .stage {
-    display: grid;
-    place-items: start center;
-    height: clamp(480px, 44vw, 640px);
-    overflow: hidden;
-    padding-top: 40px;
-    border-radius: 24px;
-    background: radial-gradient(
-      ellipse at 50% 100%,
-      color-mix(in srgb, ${color.gold} 34%, ${color.ivory}),
-      ${color.ivory} 72%
-    );
-    mask-image: linear-gradient(#000 86%, transparent);
+  .lead {
+    margin-top: 16px;
+    max-width: 46ch;
+    font: 400 clamp(1.05rem, 1rem + 0.3vw, 1.3rem) / 1.55 ${font.text};
+    color: var(--muted);
   }
-  ol {
+  ul {
     display: grid;
-    margin: clamp(32px, 3.4vw, 48px) 0 0;
+    margin: clamp(26px, 3vw, 44px) 0 0;
     padding: 0;
     list-style: none;
-    counter-reset: step;
   }
   li {
-    counter-increment: step;
     display: grid;
-    grid-template-columns: 48px minmax(0, 1fr);
-    gap: 18px;
-    padding: 22px 0;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 6px clamp(18px, 2.4vw, 40px);
+    padding: 20px 0;
     border-top: 1px solid var(--line);
   }
-  li::before {
-    content: counter(step, lower-roman);
-    font: italic 400 24px/1.1 ${font.display};
-    color: var(--mark);
+  li:last-child {
+    border-bottom: 1px solid var(--line);
   }
   li p {
-    margin-top: 6px;
     font: 400 17px/1.6 ${font.text};
     color: var(--muted);
-    max-width: 52ch;
+  }
+  .foot {
+    margin-top: 22px;
+    font: 400 16px/1.6 ${font.text};
+    color: var(--muted);
+  }
+  .foot a {
+    display: inline-block;
+    padding: 8px 0;
+    color: var(--ink);
+    font-weight: 600;
+    text-underline-offset: 4px;
   }
   ${media.md} {
     .grid {
       grid-template-columns: minmax(0, 1fr);
     }
-    .stage {
-      order: 2;
-      height: 460px;
-    }
-  }
-`;
-
-const Decide = styled(Chapter)`
-  .cells {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-  }
-  .cell {
-    display: grid;
-    grid-template-columns: 22px minmax(0, 1fr);
-    gap: 18px;
-    padding: clamp(26px, 3vw, 44px);
-    background: ${color.ivory};
-  }
-  .cell::before {
-    content: "";
-    width: 9px;
-    height: 9px;
-    margin: 12px 0 0 5px;
-    border: 1px solid ${color.goldOnLight};
-    transform: rotate(45deg);
-  }
-  .cell p {
-    margin-top: 8px;
-    font: 400 17px/1.6 ${font.text};
-    color: var(--muted);
-  }
-  .foot {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px 32px;
-    margin-top: clamp(28px, 3vw, 40px);
-    font: 400 17px/1.6 ${font.text};
-    color: var(--muted);
-  }
-  .foot p {
-    max-width: 60ch;
-  }
-  .foot a {
-    color: var(--ink);
-    font-weight: 600;
-    text-underline-offset: 4px;
   }
   ${media.sm} {
-    .cells {
+    li {
       grid-template-columns: minmax(0, 1fr);
     }
   }
@@ -418,36 +274,10 @@ const Book = styled(Chapter)`
     margin: clamp(30px, 3vw, 44px) 0 0;
     padding: 0;
     list-style: none;
-    counter-reset: next;
   }
   .side li {
-    counter-increment: next;
-    position: relative;
-    display: grid;
-    grid-template-columns: 36px minmax(0, 1fr);
-    gap: 14px;
-    padding-bottom: 22px;
-  }
-  /* The thread that joins the four steps. */
-  .side li:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    left: 13px;
-    top: 32px;
-    bottom: 4px;
-    width: 1px;
-    background: color-mix(in srgb, ${color.gold} 60%, transparent);
-  }
-  .side li::before {
-    content: counter(next);
-    display: grid;
-    place-items: center;
-    width: 28px;
-    height: 28px;
-    border: 1px solid ${color.goldOnLight};
-    border-radius: 50%;
-    font: italic 400 15px/1 ${font.display};
-    color: ${color.primary};
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
   }
   .side b {
     display: block;
@@ -468,6 +298,8 @@ const Book = styled(Chapter)`
     color: var(--muted);
   }
   .side .write a {
+    display: inline-block;
+    padding: 10px 0;
     color: var(--ink);
     font-weight: 600;
     text-underline-offset: 4px;
@@ -521,13 +353,13 @@ export default function Organizations() {
         description="Colleges, care communities, libraries and organizations can use A Story to record the people they were built by, in their own words. Book a thirty-minute demo."
       />
       <PageOpening
-        ground="night"
+        variant="wide"
         title={
           <>
             The people who made the <em>place.</em>
           </>
         }
-        lead="A Story calls the people your institution was built by - alumni, residents, long-serving staff, founders - and asks about their lives, with follow-up questions that listen. You keep their words, in their own voice, and a book when you want one."
+        lead="A Story calls the people your institution was built by, and asks about their lives with follow-up questions that listen. The calls ring in the A Story iPhone app, in a private beta. You keep their words, and a book when you want one."
         actions={
           <>
             <PrimaryAnchor href="#book">
@@ -536,137 +368,83 @@ export default function Organizations() {
             <SecondaryAnchor href="#how">How a program runs</SecondaryAnchor>
           </>
         }
-        media={
-          <Print
-            id="27"
-            alt="Someone telling a story at a dinner table while everyone listens, 1980"
-            sizes="(max-width: 1024px) 100vw, 44vw"
-            tilt={-1.5}
-            priority
-          />
+        object={
+          <Strip aria-label="Who it is for">
+            {WHO.map((w, i) => (
+              <li key={w.kind}>
+                <Print
+                  id={w.photo}
+                  alt={w.alt}
+                  ratio="4 / 5"
+                  tilt={[-1.4, 0.9, -0.7, 1.2][i]}
+                  sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 24vw"
+                  priority={i < 2}
+                />
+                <small>{w.kind}</small>
+                <h2>{w.title}</h2>
+                <p>{w.body}</p>
+              </li>
+            ))}
+          </Strip>
         }
       />
 
       <div ref={reveal}>
-        <Facts aria-label="In short">
-          <Frame>
-            <ul>
-              <li>A founder on every demo</li>
-              <li>Consent before every call</li>
-              <li>Quoted for your program</li>
-            </ul>
-          </Frame>
-        </Facts>
-
-        <Who $ground="ivory" aria-labelledby="who-title">
-          <Frame>
-            <SplitHead>
-              <div>
-                <Statement id="who-title" $size="lg">
-                  Every place has people <em>worth hearing.</em>
-                </Statement>
-              </div>
-              <Lead>
-                The calls are the same for everyone. What you keep, and who it
-                is for, is yours to decide.
-              </Lead>
-            </SplitHead>
-            <div className="grid">
-              {WHO.map((w) => (
-                <article key={w.kind} data-rise>
-                  <div className="window">
-                    <div>
-                      <Picture
-                        id={w.photo}
-                        alt={w.alt}
-                        sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 24vw"
-                      />
-                    </div>
-                  </div>
-                  <p className="n">{w.kind}</p>
-                  <Heading>{w.title}</Heading>
-                  <p>{w.body}</p>
-                </article>
-              ))}
-            </div>
-          </Frame>
-        </Who>
-
         <Line $ground="night" $tight aria-label="In one line">
           <Frame>
             <span className="orn" aria-hidden="true" />
             <p data-rise>
               <span>A record keeps what happened.</span>{" "}
-              <em>A voice keeps why.</em>
+              <em>Their own words keep why.</em>
             </p>
           </Frame>
         </Line>
 
-        <How
+        <Program
           $ground="paper"
           id="how"
-          aria-labelledby="how-title"
+          aria-label="How a program runs"
           style={{ scrollMarginTop: 80 }}
         >
           <Frame className="grid">
-            <div className="stage" data-rise aria-hidden="true">
-              <Phone width="min(320px, 84%)">
-                <AppShot name="archive" scroll />
-              </Phone>
-            </div>
             <div>
-              <Statement id="how-title" $size="lg">
-                From a demo to an archive, <em>in four steps.</em>
+              <Statement as="h2" id="how-title" $size="md">
+                From a demo to an archive.
               </Statement>
-              <ol>
+              <ul>
                 {STEPS.map(([t, d]) => (
                   <li key={t} data-rise>
-                    <div>
-                      <Heading>{t}</Heading>
-                      <p>{d}</p>
-                    </div>
+                    <Heading>{t}</Heading>
+                    <p>{d}</p>
                   </li>
                 ))}
-              </ol>
+              </ul>
             </div>
-          </Frame>
-        </How>
-
-        <Decide $ground="sand" aria-labelledby="decide-title">
-          <Frame>
-            <SplitHead>
-              <div>
-                <Eyebrow>Before the first call</Eyebrow>
-                <Statement id="decide-title" $size="lg">
-                  You decide. <em>They agree.</em>
-                </Statement>
-              </div>
-              <Lead>
+            <div>
+              <Statement as="h2" id="decide-title" $size="md">
+                You decide. <em>They agree.</em>
+              </Statement>
+              <p className="lead">
                 A private working archive and a public anniversary volume need
                 different decisions. We make them with you, before anyone is
                 called.
-              </Lead>
-            </SplitHead>
-            <div className="cells">
-              {DECIDE.map(([t, d]) => (
-                <div className="cell" key={t} data-rise>
-                  <div>
+              </p>
+              <ul>
+                {DECIDE.map(([t, d]) => (
+                  <li key={t} data-rise>
                     <Heading>{t}</Heading>
                     <p>{d}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="foot">
-              <p>
+                  </li>
+                ))}
+              </ul>
+              <p className="foot">
                 Pricing is quoted for each program, by how many people take part
                 and whether you want printed books. We tell you on the demo, not
-                after it.
+                after it. <Link to="/privacy">How we handle privacy</Link>
               </p>
-              <Link to="/privacy">How we handle privacy</Link>
             </div>
           </Frame>
-        </Decide>
+        </Program>
 
         <Book
           $ground="ivory"

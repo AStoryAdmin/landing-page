@@ -203,7 +203,9 @@ export const buttonBase = css`
   border: 1px solid transparent;
   text-decoration: none;
   cursor: pointer;
-  white-space: normal;
+  /* One line: a button label never wraps (hallmark 49). On a phone the
+     button goes full width, where the label fits. */
+  white-space: nowrap;
   transition:
     background ${motion.base},
     color ${motion.base},
@@ -298,8 +300,14 @@ export const buttonVariants = {
       &:hover {
         color: ${color.accent};
         transform: none;
-        gap: 12px;
       }
+      /* The arrow steps forward; the gap no longer jumps 8 to 12px. */
+      &:hover svg {
+        transform: translateX(4px);
+      }
+    }
+    svg {
+      transition: transform ${motion.base};
     }
   `,
 } as const;

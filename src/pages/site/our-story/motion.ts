@@ -4,7 +4,7 @@
  * registered once with GSAP so scripted motion and CSS agree.
  */
 import { CustomEase } from "gsap/CustomEase";
-import { gsap } from "../../../lib/scrollMotion";
+import { arriveIfVisible, gsap } from "../../../lib/scrollMotion";
 
 gsap.registerPlugin(CustomEase);
 
@@ -27,22 +27,38 @@ export function layDown(
   vars: { trigger?: Element; delay?: number; start?: string } = {},
 ) {
   if (!els.length) return;
-  return gsap.from(els, {
-    opacity: 0,
-    y: 28,
-    scale: 1.04,
-    rotation: (i: number) => (i % 2 ? "+=3" : "-=3"),
-    duration: 0.9,
-    ease: HOUSE_OUT,
-    stagger: 0.12,
-    delay: vars.delay ?? 0,
-    clearProps: "transform,opacity",
-    scrollTrigger: {
-      trigger: vars.trigger ?? els[0],
-      start: vars.start ?? "top 92%",
-      once: true,
+  // fromTo, so a tween killed half way (a remount, StrictMode) can never
+  // leave a print or a link stuck at opacity 0.
+  // Each print's own turn (from its CSS), read before anything moves it.
+  const base = els.map((el) => Number(gsap.getProperty(el, "rotation")) || 0);
+  return gsap.fromTo(
+    els,
+    {
+      opacity: 0,
+      y: 28,
+      scale: 1.04,
+      rotation: (i: number) => base[i] + (i % 2 ? 3 : -3),
     },
-  });
+    {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotation: (i: number) => base[i],
+      duration: 0.8,
+      ease: HOUSE_OUT,
+      stagger: 0.1,
+      delay: vars.delay ?? 0,
+      clearProps: "transform,opacity",
+      scrollTrigger: {
+        trigger: vars.trigger ?? els[0],
+        start: vars.start ?? "top 92%",
+        once: true,
+        // Already on screen at load (the letters at 1920): play at once
+        // rather than wait for a scroll (jury 2, B2).
+        onRefresh: arriveIfVisible,
+      },
+    },
+  );
 }
 
 /** Parts of a block rising in order: heading, words, action. */
@@ -51,18 +67,25 @@ export function riseIn(
   vars: { trigger?: Element; delay?: number; start?: string } = {},
 ) {
   if (!els.length) return;
-  return gsap.from(els, {
-    opacity: 0,
-    y: 22,
-    duration: 0.8,
-    ease: HOUSE_OUT,
-    stagger: 0.08,
-    delay: vars.delay ?? 0,
-    clearProps: "transform,opacity",
-    scrollTrigger: {
-      trigger: vars.trigger ?? els[0],
-      start: vars.start ?? "top 92%",
-      once: true,
+  return gsap.fromTo(
+    els,
+    { opacity: 0, y: 22 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: HOUSE_OUT,
+      stagger: 0.08,
+      delay: vars.delay ?? 0,
+      clearProps: "transform,opacity",
+      scrollTrigger: {
+        trigger: vars.trigger ?? els[0],
+        start: vars.start ?? "top 92%",
+        once: true,
+        // Already on screen at load (the letters at 1920): play at once
+        // rather than wait for a scroll (jury 2, B2).
+        onRefresh: arriveIfVisible,
+      },
     },
-  });
+  );
 }

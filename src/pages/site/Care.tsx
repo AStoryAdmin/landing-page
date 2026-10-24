@@ -1,20 +1,87 @@
 /**
- * For care communities — rebuilt on the shared audience composition
- * (kit/Audience.tsx, Pass 11g). The message is unchanged from earlier passes:
- * an invitation, never a test of memory; the family fills in the edges; agree
- * consent and support before beginning; pricing quoted individually. A Story
- * records personal stories — it is not a clinical assessment or treatment,
- * and the page says so.
+ * For care communities.
  *
- * Photographs are from the illustrative library. docs/image-prompts.md
- * ("Care communities") has briefs for purpose-made images.
+ * The message is unchanged from earlier passes: an invitation, never a test
+ * of memory; the family fills in the edges; agree consent and support before
+ * beginning; pricing quoted individually. A Story records personal stories -
+ * it is not a clinical assessment or treatment, and the page says so.
+ *
+ * Fix round 2 (2026-10-23, jury 1 #5 #7 #9 #10 #24): the page no longer uses
+ * the shared audience template. It opens on the cloth with the page's words
+ * on an ivory leaf and one print beside it - the photo-sorting scene, shown
+ * once on this page and nowhere else on the site. Then one room for knowing
+ * the person (two prints, three ruled rows), the question that opens a
+ * conversation beside how it works, and what to agree before beginning. No
+ * photograph is drawn larger than its file, and none repeats Home's.
  */
+import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
-import { ArrowIcon } from "./kit/kit";
-import { AudiencePage } from "./kit/Audience";
-import { PrimaryLink, SecondaryLink } from "./kit/kit.styles";
+import { ArrowIcon, Invitation, PageOpening, Print } from "./kit/kit";
+import { useReveals } from "./kit/reveals";
+import {
+  Chapter,
+  Frame,
+  PrimaryLink,
+  SecondaryAnchor,
+  Statement,
+} from "./kit/kit.styles";
+import { BeginCard, QuoteBand, RuledSteps } from "./rooms/Rooms";
+import { color, font, media } from "../../styles/theme";
+
+const Know = styled(Chapter)`
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(40px, 6vw, 140px);
+    align-items: center;
+  }
+  /* Two prints laid on each other, the smaller over the larger's corner. */
+  .pair {
+    position: relative;
+    padding: 0 0 clamp(60px, 7vw, 120px) 0;
+  }
+  .pair > figure:first-child {
+    width: min(86%, 640px);
+  }
+  .pair > figure:last-child {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: min(46%, 340px);
+  }
+  .words > p {
+    margin: 18px 0 clamp(22px, 2.4vw, 34px);
+    max-width: 44ch;
+    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.35rem) / 1.55 ${font.text};
+    color: ${color.body};
+  }
+  ${media.lg} {
+    .row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .pair {
+      max-width: 640px;
+    }
+  }
+`;
+
+/* On a phone the title takes the full measure, so it keeps to two lines
+   (jury 2 U7). */
+const Fit = styled.div`
+  @media (max-width: 860px) {
+    section[data-variant] .opening-grid h1 {
+      max-width: none;
+    }
+  }
+  @media (max-width: 480px) {
+    section[data-variant] .opening-grid h1 {
+      font-size: 2.1rem;
+    }
+  }
+`;
 
 export default function Care() {
+  const know = useReveals<HTMLElement>();
   return (
     <>
       <EditorialSeo
@@ -22,70 +89,94 @@ export default function Care() {
         path="/care-communities"
         description="Make room for a resident’s own stories and family perspectives. Discuss participation, setup, privacy and a small community program."
       />
-      <AudiencePage
-        eyebrow="For care communities"
-        title={
+      <Fit>
+        <PageOpening
+          variant="letter"
+          flip
+          title={
+            <>
+              Every resident has a life <em>worth knowing.</em>
+            </>
+          }
+          lead="The work they did. The music in the house. The way they made Sunday lunch. Give those stories somewhere to stay, and give the people caring for them a way to learn them."
+          actions={
+            <>
+              <PrimaryLink to="/organizations?for=care#book">
+                Book a demo <ArrowIcon />
+              </PrimaryLink>
+              <SecondaryAnchor href="#begin-title-room">
+                Planning participation
+              </SecondaryAnchor>
+            </>
+          }
+          object={
+            <Print
+              id="23"
+              alt="Two people going through a box of old photographs together"
+              sizes="(max-width: 860px) 92vw, 46vw"
+              tilt={-1.6}
+              caption="Who is that, beside your mother?"
+              priority
+            />
+          }
+        />
+      </Fit>
+
+      <Know ref={know} $ground="ivory" aria-labelledby="know-title">
+        <Frame className="row">
+          <div className="pair" data-rise="settle">
+            <Print
+              id="13"
+              alt="The end of a birthday: candles out, the cake cut, 1991"
+              sizes="(max-width: 1024px) 86vw, 36vw"
+              tilt={-1.2}
+            />
+            <Print
+              id="29"
+              alt="An ordinary morning at home: a man at the kitchen table, 1982"
+              sizes="(max-width: 1024px) 46vw, 20vw"
+              tilt={2}
+            />
+          </div>
+          <div className="words">
+            <Statement id="know-title" $size="lg" data-lines>
+              Know the person <em>behind the care.</em>
+            </Statement>
+            <p data-rise>
+              A Story records personal stories. It is not a clinical assessment
+              or treatment.
+            </p>
+            <RuledSteps
+              steps={[
+                [
+                  "Start with what they choose.",
+                  "A photograph, a recipe or a song can open a conversation. It is an invitation, never a test of what someone remembers.",
+                ],
+                [
+                  "Let the family fill in the edges.",
+                  "Relatives recognise faces, remember names and bring their own accounts, each beside the resident’s words.",
+                ],
+                [
+                  "A few lines before the next shift.",
+                  "What they did for a living, who they miss, the song that settles them.",
+                ],
+              ]}
+            />
+          </div>
+        </Frame>
+      </Know>
+
+      <QuoteBand
+        quote={
           <>
-            Every resident has a life <em>worth knowing.</em>
+            “Who taught you to make it <b>that way?</b>”
           </>
         }
-        lead="The work they did. The music in the house. The way they made Sunday lunch. Give those stories somewhere to stay - and give the people caring for them a way to learn them."
-        actions={
-          <>
-            <PrimaryLink to="/organizations?for=care#book">
-              Book a demo <ArrowIcon />
-            </PrimaryLink>
-            <SecondaryLink to="/care-communities#begin-title">
-              Planning participation
-            </SecondaryLink>
-          </>
-        }
-        collage={[
-          { photo: "05", alt: "Hands working dough on a floured counter" },
-          { photo: "31", alt: "A portrait of a woman, 1958" },
-          {
-            photo: "23",
-            alt: "Two people looking through old photographs together",
-          },
-        ]}
-        momentsTitle={
-          <>
-            Know the person <em>behind the care.</em>
-          </>
-        }
-        moments={[
-          {
-            photo: "11",
-            alt: "Hands holding playing cards at a kitchen table",
-            eyebrow: "An invitation",
-            title: "Start with what they choose.",
-            body: "A familiar photograph, recipe or song can open a conversation. It is an invitation, never a test of what someone remembers - they choose what to share and when to stop.",
-          },
-          {
-            photo: "34",
-            alt: "A family comparing photographs and recollections",
-            eyebrow: "Family context",
-            title: "Let the family fill in the edges.",
-            body: "Relatives recognise faces, remember names and bring their own accounts. Each sits beside the resident’s words, clearly attributed.",
-          },
-          {
-            photo: "12",
-            alt: "A person on a wall telephone in a hallway",
-            eyebrow: "For the team",
-            title: "A few lines before the next shift.",
-            body: "What they did for a living, who they miss, the song that settles them. The kind of detail that turns care into conversation.",
-          },
-        ]}
-        appShot={{ name: "people" }}
-        appTitle={
-          <>
-            One circle around <em>each resident.</em>
-          </>
-        }
+        title="One circle around each resident"
         steps={[
           [
             "The resident talks, when they like.",
-            "A Story calls at an agreed hour, or a staff member starts a conversation together with them.",
+            "A Story calls in its iPhone app at an agreed hour (in a private beta), or a staff member starts a conversation together with them.",
           ],
           [
             "The family adds what they know.",
@@ -96,26 +187,26 @@ export default function Care() {
             "Only the people the resident and family invite can read it.",
           ],
         ]}
-        statement={
-          <>
-            “Who taught you to make it <b>that way?”</b>
-          </>
-        }
-        beginEyebrow="Before you begin"
-        beginTitle="Make participation comfortable."
-        beginBody="Begin with a small program shaped around the residents and families who want to take part. Community pricing is quoted individually. A Story records personal stories. It is not a clinical assessment or treatment."
+      />
+
+      <BeginCard
+        id="begin-title"
+        title="Make participation comfortable."
+        body="Begin with a small program shaped around the residents and families who want to take part. Community pricing is quoted individually."
         checklist={[
           "Who will help with installation, introductions and support",
-          "Consent - and who may read or contribute",
+          "Consent, and who may read or contribute",
           "Which material should stay private",
           "How families are invited, and when",
         ]}
-        beginAction={
+        action={
           <PrimaryLink to="/organizations?for=care#book">
             Book a demo <ArrowIcon />
           </PrimaryLink>
         }
       />
+
+      <Invitation />
     </>
   );
 }

@@ -92,7 +92,7 @@ export const TocItem = styled.li`
 export const TocLink = styled.a`
   color: ${color.body};
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color 200ms cubic-bezier(0.23, 1, 0.32, 1);
 
   &:hover {
     color: ${color.accentText};

@@ -3,18 +3,21 @@
  * rules they follow and the quick usage list.
  *
  * NEW IN PHASE 2
- *   <Print id alt sizes tilt caption bare>  white border, black photo corners, Caveat caption
+ *   <Print id|src alt sizes tilt caption ratio focus bare>
+ *                                            white border, black photo corners, Caveat caption;
+ *                                            any file (src + width/height + srcSet), never upscaled
  *   <PhotoCorners/>                          the four corners, for a custom print inside .print-face
  *   <Bond pose ledge width phone>            the founder's dog lying on a ledge; never blocks a click
- *   <PageOpening ground>                     now opens on the chocolate cloth by default
+ *   <PageOpening variant object note flip ground>
+ *                                            split | object | wide | letter; cloth by default
  *   <Invitation title line>                  the cloth close + Where to next; the line varies by page
  */
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { mission } from "../../../lib/mission";
 import { useReveals } from "./reveals";
-import { display, font, media, motion } from "../../../styles/theme";
+import { color, display, font, media, motion, shadow } from "../../../styles/theme";
 import {
   Actions,
   Chapter,
@@ -81,7 +84,26 @@ export function Picture({
  * white border, four black-paper photo corners, the turn you give it
  * (`tilt`, in degrees; -2 to 2 reads as laid down by hand), and a
  * handwritten Caveat caption under it. A caption appears only when it says
- * something the photograph cannot: a name, a place, a year.
+ * something the photograph cannot: a name, a place, a year. EVERY
+ * photograph on the site goes through here, so they all read as one
+ * family's prints (jury 1 #8).
+ *
+ * Two sources:
+ *   id      a picture from the mission library (public/mission/<id>-*.webp);
+ *           the srcset and the natural size come from lib/mission.ts.
+ *   src     any other file, with its natural `width` and `height` (of the
+ *           largest file) and, where there are several sizes, `srcSet`:
+ *             <Print src="/our-story/album-1100.webp"
+ *                    srcSet="/our-story/album-640.webp 640w, /our-story/album-1100.webp 1100w"
+ *                    width={1100} height={733} alt="…" sizes="40vw" />
+ *
+ * `ratio` crops the print to a shape (4 / 5, "3 / 2", 1); `focus` is the
+ * object-position of the crop ("50% 30%"). Without it the photograph keeps
+ * its own proportion.
+ *
+ * The print is never drawn wider than its largest file (max-width is the
+ * natural width plus the border), so nothing is upscaled at 1920 or 2560;
+ * a wide slot gets a print at its true size, not a blurred one (jury 1 #9).
  *
  *   <Print id="12" alt="A person on a wall telephone, around 1981"
  *          sizes="(max-width: 860px) 80vw, 36vw" tilt={-1.5}
@@ -90,36 +112,69 @@ export function Picture({
  * `bare` shows the photograph alone (no border, no corners), for a picture
  * that is not an object on the table.
  */
+type PrintSource =
+  | { id: string; src?: never; srcSet?: never; width?: never; height?: never }
+  | { id?: never; src: string; srcSet?: string; width: number; height: number };
+
 export function Print({
-  id,
   alt,
   sizes,
   caption,
   tilt,
   priority,
   bare = false,
+  ratio,
+  focus,
   className,
-}: {
-  id: string;
+  ...source
+}: PrintSource & {
   alt: string;
   sizes: string;
   caption?: ReactNode;
   tilt?: number;
   priority?: boolean;
   bare?: boolean;
+  /** Crop the print to this shape: 4 / 5, "3 / 2", 1. */
+  ratio?: number | string;
+  /** Where the crop holds: an object-position, e.g. "50% 30%". */
+  focus?: string;
   className?: string;
 }) {
+  const natural = source.id
+    ? mission[source.id]
+    : { width: source.width!, height: source.height! };
+  const style = {
+    "--print-max": natural ? `${natural.width}px` : undefined,
+    "--print-ratio": ratio === undefined ? undefined : String(ratio),
+    "--print-focus": focus,
+  } as CSSProperties;
   return (
     <PrintMat
       $bare={bare}
       $tilt={tilt}
       className={className}
       data-bare={bare || undefined}
+      data-crop={ratio === undefined ? undefined : true}
+      style={style}
     >
       <div className="print-face">
         {!bare && <PhotoCorners />}
         <div className="print-window">
-          <Picture id={id} alt={alt} sizes={sizes} priority={priority} />
+          {source.id ? (
+            <Picture id={source.id} alt={alt} sizes={sizes} priority={priority} />
+          ) : (
+            <img
+              src={source.src}
+              srcSet={source.srcSet}
+              sizes={source.srcSet ? sizes : undefined}
+              width={source.width}
+              height={source.height}
+              alt={alt}
+              loading={priority ? "eager" : "lazy"}
+              fetchPriority={priority ? "high" : "auto"}
+              decoding="async"
+            />
+          )}
         </div>
       </div>
       {caption && <figcaption>{caption}</figcaption>}
@@ -227,6 +282,10 @@ const Opening = styled(Chapter)`
   .opening-grid.solo h1 {
     max-width: 22ch;
   }
+  .opening-words,
+  .opening-object {
+    min-width: 0;
+  }
   .opening-lead {
     margin-top: clamp(20px, 2.2vw, 32px);
     font: 400 clamp(1.25rem, 1.1rem + 0.42vw, 1.55rem) / 1.5 ${font.text};
@@ -234,32 +293,179 @@ const Opening = styled(Chapter)`
     max-width: 44ch;
     text-wrap: pretty;
   }
+  /* One quiet line under the actions (sign in, a refund, a time): sentence
+     case, 14px, the ground's muted ink. */
+  .opening-note {
+    margin-top: 18px;
+    font: 400 14px/1.55 ${font.ui};
+    color: var(--muted);
+    max-width: 52ch;
+  }
+  .opening-note a {
+    color: var(--ink);
+    text-underline-offset: 3px;
+  }
+
+  /* flip: the object first, the words on the right. */
+  &[data-flip] .opening-grid:not(.solo) {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  }
+  &[data-flip] .opening-object {
+    order: -1;
+  }
+
+  /* object: the page's own thing is the hero. The words take the narrower
+     column and sit low, on the line the object rests on; the object gets
+     the larger share of the window. */
+  &[data-variant="object"] .opening-grid:not(.solo) {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    align-items: end;
+  }
+  &[data-variant="object"][data-flip] .opening-grid:not(.solo) {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  }
+  &[data-variant="object"] .opening-grid h1 {
+    max-width: 14ch;
+  }
+  &[data-variant="object"] .opening-object {
+    display: grid;
+    justify-items: center;
+    align-items: end;
+  }
+
+  /* wide: the title runs across the window, the lead and the actions share
+     the row under it, and the object (a strip of cards, a plate of marks,
+     the price trio) spans the whole frame below. */
+  &[data-variant="wide"] .opening-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  &[data-variant="wide"] .opening-grid h1 {
+    max-width: 26ch;
+  }
+  &[data-variant="wide"] .opening-words {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: clamp(36px, 6vw, 160px);
+    align-items: end;
+  }
+  &[data-variant="wide"] .opening-words > h1,
+  &[data-variant="wide"] .opening-words > p:first-child {
+    grid-column: 1 / -1;
+  }
+  &[data-variant="wide"] .opening-tail {
+    justify-self: end;
+    text-align: right;
+  }
+  &[data-variant="wide"] .opening-tail > div {
+    justify-content: flex-end;
+  }
+  &[data-variant="wide"] .opening-object {
+    margin-top: calc(clamp(40px, 4.5vw, 88px) * var(--sy));
+  }
+
+  /* letter: the words are written on an ivory leaf lying on the cloth (a
+     note, a letter, a reply), with the object beside it. */
+  &[data-variant="letter"] .opening-sheet {
+    --ink: ${color.primary};
+    --text: ${color.body};
+    --muted: ${color.bodyMuted};
+    --line: ${color.primaryLineStrong};
+    --mark: #a86e12;
+    --label: ${color.accentText};
+    --focus: ${color.accentText};
+    --focus-halo: ${color.ivory};
+    --action-bg: ${color.chocolate};
+    --action-ink: ${color.onDark};
+    --action-hover: ${color.chocolateDeep};
+    position: relative;
+    min-width: 0;
+    color: var(--ink);
+    background: ${color.paper};
+    padding: clamp(32px, 3.6vw, 64px);
+    border-radius: 3px;
+    box-shadow: ${shadow.lie};
+    transform: rotate(-0.4deg);
+  }
+  &[data-variant="letter"] .opening-sheet::after {
+    content: "";
+    position: absolute;
+    inset: clamp(10px, 1vw, 16px);
+    border: 1px solid ${color.foil};
+    pointer-events: none;
+  }
+
   &[data-ground="night"],
   &[data-ground="cloth"],
   &[data-ground="teal"] {
     ${onDarkActions};
   }
   ${media.md} {
-    .opening-grid {
+    &[data-variant] .opening-grid:not(.solo) {
       grid-template-columns: minmax(0, 1fr);
+    }
+    &[data-flip] .opening-object {
+      order: 0;
+    }
+    &[data-variant="wide"] .opening-words {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    &[data-variant="wide"] .opening-tail {
+      justify-self: start;
+      text-align: left;
+    }
+    &[data-variant="wide"] .opening-tail > div {
+      justify-content: flex-start;
+    }
+  }
+  ${media.motion} {
+    &[data-variant="letter"] .opening-sheet {
+      transform: none;
     }
   }
 `;
 
+/** How a page opens. Seven pages shared one composition until 2026-10-23
+ * (jury 1 #4); each now picks the one that suits what it has to show. */
+export type OpeningVariant = "split" | "object" | "wide" | "letter";
+
 /**
- * A secondary route's opening. Since phase 2 it stands on the chocolate
- * cloth by default, as the top of every page in the app does: the header
- * and the opening read as one band, and the ivory page starts below. A
- * serif title (two lines at most), one paragraph, at most two actions and,
- * where it earns its place, one picture (a `Print` lies on the cloth).
- * Pass `ground="ivory"` (or paper, teal) for a page that should open light.
+ * A secondary route's opening, on the chocolate cloth by default, as the
+ * top of every page in the app is: the header and the opening read as one
+ * band, and the ivory page starts below. A serif title (two lines at most),
+ * one paragraph, at most two actions, one quiet note, and the page's own
+ * object.
+ *
+ *   variant="split"   (default) words left, the object right, centred
+ *   variant="object"  the object is the hero: it takes ~60% of the row and
+ *                     the words sit low beside it (a call card, the $1
+ *                     reservation card, the gift-wrapped book)
+ *   variant="wide"    the title across the window, lead | actions on one
+ *                     row, the object as a full-width strip below (the four
+ *                     questions on Guides, the price trio, the programme marks)
+ *   variant="letter"  the words on an ivory leaf lying on the cloth, the
+ *                     object beside it (Contact's letter, a reply)
+ *   flip              puts the object on the left (split, object, letter)
+ *
+ *   <PageOpening variant="object" title={…} lead="…" actions={…}
+ *     object={<ReservationCard />}
+ *     note={<>Already have an account? <a href="…">Sign in</a></>} />
+ *
+ * `object` is the page's own real thing, not a stock print. `media` is the
+ * old name for it and still works. `eyebrow` is optional: leave it out
+ * where the title already says where the reader is. Pass `ground="ivory"`
+ * (or paper, teal) only for a page that must open light.
  */
 export function PageOpening({
   eyebrow,
   title,
   lead,
   actions,
-  media: art,
+  note,
+  object,
+  media: legacyMedia,
+  variant = "split",
+  flip = false,
   ground = "cloth",
   labelledBy = "page-title",
 }: {
@@ -267,32 +473,72 @@ export function PageOpening({
   title: ReactNode;
   lead?: ReactNode;
   actions?: ReactNode;
+  /** One line of small print under the actions. */
+  note?: ReactNode;
+  /** The page's own object, beside or under the words. */
+  object?: ReactNode;
+  /** @deprecated use `object`. */
   media?: ReactNode;
+  variant?: OpeningVariant;
+  flip?: boolean;
   ground?: Ground;
   labelledBy?: string;
 }) {
   const ref = useReveals<HTMLElement>();
+  const art = object ?? legacyMedia;
+  const titleEl = (
+    <Title id={labelledBy} data-lines>
+      {title}
+    </Title>
+  );
+  const leadEl = lead ? (
+    <p className="opening-lead" data-rise>
+      {lead}
+    </p>
+  ) : null;
+  const tail =
+    actions || note ? (
+      <>
+        {actions && <Actions data-rise>{actions}</Actions>}
+        {note && (
+          <p className="opening-note" data-rise>
+            {note}
+          </p>
+        )}
+      </>
+    ) : null;
+  const words =
+    variant === "wide" ? (
+      <div className="opening-words">
+        {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+        {titleEl}
+        <div>{leadEl}</div>
+        {tail && <div className="opening-tail">{tail}</div>}
+      </div>
+    ) : (
+      <div className={variant === "letter" ? "opening-sheet" : "opening-words"}>
+        {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+        {titleEl}
+        {leadEl}
+        {tail}
+      </div>
+    );
   return (
     <Opening
       ref={ref}
       $ground={ground}
       data-ground={ground}
+      data-variant={variant}
+      data-flip={flip || undefined}
       aria-labelledby={labelledBy}
     >
       <Frame className={`opening-grid ${art ? "" : "solo"}`}>
-        <div>
-          {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-          <Title id={labelledBy} data-lines>
-            {title}
-          </Title>
-          {lead && (
-            <p className="opening-lead" data-rise>
-              {lead}
-            </p>
-          )}
-          {actions && <Actions data-rise>{actions}</Actions>}
-        </div>
-        {art && <div data-rise="settle">{art}</div>}
+        {words}
+        {art && (
+          <div className="opening-object" data-rise="settle">
+            {art}
+          </div>
+        )}
       </Frame>
     </Opening>
   );

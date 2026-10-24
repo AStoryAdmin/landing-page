@@ -487,30 +487,40 @@ export const SecondaryButton = styled.button`
 export const SecondaryAnchor = styled.a`
   ${secondary}
 `;
-/** A link set in the interface face whose underline draws away under the pointer. */
+/**
+ * A link set in the interface face. The underline is a real text underline,
+ * so when the link wraps on a phone every line is underlined under its own
+ * words; the old background-image rule ran through the second line and made
+ * "November, 15% off" look struck out (jury 3, B1). It fades under the
+ * pointer. Inline, with vertical padding for a 44px target.
+ */
 const textLink = css`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  font: 600 15px/1.3 ${font.ui};
+  display: inline;
+  padding-block: 12px;
+  font: 600 15px/1.45 ${font.ui};
   color: var(--ink, ${color.primary});
-  text-decoration: none;
-  background: linear-gradient(currentColor, currentColor) 0 calc(100% - 11px) /
-    100% 1px no-repeat;
-  transition: background-size ${motion.base};
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.28em;
+  text-decoration-color: currentColor;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  /* No opacity transition here: reveals tween opacity on links. */
+  transition: text-decoration-color ${motion.base};
   ${media.hover} {
     &:hover {
-      background-size: 0 1px;
-      background-position: 100% calc(100% - 11px);
+      text-decoration-color: transparent;
     }
   }
   &:active {
     opacity: 0.7;
   }
   svg {
+    display: inline-block;
     width: 16px;
     height: 16px;
+    margin-left: 8px;
+    vertical-align: -0.2em;
     transition: transform ${motion.base};
   }
   ${media.hover} {
@@ -521,6 +531,7 @@ const textLink = css`
   &:focus-visible {
     outline: 2px solid var(--focus, ${color.accentText});
     outline-offset: 3px;
+    border-radius: 2px;
   }
   &[aria-disabled="true"] {
     opacity: 0.55;
@@ -569,6 +580,9 @@ export const PrintMat = styled.figure<{ $bare?: boolean; $tilt?: number }>`
   margin: 0;
   position: relative;
   min-width: 0;
+  /* Never wider than the file (Print sets --print-max to its natural
+     width): the border's two sides are added on top. */
+  max-width: calc(var(--print-max, 100000px) + 2 * clamp(8px, 0.8vw, 14px));
   --tilt: ${({ $tilt = 0 }) => $tilt}deg;
   transform: rotate(var(--tilt));
   .print-face {
@@ -621,6 +635,15 @@ export const PrintMat = styled.figure<{ $bare?: boolean; $tilt?: number }>`
     display: block;
     width: 100%;
     height: auto;
+  }
+  /* ratio: the print cut to a shape, the crop held at --print-focus. */
+  &[data-crop] .print-window {
+    aspect-ratio: var(--print-ratio);
+  }
+  &[data-crop] .print-window img {
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--print-focus, 50% 50%);
   }
   figcaption {
     margin-top: 12px;

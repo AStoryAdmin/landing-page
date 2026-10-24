@@ -62,7 +62,7 @@ export const joanArchive = {
     first: "He’d been writing it down where I wouldn’t see. All those years.",
     second:
       "Because he couldn’t get it out of his mouth. He couldn’t say mine either. I’d had that wrong for fifty-one years as well.",
-    note: "Then she laughs. Once, and not happily, and that laugh is the whole marriage. It is why a transcript is not enough on its own: her son has read these words perhaps twice, and played the eight seconds they sit in more times than he would admit to.",
+    note: "Then she laughs, once. Her son has read these words perhaps twice, and played the eight seconds they sit in many more times. Voice clips are in development; the card and transcript are kept from every call today.",
   },
   waveform: [
     18, 34, 52, 41, 63, 78, 55, 44, 30, 22, 14, 9, 7, 6, 9, 16, 28, 47, 66, 81,

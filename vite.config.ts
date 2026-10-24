@@ -15,6 +15,22 @@ import deployment from './vercel.json' with { type: 'json' };
 function previewStaticRoutes(): Plugin {
     return {
         name: 'a-story-preview-static-routes',
+        /* Dev: /samples and /samples/ answer with the static book page in
+           public/, as the build does, instead of the SPA's not-found. */
+        configureServer(server) {
+            server.middlewares.use((request, _response, next) => {
+                const url = new URL(request.url ?? '/', 'http://localhost');
+                const bare = url.pathname.replace(/\/+$/, '');
+                if (
+                    bare &&
+                    !bare.split('/').pop()!.includes('.') &&
+                    existsSync(resolve(server.config.publicDir, `.${bare}/index.html`))
+                ) {
+                    request.url = `${bare}/index.html${url.search}`;
+                }
+                next();
+            });
+        },
         configurePreviewServer(server) {
             server.middlewares.use((request, response, next) => {
                 const url = new URL(request.url ?? '/', 'http://localhost');

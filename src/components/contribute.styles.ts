@@ -96,7 +96,7 @@ const inputStyles = `
     font-family: ${font.body};
     color: ${color.ink};
     min-height: 54px;
-    transition: border-color 0.2s ease;
+    transition: border-color 200ms cubic-bezier(0.23, 1, 0.32, 1);
     width: 100%;
     box-sizing: border-box;
 
@@ -129,10 +129,10 @@ export const KindBtn = styled.button<{ $on: boolean }>`
   font-size: 17px;
   font-weight: 600;
   transition:
-    background 200ms ease,
-    border-color 200ms ease,
-    color 200ms ease,
-    box-shadow 200ms ease;
+    background 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    color 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1);
   border: 1px solid ${({ $on }) => ($on ? color.primary : color.controlBorder)};
   background: ${({ $on }) => ($on ? color.primary : "transparent")};
   color: ${({ $on }) => ($on ? color.paperPure : color.bodyMuted)};
@@ -162,7 +162,7 @@ export const FileLabel = styled.label`
   color: ${color.bodyMuted};
   font-size: 17px;
   cursor: pointer;
-  transition: border-color 0.2s ease;
+  transition: border-color 200ms cubic-bezier(0.23, 1, 0.32, 1);
 
   &:hover {
     border-color: ${color.accent};
@@ -197,7 +197,7 @@ export const Submit = styled.button`
   letter-spacing: 0.6px;
   cursor: pointer;
   box-shadow: none;
-  transition: background 0.2s ease;
+  transition: background 200ms cubic-bezier(0.23, 1, 0.32, 1);
   margin-top: 4px;
 
   &:hover:not(:disabled) {

@@ -153,7 +153,7 @@ export const MEMORY_LAYERS = [
         blurb: 'Underneath the card, word for word, exactly as it was said. Searchable, and nothing edited out.',
     },
     {
-        name: 'The voice highlight',
-        blurb: 'The part actually worth hearing, kept as audio in their own voice - the laugh, the pause, the way they said her name.',
+        name: 'The call audio',
+        blurb: 'The call itself, kept as it was recorded. Short clips in their own voice, to play from the card, are in development.',
     },
 ];

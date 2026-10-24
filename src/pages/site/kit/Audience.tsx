@@ -3,9 +3,14 @@
  * Organizations and Your own story, so the three rooms share the home page's
  * finish (the founder asked for all three to be redone).
  *
- * 1. Opening — title, lead and actions left; a layered collage of prints
- *    right (two or three library photographs, set down at angles).
- * 2. Moments — three illustrated cards: the situations this is for.
+ * 1. Opening — on the chocolate cloth, as every page opens (jury 1 #5):
+ *    title, lead and actions left; a layered collage of three prints right
+ *    (white border, photo corners), set down at angles.
+ * 2. Moments — the situations this is for, in one of two rooms so the two
+ *    pages that use this template do not read as one (jury 1 #10):
+ *      momentsLayout="ledger"  ruled rows: a small print, the line, the text
+ *      momentsLayout="wall"    three prints of different sizes across the
+ *                              width, each with its words under it
  * 3. In the app — a real Figma screen in a phone beside three short steps.
  * 4. A statement band — one line to remember, on chocolate, with the
  *    namecard ornament.
@@ -16,15 +21,16 @@
 import type { ReactNode } from "react";
 import styled from "styled-components";
 import { AppShot, Phone } from "../app/Phone";
-import { Picture, Invitation } from "./kit";
+import { Print, Invitation } from "./kit";
 import { useReveals } from "./reveals";
-import { Actions, Chapter, Eyebrow, Frame, Title } from "./kit.styles";
-import { color, curve, display, font, media } from "../../../styles/theme";
+import { Actions, Chapter, Eyebrow, Frame, Title, onDarkActions } from "./kit.styles";
+import { color, display, font, media } from "../../../styles/theme";
 
 export type Moment = {
   photo: string;
   alt: string;
-  eyebrow: string;
+  /** Kept for the callers; not shown (a label above a heading says nothing the heading does not). */
+  eyebrow?: string;
   title: string;
   body: string;
 };
@@ -47,76 +53,71 @@ function TickIcon() {
 }
 
 const Opening = styled(Chapter)`
-  padding: clamp(72px, 9vw, 150px) 0 clamp(80px, 9vw, 150px);
-  overflow: hidden;
+  ${onDarkActions};
+  padding: calc(clamp(64px, 7vw, 132px) * var(--sy)) 0
+    calc(clamp(80px, 8vw, 140px) * var(--sy));
+  overflow: clip;
   .grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    gap: clamp(40px, 6vw, 110px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(40px, 6vw, 140px);
     align-items: center;
+  }
+  h1 {
+    max-width: 16ch;
   }
   h1 em {
     font-style: normal;
+    color: var(--mark);
   }
   .lead {
     margin-top: clamp(22px, 2.4vw, 32px);
     font: 400 clamp(1.25rem, 1.1rem + 0.42vw, 1.55rem) / 1.5 ${font.text};
-    color: var(--muted);
+    color: var(--text);
     max-width: 42ch;
   }
+  /* Three prints laid down on the cloth, overlapping a little. */
   .collage {
     position: relative;
-    aspect-ratio: 1 / 0.95;
-    margin-right: 2%;
+    aspect-ratio: 1 / 0.92;
+    width: min(100%, 980px);
+    justify-self: end;
   }
-  .collage figure {
+  .collage > figure {
     position: absolute;
-    margin: 0;
-    padding: 2%;
-    background: ${color.paperPure};
-    box-shadow: 0 40px 70px -40px rgba(42, 31, 24, 0.7);
   }
-  .collage img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .collage figure:nth-child(1) {
+  .collage > figure:nth-child(1) {
     left: 0;
-    top: 6%;
-    width: 62%;
-    aspect-ratio: 4 / 3.2;
-    transform: rotate(-2.5deg);
+    top: 7%;
+    width: 58%;
     z-index: 1;
   }
-  .collage figure:nth-child(2) {
+  .collage > figure:nth-child(2) {
     right: 0;
     top: 0;
-    width: 46%;
-    aspect-ratio: 4 / 5;
-    transform: rotate(3deg);
+    width: 42%;
     z-index: 2;
   }
-  .collage figure:nth-child(3) {
-    left: 18%;
+  .collage > figure:nth-child(3) {
+    left: 22%;
     bottom: 0;
-    width: 52%;
-    aspect-ratio: 4 / 3;
-    transform: rotate(1deg);
+    width: 48%;
     z-index: 3;
   }
   ${media.md} {
     .grid {
       grid-template-columns: minmax(0, 1fr);
     }
+    .collage {
+      justify-self: stretch;
+    }
   }
 `;
 
 const Moments = styled(Chapter)`
   h2 {
-    font: 400 ${display.lg} / 1.1 ${font.display};
-    letter-spacing: -0.02em;
+    font: 600 ${display.lg} / 1.06 ${font.display};
+    letter-spacing: -0.01em;
     color: var(--ink);
     max-width: 20ch;
   }
@@ -124,86 +125,88 @@ const Moments = styled(Chapter)`
     font-style: normal;
     color: var(--mark);
   }
-  /*
-   * Three moments, not three cards. The row of identical white tiles - photo,
-   * label, heading, paragraph - is the most templated shape on the web, and
-   * it was carrying four of this site's pages. These sit directly on the
-   * ground instead: one taken larger because it matters more, each print in
-   * the house's own keyline frame, with the gold rule between the picture and
-   * what is said about it. No container, no label above the heading.
-   */
-  .cards {
-    display: grid;
-    grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr);
-    gap: clamp(30px, 3.6vw, 64px) clamp(34px, 4.4vw, 78px);
-    margin-top: clamp(40px, 5vw, 72px);
+  h3 {
+    font: 600 ${display.sm} / 1.18 ${font.display};
+    color: var(--ink);
+    text-wrap: balance;
   }
-  .card:first-child {
-    grid-row: span 2;
-  }
-  .card .img {
-    position: relative;
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    background: ${color.ivoryDeep};
-    box-shadow: 0 26px 54px -34px rgba(42, 31, 24, 0.7);
-  }
-  .card:first-child .img {
-    aspect-ratio: 4 / 4.3;
-  }
-  .card .img::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    box-shadow: inset 0 0 0 1px rgba(42, 31, 24, 0.16);
-    pointer-events: none;
-  }
-  .card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 400ms ${curve.out};
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .card:hover img {
-      transform: scale(1.035);
-    }
-  }
-  /* The house rule, between the picture and what is said about it. */
-  .card h3 {
-    position: relative;
-    margin-top: clamp(22px, 2.2vw, 32px);
-    padding-top: clamp(18px, 1.8vw, 26px);
-    font: 400 ${display.sm} / 1.22 ${font.display};
-    color: ${color.primary};
-  }
-  .card:first-child h3 {
-    font-size: ${display.md};
-  }
-  .card h3::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 52px;
-    height: 1px;
-    background: color-mix(in srgb, ${color.gold} 78%, transparent);
-  }
-  .card p {
+  p {
     margin-top: 12px;
     font: 400 19px/1.6 ${font.text};
-    color: ${color.body};
+    color: var(--text);
     max-width: 46ch;
+    text-wrap: pretty;
+  }
+
+  /* ledger: ruled rows across the width - a small print, the line, the text. */
+  .ledger {
+    margin-top: calc(clamp(36px, 4vw, 64px) * var(--sy));
+    border-top: 1px solid var(--line);
+  }
+  .ledger article {
+    display: grid;
+    grid-template-columns: minmax(0, 0.6fr) minmax(0, 0.85fr) minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 96px);
+    align-items: center;
+    padding: calc(clamp(24px, 2.6vw, 44px) * var(--sy)) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .ledger figure {
+    width: min(100%, 360px);
+  }
+  .ledger h3 {
+    max-width: 16ch;
+    font-size: ${display.md};
+  }
+  .ledger p {
+    font-size: 20px;
+  }
+  .ledger p {
+    margin-top: 0;
+  }
+
+  /* wall: three prints of different sizes across the width, the words under each. */
+  .wall {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr) minmax(0, 1fr);
+    gap: clamp(28px, 4vw, 96px);
+    align-items: start;
+    margin-top: calc(clamp(40px, 4.6vw, 80px) * var(--sy));
+  }
+  .wall article:nth-child(2) {
+    margin-top: clamp(40px, 7vw, 150px);
+  }
+  .wall article:nth-child(3) {
+    margin-top: clamp(16px, 2.4vw, 52px);
+  }
+  .wall h3 {
+    margin-top: clamp(22px, 2.2vw, 34px);
   }
   ${media.md} {
-    .cards {
+    .ledger article {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      align-items: start;
+    }
+    .ledger article p {
+      grid-column: 2;
+    }
+    .wall {
       grid-template-columns: minmax(0, 1fr);
     }
-    .card:first-child {
-      grid-row: auto;
+    .wall article:nth-child(n) {
+      margin-top: 0;
     }
-    .card:first-child .img {
-      aspect-ratio: 16 / 10;
+    .wall figure {
+      width: min(100%, 520px);
+    }
+  }
+  ${media.sm} {
+    .ledger article {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+    }
+    .ledger article p {
+      grid-column: auto;
     }
   }
 `;
@@ -377,8 +380,18 @@ const Begin = styled(Chapter)`
   }
 `;
 
+/** Where each of the three collage prints is cut and how it is turned. */
+const COLLAGE = [
+  { ratio: 4 / 3.2, tilt: -2.5 },
+  { ratio: 4 / 5, tilt: 3 },
+  { ratio: 4 / 3, tilt: 1 },
+] as const;
+const TILTS = [-1.2, 1, -0.6] as const;
+const WALL_RATIOS = [4 / 5, 1, 4 / 3] as const;
+
 export function AudiencePage({
   eyebrow,
+  momentsLayout = "ledger",
   title,
   lead,
   actions,
@@ -396,7 +409,10 @@ export function AudiencePage({
   beginAction,
   ground = "ivory",
 }: {
-  eyebrow: string;
+  /** Optional: leave it out where the title already says who the page is for. */
+  eyebrow?: string;
+  /** How the moments are laid out; give the two audience pages different rooms. */
+  momentsLayout?: "ledger" | "wall";
   title: ReactNode;
   lead: string;
   actions: ReactNode;
@@ -407,11 +423,13 @@ export function AudiencePage({
   appTitle: ReactNode;
   steps: [string, string][];
   statement: ReactNode;
-  beginEyebrow: string;
+  beginEyebrow?: string;
   beginTitle: ReactNode;
   beginBody: string;
   checklist: string[];
   beginAction: ReactNode;
+  /** The ground of the closing "Before you begin" section. The opening is
+   * always the cloth. */
   ground?: "ivory" | "sand";
 }) {
   const r1 = useReveals<HTMLElement>();
@@ -421,10 +439,10 @@ export function AudiencePage({
   const r5 = useReveals<HTMLElement>();
   return (
     <>
-      <Opening ref={r1} $ground={ground} aria-labelledby="aud-title">
+      <Opening ref={r1} $ground="cloth" aria-labelledby="aud-title">
         <Frame className="grid">
           <div>
-            <Eyebrow>{eyebrow}</Eyebrow>
+            {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
             <Title id="aud-title" data-lines>
               {title}
             </Title>
@@ -434,15 +452,16 @@ export function AudiencePage({
             <Actions data-rise>{actions}</Actions>
           </div>
           <div className="collage" data-rise>
-            {collage.map((c, i) => (
-              <figure key={c.photo}>
-                <Picture
-                  id={c.photo}
-                  alt={c.alt}
-                  sizes="(max-width: 860px) 60vw, 30vw"
-                  priority={i === 0}
-                />
-              </figure>
+            {collage.slice(0, 3).map((c, i) => (
+              <Print
+                key={c.photo}
+                id={c.photo}
+                alt={c.alt}
+                ratio={COLLAGE[i].ratio}
+                tilt={COLLAGE[i].tilt}
+                sizes="(max-width: 860px) 60vw, 28vw"
+                priority={i === 0}
+              />
             ))}
           </div>
         </Frame>
@@ -453,20 +472,22 @@ export function AudiencePage({
           <h2 id="moments-title" data-lines>
             {momentsTitle}
           </h2>
-          <div className="cards">
-            {moments.map((m) => (
-              <article key={m.title} className="card" data-rise>
-                <div className="img">
-                  <Picture
-                    id={m.photo}
-                    alt={m.alt}
-                    sizes="(max-width: 860px) 92vw, 30vw"
-                  />
-                </div>
-                <div className="txt">
-                  <h3>{m.title}</h3>
-                  <p>{m.body}</p>
-                </div>
+          <div className={momentsLayout}>
+            {moments.map((m, i) => (
+              <article key={m.title} data-rise>
+                <Print
+                  id={m.photo}
+                  alt={m.alt}
+                  ratio={momentsLayout === "wall" ? WALL_RATIOS[i % 3] : 4 / 3}
+                  tilt={TILTS[i % 3]}
+                  sizes={
+                    momentsLayout === "wall"
+                      ? "(max-width: 860px) 92vw, 34vw"
+                      : "(max-width: 640px) 92vw, 360px"
+                  }
+                />
+                <h3>{m.title}</h3>
+                <p>{m.body}</p>
               </article>
             ))}
           </div>
@@ -511,11 +532,11 @@ export function AudiencePage({
         <p data-rise>{statement}</p>
       </Statement>
 
-      <Begin ref={r5} $ground="ivory" aria-labelledby="begin-title">
+      <Begin ref={r5} $ground={ground} aria-labelledby="begin-title">
         <Frame>
           <div className="card" data-rise>
             <div>
-              <Eyebrow>{beginEyebrow}</Eyebrow>
+              {beginEyebrow && <Eyebrow>{beginEyebrow}</Eyebrow>}
               <h2 id="begin-title">{beginTitle}</h2>
               <p>{beginBody}</p>
               {beginAction}

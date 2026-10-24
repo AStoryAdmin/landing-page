@@ -16,7 +16,7 @@ import { useScene } from "../../../lib/scrollMotion";
 import { arrive, lines } from "./motion";
 import { color, font, media } from "../../../styles/theme";
 import { START_HREF, START_LABEL } from "../../../lib/app";
-import { PLANS } from "../../../lib/pricing";
+import { OTHER_PLANS, PLANS } from "../../../lib/pricing";
 import {
   OFFERS,
   RESERVE_DEADLINE_LABEL,
@@ -24,6 +24,10 @@ import {
 } from "../../../lib/founding";
 
 const individual = PLANS.find((p) => p.id === "individual")!;
+const express = PLANS.find((p) => p.id === "express")!;
+const monthly = OTHER_PLANS.find((p) => p.id === "monthly")!;
+/** "$19.99/mo" -> "$19.99": the cheapest way in to the calls, stated as a month. */
+const monthlyPrice = monthly.price.replace(/\/mo$/, "");
 
 const NEXT = [
   { to: "/pricing", title: "Pricing", hint: "Every plan, and what each one includes." },
@@ -50,7 +54,7 @@ const Section = styled.section`
     font: 600 clamp(40px, 4.2vw, 92px) / 1.02 ${font.display};
     letter-spacing: -0.012em;
     color: ${color.primary};
-    max-width: 18ch;
+    max-width: 21ch;
     text-wrap: balance;
   }
   h2 em {
@@ -59,7 +63,7 @@ const Section = styled.section`
   }
   .plain {
     margin: clamp(18px, 1.6vw, 28px) 0 0;
-    max-width: 46ch;
+    max-width: 58ch;
     font: 400 clamp(17px, 1.2vw, 21px) / 1.5 ${font.text};
     color: ${color.body};
     text-wrap: pretty;
@@ -141,15 +145,17 @@ export default function Close() {
       <Frame className="close">
         <div>
           <h2 id="close-title">
-            Start free. Guided calls from <em>{individual.price} a year.</em>
+            Start free. Calls from <em>{monthlyPrice} a month.</em>
           </h2>
           <p className="plain">
             Free is the family archive and writing, in your browser, with no
-            card and no clock. The guided calls come with a plan, and they ring
-            on iPhone in our private beta.{" "}
+            card and no time limit. A plan adds the guided calls:{" "}
+            {monthlyPrice} a month, {individual.price} a year, or{" "}
+            {express.price} for 30 days. They ring in the A Story app on your
+            parent’s iPhone, in private beta.{" "}
             {reserveDiscountOpen()
-              ? `A dollar today holds ${OFFERS.reserve.discount}% off your first year, if you reserve by ${RESERVE_DEADLINE_LABEL}.`
-              : `A dollar today holds your place.`}
+              ? `A dollar holds your place in line and ${OFFERS.reserve.discount}% off your first year, if you reserve by ${RESERVE_DEADLINE_LABEL}. We email you when the calls open.`
+              : `A dollar holds your place in line, and we email you when the calls open.`}
           </p>
           <div className="doors">
             <PrimaryLink to={START_HREF}>

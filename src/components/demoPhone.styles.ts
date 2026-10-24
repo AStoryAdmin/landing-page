@@ -102,8 +102,8 @@ export const Bubble = styled.div<{ $role: "ai" | "user"; $show: boolean }>`
   opacity: 0;
   transform: translateY(6px);
   transition:
-    opacity 350ms ease,
-    transform 350ms ease;
+    opacity 280ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 280ms cubic-bezier(0.23, 1, 0.32, 1);
 
   ${({ $show }) =>
     $show &&
@@ -198,8 +198,8 @@ export const ChatPlayButton = styled.button`
   border-radius: 10px;
   cursor: pointer;
   transition:
-    background 0.2s ease,
-    opacity 0.2s ease;
+    background 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 200ms cubic-bezier(0.23, 1, 0.32, 1);
 
   &:hover:not(:disabled) {
     background: ${color.accentWash};
@@ -216,8 +216,8 @@ export const MemoryCardReveal = styled.div<{ $show: boolean }>`
   opacity: 0;
   transform: translateY(10px);
   transition:
-    opacity 500ms ease,
-    transform 500ms ease;
+    opacity 280ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 280ms cubic-bezier(0.23, 1, 0.32, 1);
 
   ${({ $show }) =>
     $show &&
@@ -333,9 +333,9 @@ export const McLayerTab = styled.button<{ $active?: boolean }>`
   color: ${color.body};
   cursor: pointer;
   transition:
-    color 140ms ease,
-    border-color 140ms ease,
-    background 140ms ease;
+    color 140ms cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 140ms cubic-bezier(0.23, 1, 0.32, 1),
+    background 140ms cubic-bezier(0.23, 1, 0.32, 1);
 
   &:hover {
     border-color: ${color.accentText};
@@ -567,7 +567,7 @@ export const DepthRung = styled.span<{ $level: number; $on: boolean }>`
   height: ${({ $level }) => 2 + $level}px;
   border-radius: 2px;
   background: ${({ $on }) => ($on ? color.gold : "rgba(255, 255, 255, 0.16)")};
-  transition: background 420ms ease;
+  transition: background 280ms cubic-bezier(0.23, 1, 0.32, 1);
   align-self: end;
 
   @media (prefers-reduced-motion: reduce) {
@@ -592,7 +592,7 @@ export const StayNote = styled.p<{ $show: boolean }>`
   line-height: 1.45;
   color: ${color.onDarkMuted};
   opacity: ${({ $show }) => ($show ? 1 : 0)};
-  transition: opacity 320ms ease;
+  transition: opacity 280ms cubic-bezier(0.23, 1, 0.32, 1);
 
   b {
     color: ${color.gold};
@@ -729,8 +729,8 @@ export const SensitiveNote = styled.p<{ $show: boolean }>`
   opacity: ${({ $show }) => ($show ? 1 : 0)};
   transform: translateY(${({ $show }) => ($show ? "0" : "4px")});
   transition:
-    opacity 320ms ease,
-    transform 320ms ease;
+    opacity 280ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 280ms cubic-bezier(0.23, 1, 0.32, 1);
 
   b {
     display: block;
@@ -767,7 +767,7 @@ export const McLayersHint = styled.p<{ $show: boolean }>`
   line-height: 1.5;
   color: ${color.faint};
   opacity: ${({ $show }) => ($show ? 1 : 0)};
-  transition: opacity 300ms ease;
+  transition: opacity 280ms cubic-bezier(0.23, 1, 0.32, 1);
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
@@ -882,7 +882,7 @@ export const Cover = styled.div<{ $gone: boolean }>`
   color: ${color.onDark};
   opacity: ${({ $gone }) => ($gone ? 0 : 1)};
   pointer-events: ${({ $gone }) => ($gone ? "none" : "auto")};
-  transition: opacity 420ms ease;
+  transition: opacity 280ms cubic-bezier(0.23, 1, 0.32, 1);
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
@@ -941,7 +941,7 @@ export const CoverOpen = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: filter 160ms ease;
+  transition: filter 160ms cubic-bezier(0.23, 1, 0.32, 1);
 
   &:hover {
     filter: brightness(1.08);
@@ -1032,7 +1032,7 @@ export const DemoCloseLink = styled(Link)`
   font-weight: 600;
   color: ${color.primaryDeep};
   text-decoration: none;
-  transition: filter 160ms ease;
+  transition: filter 160ms cubic-bezier(0.23, 1, 0.32, 1);
 
   &:hover {
     filter: brightness(1.06);

@@ -37,7 +37,12 @@ import { SCENARIOS } from "../../../lib/demoScripts";
 import { CALLS } from "../app/calls";
 import { ArrowIcon, Picture } from "../kit/kit";
 import { Frame, Statement, TextLink, grounds } from "../kit/kit.styles";
-import { gsap, riseLines, SplitText, useScene } from "../../../lib/scrollMotion";
+import {
+  gsap,
+  riseLines,
+  SplitText,
+  useScene,
+} from "../../../lib/scrollMotion";
 import { color, font, media, motion } from "../../../styles/theme";
 
 const CALL = CALLS.map((c) => {
@@ -85,9 +90,19 @@ const Scene = styled.section`
   }
   .lead {
     margin-top: 14px;
-    font: 400 clamp(1.05rem, 1rem + 0.3vw, 1.2rem) / 1.55 ${font.body};
+    font: 400 clamp(1.1rem, 1.02rem + 0.35vw, 1.35rem) / 1.55 ${font.text};
     color: ${color.onDarkMuted};
     max-width: 52ch;
+  }
+  /* What these are, said where the names are: scripted samples. */
+  .samples {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    font: 600 12px/1.3 ${font.ui};
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: ${color.gold};
   }
 
   /* The three calls. */
@@ -111,7 +126,8 @@ const Scene = styled.section`
     cursor: pointer;
     transition:
       background-color ${motion.base},
-      color ${motion.base};
+      color ${motion.base},
+      transform ${motion.press};
   }
   [role="tab"] b {
     font: 500 18px/1.2 ${font.display};
@@ -139,8 +155,9 @@ const Scene = styled.section`
     display: grid;
     place-items: center;
     /* Height-aware: the photograph and all three turns in one laptop screen. */
-    min-height: clamp(440px, 54svh, 580px);
-    margin-top: calc(clamp(20px, 2.4vw, 40px) * var(--sy));
+    min-height: clamp(420px, 50svh, 540px);
+    max-width: 1180px;
+    margin: calc(clamp(20px, 2.4vw, 40px) * var(--sy)) auto 0;
   }
   .print {
     position: relative;
@@ -189,14 +206,14 @@ const Scene = styled.section`
   }
   .note.answer {
     --tint: ${color.accent};
-    right: 0;
-    top: 8%;
+    right: 2%;
+    top: 6%;
     rotate: 1.6deg;
   }
   .note.follow {
     --tint: ${color.warmGold};
-    left: 2%;
-    top: 30%;
+    left: 3%;
+    top: 34%;
     rotate: -1.6deg;
   }
   .note header {
@@ -205,6 +222,8 @@ const Scene = styled.section`
     gap: 12px;
     margin-bottom: 10px;
   }
+  /* A person as a seal, as the app draws one: the initial in a gold ring
+     (no tinted disc; jury 1 #18). */
   .note i {
     display: grid;
     flex: none;
@@ -212,10 +231,14 @@ const Scene = styled.section`
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    font: 600 14px/1 ${font.body};
+    font: 500 17px/1 ${font.display};
     font-style: normal;
-    color: ${color.ivory};
-    background: var(--tint);
+    color: ${color.primary};
+    background: ${color.paperPure};
+    box-shadow:
+      inset 0 0 0 1px ${color.gold},
+      0 0 0 2px ${color.paperPure},
+      0 0 0 3px color-mix(in srgb, ${color.gold} 45%, transparent);
   }
   .note b {
     display: block;
@@ -371,7 +394,12 @@ export default function Listen({
     if (!stage) return;
     const ctx = gsap.context(() => {
       const split = mark
-        ? SplitText.create(mark, { type: "words", tag: "span", wordsClass: "w", aria: "none" })
+        ? SplitText.create(mark, {
+            type: "words",
+            tag: "span",
+            wordsClass: "w",
+            aria: "none",
+          })
         : null;
       mark?.classList.add("split");
       // `first` flips only when the trigger has really fired, so a rehearsal
@@ -389,8 +417,12 @@ export default function Listen({
             }
           : undefined,
       });
-      tl.from(".print", { y: 18, opacity: 0, rotation: "-=2.5", duration: 1 })
-        .from(".note.answer", { y: 24, opacity: 0, duration: 0.9 }, 0.3);
+      tl.from(".print", {
+        y: 18,
+        opacity: 0,
+        rotation: "-=2.5",
+        duration: 1,
+      }).from(".note.answer", { y: 24, opacity: 0, duration: 0.9 }, 0.3);
       if (split?.words.length) {
         tl.fromTo(
           split.words,
@@ -399,7 +431,11 @@ export default function Listen({
           ">-0.35",
         );
       }
-      tl.from(".note.follow", { y: 24, x: 12, opacity: 0, duration: 0.9 }, "+=0.5");
+      tl.from(
+        ".note.follow",
+        { y: 24, x: 12, opacity: 0, duration: 0.9 },
+        "+=0.5",
+      );
     }, stage);
     return () => {
       ctx.revert();
@@ -408,7 +444,9 @@ export default function Listen({
   }, [active, ref]);
 
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
-    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[
+      e.key
+    ];
     if (!step) return;
     e.preventDefault();
     const next = (active + step + CALL.length) % CALL.length;
@@ -427,29 +465,42 @@ export default function Listen({
             </Statement>
             <p className="lead">{c.lead}</p>
           </div>
-          <div role="tablist" aria-label="Three calls" onKeyDown={onKey}>
-            {CALL.map((x, i) => (
-              <button
-                key={x.id}
-                ref={(el) => {
-                  tabs.current[i] = el;
-                }}
-                type="button"
-                role="tab"
-                id={`${uid}-tab-${i}`}
-                aria-selected={active === i}
-                aria-controls={`${uid}-panel`}
-                tabIndex={active === i ? 0 : -1}
-                onClick={() => setActive(i)}
-              >
-                <b>{x.teller}</b>
-                <span>{x.behaviour.toLowerCase()}</span>
-              </button>
-            ))}
+          <div>
+            <p className="samples" id={`${uid}-samples`}>
+              Sample calls
+            </p>
+            <div
+              role="tablist"
+              aria-labelledby={`${uid}-samples`}
+              onKeyDown={onKey}
+            >
+              {CALL.map((x, i) => (
+                <button
+                  key={x.id}
+                  ref={(el) => {
+                    tabs.current[i] = el;
+                  }}
+                  type="button"
+                  role="tab"
+                  id={`${uid}-tab-${i}`}
+                  aria-selected={active === i}
+                  aria-controls={`${uid}-panel`}
+                  tabIndex={active === i ? 0 : -1}
+                  onClick={() => setActive(i)}
+                >
+                  <b>{x.teller}</b>
+                  <span>{x.behaviour.toLowerCase()}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div role="tabpanel" id={`${uid}-panel`} aria-labelledby={`${uid}-tab-${active}`}>
+        <div
+          role="tabpanel"
+          id={`${uid}-panel`}
+          aria-labelledby={`${uid}-tab-${active}`}
+        >
           <div className="stage" key={c.id}>
             <figure className="print">
               <div className="window">
@@ -489,7 +540,10 @@ export default function Listen({
         </div>
 
         <div className="foot">
-          <span>Kept from every call: the card and the transcript. Voice · in development.</span>
+          <span>
+            Kept from every call: the card and the transcript. Voice · in
+            development.
+          </span>
           {more && (
             <TextLink to="/how-it-works">
               How a call works <ArrowIcon />

@@ -7,14 +7,16 @@
  * chapter as a tracked sage kicker and "Live conversation · 14 min" on the
  * right; the title in the book's display face; the dateline in terracotta
  * when there is a date; two lines of the person's own words in italic; the
- * faces of the people in it; who told it as a small portrait in the folio
- * line. The paper is the memory's chosen colour, else its chapter's tint.
+ * people in it; who told it. The paper is the memory's chosen colour, else
+ * its chapter's tint. Since phase 2 the site loads the app's faces
+ * (Cormorant Garamond, EB Garamond, Montserrat), so the card sets in them.
+ * The inks are the app's tokens (theme.ts `app`).
  *
- * Two things differ, on purpose. The app's book faces (Cormorant Garamond,
- * EB Garamond) are not loaded on the site, which adds no fonts; the card
- * falls through to Source Serif 4, which is the app's own declared fallback
- * for both. Montserrat, the app's interface face, falls through to Figtree
- * the same way. The inks are the app's tokens (theme.ts `app`).
+ * One change from the app, on purpose (2026-10-23, jury 1 #12): the app
+ * overlaps the people's initials in tinted discs and repeats the teller as a
+ * lone disc on the right, which read on the site as a clipped "W R" and a
+ * stray "R". Here the people are the site's gold-ring seals side by side
+ * (as Home's Witnesses draws them) and the folio line says "Told by Ruth".
  *
  * It is an illustration, not a link: the site has nowhere to open it.
  */
@@ -158,39 +160,42 @@ const Card = styled.article`
     gap: 12px;
     min-height: 28px;
   }
-  .avatar {
-    display: inline-grid;
-    place-items: center;
-    flex: none;
-    border-radius: 50%;
-    background: var(--support);
-    color: var(--ink-soft);
-    font: 600 13px/1 var(--font-ui);
-    overflow: hidden;
-  }
-  .avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  /* The people in it, as monogram seals: the initial in a gold ring, side by
+     side, never overlapped or clipped. */
   .faces {
     display: inline-flex;
     align-items: center;
+    gap: 6px;
   }
-  .faces .avatar {
-    border: 2px solid var(--card);
-    margin-left: -8px;
+  .seal {
+    --seal-paper: var(--card);
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid ${color.warmGold};
+    box-shadow:
+      inset 0 0 0 2px var(--seal-paper),
+      inset 0 0 0 3px color-mix(in srgb, ${color.warmGold} 55%, transparent);
+    font: 600 15px/1 var(--book-display);
+    color: var(--ink);
   }
-  .faces .avatar:first-child {
-    margin-left: 0;
+  &.butter .seal {
+    --seal-paper: var(--paper-butter);
   }
+  .seal img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  /* Who told it, in words, in the folio line. */
   .told {
-    display: inline-flex;
-    align-items: center;
-  }
-  .told .avatar {
-    border: 2px solid var(--book-print);
-    box-shadow: 0 1px 3px rgba(42, 35, 32, 0.2);
+    font: 500 13px/1.3 var(--font-ui);
+    color: var(--ink-soft);
+    white-space: nowrap;
   }
   @media (max-width: 760px) {
     grid-template-columns: 104px minmax(0, 1fr);
@@ -223,16 +228,12 @@ function MicIcon() {
   );
 }
 
-/** The app's Avatar: a portrait when there is one, else the initial. */
-function Avatar({ name, size, src }: { name: string; size: number; src?: string }) {
+/** A person as a seal: their portrait when there is one, else the initial in a gold ring. */
+function Seal({ name, src }: { name: string; src?: string }) {
   const initial = (name || "?").trim()[0]?.toUpperCase() || "?";
   return (
-    <span
-      className="avatar"
-      aria-hidden="true"
-      style={{ width: size, height: size, fontSize: Math.max(13, Math.round(size * 0.42)) }}
-    >
-      {src ? <img src={src} alt="" width={size} height={size} /> : initial}
+    <span className="seal" aria-hidden="true">
+      {src ? <img src={src} alt="" width={28} height={28} /> : initial}
     </span>
   );
 }
@@ -275,15 +276,12 @@ export default function MemoryCard({ memory, className }: { memory: SampleMemory
         <p className="date dated">{date}</p>
         <p className="excerpt">{words}</p>
         <div className="foot">
-          <span className="faces" aria-label={people.join(", ")}>
+          <span className="faces" role="img" aria-label={`In it: ${people.join(", ")}`}>
             {people.slice(0, 3).map((p) => (
-              <Avatar key={p} name={p} size={24} />
+              <Seal key={p} name={p} src={p === teller ? tellerPhoto : undefined} />
             ))}
           </span>
-          <span className="told" title={told}>
-            <Avatar src={tellerPhoto} name={teller} size={26} />
-            <span className="sr-only">{told}</span>
-          </span>
+          <span className="told">{told}</span>
         </div>
       </div>
     </Card>

@@ -6,19 +6,19 @@ export const groups = [
     items: [
       {
         q: "What is A Story?",
-        a: "A Story helps families build a living archive through conversation. Guided calls become readable memory cards, full transcripts, and voice highlights. Photographs and family contributions add context, and you can turn part of the archive into a hardcover book.",
+        a: "A Story helps families build a living archive through conversation. Guided calls become memory cards to read and full transcripts. Photographs and family contributions add context, and you can turn part of the archive into a hardcover book.",
       },
       {
         q: "Can I sign up today?",
-        a: "Yes. Start free at app.astoryapp.com: make an account in your browser, with no card. The plans where A Story makes the calls open to a few families at a time: reserve one for $1 by 2 November and hold 15% off your first year, refundable any time before launch.",
+        a: "Yes. Start free at app.astoryapp.com: make an account in your browser, with no card. The plans where A Story makes the calls open to a few families at a time. Reserve one for $1 and we email you when the calls open, in the order families reserved. Reserve by 2 November to hold 15% off your first year. The dollar is refundable any time before the calls open.",
       },
       {
         q: "Does my family member need to install an app?",
-        a: "To be called, yes. You and your storyteller install A Story once, and you can help with the setup. After that, their phone rings at the chosen time and they answer the call. To read or add to the archive, no: any browser works, at app.astoryapp.com.",
+        a: "To be called, yes. The calls ring in the A Story iPhone app, which is in a private beta. Your parent installs it once on their iPhone, and we help you set it up. After that, the app rings at the hour you picked and they answer and talk. To read or add to the archive, no app is needed: any browser works, at app.astoryapp.com.",
       },
       {
         q: "Can I use A Story on a computer?",
-        a: "Yes. At app.astoryapp.com you can write, read the archive, see the family tree and read the book, in any browser. The calls happen on the phone.",
+        a: "Yes. At app.astoryapp.com you can write, read the archive, see the family tree and read the book, in any browser. The calls ring in the A Story iPhone app.",
       },
       {
         q: "Can I record my own story?",
@@ -27,7 +27,7 @@ export const groups = [
     ],
   },
   {
-    title: "Conversation & archive",
+    title: "Conversation, archive & family",
     items: [
       {
         q: "Who asks the questions?",
@@ -39,13 +39,8 @@ export const groups = [
       },
       {
         q: "Is the summary the whole record?",
-        a: "No. The memory card is a short summary. The full verbatim transcript stays underneath it, and voice highlights are kept as audio. Photographs and other relatives’ memories can sit alongside the story.",
+        a: "No. The memory card is a short summary. The full verbatim transcript stays underneath it, and the call audio is kept. Photographs and other relatives’ memories can sit alongside the story.",
       },
-    ],
-  },
-  {
-    title: "Family participation",
-    items: [
       {
         q: "Can relatives add a different version?",
         a: "Yes. Invite them with your family code or link. They read the memories the family keeps and add their side, with photographs. There is no fee per relative.",
@@ -61,7 +56,7 @@ export const groups = [
       },
       {
         q: "Is there a free trial?",
-        a: `No - there is something better: a Free tier that never runs out. ${START.detail}`,
+        a: `No. Free never runs out. ${START.detail}`,
       },
       {
         q: "How much is the printed book?",

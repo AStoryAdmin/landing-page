@@ -6,8 +6,8 @@
  * The left page is the endpaper - the chocolate board with the A mark
  * pressed into it - holding three prints in black photo corners, a line
  * written under each, and one thing a person said, in the book's serif. The
- * right page is the title page: the company's opening line, one sentence on
- * what A Story does, the two doors (Start free, Reserve for $1) and, asleep
+ * right page is the title page: the app's own line ("Every life holds a story
+ * worth keeping.", Bao 2026-10-23), one sentence on what A Story does, the two doors (Start free, Reserve for $1) and, asleep
  * on his book at the foot of the page, Bond, the founder's dog. He is
  * decoration only and never covers a word or a control.
  *
@@ -225,7 +225,7 @@ const Scene = styled.section`
   }
   .lead {
     margin: 2cqw 0 0;
-    max-width: 38ch;
+    max-width: 44ch;
     font: 400 max(17px, 1.32cqw) / 1.5 ${font.text};
     color: ${color.body};
     text-wrap: pretty;
@@ -237,10 +237,17 @@ const Scene = styled.section`
     align-items: center;
     margin-top: 2.6cqw;
   }
+  /* The doors grow with the book, so at 2560 they are not 52px under a 100px
+     headline (jury 2, P1); below about 1700px they are the kit's size. */
+  .doors a {
+    min-height: max(54px, 3.1cqw);
+    padding-inline: max(24px, 1.6cqw);
+    font-size: max(16px, 0.92cqw);
+  }
   .small {
     margin: 1.4cqw 0 0;
-    max-width: 40ch;
-    font: 400 14px / 1.5 ${font.body};
+    max-width: 50ch;
+    font: 400 max(14px, 0.82cqw) / 1.5 ${font.body};
     color: ${color.bodyMuted};
   }
   /* Bond, asleep on his book at the foot of the page. */
@@ -253,13 +260,26 @@ const Scene = styled.section`
     pointer-events: none;
     filter: drop-shadow(0 6px 8px rgba(42, 31, 24, 0.18));
   }
+  /* Phone only: in the free corner right of the lake print. */
+  .sample-note {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    left: 63%;
+    right: 5%;
+    top: 66%;
+    margin: 0;
+    text-align: left;
+    font: 400 13px / 1.3 ${font.body};
+    color: ${color.onDarkMuted};
+  }
   /* The ribbon marker, hanging from the head of the spine. */
   .ribbon {
     position: absolute;
     left: calc(50% - 0.5cqw);
-    bottom: -3.2cqw;
+    bottom: -1.7cqw;
     width: 1cqw;
-    height: 5cqw;
+    height: 3.4cqw;
     background: ${color.accent};
     clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
     box-shadow: inset 2px 0 0 rgba(0, 0, 0, 0.12);
@@ -326,10 +346,23 @@ const Scene = styled.section`
     .ribbon {
       display: none;
     }
+    /* The quote, which names the sample family, is hidden on a phone; this
+       keeps the disclosure where the pictures are (jury 3, #38). */
+    .sample-note {
+      display: block;
+    }
   }
   ${media.sm} {
+    .title-page {
+      padding-inline: 22px;
+    }
+    /* Two lines at 390: "Every life holds a / story worth keeping." */
     h1 {
-      font-size: 40px;
+      font-size: 37px;
+    }
+    /* Both doors the full width of the page, one above the other. */
+    .doors a {
+      flex: 1 1 100%;
     }
   }
 `;
@@ -337,9 +370,10 @@ const Scene = styled.section`
 export default function OpenBook() {
   const ref = useScene<HTMLElement>((root, { wide }) => {
     const prints = root.querySelectorAll(".album figure");
-    const rest = root.querySelectorAll(".mark, .rule, .lead, .doors, .small, .said");
+    const rest = root.querySelectorAll(".mark, .rule, .doors, .small, .said");
+    const lead = root.querySelector(".lead");
     const bond = root.querySelector(".bond");
-    const title = lines(root.querySelector("h1"), { paused: true, trigger: false, delay: 0.25 });
+    const title = lines(root.querySelector("h1"), { paused: true, trigger: false, delay: 0.1 });
 
     const tl = gsap.timeline({ paused: true, defaults: { ease: OUT } });
     tl.from(prints, {
@@ -347,13 +381,16 @@ export default function OpenBook() {
       rotation: (i: number) => (i % 2 ? 4 : -4),
       scale: 0.96,
       opacity: 0,
-      duration: 1.1,
-      stagger: 0.12,
+      duration: 0.9,
+      stagger: 0.1,
     })
-      .from(rest, { y: 20, opacity: 0, duration: 0.9, stagger: 0.07 }, 0.45)
-      .from(bond, { y: 14, opacity: 0, duration: 0.9 }, 1.1);
+      // The lead is the largest text on the first screen: it settles into
+      // place but is never transparent, so it paints at once (jury 2, B4).
+      .from(lead, { y: 14, duration: 0.7 }, 0.3)
+      .from(rest, { y: 18, opacity: 0, duration: 0.7, stagger: 0.06 }, 0.35)
+      .from(bond, { y: 12, opacity: 0, duration: 0.7 }, 0.9);
 
-    // One short arrival on load, about a second and a half; nothing waits on it.
+    // One short arrival on load, about a second and a quarter; nothing waits on it.
     title?.play();
     tl.play();
 
@@ -407,12 +444,13 @@ export default function OpenBook() {
             </blockquote>
             <figcaption>Dan, about his father · from a sample family’s book</figcaption>
           </figure>
+          <p className="sample-note">From a sample family’s book</p>
         </div>
 
         <div className="title-page">
           <span className="mark" aria-hidden="true" />
           <h1 id="hero-title">
-            Most of a life goes <em>undocumented.</em>
+            Every life holds a story <em>worth keeping.</em>
           </h1>
           <span className="rule" aria-hidden="true" />
           <p className="lead">
@@ -429,12 +467,15 @@ export default function OpenBook() {
             </SecondaryLink>
           </div>
           <p className="small">
-            Start free with the family archive in your browser, no card. The
-            calls ring on iPhone in our private beta.
+            Start free in your browser, no card. The calls ring in the A Story
+            app on your parent’s iPhone, now in private beta. Reserve, and we
+            email you when the calls open.
           </p>
           <img
             className="bond"
-            src="/home/bond-book.webp"
+            src="/home/bond-book-400.webp"
+            srcSet="/home/bond-book-400.webp 400w, /home/bond-book.webp 863w"
+            sizes="(max-width: 860px) 112px, 11vw"
             width={863}
             height={474}
             alt=""

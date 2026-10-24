@@ -8,17 +8,20 @@
  * Uncle Ben's confession - each under their own name (lib/homeExamples.ts,
  * LAKE_MONSTER; a fictional family). The campfire print is the one the
  * memory is about. The facts are the product's: one link, no account
- * needed, nothing shown until the storyteller says yes.
+ * needed, nothing shown until the storyteller says yes. The privacy line
+ * under it quotes /privacy's short version (components/privacy.tsx) word
+ * for word: only your family sees it, never sold, never used to train AI.
  *
  * Ground: the teal cloth - the one teal scene on the page.
  */
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { LAKE_MONSTER as M } from "../../../lib/homeExamples";
 import { Frame } from "../kit/kit.styles";
 import { Print } from "./bench";
 import { tealCloth } from "../kit/cloth";
 import { useScene } from "../../../lib/scrollMotion";
-import { arrive, layDown, lines } from "./motion";
+import { arrive, deal, layDown, lines } from "./motion";
 import { color, font, media } from "../../../styles/theme";
 
 const Section = styled.section`
@@ -130,8 +133,31 @@ const Section = styled.section`
   }
   .yes {
     margin: clamp(18px, 1.6vw, 26px) 0 0;
-    font: 400 14px / 1.5 ${font.body};
+    max-width: 62ch;
+    font: 400 14px / 1.55 ${font.body};
     color: ${color.onDarkMuted};
+    text-wrap: pretty;
+  }
+  /* The privacy promise, in /privacy's own words. A plain underline that
+     follows the line if it wraps (never an inline-flex underline). */
+  .yes a {
+    color: ${color.ivory};
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, ${color.warmGold} 70%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+    border-radius: 2px;
+    transition: text-decoration-color 200ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .yes a:hover {
+      text-decoration-color: ${color.warmGold};
+    }
+  }
+  .yes a:focus-visible {
+    outline: 2px solid ${color.gold};
+    outline-offset: 3px;
   }
 
   ${media.lg} {
@@ -156,10 +182,10 @@ export default function Witnesses() {
     layDown(root.querySelectorAll(".room figure"));
     lines(root.querySelector("h2"));
     arrive(root.querySelectorAll(".lead"), { delay: 0.2 });
-    arrive(root.querySelectorAll(".slip"), {
+    deal(root.querySelectorAll(".slip"), {
       trigger: root.querySelector(".slips"),
-      delay: 0.2,
-      stagger: 0.14,
+      delay: 0.15,
+      stagger: 0.12,
     });
     arrive(root.querySelectorAll(".yes"), { delay: 0.6 });
   });
@@ -213,7 +239,11 @@ export default function Witnesses() {
               </li>
             ))}
           </ul>
-          <p className="yes">Nothing appears in Walt’s story until he says yes.</p>
+          <p className="yes">
+            Nothing appears in Walt’s story until he says yes. Only your family
+            sees it. We never sell data, and we never train AI on your stories.{" "}
+            <Link to="/privacy">How we keep it private</Link>
+          </p>
         </div>
       </Frame>
     </Section>

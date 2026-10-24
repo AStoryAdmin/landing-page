@@ -22,11 +22,7 @@
  */
 import styled from "styled-components";
 import { BOOK, BOOK_EDITIONS, FREE_TIER, PLANS } from "../../../lib/pricing";
-import {
-  FOUNDING_PLACES,
-  OFFERS,
-  RESERVE_DEADLINE_LABEL,
-} from "../../../lib/founding";
+import { OFFERS, RESERVE_DEADLINE_LABEL } from "../../../lib/founding";
 import { useFoundingStatus } from "./foundingStatus";
 import { useReveals } from "./reveals";
 import {
@@ -45,6 +41,8 @@ import { color, display, font, media } from "../../../styles/theme";
 const individual = PLANS.find((p) => p.id === "individual")!;
 const family = PLANS.find((p) => p.id === "family")!;
 const express = PLANS.find((p) => p.id === "express")!;
+/* Only counted now: the editions themselves are listed once, on Pricing's
+   own editions grid (YC juries 1 #14 and 3 #15: prices said once). */
 const printed = BOOK_EDITIONS.filter((e) => e.id !== "home");
 
 const Section = styled(Chapter)`
@@ -112,30 +110,13 @@ const Section = styled(Chapter)`
     color: var(--muted, ${color.body});
     max-width: 34ch;
   }
-  ul {
-    list-style: none;
-    margin: 18px 0 0;
-    padding: 0;
-  }
-  /* The rungs are list items too: scope the bullet rules to the inner lists. */
-  .rung ul li {
-    position: relative;
-    padding: 5px 0 5px 20px;
+  /* One quiet line per rung pointing at the full detail below, instead of
+     the old per-plan lists that said every price a second time. */
+  .more {
+    margin-top: 12px;
     font: 400 15px/1.5 ${font.body};
-    color: var(--muted, ${color.body});
-  }
-  .rung ul li::before {
-    content: "";
-    position: absolute;
-    left: 2px;
-    top: 15px;
-    width: 8px;
-    height: 1px;
-    background: var(--mark, ${color.accent});
-  }
-  .rung ul li b {
-    font-weight: 600;
-    color: var(--ink, ${color.primary});
+    color: var(--muted, ${color.bodyMuted});
+    max-width: 40ch;
   }
   /* Before launch: the two early ways into the same calls, under a hairline. */
   .early {
@@ -248,17 +229,15 @@ export default function PriceLadder({
             </p>
             <h3>Free, for as long as you like.</h3>
             <p className="price">
-              $0 <span>no card, no clock</span>
+              $0 <span>no card, no time limit</span>
             </p>
             <p className="line">
               Read, add what you remember, invite the family, keep it. The
               same archive on every plan, including this one.
             </p>
-            <ul>
-              {FREE_TIER.includes.map((x) => (
-                <li key={x}>{x}</li>
-              ))}
-            </ul>
+            <p className="more">
+              {FREE_TIER.includes[0]}, then three guided questions a day.
+            </p>
           </li>
 
           <li className="rung" data-rise>
@@ -270,23 +249,13 @@ export default function PriceLadder({
               {individual.price} <span>a year, one storyteller</span>
             </p>
             <p className="line">
-              The guided phone conversations, and the card, the transcript
-              and the voice that come of each one.
+              The guided calls, ringing in the A Story iPhone app, and the
+              card and the transcript that come of each one.
             </p>
-            <ul>
-              <li>
-                <b>{individual.name}</b> · {individual.price} {individual.period}
-                {" · "}
-                {individual.meter}
-              </li>
-              <li>
-                <b>{family.name}</b> · {family.price} {family.period} · {family.who.toLowerCase()}
-              </li>
-              <li>
-                <b>{express.name}</b> · {express.price} once · {express.meter}
-                {" "}inside 30 days
-              </li>
-            </ul>
+            <p className="more">
+              {individual.name}, {family.name} and {express.name} are side by
+              side below.
+            </p>
             {early && (
             <div className="early">
               <div>
@@ -314,11 +283,12 @@ export default function PriceLadder({
                 ) : (
                   <>
                     <p>
-                      <b>Plans are not sold on the web yet.</b> The {FOUNDING_PLACES} founding
-                      places are taken. A reservation is still{" "}
-                      <b>{reserve.price}</b>: a place in line, and{" "}
-                      {reserve.discount}% off the first year if you reserve by{" "}
-                      {RESERVE_DEADLINE_LABEL}. The dollar comes off that year.
+                      <b>Plans aren’t on sale yet.</b> The founding places are
+                      filled. <b>{reserve.price}</b> still holds a place in line
+                      and {reserve.discount}% off your first year if you
+                      reserve by {RESERVE_DEADLINE_LABEL}, and the dollar comes
+                      off that year. We email you when the calls open, in the
+                      order families reserved.
                     </p>
                   </>
                 )}
@@ -339,13 +309,10 @@ export default function PriceLadder({
               Printed editions from {BOOK.from}. Individual, Family and
               Express include a Classic Hardcover; you pay the shipping.
             </p>
-            <ul>
-              {printed.map((e) => (
-                <li key={e.id}>
-                  <b>{e.name}</b> · {e.price}
-                </li>
-              ))}
-            </ul>
+            <p className="more">
+              {printed.length + 1} editions, from free to done for you, are
+              below.
+            </p>
           </li>
         </ul>
 

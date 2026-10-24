@@ -171,7 +171,7 @@ export const organizationSchema = () => ({
   email: SITE.email,
   slogan: SITE.tagline,
   description:
-    "A Story helps families build a private living archive through conversation, photographs, original words, voice, and multiple perspectives, with optional printed volumes.",
+    "An AI biographer that calls your parents, and the whole family adds their part. A Story keeps what they tell in a private family archive, with their own words, photographs and everyone’s version, and optional printed books.",
   logo: `${SITE.url}/logo.png`,
   memberOf: PROGRAMS.memberships.map((m) => ({
     "@type": "ProgramMembership",
@@ -226,10 +226,10 @@ export const productSchema = () => ({
   "@type": "SoftwareApplication",
   name: "A Story",
   applicationCategory: "LifestyleApplication",
-  operatingSystem: "Web, iOS, Android",
+  operatingSystem: "Web, iOS",
   url: SITE.url,
   description:
-    "A Story calls a parent or grandparent and asks about their life: a guided conversation, a private family archive everyone can add to, and printed books.",
+    "An AI biographer that calls your parents, and the whole family adds their part. The calls ring in the A Story iPhone app (private beta); the family archive and the book work in any browser.",
   offers: {
     "@type": "Offer",
     price: PRICE.headlineAmount,

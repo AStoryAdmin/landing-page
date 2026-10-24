@@ -1,5 +1,7 @@
 /**
- * The three conversations the home page plays.
+ * The three conversations the home page plays. All three are scripted samples
+ * with invented people, and every surface that shows one says so (the lead
+ * opens "A scripted sample call.").
  *
  * ─────────────────────────────────────────────────────────────────────────
  * THE QUESTIONS COME FROM THE APP'S OWN BANK — phone-app-main's
@@ -161,8 +163,8 @@ const faith: Scenario = {
     subject: 'One winter · her mother',
     cover: {
         quote: 'I’d tell her they moved the wall. That’s all. I’d just want her to know they moved the wall.',
-        attribution: 'Rosa, 84 - about a brother who lived four days',
-        lead: 'Her grandson asked for her earliest memory of church. She gave it, and then added eight words she had not planned to say.',
+        attribution: 'Rosa, 84 - about her mother and one winter',
+        lead: 'A scripted sample call. Her grandson asked for her earliest memory of church. She gave it, and then added eight words she had not planned to say.',
         length: '11 questions · about a minute to watch',
     },
     script: [
@@ -356,7 +358,7 @@ const faith: Scenario = {
     clip: {
         label: 'In Rosa’s voice',
         duration: '0:38',
-        note: 'Thirty-eight seconds out of fifty minutes. Four seconds of nothing before she answers, and then what her voice does on “they moved the wall” - which she says twice, and the second time is not the same as the first. No transcript holds that, so it is kept as sound.',
+        note: 'Thirty-eight seconds in her own voice. She says “they moved the wall” twice, and the second time is not the same as the first. Clips like this are in development. Every call keeps the card and the transcript today.',
     },
     linked: [
         'Her mother, Angela',
@@ -406,7 +408,7 @@ const childhood: Scenario = {
     cover: {
         quote: 'She never once said why we went round that way, and neither did I. No. I never told her.',
         attribution: 'Errol, 79 - about the year he was seven',
-        lead: 'He refuses a question in the middle of this call. What happens next is the reason families stop being frightened of this.',
+        lead: 'A scripted sample call. He refuses a question halfway through, and the interview takes the no without losing him.',
         length: '10 questions · about a minute to watch',
     },
     script: [
@@ -573,7 +575,7 @@ const childhood: Scenario = {
     clip: {
         label: 'In Errol’s voice',
         duration: '0:29',
-        note: 'Twenty-nine seconds, and most of what matters is two of them - the gap before “no, I never told her”. Written down that is four words. It is not four words when a seventy-nine-year-old says it about somebody who died in 1991.',
+        note: 'Twenty-nine seconds in his own voice. Most of what matters is the gap before “no, I never told her”. Clips like this are in development. Every call keeps the card and the transcript today.',
     },
     linked: ['Vera, his aunt', 'The sanatorium year', 'Walsall', '1954'],
     family: [
@@ -619,7 +621,7 @@ const love: Scenario = {
     cover: {
         quote: 'He’d been writing it down where I wouldn’t see. All those years. Because he couldn’t get it out of his mouth.',
         attribution: 'Joan, 84 - about fifty-one years of marriage',
-        lead: 'A question about a courtship. She answers it in one sentence, adds three more words, and the whole call turns on them.',
+        lead: 'A scripted sample call. A question about a courtship. She answers it in one sentence, adds three more words, and the call turns on them.',
         length: '9 questions · about a minute to watch',
     },
     script: [
@@ -796,7 +798,7 @@ const love: Scenario = {
     clip: {
         label: 'In Joan’s voice',
         duration: '0:47',
-        note: 'Forty-seven seconds, and the last eight are the ones her son has played most. She says “I’d had that wrong for fifty-one years as well”, and then laughs - once, not happily - and that laugh is the whole marriage. It does not survive being typed out.',
+        note: 'Forty-seven seconds in her own voice. Her son plays the last eight most, where she says “I’d had that wrong for fifty-one years as well” and laughs once. Clips like this are in development. Every call keeps the card and the transcript today.',
     },
     linked: [
         'Ray, her husband',

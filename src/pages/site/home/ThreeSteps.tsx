@@ -7,9 +7,14 @@
  * in to a real account, so each step is shown as what it looks like in a
  * family's life instead, as a print on the cloth: the daughter setting it up
  * on her father's phone, the grandmother laughing on the call at her kitchen
- * table, the family around the table going through it together. The first two
- * were generated for this section (assets/generated/, public/home/); the
- * third is the library's 34. The book itself is shown once, lower down.
+ * table, a mother and daughter reading the memory on the sofa. All three were
+ * generated for this section (assets/generated/, public/home/); the third
+ * replaced the library's 34 on 2026-10-23 so Home shares no photograph with
+ * Care or Our story (jury 1, #7). The book itself is shown once, lower down.
+ *
+ * Calls ring in the A Story iPhone app (private beta), never as a regular
+ * phone call (Bao, 2026-10-23), so step I says the app is installed on their
+ * iPhone and step II says the call rings in the app.
  * When real screens of the new app exist, they belong in the step text's
  * place, cropped to what matters, not in drawn phones.
  *
@@ -21,18 +26,15 @@ import { ArrowIcon } from "../kit/kit";
 import { Frame, TextLink } from "../kit/kit.styles";
 import { Print } from "./bench";
 import { chocolateCloth } from "../kit/cloth";
-import { missionSrc } from "./bench.styles";
 import { useScene } from "../../../lib/scrollMotion";
 import { arrive, layDown, lines } from "./motion";
 import { color, font, media } from "../../../styles/theme";
-
-const together = missionSrc("34");
 
 const STEPS = [
   {
     n: "I",
     title: "Set it up once.",
-    text: "Two minutes on their phone. Pick the hour A Story calls.",
+    text: "Install A Story on their iPhone together. Two minutes, then pick the hour it calls.",
     src: "/home/step-one-setup-1400.webp",
     srcSet: "/home/step-one-setup-800.webp 800w, /home/step-one-setup-1400.webp 1400w",
     alt: "A daughter showing her father something on her phone on the sofa, under the lamp",
@@ -41,8 +43,8 @@ const STEPS = [
   },
   {
     n: "II",
-    title: "They answer the phone.",
-    text: "Nothing to type or save. They just talk.",
+    title: "They answer the call.",
+    text: "It rings in the app at the hour you picked. Nothing to type or save. They just talk.",
     src: "/home/step-two-call-1400.webp",
     srcSet: "/home/step-two-call-800.webp 800w, /home/step-two-call-1400.webp 1400w",
     alt: "A grandmother laughing on the phone at her kitchen table, an old photograph beside her mug",
@@ -53,10 +55,10 @@ const STEPS = [
     n: "III",
     title: "The family keeps it.",
     text: "Each call becomes a memory the whole family can read, free, on a phone or at app.astoryapp.com.",
-    src: together.src,
-    srcSet: together.srcSet,
-    alt: "A family around the kitchen table going through old photographs together",
-    caption: "Everyone with a version of it",
+    src: "/home/step-three-family-1400.webp",
+    srcSet: "/home/step-three-family-800.webp 800w, /home/step-three-family-1400.webp 1400w",
+    alt: "A mother and her teenage daughter on the sofa reading something on her phone, the daughter laughing",
+    caption: "Grandma’s first call, read together",
     tilt: -1,
   },
 ];
@@ -113,17 +115,10 @@ const Section = styled.section`
     /* A print is capped by the window's height as well as its width. */
     max-width: calc((100svh - 300px) * 1.5);
   }
+  /* No I / II / III: the list is ordered and the headings say the order
+     (jury 2, P1; taste-skill bans index numbering). */
   .step-text {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    column-gap: 16px;
     margin-top: clamp(18px, 1.8vw, 28px);
-  }
-  .n {
-    grid-row: 1 / 3;
-    min-width: 1.6em;
-    font: 500 clamp(24px, 1.9vw, 34px) / 1.05 ${font.display};
-    color: ${color.warmGold};
   }
   h3 {
     margin: 0;
@@ -190,9 +185,6 @@ export default function ThreeSteps() {
                 sizes="(max-width: 860px) 92vw, 30vw"
               />
               <div className="step-text">
-                <span className="n" aria-hidden="true">
-                  {s.n}
-                </span>
                 <h3>{s.title}</h3>
                 <p>{s.text}</p>
               </div>

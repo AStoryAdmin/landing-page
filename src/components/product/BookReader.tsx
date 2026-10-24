@@ -95,7 +95,7 @@ const Paper = styled.article<{ $reading: boolean; $backward: boolean }>`
   min-height: ${({ $reading }) => ($reading ? "0" : "530px")};
   box-shadow: inset -8px 0 18px -18px ${color.primary};
   animation: ${({ $backward }) => ($backward ? backwardTurn : forwardTurn)}
-    320ms ease both;
+    280ms cubic-bezier(0.23, 1, 0.32, 1) both;
   transform-origin: left center;
   h3 {
     font: 400 clamp(1.75rem, 2vw, 2.5rem) / 1.2 ${font.display};

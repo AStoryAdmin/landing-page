@@ -27,6 +27,7 @@
  * is: Volume I.
  */
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import {
@@ -36,7 +37,6 @@ import {
   PLANS,
   BOOK,
   BOOK_EDITIONS,
-  START,
 } from "../../lib/pricing";
 import { checkoutFor, isCheckoutLive } from "../../lib/checkout";
 import { START_HREF, START_LABEL } from "../../lib/app";
@@ -45,20 +45,28 @@ import {
   RESERVE_DEADLINE_LABEL,
   reserveDiscountOpen,
 } from "../../lib/founding";
-import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
+import { QUESTION_COUNT } from "../../lib/product";
 import { ArrowIcon, PageOpening } from "./kit/kit";
-import PriceLadder from "./kit/PriceLadder";
 import { useReveals } from "./kit/reveals";
 import {
   Chapter,
   Frame,
   PrimaryAnchor,
+  SecondaryLink,
   SplitHead,
   Statement,
   TextAnchor,
   TextLink,
 } from "./kit/kit.styles";
-import { color, display, font, media, motion } from "../../styles/theme";
+import {
+  color,
+  curve,
+  display,
+  font,
+  media,
+  motion,
+  shadow,
+} from "../../styles/theme";
 
 const Plans = styled(Chapter)`
   padding-top: 0;
@@ -254,11 +262,21 @@ const Plans = styled(Chapter)`
     align-items: center;
     gap: 12px 24px;
   }
+  /* An inline link with a real underline, so a wrapped second line is
+     underlined under its words, never struck through (jury 3, B1). */
   .decide .reserve {
+    display: inline-block;
+    padding: 12px 0;
+    background: none;
+    font: 500 15px/1.4 ${font.body};
     color: ${color.ivory};
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in srgb, ${color.gold} 80%, transparent);
+    text-underline-offset: 5px;
+  }
+  .decide .reserve svg {
+    display: none;
   }
   .all-plans {
     margin-top: 18px;
@@ -471,37 +489,10 @@ const Forever = styled(Chapter)`
     color: ${color.body};
     max-width: 62ch;
   }
-  /* Two things the app already does for the day you are not there. */
-  .later {
-    list-style: none;
-    margin: clamp(40px, 5vw, 64px) 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(20px, 3vw, 40px);
-    max-width: 960px;
-  }
-  .later li {
-    padding: 22px 0 0;
-    border-top: 1px solid ${color.primaryLineStrong};
-  }
-  .later b {
-    display: block;
-    font: 400 ${display.sm} / 1.3 ${font.display};
-    color: ${color.primary};
-  }
-  .later p {
-    margin-top: 8px;
-    font: 400 16px/1.6 ${font.text};
-    color: ${color.body};
-    max-width: 40ch;
-  }
   details {
     border-top: 1px solid ${color.primaryLineStrong};
-    max-width: 760px;
-  }
-  details:last-of-type {
     border-bottom: 1px solid ${color.primaryLineStrong};
+    align-self: start;
   }
   summary {
     min-height: 64px;
@@ -520,12 +511,16 @@ const Forever = styled(Chapter)`
     font: 400 17px/1.65 ${font.text};
     color: ${color.body};
   }
+  /* The two questions side by side across the width, not a half column. */
   .questions {
-    margin-top: clamp(64px, 7vw, 110px);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 clamp(28px, 5vw, 80px);
+    margin-top: clamp(48px, 5vw, 88px);
   }
   ${media.md} {
     .kept,
-    .later {
+    .questions {
       grid-template-columns: minmax(0, 1fr);
     }
   }
@@ -675,6 +670,150 @@ const Book = styled(Chapter)`
     }
   }
 `;
+
+/*
+ * The hero's object (juries 1 #6, 4 #10): what A Story costs, as one printed
+ * price card lying on the cloth - the archive, the calls, the book - so the
+ * empty right half of the opening holds the real thing. It is the summary;
+ * the plan cards below carry the detail, and nothing else on the page
+ * repeats it.
+ */
+const Sheet = styled.div`
+  position: relative;
+  color: ${color.primary};
+  background: ${color.paperPure};
+  box-shadow: ${shadow.lie};
+  &::before {
+    content: "";
+    position: absolute;
+    inset: clamp(8px, 0.8vw, 14px);
+    border: 1px solid ${color.foil};
+    pointer-events: none;
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .cols li {
+    padding: clamp(26px, 2.6vw, 44px) clamp(22px, 2.6vw, 48px);
+  }
+  .cols li + li {
+    border-left: 1px solid ${color.primaryLine};
+  }
+  .k {
+    font: 600 12px/1.3 ${font.ui};
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: ${color.accentText};
+  }
+  .p {
+    margin-top: 12px;
+    font: 500 clamp(2.6rem, 1.8rem + 2.2vw, 4.6rem) / 1 ${font.display};
+    letter-spacing: -0.02em;
+    font-variant-numeric: lining-nums;
+  }
+  .p small {
+    margin-left: 8px;
+    font: 400 clamp(1rem, 0.95rem + 0.2vw, 1.15rem) / 1.3 ${font.text};
+    letter-spacing: 0;
+    color: ${color.bodyMuted};
+  }
+  .l {
+    margin-top: 12px;
+    max-width: 30ch;
+    font: 400 clamp(1.02rem, 0.98rem + 0.2vw, 1.2rem) / 1.5 ${font.text};
+    color: ${color.body};
+  }
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px 28px;
+    margin: 0 clamp(22px, 2.6vw, 48px);
+    padding: 16px 0 clamp(22px, 2.2vw, 34px);
+    border-top: 1px solid ${color.primaryLine};
+    font: 400 15px/1.5 ${font.text};
+    color: ${color.body};
+  }
+  .foot a {
+    display: inline-block;
+    padding: 10px 0;
+    font: 600 14px/1.3 ${font.ui};
+    color: ${color.primary};
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, ${color.gold} 80%, transparent);
+    text-underline-offset: 5px;
+    white-space: nowrap;
+    transition: color 160ms ${curve.out};
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .foot a:hover {
+      color: ${color.accentText};
+    }
+  }
+  ${media.md} {
+    .cols {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .cols li + li {
+      border-left: 0;
+      border-top: 1px solid ${color.primaryLine};
+    }
+    .cols li {
+      padding-block: 22px;
+    }
+  }
+`;
+
+function PriceCard() {
+  const individual = PLANS.find((p) => p.id === "individual")!;
+  return (
+    <Sheet>
+      <ul className="cols" aria-label="What A Story costs">
+        <li>
+          <p className="k">The archive</p>
+          <p className="p">$0</p>
+          <p className="l">
+            Free for as long as you like. Read, write and invite the whole
+            family.
+          </p>
+        </li>
+        <li>
+          <p className="k">The calls</p>
+          <p className="p">
+            {individual.price}
+            <small>a year</small>
+          </p>
+          <p className="l">
+            For one storyteller: {individual.meter.toLowerCase()}. Every plan is
+            side by side below.
+          </p>
+        </li>
+        <li>
+          <p className="k">The book</p>
+          <p className="p">Free</p>
+          <p className="l">
+            To print at home, every page. Printed editions from {BOOK.from}.
+          </p>
+        </li>
+      </ul>
+      <p className="foot">
+        <span>
+          Plans aren’t on sale yet. {OFFERS.reserve.price} holds your place in
+          line
+          {reserveDiscountOpen()
+            ? `, and ${OFFERS.reserve.discount}% off your first year if you reserve by ${RESERVE_DEADLINE_LABEL}.`
+            : "."}
+        </span>
+        <Link to="/reserve">How reserving works</Link>
+      </p>
+    </Sheet>
+  );
+}
 
 const individual = PLANS.find((p) => p.id === "individual")!;
 const family = PLANS.find((p) => p.id === "family")!;
@@ -834,15 +973,26 @@ export default function Pricing() {
         description="Compare Individual, Family, Express, Monthly and Free: the call minutes, which plans include a hardcover, and what stays yours whatever you choose."
       />
       <PageOpening
+        variant="wide"
         title={
           <>
-            Free to start. Only <em>calls</em> are paid.
+            Free to start. Pay for <em>calls.</em>
           </>
         }
-        lead={`${START.headline} - ${START.detail} Inviting family, writing and reading are never charged by the person. Prices are in US dollars, and calls ring on iPhone in our private beta.`}
+        lead="Every account starts on Free, with no card and no time limit. Inviting family, writing and reading never cost extra."
+        actions={
+          <>
+            <PrimaryAnchor href={START_HREF}>
+              {START_LABEL} <ArrowIcon />
+            </PrimaryAnchor>
+            <SecondaryLink to="/reserve">
+              Reserve for {OFFERS.reserve.price}
+            </SecondaryLink>
+          </>
+        }
+        note="Prices in US dollars. The calls ring in the A Story iPhone app, in a private beta."
+        object={<PriceCard />}
       />
-
-      <PriceLadder ground="ivory" title={false} onward={false} early />
 
       <Plans ref={plans} $ground="ivory" aria-label="Plans">
         <Frame>
@@ -919,12 +1069,6 @@ export default function Pricing() {
               </div>
             ))}
           </div>
-
-          <p className="all-plans">
-            Every paid plan includes all {QUESTION_COUNT} questions across{" "}
-            {CHAPTER_COUNT} chapters, unlimited writing and unlimited
-            photographs.
-          </p>
 
           <Compare>
             <details>
@@ -1014,11 +1158,11 @@ export default function Pricing() {
                 </PrimaryAnchor>
               )}
               {selectedId !== "free" && !isCheckoutLive(selectedId) && (
-                <TextLink to={checkoutFor(selectedId)} className="reserve">
+                <Link to={checkoutFor(selectedId)} className="reserve">
                   {reserveDiscountOpen()
-                    ? `Or reserve ${name} for ${OFFERS.reserve.price} by ${RESERVE_DEADLINE_LABEL}, ${OFFERS.reserve.discount}% off`
-                    : `Or reserve ${name} for ${OFFERS.reserve.price}`}
-                </TextLink>
+                    ? `Or reserve for ${OFFERS.reserve.price}, ${OFFERS.reserve.discount}% off`
+                    : `Or reserve for ${OFFERS.reserve.price}`}
+                </Link>
               )}
             </div>
           </div>
@@ -1038,23 +1182,11 @@ export default function Pricing() {
                 {k}
               </li>
             ))}
-          </ul>
-
-          <ul className="later" aria-label="For later">
             <li data-rise>
-              <b>Who looks after this if I can’t</b>
-              <p>
-                Name a trusted person in Account. They receive what you have
-                written, and the letters you have left, if you are no longer
-                here.
-              </p>
+              Name a trusted person, who receives what you wrote if you can’t
             </li>
             <li data-rise>
-              <b>A letter for later</b>
-              <p>
-                Write a letter to one person now, give it a date, and it is
-                delivered then.
-              </p>
+              Write a letter to one person, delivered on the date you choose
             </li>
           </ul>
 
@@ -1087,7 +1219,7 @@ export default function Pricing() {
             data-drift="5"
             src="/book-objects/sample-carolyn-720.webp"
             srcSet="/book-objects/sample-carolyn-360.webp 360w, /book-objects/sample-carolyn-720.webp 720w"
-            sizes="(max-width: 860px) 70vw, 460px"
+            sizes="(max-width: 860px) 92vw, 460px"
             width={720}
             height={720}
             alt="The cover of a sample A Story book, Moments & Memories, with family photographs on navy linen"

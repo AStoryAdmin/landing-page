@@ -53,3 +53,19 @@ below without a narrow column.
 - Keep every real fact; invent nothing. Keep routes, SEO, prerender and the checks green.
 - Every effect has a reduced-motion fallback; nothing is left half-faded.
 - Check at 1366x768, 1920x1000, 2560x1300 and 390x844.
+
+## Bao's rulings, 2026-10-23 (night before YC)
+
+- No traction line on the site (no "private beta with 10 families").
+- A short "why now" band on /our-story only, with sources linked: generative-AI use among adults 50+
+  went from 18% (2024) to 30% (2025) (AARP 2026 Tech Trends, the linked page); 11,200 Americans turn 65 every day through 2027
+  (Alliance for Lifetime Income, Peak 65). Kept off Home.
+- Team on /our-story: Daniel and Bao only (not Nhi Tran), each with a small round photo and one
+  credentials line. Daniel: Co-founder & CEO; BS Mathematics and Data Science, Bowling Green State
+  University. Bao: Co-founder, COO & CTO; MS ECE, University of Michigan, doctoral fellow; led
+  go-to-market for four biotech startups. Photos: `public/our-story/{daniel,bao}-320.webp` (from the
+  MBC deck).
+- Calls today: the parent installs the A Story iPhone app (private beta) and the call rings in the
+  app. Say so plainly wherever calls are mentioned; never imply a regular phone call or no app.
+- No launch month: "we email you when the calls open, in the order families reserved".
+- Home headline becomes the app's line: "Every life holds a story worth keeping."

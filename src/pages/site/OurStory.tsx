@@ -19,10 +19,12 @@
  * line of the letter beneath them.
  * ─────────────────────────────────────────────────────────────────────────
  *
- * No photographs of the founders are used (no posed founder portraits, and
- * none that would stand in for Daniel's uncles): each note is signed by hand
- * at its foot. The prints are illustrative album photographs
- * (public/our-story, from the pitch decks, and mission 34).
+ * Each note is signed by hand at its foot, with a small round portrait of
+ * its writer and one line of credentials (Bao's ruling, 2026-10-23: a
+ * round portrait, never a posed hero). A short "why now" band with two
+ * sourced numbers sits between the letters and the close (on this page
+ * only). The prints are illustrative album photographs (public/our-story,
+ * from the pitch decks, and mission 34).
  */
 import type { ReactNode } from "react";
 import styled from "styled-components";
@@ -31,10 +33,11 @@ import { ArrowIcon } from "./kit/kit";
 import { Frame, PrimaryLink, SecondaryLink } from "./kit/kit.styles";
 import { color, display, font, media } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
+import { DEMO_EMAIL } from "../../lib/demoRequest";
 import { riseLines, useScene } from "../../lib/scrollMotion";
 import { Snapshot } from "./our-story/Snapshot";
 import { benchCloth, benchVars } from "./our-story/bench";
-import { layDown, riseIn } from "./our-story/motion";
+import { cssOut, layDown, riseIn } from "./our-story/motion";
 
 /* The printed frame of the book's page: a foil hairline with a corner
    flourish at each corner (web-app astory.css `.page-frame`). */
@@ -215,6 +218,26 @@ const Sheet = styled.article<{ $tilt: number }>`
     margin-top: auto;
     padding-top: clamp(22px, 2.4vw, 36px);
   }
+  /* The writer: a small round portrait beside the signature (a round
+     portrait, never a hero; DESIGN-TASTE), then the role and one line of
+     credentials (Bao's ruling, 2026-10-23). */
+  .who-signs {
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 1.4vw, 20px);
+    min-width: 0;
+  }
+  .who-signs img {
+    flex: none;
+    width: clamp(56px, 4.4vw, 68px);
+    height: clamp(56px, 4.4vw, 68px);
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    box-shadow:
+      0 0 0 3px ${color.paperPure},
+      0 0 0 4px color-mix(in srgb, ${color.gold} 60%, transparent);
+  }
   .sign b {
     display: block;
     font: 500 clamp(30px, 2.3vw, 42px) / 1 ${font.script};
@@ -225,10 +248,16 @@ const Sheet = styled.article<{ $tilt: number }>`
   .sign small {
     display: block;
     margin-top: 8px;
-    font: 600 13px/1.3 ${font.body};
+    font: 600 12px/1.3 ${font.body};
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: ${color.accentText};
+  }
+  .sign .cred {
+    margin-top: 6px;
+    max-width: 42ch;
+    font: 400 14px/1.45 ${font.body};
+    color: ${color.bodyMuted};
   }
   .sign a {
     display: inline-flex;
@@ -240,7 +269,7 @@ const Sheet = styled.article<{ $tilt: number }>`
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, ${color.gold} 70%, transparent);
     text-underline-offset: 5px;
-    transition: color 160ms ease;
+    transition: color 160ms ${cssOut};
   }
   @media (hover: hover) and (pointer: fine) {
     .sign a:hover {
@@ -295,6 +324,90 @@ const Sheet = styled.article<{ $tilt: number }>`
   }
 `;
 
+/* ── Why now: two sourced numbers, on the paper (Bao's ruling, 2026-10-23:
+   on /our-story only, never Home). A ratio and a count, each with its unit
+   and its source linked. ── */
+const WhyNow = styled.section`
+  background: ${color.sand};
+  color: ${color.primary};
+  padding: calc(clamp(56px, 6vw, 112px) * var(--sy)) 0;
+  .why {
+    display: grid;
+    grid-template-columns: minmax(0, 0.6fr) minmax(0, 2fr);
+    gap: clamp(28px, 5vw, 110px);
+    align-items: start;
+  }
+  h2 {
+    font: 400 ${display.lg} / 1 ${font.display};
+    letter-spacing: -0.02em;
+  }
+  h2 em {
+    font-style: normal;
+    font-weight: 500;
+    color: ${color.accent};
+  }
+  dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(28px, 4vw, 96px);
+    margin: 0;
+  }
+  dl > div {
+    padding-top: 18px;
+    border-top: 1px solid ${color.primaryLineStrong};
+  }
+  dt {
+    font: 500 clamp(2.6rem, 1.6rem + 3vw, 5.4rem) / 1 ${font.display};
+    letter-spacing: -0.02em;
+    font-variant-numeric: lining-nums;
+    color: ${color.primary};
+  }
+  dt span[aria-hidden] {
+    color: ${color.accent};
+    font-weight: 400;
+  }
+  dd {
+    margin: 14px 0 0;
+    max-width: 38ch;
+    font: 400 clamp(1.05rem, 1rem + 0.25vw, 1.25rem) / 1.5 ${font.text};
+    color: ${color.body};
+  }
+  dd a {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 6px 0;
+    font: 500 14px/1.4 ${font.body};
+    color: ${color.bodyMuted};
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, ${color.gold} 70%, transparent);
+    text-underline-offset: 4px;
+    transition: color 160ms ${cssOut};
+  }
+  @media (hover: hover) and (pointer: fine) {
+    dd a:hover {
+      color: ${color.primary};
+    }
+  }
+  dd a:focus-visible {
+    outline: 2px solid ${color.accentText};
+    outline-offset: 3px;
+  }
+  .sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  ${media.md} {
+    .why,
+    dl {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+`;
+
 /* ── The close, on the ivory page ── */
 const Close = styled.section`
   --ink: ${color.primary};
@@ -330,6 +443,19 @@ const Close = styled.section`
     font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.55 ${font.text};
     color: ${color.bodyMuted};
   }
+  p.write {
+    margin-top: 14px;
+    font: 400 15px/1.55 ${font.body};
+  }
+  p.write a {
+    display: inline-block;
+    padding: 10px 0;
+    color: ${color.primary};
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, ${color.gold} 70%, transparent);
+    text-underline-offset: 4px;
+    overflow-wrap: anywhere;
+  }
   .doors {
     display: flex;
     flex-wrap: wrap;
@@ -356,6 +482,8 @@ function Note({
   from,
   name,
   role,
+  cred,
+  photo,
   link,
   tilt,
   children,
@@ -363,6 +491,8 @@ function Note({
   from: string;
   name: string;
   role: string;
+  cred: string;
+  photo: string;
   link: string;
   tilt: number;
   children: ReactNode;
@@ -375,9 +505,20 @@ function Note({
       </h2>
       {children}
       <footer className="sign">
-        <div>
-          <b>{name}</b>
-          <small>{role}</small>
+        <div className="who-signs">
+          <img
+            src={photo}
+            alt={name}
+            width={320}
+            height={320}
+            loading="lazy"
+            decoding="async"
+          />
+          <div>
+            <b>{name}</b>
+            <small>{role}</small>
+            <p className="cred">{cred}</p>
+          </div>
         </div>
         <a href={link} target="_blank" rel="noopener noreferrer">
           LinkedIn
@@ -398,6 +539,11 @@ export default function OurStory() {
     layDown([...root.querySelectorAll("[data-sheet]")], {
       trigger: root.querySelector(".letters") ?? undefined,
       start: "top 88%",
+    });
+  });
+  const why = useScene<HTMLElement>((root) => {
+    riseIn([...root.querySelectorAll("[data-why]")], {
+      trigger: root.querySelector(".why") ?? undefined,
     });
   });
   const close = useScene<HTMLElement>((root) => {
@@ -464,6 +610,8 @@ export default function OurStory() {
               from="Daniel"
               name="Daniel Hoang Nguyen"
               role="Co-founder & CEO"
+              cred="BS Mathematics and Data Science, Bowling Green State University"
+              photo="/our-story/daniel-320.webp"
               link="https://www.linkedin.com/in/daniel-hoang-nguyen-65bb05224/"
               tilt={-0.5}
             >
@@ -495,6 +643,8 @@ export default function OurStory() {
               from="Bao"
               name="Bao Vo"
               role="Co-founder, COO & CTO"
+              cred="MS ECE, University of Michigan, doctoral fellow. Led go-to-market for four biotech startups."
+              photo="/our-story/bao-320.webp"
               link="https://www.linkedin.com/in/gbaovo/"
               tilt={0.45}
             >
@@ -524,6 +674,45 @@ export default function OurStory() {
         </Frame>
       </Bench>
 
+      <WhyNow ref={why} aria-labelledby="why-title">
+        <Frame className="why">
+          <h2 id="why-title" data-why>
+            Why <em>now.</em>
+          </h2>
+          <dl>
+            <div data-why>
+              <dt>
+                18% <span aria-hidden="true">→</span>
+                <span className="sr">to</span> 30%
+              </dt>
+              <dd>
+                Adults 50 and over who use generative AI, 2024 to 2025.{" "}
+                <a
+                  href="https://www.aarp.org/2026techtrends"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  AARP, 2026 Tech Trends
+                </a>
+              </dd>
+            </div>
+            <div data-why>
+              <dt>11,200</dt>
+              <dd>
+                Americans turn 65 every day, through 2027.{" "}
+                <a
+                  href="https://protectedincome.org/peak65/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Alliance for Lifetime Income, Peak 65
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </Frame>
+      </WhyNow>
+
       <Close ref={close} aria-labelledby="close-title">
         <Frame className="row">
           <Snapshot
@@ -544,6 +733,11 @@ export default function OurStory() {
             <p>
               What began as a way to preserve older stories became a place for
               the whole family’s memories.
+            </p>
+            <p className="write">
+              Write to Daniel at{" "}
+              <a href={`mailto:${DEMO_EMAIL}`}>{DEMO_EMAIL}</a>. We answer every
+              email ourselves.
             </p>
             <div className="doors">
               <PrimaryLink to={START_HREF}>

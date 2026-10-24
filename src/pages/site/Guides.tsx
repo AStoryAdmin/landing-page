@@ -14,8 +14,15 @@ import guides from "../../lib/guides.json";
 import { CHAPTERS, DEPTHS } from "../../lib/product";
 import { ArrowIcon, Invitation, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
-import { Chapter, Eyebrow, Frame, Statement } from "./kit/kit.styles";
-import { color, display, font, media, motion } from "../../styles/theme";
+import { Chapter, Frame, Statement } from "./kit/kit.styles";
+import {
+  color,
+  display,
+  font,
+  media,
+  motion,
+  shadow,
+} from "../../styles/theme";
 
 const STARTERS = [
   ["Everyday life", "What did an ordinary Sunday look like in your house?"],
@@ -24,55 +31,66 @@ const STARTERS = [
   ["A photograph", "What happened just before this was taken?"],
 ];
 
-const Starters = styled(Chapter)`
-  padding-top: 0;
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(14px, 1.6vw, 24px);
-  }
-  /*
-   * Four questions, not four boxes. They sat in identical white cards, each
-   * repeating the same closing sentence - the same words four times is
-   * filler, so it is said once under the row instead, and the questions sit
-   * on the ground under the house rule.
-   */
-  .card {
+/*
+ * The four questions are the opening's object (jury 1 #6): question cards
+ * laid on the cloth like the app's daily question, each a leaf of the book's
+ * paper, a little turned. The sentence that follows them is said once, as
+ * the opening's note.
+ */
+const Cards = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 36px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  li {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 14px;
-    padding-top: clamp(20px, 2vw, 28px);
-    border-top: 1px solid color-mix(in srgb, ${color.gold} 72%, transparent);
-  }
-  .card small {
-    font: italic 400 15px/1.3 ${font.display};
-    letter-spacing: 0;
-    text-transform: none;
-    color: ${color.bodyMuted};
-  }
-  .card p {
-    font: 400 ${display.sm} / 1.3 ${font.display};
+    min-height: clamp(180px, 15vw, 280px);
+    padding: clamp(24px, 2.4vw, 40px);
     color: ${color.primary};
+    background: ${color.paperPure};
+    box-shadow: ${shadow.lie};
+    transform: rotate(var(--turn));
   }
-  .after {
-    margin-top: clamp(26px, 2.6vw, 40px);
-    font: italic 400 17px/1.5 ${font.display};
-    color: ${color.primaryMid};
+  li::before {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border: 1px solid ${color.foil};
+    pointer-events: none;
+  }
+  small {
+    font: 600 12px/1.3 ${font.ui};
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: ${color.accentText};
+  }
+  p {
+    font: italic 400 clamp(1.35rem, 1.1rem + 0.8vw, 2.1rem) / 1.25
+      ${font.display};
+    color: ${color.primary};
+    text-wrap: pretty;
   }
   ${media.lg} {
-    .cards {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   ${media.sm} {
-    .cards {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .card {
+    grid-template-columns: minmax(0, 1fr);
+    li {
       min-height: 0;
     }
   }
+  ${media.motion} {
+    li {
+      transform: none;
+    }
+  }
 `;
+const TURNS = ["-1.2deg", "0.8deg", "-0.5deg", "1.1deg"];
 
 const Index = styled(Chapter)`
   .head {
@@ -93,7 +111,7 @@ const Index = styled(Chapter)`
     transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1);
   }
   a.entry h3 {
-    transition: color 160ms ease;
+    transition: color 160ms cubic-bezier(0.23, 1, 0.32, 1);
   }
   a.entry:last-of-type {
     border-bottom: 1px solid ${color.primaryLineStrong};
@@ -189,7 +207,6 @@ const Index = styled(Chapter)`
 `;
 
 export default function Guides() {
-  const starters = useReveals<HTMLElement>();
   const index = useReveals<HTMLElement>();
   return (
     <>
@@ -199,38 +216,29 @@ export default function Guides() {
         description="Practical ways to begin family conversations, name the faces in photographs and make room for different recollections."
       />
       <PageOpening
+        variant="wide"
         title={
           <>
             A place to <em>begin.</em>
           </>
         }
         lead="Four questions you could ask tonight, and short guides for the conversations that take more care."
-      />
-
-      <Starters
-        ref={starters}
-        $ground="ivory"
-        aria-label="Questions to begin with"
-      >
-        <Frame>
-          <div className="cards">
-            {STARTERS.map(([topic, question]) => (
-              <article className="card" key={topic} data-rise>
+        note="Ask one, then follow the detail they choose to share."
+        object={
+          <Cards aria-label="Questions to begin with">
+            {STARTERS.map(([topic, question], i) => (
+              <li key={topic} style={{ ["--turn" as string]: TURNS[i] }}>
                 <small>{topic}</small>
                 <p>“{question}”</p>
-              </article>
+              </li>
             ))}
-          </div>
-          <p className="after" data-rise>
-            Then follow the detail they choose to share.
-          </p>
-        </Frame>
-      </Starters>
+          </Cards>
+        }
+      />
 
       <Index ref={index} $ground="paper" aria-labelledby="index-title">
         <Frame>
           <div className="head">
-            <Eyebrow>The guides</Eyebrow>
             <Statement id="index-title" data-lines>
               For the conversations that take more <em>care.</em>
             </Statement>

@@ -71,7 +71,7 @@ const Sheet = styled.dialog`
     backdrop-filter: blur(3px);
   }
   &[open] {
-    animation: sheet-in 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    animation: sheet-in 320ms cubic-bezier(0.23, 1, 0.32, 1);
   }
   &[open]::backdrop {
     animation: veil-in 240ms ease-out;

@@ -1,591 +1,416 @@
 /**
- * How it works — shown, not told.
+ * How it works - shown, not told.
  *
- * Pass 11 set this page as three acts of text: steps as paragraphs, three
- * complete transcripts with margin notes, then the family's receipts. The
- * founder's verdict: "all text, and I can't retain anything." This version
- * is built so a reader leaves with five moments and three verbs:
+ * Fix round 2 (2026-10-23, YC juries 1 #3 #13, 2 U5, 3 B2, 4 #2 #7 #8): the
+ * page was 9 screens at 1920 and still spoke phase 1 - five numbered steps
+ * with pill labels hanging on a connector line beside a drawn iPhone with a
+ * 9:41 status bar, the old 10 October app screens, a voice player for a
+ * feature still in development and a four-screen tour of the old screens.
+ * It is now about six screens:
  *
- * 1. The walkthrough — one phone stays on screen while five short steps
- *    scroll past it (You set it up · Their phone rings · It listens and
- *    follows · It becomes a memory · The family adds theirs), and the phone
- *    changes to that moment in the app. One line per step.
- * 2. The calls, played — the same three phones as Home (app/CallTrio.tsx):
- *    press play and watch it ask, listen, follow and remember.
- * 3. How deep it goes — the five rungs as a staircase, not a list.
- * 4. What the family receives — the card, the transcript and the voice as
- *    three objects, then the family adding to it.
+ * 1. Opening, on the cloth: the call itself as the object - the question
+ *    that rings in the A Story app at the hour the family chose.
+ * 2. Four moments, as ruled rows (no numerals, no pills, no thread), beside
+ *    what one call leaves: the app's own memory card (app/MemoryCard.tsx,
+ *    ported line for line from the web app) and the transcript under it.
+ *    This merges the old walkthrough and "Each call leaves a memory".
+ * 3. Sample calls (home/Listen.tsx), labelled as samples.
+ * 4. Everyone has a way in: four ways, in words, on one row.
  * 5. The book.
  *
- * Phase 2 (2026-10-23): the QR section, "She's not good with these things",
- * the shared "more ways" block and the family list under the receipts were
- * cut, and so was the five-rung "it goes deeper" staircase (the calls above
- * already show the follow-up) - each repeated a beat around it - and the claims were brought in line
- * with what the product does today (calls on iPhone in the private beta,
- * voice in development, hardcovers on the plans that include them).
- *
- * The complete annotated transcripts are gone from this page (the founder:
- * too lengthy); three short cards keep the point — the one move each call
- * turns on. A QR section shows how the family joins: scan the code, land on
- * the family's story (real Figma screens, public/app).
- *
- * ─────────────────────────────────────────────────────────────────────────
- * VOICE IS AHEAD OF THE APP. demoScripts.ts says so in its header: storing
- * the storyteller's own audio is being built. Wherever this page shows the
- * voice layer it carries the "In development" mark. Do not remove it until
- * the app keeps the audio.
- * ─────────────────────────────────────────────────────────────────────────
+ * Product truth (Bao's rulings, 2026-10-23): the calls ring in the A Story
+ * iPhone app, in a private beta, and the parent installs it. Never a regular
+ * phone call, never "no app". Voice clips are in development: the page says
+ * so once and promises the card and the transcript.
  */
-import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { SCENARIOS } from "../../lib/demoScripts";
 import { BOOK } from "../../lib/pricing";
 import CallStills from "./home/Listen";
-import { AppShot, Phone } from "./app/Phone";
-import { CallScreen, IncomingScreen } from "./app/screens";
-import { ArrowIcon, Invitation, PageOpening, Picture, Print } from "./kit/kit";
+import MemoryCard from "./app/MemoryCard";
+import { ArrowIcon, Invitation, PageOpening, Picture } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
-import AppTour, { type TourStop } from "./kit/AppTour";
 import {
   Chapter,
   Frame,
   Lead,
   PrimaryLink,
-  SecondaryLink,
+  SecondaryAnchor,
   SplitHead,
   Statement,
   TextAnchor,
   TextLink,
 } from "./kit/kit.styles";
-import { color, display, font, media } from "../../styles/theme";
+import { color, display, font, media, shadow } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
-
-/* Everyone else in the family, on the app's own screens (added 2026-10-09;
-   kit/AppTour.tsx says where the screens come from). */
-const WAYS_IN: TourStop[] = [
-  {
-    shot: "talk",
-    k: "Telling about someone",
-    t: "“Rose is here with me.”",
-    d: "A cousin or an aunt can talk with A Story about Rose. The questions turn around for them, and what they add is credited to them.",
-    dark: true,
-  },
-  {
-    shot: "write",
-    k: "Writing it down",
-    t: "A companion for the blank page.",
-    d: "A question to answer out loud, another if that one doesn’t fit, and tidying that leaves your words yours.",
-  },
-  {
-    shot: "import",
-    k: "Already written",
-    t: "Bring in the memoir.",
-    d: "A Word or text file becomes one memory per chapter, and A Story reads it first, so it never asks again what’s there.",
-  },
-  {
-    shot: "group-call",
-    dark: true,
-    k: "Together",
-    t: "Call the family together.",
-    d: "Up to four phones on one call. Everyone talks, and A Story keeps what’s said.",
-  },
-];
 
 const love = SCENARIOS.find((s) => s.id === "love")!;
 const QUESTION = "What did the garage smell like when you were fixing things?";
 
-const Soon = styled.span`
-  display: inline-block;
-  margin-left: 8px;
-  padding: 3px 8px;
-  border: 1px solid currentColor;
-  border-radius: 2px;
-  font: 600 13px/1.2 ${font.body};
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  vertical-align: middle;
-  color: ${color.accentText};
-`;
+/* ── The opening's object: the call, as it arrives ────────────────────── */
 
-/* ── The opening: a kitchen table, and the call arriving ──────────────── */
-
-const OpeningArt = styled.div`
+const Slip = styled.figure`
   position: relative;
-  padding-bottom: 12%;
-  .incoming {
+  width: min(100%, 820px);
+  margin: 0;
+  padding: clamp(30px, 3.2vw, 64px) clamp(28px, 3.2vw, 56px)
+    clamp(26px, 2.6vw, 44px);
+  color: ${color.primary};
+  background: ${color.paperPure};
+  box-shadow: ${shadow.lie};
+  transform: rotate(-1.2deg);
+  &::before {
+    content: "";
     position: absolute;
-    left: -8%;
-    bottom: 0;
-    filter: drop-shadow(0 30px 40px rgba(20, 12, 6, 0.35));
+    inset: clamp(8px, 0.8vw, 14px);
+    border: 1px solid ${color.foil};
+    pointer-events: none;
   }
-  ${media.md} {
-    padding-bottom: 0;
-    .incoming {
-      display: none;
+  .when {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+    font: 600 12px/1.3 ${font.ui};
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: ${color.accentText};
+  }
+  /* A slow ring: the dot breathes while the call waits to be answered. */
+  .when i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: ${color.teal};
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .when i {
+      animation: ring 1.6s cubic-bezier(0.23, 1, 0.32, 1) infinite;
     }
   }
+  @keyframes ring {
+    0% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, ${color.teal} 55%, transparent);
+    }
+    100% {
+      box-shadow: 0 0 0 14px transparent;
+    }
+  }
+  blockquote {
+    margin: clamp(18px, 2vw, 28px) 0 0;
+    font: italic 400 clamp(1.7rem, 1.1rem + 1.9vw, 3.4rem) / 1.16
+      ${font.display};
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 6px 20px;
+    margin-top: clamp(22px, 2.4vw, 34px);
+    padding-top: 16px;
+    border-top: 1px solid ${color.primaryLine};
+    font: 400 15px/1.5 ${font.text};
+    color: ${color.bodyMuted};
+  }
+  figcaption b {
+    font-weight: 500;
+    color: ${color.primary};
+  }
+  ${media.motion} {
+    transform: none;
+  }
 `;
 
-/* ── 1. The walkthrough ────────────────────────────────────────────────── */
+function CallSlip() {
+  return (
+    <Slip aria-label="A sample call arriving in the A Story app">
+      <p className="when">
+        <i aria-hidden="true" /> Tuesday, 10:00 · A Story is calling
+      </p>
+      <blockquote>“{QUESTION}”</blockquote>
+      <figcaption>
+        <span>
+          <b>In the A Story app</b>, on their iPhone
+        </span>
+        <span>They answer, and talk.</span>
+      </figcaption>
+    </Slip>
+  );
+}
+
+/* ── Four moments, beside what one call leaves ─────────────────────────── */
 
 const STEPS = [
   {
     who: "You",
     title: "Set it up once.",
-    text: "Two minutes on their phone. Choose the hour A Story should ring - that’s your whole job.",
+    text: "Your parent installs A Story on their iPhone, and you choose the hour it rings. That is your whole job.",
   },
   {
     who: "Them",
     title: "Their phone rings.",
-    text: "Nothing to type and no password to remember. They answer and talk.",
+    text: "The call comes through the A Story app at that hour. They answer and talk. Nothing to type.",
   },
   {
     who: "A Story",
     title: "It listens, and follows.",
-    text: "It follows what they actually say, and lets go when they say no.",
-  },
-  {
-    who: "A Story",
-    title: "It becomes a memory.",
-    text: "A card to read, with every word they said underneath it.",
+    text: "It follows what they actually say, and lets go when they say no. Each call becomes a memory to read.",
   },
   {
     who: "Everyone",
     title: "The family adds theirs.",
-    text: "One link, no account. Their photos and versions sit beside the original - nothing replaces anything.",
+    text: "One link, no account. Their photos and versions sit beside the original, which stays as it was.",
   },
 ];
 
-/**
- * Each moment on the founder's real Figma screens (public/app) where the
- * file draws one — Home, the memory page, the Archive with family
- * contributions waiting. The incoming call and the live call are moments the
- * file doesn't draw, so those two stay as HTML screens in the same style.
- */
-function StepScreen({ n }: { n: number }) {
-  if (n === 0) return <AppShot name="home" />;
-  if (n === 1)
-    return <IncomingScreen when="Tuesday, 10:00" question={QUESTION} />;
-  if (n === 2)
-    return (
-      <CallScreen
-        teller={love.teller}
-        title={love.label}
-        chapter={love.chapter}
-        ask={love.script[2].text}
-        answer={love.script[3].text}
-        follow={love.script[4].text}
-        kept={["The card", "The transcript", "Voice · in development"]}
-      />
-    );
-  if (n === 3) return <AppShot name="memory" />;
-  return <AppShot name="archive" scroll />;
-}
-
-/** Screens whose top is dark (the status bar sits on chocolate). */
-const DARK_TOP = [0, 1];
-
-const Walk = styled(Chapter)`
-  .walk {
+const Moments = styled(Chapter)`
+  .row {
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: clamp(32px, 6vw, 110px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(40px, 6vw, 140px);
+    align-items: start;
+    margin-top: calc(clamp(32px, 4vw, 64px) * var(--sy));
   }
-  .sticky {
-    align-self: start;
-    position: sticky;
-    top: calc(var(--nav-total, 80px) + 3vh);
-    height: calc(100vh - var(--nav-total, 80px) - 6vh);
-    display: grid;
-    place-items: center;
-  }
-  .sticky .scr {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 500ms ease;
-  }
-  .sticky .scr.on {
-    opacity: 1;
-  }
-  .steps {
-    list-style: none;
+  ol {
     margin: 0;
     padding: 0;
-    position: relative;
+    list-style: none;
   }
-  /* The thread down the side of the steps. */
-  .steps::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 10vh;
-    bottom: 10vh;
-    width: 1px;
-    background: var(--line);
+  li {
+    display: grid;
+    grid-template-columns: minmax(0, 0.32fr) minmax(0, 1fr);
+    gap: 6px clamp(18px, 2.4vw, 40px);
+    padding: clamp(18px, 2vw, 28px) 0;
+    border-top: 1px solid ${color.primaryLine};
   }
-  .step {
-    position: relative;
-    /* 74vh made five steps 3.7 screens on a laptop (2026-10-14); 50svh
-       still made them 2.5 (2026-10-23). */
-    min-height: 36svh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: clamp(28px, 3vw, 48px);
+  li:last-child {
+    border-bottom: 1px solid ${color.primaryLine};
   }
-  .step::before {
-    content: "";
-    position: absolute;
-    left: -5px;
-    top: 50%;
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background: ${color.ivory};
-    border: 1px solid ${color.primaryLineStrong};
-    transition:
-      background 400ms,
-      border-color 400ms,
-      transform 400ms;
-  }
-  .step.on::before {
-    background: ${color.accent};
-    border-color: ${color.accent};
-    transform: scale(1.3);
-  }
-  /*
-   * The step you are not on recedes by colour, not by opacity. At 0.3 the
-   * heading fell to 1.7:1 against the ivory and the sentence under it to
-   * 1.6 - a reader with low vision lost every step but one. Holding the ink
-   * at the lighter chocolates keeps the same recession and stays readable.
-   */
-  @media (prefers-reduced-motion: no-preference) {
-    .step:not(.on) > h3 {
-      color: ${color.primaryLight};
-    }
-    .step:not(.on) > p:not(.num) {
-      color: ${color.faint};
-    }
-    .step:not(.on) > .num b {
-      color: color-mix(in srgb, ${color.accent} 46%, ${color.ivoryDeep});
-    }
-  }
-  .step > h3,
-  .step > p,
-  .step > .num b {
-    transition: color 500ms ease;
-  }
-  .num {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 18px;
-  }
-  .num b {
-    font: 400 clamp(2.4rem, 1.6rem + 2vw, 3.6rem) / 1 ${font.display};
-    color: ${color.accent};
-    font-variant-numeric: lining-nums;
-  }
-  .num span {
-    padding: 6px 12px;
-    border-radius: 99px;
-    background: ${color.paperPure};
-    box-shadow: inset 0 0 0 1px ${color.primaryLine};
-    font: 600 13px/1 ${font.body};
-    letter-spacing: 0.12em;
+  .who {
+    padding-top: 0.55em;
+    font: 600 12px/1.3 ${font.ui};
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: ${color.bodyMuted};
+    color: ${color.accentText};
   }
-  .step > h3 {
-    font: 400 ${display.lg} / 1.05 ${font.display};
-    letter-spacing: -0.02em;
+  h3 {
+    font: 400 ${display.md} / 1.1 ${font.display};
+    letter-spacing: -0.01em;
     color: ${color.primary};
   }
-  .step > p:not(.num) {
-    margin-top: 16px;
-    font: 400 clamp(1.1rem, 1rem + 0.35vw, 1.3rem) / 1.55 ${font.text};
+  li p:not(.who) {
+    margin-top: 8px;
+    max-width: 40ch;
+    font: 400 clamp(1.05rem, 1rem + 0.25vw, 1.25rem) / 1.55 ${font.text};
     color: ${color.body};
-    max-width: 34ch;
   }
-  .mini {
-    display: none;
-  }
-  ${media.md} {
-    .walk {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .sticky {
-      display: none;
-    }
-    .step {
-      min-height: 0;
-      padding: 40px 0 40px 28px;
-    }
-    .mini {
-      display: block;
-      margin-top: 28px;
-    }
-  }
-`;
-
-function Walkthrough() {
-  const [on, setOn] = useState(0);
-  const list = useRef<HTMLOListElement>(null);
-  const reveal = useReveals<HTMLElement>();
-
-  useEffect(() => {
-    const items = list.current?.querySelectorAll<HTMLElement>(".step");
-    if (!items) return;
-    // The step crossing the middle of the screen is the one the phone shows.
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting)
-            setOn(Number((e.target as HTMLElement).dataset.n));
-        });
-      },
-      { rootMargin: "-48% 0px -48% 0px" },
-    );
-    items.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-
-  return (
-    <Walk ref={reveal} $ground="ivory" aria-labelledby="walk-title">
-      <Frame>
-        <SplitHead>
-          <div>
-            <Statement id="walk-title" $size="xl" data-lines>
-              Five moments. You’re in <em>one.</em>
-            </Statement>
-          </div>
-          <Lead data-rise>
-            From the first two minutes to the family adding what they remember -
-            follow it on the phone.
-          </Lead>
-        </SplitHead>
-
-        <div className="walk">
-          <div className="sticky" aria-hidden="true">
-            <Phone
-              width="min(360px, calc((100svh - 200px) * 0.4756))"
-              lightStatus={DARK_TOP.includes(on)}
-            >
-              {STEPS.map((_, n) => (
-                <div key={n} className={`scr${on === n ? " on" : ""}`}>
-                  <StepScreen n={n} />
-                </div>
-              ))}
-            </Phone>
-          </div>
-          <ol className="steps" ref={list}>
-            {STEPS.map((s, n) => (
-              <li
-                key={s.title}
-                className={`step${on === n ? " on" : ""}`}
-                data-n={n}
-              >
-                <p className="num">
-                  <b aria-hidden="true">{String(n + 1).padStart(2, "0")}</b>
-                  <span>{s.who}</span>
-                </p>
-                <h3>{s.title}</h3>
-                <p>{s.text}</p>
-                <div className="mini" aria-hidden="true">
-                  <Phone
-                    width="min(240px, 70vw)"
-                    lightStatus={DARK_TOP.includes(n)}
-                  >
-                    <StepScreen n={n} />
-                  </Phone>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </Frame>
-    </Walk>
-  );
-}
-
-/* ── 2. The call, played ───────────────────────────────────────────────── */
-
-/* ── 4. What the family receives ───────────────────────────────────────── */
-
-const Receives = styled(Chapter)`
-  .objects {
+  /* What one call leaves: the card, and the typed sheet laid under it. */
+  .leaves {
+    position: relative;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(20px, 3vw, 48px);
-    margin-top: calc(clamp(32px, 4vw, 72px) * var(--sy));
+    gap: 0;
+    padding-top: 6px;
   }
-  .obj {
-    display: flex;
-    flex-direction: column;
+  .leaves > p.label {
+    font: 600 12px/1.3 ${font.ui};
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: ${color.accentText};
+    margin-bottom: 14px;
   }
-  .stage {
-    display: grid;
-    place-items: start center;
-    height: clamp(300px, min(38vw, 50svh), 560px);
-    overflow: hidden;
-    padding-top: 28px;
-    border-radius: 22px;
-    background: radial-gradient(
-      ellipse at 50% 100%,
-      color-mix(in srgb, ${color.gold} 30%, ${color.ivory}),
-      ${color.paperPure} 72%
-    );
-    mask-image: linear-gradient(#000 84%, transparent);
-  }
-  /* The transcript as a typed sheet, set down at a slight angle. */
-  .sheet-stage {
-    place-items: center;
-    padding: 28px;
+  .card {
+    position: relative;
+    z-index: 2;
+    width: min(100%, 640px);
   }
   .sheet {
-    width: min(100%, 340px);
-    padding: 26px 26px 30px;
+    position: relative;
+    z-index: 1;
+    width: min(92%, 560px);
+    margin: -10px 0 0 auto;
+    padding: 30px clamp(22px, 2.4vw, 34px) 26px;
     background: ${color.paperPure};
     box-shadow: 0 30px 50px -30px rgba(42, 31, 24, 0.55);
-    transform: rotate(-1.2deg);
+    transform: rotate(1deg);
   }
   .sheet-head {
-    margin-bottom: 12px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid ${color.primaryLineStrong};
-    font: 600 13px/1.2 ${font.body};
+    margin-bottom: 10px;
+    font: 600 12px/1.3 ${font.ui};
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${color.accentText};
   }
   .sheet p:not(.sheet-head) {
-    padding: 9px 0;
+    padding: 10px 0;
     border-top: 1px solid ${color.primaryLine};
-    font: 400 15px/1.5 ${font.display};
+    font: 400 17px/1.5 ${font.text};
     color: ${color.primary};
-  }
-  .sheet-head + p {
-    border-top: 0 !important;
   }
   .sheet time {
     display: block;
-    margin-bottom: 3px;
-    font: 600 13px/1.2 ${font.body};
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    margin-bottom: 2px;
+    font: 500 13px/1.3 ${font.ui};
     color: ${color.bodyMuted};
   }
-  /* Joan's words laid into the player where the Figma file has placeholder text. */
-  .player-copy {
-    position: absolute;
-    left: 7cqw;
-    right: 7cqw;
-    top: 83cqw;
-    display: grid;
-    justify-items: center;
-    gap: 1.6cqw;
-    text-align: center;
-  }
-  .player-copy b {
-    font: 700 6cqw/1.2 ${font.body};
-    color: ${color.primary};
-  }
-  .player-copy span {
-    font: 500 3.8cqw/1.2 ${font.body};
+  .kept {
+    margin-top: 22px;
+    max-width: 48ch;
+    font: 400 15px/1.55 ${font.ui};
     color: ${color.bodyMuted};
-  }
-  .player-copy q {
-    margin-top: 3cqw;
-    font: italic 400 4.4cqw/1.45 ${font.display};
-    color: ${color.primary};
-  }
-  .obj > small {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-    margin-top: 24px;
-    font: 600 13px/1.3 ${font.body};
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: ${color.primary};
-  }
-  .obj > small i {
-    display: grid;
-    place-items: center;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: ${color.teal};
-    color: ${color.ivory};
-    font: 600 13px/1 ${font.body};
-    font-style: normal;
-    letter-spacing: 0;
-  }
-  .obj > small ${Soon} {
-    margin-left: 0;
-  }
-  .cap {
-    margin-top: 10px;
-    font: 400 16px/1.55 ${font.text};
-    color: ${color.body};
-    max-width: 36ch;
-  }
-  .family {
-    display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: clamp(32px, 6vw, 110px);
-    align-items: start;
-    margin-top: calc(clamp(44px, 6vw, 120px) * var(--sy));
-  }
-  .family ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 12px;
-  }
-  .family li {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    padding: 16px 18px;
-    border-radius: 14px;
-    background: ${color.paperPure};
-    box-shadow: inset 0 0 0 1px ${color.primaryLine};
-  }
-  .initial {
-    display: grid;
-    place-items: center;
-    flex: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: ${color.primary};
-    color: ${color.ivory};
-    font: 600 14px/1 ${font.body};
-  }
-  .family li p {
-    font: 400 16px/1.5 ${font.text};
-    color: ${color.body};
-  }
-  .family li small {
-    display: block;
-    margin-top: 4px;
-    font: 600 13px/1.3 ${font.body};
-    color: ${color.accentText};
   }
   ${media.lg} {
-    .objects,
-    .family {
+    .row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  ${media.sm} {
+    li {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .who {
+      padding-top: 0;
+    }
+  }
+  ${media.motion} {
+    .sheet {
+      transform: none;
+    }
+  }
+`;
+
+function FourMoments() {
+  const ref = useReveals<HTMLElement>();
+  return (
+    <Moments ref={ref} $ground="ivory" aria-labelledby="moments-title">
+      <Frame>
+        <SplitHead>
+          <Statement id="moments-title" $size="lg" data-lines>
+            Four moments. You’re in <em>the first.</em>
+          </Statement>
+          <Lead data-rise>
+            Follow one family from the two-minute setup to everyone adding what
+            they remember.
+          </Lead>
+        </SplitHead>
+        <div className="row">
+          <ol>
+            {STEPS.map((s) => (
+              <li key={s.title} data-rise>
+                <p className="who">{s.who}</p>
+                <div>
+                  <h3>{s.title}</h3>
+                  <p>{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <div className="leaves" data-rise="settle">
+            <p className="label">What one call leaves, in the app</p>
+            <MemoryCard
+              className="card"
+              memory={{
+                photo: "/mission/02-640.webp",
+                chapter: love.chapter,
+                title: love.title,
+                date: love.dateLine,
+                words: love.excerpt,
+                people: ["Joan", "Ray", "Paul"],
+                teller: "Joan",
+              }}
+            />
+            <div className="sheet" aria-label="The transcript, word for word">
+              <p className="sheet-head">The transcript, word for word</p>
+              {love.transcript.slice(0, 2).map((l, i) => (
+                <p key={i}>
+                  <time>
+                    {l.at} · {l.who}
+                  </time>
+                  {l.text}
+                </p>
+              ))}
+            </div>
+            <p className="kept">
+              Every call keeps the card and the full transcript. Clips in the
+              storyteller’s own voice are in development. Joan is a sample.
+            </p>
+          </div>
+        </div>
+      </Frame>
+    </Moments>
+  );
+}
+
+/* ── Everyone has a way in ─────────────────────────────────────────────── */
+
+const WAYS = [
+  {
+    k: "Telling about someone",
+    t: "“Rose is here with me.”",
+    d: "A cousin or an aunt talks with A Story about Rose. The questions turn around for them, and what they add is credited to them.",
+  },
+  {
+    k: "Writing it down",
+    t: "A companion for the blank page.",
+    d: "A question to answer, another if that one doesn’t fit, and tidying that leaves your words yours.",
+  },
+  {
+    k: "Already written",
+    t: "Bring in the memoir.",
+    d: "A Word or text file becomes one memory per chapter. A Story reads it first, so it never asks again what’s there.",
+  },
+  {
+    k: "Together",
+    t: "Call the family together.",
+    d: "Up to four phones on one call in the app. Everyone talks, and A Story keeps what’s said.",
+  },
+];
+
+const Ways = styled(Chapter)`
+  ul {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(24px, 3vw, 56px);
+    margin: calc(clamp(28px, 3.4vw, 56px) * var(--sy)) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    padding-top: 18px;
+    border-top: 1px solid ${color.primaryLineStrong};
+  }
+  small {
+    display: block;
+    font: 600 12px/1.3 ${font.ui};
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: ${color.accentText};
+  }
+  h3 {
+    margin-top: 12px;
+    font: 400 ${display.sm} / 1.2 ${font.display};
+    color: ${color.primary};
+  }
+  p {
+    margin-top: 10px;
+    font: 400 17px/1.55 ${font.text};
+    color: ${color.body};
+  }
+  ${media.lg} {
+    ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  ${media.sm} {
+    ul {
       grid-template-columns: minmax(0, 1fr);
     }
   }
 `;
 
-/* ── 5. The book ─────────────────────────────────────────────────────────── */
+/* ── The book ──────────────────────────────────────────────────────────── */
 
 const Volume = styled(Chapter)`
   .vol {
@@ -597,6 +422,7 @@ const Volume = styled(Chapter)`
   .vol img {
     display: block;
     width: 100%;
+    max-width: 1100px;
     height: auto;
   }
   .price {
@@ -604,10 +430,6 @@ const Volume = styled(Chapter)`
     font: 400 ${display.sm} / 1.4 ${font.display};
     color: ${color.primary};
     max-width: 30ch;
-  }
-  .price b {
-    font-weight: 500;
-    color: ${color.accentText};
   }
   .links {
     display: flex;
@@ -623,8 +445,7 @@ const Volume = styled(Chapter)`
 `;
 
 export default function HowItWorks() {
-  const receives = useReveals<HTMLElement>();
-  const waysIn = useReveals<HTMLElement>();
+  const ways = useReveals<HTMLElement>();
   const volume = useReveals<HTMLElement>();
 
   return (
@@ -632,39 +453,28 @@ export default function HowItWorks() {
       <EditorialSeo
         title="How A Story works - a conversation becomes a family archive"
         path="/how-it-works"
-        description="Set it up once. A Story calls, listens and follows what they actually say. Watch a call, then see what the family receives."
+        description="Set it up once. A Story calls in its iPhone app, listens and follows what they actually say. See a sample call, then what the family keeps."
       />
       <PageOpening
+        variant="object"
         title={
           <>
             A Story does the <em>asking.</em>
           </>
         }
-        lead="You set it up once and choose the hour. Then A Story calls, asks about their life and follows whatever they actually say. Calls ring on iPhone in our private beta. Writing, the family archive and the book work in your browser today."
+        lead="You set it up once and choose the hour. A Story calls, asks about their life and follows whatever they say. For now the calls ring through the A Story app on iPhone, in a private beta. Writing, the family archive and the book work in any browser today."
         actions={
           <>
             <PrimaryLink to={START_HREF}>
               {START_LABEL} <ArrowIcon />
             </PrimaryLink>
-            <SecondaryLink to="/how-it-works#calls">Watch a call</SecondaryLink>
+            <SecondaryAnchor href="#calls">See a sample call</SecondaryAnchor>
           </>
         }
-        media={
-          <OpeningArt>
-            <Print
-              id="33"
-              alt="Two adults talking across a kitchen table"
-              sizes="(max-width: 860px) 92vw, 44vw"
-              priority
-            />
-            <Phone className="incoming" width="min(200px, 16vw)" lightStatus>
-              <IncomingScreen when="Tuesday, 10:00" question={QUESTION} />
-            </Phone>
-          </OpeningArt>
-        }
+        object={<CallSlip />}
       />
 
-      <Walkthrough />
+      <FourMoments />
 
       <CallStills
         id="calls"
@@ -676,96 +486,30 @@ export default function HowItWorks() {
         }
       />
 
-      <Receives ref={receives} $ground="sand" aria-labelledby="receives-title">
+      <Ways ref={ways} $ground="paper" aria-labelledby="ways-title">
         <Frame>
           <SplitHead>
-            <Statement id="receives-title" $size="lg" data-lines>
-              Each call leaves a memory to <em>read.</em>
-            </Statement>
-            <Lead data-rise>
-              The card is organized so it can be found again, and the transcript
-              stays underneath it, word for word.
-            </Lead>
-          </SplitHead>
-
-          {/* Illustrated with the app itself (founder's Figma, public/app):
-              the memory page, the words underneath, and the voice player. */}
-          <div className="objects">
-            <article className="obj" data-rise>
-              <div className="stage">
-                <Phone width="min(300px, 86%)">
-                  <AppShot name="memory" />
-                </Phone>
-              </div>
-              <small>
-                <i aria-hidden="true">1</i>The card
-              </small>
-              <p className="cap">
-                A memory page to read - the date, the chapter, the voice, and
-                who told it.
-              </p>
-            </article>
-            <article className="obj" data-rise>
-              <div className="stage sheet-stage">
-                <div className="sheet">
-                  <p className="sheet-head">{love.label} · transcript</p>
-                  {love.transcript.slice(0, 3).map((l, i) => (
-                    <p key={i}>
-                      <time>
-                        {l.at} · {l.who}
-                      </time>
-                      {l.text}
-                    </p>
-                  ))}
-                </div>
-              </div>
-              <small>
-                <i aria-hidden="true">2</i>The transcript
-              </small>
-              <p className="cap">
-                Every word underneath, timed to the call. The card never
-                replaces it.
-              </p>
-            </article>
-            <article className="obj" data-rise>
-              <div className="stage">
-                <Phone width="min(300px, 86%)">
-                  <AppShot name="player" />
-                  <div className="player-copy">
-                    <b>{love.label}</b>
-                    <span>{love.chapter}</span>
-                    <q>{love.excerpt}</q>
-                  </div>
-                </Phone>
-              </div>
-              <small>
-                <i aria-hidden="true">3</i>
-                {love.clip.label} · {love.clip.duration}
-                <Soon>In development</Soon>
-              </small>
-              <p className="cap">{love.clip.note}</p>
-            </article>
-          </div>
-        </Frame>
-      </Receives>
-
-      <Chapter ref={waysIn} $ground="paper" aria-labelledby="ways-in-title">
-        <Frame>
-          <SplitHead>
-            <Statement id="ways-in-title" $size="lg" data-lines>
+            <Statement id="ways-title" $size="lg" data-lines>
               Everyone in the family has a way <em>in.</em>
             </Statement>
             <Lead data-rise>
-              The people who know her stories tell their part, the one who
-              writes gets help, and whoever typed it up years ago doesn’t type
-              it twice.
+              Everyone who knows her stories can add their part, and a memoir
+              someone typed years ago comes in as it is.
             </Lead>
           </SplitHead>
-          <AppTour stops={WAYS_IN} />
+          <ul>
+            {WAYS.map((w) => (
+              <li key={w.k} data-rise>
+                <small>{w.k}</small>
+                <h3>{w.t}</h3>
+                <p>{w.d}</p>
+              </li>
+            ))}
+          </ul>
         </Frame>
-      </Chapter>
+      </Ways>
 
-      <Volume ref={volume} $ground="paper" aria-labelledby="volume-title">
+      <Volume ref={volume} $ground="sand" aria-labelledby="volume-title">
         <Frame className="vol">
           <div data-print data-drift="4">
             <Picture
@@ -782,7 +526,6 @@ export default function HowItWorks() {
               The stories and photographs, bound as a book. Print it at home
               free, or order a printed edition from {BOOK.from} once ordering
               opens. Individual, Family and Express include a Classic Hardcover.
-              The archive keeps growing after the book is printed.
             </p>
             <div className="links" data-rise>
               {/* /samples is a page in public/, outside the router: a plain anchor. */}
@@ -791,9 +534,6 @@ export default function HowItWorks() {
               </TextAnchor>
               <TextLink to="/pricing#book">
                 See book options <ArrowIcon />
-              </TextLink>
-              <TextLink to="/guides">
-                Conversation guides <ArrowIcon />
               </TextLink>
             </div>
           </div>

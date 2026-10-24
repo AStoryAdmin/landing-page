@@ -357,7 +357,7 @@ export const HOME_COLUMNS = [
 ] as const;
 export const HOME_ROWS: Row[] = [
   {
-    label: "They just answer the phone - nothing to type or record",
+    label: "They just answer when it rings - nothing to type or record",
     cells: [2, 2, 1, 2],
   },
   {
@@ -390,7 +390,7 @@ export const COMPARE_COLUMNS = [
 ] as const;
 export const COMPARE_ROWS: Row[] = [
   {
-    label: "They just answer the phone - nothing to type or record",
+    label: "They just answer when it rings - nothing to type or record",
     cells: [2, 2, 1, 2, 2, 1, 1],
   },
   {
@@ -419,15 +419,15 @@ export const COMPARE_ROWS: Row[] = [
   },
 ];
 
-/** Why families switch — the /compare argument, in four short reasons. */
+/** The /compare argument ("Four reasons to choose A Story"), in four short reasons. */
 export const SWITCH = [
   {
     title: "You want everyone’s version, not just one.",
     body: "A memoir tells it one way. A Story keeps Mom’s version, her brother’s, and the photograph - side by side, each in their own name.",
   },
   {
-    title: "Your parent won’t use an app.",
-    body: "A Story calls at the hour they choose. They answer and talk; it follows what they say, the way someone who knows them would.",
+    title: "Your parent would rather talk than type.",
+    body: "A Story rings in its iPhone app at the hour they choose, and we help you set it up. They answer and talk, and it follows what they say, the way someone who knows them would.",
   },
   {
     title: "Life is still happening.",

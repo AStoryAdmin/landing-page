@@ -31,9 +31,9 @@
  *   payment not live   → account, then claimed free on the account
  *   claimed            → confirmation
  */
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import {
   FOUNDING_BALANCE,
@@ -48,6 +48,7 @@ import {
   foundingPlacesLine,
   isOfferLive,
   reserveDiscountOpen,
+  reserveMetaDescription,
   offerCheckoutUrl,
   type OfferId,
 } from "../../lib/founding";
@@ -76,59 +77,11 @@ import {
   Statement,
   onDarkActions,
 } from "./kit/kit.styles";
-import { color, display, font, media } from "../../styles/theme";
+import { color, display, font, media, shadow } from "../../styles/theme";
 
-const Offers = styled(Chapter)`
-  padding-top: clamp(56px, 6vw, 96px);
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(20px, 3vw, 44px);
-    max-width: 1120px;
-    margin-inline: auto;
-    align-items: stretch;
-  }
-  /* Founding places filled (2026-10-23, YC audit S10): one card, and one
-     line saying so - never the $29 place offered as a choice. */
-  .solo-row {
-    display: grid;
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
-    gap: clamp(36px, 5vw, 110px);
-    align-items: center;
-  }
-  .why-in ul {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(20px, 2.4vw, 40px);
-    margin: clamp(28px, 3vw, 44px) 0 0;
-    padding: 0;
-    list-style: none;
-  }
-  .why-in li {
-    padding-top: 18px;
-    border-top: 1px solid var(--line);
-  }
-  .why-in li p {
-    margin-top: 10px;
-    font: 400 17px/1.6 ${font.text};
-    color: var(--muted);
-  }
-  ${media.lg} {
-    .solo-row {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-  ${media.sm} {
-    .why-in ul {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-  .filled {
-    margin: 20px 0 0;
-    text-align: center;
-    font: 400 17px/1.5 ${font.text};
-    color: ${color.bodyMuted};
-  }
+/* The offer card's own rules: shared by the cards on the ivory page and by
+   the $1 card that lies on the cloth in the opening (jury 1 #6). */
+const cardRules = css`
   .offer {
     display: flex;
     flex-direction: column;
@@ -363,6 +316,180 @@ const Offers = styled(Chapter)`
     outline: 2px solid ${color.teal};
     outline-offset: 2px;
   }
+`;
+
+/* The $1 card as the opening's object: a leaf of the book's paper on the
+   cloth, carrying the light page's inks so its action reads on paper. */
+const HeroCard = styled.div`
+  --ink: ${color.primary};
+  --text: ${color.body};
+  --muted: ${color.bodyMuted};
+  --line: ${color.primaryLine};
+  --label: ${color.accentText};
+  --focus: ${color.accentText};
+  --focus-halo: ${color.paperPure};
+  --action-bg: ${color.chocolate};
+  --action-ink: ${color.onDark};
+  --action-hover: ${color.chocolateDeep};
+  width: min(100%, 620px);
+  color: ${color.primary};
+  text-align: left;
+  ${cardRules};
+  .offer {
+    box-shadow: ${shadow.lie};
+  }
+  .offer.plain {
+    border: 0;
+  }
+  /* On the cloth the card says only what the room below does not: the
+     facts "What happens next" and "Why a dollar" carry are left to them,
+     so the card fits the first screen of a laptop. */
+  .offer {
+    padding: clamp(26px, 2.6vw, 44px);
+  }
+  .price {
+    margin-top: 18px;
+  }
+  .held {
+    margin-top: 18px;
+  }
+  ul.inc {
+    margin-top: 18px;
+  }
+  ul.inc li:nth-child(-n + 3) {
+    display: none;
+  }
+  .act {
+    margin-top: 22px;
+  }
+  /* The card's foot: the two small facts that used to sit alone under it. */
+  .card-foot {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid ${color.primaryLine};
+    font: 400 14px/1.55 ${font.body};
+    color: ${color.bodyMuted};
+  }
+  .card-foot a {
+    display: inline-block;
+    padding: 8px 2px;
+    margin: -8px 0;
+    color: ${color.primary};
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+`;
+
+/* The words sit level with the card's middle, not at its foot. */
+const CenterOpening = styled.div`
+  [data-variant="object"] .opening-grid:not(.solo) {
+    align-items: center;
+  }
+`;
+
+/* What happens next, and why a dollar: one room on the ivory page. */
+const Next = styled(Chapter)`
+  .two {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(36px, 6vw, 140px);
+    align-items: start;
+  }
+  .then {
+    margin-top: clamp(18px, 2vw, 28px);
+    max-width: 40ch;
+    font: 400 clamp(1.2rem, 1.05rem + 0.5vw, 1.6rem) / 1.5 ${font.text};
+    color: ${color.primary};
+  }
+  .then + p {
+    margin-top: 16px;
+    max-width: 46ch;
+    font: 400 17px/1.6 ${font.text};
+    color: ${color.bodyMuted};
+  }
+  ul {
+    margin: clamp(22px, 2.4vw, 34px) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 8px clamp(20px, 3vw, 48px);
+    padding: 18px 0;
+    border-top: 1px solid ${color.primaryLine};
+  }
+  li:last-child {
+    border-bottom: 1px solid ${color.primaryLine};
+  }
+  li h3 {
+    font: 400 ${display.sm} / 1.25 ${font.display};
+    color: ${color.primary};
+  }
+  li p {
+    font: 400 17px/1.55 ${font.text};
+    color: ${color.body};
+  }
+  ${media.md} {
+    .two,
+    li {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+`;
+
+const Offers = styled(Chapter)`
+  padding-top: clamp(56px, 6vw, 96px);
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(20px, 3vw, 44px);
+    max-width: 1120px;
+    margin-inline: auto;
+    align-items: stretch;
+  }
+  /* Founding places filled (2026-10-23, YC audit S10): one card, and one
+     line saying so - never the $29 place offered as a choice. */
+  .solo-row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    gap: clamp(36px, 5vw, 110px);
+    align-items: center;
+  }
+  .why-in ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(20px, 2.4vw, 40px);
+    margin: clamp(28px, 3vw, 44px) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .why-in li {
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .why-in li p {
+    margin-top: 10px;
+    font: 400 17px/1.6 ${font.text};
+    color: var(--muted);
+  }
+  ${media.lg} {
+    .solo-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  ${media.sm} {
+    .why-in ul {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .filled {
+    margin: 20px 0 0;
+    text-align: center;
+    font: 400 17px/1.5 ${font.text};
+    color: ${color.bodyMuted};
+  }
+  ${cardRules};
   .signin {
     margin-top: 28px;
     text-align: center;
@@ -761,13 +888,8 @@ export default function Reserve() {
     const offer = OFFERS[id];
     const copy = COPY[id];
     /* Payment not switched on yet — claim it on the account, free. */
-    if (account === undefined) {
-      return (
-        <PrimaryLink to={signUpHref("/reserve")}>
-          Continue <ArrowIcon />
-        </PrimaryLink>
-      );
-    }
+    /* While the stored session is read, the signed-out action stands in,
+       so the card does not change height on load (jury 2, B3: CLS). */
     if (!account) {
       return (
         <>
@@ -827,7 +949,7 @@ export default function Reserve() {
       : "#offers";
   const { reserve, founding } = OFFERS;
 
-  const card = (id: OfferId) => {
+  const card = (id: OfferId, foot?: ReactNode) => {
     const o = OFFERS[id];
     const isFounding = id === "founding";
     const body = (
@@ -838,8 +960,8 @@ export default function Reserve() {
               ? "Filled"
               : `Open now · ${placesLine}`
             : discountOpen
-              ? `The easy yes · ends ${RESERVE_DEADLINE_LABEL}`
-              : "The easy yes"}
+              ? `Reserve · ends ${RESERVE_DEADLINE_LABEL}`
+              : "Reserve"}
         </p>
         <h2 className="name">{o.name}</h2>
         <p className="who">
@@ -893,6 +1015,7 @@ export default function Reserve() {
             ))}
         </ul>
         <div className="act">{action(id)}</div>
+        {foot}
       </>
     );
     return isFounding ? (
@@ -920,11 +1043,7 @@ export default function Reserve() {
             : `Reserve A Story for ${reserve.price}`
         }
         path="/reserve"
-        description={
-          founding.open
-            ? `A Story opens to ${founding.places} founding families before launch: ${founding.price}, set up with you by hand, one of us on your first call, half off your first year, refundable until that call. Or hold a place for ${reserve.price}.`
-            : `The founding places are filled. ${reserve.price} holds your place in line for launch, ${reserve.discount}% off your first year if you reserve by ${RESERVE_DEADLINE_LABEL}, refundable any time before launch.`
-        }
+        description={reserveMetaDescription()}
       />
 
       {/* While founding places remain, the page leads with them (header);
@@ -964,113 +1083,129 @@ export default function Reserve() {
           }
         />
       ) : (
-        <PageOpening
-          ground="night"
-          eyebrow={discountOpen ? `Reserve · ${deadline}` : "Reserve"}
-          labelledBy="reserve-title"
-          title={
-            <>
-              Hold your place <em>for a dollar.</em>
-            </>
-          }
-          lead={`Anyone can start A Story free in a browser. The calls come with a plan, and the founding places are filled: reserve for ${reserve.price} and we tell you the moment it is your turn.`}
-          actions={
-            <>
-              <PrimaryAnchor
-                href={openingHref}
-                onClick={(e) => {
-                  track("offer_click", { offer: "reserve", from: "opening" });
-                  gate(e, "reserve", openingHref);
-                }}
-              >
-                Reserve for {reserve.price} <ArrowIcon />
-              </PrimaryAnchor>
-              <ComingSoon />
-            </>
-          }
-        />
+        /* Founding places filled: the $1 card itself is the opening's
+           object, on the cloth (jury 1 #6); the two small facts that sat
+           alone under it are its foot (jury 1 #22). */
+        <CenterOpening>
+          <PageOpening
+            variant="object"
+            labelledBy="reserve-title"
+            title={
+              <>
+                Hold your place <em>for a dollar.</em>
+              </>
+            }
+            lead={`Anyone can start A Story free in a browser. The calls come with a plan, and they ring in the A Story iPhone app, which is in a private beta. ${reserve.price} holds your family a place in line.`}
+            object={
+              <HeroCard>
+                {card(
+                  "reserve",
+                  <p className="card-foot">
+                    The founding places are filled - thank you.
+                    {!isIn && account === null && (
+                      <>
+                        {" "}
+                        Already have an account?{" "}
+                        <Link to="/sign-in?next=/reserve">Sign in</Link>
+                      </>
+                    )}
+                  </p>,
+                )}
+              </HeroCard>
+            }
+          />
+        </CenterOpening>
       )}
 
-      <Offers
-        ref={reveal}
-        $ground="ivory"
-        id="offers"
-        aria-label="Two ways in"
-        style={{ scrollMarginTop: 80 }}
-      >
-        <Frame>
-          {foundingOpen ? (
-            <div className="grid">
-              {card("founding")}
-              {card("reserve")}
-            </div>
-          ) : (
-            <div className="solo-row">
-              <div>
+      {(foundingOpen || (isIn && shareUrl)) && (
+        <Offers
+          ref={reveal}
+          $ground="ivory"
+          id="offers"
+          aria-label="Two ways in"
+          style={{ scrollMarginTop: 80 }}
+        >
+          <Frame>
+            {foundingOpen ? (
+              <div className="grid">
+                {card("founding")}
                 {card("reserve")}
-                <p className="filled" data-rise>
-                  The founding places are filled - thank you.
-                </p>
               </div>
-              <div className="why-in" data-rise>
-                <Statement as="h2" id="why-title" $size="md">
-                  The smallest thing that <em>means</em> something.
-                </Statement>
+            ) : null}
+
+            {isIn && shareUrl && (
+              <div className="share" data-rise>
+                <Heading as="h2">Bring your brothers and sisters in.</Heading>
                 <Lead>
-                  To you, because it holds a price. To us, because it tells us
-                  who to open to first.
+                  Anyone who reserves through your link gets the same{" "}
+                  {reserve.discount}% off - and it is one more person who will
+                  read what your parents say.
                 </Lead>
-                <ul>
-                  {WHY_PAY.map((w) => (
-                    <li key={w.t}>
-                      <Heading>{w.t}</Heading>
-                      <p>{w.d}</p>
-                    </li>
-                  ))}
-                </ul>
+                <div className="row">
+                  <code>{shareUrl}</code>
+                  <SecondaryButton type="button" onClick={share}>
+                    {copied ? "Copied - paste it to them" : "Share with family"}
+                  </SecondaryButton>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {isIn && shareUrl && (
-            <div className="share" data-rise>
-              <Heading as="h2">Bring your brothers and sisters in.</Heading>
-              <Lead>
-                Anyone who reserves through your link gets the same{" "}
-                {reserve.discount}% off - and it is one more person who will
-                read what your parents say.
-              </Lead>
-              <div className="row">
-                <code>{shareUrl}</code>
-                <SecondaryButton type="button" onClick={share}>
-                  {copied ? "Copied - paste it to them" : "Share with family"}
-                </SecondaryButton>
-              </div>
-            </div>
-          )}
+            {foundingOpen && !isIn && account === null && (
+              <p className="signin">
+                Already have an account?{" "}
+                <Link to="/sign-in?next=/reserve">Sign in</Link>
+              </p>
+            )}
+          </Frame>
+        </Offers>
+      )}
 
-          {!isIn && account === null && (
-            <p className="signin">
-              Already have an account?{" "}
-              <Link to="/sign-in?next=/reserve">Sign in</Link>
-            </p>
-          )}
-        </Frame>
-      </Offers>
+      {!foundingOpen && (
+        <Next $ground="ivory" aria-labelledby="next-title">
+          <Frame className="two">
+            <div>
+              <Statement id="next-title" $size="lg" data-lines>
+                What happens <em>next.</em>
+              </Statement>
+              <p className="then" data-rise>
+                When the calls open, we email you, in the order families
+                reserved. Your parent installs A Story on their iPhone, you pick
+                the hour, and the first call rings.
+              </p>
+              <p data-rise>
+                Until then, the family archive, writing and the book work today
+                in any browser, free.
+              </p>
+            </div>
+            <div>
+              <Statement as="h2" id="why-title" $size="md" data-lines>
+                Why a <em>dollar.</em>
+              </Statement>
+              <ul>
+                {WHY_PAY.map((w) => (
+                  <li key={w.t} data-rise>
+                    <h3>{w.t}</h3>
+                    <p>{w.d}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Frame>
+        </Next>
+      )}
 
       {foundingOpen && (
         <Why $ground="paper" aria-labelledby="why-title">
           <Frame>
             <SplitHead>
               <div>
-                <Eyebrow>Why pay anything</Eyebrow>
                 <Statement id="why-title" $size="lg">
-                  The smallest thing that <em>means</em> something.
+                  Why a <em>dollar.</em>
                 </Statement>
               </div>
               <Lead>
-                To you, because it holds a price. To us, because it tells us who
-                to open to first.
+                It holds your price, and it tells us which families to open the
+                calls to first.
               </Lead>
             </SplitHead>
             <ul className="four">
@@ -1127,17 +1262,17 @@ export default function Reserve() {
       <Closing $ground="night" aria-labelledby="closing-title">
         <Frame>
           <Statement id="closing-title" $size="lg">
-            The question nobody has <em>asked yet.</em>
+            The questions you keep meaning <em>to ask.</em>
           </Statement>
           <p className="lead">
             {foundingOpen
               ? `Twenty-nine dollars has it asked before launch, with one of us on the call (${placesLine}, in the order families join). `
               : ""}
-            A dollar puts you in line to have it asked
+            A dollar puts you in line
             {discountOpen
-              ? `, at ${OFFERS.reserve.discount}% off if you reserve by ${RESERVE_DEADLINE_LABEL}`
+              ? `, with ${OFFERS.reserve.discount}% off if you reserve by ${RESERVE_DEADLINE_LABEL}`
               : ""}
-            . Either way, if the timing turns out wrong, the money comes back.
+            . If the timing turns out wrong, we refund it.
           </p>
           <Actions className="acts">
             {foundingOpen && (
