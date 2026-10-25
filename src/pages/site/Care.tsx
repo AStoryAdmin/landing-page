@@ -213,7 +213,7 @@ export default function Care() {
         steps={[
           [
             "The resident talks, when they like.",
-            "A Story calls in its iPhone app at an agreed hour (in a private beta), or a staff member starts a conversation together with them.",
+            "A Story calls in its iPhone app at an agreed hour (in a private beta), or a staff member starts a conversation together with them. Coming next: residents answer by just talking, in their own language, with nothing to install.",
           ],
           [
             "The family adds what they know.",
