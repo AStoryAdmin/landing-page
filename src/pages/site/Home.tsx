@@ -8,6 +8,7 @@ import Hero from "./home/Hero";
 import WhatGetsLost from "./home/WhatGetsLost";
 import EveryVoice from "./home/EveryVoice";
 import FamilyBook from "./home/FamilyBook";
+import WhereWeAreGoing from "./kit/WhereWeAreGoing";
 
 const monthly = OTHER_PLANS.find((p) => p.id === "monthly")!;
 /** "$19.99/mo" -> "$19.99": the cheapest way in to the calls, said once. */
@@ -33,7 +34,10 @@ const monthlyPrice = monthly.price.replace(/\/mo$/, "");
  *                    "One life. Many witnesses." on the cloth.
  *   4. FamilyBook    the Hartleys' book (a sample) to open and turn, cover to
  *                    today; the way to the three sample books on /samples.
- *   5. Invitation    the site's close on the cloth, with the one price line.
+ *   5. WhereWeAreGoing  the direction in one honest paragraph (Plan 2,
+ *                    2026-10-25): a biographer today, the family's memory
+ *                    next, opt-in, in real recorded voices.
+ *   6. Invitation    the site's close on the cloth, with the one price line.
  *
  * Left out, and why: the intro cover (Intro.tsx; it held the page for five
  * seconds); StepOne (Bao: "horrible"); ThreeSteps (a row of three equal
@@ -60,6 +64,7 @@ export default function Home() {
       <WhatGetsLost />
       <EveryVoice />
       <FamilyBook />
+      <WhereWeAreGoing />
       <Invitation
         title={
           <>

@@ -36,6 +36,7 @@ import { START_HREF, START_LABEL } from "../../lib/app";
 import { DEMO_EMAIL } from "../../lib/demoRequest";
 import { riseLines, useScene } from "../../lib/scrollMotion";
 import { Snapshot } from "./our-story/Snapshot";
+import WhereWeAreGoing from "./kit/WhereWeAreGoing";
 import { benchCloth, benchVars } from "./our-story/bench";
 import { cssOut, layDown, riseIn } from "./our-story/motion";
 
@@ -721,6 +722,8 @@ export default function OurStory() {
           </dl>
         </Frame>
       </WhyNow>
+
+      <WhereWeAreGoing id="our-story-going" />
 
       <Close ref={close} aria-labelledby="close-title">
         <Frame className="row">
