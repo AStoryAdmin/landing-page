@@ -118,7 +118,7 @@ export default function Compare() {
   return (
     <>
       <EditorialSeo
-        title="How A Story is different - more than a memoir"
+        title="How A Story is different from other story apps"
         path="/compare"
         description="A Story beside Storyworth, Remento, Storii, Meminto, Spomen and Heirloom: calls that follow up, every family member's version, an archive that keeps growing."
       />

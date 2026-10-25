@@ -42,7 +42,7 @@ import { QUESTION_COUNT } from './product';
  * 4. The book comes in six editions, from free to done-for-you, mirroring
  *    the app's supabase/functions/_shared/bookCatalog.js (added 2026-10-02):
  *    print at home free, a print-ready Digital Edition, Softcover, Classic
- *    Hardcover, Heirloom, and a Full-Service Legacy Edition with an editor.
+ *    Hardcover, Heirloom, and a Full-Service Edition with an editor.
  *    Individual, Family and Express include a Classic Hardcover (one a year,
  *    one per storyteller a year on Family, one per Express pass) — or its
  *    value toward a finer edition — plus the Digital Edition; a member pays
@@ -289,7 +289,7 @@ export const BOOK_EDITIONS: BookEdition[] = [
     },
     {
         id: 'legacy',
-        name: 'Full-Service Legacy Edition',
+        name: 'Full-Service Edition',
         price: '$499',
         badge: 'We do everything',
         tagline: 'A person of ours, start to finish.',
@@ -305,7 +305,7 @@ export const BOOK_EDITIONS: BookEdition[] = [
 
 /** The book in sentences, for pages that only mention it. */
 export const BOOK = {
-    /** Printed editions start here and run to the Legacy Edition. */
+    /** Printed editions start here and run to the Full-Service Edition. */
     from: '$39',
     members:
         'Individual, Family and Express include a Classic Hardcover - or its $69 toward a finer edition - and the Digital Edition. You pay only the shipping. Monthly includes the Digital Edition.',
@@ -329,7 +329,7 @@ export const KEEPS_LINE =
  * An earlier version of this led with "what happens the day you stop paying"
  * and described cancelling as dropping to Free. Both were true and both were
  * the wrong way round: it centred an ending on a product whose entire argument
- * is that there isn't one. A Story is not a memoir to finish. The app is the
+ * is that there isn't one. A Story is not a book to finish. The app is the
  * thing you keep; a plan is a service you switch on when you want the asking
  * done for you, and switching it off takes nothing away.
  */

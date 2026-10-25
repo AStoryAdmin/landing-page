@@ -23,17 +23,17 @@ export const AS_OF = "September 2026";
 /** The three product models — the primary comparison. */
 export const MODELS = [
   {
-    group: "Memoir products",
+    group: "Story apps",
     note: "They built this category, and they do it well.",
     items: [
-      { name: "Storyworth", loop: "Questions → storyteller → memoir → book" },
+      { name: "Storyworth", loop: "Questions → storyteller → written stories → book" },
       {
         name: "Remento",
         loop: "Prompt → voice/video → written story → voice-linked book",
       },
       {
         name: "Storii",
-        loop: "Phone prompt → recording → transcript / memoir",
+        loop: "Phone prompt → recording → transcript / written story",
       },
       {
         name: "Meminto",
@@ -293,7 +293,7 @@ export const MATRIX: { row: string; cells: Mark[] }[] = [
       m(1, "Some"),
       m(1, "Some"),
       m(1, "Some"),
-      m(0, "Mostly memoir"),
+      m(0, "Mostly the past"),
       m(2, "Strong"),
       m(2, "Strong"),
       m(2, "Core"),
@@ -317,7 +317,7 @@ export const MATRIX: { row: string; cells: Mark[] }[] = [
 export const WHY_NOT = [
   {
     q: "Why not Storyworth?",
-    a: "Storyworth is excellent at helping a storyteller create a memoir. It has also expanded into guided phone interviewing and family calls. A Story starts from a different object: the family memory itself. The same event can accumulate an original recording, a photograph, a corrected date, a sibling’s version and another conversation years later. It does not have to resolve into one narrator’s memoir.",
+    a: "Storyworth is excellent at helping a storyteller write their life story. It has also expanded into guided phone interviewing and family calls. A Story starts from a different object: the family memory itself. The same event can accumulate an original recording, a photograph, a corrected date, a sibling’s version and another conversation years later. It does not have to resolve into one narrator’s book.",
   },
   {
     q: "Why not Remento?",
@@ -325,11 +325,11 @@ export const WHY_NOT = [
   },
   {
     q: "Why not Spomen?",
-    a: "Spomen is probably the closest emerging competitor and validates the shift from memoir products toward family archives. The important philosophical difference is that Spomen describes weaving contributions into an attributed family story. A Story is intentionally documentary: when relatives remember the same event differently, it preserves those versions alongside one another rather than needing to reconcile them into one narrative. We are not trying to write the definitive version of a family’s history. We are trying to preserve the evidence of how that family remembers it.",
+    a: "Spomen is probably the closest emerging competitor and validates the shift from single-storyteller books toward family archives. The important philosophical difference is that Spomen describes weaving contributions into an attributed family story. A Story is intentionally documentary: when relatives remember the same event differently, it preserves those versions alongside one another rather than needing to reconcile them into one narrative. We are not trying to write the definitive version of a family’s history. We are trying to preserve the evidence of how that family remembers it.",
   },
   {
     q: "Why not Heirloom?",
-    a: "Heirloom is moving toward an interactive AI legacy - a Family Council and, at higher tiers, cloned voice. A Story makes a different trust decision. It does not try to recreate a person. It preserves what they actually said, what others actually remember, and the original material underneath it.",
+    a: "Heirloom is moving toward an interactive AI version of a person - a Family Council and, at higher tiers, a synthetic voice. A Story makes a different trust decision: we don’t generate a person’s words or voice. It preserves what they actually said, what others actually remember, and the original material underneath it.",
   },
   {
     q: "Why not Ancestry?",
@@ -423,7 +423,7 @@ export const COMPARE_ROWS: Row[] = [
 export const SWITCH = [
   {
     title: "You want everyone’s version, not just one.",
-    body: "A memoir tells it one way. A Story keeps Mom’s version, her brother’s, and the photograph - side by side, each in their own name.",
+    body: "A single-storyteller book tells it one way. A Story keeps Mom’s version, her brother’s, and the photograph - side by side, each in their own name.",
   },
   {
     title: "Your parent would rather talk than type.",

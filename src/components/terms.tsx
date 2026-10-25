@@ -224,7 +224,7 @@ const sections: SectionData[] = [
             contact@astoryapp.com
           </LegalLink>{" "}
           and we will refund you. We would rather return the money than have a
-          gift sit there unopened, and we do not put a deadline on this. For a
+          gift sit there unopened, and we do not put a time limit on this. For a
           gift bought through the App Store, we will help you ask Apple.
         </Paragraph>
         <Paragraph>

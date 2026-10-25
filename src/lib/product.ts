@@ -43,7 +43,7 @@ export const CHAPTERS: Chapter[] = [
     {
         name: 'Where we come from',
         blurb: 'Parents, grandparents, and the place the family started.',
-        note: 'A life has an edge before it begins, and most memoirs have nowhere to put it.',
+        note: 'A life has an edge before it begins, and most life-story books have nowhere to put it.',
     },
     {
         name: 'Childhood',

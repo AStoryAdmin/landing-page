@@ -168,6 +168,6 @@ export const AT_CHECKOUT = [
     },
     {
         t: 'Refunded if it goes unused',
-        d: 'If the person you bought it for never gets going, write to us and we will refund you. No deadline on that, and no argument.',
+        d: 'If the person you bought it for never gets going, write to us and we will refund you. No time limit on that, and no argument.',
     },
 ] as const;

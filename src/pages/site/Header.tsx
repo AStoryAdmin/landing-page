@@ -25,7 +25,7 @@ const groups = [
       [
         "How A Story is different",
         "/compare",
-        "Memoir products, family archives, and us.",
+        "Story apps, family archives, and us.",
       ],
       ["Questions & answers", "/questions", "The practical things, explained."],
       ["Conversation guides", "/guides", "A good place to begin."],

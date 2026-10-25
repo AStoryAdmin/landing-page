@@ -366,7 +366,7 @@ const WAYS = [
   },
   {
     k: "Already written",
-    t: "Bring in the memoir.",
+    t: "Bring in what’s already written.",
     d: "A Word or text file becomes one memory per chapter. A Story reads it first, so it never asks again what’s there.",
   },
   {
@@ -505,7 +505,7 @@ export default function HowItWorks() {
               Everyone in the family has a way <em>in.</em>
             </Statement>
             <Lead data-rise>
-              Everyone who knows her stories can add their part, and a memoir
+              Everyone who knows her stories can add their part, and a life story
               someone typed years ago comes in as it is.
             </Lead>
           </SplitHead>

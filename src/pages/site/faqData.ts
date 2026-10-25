@@ -60,7 +60,7 @@ export const groups = [
       },
       {
         q: "How much is the printed book?",
-        a: `Printing the whole book at home is free. Printed editions run from a ${BOOK.from} Softcover to a $149 Heirloom Edition, and a $499 Full-Service Legacy Edition with an editor of ours; the print-ready Digital Edition is $19. ${BOOK.members} ${BOOK.allowance}, with no page limit. ${BOOK.ships}. ${BOOK.opens}`,
+        a: `Printing the whole book at home is free. Printed editions run from a ${BOOK.from} Softcover to a $149 Heirloom Edition, and a $499 Full-Service Edition with an editor of ours; the print-ready Digital Edition is $19. ${BOOK.members} ${BOOK.allowance}, with no page limit. ${BOOK.ships}. ${BOOK.opens}`,
       },
       {
         q: "How does giving A Story work?",

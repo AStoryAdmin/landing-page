@@ -411,7 +411,7 @@ export default function Start() {
           ))}
         </ol>
         <p className="motto" data-rise>
-          Not a memoir to finish - <i>A Story</i> to keep, and to carry on.
+          Not a book to finish - <i>A Story</i> to keep, and to carry on.
         </p>
       </div>
 
