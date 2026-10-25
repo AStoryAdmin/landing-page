@@ -4,10 +4,14 @@
  *
  * Photograph 27 fills the window under the bar: someone mid-story at Sunday
  * dinner, everyone listening, nobody writing it down - the thing A Story is
- * trying to catch. The headline is the app's own line ("Every life holds a
- * story worth keeping.", Bao 2026-10-23), then one sentence on what A Story
- * is, the two doors, and the honest small print: the calls ring in the A
- * Story iPhone app, in private beta, which the parent installs.
+ * trying to catch. 2026-10-25 (Plan 2, section 1): the eyebrow names the
+ * category ("The AI biographer for families"), the headline is the slogan,
+ * and the sentence is the daily habit - a relative's question in their own
+ * voice, answered just by talking. Before, the headline was the app's own
+ * line ("Every life holds a story worth keeping.", Bao 2026-10-23) and the
+ * sentence said A Story "calls your parents". Then the two doors and the
+ * honest small print: the iPhone app is in private beta, and the simple
+ * link comes next (copy wording for Daniel and Bao to approve).
  *
  * Type floor (Bao, 2026-10-24: "i despised the small text everywhere"): the
  * sentence is EB Garamond at 20px or more (18px on a phone), the small print
@@ -21,7 +25,7 @@
  */
 import styled from "styled-components";
 import { ArrowIcon, Picture } from "../kit/kit";
-import { Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
+import { Eyebrow, Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
 import { gsap, openMasks, SplitText, useScene } from "../../../lib/scrollMotion";
 import { color, font, media } from "../../../styles/theme";
 import { START_HREF, START_LABEL } from "../../../lib/app";
@@ -32,6 +36,7 @@ const Scene = styled.section`
   --focus: ${color.gold};
   --focus-halo: ${color.chocolateDeep};
   --mark: ${color.gold};
+  --label: ${color.gold};
   position: relative;
   min-height: max(calc(100svh - var(--nav-total, 88px)), 640px);
   display: flex;
@@ -137,7 +142,7 @@ export default function Hero() {
   const ref = useScene<HTMLElement>((root) => {
     const photo = root.querySelector(".hero-photo img");
     const title = root.querySelector("h1")!;
-    const rest = root.querySelectorAll(".hero-lead, .hero-actions, .hero-small");
+    const rest = root.querySelectorAll(".hero-eyebrow, .hero-lead, .hero-actions, .hero-small");
     gsap.fromTo(photo, { scale: 1.12 }, { scale: 1, duration: 2.4, ease: "house-out" });
     gsap.fromTo(
       rest,
@@ -178,13 +183,16 @@ export default function Hero() {
         />
       </div>
       <Frame className="hero-body">
+        <Eyebrow className="hero-eyebrow">The AI biographer for families</Eyebrow>
         <h1 id="hero-title">
-          Every life holds a story <em>worth keeping.</em>
+          Your Family’s <em>Living Memories</em>
         </h1>
         <p className="hero-lead">
-          A Story is an AI biographer that calls your parents and grandparents,
-          asks about their lives, and keeps what they tell in a private book the
-          whole family can add to.
+          Each day, someone in the family sends Grandma a question in their own
+          voice. She answers just by talking - in the app or from a simple
+          link, in Vietnamese or English. A Story asks the follow-up a good
+          biographer would, and keeps every story and lesson in her own voice,
+          for a printed book.
         </p>
         <div className="hero-actions">
           <PrimaryLink to={START_HREF}>
@@ -195,9 +203,9 @@ export default function Hero() {
           </TextLink>
         </div>
         <p className="hero-small">
-          Start free in your browser, no card. The calls ring in the A Story app
-          on your parent’s iPhone, now in private beta. Reserve, and we email you
-          when the calls open.
+          Start free in your browser, no card. The A Story iPhone app is in
+          private beta, and answering from a simple link comes next. Reserve,
+          and we email you when it opens.
         </p>
       </Frame>
     </Scene>

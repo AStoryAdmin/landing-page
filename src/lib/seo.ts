@@ -171,7 +171,7 @@ export const organizationSchema = () => ({
   email: SITE.email,
   slogan: SITE.tagline,
   description:
-    "An AI biographer that calls your parents, and the whole family adds their part. A Story keeps what they tell in a private family archive, with their own words, photographs and everyone’s version, and optional printed books.",
+    "The AI biographer for families. Each day, someone in the family sends a question in their own voice, and a parent or grandparent answers just by talking. A Story keeps what they tell in a private family archive, with their own words, photographs and everyone’s version, and optional printed books.",
   logo: `${SITE.url}/logo.png`,
   memberOf: PROGRAMS.memberships.map((m) => ({
     "@type": "ProgramMembership",
@@ -229,7 +229,7 @@ export const productSchema = () => ({
   operatingSystem: "Web, iOS",
   url: SITE.url,
   description:
-    "An AI biographer that calls your parents, and the whole family adds their part. The calls ring in the A Story iPhone app (private beta); the family archive and the book work in any browser.",
+    "The AI biographer for families: a daily question in a family member’s voice, answered just by talking. Answering is in the A Story iPhone app (private beta); the family archive and the book work in any browser.",
   offers: {
     "@type": "Offer",
     price: PRICE.headlineAmount,

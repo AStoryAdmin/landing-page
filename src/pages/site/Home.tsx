@@ -51,7 +51,7 @@ export default function Home() {
       <EditorialSeo
         title="A Story - Your Family’s Living Memories"
         path="/"
-        description="A Story is an AI biographer that calls your parents and grandparents, asks about their lives, and keeps what they tell in a private book the whole family can add to."
+        description="The AI biographer for families: a daily question in a family member’s voice, answered just by talking, and every story kept in their own voice for a printed book."
       />
       {/* Only when the address carries a family code (?ref=): the code,
           large, and the three steps to use it. */}

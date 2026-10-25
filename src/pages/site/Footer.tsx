@@ -91,8 +91,9 @@ export default function Footer() {
           <div>
             <Logo tone="dark" height={48} />
             <p className="footer-line">
-              A Story calls someone you love, listens, and keeps what they
-              say in a private archive the whole family can add to.
+              A Story brings someone you love a daily question in a family
+              member’s voice, listens, and keeps what they say in a private
+              archive the whole family can add to.
             </p>
             <p className="footer-contact">
               <a href={CONTACT.general}>{SITE.email}</a>
