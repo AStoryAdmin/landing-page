@@ -964,9 +964,9 @@ export default function Reserve() {
             ? !foundingOpen
               ? "Filled"
               : `Open now · ${placesLine}`
-            : discountOpen
-              ? `Reserve · ends ${RESERVE_DEADLINE_LABEL}`
-              : "Reserve"}
+            : /* No "ends 2 November" chip (Plan 2, 2026-10-25): the offer
+                 keeps its date in the page copy and terms, not a countdown. */
+              "Reserve"}
         </p>
         <h2 className="name">{o.name}</h2>
         <p className="who">

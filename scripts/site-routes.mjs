@@ -32,6 +32,9 @@ export const privateRoutes = [
     { path: '/join' },
     { path: '/thanks' },
     { path: '/l', visit: '/l?m=prerender&k=prerender' },
+    /* The holiday gift: noindex while lib/gift.ts keeps it closed. Move it
+       to src/lib/sitePages.json (the sitemap) when it opens. */
+    { path: '/gift' },
 ];
 /* The address a page is known by: with a trailing slash, because that is the
    form S3 serves with a 200 whether or not the CloudFront function is
