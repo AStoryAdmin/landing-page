@@ -52,6 +52,7 @@ import {
   offerCheckoutUrl,
   type OfferId,
 } from "../../lib/founding";
+import { PRICES_PUBLIC } from "../../lib/pricing";
 import { markOffer, useAccount, useReferralCode } from "../../lib/auth";
 import { useFoundingTaken } from "../../lib/foundingCount";
 import { track } from "../../lib/analytics";
@@ -988,7 +989,8 @@ export default function Reserve() {
                 ? `${o.discount}% off your first year`
                 : deadline}
           </p>
-          {(isFounding || discountOpen) && (
+          {/* The held figures only while prices are public (pricing.ts). */}
+          {PRICES_PUBLIC && (isFounding || discountOpen) && (
             <dl>
               <div>
                 <dt>Individual</dt>
@@ -1006,7 +1008,9 @@ export default function Reserve() {
           )}
           <p className="f">
             {isFounding
-              ? `The ${o.price} counts toward it - ${FOUNDING_BALANCE.individual} more for Individual, whenever you choose.`
+              ? PRICES_PUBLIC
+                ? `The ${o.price} counts toward it - ${FOUNDING_BALANCE.individual} more for Individual, whenever you choose.`
+                : `The ${o.price} counts toward it.`
               : discountOpen
                 ? "And the dollar comes off that."
                 : "A dollar still holds your place in line, and still comes off your first year."}

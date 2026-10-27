@@ -25,6 +25,17 @@
  * lines the app already supports sit with "What stays yours": the trusted
  * person, and a letter for later. The book section says what a printed book
  * is: Volume I.
+ *
+ * 2026-10-26, at the founder's request: fewer decisions on the first screen.
+ * Individual leads (the hero card and the wide card), Express sits beside it
+ * as the one to give for the holidays, and Family, Monthly, the comparison
+ * and the five book editions fold away. A fifteen-minute call with Daniel is
+ * offered beside the plans for anyone unsure.
+ *
+ * Later the same day the founder made prices private until launch
+ * (pricing.ts, PRICES_PUBLIC): every figure reads "Founding price", and a
+ * signup under the two cards asks for a name and an email to send it to
+ * (kit/FoundingPriceSignup). Free stays $0 and the reservation $1.
  */
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -37,7 +48,11 @@ import {
   PLANS,
   BOOK,
   BOOK_EDITIONS,
+  PRICES_PUBLIC,
+  PRICE_HIDDEN_NOTE,
+  shown,
 } from "../../lib/pricing";
+import FoundingPriceSignup from "./kit/FoundingPriceSignup";
 import { checkoutFor, isCheckoutLive } from "../../lib/checkout";
 import { START_HREF, START_LABEL } from "../../lib/app";
 import {
@@ -46,6 +61,7 @@ import {
   reserveDiscountOpen,
 } from "../../lib/founding";
 import { QUESTION_COUNT } from "../../lib/product";
+import { DEMO_EMAIL } from "../../lib/demoRequest";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import { PhonePairs } from "./rooms/phonePairs";
@@ -53,6 +69,7 @@ import {
   Chapter,
   Frame,
   PrimaryAnchor,
+  PrimaryLink,
   SecondaryLink,
   SplitHead,
   Statement,
@@ -72,11 +89,16 @@ import {
 
 const Plans = styled(Chapter)`
   padding-top: 0;
+  /* Individual wide, Express beside it; the folded pair below shares a row. */
   .plans {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
     gap: clamp(16px, 2vw, 28px);
     align-items: stretch;
+  }
+  .plans.pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 28px;
   }
   .plan {
     position: relative;
@@ -193,6 +215,126 @@ const Plans = styled(Chapter)`
     outline: 3px solid ${color.accent};
     outline-offset: 4px;
   }
+  .blurb {
+    margin-top: 18px;
+    max-width: 52ch;
+    font: 400 ${type.read} / 1.6 ${font.text};
+    color: ${color.body};
+  }
+  /* Express as the present: the sand of the book page, a gold rule on top. */
+  .plan.gift {
+    background: ${color.sand};
+    box-shadow: inset 0 3px 0 ${color.gold};
+    scroll-margin-top: 96px;
+  }
+  .plan.gift.is-selected {
+    box-shadow:
+      inset 0 3px 0 ${color.gold},
+      inset 0 0 0 1px ${color.primary};
+  }
+  .gift-line {
+    margin-top: 14px;
+    font: italic 400 ${type.read} / 1.45 ${font.display};
+    color: ${color.primaryMid};
+  }
+
+  /* While prices are private (pricing.ts, PRICES_PUBLIC): the words stand
+     where the figure would, a size down so they do not shout. */
+  .price.hidden {
+    font: 400 ${display.md} / 1.1 ${font.display};
+    color: ${color.primaryMid};
+  }
+  /* The founding-price signup, one band under the two cards. */
+  .ask {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 24px clamp(32px, 5vw, 80px);
+    align-items: end;
+    margin-top: clamp(16px, 2vw, 28px);
+    padding: clamp(28px, 3vw, 44px);
+    background: ${color.paperPure};
+    border: 1px solid ${color.primaryLine};
+    scroll-margin-top: 96px;
+  }
+  .ask h2 {
+    font: 400 ${display.md} / 1.1 ${font.display};
+    color: ${color.primary};
+  }
+  .ask p {
+    margin-top: 10px;
+    max-width: 46ch;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: ${color.body};
+  }
+  ${media.lg} {
+    .ask {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Institutions (2026-10-26): their own door on Pricing, to the demo
+     booking on /organizations (DemoBooking.tsx). */
+  .orgs {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) auto;
+    gap: 24px clamp(32px, 5vw, 80px);
+    align-items: center;
+    margin-top: clamp(20px, 2.4vw, 32px);
+    padding: clamp(28px, 3vw, 44px);
+    background: ${color.paperPure};
+    border: 1px solid ${color.primaryLine};
+  }
+  .orgs-kicker {
+    display: block;
+    margin-bottom: 8px;
+    font: 600 ${type.label} / 1.3 ${font.ui};
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: ${color.accentText};
+  }
+  .orgs h2 {
+    max-width: 30ch;
+    font: 400 ${display.sm} / 1.15 ${font.display};
+    color: ${color.primary};
+  }
+  .orgs p {
+    margin-top: 10px;
+    max-width: 58ch;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: ${color.body};
+  }
+  .orgs-doors {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 24px;
+  }
+  ${media.md} {
+    .orgs {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* The quiet way to ask, beside the prices rather than in front of them. */
+  .founder {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 16px;
+    margin-top: clamp(20px, 2.4vw, 32px);
+    font: 400 ${type.read} / 1.5 ${font.text};
+    color: ${color.body};
+  }
+  .founder a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font: 600 ${type.ui} / 1.3 ${font.ui};
+    color: ${color.primary};
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, ${color.gold} 80%, transparent);
+    text-underline-offset: 5px;
+  }
 
   .others {
     display: grid;
@@ -286,7 +428,8 @@ const Plans = styled(Chapter)`
     color: ${color.bodyMuted};
   }
   ${media.lg} {
-    .plans {
+    .plans,
+    .plans.pair {
       grid-template-columns: minmax(0, 1fr);
     }
   }
@@ -363,8 +506,18 @@ const Compare = styled.div`
     font: 400 ${display.md} / 1.2 ${font.display};
     color: ${color.primary};
   }
+  summary p {
+    margin-top: 4px;
+    font: 400 ${type.read} / 1.45 ${font.text};
+    color: ${color.bodyMuted};
+  }
+  h3 {
+    margin-top: clamp(40px, 5vw, 64px);
+    font: 400 ${display.sm} / 1.2 ${font.display};
+    color: ${color.primary};
+  }
   details[open] .grid {
-    margin-top: 28px;
+    margin-top: 20px;
   }
   .grid {
     border-radius: 20px;
@@ -648,6 +801,27 @@ const Book = styled(Chapter)`
     font: 500 ${type.label} / 1.4 ${font.body};
     color: ${color.bodyMuted};
   }
+  /* The five editions fold away under one line, like the comparison. */
+  .all-editions {
+    margin-top: clamp(40px, 5vw, 64px);
+    border-top: 1px solid ${color.primaryLineStrong};
+    border-bottom: 1px solid ${color.primaryLineStrong};
+  }
+  .all-editions summary {
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+    cursor: pointer;
+    font: 400 ${display.sm} / 1.3 ${font.display};
+    color: ${color.primary};
+  }
+  .all-editions summary:focus-visible {
+    outline: 3px solid ${color.accent};
+    outline-offset: 4px;
+  }
+  .all-editions .editions {
+    margin: 8px 0 clamp(24px, 3vw, 36px);
+  }
   /* One full-width line under the editions (it sat alone on a half row). */
   .members {
     margin-top: clamp(24px, 3vw, 36px);
@@ -775,9 +949,10 @@ const Sheet = styled.div`
 `;
 
 /*
- * One opening price for the calls, the same as Home's close (fix round 3,
- * jury 1 R2 #9): "Calls from $19.99 a month". The yearly plan and Express
- * stay in view as the other ways in. Every figure is read from pricing.ts.
+ * Home's close still opens at "Calls from $19.99 a month" (fix round 3, jury
+ * 1 R2 #9). Here, where people decide, the card leads with the plan most
+ * should choose - Individual - and names Express and Monthly as the other
+ * ways in. Every figure is read from pricing.ts.
  */
 const monthly = OTHER_PLANS.find((p) => p.id === "monthly")!;
 /** "$19.99/mo" -> "$19.99" */
@@ -797,33 +972,54 @@ function PriceCard() {
             family.
           </p>
         </li>
-        <li>
-          <p className="k">The calls, from</p>
-          <p className="p">
-            {monthlyPrice}
-            <small>a month</small>
-          </p>
-          <p className="l">
-            Or {individual.price} a year for one storyteller, or{" "}
-            {express.price} once for 30 days. Every plan is side by side below.
-          </p>
-        </li>
+        {PRICES_PUBLIC ? (
+          <li>
+            <p className="k">The calls, most families</p>
+            <p className="p">
+              {individual.price}
+              <small>a year</small>
+            </p>
+            <p className="l">
+              {individual.name},{" "}
+              {individual.monthlyEquivalent?.replace("≈ ", "about ")}, a
+              hardcover every year. Or {express.price} once to give, or{" "}
+              {monthlyPrice} a month.
+            </p>
+          </li>
+        ) : (
+          <li>
+            <p className="k">The calls</p>
+            <p className="p">
+              Founding
+              <small>price, by email</small>
+            </p>
+            <p className="l">
+              {individual.name} for most families, {express.name} to give.
+              Daniel emails the founding prices before launch.
+            </p>
+          </li>
+        )}
         <li>
           <p className="k">The book</p>
-          <p className="p">Free</p>
-          <p className="l">
-            To print at home, every page. Printed editions from {BOOK.from}.
-          </p>
+          <p className="p">Five editions</p>
+          <p className="l">A print-ready Digital Edition. {BOOK.printed}.</p>
         </li>
       </ul>
       <p className="foot">
-        <span>
-          Plans aren’t on sale yet. {OFFERS.reserve.price} holds your place in
-          line
-          {reserveDiscountOpen()
-            ? `, and ${OFFERS.reserve.discount}% off your first year if you reserve by ${RESERVE_DEADLINE_LABEL}.`
-            : "."}
-        </span>
+        {PRICES_PUBLIC ? (
+          <span>
+            Plans aren’t on sale yet. {OFFERS.reserve.price} holds your place in
+            line
+            {reserveDiscountOpen()
+              ? `, and ${OFFERS.reserve.discount}% off your first year if you reserve by ${RESERVE_DEADLINE_LABEL}.`
+              : "."}
+          </span>
+        ) : (
+          <span>
+            Plans aren’t on sale yet.{" "}
+            <a href="#founding-price">Get the founding price</a>
+          </span>
+        )}
         <Link to="/reserve">How reserving works</Link>
       </p>
     </Sheet>
@@ -834,6 +1030,13 @@ const individual = PLANS.find((p) => p.id === "individual")!;
 const family = PLANS.find((p) => p.id === "family")!;
 const express = PLANS.find((p) => p.id === "express")!;
 const free = OTHER_PLANS.find((p) => p.id === "free")!;
+
+/** Straight to Daniel's inbox, the address the demo form already uses. */
+const FOUNDER_CALL = `mailto:${DEMO_EMAIL}?subject=${encodeURIComponent(
+  "15 minutes about A Story",
+)}&body=${encodeURIComponent(
+  "Hi Daniel - I'd like 15 minutes to talk about A Story before I choose a plan.\n\nWho it's for:\nTimes that suit me:\n",
+)}`;
 
 /** Columns of the comparison, in reading order: from nothing paid to the most shared. */
 const COLS = [
@@ -846,20 +1049,26 @@ const COLS = [
   {
     id: "express",
     name: express.name,
-    price: express.price,
+    price: shown(express.price, "Founding"),
     period: express.period,
   },
   {
     id: "individual",
     name: individual.name,
-    price: individual.price,
-    period: `${individual.period} · ${individual.monthlyEquivalent}`,
+    price: shown(individual.price, "Founding"),
+    period: shown(
+      `${individual.period} · ${individual.monthlyEquivalent}`,
+      individual.period,
+    ),
   },
   {
     id: "family",
     name: family.name,
-    price: family.price,
-    period: `${family.period} · ${family.monthlyEquivalent}`,
+    price: shown(family.price, "Founding"),
+    period: shown(
+      `${family.period} · ${family.monthlyEquivalent}`,
+      family.period,
+    ),
   },
 ];
 
@@ -936,7 +1145,7 @@ const ROWS: { label: string; cells: [string, string?][]; yes?: boolean }[] = [
   {
     label: "The printed book",
     cells: [
-      ["Print at home, free", `Printed editions from ${BOOK.from}`],
+      ["Not included", BOOK.printed],
       ["Classic Hardcover included", "One with the pass · you pay shipping"],
       ["Classic Hardcover included", "One every year · you pay shipping"],
       ["Classic Hardcover included", "One a year for each storyteller"],
@@ -945,7 +1154,10 @@ const ROWS: { label: string; cells: [string, string?][]; yes?: boolean }[] = [
   {
     label: "Digital Edition",
     cells: [
-      [BOOK_EDITIONS[1].price, "Print-ready, for any print shop"],
+      [
+        shown(BOOK_EDITIONS[0].price, "To buy"),
+        "Print-ready, for any print shop",
+      ],
       ["Included"],
       ["Included"],
       ["Included"],
@@ -980,6 +1192,60 @@ export default function Pricing() {
   const forever = useReveals<HTMLElement>();
   const book = useReveals<HTMLElement>();
 
+  /** One plan card: "lead" adds the blurb, "gift" dresses Express as the present. */
+  const planCard = (p: (typeof PLANS)[number], kind?: "lead" | "gift") => (
+    <article
+      key={p.id}
+      id={kind === "gift" ? "express" : undefined}
+      data-rise
+      className={`plan ${p.featured ? "featured" : ""} ${kind ?? ""} ${selected === p.id ? "is-selected" : ""}`}
+      onClick={() => setSelected(p.id)}
+    >
+      <input
+        className="choose"
+        type="radio"
+        name="preferred-plan"
+        checked={selected === p.id}
+        onChange={() => setSelected(p.id)}
+        aria-label={`Select ${p.name}, ${shown(p.price)} ${p.period}`}
+      />
+      <div className="plan-top">
+        <h2>{p.name}</h2>
+        {p.featured && <span className="tag">Recommended</span>}
+        {kind === "gift" && <span className="tag">The one to give</span>}
+      </div>
+      <p className="who">{p.who}</p>
+      {kind === "gift" && (
+        <p className="gift-line">
+          For the holidays, a birthday, or the week everyone is home. Nothing
+          renews.
+        </p>
+      )}
+      <p className={PRICES_PUBLIC ? "price" : "price hidden"}>
+        {shown(p.price)}
+      </p>
+      <p className="period">
+        {p.period}
+        {PRICES_PUBLIC && p.monthlyEquivalent && ` · ${p.monthlyEquivalent}`}
+        {!PRICES_PUBLIC && ` · ${PRICE_HIDDEN_NOTE.toLowerCase()}`}
+      </p>
+      {kind === "lead" && <p className="blurb">{p.blurb}</p>}
+      <p className="meter">{p.meter}</p>
+      <p className="meter-note">{p.meterNote}</p>
+      <ul>
+        {p.features.map((f) => (
+          <li key={f}>{f}</li>
+        ))}
+      </ul>
+      <div className="bundle">
+        <p>
+          {p.book}
+          <small>Plus the Digital Edition · you pay only the shipping</small>
+        </p>
+      </div>
+    </article>
+  );
+
   return (
     <>
       <EditorialSeo
@@ -995,7 +1261,11 @@ export default function Pricing() {
               Free to start. Pay for <em>calls.</em>
             </>
           }
-          lead={`No card and no time limit. Calls from ${monthlyPrice} a month, and inviting family, writing and reading never cost extra.`}
+          lead={
+            PRICES_PUBLIC
+              ? `No card and no time limit. Most families choose ${individual.name}: ${individual.price} a year for one storyteller, with a hardcover every year. Inviting family, writing and reading never cost extra.`
+              : `No card and no time limit. Most families choose ${individual.name}: one storyteller, with a hardcover every year. Inviting family, writing and reading never cost extra, and the founding prices come by email before launch.`
+          }
           actions={
             <>
               <PrimaryAnchor href={START_HREF}>
@@ -1006,7 +1276,7 @@ export default function Pricing() {
               </SecondaryLink>
             </>
           }
-          note="Prices in US dollars. The calls ring in the A Story iPhone app, in a private beta."
+          note={`${PRICES_PUBLIC ? "Prices in US dollars. " : ""}The calls ring in the A Story iPhone app, in a private beta.`}
           object={<PriceCard />}
         />
       </PhonePairs>
@@ -1018,81 +1288,94 @@ export default function Pricing() {
             role="radiogroup"
             aria-label="Choose your preferred plan"
           >
-            {PLANS.map((p) => (
-              <article
-                key={p.id}
-                data-rise
-                className={`plan ${p.featured ? "featured" : ""} ${selected === p.id ? "is-selected" : ""}`}
-                onClick={() => setSelected(p.id)}
-              >
-                <input
-                  className="choose"
-                  type="radio"
-                  name="preferred-plan"
-                  checked={selected === p.id}
-                  onChange={() => setSelected(p.id)}
-                  aria-label={`Select ${p.name}, ${p.price} ${p.period}`}
-                />
-                <div className="plan-top">
-                  <h2>{p.name}</h2>
-                  {p.featured && <span className="tag">Recommended</span>}
-                </div>
-                <p className="who">{p.who}</p>
-                <p className="price">{p.price}</p>
-                <p className="period">
-                  {p.period}
-                  {p.monthlyEquivalent && ` · ${p.monthlyEquivalent}`}
-                </p>
-                <p className="meter">{p.meter}</p>
-                <p className="meter-note">{p.meterNote}</p>
-                <ul>
-                  {p.features.map((f) => (
-                    <li key={f}>{f}</li>
-                  ))}
-                </ul>
-                <div className="bundle">
-                  <p>
-                    {p.book}
-                    <small>
-                      Plus the Digital Edition · you pay only the shipping
-                    </small>
-                  </p>
-                </div>
-              </article>
-            ))}
+            {planCard(individual, "lead")}
+            {planCard(express, "gift")}
           </div>
 
-          <div className="others solo">
-            {OTHER_PLANS.filter((p) => p.id !== "free").map((p) => (
-              <div
-                key={p.id}
-                className={`other ${selected === p.id ? "is-selected" : ""}`}
-                onClick={() => setSelected(p.id)}
-                data-rise
-              >
-                <input
-                  className="choose"
-                  type="radio"
-                  name="preferred-plan"
-                  style={{ position: "absolute", inset: 0, opacity: 0 }}
-                  checked={selected === p.id}
-                  onChange={() => setSelected(p.id)}
-                  aria-label={`Select ${p.label}, ${p.price}`}
-                />
-                <b>
-                  {p.label} · {p.price}
-                </b>
-                <span>{p.sub}. Billed monthly.</span>
+          {!PRICES_PUBLIC && (
+            <div className="ask" id="founding-price" data-rise>
+              <div>
+                <h2>Get the founding price.</h2>
+                <p>
+                  Prices are private until launch. Leave your name and email and
+                  Daniel sends you every plan’s founding price himself, before
+                  the calls open.
+                </p>
               </div>
-            ))}
+              <FoundingPriceSignup source="pricing" plan={name} />
+            </div>
+          )}
+
+          <p className="founder" data-rise>
+            <span>Not sure which, or who it’s for? Ask a founder.</span>
+            <a href={FOUNDER_CALL}>15 minutes with Daniel</a>
+          </p>
+
+          <div className="orgs" data-rise aria-labelledby="orgs-title">
+            <div>
+              <span className="orgs-kicker">For institutions</span>
+              <h2 id="orgs-title">
+                Care communities, schools, libraries and organizations.
+              </h2>
+              <p>
+                Program pricing is quoted for each place. Book a demo and Daniel
+                writes back within a working day to talk about participants,
+                consent and access.
+              </p>
+            </div>
+            <div className="orgs-doors">
+              <PrimaryLink to="/organizations#book">
+                Book a demo <ArrowIcon />
+              </PrimaryLink>
+              <TextLink to="/care-communities">For care communities</TextLink>
+            </div>
           </div>
 
           <Compare>
             <details>
               <summary>
-                <h2 id="compare-title">Compare every plan, side by side</h2>
+                <div>
+                  <h2 id="compare-title">Other ways to start</h2>
+                  <p>
+                    {family.name} for up to three storytellers, {monthly.label}{" "}
+                    with no yearly commitment, and every plan side by side.
+                  </p>
+                </div>
                 <span aria-hidden="true" />
               </summary>
+              <div
+                className="plans pair"
+                role="radiogroup"
+                aria-label="More plans"
+              >
+                {planCard(family)}
+                <article
+                  className={`plan ${selected === monthly.id ? "is-selected" : ""}`}
+                  onClick={() => setSelected(monthly.id)}
+                >
+                  <input
+                    className="choose"
+                    type="radio"
+                    name="preferred-plan"
+                    checked={selected === monthly.id}
+                    onChange={() => setSelected(monthly.id)}
+                    aria-label={`Select ${monthly.label}, ${shown(monthly.price)}`}
+                  />
+                  <div className="plan-top">
+                    <h2>{monthly.label}</h2>
+                  </div>
+                  <p className="who">No yearly commitment</p>
+                  <p className={PRICES_PUBLIC ? "price" : "price hidden"}>
+                    {shown(monthlyPrice)}
+                  </p>
+                  <p className="period">
+                    per month · cancel any time
+                    {!PRICES_PUBLIC && ` · ${PRICE_HIDDEN_NOTE.toLowerCase()}`}
+                  </p>
+                  <p className="meter">{monthly.sub}.</p>
+                </article>
+              </div>
+              <h3>Compare every plan</h3>
               <div
                 className="grid"
                 tabIndex={0}
@@ -1244,11 +1527,11 @@ export default function Pricing() {
           />
           <div>
             <Statement id="book-title" $size="lg" data-lines>
-              Six ways to hold the <em>book.</em>
+              Five ways to hold the <em>book.</em>
             </Statement>
             <p data-rise>
-              From a PDF you print at the library to a linen Heirloom in its
-              box, or an editor of ours doing all of it. {BOOK.pages}.
+              From a print-ready file for any print shop to a linen Heirloom in
+              its box, or an editor of ours doing all of it. {BOOK.pages}.
             </p>
             <p data-rise>
               {/* /samples is a page in public/, outside the router: a plain anchor. */}
@@ -1259,25 +1542,32 @@ export default function Pricing() {
           </div>
         </Frame>
         <Frame>
-          <ul className="editions" aria-label="Book editions">
-            {BOOK_EDITIONS.map((e) => (
-              <li key={e.id} data-rise>
-                <span className="badge">{e.badge ?? ""}</span>
-                <h3>{e.name}</h3>
-                <p className="cost">
-                  {e.price}
-                  {e.extra && <small>{e.extra} each extra copy</small>}
-                </p>
-                <p className="tag">{e.tagline}</p>
-                <ul>
-                  {e.includes.map((x) => (
-                    <li key={x}>{x}</li>
-                  ))}
-                </ul>
-                <p className="when">{e.delivery}</p>
-              </li>
-            ))}
-          </ul>
+          <details className="all-editions">
+            <summary>
+              See all five editions, from Digital to Full-Service
+            </summary>
+            <ul className="editions" aria-label="Book editions">
+              {BOOK_EDITIONS.map((e) => (
+                <li key={e.id}>
+                  <span className="badge">{e.badge ?? ""}</span>
+                  <h3>{e.name}</h3>
+                  <p className="cost">
+                    {shown(e.price)}
+                    {PRICES_PUBLIC && e.extra && (
+                      <small>{e.extra} each extra copy</small>
+                    )}
+                  </p>
+                  <p className="tag">{e.tagline}</p>
+                  <ul>
+                    {e.includes.map((x) => (
+                      <li key={x}>{x}</li>
+                    ))}
+                  </ul>
+                  <p className="when">{e.delivery}</p>
+                </li>
+              ))}
+            </ul>
+          </details>
           <p className="members" data-rise>
             <strong>With a plan:</strong> {BOOK.members} {BOOK.allowance}.
             Ordering opens soon.

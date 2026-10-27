@@ -16,7 +16,7 @@ import { useScene } from "../../../lib/scrollMotion";
 import { arrive, lines } from "./motion";
 import { color, font, media } from "../../../styles/theme";
 import { START_HREF, START_LABEL } from "../../../lib/app";
-import { OTHER_PLANS, PLANS } from "../../../lib/pricing";
+import { OTHER_PLANS, PLANS, PRICES_PUBLIC } from "../../../lib/pricing";
 import {
   OFFERS,
   RESERVE_DEADLINE_LABEL,
@@ -30,9 +30,21 @@ const monthly = OTHER_PLANS.find((p) => p.id === "monthly")!;
 const monthlyPrice = monthly.price.replace(/\/mo$/, "");
 
 const NEXT = [
-  { to: "/pricing", title: "Pricing", hint: "Every plan, and what each one includes." },
-  { to: "/how-it-works", title: "How it works", hint: "The call, the memory, the book." },
-  { to: "/our-story", title: "Our story", hint: "Built by Daniel Hoang Nguyen and Bao Vo." },
+  {
+    to: "/pricing",
+    title: "Pricing",
+    hint: "Every plan, and what each one includes.",
+  },
+  {
+    to: "/how-it-works",
+    title: "How it works",
+    hint: "The call, the memory, the book.",
+  },
+  {
+    to: "/our-story",
+    title: "Our story",
+    hint: "Built by Daniel Hoang Nguyen and Bao Vo.",
+  },
 ];
 
 const Section = styled.section`
@@ -137,7 +149,10 @@ export default function Close() {
   const ref = useScene<HTMLElement>((root) => {
     lines(root.querySelector("h2"));
     arrive(root.querySelectorAll(".plain, .doors"), { delay: 0.2 });
-    arrive(root.querySelectorAll(".next a"), { trigger: root.querySelector(".next"), delay: 0.3 });
+    arrive(root.querySelectorAll(".next a"), {
+      trigger: root.querySelector(".next"),
+      delay: 0.3,
+    });
   });
 
   return (
@@ -145,14 +160,24 @@ export default function Close() {
       <Frame className="close">
         <div>
           <h2 id="close-title">
-            Start free. Calls from <em>{monthlyPrice} a month.</em>
+            {PRICES_PUBLIC ? (
+              <>
+                Start free. Calls from <em>{monthlyPrice} a month.</em>
+              </>
+            ) : (
+              <>
+                Start free. The calls, <em>at a founding price.</em>
+              </>
+            )}
           </h2>
           <p className="plain">
             Free is the family archive and writing, in your browser, with no
-            card and no time limit. A plan adds the guided calls:{" "}
-            {monthlyPrice} a month, {individual.price} a year, or{" "}
-            {express.price} for 30 days. They ring in the A Story app on your
-            parent’s iPhone, in private beta.{" "}
+            card and no time limit. A plan adds the guided calls
+            {PRICES_PUBLIC
+              ? `: ${monthlyPrice} a month, ${individual.price} a year, or ${express.price} for 30 days. `
+              : ` - monthly, yearly, or ${express.name} for 30 days, with founding prices by email before launch. `}
+            They ring in the A Story app on your parent’s iPhone, in private
+            beta.{" "}
             {reserveDiscountOpen()
               ? `A dollar holds your place in line and ${OFFERS.reserve.discount}% off your first year, if you reserve by ${RESERVE_DEADLINE_LABEL}. We email you when the calls open.`
               : `A dollar holds your place in line, and we email you when the calls open.`}

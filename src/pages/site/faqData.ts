@@ -1,4 +1,4 @@
-import { BOOK, OTHER_PLANS, PLANS, START } from "../../lib/pricing";
+import { BOOK, OTHER_PLANS, PLANS, PRICES_PUBLIC, START } from "../../lib/pricing";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
 export const groups = [
   {
@@ -52,7 +52,9 @@ export const groups = [
     items: [
       {
         q: "What does it cost?",
-        a: `Individual is ${PLANS[0].price} ${PLANS[0].period}; Family is ${PLANS[1].price} ${PLANS[1].period}. Express is ${PLANS[2].price}, ${PLANS[2].period}. Monthly is ${OTHER_PLANS[0].price}, and Free is free. Individual, Family and Express include a Classic Hardcover; on Free and Monthly you can print at home free or order from ${BOOK.from}. The Pricing page lists call minutes.`,
+        a: PRICES_PUBLIC
+          ? `Individual is ${PLANS[0].price} ${PLANS[0].period}; Family is ${PLANS[1].price} ${PLANS[1].period}. Express is ${PLANS[2].price}, ${PLANS[2].period}. Monthly is ${OTHER_PLANS[0].price}, and Free is free. Individual, Family and Express include a Classic Hardcover; on Free and Monthly you can buy the Digital Edition or a printed edition from ${BOOK.from}. The Pricing page lists call minutes.`
+          : `Free is free, for as long as you like. The plans with calls - Individual (${PLANS[0].period}), Family (${PLANS[1].period}), Express (${PLANS[2].period}) and Monthly - have founding prices we send by email before launch: leave your name and email on the Pricing page. Individual, Family and Express include a Classic Hardcover; on Free and Monthly you can buy the Digital Edition or a printed edition.`,
       },
       {
         q: "Is there a free trial?",
@@ -60,7 +62,9 @@ export const groups = [
       },
       {
         q: "How much is the printed book?",
-        a: `Printing the whole book at home is free. Printed editions run from a ${BOOK.from} Softcover to a $149 Heirloom Edition, and a $499 Full-Service Legacy Edition with an editor of ours; the print-ready Digital Edition is $19. ${BOOK.members} ${BOOK.allowance}, with no page limit. ${BOOK.ships}. ${BOOK.opens}`,
+        a: PRICES_PUBLIC
+          ? `The book comes in five editions. Printed editions run from a ${BOOK.from} Softcover to a $149 Heirloom Edition, and a $499 Full-Service Legacy Edition with an editor of ours; the print-ready Digital Edition is $19. ${BOOK.members} ${BOOK.allowance}, with no page limit. ${BOOK.ships}. ${BOOK.opens}`
+          : `The book comes in five editions. Printed editions run from a Softcover to a linen Heirloom Edition, and a Full-Service Legacy Edition with an editor of ours; there is also a print-ready Digital Edition. Their prices come with the founding prices, by email before launch. ${BOOK.members} ${BOOK.allowance}, with no page limit. ${BOOK.ships}. ${BOOK.opens}`,
       },
       {
         q: "How does giving A Story work?",

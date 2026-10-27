@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { refreshWhenSettled } from "../../lib/scrollMotion";
-import { OTHER_PLANS } from "../../lib/pricing";
+import { OTHER_PLANS, PRICES_PUBLIC } from "../../lib/pricing";
 import { Invitation } from "./kit/kit";
 import CodeFromFamily from "./home/CodeFromFamily";
 import Hero from "./home/Hero";
@@ -66,7 +66,7 @@ export default function Home() {
             Start the family’s book <em>today.</em>
           </>
         }
-        line={`Free in your browser, with no card: the archive, the writing and the whole family. The calls are from ${monthlyPrice} a month and ring in the A Story app on your parent’s iPhone, now in private beta.`}
+        line={`Free in your browser, with no card: the archive, the writing and the whole family. The calls ${PRICES_PUBLIC ? `are from ${monthlyPrice} a month and ` : ""}ring in the A Story app on your parent’s iPhone, now in private beta.`}
       />
     </>
   );

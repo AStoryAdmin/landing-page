@@ -43,7 +43,7 @@ const family = PLANS.find((p) => p.id === "family")!;
 const express = PLANS.find((p) => p.id === "express")!;
 /* Only counted now: the editions themselves are listed once, on Pricing's
    own editions grid (YC juries 1 #14 and 3 #15: prices said once). */
-const printed = BOOK_EDITIONS.filter((e) => e.id !== "home");
+const printed = BOOK_EDITIONS.filter((e) => e.id !== "digital");
 
 const Section = styled(Chapter)`
   .ladder {

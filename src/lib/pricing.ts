@@ -39,10 +39,12 @@ import { QUESTION_COUNT } from './product';
  *    install the app. Free never runs out, so nobody loses an archive by not
  *    deciding.
  *
- * 4. The book comes in six editions, from free to done-for-you, mirroring
- *    the app's supabase/functions/_shared/bookCatalog.js (added 2026-10-02):
- *    print at home free, a print-ready Digital Edition, Softcover, Classic
- *    Hardcover, Heirloom, and a Full-Service Legacy Edition with an editor.
+ * 4. The book comes in five editions, mirroring the app's
+ *    supabase/functions/_shared/bookCatalog.js (added 2026-10-02): a
+ *    print-ready Digital Edition, Softcover, Classic Hardcover, Heirloom, and
+ *    a Full-Service Legacy Edition with an editor. Since 2026-10-26 the site
+ *    calls no edition free (Daniel: "Book is not free since we have so many
+ *    tiers for it"), so the app's print-at-home PDF is not listed here.
  *    Individual, Family and Express include a Classic Hardcover (one a year,
  *    one per storyteller a year on Family, one per Express pass) — or its
  *    value toward a finer edition — plus the Digital Edition; a member pays
@@ -62,6 +64,32 @@ import { QUESTION_COUNT } from './product';
  *    thing with a bill attached: unlimited on the paid plans, five a week on
  *    Free (FREE_WEEKLY_PHOTOS in the app).
  */
+
+/**
+ * ─────────────────────────────────────────────────────────────────────────
+ * PRICES ARE PRIVATE UNTIL LAUNCH. Decided by the founder on 2026-10-26:
+ * the site names every plan and what it includes, but not what it costs.
+ * Where a figure would stand, it says "Founding price" and offers to email
+ * it before launch (FoundingPriceSignup, into waitlist_signups with source
+ * `<page>:founding-price`). Free stays $0 and the reservation stays $1 -
+ * those are what someone can actually do today.
+ *
+ * Launch day: set this to true. Every figure below comes back on every page,
+ * the structured data included; nothing else needs touching.
+ * ─────────────────────────────────────────────────────────────────────────
+ */
+export const PRICES_PUBLIC = false;
+
+/** What stands where a price would, while prices are private. */
+export const PRICE_HIDDEN = 'Founding price';
+export const PRICE_HIDDEN_NOTE = 'Emailed to you before launch';
+
+/** A figure while prices are public, otherwise the words in its place. */
+export const shown = (figure: string, instead: string = PRICE_HIDDEN): string =>
+    PRICES_PUBLIC ? figure : instead;
+
+/** The hardcover's value toward a finer edition, in a sentence. */
+const HARDCOVER_CREDIT = shown('its $69', 'its value');
 
 export type Plan = {
     /** Matches the plan slug the app and Stripe use. */
@@ -112,7 +140,7 @@ export const PLANS: Plan[] = [
             'Unlimited photo uploads',
             'Invite the whole family to read and contribute, free',
         ],
-        book: 'A Classic Hardcover every year, or its $69 toward a finer edition',
+        book: `A Classic Hardcover every year, or ${HARDCOVER_CREDIT} toward a finer edition`,
         featured: true,
     },
     {
@@ -154,7 +182,7 @@ export const PLANS: Plan[] = [
             'Unlimited photo uploads',
             'One storyteller',
         ],
-        book: 'A Classic Hardcover with the pass, or its $69 toward a finer edition',
+        book: `A Classic Hardcover with the pass, or ${HARDCOVER_CREDIT} toward a finer edition`,
         utility: true,
     },
 ];
@@ -165,7 +193,7 @@ export const OTHER_PLANS = [
         id: 'monthly' as const,
         label: 'Monthly',
         price: '$19.99/mo',
-        sub: 'No yearly commitment · 90 minutes of guided calls a month · the Digital Edition included, printed books from $39',
+        sub: `No yearly commitment · 90 minutes of guided calls a month · the Digital Edition included, ${shown('printed books from $39', 'printed books to order')}`,
     },
     {
         id: 'free' as const,
@@ -189,7 +217,7 @@ export const FREE_TIER = {
     blurb:
         'One ten-minute conversation with A Story, once your family is in the iPhone beta, then ' +
         'three guided questions a day, writing in your own words without limit, the whole ' +
-        'family invited free, and the whole book to print at home. What Free does not ' +
+        'family invited free. What Free does not ' +
         'include is A Story calling you after that first time - that is the part with a real ' +
         'cost behind it.',
     includes: [
@@ -198,9 +226,8 @@ export const FREE_TIER = {
         'Unlimited writing in your own words',
         'Unlimited family members reading and contributing',
         'Five photo uploads a week',
-        'The whole book to print at home, free',
     ],
-    excludes: `Guided calls after the first, unlimited photos, and the full ${QUESTION_COUNT}-question bank open by chapter`,
+    excludes: `Guided calls after the first, unlimited photos, the full ${QUESTION_COUNT}-question bank open by chapter, and the book`,
 } as const;
 
 /** The headline figure, for pages that quote a single number. */
@@ -223,7 +250,7 @@ export const PRICE = {
  * ─────────────────────────────────────────────────────────────────────────
  */
 export type BookEdition = {
-    id: 'home' | 'digital' | 'softcover' | 'hardcover' | 'heirloom' | 'legacy';
+    id: 'digital' | 'softcover' | 'hardcover' | 'heirloom' | 'legacy';
     name: string;
     price: string;
     /** Each further copy of the same book, where copies are sold. */
@@ -235,14 +262,6 @@ export type BookEdition = {
 };
 
 export const BOOK_EDITIONS: BookEdition[] = [
-    {
-        id: 'home',
-        name: 'Print at home',
-        price: 'Free',
-        tagline: 'The whole book as a PDF, right now.',
-        includes: ['Every memory and photograph, laid out as the book', 'Print it yourself, or keep it on your phone'],
-        delivery: 'Instantly',
-    },
     {
         id: 'digital',
         name: 'Digital Edition',
@@ -307,13 +326,16 @@ export const BOOK_EDITIONS: BookEdition[] = [
 export const BOOK = {
     /** Printed editions start here and run to the Legacy Edition. */
     from: '$39',
-    members:
-        'Individual, Family and Express include a Classic Hardcover - or its $69 toward a finer edition - and the Digital Edition. You pay only the shipping. Monthly includes the Digital Edition.',
+    /** "Printed editions from $39", or without the figure while prices are private. */
+    printed: shown('Printed editions from $39', 'Printed editions, softcover to Heirloom'),
+    /** " from $39" to follow "a printed edition", or nothing while prices are private. */
+    fromPhrase: shown(' from $39', ''),
+    members: `Individual, Family and Express include a Classic Hardcover - or ${HARDCOVER_CREDIT} toward a finer edition - and the Digital Edition. You pay only the shipping. Monthly includes the Digital Edition.`,
     allowance: 'One a year on Individual, one a year for each storyteller on Family, one with each Express pass',
     pages: 'No page limit',
     ships: 'Printed editions ship to the US and Canada, with shipping included when you buy one',
     /** BOOK_ORDERING_OPEN is off in the app until a print company is set up. */
-    opens: 'Printed editions open for ordering soon. The whole book can always be saved as a PDF or printed at home, free.',
+    opens: 'Printed editions open for ordering soon.',
 } as const;
 
 /**

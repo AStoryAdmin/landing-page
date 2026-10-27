@@ -32,7 +32,7 @@
  * in EB Garamond, the book's reading face; captions under prints in Caveat.
  * The headline is new ("Your story isn't behind you" was a not-X-but-Y
  * line) and there is no eyebrow. The print line no longer promises a
- * hardcover with every plan: print at home free, printed editions from
+ * hardcover with every plan: a Digital Edition, printed editions from
  * pricing.ts. The foil-gradient title and the glow are gone (no gradient
  * text). The Hartleys are a sample family, and the page says so.
  */
@@ -1420,8 +1420,8 @@ export default function FamilyBook() {
 
         <div className="print-line">
           <p>
-            One day it leaves the screen. Print it at home for free, or order
-            a printed edition from {BOOK.from}.
+            One day it leaves the screen, as a Digital Edition or a printed
+            edition{BOOK.fromPhrase}, softcover to Heirloom.
           </p>
           <div className="links">
             {/* /samples is a page in public/, outside the router: a plain anchor. */}

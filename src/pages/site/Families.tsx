@@ -25,7 +25,7 @@
 import type { ReactNode } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
-import { PLANS } from "../../lib/pricing";
+import { PLANS, PRICES_PUBLIC } from "../../lib/pricing";
 import { ArrowIcon, Invitation, PageOpening, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import {
@@ -389,12 +389,14 @@ function OccasionsRoom() {
         </div>
         <div className="gift" data-rise>
           <p>
-            The easiest to give: {express.name}, <b>{express.price}</b> one
-            time. About a month of calls in the A Story app, and a Classic
-            Hardcover once printed ordering opens. Nothing renews.
+            The easiest to give: {express.name},{" "}
+            {PRICES_PUBLIC ? <b>{express.price}</b> : "paid"} one time. About a
+            month of calls in the A Story app, and a Classic Hardcover once
+            printed ordering opens. Nothing renews.
           </p>
-          <TextLink to="/pricing">
-            Compare plans <ArrowIcon />
+          <TextLink to={PRICES_PUBLIC ? "/pricing" : "/pricing#founding-price"}>
+            {PRICES_PUBLIC ? "Compare plans" : "Get the founding price"}{" "}
+            <ArrowIcon />
           </TextLink>
         </div>
       </Frame>

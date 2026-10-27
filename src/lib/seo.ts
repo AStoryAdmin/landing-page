@@ -7,7 +7,7 @@
  * duplicate title or description in the document.
  */
 
-import { PRICE } from "./pricing";
+import { PRICE, PRICES_PUBLIC } from "./pricing";
 
 export const SITE = {
   name: "A Story",
@@ -230,12 +230,21 @@ export const productSchema = () => ({
   url: SITE.url,
   description:
     "An AI biographer that calls your parents, and the whole family adds their part. The calls ring in the A Story iPhone app (private beta); the family archive and the book work in any browser.",
-  offers: {
-    "@type": "Offer",
-    price: PRICE.headlineAmount,
-    priceCurrency: PRICE.currency,
-    description: PRICE.headlineNote,
-  },
+  /* While prices are private (pricing.ts) the offer Google sees is Free, the
+     one price the site states. */
+  offers: PRICES_PUBLIC
+    ? {
+        "@type": "Offer",
+        price: PRICE.headlineAmount,
+        priceCurrency: PRICE.currency,
+        description: PRICE.headlineNote,
+      }
+    : {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: PRICE.currency,
+        description: "Free to start, with no card and no time limit",
+      },
 });
 
 export const breadcrumbSchema = (trail: { name: string; path: string }[]) => ({

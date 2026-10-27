@@ -535,9 +535,9 @@ export default function HowItWorks() {
               When a chapter is ready, make it a <em>volume.</em>
             </Statement>
             <p className="price" data-rise>
-              The stories and photographs, bound as a book. Print it at home
-              free, or order a printed edition from {BOOK.from} once ordering
-              opens. Individual, Family and Express include a Classic Hardcover.
+              The stories and photographs, bound as a book: a print-ready
+              Digital Edition, or a printed edition{BOOK.fromPhrase} once
+              ordering opens. Individual, Family and Express include a Classic Hardcover.
             </p>
             <div className="links" data-rise>
               {/* /samples is a page in public/, outside the router: a plain anchor. */}
