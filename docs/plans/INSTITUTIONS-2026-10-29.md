@@ -64,10 +64,9 @@ approved. Nothing is pushed or deployed: he reviews in the morning.
 Scripts: `node qa/institutions-2026-10-29/interact.mjs` and `node qa/institutions-2026-10-29/shoot.mjs <label>` against a dev server on :5191.
 Screenshots (gitignored): `qa/institutions-2026-10-29/shots/before-*` and `after-*`.
 
-## Open for Daniel (copy claims, unchanged from before this branch)
+## Copy claims (resolved 2026-10-30, Daniel: "Fix claims, then ship")
 
-A fresh-eyes review flagged existing copy that may promise more than the beta does. Not changed without your call:
-
-- "Daniel writes back within a working day" (demo form + booking room).
-- "a link they sign up through", "Set per program", "ready to cite or exhibit", "We help everyone set it up" – do these institution features exist yet?
-- "A list of names and phone numbers" reads like ordinary phone calls; the calls ring only in the iPhone app. Consider: "Each person needs an iPhone with the app; we help them install it."
+- Removed "a link they sign up through", "Set per program", "ready to cite or exhibit" (not built for institutions).
+- "A list of names and phone numbers" -> "The people you want heard, and how we reach them."
+- Added "Each person needs an iPhone, and we help them install the app."
+- Kept "within a working day": it is the site-wide promise (Contact, Reserve, founding price), not just this page.

@@ -74,7 +74,7 @@ const WHO: { kind: Kind; label: string; title: string; body: string }[] = [
     kind: "Library, museum or historical society",
     label: "Libraries, museums and historical societies",
     title: "An oral history that keeps going.",
-    body: "Firsthand accounts beside the photographs and documents you already hold, with names and dates attached, ready to cite or exhibit.",
+    body: "Firsthand accounts beside the photographs and documents you already hold, with names and dates attached.",
   },
   {
     kind: "Company or nonprofit",
@@ -103,11 +103,11 @@ const STEPS = [
   ],
   [
     "You choose who takes part.",
-    "A list of names and phone numbers, or an invitation people sign up through. Consent comes first.",
+    "The people you want heard, and how we reach them. Consent comes first.",
   ],
   [
     "A Story makes the calls.",
-    "Guided conversations in the A Story iPhone app, now in a private beta, at the hour each person picks. We help everyone set it up.",
+    "Guided conversations in the A Story iPhone app, now in a private beta, at the hour each person picks. Each person needs an iPhone, and we help them install the app.",
   ],
   [
     "You keep the archive.",
@@ -118,11 +118,11 @@ const STEPS = [
 const DECIDE = [
   [
     "Who takes part",
-    "And how they are invited - a list from you, or a link they sign up through.",
+    "And how they are invited. We agree it with you.",
   ],
   [
     "Who can listen",
-    "A private archive, the participants' own families, or the public. Set per program.",
+    "A private archive, the participants' own families, or the public. We agree it with you, before anyone is called.",
   ],
   [
     "Consent",
