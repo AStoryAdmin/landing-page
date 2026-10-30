@@ -13,23 +13,34 @@
  * the person (two prints, three ruled rows), the question that opens a
  * conversation beside how it works, and what to agree before beginning. No
  * photograph is drawn larger than its file, and none repeats Home's.
+ *
+ * 2026-10-29 (founder: the page's goal "is not really there"): the page now
+ * books its own demo. "Book a demo" used to leave for /organizations, and
+ * the page ended on the family close ("The archive is free...", Start
+ * free), which is not what a care community came for. The last room is the
+ * booking form itself (kit/DemoSection.tsx) with the care kind picked and
+ * what we agree before anyone is called beside it, plus a door to
+ * /organizations for every other kind of place.
  */
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
-import { ArrowIcon, Invitation, PageOpening, Print } from "./kit/kit";
+import { Link } from "react-router-dom";
+import { ArrowIcon, PageOpening, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import {
   Actions,
   Chapter,
   Frame,
-  PrimaryLink,
+  PrimaryAnchor,
   SecondaryAnchor,
   Statement,
 } from "./kit/kit.styles";
-import { BeginCard, QuoteBand, RuledSteps } from "./rooms/Rooms";
+import { QuoteBand, RuledSteps } from "./rooms/Rooms";
+import DemoSection from "./kit/DemoSection";
 import { color, font, media, type } from "../../styles/theme";
 
 const Know = styled(Chapter)`
+  scroll-margin-top: 80px;
   .row {
     display: grid;
     grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
@@ -114,6 +125,15 @@ const Fit = styled.div`
   }
 `;
 
+/* What a care community and A Story settle on the demo, before anyone is
+   called (the checklist that used to be the BeginCard). */
+const AGREE: [string, string][] = [
+  ["Who helps", "With installation, introductions and support, on your side and ours."],
+  ["Consent", "Each resident agrees, and who may read or contribute is set with them."],
+  ["What stays private", "Which stories stay with the family, and which the care team may read."],
+  ["How families are invited", "And when, so the first call is not a surprise to anyone."],
+];
+
 export default function Care() {
   const know = useReveals<HTMLElement>();
   return (
@@ -138,12 +158,10 @@ export default function Care() {
           lead="The work they did. The music in the house. The way they made Sunday lunch. Give those stories somewhere to stay, and give the people caring for them a way to learn them."
           actions={
             <>
-              <PrimaryLink to="/organizations?for=care#book">
+              <PrimaryAnchor href="#book">
                 Book a demo <ArrowIcon />
-              </PrimaryLink>
-              <SecondaryAnchor href="#begin-title-room">
-                Planning participation
-              </SecondaryAnchor>
+              </PrimaryAnchor>
+              <SecondaryAnchor href="#know">How it works</SecondaryAnchor>
             </>
           }
           object={
@@ -159,7 +177,12 @@ export default function Care() {
         />
       </Fit>
 
-      <Know ref={know} $ground="ivory" aria-labelledby="know-title">
+      <Know
+        ref={know}
+        $ground="ivory"
+        id="know"
+        aria-labelledby="know-title"
+      >
         <Frame className="row">
           <div className="pair" data-rise="settle">
             <Print
@@ -226,24 +249,38 @@ export default function Care() {
         ]}
       />
 
-      <BeginCard
-        id="begin-title"
-        title="Make participation comfortable."
-        body="Begin with a small program shaped around the residents and families who want to take part. Community pricing is quoted individually."
-        checklist={[
-          "Who will help with installation, introductions and support",
-          "Consent, and who may read or contribute",
-          "Which material should stay private",
-          "How families are invited, and when",
-        ]}
-        action={
-          <PrimaryLink to="/organizations?for=care#book">
-            Book a demo <ArrowIcon />
-          </PrimaryLink>
+      <DemoSection
+        title={
+          <>
+            A small program, <em>shaped with you.</em>
+          </>
         }
+        lead="Begin with the residents and families who want to take part. Community pricing is quoted individually, on the demo."
+        aside={
+          <ul aria-label="What we agree before anyone is called">
+            {AGREE.map(([t, d]) => (
+              <li key={t}>
+                <b>{t}</b>
+                <span>{d}</span>
+              </li>
+            ))}
+          </ul>
+        }
+        footer={
+          <>
+            Not a care community?{" "}
+            <Link to="/organizations">
+              A Story for colleges, libraries and more
+            </Link>
+          </>
+        }
+        kind="Senior living or care community"
+        source="care:demo"
+        rolePlaceholder="Life enrichment director"
+        notePlaceholder="The residents who moved in this year, and their families, before the holidays."
+        cardLabel="A demo for your community"
+        cardTitle="Tell us about your residents, and when suits you."
       />
-
-      <Invitation />
     </>
   );
 }

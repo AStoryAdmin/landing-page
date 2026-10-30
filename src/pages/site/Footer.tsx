@@ -42,8 +42,8 @@ const GROUPS: { title: string; rooms: Room[] }[] = [
     title: "Who it’s for",
     rooms: [
       { to: "/for-families", label: "Families" },
-      { to: "/care-communities", label: "Care communities" },
       { to: "/organizations", label: "Institutions" },
+      { to: "/care-communities", label: "Care communities" },
       { to: "/your-story", label: "Your own story" },
     ],
   },

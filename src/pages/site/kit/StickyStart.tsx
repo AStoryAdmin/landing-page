@@ -13,6 +13,10 @@
  * that have a decision of their own at the bottom (Pricing's decision bar,
  * Reserve, Start, the account pages) or on the legal pages.
  *
+ * On the two institution pages the bar offers what those pages are for,
+ * Book a demo (#book), and steps away while the booking or collaboration
+ * room is in view (2026-10-29).
+ *
  * Rendered inside <main>, so the header's open menu, which makes main
  * inert, takes it out of reach with everything else.
  */
@@ -20,7 +24,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { ArrowIcon } from "./kit";
-import { PrimaryLink } from "./kit.styles";
+import { PrimaryAnchor, PrimaryLink } from "./kit.styles";
 import { color, media, motion } from "../../../styles/theme";
 import { START_HREF, START_LABEL } from "../../../lib/app";
 
@@ -38,6 +42,7 @@ const SHOW_ON = new Set([
   "/programs",
 ]);
 const showsOn = (path: string) => SHOW_ON.has(path) || path.startsWith("/guides/");
+const DEMO_ON = new Set(["/organizations", "/care-communities"]);
 
 const Bar = styled.div`
   display: none;
@@ -97,7 +102,7 @@ export default function StickyStart() {
         return;
       }
       const endings = document.querySelectorAll<HTMLElement>(
-        '[aria-labelledby="invitation-title"], footer',
+        '[aria-labelledby="invitation-title"], footer, #book, #collaborate',
       );
       io = new IntersectionObserver((entries) => {
         for (const e of entries) {
@@ -124,9 +129,15 @@ export default function StickyStart() {
   if (!showsOn(pathname)) return null;
   return (
     <Bar data-shown={shown} aria-hidden={!shown}>
-      <PrimaryLink to={START_HREF} tabIndex={shown ? 0 : -1}>
-        {START_LABEL} <ArrowIcon />
-      </PrimaryLink>
+      {DEMO_ON.has(pathname) ? (
+        <PrimaryAnchor href="#book" tabIndex={shown ? 0 : -1}>
+          Book a demo <ArrowIcon />
+        </PrimaryAnchor>
+      ) : (
+        <PrimaryLink to={START_HREF} tabIndex={shown ? 0 : -1}>
+          {START_LABEL} <ArrowIcon />
+        </PrimaryLink>
+      )}
     </Bar>
   );
 }
