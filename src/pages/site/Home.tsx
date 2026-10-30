@@ -66,7 +66,7 @@ export default function Home() {
             Start the family’s book <em>today.</em>
           </>
         }
-        line={`Free in your browser, with no card: the archive, the writing and the whole family. The calls are from ${monthlyPrice} a month and ring in the A Story app on your parent’s iPhone, now in private beta.`}
+        line={`The whole family can write in the archive for free in your browser, with no card. The calls are from ${monthlyPrice} a month and ring in the A Story app on your parent’s iPhone, now in private beta.`}
       />
     </>
   );

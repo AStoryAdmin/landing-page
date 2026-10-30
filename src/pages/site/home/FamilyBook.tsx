@@ -17,7 +17,7 @@
  *   foot — a documentary, not a diary.
  * - The last spread is the mission's ending (CM06, CM09): the family's years
  *   as a contact sheet with an empty frame for what's next — "Today belongs
- *   here too" — and "The story keeps going. Because so do you."
+ *   here too" — and "The story keeps going. The family adds the next page."
  *
  * Turn the pages with the arrows, the timeline under the book, the arrow
  * keys, or a click on either page. Wide screens get a true spread with 3D
@@ -1170,11 +1170,10 @@ function EndRight() {
         <br />
         Made to be passed on.
       </p>
-      <p className="not-end">But this is not the end.</p>
       <h3>
         The story <em>keeps going.</em>
       </h3>
-      <p className="because">Because so do you.</p>
+      <p className="because">The family adds the next page.</p>
       <a className="begin" href={START_HREF} onClick={(e) => e.stopPropagation()}>
         {START_LABEL} <ArrowIcon />
       </a>
@@ -1310,9 +1309,9 @@ export default function FamilyBook() {
             Seventy years, <em>still being written.</em>
           </Statement>
           <p className="lead">
-            A sample family’s book, the Hartleys’. Each page is a memory one of
-            them told on a call, with what someone else in the family
-            remembers beside it. Turn the pages.
+            The Hartleys are a sample family. Each page is a memory one of them
+            told on a call, with what someone else in the family remembers
+            beside it. Turn the pages.
           </p>
         </SplitHead>
 

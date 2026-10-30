@@ -195,9 +195,9 @@ export default function Hero() {
           </TextLink>
         </div>
         <p className="hero-small">
-          Start free in your browser, no card. The calls ring in the A Story app
-          on your parent’s iPhone, now in private beta. Reserve, and we email you
-          when the calls open.
+          Start free in your browser, no card, or reserve for $1 and we’ll email
+          you when the calls open. The calls are in private beta and ring in the
+          A Story app on your parent’s iPhone.
         </p>
       </Frame>
     </Scene>

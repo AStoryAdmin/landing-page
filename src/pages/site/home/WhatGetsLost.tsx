@@ -660,9 +660,9 @@ function CatchRoom() {
             <em>A&nbsp;Story</em> exists to catch what the photograph can’t.
           </h2>
           <p className="how">
-            You set it up once on their iPhone. A Story calls in its app, asks
-            about their life from a bank of {QUESTION_COUNT} questions, and keeps what
-            they say in their own words, for the whole family.
+            You set it up once on their iPhone. A Story calls in its app and asks
+            about their life, from a bank of {QUESTION_COUNT} questions. It keeps
+            what they say in their own words, for the whole family.
           </p>
         </div>
         <div className="caught">
