@@ -41,7 +41,11 @@ const SHOW_ON = new Set([
   "/your-story",
   "/programs",
 ]);
-const showsOn = (path: string) => SHOW_ON.has(path) || path.startsWith("/guides/");
+/* The live site answers at /organizations/ (seo.ts pageUrl), so the sets
+   are matched without the trailing slash. */
+const bare = (path: string) => path.replace(/(.)\/$/, "$1");
+const showsOn = (path: string) =>
+  SHOW_ON.has(bare(path)) || path.startsWith("/guides/");
 const DEMO_ON = new Set(["/organizations", "/care-communities"]);
 
 const Bar = styled.div`
@@ -129,7 +133,7 @@ export default function StickyStart() {
   if (!showsOn(pathname)) return null;
   return (
     <Bar data-shown={shown} aria-hidden={!shown}>
-      {DEMO_ON.has(pathname) ? (
+      {DEMO_ON.has(bare(pathname)) ? (
         <PrimaryAnchor href="#book" tabIndex={shown ? 0 : -1}>
           Book a demo <ArrowIcon />
         </PrimaryAnchor>

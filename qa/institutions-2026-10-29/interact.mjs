@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 const base = process.argv[2] ?? 'http://localhost:5191';
 const b = await chromium.launch();
 const out = [];
-const ok = (m) => out.push('PASS ' + m);
+const ok = (m) => { out.push('PASS ' + m); console.log('PASS ' + m); };
 
 // A1: primary action in the first screen, desktop and phone
 for (const [w, h] of [[1440, 900], [393, 852]]) {
@@ -57,10 +57,12 @@ await c.getByLabel('Your name').fill('Test Person');
 await c.getByLabel('Email').fill('test@example.com');
 await c.getByLabel(/Organization/).fill('Test Foundation');
 await c.getByLabel('The idea').fill('Fund ten families to record their grandparents.');
-await c.locator('button[type=submit]').click();
-await p.waitForTimeout(2500);
-const status = await p.locator('#collaborate [role=status], #collaborate [role=alert]').first().innerText();
-const href = await p.locator('#collaborate [role=alert] a').first().getAttribute('href').catch(() => null);
+/* Only submit locally: on the live site this sends Daniel a real email. */
+const local = /localhost|127.0.0.1/.test(base);
+if (local) await c.locator('button[type=submit]').click();
+await p.waitForTimeout(local ? 2500 : 0);
+const status = local ? await p.locator('#collaborate [role=status], #collaborate [role=alert]').first().innerText() : 'not submitted (live site)';
+const href = !local ? null : await p.locator('#collaborate [role=alert] a').first().getAttribute('href').catch(() => null);
 ok(`collaboration submit -> "${status.slice(0, 80)}"` + (href ? ` | mailto subject: ${decodeURIComponent(href.split('subject=')[1].split('&')[0])}` : ''));
 
 // A5: care page has its own form, care kind picked, no family close
@@ -79,7 +81,8 @@ await p.close();
 
 // mobile sticky bar offers Book a demo on these pages
 const m = await b.newPage({ viewport: { width: 393, height: 852 }, reducedMotion: 'reduce' });
-for (const r of ['/organizations', '/care-communities']) {
+/* The live site answers with a trailing slash (/organizations/). */
+for (const r of ['/organizations', '/care-communities', '/organizations/', '/care-communities/']) {
   await m.goto(base + r, { waitUntil: 'networkidle' });
   await m.evaluate(() => scrollTo(0, 1600));
   await m.waitForTimeout(600);

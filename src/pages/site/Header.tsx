@@ -277,7 +277,7 @@ export default function Header() {
               </a>
             ))}
             {/* The institution pages' one action is a demo (2026-10-29). */}
-            {DEMO_PAGES.has(location.pathname) ? (
+            {DEMO_PAGES.has(location.pathname.replace(/(.)\/$/, "$1")) ? (
               <a className="gf-button" href="#book" onClick={close}>
                 Book a demo <ArrowIcon />
               </a>
