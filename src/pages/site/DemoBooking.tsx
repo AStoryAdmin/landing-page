@@ -1,5 +1,6 @@
 /**
- * The demo booking form on /organizations (#book). Added 2026-10-20.
+ * The demo booking form on /organizations and /care-communities (#book,
+ * kit/DemoSection.tsx). Added 2026-10-20.
  *
  * It replaced "Request a demonstration" on /start, which saved a name and a
  * phone number and emailed nobody (lib/demoRequest.ts). An institution
@@ -61,8 +62,15 @@ const upcomingDays = (now = new Date()): string[] => {
 
 export default function DemoBooking({
   initialKind = "",
+  source = "organizations:demo",
+  rolePlaceholder = "Alumni director",
+  notePlaceholder = "Our 50th reunion class, before the anniversary next spring.",
 }: {
   initialKind?: string;
+  /** Where the request came from, stored with the row ("care:demo"). */
+  source?: string;
+  rolePlaceholder?: string;
+  notePlaceholder?: string;
 }) {
   const uid = useId();
   const days = useMemo(() => upcomingDays(), []);
@@ -80,6 +88,13 @@ export default function DemoBooking({
   const [organization, setOrganization] = useState("");
   const [role, setRole] = useState("");
   const [kind, setKind] = useState(initialKind);
+  /* A "Who we work with" tile on /organizations picks the kind after the
+     form has mounted (adjusting state while rendering, not in an effect). */
+  const [seenKind, setSeenKind] = useState(initialKind);
+  if (initialKind !== seenKind) {
+    setSeenKind(initialKind);
+    if (initialKind) setKind(initialKind);
+  }
   const [size, setSize] = useState("");
   const [picked, setPicked] = useState<string[]>([]);
   const [parts, setParts] = useState<string[]>([]);
@@ -128,7 +143,7 @@ export default function DemoBooking({
       timezone,
       note,
       website,
-      source: "organizations:demo",
+      source,
     });
     setBusy(false);
     if (result.ok) {
@@ -180,7 +195,7 @@ export default function DemoBooking({
           <input
             id={`${uid}-role`}
             autoComplete="organization-title"
-            placeholder="Alumni director"
+            placeholder={rolePlaceholder}
             value={role}
             onChange={(e) => setRole(e.target.value)}
           />
@@ -309,7 +324,7 @@ export default function DemoBooking({
         </span>
         <textarea
           id={`${uid}-note`}
-          placeholder="Our 50th reunion class, before the anniversary next spring."
+          placeholder={notePlaceholder}
           value={note}
           onChange={(e) => setNote(e.target.value)}
         />

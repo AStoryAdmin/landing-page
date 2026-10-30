@@ -28,9 +28,9 @@ export const INSTITUTION_KINDS = [
   "College or university",
   "School",
   "Library, museum or historical society",
-  "Senior living or care community",
   "Company or nonprofit",
-  "Faith or community group",
+  "Cultural, faith or community group",
+  "Senior living or care community",
   "Something else",
 ] as const;
 

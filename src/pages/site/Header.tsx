@@ -18,6 +18,7 @@ const primary = [
    router, so it needs a full navigation - a router Link would show the
    not-found route. */
 const outsideRouter = (to: string) => to === "/samples" || /^https?:/.test(to);
+const DEMO_PAGES = new Set(["/organizations", "/care-communities"]);
 const groups = [
   {
     label: "Explore",
@@ -36,11 +37,15 @@ const groups = [
     label: "Also for",
     items: [
       [
+        "Institutions",
+        "/organizations",
+        "Colleges, schools, libraries, companies, communities. Book a demo.",
+      ],
+      [
         "Care communities",
         "/care-communities",
         "Know the person behind the care.",
       ],
-      ["Institutions", "/organizations", "Colleges, libraries, companies. Book a demo."],
       ["Your own story", "/your-story", "Your life belongs here too."],
       [
         "Get in touch",
@@ -271,9 +276,16 @@ export default function Header() {
                 {label}
               </a>
             ))}
-            <a className="gf-button" href={START_HREF} onClick={close}>
-              {START_LABEL} <ArrowIcon />
-            </a>
+            {/* The institution pages' one action is a demo (2026-10-29). */}
+            {DEMO_PAGES.has(location.pathname.replace(/(.)\/$/, "$1")) ? (
+              <a className="gf-button" href="#book" onClick={close}>
+                Book a demo <ArrowIcon />
+              </a>
+            ) : (
+              <a className="gf-button" href={START_HREF} onClick={close}>
+                {START_LABEL} <ArrowIcon />
+              </a>
+            )}
           </div>
           <div className="gf-mobile-more">
             {groups.map((g) => (
