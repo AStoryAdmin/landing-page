@@ -56,6 +56,15 @@ const Steps = styled(Form)`
     text-transform: none;
     color: ${color.primary};
   }
+  @media (max-width: 860px) {
+    gap: 26px;
+    fieldset.step {
+      gap: 20px;
+    }
+    legend.step-legend {
+      margin-bottom: 12px;
+    }
+  }
 `;
 
 /** The next eight weekdays, starting two working days from today. */

@@ -87,6 +87,21 @@ const Know = styled(Chapter)`
       max-width: 640px;
     }
   }
+  /* Phone: the room's rhythm tightened so "What you need" costs no extra
+     screen (spec §4C target ≤ 7.9 screens at 390). */
+  ${media.md} {
+    padding: 52px 0;
+    .row {
+      gap: 28px;
+    }
+    .pair {
+      padding-bottom: 44px;
+    }
+    .words li {
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+  }
 `;
 
 /*
@@ -166,8 +181,33 @@ const Need = styled(Chapter)`
     color: var(--text, var(--ink));
   }
   ${media.md} {
+    padding: 28px 0 24px;
     .row {
       grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+    }
+    p {
+      padding: 12px 0;
+    }
+  }
+`;
+
+/* The booking room on a phone: the same parts, closer together (the
+   section and its list are kit/DemoSection.tsx; only spacing changes here). */
+const Booking = styled.div`
+  display: contents;
+  ${media.md} {
+    > section {
+      padding: 52px 0;
+    }
+    > section .row {
+      gap: 32px;
+    }
+    > section .side ul {
+      margin-top: 18px;
+    }
+    > section .side li {
+      padding: 12px 0;
     }
   }
 `;
@@ -176,6 +216,12 @@ const Need = styled(Chapter)`
    sits above three typeset columns, one per role (no cards). */
 const Circle = styled.div`
   display: contents;
+  ${media.md} {
+    > section {
+      padding-top: 52px;
+      padding-bottom: 52px;
+    }
+  }
   ${media.up.lg} {
     > section .row {
       grid-template-columns: minmax(0, 1fr);
@@ -307,7 +353,7 @@ export default function Care() {
             />
             <p className="film">
               <TextAnchor href="/how-it-works#film">
-                See a call become a book · 49 s
+                See a call become a book&nbsp;·&nbsp;49&nbsp;s
               </TextAnchor>
             </p>
           </div>
@@ -339,6 +385,7 @@ export default function Care() {
       />
       </Circle>
 
+      <Booking>
       <DemoSection
         title={
           <>
@@ -371,6 +418,7 @@ export default function Care() {
         cardLabel="A demo for your community"
         cardTitle="Tell us about your residents, and when suits you."
       />
+      </Booking>
     </>
   );
 }

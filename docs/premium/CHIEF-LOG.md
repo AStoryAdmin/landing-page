@@ -75,3 +75,28 @@ No step-down was needed.
   sets `body[data-film-playing]` on play and removes it on pause/ended/unmount, so
   `body[data-film-playing] &{ display:none }` (or the equivalent) is enough.
 - **Deploy (§7.14):** `.vtt` Content-Type on S3 is still the open flag.
+
+## Builder 4 — Group C structure, fix round (branch premium/b4)
+
+State: **passed only locally** (Chromium preview on :5204, 390x844 and 1440x900).
+
+### Measured after this round (document height / viewport height)
+| Page | 390 | target | 1440 | target |
+|---|---|---|---|---|
+| /organizations | 10.84 | ≤ 8 (baseline 12.9) | 6.68 | ≤ 6 (baseline 7.56) |
+| /care-communities | 7.89 | ≤ 7.9 (baseline 7.91) | 5.39 | — |
+| /programs | 4.05 | — | 3.02 | — |
+| /contact | 4.35 | — | 2.71 | — |
+
+- /care-communities now meets ≤ 7.9 at 390 with page-local phone spacing in `Care.tsx` (What you need, residents room, circle band, booking room) and a tighter phone gap in `DemoBooking.tsx`. The margin is 0.01 screen: any later kit change that adds height on this page will push it over.
+- Film links (/organizations x2, /care-communities x1) now land on `/how-it-works#film` with `#film` present (Builder 2's film is merged into site-premium). Each link keeps "· 49 s" together with non-breaking spaces.
+
+### Requests
+- **Chief: accept /organizations overage until Builder 1's `kit/Scroller.tsx` lands.** At 390 the segment cards in a Scroller are the planned cut (spec §4C); Builder 4 adopts it in round 2. At 1440 (6.68 vs ≤ 6) the gap is mostly section padding (three 117 px top/bottom bands); Builder 4 did not override kit padding page-locally there so it doesn't fight Builder 1's §3 spacing under `main[data-premium]`. Re-measure after both land.
+- **Builder 1, `lib/today.ts` (§3.7):** Builder 4 adds the Today note under the hero on /organizations and /care-communities when it exists.
+- **Builder 1, `Footer.tsx` (§1.3) and `kit.tsx` `Invitation`:** suppress the footer program plate on /programs (marks currently 6 in the DOM: 5 opening + plate); Builder 4 then passes `next={["/our-story","/how-it-works","/contact"]}`.
+- **Builder 1, `Header.tsx` / `nav.ts` / `Footer.tsx` (§1.1, §1.2, M11):** label "Schools, libraries & companies" (drawer and More panel still read "Institutions"), and no "Book a demo" row on /organizations and /care-communities.
+
+### Assumptions
+- Hero caption uses the label the site already gives this book: "A sample book: a founder's ledger." (home/CallBecomes.tsx:44, samples/index.html:1315).
+- Privacy links are a plain list with a sentence-case heading (no separators), per review item 10.

@@ -18,7 +18,8 @@
  *   - One form on the page. "Propose a collaboration" is no longer mounted
  *     (CollaborationForm.tsx is kept); another idea goes to /contact.
  *   - The opening stands on paper with one real object, the square sample
- *     book "The Ledger" (a founder's shop, told by the family), instead of
+ *     book "The Ledger" (labelled "a founder's ledger", as on home and
+ *     /samples), instead of
  *     four tilted prints.
  *   - "What you need" follows the opening: three lines the site already
  *     says (STEPS, DECIDE, and the program line on /pricing), so the iPhone
@@ -407,16 +408,22 @@ const Program = styled(Chapter)`
   }
   .privacy h3 {
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: var(--label);
   }
-  .privacy p {
-    margin-top: 10px;
-    font: 400 ${type.read} / 1.6 ${font.text};
-    color: var(--muted);
+  .privacy ul {
+    display: block;
+    margin: 6px 0 0;
   }
-  .privacy p a {
+  .privacy li,
+  .privacy li:last-child {
+    display: block;
+    padding: 0;
+    border: 0;
+    font: 400 ${type.read} / 1.5 ${font.text};
+  }
+  .privacy li a {
     display: inline-block;
     padding: 6px 0;
     color: var(--ink);
@@ -490,7 +497,7 @@ export default function Organizations() {
                   Book a demo <ArrowIcon />
                 </PrimaryAnchor>
                 <SecondaryAnchor href={FILM}>
-                  Watch the film · 49 s
+                  Watch the film&nbsp;·&nbsp;49&nbsp;s
                 </SecondaryAnchor>
               </>
             }
@@ -513,7 +520,7 @@ export default function Organizations() {
                   />
                 </a>
                 <figcaption>
-                  A sample book: a founder’s shop, told by the family.{" "}
+                  A sample book: a founder’s ledger.{" "}
                   <a href="/samples#raymond">Read it</a>
                 </figcaption>
               </Book>
@@ -618,7 +625,7 @@ export default function Organizations() {
                   Book a demo <ArrowIcon />
                 </PrimaryAnchor>
                 <TextAnchor href={FILM}>
-                  See one conversation become a book · 49 s
+                  See one conversation become a book&nbsp;·&nbsp;49&nbsp;s
                 </TextAnchor>
               </Actions>
             </div>
@@ -641,14 +648,13 @@ export default function Organizations() {
               </ul>
               <div className="privacy">
                 <h3 id="privacy-title">Privacy, in the policy itself</h3>
-                <p>
-                  {PRIVACY.map(([t, to], i) => (
-                    <span key={to}>
+                <ul aria-labelledby="privacy-title">
+                  {PRIVACY.map(([t, to]) => (
+                    <li key={to}>
                       <a href={to}>{t}</a>
-                      {i < PRIVACY.length - 1 ? " · " : ""}
-                    </span>
+                    </li>
                   ))}
-                </p>
+                </ul>
               </div>
             </div>
           </Frame>
