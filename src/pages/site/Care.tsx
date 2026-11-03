@@ -50,17 +50,17 @@ import { TODAY_NOTE } from "../../lib/today";
 import { color, display, font, media, space, type } from "../../styles/theme";
 
 const Know = styled(Chapter)`
-  scroll-margin-top: 80px;
+  scroll-margin-top: calc(${space.xxxl} + ${space.md});
   .row {
     display: grid;
     grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-    gap: clamp(40px, 6vw, 140px);
+    gap: clamp(${space.xl}, 6vw, calc(${space.xxxl} + ${space.xxxl} + ${space.sm}));
     align-items: center;
   }
   /* Two prints laid on each other, the smaller over the larger's corner. */
   .pair {
     position: relative;
-    padding: 0 0 clamp(60px, 7vw, 120px) 0;
+    padding: 0 0 clamp(${space.xxxl}, 7vw, calc(${space.xxxl} + ${space.xxl})) 0;
   }
   .pair > figure:first-child {
     width: min(86%, 640px);
@@ -72,13 +72,13 @@ const Know = styled(Chapter)`
     width: min(46%, 340px);
   }
   .words > p:not(.film) {
-    margin: 18px 0 clamp(22px, 2.4vw, 34px);
+    margin: ${space.md} 0 clamp(${space.lg}, 2.4vw, ${space.xl});
     max-width: 44ch;
     font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
   }
   .words > p.film {
-    margin-top: clamp(20px, 2.2vw, 30px);
+    margin-top: clamp(${space.md}, 2.2vw, ${space.xl});
   }
   ${media.lg} {
     .row {
@@ -102,8 +102,8 @@ const Know = styled(Chapter)`
       width: min(76%, 640px);
     }
     .words li {
-      padding-top: 12px;
-      padding-bottom: 12px;
+      padding-top: ${space.sm};
+      padding-bottom: ${space.sm};
     }
   }
 `;
@@ -164,7 +164,7 @@ const Need = styled(Chapter)`
   .row {
     display: grid;
     grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
-    gap: clamp(24px, 5vw, 110px);
+    gap: clamp(${space.lg}, 5vw, calc(${space.xxxl} + ${space.xxl}));
     align-items: start;
   }
   h2 {
@@ -173,7 +173,7 @@ const Need = styled(Chapter)`
   }
   p {
     max-width: 56ch;
-    padding: 16px 0;
+    padding: ${space.md} 0;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
     font: 400 ${type.read} / 1.55 ${font.text};
@@ -183,10 +183,10 @@ const Need = styled(Chapter)`
     padding: ${space.lg} 0;
     .row {
       grid-template-columns: minmax(0, 1fr);
-      gap: 12px;
+      gap: ${space.sm};
     }
     p {
-      padding: 12px 0;
+      padding: ${space.sm} 0;
     }
   }
 `;
@@ -224,7 +224,7 @@ const Circle = styled.div`
   ${media.up.lg} {
     > section .row {
       grid-template-columns: minmax(0, 1fr);
-      gap: clamp(36px, 4vw, 64px);
+      gap: clamp(${space.xl}, 4vw, ${space.xxxl});
     }
     > section blockquote {
       max-width: 22ch;
@@ -232,7 +232,7 @@ const Circle = styled.div`
     > section ul {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: clamp(28px, 3vw, 56px);
+      gap: clamp(${space.lg}, 3vw, ${space.xxl});
     }
     > section li,
     > section li:last-child {

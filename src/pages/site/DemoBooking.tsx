@@ -27,7 +27,7 @@ import { ArrowIcon } from "./kit/kit";
 import { PrimaryButton, TextAnchor } from "./kit/kit.styles";
 import { Done, Form } from "./kit/form.styles";
 import styled from "styled-components";
-import { color, display, font } from "../../styles/theme";
+import { color, display, font, space } from "../../styles/theme";
 
 const SIZES = [
   "Under 10",
@@ -42,14 +42,14 @@ const PARTS = ["Morning", "Midday", "Afternoon"] as const;
    the demo itself. Plain fieldsets with a legend each, no wizard; the
    fields, names and payload are unchanged (npm run test:contracts). */
 const Steps = styled(Form)`
-  gap: clamp(30px, 3vw, 40px);
+  gap: ${space.xl};
   fieldset.step {
     display: grid;
-    gap: 26px;
+    gap: ${space.lg};
   }
   legend.step-legend {
-    margin-bottom: 18px;
-    padding-bottom: 10px;
+    margin-bottom: ${space.md};
+    padding-bottom: ${space.xs};
     border-bottom: 1px solid ${color.primaryLine};
     font: 400 ${display.sm} / 1.2 ${font.display};
     letter-spacing: 0;
@@ -59,24 +59,24 @@ const Steps = styled(Form)`
   /* A wide screen reads the two steps at a glance; tighter rows keep the
      card near one screen (spec §4C page lengths). */
   @media (min-width: 1025px) {
-    gap: 24px;
+    gap: ${space.lg};
     fieldset.step {
-      gap: 18px;
+      gap: ${space.md};
     }
     .two {
-      row-gap: 18px;
+      row-gap: ${space.md};
     }
     legend.step-legend {
-      margin-bottom: 10px;
+      margin-bottom: ${space.xs};
     }
   }
   @media (max-width: 860px) {
-    gap: 26px;
+    gap: ${space.lg};
     fieldset.step {
-      gap: 20px;
+      gap: ${space.md};
     }
     legend.step-legend {
-      margin-bottom: 12px;
+      margin-bottom: ${space.sm};
     }
   }
 `;

@@ -42,7 +42,7 @@
  * Pricing is quoted per program, and the page says so rather than inventing
  * a number (lib/pricing.ts mirrors the app, which has no institution plan).
  */
-import { useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
@@ -71,6 +71,9 @@ const CARE: Kind = "Senior living or care community";
 /* The film on /how-it-works (kit/Film.tsx, Builder 2). A plain href, so the
    browser lands on the anchor after the page loads. */
 const FILM = "/how-it-works#film";
+
+/* Where "You decide" folds (the same width as media.sm). */
+const FOLD = "(max-width: 640px)";
 
 const WHO: { kind: Kind; label: string; title: string; body: string }[] = [
   {
@@ -131,7 +134,8 @@ const STEPS = [
   ],
   [
     "A Story makes the calls.",
-    "Guided conversations in the A Story iPhone app, now in a private beta, at the hour each person picks. Each person needs an iPhone, and we help them install the app.",
+    /* The iPhone requirement is said once, in "What you need" above. */
+    "Guided conversations in the A Story iPhone app, now in a private beta, at the hour each person picks.",
   ],
   [
     "You keep the archive.",
@@ -173,7 +177,7 @@ const PRIVACY = [
 const Book = styled.figure`
   display: grid;
   justify-items: center;
-  gap: 16px;
+  gap: ${space.md};
   margin: 0;
   a.cover {
     display: block;
@@ -221,7 +225,7 @@ const Need = styled(Chapter)`
   .row {
     display: grid;
     grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
-    gap: clamp(24px, 5vw, 110px);
+    gap: clamp(${space.lg}, 5vw, calc(${space.xxxl} + ${space.xxl}));
     align-items: start;
   }
   h2 {
@@ -234,7 +238,7 @@ const Need = styled(Chapter)`
     list-style: none;
   }
   li {
-    padding: 16px 0;
+    padding: ${space.md} 0;
     border-top: 1px solid var(--line);
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--text, var(--ink));
@@ -255,7 +259,7 @@ const Who = styled(Chapter)`
   .head {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(24px, 4vw, 80px);
+    gap: clamp(${space.lg}, 4vw, calc(${space.xxxl} + ${space.md}));
     align-items: end;
   }
   .head p {
@@ -288,7 +292,7 @@ const Who = styled(Chapter)`
     display: flex;
     flex-direction: column;
     min-width: 0;
-    padding-top: clamp(18px, 1.8vw, 26px);
+    padding-top: clamp(${space.md}, 1.8vw, ${space.lg});
     border-top: 1px solid var(--line);
   }
   small {
@@ -299,39 +303,39 @@ const Who = styled(Chapter)`
     color: ${color.accentText};
   }
   h3 {
-    margin-top: 12px;
+    margin-top: ${space.sm};
     font: 500 ${display.sm} / 1.2 ${font.display};
     color: var(--ink);
   }
   li p {
-    margin-top: 10px;
+    margin-top: ${space.xs};
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--text);
   }
   .go {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 20px;
+    gap: ${space.xxs} ${space.md};
     margin-top: auto;
-    padding-top: 14px;
+    padding-top: ${space.sm};
   }
   .go a {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: ${space.xs};
     min-height: 44px;
     color: var(--ink);
     font: 600 ${type.ui} / 1.3 ${font.ui};
     text-underline-offset: 4px;
   }
   .else {
-    margin-top: clamp(22px, 2.4vw, 32px);
+    margin-top: clamp(${space.lg}, 2.4vw, ${space.xl});
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
   }
   .else a {
     display: inline-block;
-    padding: 10px 0;
+    padding: ${space.xs} 0;
     color: var(--ink);
     font-weight: 600;
     text-underline-offset: 4px;
@@ -354,7 +358,7 @@ const Line = styled(Chapter)`
     display: block;
     width: 9px;
     height: 9px;
-    margin: 0 auto clamp(28px, 3vw, 40px);
+    margin: 0 auto clamp(${space.lg}, 3vw, ${space.xl});
     border: 1px solid ${color.gold};
     transform: rotate(45deg);
   }
@@ -384,26 +388,26 @@ const Program = styled(Chapter)`
   .grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(40px, 6vw, 140px);
+    gap: clamp(${space.xl}, 6vw, calc(${space.xxxl} + ${space.xxxl} + ${space.sm}));
     align-items: start;
   }
   .lead {
-    margin-top: 16px;
+    margin-top: ${space.md};
     max-width: 46ch;
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
   }
   ul {
     display: grid;
-    margin: clamp(26px, 3vw, 44px) 0 0;
+    margin: clamp(${space.lg}, 3vw, ${space.xxl}) 0 0;
     padding: 0;
     list-style: none;
   }
   li {
     display: grid;
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-    gap: 6px clamp(18px, 2.4vw, 40px);
-    padding: 20px 0;
+    gap: ${space.xxs} clamp(${space.md}, 2.4vw, ${space.xl});
+    padding: ${space.md} 0;
     border-top: 1px solid var(--line);
   }
   li:last-child {
@@ -413,8 +417,53 @@ const Program = styled(Chapter)`
     font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted);
   }
+  /* "You decide": a fold on a phone only. From 641 px the summary is
+     hidden and the details stay open. */
+  .decide > summary {
+    display: none;
+  }
+  ${media.sm} {
+    .decide {
+      margin-top: ${space.md};
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .decide > summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: ${space.md};
+      min-height: 44px;
+      padding: ${space.xs} 0;
+      cursor: pointer;
+      list-style: none;
+      color: var(--ink);
+      font: 600 ${type.ui} / 1.3 ${font.ui};
+    }
+    .decide > summary::-webkit-details-marker {
+      display: none;
+    }
+    .decide > summary::after {
+      content: "+";
+      font: 400 ${display.sm} / 1 ${font.display};
+      color: var(--muted);
+    }
+    .decide[open] > summary::after {
+      content: "−";
+    }
+    .decide > summary:focus-visible {
+      outline: 2px solid ${color.primary};
+      outline-offset: 2px;
+    }
+    .decide[open] {
+      padding-bottom: ${space.md};
+    }
+    .decide > ul {
+      margin-top: 0;
+    }
+  }
   .privacy {
-    margin-top: clamp(28px, 3vw, 40px);
+    margin-top: clamp(${space.lg}, 3vw, ${space.xl});
   }
   .privacy h3 {
     font: 600 ${type.label} / 1.3 ${font.ui};
@@ -424,7 +473,7 @@ const Program = styled(Chapter)`
   }
   .privacy ul {
     display: block;
-    margin: 6px 0 0;
+    margin: ${space.xxs} 0 0;
   }
   .privacy li,
   .privacy li:last-child {
@@ -435,7 +484,7 @@ const Program = styled(Chapter)`
   }
   .privacy li a {
     display: inline-block;
-    padding: 6px 0;
+    padding: ${space.xxs} 0;
     color: var(--ink);
     font-weight: 600;
     text-underline-offset: 4px;
@@ -466,16 +515,16 @@ const Rhythm = styled.div`
       row-gap: ${space.xl};
     }
     #how ul {
-      margin-top: 22px;
+      margin-top: ${space.lg};
     }
     #how li {
-      padding: 14px 0;
+      padding: ${space.sm} 0;
     }
     #how .privacy ul {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 24px;
-      margin-top: 6px;
+      column-gap: ${space.lg};
+      margin-top: ${space.xxs};
     }
     #how .privacy li {
       padding: 0;
@@ -492,13 +541,16 @@ const Rhythm = styled.div`
       margin-top: ${space.xl};
     }
     #how ul {
-      margin-top: ${space.lg};
+      margin-top: ${space.md};
+    }
+    #how .decide > ul {
+      margin-top: 0;
     }
     #how li {
       padding: ${space.sm} 0;
     }
     #how .grid {
-      gap: ${space.xxl};
+      gap: ${space.xl};
     }
     #book .row {
       gap: ${space.xl};
@@ -522,6 +574,15 @@ export default function Organizations() {
   const [params] = useSearchParams();
   const [kind, setKind] = useState(() => kindFromParams(params));
   const reveal = useReveals<HTMLDivElement>();
+  /* On a phone the decisions and the privacy links fold under one line
+     (spec §4C: at most 8 screens at 390). The prerendered page ships them
+     open, so they read without script and on every wider screen. */
+  const decide = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    if (decide.current && window.matchMedia(FOLD).matches) {
+      decide.current.open = false;
+    }
+  }, []);
 
   /* A column picks its kind in the form and goes there. The href does the
      same without script (the prerendered page). */
@@ -708,24 +769,27 @@ export default function Organizations() {
                 different decisions. We make them with you, before anyone is
                 called.
               </p>
-              <ul>
-                {DECIDE.map(([t, d]) => (
-                  <li key={t}>
-                    <Heading>{t}</Heading>
-                    <p>{d}</p>
-                  </li>
-                ))}
-              </ul>
-              <div className="privacy">
-                <h3 id="privacy-title">Privacy, in the policy itself</h3>
-                <ul aria-labelledby="privacy-title">
-                  {PRIVACY.map(([t, to]) => (
-                    <li key={to}>
-                      <a href={to}>{t}</a>
+              <details className="decide" ref={decide} open>
+                <summary>What you decide, and privacy</summary>
+                <ul>
+                  {DECIDE.map(([t, d]) => (
+                    <li key={t}>
+                      <Heading>{t}</Heading>
+                      <p>{d}</p>
                     </li>
                   ))}
                 </ul>
-              </div>
+                <div className="privacy">
+                  <h3 id="privacy-title">Privacy, in the policy itself</h3>
+                  <ul aria-labelledby="privacy-title">
+                    {PRIVACY.map(([t, to]) => (
+                      <li key={to}>
+                        <a href={to}>{t}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </details>
             </div>
           </Frame>
         </Program>

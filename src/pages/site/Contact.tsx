@@ -40,7 +40,7 @@ import {
   TextAnchor,
 } from "./kit/kit.styles";
 import { Done, Form } from "./kit/form.styles";
-import { color, curve, display, font, media, shadow, type } from "../../styles/theme";
+import { color, curve, display, font, media, shadow, space, type } from "../../styles/theme";
 
 const TOPICS = [
   "A question",
@@ -76,7 +76,7 @@ const DOORS = [
 const Reader = styled.figure`
   display: grid;
   justify-items: center;
-  gap: 18px;
+  gap: ${space.md};
   margin: 0;
   text-align: center;
   img {
@@ -92,7 +92,7 @@ const Reader = styled.figure`
   }
   p {
     display: grid;
-    gap: 4px;
+    gap: ${space.xxs};
   }
   b {
     font: 500 ${display.sm} / 1 ${font.script};
@@ -108,7 +108,7 @@ const Body = styled(Chapter)`
   .row {
     display: grid;
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-    gap: clamp(40px, 6vw, 110px);
+    gap: clamp(${space.xl}, 6vw, calc(${space.xxxl} + ${space.xxl}));
     align-items: start;
   }
   .side {
@@ -117,8 +117,8 @@ const Body = styled(Chapter)`
   }
   .address {
     display: grid;
-    gap: 14px;
-    padding: clamp(24px, 2.6vw, 34px) 0;
+    gap: ${space.sm};
+    padding: clamp(${space.lg}, 2.6vw, ${space.xl}) 0;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
   }
@@ -130,7 +130,7 @@ const Body = styled(Chapter)`
   }
   .address a.big {
     display: inline-block;
-    padding: 8px 0;
+    padding: ${space.xs} 0;
     font: 400 ${display.sm} / 1.2 ${font.display};
     color: var(--ink);
     text-decoration: none;
@@ -145,7 +145,7 @@ const Body = styled(Chapter)`
   .address .acts {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: ${space.sm};
   }
   .address p {
     font: 400 ${type.read} / 1.55 ${font.text};
@@ -153,7 +153,7 @@ const Body = styled(Chapter)`
   }
   .doors {
     display: grid;
-    margin: clamp(28px, 3vw, 40px) 0 0;
+    margin: clamp(${space.lg}, 3vw, ${space.xl}) 0 0;
     padding: 0;
     list-style: none;
   }
@@ -161,8 +161,8 @@ const Body = styled(Chapter)`
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: 16px;
-    padding: 18px 0;
+    gap: ${space.md};
+    padding: ${space.md} 0;
     border-bottom: 1px solid var(--line);
     text-decoration: none;
     color: var(--ink);
@@ -173,7 +173,7 @@ const Body = styled(Chapter)`
   }
   .doors span {
     display: block;
-    margin-top: 4px;
+    margin-top: ${space.xxs};
     font: 400 ${type.read} / 1.5 ${font.text};
     color: var(--muted);
   }
@@ -194,8 +194,8 @@ const Body = styled(Chapter)`
       0 40px 80px -48px rgba(42, 31, 24, 0.45);
   }
   .card-head {
-    margin-bottom: clamp(26px, 3vw, 36px);
-    padding-bottom: clamp(20px, 2.4vw, 28px);
+    margin-bottom: clamp(${space.lg}, 3vw, ${space.xl});
+    padding-bottom: clamp(${space.md}, 2.4vw, ${space.lg});
     border-bottom: 1px solid ${color.primaryLine};
   }
   .card-head small {
@@ -206,7 +206,7 @@ const Body = styled(Chapter)`
     color: ${color.accentText};
   }
   .card-head h2 {
-    margin-top: 10px;
+    margin-top: ${space.xs};
     font: 400 ${display.sm} / 1.2 ${font.display};
     color: ${color.primary};
   }

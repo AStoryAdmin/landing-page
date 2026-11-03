@@ -207,3 +207,19 @@ Done: today note in the /organizations and /care-communities heroes; /organizati
 - /contact door rows keep their arrow: they are row links like the kit's "Where to next" rows, not text links.
 - /programs host links lose the arrow (§3.3); they still open in a new tab, as before.
 - "Who we work with." lost its gold word to meet h2 em <= 0.5 (text unchanged).
+
+## Builder 4 — Group C finish, review fixes (branch premium/b4)
+
+State: **passed only locally** (Chromium, `vite preview` :5204, reduced motion). Shots: `qa/premium-2026-11/after/{organizations,care-communities,programs,contact}-{390,1440}.png`.
+
+| Page | 390 screens | target | 1440 screens | target |
+|---|---|---|---|---|
+| /organizations | **7.97** (6727 px; was 8.96) | <= 8 | 5.67 | <= 6 |
+| /care-communities | 7.86 | <= 7.9 | 5.30 | — |
+| /programs | 3.69 | — | 2.74 | — |
+| /contact | 4.27 (first field at 1.35) | form <= 2 | 2.66 | — |
+
+- **Decision (Daniel asleep, no chief ruling found): both options applied on /organizations.** (a) The iPhone sentence is removed from the "A Story makes the calls." step; it is said once, in "What you need". (b) At <= 640 px "You decide" keeps its h2 and lead; the four decision rows and the privacy links fold into `<details>` with the summary "What you decide, and privacy" (closed after hydration on phones; prerendered open, so no-script and >= 641 px read everything; summary hidden from 641 px). Neither alone reached 8 screens (fold ~700 px, sentence ~58 px). Reversible in `Organizations.tsx` (`FOLD`, `.decide`).
+- **Check 3.2:** `git diff site-premium..premium/b4 -- src` adds 0 raw-px padding/margin/gap lines. All five Group C files now have 0 (was Org 25, Care 13, DemoBooking 11, Contact 14, Programs 10). Values were snapped to the nearest `space.*` token (ties to the smaller); maxima above 64 px are `calc()` sums of tokens.
+- Checks: one `<form>` on /organizations, /care-communities, /contact; "Book a demo" in main 3 / 2 / 1; no "%" on /contact; first-screen `img` on /care-communities at 390; "leave with them" absent from `dist/organizations/index.html`; no horizontal overflow at 390.
+- **Still blocked (unchanged, needs chief assignment):** uppercase count (form labels/legends/`small` in B1's `kit/form.styles.ts`; card label in unowned `kit/DemoSection.tsx`; QuoteBand h2 in unowned `rooms/Rooms.tsx`). Builder 4 did not restyle forms page-locally (a §3 system change lands whole).
