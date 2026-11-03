@@ -3,13 +3,16 @@
  * as the rest of the site (Pass 11g: the founder found this page below the
  * others' quality).
  *
- * - Opening, on the cloth (2026-10-23, jury 1 #5): the title on the left;
- *   on the right Daniel, round portrait and all, on a leaf of paper - a real
- *   person to write to - so the page reads as service, not a manual.
- * - Sentence-case topic tabs and a search field filter together.
- * - Each group is a chapter with a serif title (no numerals) and its
- *   answers as quiet cards: serif question, a gold coin that turns + into ×.
- * - The shared closing band; the person to write to is at the top.
+ * Premium pass (2026-11-02, design spec §4D, §3.4, §3.9):
+ * - The opening is on the paper. Its object is Daniel, round portrait and
+ *   all, under "Rather ask a person?": a real person to write to, so the page
+ *   reads as service, not a manual. On a light ground the leaf is flat: a
+ *   hairline and the foil inset, no shadow.
+ * - The topic chips are one <Scroller label="Question topics">: never cut
+ *   mid-word, the end fades while there is more; the search sits under them.
+ * - Each group header is type: a display.sm heading with a hairline above,
+ *   no box. The answers are rows between hairlines, not cards.
+ * - The closing band offers Pricing, How it works and Contact.
  *
  * Answers come from `faqData.ts` (which reads its figures from pricing.ts and
  * product.ts); the FAQ schema is unchanged.
@@ -26,52 +29,47 @@ import {
 import { CONTACT } from "../../lib/contact";
 import { groups } from "./faqData";
 import { ArrowIcon, Invitation } from "./kit/kit";
+import Scroller from "./kit/Scroller";
 import { useReveals } from "./kit/reveals";
-import { Chapter, Frame, Title } from "./kit/kit.styles";
+import { Chapter, Frame, Lead, Title } from "./kit/kit.styles";
 import {
   color,
   display,
   font,
   media,
   motion,
-  shadow,
+  space,
   type,
 } from "../../styles/theme";
 
 const Opening = styled(Chapter)`
-  padding: clamp(80px, 10vw, 160px) 0 clamp(56px, 6vw, 96px);
+  padding: calc(${space.section} * var(--sy)) 0;
   .grid {
     display: grid;
     grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
     gap: clamp(40px, 6vw, 110px);
     align-items: end;
   }
-  h1 em {
-    font-style: normal;
-  }
   .lead {
-    margin-top: 24px;
-    font: 400 clamp(1.15rem, 1.05rem + 0.4vw, 1.45rem) / 1.55 ${font.text};
-    color: var(--text);
-    max-width: 40ch;
+    margin-top: ${space.lg};
   }
-  /* A real person to write to: Daniel, on a leaf of the book's paper lying
-     on the cloth (jury 1 #20: his round portrait, not a blurred thumbnail). */
+  /* A real person to write to: Daniel, on a leaf of the book's paper (jury 1
+     #20: his round portrait, not a blurred thumbnail). Flat on the paper. */
   .concierge {
     position: relative;
     display: grid;
     grid-template-columns: 72px 1fr;
     gap: 18px;
     align-items: center;
-    padding: clamp(24px, 2.4vw, 36px);
-    background: ${color.paperPure};
-    box-shadow: ${shadow.lie};
-    transform: rotate(0.8deg);
+    padding: clamp(${space.lg}, 2.4vw, 36px);
+    background: ${color.ivory};
+    border: 1px solid ${color.primaryLine};
+    border-radius: 3px;
   }
   .concierge::before {
     content: "";
     position: absolute;
-    inset: 10px;
+    inset: 8px;
     border: 1px solid ${color.foil};
     pointer-events: none;
   }
@@ -85,18 +83,17 @@ const Opening = styled(Chapter)`
     object-fit: cover;
     object-position: 50% 30%;
     box-shadow:
-      0 0 0 3px ${color.paperPure},
+      0 0 0 3px ${color.ivory},
       0 0 0 4px color-mix(in srgb, ${color.gold} 60%, transparent);
   }
   .concierge small {
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   .concierge p {
     margin-top: 6px;
-    font: 400 clamp(1.2rem, 1.1rem + 0.4vw, 1.5rem) / 1.3 ${font.display};
+    font: 400 ${display.sm} / 1.25 ${font.display};
     color: ${color.primary};
   }
   .concierge a {
@@ -115,22 +112,13 @@ const Opening = styled(Chapter)`
       background-color ${motion.base},
       transform ${motion.press};
   }
-  @media (hover: hover) and (pointer: fine) {
+  ${media.hover} {
     .concierge a:hover {
       background: ${color.chocolateDeep};
     }
   }
   .concierge a:active {
-    transform: scale(0.98);
-  }
-  .concierge a:focus-visible {
-    outline: 2px solid ${color.accentText};
-    outline-offset: 3px;
-  }
-  ${media.motion} {
-    .concierge {
-      transform: none;
-    }
+    transform: scale(0.97);
   }
   .concierge a svg {
     width: 16px;
@@ -139,37 +127,49 @@ const Opening = styled(Chapter)`
   ${media.md} {
     .grid {
       grid-template-columns: minmax(0, 1fr);
+      gap: ${space.xl};
     }
   }
 `;
 
 const Answers = styled(Chapter)`
-  padding-top: 0;
+  padding: 0 0 calc(${space.section} * var(--sy));
   .tools {
     position: sticky;
-    top: 12px;
+    top: calc(var(--nav-total, 0px) + ${space.sm});
     z-index: 3;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
+    gap: ${space.xs} ${space.lg};
     align-items: center;
-    gap: 10px;
-    padding: 8px 0;
-    margin-bottom: clamp(36px, 4vw, 64px);
+    padding: ${space.xs} 0;
+    margin-bottom: clamp(${space.xl}, 4vw, ${space.xxxl});
     background: ${color.ivory};
     border-bottom: 1px solid ${color.primaryLine};
   }
-  /* Wide screens: the pills sit in the toolbar row as if unwrapped. */
-  .pills {
-    display: contents;
+  /* The chips: a scroller (spec §3.9). Each chip takes its own width, and
+     the row only scrolls when it is wider than the window. On a wide screen
+     the scroller stops at the search, so it gives back its right bleed. */
+  .tools .scroller {
+    margin-inline-end: 0;
+  }
+  .tools .scroller-track {
+    grid-auto-columns: max-content;
+    gap: ${space.xxs};
+    padding-inline-end: 0;
+  }
+  .tools .scroller-track > li {
+    scroll-snap-align: start;
   }
   /* Sentence-case text tabs, the chosen one underlined (jury 1 #20). */
   .pill {
     min-height: 44px;
-    padding: 0 12px;
+    padding: 0 ${space.sm};
     border: 0;
     background: transparent;
     font: 500 ${type.ui} / 1 ${font.ui};
     color: ${color.bodyMuted};
+    white-space: nowrap;
     text-decoration: underline;
     text-decoration-color: transparent;
     text-decoration-thickness: 2px;
@@ -179,7 +179,7 @@ const Answers = styled(Chapter)`
       color ${motion.base},
       text-decoration-color ${motion.base};
   }
-  @media (hover: hover) and (pointer: fine) {
+  ${media.hover} {
     .pill:hover {
       color: ${color.primary};
     }
@@ -190,15 +190,12 @@ const Answers = styled(Chapter)`
   }
   .search {
     position: relative;
-    /* Wide enough for the whole placeholder (it was cut to "Search - try privacy, t"). */
-    flex: 1 1 300px;
-    min-width: min(300px, 100%);
     display: flex;
     align-items: center;
   }
   .search svg {
     position: absolute;
-    left: 16px;
+    left: ${space.md};
     width: 16px;
     height: 16px;
     color: ${color.bodyMuted};
@@ -207,95 +204,71 @@ const Answers = styled(Chapter)`
     width: 100%;
     min-height: 44px;
     padding: 0 18px 0 42px;
-    border: 0;
+    border: 1px solid ${color.primaryLine};
     border-radius: 999px;
-    background: ${color.ivory};
-    font: 400 18px / 1 ${font.text};
+    background: ${color.paper};
+    font: 400 ${type.read} / 1 ${font.text};
     color: ${color.primary};
   }
-  .search input:focus-visible,
-  .pill:focus-visible,
-  summary:focus-visible {
-    outline: 2px solid ${color.accent};
-    outline-offset: 3px;
-  }
-  /* Phones (2026-10-15 audit): the six filters wrapped to one per line and
-     stuck to the top, covering nearly half the screen while reading. Here
-     they are one swipeable line above the search, and do not stick. */
+  /* Phones (2026-10-15 audit): the filters stuck to the top covered nearly
+     half the screen while reading. Here the chips are one swipeable line
+     above the search, and nothing sticks. */
   ${media.md} {
     .tools {
       position: relative;
       top: auto;
-      flex-wrap: nowrap;
-      flex-direction: column;
-      align-items: stretch;
+      grid-template-columns: minmax(0, 1fr);
     }
-    .pills {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 4px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      margin: 0 -10px;
-      padding: 0 10px;
+    .tools .scroller {
+      margin-inline-end: calc(-1 * var(--page-gutter));
     }
-    .pills::-webkit-scrollbar {
-      display: none;
-    }
-    .pill {
-      flex: none;
-      white-space: nowrap;
-    }
-    .search {
-      flex: none;
+    .tools .scroller-track {
+      padding-inline-end: var(--page-gutter);
     }
   }
+  /* A group: its title is type with a hairline above (S23), its answers are
+     rows between hairlines. */
   section {
     display: grid;
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr);
-    gap: clamp(28px, 5vw, 96px);
-    padding: clamp(40px, 5vw, 72px) 0;
+    gap: clamp(${space.lg}, 5vw, 96px);
+    padding: clamp(${space.xl}, 4vw, ${space.xxxl}) 0;
     border-top: 1px solid ${color.primaryLineStrong};
   }
   .gh {
     position: sticky;
-    top: 110px;
+    top: calc(var(--nav-total, 0px) + 96px);
     align-self: start;
   }
   .gh h2 {
-    font: 400 ${display.md} / 1.15 ${font.display};
+    font: 400 ${display.sm} / 1.2 ${font.display};
     color: ${color.primary};
   }
   .gh small {
     display: block;
-    margin-top: 8px;
-    font: 500 ${type.label} / 1.3 ${font.body};
+    margin-top: ${space.xs};
+    font: 500 ${type.label} / 1.3 ${font.ui};
     color: ${color.bodyMuted};
   }
   .items {
     display: grid;
-    gap: 12px;
   }
   details {
-    border-radius: 18px;
-    background: ${color.paperPure};
-    box-shadow: 0 0 0 1px ${color.primaryLine};
-    transition: box-shadow ${motion.slow};
+    border-top: 1px solid ${color.primaryLine};
   }
-  details[open] {
-    box-shadow:
-      0 0 0 1px ${color.primaryLineStrong},
-      0 24px 50px -36px rgba(42, 31, 24, 0.5);
+  details:last-child {
+    border-bottom: 1px solid ${color.primaryLine};
   }
   summary {
     list-style: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
-    padding: 22px 22px 22px 26px;
+    gap: ${space.lg};
+    min-height: 44px;
+    padding: 18px 0;
     cursor: pointer;
-    font: 400 clamp(1.1rem, 1rem + 0.3vw, 1.3rem) / 1.35 ${font.display};
+    font: 400 ${display.sm} / 1.3 ${font.display};
     color: ${color.primary};
   }
   summary::-webkit-details-marker {
@@ -307,7 +280,7 @@ const Answers = styled(Chapter)`
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    background: ${color.ivory};
+    border: 1px solid ${color.primaryLine};
     transition:
       background ${motion.slow},
       transform ${motion.reveal};
@@ -328,10 +301,11 @@ const Answers = styled(Chapter)`
   }
   details[open] summary i {
     background: ${color.gold};
+    border-color: ${color.gold};
     transform: rotate(45deg);
   }
   details p {
-    padding: 0 26px 24px;
+    padding: 0 0 ${space.lg};
     font: 400 ${type.read} / 1.7 ${font.text};
     color: ${color.body};
     max-width: 62ch;
@@ -344,6 +318,7 @@ const Answers = styled(Chapter)`
   ${media.md} {
     section {
       grid-template-columns: minmax(0, 1fr);
+      gap: ${space.md};
     }
     .gh {
       position: static;
@@ -380,16 +355,16 @@ export default function Questions() {
           faqSchema(groups.flatMap((g) => g.items)),
         ]}
       />
-      <Opening ref={opening} $ground="cloth" aria-labelledby="faq-title">
+      <Opening ref={opening} $ground="paper" aria-labelledby="faq-title">
         <Frame className="grid">
           <div>
             <Title id="faq-title" data-lines>
               The practical things, answered <em>plainly.</em>
             </Title>
-            <p className="lead" data-rise>
+            <Lead className="lead" data-rise>
               What people ask before the first conversation - about calls,
               privacy, the family, plans and the book.
-            </p>
+            </Lead>
           </div>
           <aside className="concierge" data-rise aria-label="Talk to a person">
             <img
@@ -398,6 +373,7 @@ export default function Questions() {
               width={320}
               height={320}
               decoding="async"
+              fetchPriority="high"
             />
             <div>
               <small>Rather ask a person?</small>
@@ -413,27 +389,30 @@ export default function Questions() {
       <Answers $ground="ivory" aria-label="Answers">
         <Frame>
           <div className="tools" role="group" aria-label="Filter the answers">
-            <div className="pills">
-              <button
-                type="button"
-                className="pill"
-                aria-pressed={topic === null}
-                onClick={() => setTopic(null)}
-              >
-                All
-              </button>
-              {groups.map((g) => (
+            <Scroller label="Question topics">
+              <li>
                 <button
-                  key={g.title}
                   type="button"
                   className="pill"
-                  aria-pressed={topic === g.title}
-                  onClick={() => setTopic(topic === g.title ? null : g.title)}
+                  aria-pressed={topic === null}
+                  onClick={() => setTopic(null)}
                 >
-                  {g.title}
+                  All
                 </button>
+              </li>
+              {groups.map((g) => (
+                <li key={g.title}>
+                  <button
+                    type="button"
+                    className="pill"
+                    aria-pressed={topic === g.title}
+                    onClick={() => setTopic(topic === g.title ? null : g.title)}
+                  >
+                    {g.title}
+                  </button>
+                </li>
               ))}
-            </div>
+            </Scroller>
             <label className="search">
               <span className="sr-only">Find an answer</span>
               <svg
@@ -487,7 +466,7 @@ export default function Questions() {
         </Frame>
       </Answers>
 
-      <Invitation />
+      <Invitation next={["/pricing", "/how-it-works", "/contact"]} />
     </>
   );
 }

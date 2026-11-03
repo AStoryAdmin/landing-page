@@ -5,9 +5,13 @@
  * headings, and a contents list that stays beside the text on wide screens.
  * The guide's own example opens it as a pull quote; its closing question is
  * set large at the end, because the point of a guide is the question the
- * reader goes and asks. A photograph appears only for the four guides where
- * the image shows what the guide is about (a conversation, a box of photos,
- * a shared afternoon, an ordinary day) — decorative openers were removed.
+ * reader goes and asks.
+ *
+ * Premium pass (2026-11-02, design spec §4D): the head is on the paper, not
+ * the cloth, so the guides read as a library. The title is set at display.lg
+ * (the long titles keep to four lines at 390), and the guide's photograph
+ * (guidePictures.ts, the one its index row shows) takes half the row on a
+ * wide screen and the full width above the title on a phone, as a crop.
  */
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -21,7 +25,7 @@ import {
   organizationSchema,
   websiteSchema,
 } from "../../lib/seo";
-import { ArrowIcon, Print } from "./kit/kit";
+import { ArrowIcon, Picture } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import {
   Chapter,
@@ -31,40 +35,25 @@ import {
   PrimaryLink,
   Title,
 } from "./kit/kit.styles";
-import { color, curve, display, font, media, type } from "../../styles/theme";
-
-/**
- * Guides whose photograph carries the subject; the others read better
- * without one. One photograph, one page (jury 1 #7): Home keeps the lake (30)
- * and the lunchbox (21), and Care keeps the photo-sorting scene (23), so
- * those guides take a library print of their own here.
- */
-const PICTURED: Record<string, string> = {
-  "interview-a-parent": "33",
-  "unlabeled-family-photographs": "03",
-  "different-versions": "H03",
-  "ordinary-life-questions": "35",
-};
-
-/* The guide opens on the cloth, like every page (jury 1 #5): the way back,
-   the title and the thesis on the left, its photograph beside them. */
-const PICTURE_ALT: Record<string, string> = {
-  "03": "A faded family snapshot, around 1973: a car being unloaded at a new house",
-  H03: "Friends on a lake shore at dusk, one pointing out across the water",
-  "35": "An ordinary weekday: someone carrying laundry through the house",
-};
+import {
+  color,
+  curve,
+  display,
+  font,
+  measure,
+  media,
+  space,
+  type,
+} from "../../styles/theme";
+import { guidePicture } from "./guidePictures";
 
 const Head = styled(Chapter)`
-  padding: calc(clamp(40px, 5vw, 96px) * var(--sy)) 0
-    calc(clamp(56px, 6vw, 112px) * var(--sy));
+  padding: calc(${space.section} * var(--sy)) 0;
   .head {
     display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    gap: clamp(36px, 5vw, 110px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(${space.xl}, 5vw, 110px);
     align-items: center;
-  }
-  .head.solo {
-    grid-template-columns: minmax(0, 1fr);
   }
   .back {
     /* Its own line: inline, it sat on one baseline with the eyebrow after it. */
@@ -72,30 +61,31 @@ const Head = styled(Chapter)`
     width: fit-content;
     align-items: center;
     min-height: 44px;
-    margin-bottom: 28px;
+    margin-bottom: ${space.lg};
     font: 500 ${type.ui} / 1 ${font.ui};
     color: var(--muted);
     text-underline-offset: 5px;
   }
-  /* Article titles are long (60-70 characters): a smaller display size on
-     a wider measure keeps them to two lines on a desktop. */
+  /* Article titles are long (57-78 characters): display.lg on a wide
+     measure keeps them to four lines at 390 and three on a desktop. */
   h1 {
-    max-width: 38ch;
-    font-size: clamp(2rem, 1.2rem + 2.1vw, 3.6rem);
+    max-width: 24ch;
+    font-size: ${display.lg};
+    line-height: 1.06;
   }
   .thesis {
-    margin-top: 24px;
-    font: 400 clamp(1.2rem, 1.05rem + 0.45vw, 1.5rem) / 1.55 ${font.text};
+    margin-top: ${space.lg};
+    font: 400 ${type.lead} / 1.5 ${font.text};
     color: var(--text);
-    max-width: 48ch;
+    max-width: ${measure.lead};
   }
   .byline {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 8px 24px;
-    margin-top: 24px;
-    padding-top: 18px;
+    gap: ${space.xs} ${space.lg};
+    margin-top: ${space.lg};
+    padding-top: ${space.md};
     border-top: 1px solid var(--line);
     font: 400 ${type.note} / 1.5 ${font.ui};
     color: var(--muted);
@@ -111,19 +101,29 @@ const Head = styled(Chapter)`
     text-underline-offset: 5px;
     cursor: pointer;
   }
+  /* The photograph as a crop (spec §3.5): 3:2, the md radius, no border.
+     Capped by height too, so it is never taller than a laptop window. */
   .lead-image {
-    /* Capped by height too, so the print is never taller than a laptop
-       window (the laptop rule, design.md). */
-    max-width: min(760px, calc(64svh * 4 / 3));
-    justify-self: end;
     width: 100%;
+    max-width: calc(64svh * 3 / 2);
+    justify-self: end;
+  }
+  .lead-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
   }
   ${media.md} {
     .head {
       grid-template-columns: minmax(0, 1fr);
+      gap: ${space.lg};
     }
     .lead-image {
-      justify-self: start;
+      order: -1;
+      justify-self: stretch;
+      max-width: none;
     }
   }
 `;
@@ -131,7 +131,7 @@ const Head = styled(Chapter)`
 /* The article on the ivory page: the contents rail on the left, the text
    centred in the rest at a reading measure, set in EB Garamond (jury 1 #15). */
 const Article = styled(Chapter)`
-  padding: calc(clamp(56px, 6vw, 104px) * var(--sy)) 0 clamp(80px, 9vw, 140px);
+  padding: calc(${space.section} * var(--sy)) 0;
   .body {
     display: grid;
     grid-template-columns: minmax(0, 0.32fr) minmax(0, 1fr);
@@ -145,11 +145,10 @@ const Article = styled(Chapter)`
     gap: 2px;
   }
   nav small {
-    margin-bottom: 8px;
+    margin-bottom: ${space.xs};
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: ${color.accentText};
+    letter-spacing: 0.01em;
+    color: var(--label);
   }
   nav a {
     display: block;
@@ -184,14 +183,14 @@ const Article = styled(Chapter)`
   .text h2 {
     font: 400 ${display.md} / 1.2 ${font.display};
     color: ${color.primary};
-    margin-bottom: 16px;
+    margin-bottom: ${space.md};
   }
   .text section p {
-    font: 400 clamp(1.15rem, 1.1rem + 0.2vw, 1.3rem) / 1.7 ${font.text};
+    font: 400 ${type.read} / 1.7 ${font.text};
     color: ${color.body};
   }
   .text section p + p {
-    margin-top: 16px;
+    margin-top: ${space.md};
   }
   .view {
     margin-top: clamp(48px, 5vw, 72px);
@@ -206,10 +205,10 @@ const Article = styled(Chapter)`
     margin-top: 14px;
   }
   .view a {
-    margin-top: 24px;
+    margin-top: ${space.lg};
   }
   .source {
-    margin-top: 24px;
+    margin-top: ${space.lg};
     font: 400 ${type.note} / 1.6 ${font.ui};
     color: ${color.bodyMuted};
   }
@@ -225,7 +224,7 @@ const Article = styled(Chapter)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 24px;
+    gap: ${space.lg};
     padding: 18px 0;
     border-top: 1px solid ${color.primaryLine};
     font: 400 ${display.sm} / 1.3 ${font.display};
@@ -237,6 +236,7 @@ const Article = styled(Chapter)`
       color: ${color.accentText};
     }
   }
+  /* The primary carries the arrow; the related rows are plain links. */
   .related svg {
     width: 18px;
     height: 18px;
@@ -280,7 +280,7 @@ export default function Guide() {
         setNotice("Sharing is unavailable here. Use Copy link.");
     }
   };
-  const picture = PICTURED[g.slug];
+  const picture = guidePicture(g);
   return (
     <article aria-labelledby="guide-title">
       <Seo
@@ -314,8 +314,8 @@ export default function Guide() {
           },
         ]}
       />
-      <Head ref={ref} $ground="cloth">
-        <Frame className={`head${picture ? "" : " solo"}`}>
+      <Head ref={ref} $ground="paper">
+        <Frame className="head">
           <div>
             <Link className="back" to="/guides">
               ← All conversation guides
@@ -345,17 +345,15 @@ export default function Guide() {
               <span role="status">{notice}</span>
             </div>
           </div>
-          {picture && (
-            <div className="lead-image" data-rise="settle">
-              <Print
-                id={picture}
-                alt={picture === g.image ? g.alt : PICTURE_ALT[picture]}
-                tilt={-1.2}
-                priority
-                sizes="(max-width: 860px) 100vw, 40vw"
-              />
-            </div>
-          )}
+          <div className="lead-image">
+            <Picture
+              id={picture.id}
+              alt={picture.alt}
+              frame="crop"
+              priority
+              sizes="(max-width: 860px) calc(100vw - 32px), 46vw"
+            />
+          </div>
         </Frame>
       </Head>
 

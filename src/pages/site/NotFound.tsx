@@ -1,8 +1,25 @@
+import styled from "styled-components";
 import Seo from "../../components/ui/Seo";
 import { ArrowIcon, PageOpening } from "./kit/kit";
-import { PrimaryLink, TextLink } from "./kit/kit.styles";
+import { PrimaryLink, TextAnchor, TextLink } from "./kit/kit.styles";
+import { isFile, route, type RoutePath } from "../../lib/nav";
+import { space } from "../../styles/theme";
 
-/** A clear message and two ways back. Nothing else earns a place here. */
+/** Where a lost reader can start again (design spec §4D), named as nav.ts names them. */
+const PLACES: RoutePath[] = ["/how-it-works", "/samples", "/questions", "/contact"];
+
+/* Its own line under the one button, in the row of actions. */
+const Places = styled.nav`
+  flex: 1 1 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 ${space.xl};
+`;
+
+/**
+ * A clear message, the way home, and four places to start (premium pass:
+ * on the ivory page, words alone, `solo`).
+ */
 export default function NotFound() {
   return (
     <>
@@ -13,6 +30,7 @@ export default function NotFound() {
         noindex
       />
       <PageOpening
+        ground="ivory"
         eyebrow="Page not found"
         title={
           <>
@@ -25,7 +43,20 @@ export default function NotFound() {
             <PrimaryLink to="/">
               Back to A Story <ArrowIcon />
             </PrimaryLink>
-            <TextLink to="/questions">Questions &amp; answers</TextLink>
+            <Places aria-label="Places to start">
+              {PLACES.map((p) => {
+                const r = route(p);
+                return isFile(r.to) ? (
+                  <TextAnchor key={p} href={r.to}>
+                    {r.label}
+                  </TextAnchor>
+                ) : (
+                  <TextLink key={p} to={r.to}>
+                    {r.label}
+                  </TextLink>
+                );
+              })}
+            </Places>
           </>
         }
       />
