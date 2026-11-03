@@ -671,6 +671,11 @@ Pages: /care-communities, /organizations, /questions (#organizations), /compare.
 - Compare note (CompareOpening leaf): StoryCorps named only as "a public archive, not a private family one"; links /organizations. The same line sits in the org "What we can say today" fold.
 - Checks: lint, tsc, build:static, test:contracts, test:routing pass; copy-check /questions /compare /contact 0 hits; home-diff 0 px at 390 and 1440; no horizontal overflow at 320/390/1440 on the four pages. Screens at 390: care 8.02, organizations 8.28, questions 6.17, compare 7.8; at 1440: 6.56 / 6.64 / 5.07 / 4.45.
 
+### Fix round (after tester + supervisor, 2026-11-03)
+- Care first screen on a phone: the call screen is lifted 21 % inside the 200 px crop (`Care.tsx` `Call`), the mask fades in at the top and holds solid to 74 %, so the "A STORY" eyebrow, both question lines and "Rose is here with me" are fully inside the band and the status bar / Leave / Topic row is what is cut. The hero image is now an eager `<img fetchpriority="high">` drawn in `Care.tsx` (`HeroShot`): once the frame is lifted, the unloaded lazy img sat outside the clip and Chromium never requested `talk.webp` (memory.webp below did). Desktop (> 860 px) unchanged.
+- Demo form legends (`DemoBooking.tsx` `Steps`): a legend and its `optional` may wrap (`flex-wrap: wrap`), so the care legend no longer pushes OPTIONAL past the edge at 320 / 150 %: scrollWidth 320 of 320 at 100 / 125 / 150 % on /care-communities (was 346).
+- `orgQuestions.ts`: "not a staff note" → "not anything added on their behalf" (faqData.ts:30, no staff-note feature exists); "How long is it kept?" put in the positive ("The archive stays for as long as the account does, with or without a paid plan; a plan covers the guided calls, and everything already recorded keeps working", privacy.tsx:436-439); "in writing if you need it for your administrator" → "or write to contact@astoryapp.com; Daniel answers every message himself" (Questions.tsx:423).
+
 ### Assumptions
 - `kit/DemoSection.tsx` has no owner in §6 for this round; it was edited only to pass four props to `DemoBooking`.
 - `orgQuestions.ts` is a new file (faqData.ts belongs to B2 this round); Questions.tsx appends its group last.

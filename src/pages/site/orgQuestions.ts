@@ -27,10 +27,13 @@ export const CAN_SAY: readonly { lead: string; rest: string }[] = [
     rest: "Nobody at A Story listens unless you ask us to help.",
   },
   {
-    /* faqData.ts "Do I need an account to add something?": "nothing appears
-       until the storyteller says yes." */
+    /* faqData.ts:30 "Do I need an account to add something?": "Each person
+       adds what they remember, under their own name ... nothing appears
+       until the storyteller says yes." The same source covers anything
+       added on their behalf; the app has no staff-note feature, so none is
+       named. */
     lead: "Nothing appears until the storyteller says yes.",
-    rest: "Not a relative's addition, not a staff note.",
+    rest: "Not a relative's addition, not anything added on their behalf.",
   },
   {
     /* privacy.tsx:101 and :105, quoted word for word. */
@@ -99,8 +102,11 @@ export const ORG_GROUP = {
     },
     {
       q: "How long is it kept?",
-      /* privacy.tsx:414-424 and :433-439 (section 9). */
-      a: "For as long as the account or archive is active. Deleting the account in the app, or asking us, removes it within thirty days. An archive does not expire when a plan ends: the guided calls stop, and everything already recorded stays.",
+      /* privacy.tsx:414-424 and :433-439 (section 9): "Your archive does
+         not expire when you stop paying ... the guided AI conversations
+         stop, and everything else keeps working." Put in the positive
+         (round-3 copy rule: nothing framed around an ending or expiry). */
+      a: "For as long as the account or archive is active. Deleting the account in the app, or asking us, removes it within thirty days. The archive stays for as long as the account does, with or without a paid plan; a plan covers the guided calls, and everything already recorded keeps working.",
     },
     {
       q: "Can we export it?",
@@ -120,8 +126,9 @@ export const ORG_GROUP = {
     {
       q: "What about HIPAA, a BAA or where data lives?",
       /* Care.tsx and Organizations.tsx, "Questions about consent, staff
-         access or HIPAA? Bring them to the demo." No claim either way. */
-      a: "We make no claim about those on the site. Bring them to the demo, and Daniel answers them directly, in writing if you need it for your administrator.",
+         access or HIPAA? Bring them to the demo." No claim either way.
+         Questions.tsx:423 "Daniel answers every email himself." */
+      a: "We make no claim about those on the site. Bring them to the demo, or write to contact@astoryapp.com; Daniel answers every message himself.",
     },
     {
       q: "What does a program cost?",

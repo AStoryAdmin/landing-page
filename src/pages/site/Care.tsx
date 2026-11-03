@@ -90,14 +90,45 @@ const Call = styled.figure`
     text-align: center;
     text-wrap: balance;
   }
+  /* Phone: a band of the screen, not the whole phone. The screen is
+     lifted inside the crop so the band starts just above the "A STORY"
+     eyebrow (at 29 % of the phone's height in talk.webp): the status bar
+     and the Leave / Topic row are the part that is cut, and both lines of
+     the question and the "Rose is here with me" button sit inside the
+     solid part of the mask (round-3 supervisor: the old crop showed the
+     chrome and ~90 px of dark screen, and faded out on the question). */
   @media (max-width: 860px) {
     .device {
       width: min(60vw, 236px);
       height: clamp(200px, 50vw, 240px);
       overflow: hidden;
-      mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0,
+        #000 12%,
+        #000 74%,
+        transparent 100%
+      );
+    }
+    .device > * {
+      transform: translateY(-21%);
     }
   }
+`;
+
+/* The hero screen (public/app/talk.webp), drawn like the kit AppShot but
+   loaded eagerly: it is the first screen's only image, and once the
+   frame is lifted inside the crop the unloaded img sits outside the clip,
+   so a lazy load never fires (measured in headless Chromium: memory.webp
+   below requested, talk.webp never). The LCP image eager with a high
+   priority is also the taste rule (taste.md §1, vercel/commerce). */
+const HeroShot = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  display: block;
 `;
 
 const Know = styled(Chapter)`
@@ -542,7 +573,13 @@ export default function Care() {
                   lightStatus
                   label="The A Story app during a call. On screen: the question “What’s something you remember Rose always doing?”, a button “Rose is here with me”, and “Listening — just start talking”."
                 >
-                  <AppShot name="talk" />
+                  <HeroShot
+                    src="/app/talk.webp"
+                    alt=""
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
+                  />
                 </Phone>
               </div>
               <figcaption>

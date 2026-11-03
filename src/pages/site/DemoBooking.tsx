@@ -54,6 +54,15 @@ const Steps = styled(Form)`
     display: grid;
     gap: ${space.lg};
   }
+  /* A legend and its "optional" are a flex row in the kit; at 320 with
+     large text the care legend ("How many residents might take part")
+     fills the row and the small spilt past the edge (round-3 tester,
+     scrollWidth 346 of 320). It may wrap onto its own line instead. */
+  legend,
+  .field > span {
+    flex-wrap: wrap;
+    row-gap: 2px;
+  }
   legend.step-legend {
     margin-bottom: ${space.md};
     padding-bottom: ${space.xs};
