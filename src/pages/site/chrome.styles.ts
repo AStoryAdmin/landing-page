@@ -145,6 +145,7 @@ export const HeaderShell = styled.header`
      with a gold rule under the word. */
   .gf-nav-links > a,
   .org-toggle,
+  .gf-door,
   .gf-signin {
     position: relative;
     min-height: 44px;
@@ -178,6 +179,7 @@ export const HeaderShell = styled.header`
   ${media.hover} {
     .gf-nav-links > a:hover,
     .org-toggle:hover,
+    .gf-door:hover,
     .gf-signin:hover {
       color: ${color.onDark};
     }
@@ -195,8 +197,14 @@ export const HeaderShell = styled.header`
   }
   .gf-nav-links > a:active,
   .org-toggle:active,
+  .gf-door:active,
   .gf-signin:active {
     opacity: 0.7;
+  }
+  /* The invited relative's door (round 3, plan task 1): a quiet link beside
+     Sign in, full ivory on its own page. */
+  .gf-door[aria-current="page"] {
+    color: ${color.onDark};
   }
   .org-chevron {
     flex: none;
@@ -546,9 +554,13 @@ export const HeaderShell = styled.header`
         grid-template-columns: max-content;
       }
     }
-    /* 3. Sign in as a text link, then the one button, full width. */
+    /* 3. Sign in as a text link, then the one button, full width. The
+       short "Invited?" stays out: the drawer has the full row above. */
     .gf-nav-right {
       margin-top: 24px;
+    }
+    .gf-door {
+      display: none;
     }
     .gf-signin {
       align-self: flex-start;

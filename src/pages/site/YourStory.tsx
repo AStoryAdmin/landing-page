@@ -26,6 +26,7 @@
  * sample) - beside the three ways in, and what Free covers in one line. The
  * site's closing Invitation follows with the one action.
  */
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { FREE_TIER } from "../../lib/pricing";
@@ -315,24 +316,34 @@ export default function YourStory() {
       <EditorialSeo
         title="Your own story - record the life you’re living now"
         path="/your-story"
-        description="You don’t have to be old to have a story. Talk or write about the life you’re living now - the first apartment, the friends - and keep it private."
+        description="The life you’re living now is a story too, at any age. Talk or write about it - the first apartment, the friends, this year - and keep it private."
       />
       <PhonePairs>
+        {/* Round 3 (2026-11-03, plan task 1, Harold): the opening no longer
+            says you don't have to be old; it says the life being lived now
+            counts, at any age, and points the person being asked by their
+            family to their own door. Mission: "Today is part of it too." */}
         <PageOpening
           variant="split"
           ground="paper"
           title={
             <>
-              You don’t have to be old to have <em>a story.</em>
+              The life you’re living now is <em>a story.</em>
             </>
           }
-          lead="The first apartment. The group of friends. The year everything changed. Keep it while it’s still happening, in your own words, on your own time."
+          lead="The first apartment. The group of friends. The year everything changed. At any age, keep it while it’s still happening, in your own words, on your own time."
           actions={
             <>
               <PrimaryLink to={START_HREF}>
                 {START_LABEL} <ArrowIcon />
               </PrimaryLink>
               <SecondaryLink to="/how-it-works">See how it works</SecondaryLink>
+            </>
+          }
+          note={
+            <>
+              Being asked by your family to tell yours?{" "}
+              <Link to="/join#being-asked">Start here instead</Link>.
             </>
           }
           object={

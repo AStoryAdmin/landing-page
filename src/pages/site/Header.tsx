@@ -9,6 +9,7 @@ import {
   BAR_AFTER,
   DRAWER_DOORS,
   DRAWER_MUTED,
+  INVITED_LABEL,
   ORG_MENU_LABEL,
   SIGN_IN,
   bare,
@@ -358,6 +359,19 @@ export default function Header() {
           </div>
           {/* The door for people who already have an account, beside the one action. */}
           <div className="gf-nav-right">
+            {/* Round 3 (plan task 1, Tuan): the invited relative's door in
+                the desktop bar, a quiet link beside Sign in. The drawer has
+                its full row ("Invited to a family's book"), so this one is
+                hidden there (chrome.styles.ts). scripts/nav-count.mjs
+                counts it apart from the four rooms. Not on the two org
+                pages: their wider "Book a demo" leaves no room at 1180, and
+                their reader is not the invited relative (spec M11 keeps
+                the bar lean there too). */}
+            {!onOrgPage && (
+              <Link className="gf-door" to="/join" onClick={close}>
+                {INVITED_LABEL}
+              </Link>
+            )}
             <a className="gf-signin" href={SIGN_IN.to} onClick={close}>
               {SIGN_IN.label}
             </a>
