@@ -16,6 +16,11 @@
  * founder asked for a brief page. The night band, the giant verbs and the
  * question block are gone; one list holds the five.
  *
+ * 2026-11-02 (design-spec §4C): the opening is the cloth's `wide` variant,
+ * the title across the window and the plate of marks as the object below
+ * it. The footer's own plate of marks is to be left out on /programs
+ * (spec §1.3, Footer.tsx), so the marks appear once on this page.
+ *
  * The founder asked for the missions to be shown big and a little grand
  * (2026-10-15). Grand is allowed in A Story's own voice; the programs' side
  * stays a paraphrase of what each program is for, never a quotation.
@@ -292,6 +297,7 @@ export default function Programs() {
       />
 
       <PageOpening
+        variant="wide"
         labelledBy="programs-title"
         title={
           <>

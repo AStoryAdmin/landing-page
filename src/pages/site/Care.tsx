@@ -21,6 +21,14 @@
  * booking form itself (kit/DemoSection.tsx) with the care kind picked and
  * what we agree before anyone is called beside it, plus a door to
  * /organizations for every other kind of place.
+ *
+ * 2026-11-02, premium pass (docs/premium/design-spec.md §4 Group C): on a
+ * phone the photograph comes before the leaf (CSS order, same DOM), so the
+ * first screen is not all text. "What you need" sits straight after the
+ * opening with the page's own line about how the calls happen (it moved
+ * there from the circle's first row). The circle's three roles are three
+ * typeset columns on a wide screen. A text link in the residents' room
+ * opens the film on /how-it-works.
  */
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
@@ -34,10 +42,11 @@ import {
   PrimaryAnchor,
   SecondaryAnchor,
   Statement,
+  TextAnchor,
 } from "./kit/kit.styles";
 import { QuoteBand, RuledSteps } from "./rooms/Rooms";
 import DemoSection from "./kit/DemoSection";
-import { color, font, media, type } from "../../styles/theme";
+import { color, display, font, media, type } from "../../styles/theme";
 
 const Know = styled(Chapter)`
   scroll-margin-top: 80px;
@@ -61,11 +70,14 @@ const Know = styled(Chapter)`
     bottom: 0;
     width: min(46%, 340px);
   }
-  .words > p {
+  .words > p:not(.film) {
     margin: 18px 0 clamp(22px, 2.4vw, 34px);
     max-width: 44ch;
     font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
+  }
+  .words > p.film {
+    margin-top: clamp(20px, 2.2vw, 30px);
   }
   ${media.lg} {
     .row {
@@ -123,6 +135,67 @@ const Fit = styled.div`
       font-size: 2.1rem;
     }
   }
+  /* On a phone the photograph comes first, so the first screen holds it
+     (the kit puts a flipped object back after the words below 861 px). */
+  @media (max-width: 860px) {
+    section[data-variant][data-flip] .opening-object {
+      order: -1;
+    }
+  }
+`;
+
+/* What you need: the one line about how the calls happen, straight after
+   the opening (Denise and Priya look for it first). */
+const Need = styled(Chapter)`
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+    gap: clamp(24px, 5vw, 110px);
+    align-items: start;
+  }
+  h2 {
+    font: 400 ${display.sm} / 1.2 ${font.display};
+    color: var(--ink);
+  }
+  p {
+    max-width: 56ch;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--text, var(--ink));
+  }
+  ${media.md} {
+    .row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+`;
+
+/* The circle around each resident: on a wide screen the line to remember
+   sits above three typeset columns, one per role (no cards). */
+const Circle = styled.div`
+  display: contents;
+  ${media.up.lg} {
+    > section .row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: clamp(36px, 4vw, 64px);
+    }
+    > section blockquote {
+      max-width: 22ch;
+    }
+    > section ul {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(28px, 3vw, 56px);
+    }
+    > section li,
+    > section li:last-child {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      border-bottom: 0;
+    }
+  }
 `;
 
 /* What a care community and A Story settle on the demo, before anyone is
@@ -177,6 +250,16 @@ export default function Care() {
         />
       </Fit>
 
+      <Need $ground="paper" $tight aria-labelledby="need-title">
+        <Frame className="row">
+          <h2 id="need-title">What you need</h2>
+          <p>
+            A Story calls in its iPhone app at an agreed hour (in a private
+            beta), or a staff member starts a conversation together with them.
+          </p>
+        </Frame>
+      </Need>
+
       <Know
         ref={know}
         $ground="ivory"
@@ -222,10 +305,16 @@ export default function Care() {
                 ],
               ]}
             />
+            <p className="film">
+              <TextAnchor href="/how-it-works#film">
+                See a call become a book · 49 s
+              </TextAnchor>
+            </p>
           </div>
         </Frame>
       </Know>
 
+      <Circle>
       <QuoteBand
         quote={
           <>
@@ -236,7 +325,7 @@ export default function Care() {
         steps={[
           [
             "The resident talks, when they like.",
-            "A Story calls in its iPhone app at an agreed hour (in a private beta), or a staff member starts a conversation together with them.",
+            "At an agreed hour, or together with a staff member.",
           ],
           [
             "The family adds what they know.",
@@ -248,6 +337,7 @@ export default function Care() {
           ],
         ]}
       />
+      </Circle>
 
       <DemoSection
         title={
@@ -270,7 +360,7 @@ export default function Care() {
           <>
             Not a care community?{" "}
             <Link to="/organizations">
-              A Story for colleges, libraries and more
+              A Story for schools, libraries and companies
             </Link>
           </>
         }

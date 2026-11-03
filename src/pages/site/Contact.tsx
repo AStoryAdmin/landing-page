@@ -11,6 +11,11 @@
  *
  * The other doors - book a demo, reserve, questions - are beside the form,
  * so someone who came here for one of those finds it without writing.
+ *
+ * 2026-11-02 (design-spec §4C): the doors are named by what people came
+ * for ("Reserve for $1", "Book a demo", "Questions & answers"), with no
+ * discount. On a phone the letter and its signature come first, then the
+ * form, then the address and the doors.
  */
 import { useId, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
@@ -43,19 +48,21 @@ const TOPICS = [
   "Something else",
 ] as const;
 
+/* The other doors, by what people came for (design-spec §4C). The $1 line
+   is lib/founding.ts INCLUDES.reserve: no discount is mentioned. */
 const DOORS = [
   [
-    "Booking a demo for an institution?",
-    "Pick a time on the Institutions page.",
-    "/organizations#book",
-  ],
-  [
-    "Ready to hold a place?",
-    "Reserve for $1 - it comes off your first year.",
+    "Reserve for $1",
+    "It holds your place in line, and the dollar comes off your first year.",
     "/reserve",
   ],
   [
-    "A quick question?",
+    "Book a demo",
+    "For a school, library, company or care community.",
+    "/organizations#book",
+  ],
+  [
+    "Questions & answers",
     "The practical things are answered here.",
     "/questions",
   ],
@@ -388,7 +395,7 @@ export default function Contact() {
                       <p className="hint">
                         Booking a demo?{" "}
                         <Link to="/organizations#book">
-                          Pick a time on the Institutions page
+                          Pick a time for a demo
                         </Link>{" "}
                         - or write here, either is fine.
                       </p>
