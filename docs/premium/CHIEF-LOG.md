@@ -749,3 +749,67 @@ Pages: /care-communities, /organizations, /questions (#organizations), /compare.
   - The "Afternoon" time chip sits alone on its row at 390. Three chips need 311px and the column is 292. Fitting them would take 9px chip padding or a wider card. Pre-B4 had the same orphan.
   - The two credit addresses now appear twice (in the caption as words, in Sources as links). That is the price of a word-for-word credit with even leading.
 - **B1 (`AppDoor.tsx`, /start):** unchanged from my fix-pass line above ("I already have an account" 25px at 1440, 6px under "Continue" at 390). /start is not under `data-premium`.
+
+## Round 3 fix 1
+
+Chief brief for one builder, working directly on `site-premium` in `C:\Users\nguye\Desktop\a-story-landing-premium`. Input: panel r3-0 (Maya 7.29, Harold 7.57, Tuan 7.79, Denise 7.43, Priya 7.29; screenshots in `qa/premium-2026-11/panel-r3-0/`). No item below needs a blocked fact. Out of scope and left with Daniel: a gift in the recipient's name or a gift note, any date, iPad/Android, call length, contributor voice, notifications, an org price, equipment, HIPAA/BAA/residency, export formats, decision-maker consent, proof/quotes/pilots/counts, Daniel's photo, and the app's own create-account page.
+
+Ground rules for this pass: one builder owns every file named here. `/` stays pixel-identical except the header and footer, so do not edit anything under `home/` (`home/ThreeSteps.tsx:47` keeps "the hour you picked"). Every new sentence must be copied from a line already in the code, or be a strict subset of one. Give its file:line in a source comment and in the report. Nothing may be framed around an ending, expiry or loss. Commit per item group, with the trailer `Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>`. No push, no deploy, no bare `git stash`.
+
+### Changes, highest leverage first
+
+1. **/join: what you need to hold, on the page itself** (`AppDoor.tsx`, /join opening, under the code box). Add one serif line: "No app needed to add yours: any browser works." (`faqData.ts:56` "To read or add to the archive, no app is needed: any browser works"). In the "Being asked to tell your story?" half, add the sourced device line "Today the calls ring in the A Story iPhone app, in a private beta." (`lib/today.ts:14`). *Why:* Tuan #2 and Harold #1 (they can't tell from their own page whether this works for them). Lifts Tuan clarity/trust and Harold clarity/trust.
+
+2. **/join: what happens after "Open the invitation"** (`AppDoor.tsx`). Under the button, add a three-step line or a small ruled list: "1. Open the invitation. 2. Add a memory in writing, or photographs. 3. It appears once [storyteller] says yes." Sources: photographs sit alongside the story (`faqData.ts:76`); nothing appears until the storyteller says yes (`orgQuestions.ts` CAN_SAY, and "waiting for Walt to say yes" in the sample card, `AppDoor.tsx` `SampleAddition`). Then add one effort line with no number: "Add one memory or many, whenever you like." (the archive is open in any browser, `faqData.ts:56`). Do NOT mention voice notes: clips are still in development (`AppDoor.tsx:334-337`). *Why:* Tuan #1 and #4. Lifts Tuan clarity/desire.
+
+3. **/join: the sample photo is blank in the first screen** (`AppDoor.tsx` `SampleAddition`: `Picture ... priority` near line 323, plus any `data-rise` or fade that wraps the opening object). The image is marked priority, but it is still invisible after networkidle + 800 ms at 1440 and at 390 (`tuan-join-first.png`, `tuan-join-390-first.png`). Exempt the opening object from the scroll reveal so it renders in its final state (taste rule 26). Confirm the `<img>` is eager, has `fetchpriority="high"` and does not start at opacity 0. At 390, move the card up with CSS `order` (rule 19) so its top shows in the first screen. *Why:* Tuan #3 and #6 (an empty box that looks broken). Lifts Tuan premium/mobile and Harold premium.
+
+4. **Put the storyteller's reassurance next to the storyteller** (`HowItWorks.tsx` `#being-asked`, the "Being asked" half of `AppDoor.tsx`). Move the sentence at `AppDoor.tsx:170` ("It's a computer that calls and asks, not a person... Daniel answers himself") into the #being-asked block, in the same serif as that block, and keep a short form by the film. Add "You can decline a question, pause, or change the subject." (`faqData.ts:73`), linked to that answer on /questions. On both pages, add "Who is behind A Story" → `/our-story` beside "Daniel answers himself". *Why:* Harold #2, #6, #7 and Tuan #7. Lifts Harold trust/warmth and Tuan trust.
+
+5. **/join: one type system and one composition** (`AppDoor.tsx` styles). Set the code-vs-link helper line and the "3 additions waiting..." line in the serif (EB Garamond), like the lead. In the lower half, put the seven promises in one run with no unexplained gap, and fill or remove the empty left column (a heading above the list in a single column at every width is fine). Remove the large empty band under the hero at 1440. *Why:* Harold #3 and Tuan #5. Lifts premium for both.
+
+6. **/for-families: every Start keeps the gift context** (`Families.tsx`: the hero Start and the closing Start near line 653 use `START_HREF` with no query). Use `${START_HREF}?for=someone` on all three, as line 473 already does. Change "at the hour you picked" to "at the hour your family picked" at `Families.tsx:559`, `faqData.ts:56` and `Care.tsx:505` (the wording from round 3 plan task 1); leave `home/ThreeSteps.tsx:47` alone. *Why:* Maya #2 and #6. Lifts Maya clarity/trust.
+
+7. **The site's sign-up door honours ?for=someone** (`AppDoor.tsx` `destination()` and the create-account copy near lines 88-94; the pre-paint branches at `index.html:85,87`; `App.tsx` `AuthDoor`). Pass `for`, and only `for`, through to `APP.createAccount`. When `for=someone`, lead with the second half of the existing lead: "Setting it up for a parent? You make the account and choose a good time for the first call; their story belongs to them." (`AppDoor.tsx:94`). Do not claim that the app's page changes. Row 30 of `qa/routing/cloudfront.test.mjs` (`?ref=` dropped) must still pass; add a row for `?for=someone`. This closes B2's open request above. *Why:* Maya #2 ("I worry I'm making my own book"). Lifts Maya clarity/trust.
+
+8. **/for-families #giving reads as a gift, not an FAQ** (`Families.tsx` `.gift` near line 452, `faqData.ts:107`). Turn the block into a short "Giving it today" card with three steps from `faqData.ts:107`:
+   - set up the archive for your relative, free;
+   - choose a good time for the first call;
+   - $1 holds your family's place, and we email you when the calls open.
+
+   Put two actions side by side: Start free (with `?for=someone`) and Reserve for $1. On /for-families only, drop "the annual and monthly plans renew" (it stays on /questions and /pricing), and keep "Express is the one-time plan, nothing renews". Under the actions, put "Daniel answers every email himself." (`Questions.tsx:431`) and the Our story link. Hide the sticky bottom Start bar (`kit/StickyStart.tsx`) while an inline Start/Reserve row is on screen (IntersectionObserver). No gift button, gift card, gift note or date (all blocked). *Why:* Maya #1, #5 and #6. Lifts Maya desire/clarity/trust/mobile.
+
+9. **/pricing: the one-time path first on a phone, and the books folded** (`Pricing.tsx`, `kit/PriceLadder.tsx`). At 640 px and below, show the Express card first with CSS `order`. The DOM is unchanged, so on desktop "Recommended" keeps its middle place, as `Pricing.tsx:1113` decided. Give the card the anchor `#express` and link it from the first-screen line "Express is one time, and nothing renews". Fold the six book editions into one closed `details`, "Printed books, from Free to $499" (prices unchanged, `lib/pricing.ts`). Next to "relatives you invite pay nothing" in the first screen, add a "Care communities and organizations →" link (the same link already sits at the bottom). Target: /pricing at most 8 screens at 390 (rule 11). *Why:* Maya #3, Denise #7, Tuan #8. Lifts Maya clarity/mobile and Denise navigation.
+
+10. **The phone menu: one type size, the visitor's own doors first** (`Header.tsx` drawer, `lib/nav.ts`, `Footer.tsx` if a label changes). The drawer's main list, all in one size: How it works, Sample books, Pricing, For families, Invited to a family's book, Asked to tell your story? (renamed from "Being asked", the `/how-it-works#being-asked` label at `nav.ts:78`), For organizations, Our story. Questions & answers, Compare, Guides and Contact stay in a quiet second group. For families, Invited to a family's book and Asked to tell your story? must all sit above For organizations. The desktop bar is unchanged, and `scripts/nav-count.mjs` must still pass. *Why:* Maya #4 and Harold #4. Lifts navigation for both.
+
+11. **Move the film credit out of the reading line** (`kit/Film.tsx`, the credit and `Sources`). Put the CC credit and its Sources row in one closed `details`, "Music credit", under the transcript link. Keep the text word for word and the links 44 px tall and 8 px apart, as B4 left them. Close the empty gap under the film card. Keep the credit in the transcript too. *Why:* Harold #5 and Maya #6. Lifts premium/warmth.
+
+12. **Care page: fewer deferrals, cleaner mock-ups, each line once** (`Care.tsx`, `Organizations.tsx`, `orgQuestions.ts`).
+    - (a) On /care-communities, replace the run of "bring it to the demo" answers with one plain line naming what the site does not state yet: "HIPAA and a BAA, where data is stored, export formats, consent for a resident who cannot decide alone, and price". Follow it with "Bring them to the demo, or write to contact@astoryapp.com; Daniel answers every message himself." (`orgQuestions.ts:145`).
+    - (b) Crop the hero `talk.webp` so "10:00 of call time left" falls outside the frame. Crop `memory.webp` so the red delete button, "Saved Dec 31, 2023" and "2 waiting for you" fall outside it. Use a CSS crop or object-position only; do not edit the screenshots.
+    - (c) Keep one "An invitation, never a test of what someone remembers" per page, and one "quoted on the demo" per page (`Care.tsx:527` and its repeats).
+    - (d) Make the /care-communities "What we can say today" differ from the /organizations one by order only: care-relevant lines first (repeats are fine; nothing appears until they say yes; the storyteller owns it).
+    - (e) Add a `@media print` stylesheet for /care-communities and /organizations, so Denise can print to PDF and forward the page. Hide the header, sticky bar, form and film; keep "What you need", "What we can say today" and the contact line.
+
+    *Why:* Denise #2, #5, #6 and Priya #6. Lifts Denise trust/clarity/premium. It also cuts both pages toward 8 screens at 390 (the B3/B4 requests).
+
+13. **/questions#organizations opens readable** (`Questions.tsx`). When the hash is `#organizations` or the org tab is active, open the first two answers, or show the org group as an open list instead of 11 closed rows. *Why:* Priya #7 and Denise. Lifts navigation/clarity.
+
+14. **Sign-up form art** (`pages/site/account/SignUp.tsx`, the /reserve sign-up Maya reached). Replace the cartoon puppy above the ornate frame with the site's type-led paper composition (no new illustration, no new photo). *Why:* Maya #6, premium. Low effort.
+
+### Done-checks (the builder shows the output, not a summary)
+- lint, build:static, test:contracts, test:routing (with the new `?for=someone` row), check, nav-count and copy-check pass.
+- `node scripts/home-diff.mjs` against cc87bfe+P0: 0 px at 1440. At 390, only the known lazy-print noise, with the same main height.
+- Overflow 0 and small taps 0 at 320/390/1440 x 100/150% text on /join, /how-it-works, /for-families, /pricing, /care-communities, /organizations and /questions.
+- Screens at 390, before and after, for /join, /for-families, /pricing, /care-communities and /organizations; /pricing and /care-communities at or under 8.
+- First-screen shots at 390 and 1440 of /join (photo visible), /for-families, /pricing (Express visible at 390) and /care-communities (no timer, no delete button). A drawer shot at 390.
+- `#film` and `#being-asked` still land on the right section, and the film still plays (film-check).
+- A source table listing every new or moved sentence with its file:line.
+
+### Chief's assumptions (Daniel asleep)
+- For this pass, one builder may touch B1-B4 files, because the task asks for a single builder on `site-premium`. Ownership as in design-spec §6 resumes afterwards.
+- "Asked to tell your story?" replaces the jargon label "Being asked". It is a navigation label, not a claim.
+- "Add one memory or many, whenever you like." is treated as a restatement of `faqData.ts:56` (the archive is open in any browser), not a new fact. If the tester disagrees, keep only the three-step line.
+- Showing Express first on phones is a layout choice. Which plan is "Recommended" (`lib/pricing.ts:116`) does not change.
+- Folding the credit into a `details` keeps the CC BY attribution one press away, and it is also in the transcript. If the supervisor rules that the licence needs it always visible, keep it visible as one short line and fold only the Sources row.
