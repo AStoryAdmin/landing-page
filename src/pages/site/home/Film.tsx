@@ -39,9 +39,11 @@ import {
   Frame,
   Lead,
   PrimaryButton,
+  TextLink,
   grounds,
   onDarkActions,
 } from "../kit/kit.styles";
+import { OFFERS } from "../../../lib/founding";
 import { gsap, riseLines, useScene } from "../../../lib/scrollMotion";
 import { color, font, media, motion, radius } from "../../../styles/theme";
 
@@ -158,6 +160,9 @@ const Scene = styled.section`
     position: absolute;
     inset: auto 0 0 0;
     display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+    align-items: center;
     justify-content: center;
     padding: clamp(48px, 7vw, 96px) 20px clamp(20px, 2.6vw, 36px);
     background: linear-gradient(
@@ -381,6 +386,12 @@ export default function Film() {
             <PrimaryButton type="button" onClick={() => setOpen(true)}>
               Watch the film <ArrowIcon />
             </PrimaryButton>
+            {/* The film ends on "Reserve your family's place · astoryapp.com";
+                the same sentence sits beside it here, with the price the film
+                leaves to the page (OFFERS.reserve, 2026-11-03). */}
+            <TextLink to="/reserve">
+              Reserve your family's place for {OFFERS.reserve.price}
+            </TextLink>
           </div>
         </figure>
       </Frame>
