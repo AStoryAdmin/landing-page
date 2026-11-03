@@ -1278,13 +1278,16 @@ export default function Pricing() {
           <div className={`decide${chosen ? " float" : ""}`} aria-live="polite">
             <div>
               <strong>{name}</strong>
-              <small>
-                {selectedId === "free"
-                  ? "No card. Make your account in your browser and begin today."
-                  : isCheckoutLive(selectedId)
-                    ? "Continue with your selected plan."
-                    : "Plans open at launch."}
-              </small>
+              {/* The buying state is said once on this page (spec §4B, S2),
+                  in the line above the plans, so a paid plan that cannot be
+                  bought yet gets no second line here. */}
+              {selectedId === "free" ? (
+                <small>
+                  No card. Make your account in your browser and begin today.
+                </small>
+              ) : isCheckoutLive(selectedId) ? (
+                <small>Continue with your selected plan.</small>
+              ) : null}
             </div>
             <div className="decide-actions">
               {/* One primary action on this page: Start free. Plans that

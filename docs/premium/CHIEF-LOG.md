@@ -298,6 +298,11 @@ Home diff 0 px at 390 and 1440. Copy-check PASS on /pricing, /reserve, /compare,
   "you pay only the shipping" is back on the cards) are hidden; some spacing moved to `space.*` tokens.
   No prices, features or delivery lines were removed.
 - /reserve: `<em>` removed from "What happens next." and "The questions you keep meaning to ask."
+- Fix round 2 (2026-11-03): /pricing decision bar no longer says "Plans open at launch." for a paid plan
+  that can't be bought yet; the buying state is said once, in "Plans aren't on sale yet..." (spec §4B, S2).
+  The bar keeps the plan name, Start free and "Or reserve for $1". Free and live-checkout lines unchanged.
+  Measure (/compare 83, /thanks 95) and uppercase count (footer 5; /pricing 6 with "Recommended") are
+  still open and sit in Builder 1's files; the two requests below stand unchanged.
 
 ### Requests (from Builder 3 to Builder 1, via the chief)
 - **Footer chrome:** 5 uppercase labels on every page (The product, Who it's for, Help, Company,
