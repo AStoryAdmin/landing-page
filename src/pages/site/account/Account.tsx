@@ -8,12 +8,14 @@
  * points at the one thing to do: /reserve.
  * ─────────────────────────────────────────────────────────────────────────
  */
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Seo from "../../../components/ui/Seo";
 import { signOut, useAccount } from "../../../lib/auth";
 import { OFFERS, waitlistLabel } from "../../../lib/founding";
 import { track } from "../../../lib/analytics";
 import AccountShell from "./AccountShell";
+import { ArrowIcon } from "../kit/kit";
+import { PrimaryLink } from "../kit/kit.styles";
 
 const longDate = (iso: string) =>
   new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" });
@@ -87,9 +89,10 @@ export default function Account() {
           )}
         </dl>
         <div style={{ display: "grid", gap: 18, marginTop: 28 }}>
-          <Link className="go" to="/reserve">
-            {holds ? "Your reservation" : `Reserve for ${OFFERS.reserve.price}`}
-          </Link>
+          <PrimaryLink className="go" to="/reserve">
+            {holds ? "Your reservation" : `Reserve for ${OFFERS.reserve.price}`}{" "}
+            <ArrowIcon />
+          </PrimaryLink>
           <div className="quiet" style={{ justifyContent: "center" }}>
             <button type="button" onClick={onSignOut}>
               Sign out

@@ -17,7 +17,7 @@ import styled from "styled-components";
 import { CODE_LEN } from "../../../lib/auth";
 import { Picture } from "../kit/kit";
 import { useReveals } from "../kit/reveals";
-import { Eyebrow } from "../kit/kit.styles";
+import { Card, Eyebrow } from "../kit/kit.styles";
 import { color, display, font, media, motion, type } from "../../../styles/theme";
 
 const Page = styled.section`
@@ -110,7 +110,7 @@ const Page = styled.section`
     border-radius: 50%;
     background: ${color.night};
     box-shadow: inset 0 0 0 1px ${color.gold};
-    font: italic 400 20px / 1 ${font.display};
+    font: italic 400 ${type.read} / 1 ${font.display};
     color: ${color.gold};
   }
   .motto {
@@ -136,28 +136,11 @@ const Page = styled.section`
       ),
       ${color.ivory};
   }
+  /* Premium pass (spec §3.4): the form sits on the kit's one Card, on the
+     ivory, at most 440px wide. No double gold keyline, no shadow. */
   .card {
     position: relative;
-    width: min(100%, 520px);
-    padding: clamp(36px, 4.5vw, 60px) clamp(28px, 4vw, 56px);
-    background: ${color.paperPure};
-    box-shadow:
-      0 1px 2px rgba(42, 31, 24, 0.06),
-      0 50px 90px -60px rgba(42, 31, 24, 0.6);
-  }
-  .card::before,
-  .card::after {
-    content: "";
-    position: absolute;
-    pointer-events: none;
-    border: 1px solid color-mix(in srgb, ${color.gold} 70%, transparent);
-  }
-  .card::before {
-    inset: 10px;
-  }
-  .card::after {
-    inset: 14px;
-    border-color: color-mix(in srgb, ${color.gold} 35%, transparent);
+    width: 100%;
   }
   .card > * {
     position: relative;
@@ -168,8 +151,7 @@ const Page = styled.section`
   }
   .card-head small {
     font: 600 ${type.label} / 1 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   .card-head h2 {
@@ -215,8 +197,7 @@ const Page = styled.section`
   }
   .field > span {
     font: 600 ${type.label} / 1.3 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.bodyMuted};
   }
   .field input {
@@ -227,7 +208,7 @@ const Page = styled.section`
     border-bottom: 1px solid ${color.primaryLineStrong};
     border-radius: 0;
     background: transparent;
-    font: 400 22px/1.2 ${font.display};
+    font: 400 ${type.lead} / 1.2 ${font.display};
     color: ${color.primary};
     transition: border-color ${motion.slow};
   }
@@ -253,13 +234,11 @@ const Page = styled.section`
     border: 0;
     background: transparent;
     font: 600 ${type.ui} / 1 ${font.body};
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
     color: ${color.accentText};
     cursor: pointer;
   }
   .field .code {
-    font: 400 30px/1.2 ${font.display};
+    font: 400 ${display.sm} / 1.2 ${font.display};
     letter-spacing: 0.5em;
     text-align: center;
     font-variant-numeric: tabular-nums;
@@ -277,7 +256,7 @@ const Page = styled.section`
     gap: 10px;
     min-height: 44px;
     width: fit-content;
-    font: 400 16px/1.4 ${font.body};
+    font: 400 ${type.note} / 1.4 ${font.body};
     color: ${color.body};
     cursor: pointer;
   }
@@ -297,64 +276,12 @@ const Page = styled.section`
     color: inherit;
   }
 
-  /* The site's pill with its gold coin, full width inside the card. */
+  /* The submit is the kit's PrimaryButton with its arrow (spec §4B):
+     sentence case, no gold coin. Full width inside the card. */
   .card form > button[type="submit"],
   .card .go {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     width: 100%;
-    min-height: 58px;
     margin-top: 6px;
-    padding: 0 8px 0 28px;
-    border: 0;
-    border-radius: 999px;
-    background: ${color.primary};
-    color: ${color.ivory};
-    font: 600 ${type.ui} / 1 ${font.body};
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-    cursor: pointer;
-    box-shadow: 0 16px 30px -18px
-      color-mix(in srgb, ${color.primary} 80%, transparent);
-    transition: background ${motion.slow};
-  }
-  /* The coin, with the site's own arrow drawn into it - /start's (Pass 13d),
-     which replaced a Unicode "→" that every platform draws differently. */
-  .card form > button[type="submit"]::after,
-  .card .go::after {
-    content: "";
-    display: block;
-    width: 42px;
-    height: 42px;
-    flex: none;
-    border-radius: 50%;
-    background:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M3 10h13m-5-5 5 5-5 5' stroke='${encodeURIComponent(
-          color.primary,
-        )}' stroke-width='1.6'/%3E%3C/svg%3E")
-        center / 20px 20px no-repeat,
-      ${color.gold};
-    transition: transform ${motion.reveal};
-  }
-  .card form > button[type="submit"]:hover,
-  .card .go:hover {
-    background: ${color.night};
-  }
-  .card form > button[type="submit"]:hover::after,
-  .card .go:hover::after {
-    transform: rotate(-45deg);
-  }
-  .card form > button[type="submit"]:disabled {
-    opacity: 0.6;
-    cursor: default;
-  }
-  .card form > button[type="submit"]:focus-visible,
-  .card .go:focus-visible {
-    outline: 2px solid ${color.gold};
-    outline-offset: 4px;
   }
 
   /* A laptop screen: the type floor (2026-10-24) made the card taller, so
@@ -426,8 +353,7 @@ const Page = styled.section`
   }
   dl.details dt {
     font: 600 ${type.note} / 1.9 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.bodyMuted};
   }
   dl.details dd {
@@ -508,8 +434,8 @@ export default function AccountShell({
       </div>
 
       <div className="desk">
-        <div style={{ width: "min(100%, 520px)" }}>
-          <div className="card" data-rise>
+        <div style={{ width: "min(100%, 440px)" }}>
+          <Card $ground="ivory" className="card" data-rise>
             <div className="card-head">
               <small>{label}</small>
               <h2>{heading}</h2>
@@ -519,7 +445,7 @@ export default function AccountShell({
               </span>
             </div>
             {children}
-          </div>
+          </Card>
           {after && <p className="switch">{after}</p>}
         </div>
       </div>

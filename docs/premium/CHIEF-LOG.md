@@ -328,6 +328,122 @@ Section heights at 390 (px): /organizations who 575, how 1055 (was ~1300), book 
 - Folding privacy on phones is acceptable trust-wise because it stays one tap away, is open with no script, and is open on every screen from 641 px; no length waiver was needed, so none is requested.
 - Shortening both leads is a copy cut, not a new claim; no number, price, date or count was added.
 
+## Builder 3 - P2 group B pages (branch premium/b3)
+
+State: **passed only locally** (vite preview :5203, Chromium, 390x844 and 1440x900).
+
+### Measured (full document height / viewport, footer included)
+| Page | 390 | 1440 | Target | Overflow |
+|---|---|---|---|---|
+| /pricing | 9.11 (was 11.2) | 6.12 (was 6.2) | 8 / 6 | 0 |
+| /compare | 7.47 | 4.26 | 8 / 6 | 0 |
+| /reserve | 4.14 | 3.15 | - | 0 |
+| /sign-in?next=/reserve | 1.71 | 1.16 | - | 0 |
+| /sign-up?next=/reserve | 2.37 | 1.32 | - | 0 |
+| /thanks | 1.82 | 1.28 | - | 0 |
+
+/pricing misses both targets (9.11 at 390, 6.12 at 1440). Going further means taking
+plan features or edition lists off the phone; not done without a ruling.
+
+Copy-check (`main` innerText after 2 s): /pricing, /reserve with the spec patterns, /thanks for
+"Stripe", /compare for "isn't the end": 0 hits. /thanks main contains "same email" and
+"Your checkout receipt is your confirmation".
+
+### Decisions and assumptions
+- /pricing hero object: `public/book-objects/sample-raymond-*.webp` ("The Ledger", a /samples
+  cover) beside the PriceCard, eager + fetchpriority high. Sheet on ivory: hairline, no shadow.
+- /pricing hero note is "Prices in US dollars. " + `TODAY_NOTE` (kept the currency fact).
+- PriceCard foot ("Plans aren't on sale yet...", "How reserving works") removed; the buying state is
+  said once in a `Note` under the hero. "Ordering opens soon." removed from the members line.
+- Order: cards, "Whatever you choose, it stays yours.", film link, compare (collapsed), editions,
+  questions + /compare and /questions links. To save height the compare sits inside the "stays
+  yours" section and the questions inside the book section (no extra section padding).
+- On phones the plan cards hide `meterNote` and "Plus the Digital Edition..." (both repeated word for
+  word in the comparison table). Supervisor can veto.
+- Pricing compare at <=640: one DOM; cells reordered per plan with CSS `order` (`--o`) and
+  `display: contents`, label from `data-label`. From 641 the question column is sticky.
+- /compare row "Keeps growing after the book - the book isn't the end" is relabelled in
+  `Compare.tsx` to "Keeps growing after the book" (no full stop, to match the other row labels).
+  `lib/landscape.ts` and home are untouched.
+- CompareTable is shared with home: every new rule is under `main[data-premium]`, and the
+  overflow effect only runs when `usePremium()` is true (home gets only an inert `data-label`).
+- /compare hero is now `wide` on cloth; the leaf runs full width with the four reasons in 2 columns.
+- `deadlineLine()` callers: none (`rg deadlineLine src` finds only its definition and comments).
+  `kit/PriceLadder.tsx` is not imported anywhere; left as is.
+- Sentence case for the remaining small caps in my files (reserve tag, price label, account labels,
+  compare leaf/voices labels, edition badges); "Recommended" and the pricing table heads keep caps at
+  `tracking.eyebrowPremium`.
+- /start, /join, /account: no visual change (redirects); no screenshots taken. `test:routing` passes.
+- B1 ring request done: /pricing's own `summary` / `thead button` focus rules removed; the hidden
+  radio's card draws a 2px chocolate ring at 3px offset.
+
+### Requests
+- ~~**lib/landscape.ts owner:** `SWITCH[3].title` "A book shouldn't be the end." shows in the /compare
+  opening leaf.~~ **Done** (supervisor ruling: real hit). `CompareOpening.tsx` maps SWITCH and shows
+  "Keeps growing after the book." for that reason; body unchanged; `lib/landscape.ts` untouched.
+- ~~**Supervisor:** /pricing screen targets not met.~~ **Done**, no exception needed: 7.91 @390, 5.91 @1440.
+
+### Fix round (review must-fix 1-5)
+Measured with the taste measure script (whole document, vite preview :5203, after a full rebuild):
+
+| Page | distinctSizes 390 / 1440 | measureMax 1440 | upperCount | h2 em | Screens 390 / 1440 |
+|---|---|---|---|---|---|
+| /pricing | 7 / 8 | 70 | 6 (5 footer + "Recommended") | 2/6 | 7.91 / 5.91 |
+| /compare | 7 / 8 | 83 ("Where to next", kit) | 5 (footer) | 2/4 | 7.52 / 4.29 |
+| /reserve | 7 / 8 | 75 | 5 (footer) | 1/4 | 4.11 / 3.15 |
+
+Home diff 0 px at 390 and 1440. Copy-check PASS on /pricing, /reserve, /compare, /thanks; /compare
+`main` has no "the end".
+
+- Sizes: `display.sm` and `type.lead` are gone from my rendered styles (plan-card Monthly name, kept
+  list, edition names and prices, table heads, question summaries, compare leaf h3, reserve h3s and
+  "then" line) - mapped to `display.md`, `type.read` or `type.ui`. CompareTable's px marks get token
+  sizes under `IN_MAIN` only (home keeps its px).
+- Pricing table row heads are sentence case; thead and "Recommended" keep caps.
+- **Measure deviation:** my notes (/pricing state Note, film line, question links; /compare sources
+  line) sit on `measure.lead` (52ch), not 64ch. 64ch of Montserrat at 17px measures 85 on the taste
+  script, over its 80. Supervisor can swap back to `measure.read` if the script is changed instead.
+- /pricing length: the decision bar shows only once a plan is chosen by hand (before that it repeated
+  the opening's two actions); on phones the book-section photo (the opening already shows a sample
+  book), the edition taglines and the "With a plan" summary line (each card says its book, and
+  "you pay only the shipping" is back on the cards) are hidden; some spacing moved to `space.*` tokens.
+  No prices, features or delivery lines were removed.
+- /reserve: `<em>` removed from "What happens next." and "The questions you keep meaning to ask."
+- Fix round 2 (2026-11-03): /pricing decision bar no longer says "Plans open at launch." for a paid plan
+  that can't be bought yet; the buying state is said once, in "Plans aren't on sale yet..." (spec §4B, S2).
+  The bar keeps the plan name, Start free and "Or reserve for $1". Free and live-checkout lines unchanged.
+  Measure (/compare 83, /thanks 95) and uppercase count (footer 5; /pricing 6 with "Recommended") are
+  still open and sit in Builder 1's files; the two requests below stand unchanged.
+- Fix round 3 (2026-11-03, review must-fix 1-3):
+  - `faqData.ts` first group title is now "Invited, or being asked" (it is also the /questions topic
+    pill). At 390 the pill is 208 px, x=69 to 277 (was 331 px, x=69 to 400). The h2 uses the same title
+    because `Questions.tsx` (B1) renders `g.title` for both.
+  - /pricing heading restored to "Stop paying, and it is still *yours.*" per the chief ruling (B3),
+    over the spec §4B:477 rename; comment updated.
+  - ring-check `/questions/,/pricing/,/compare/` @390+1440: 95 rings, 1 failing, the pre-existing
+    "Question topics" scroller (B1, also fails on site-premium). The invited pill no longer fails.
+  - copy-check: /compare PASS, /questions PASS, /pricing 1 hit "Stop paying" (ruled innocent; see request).
+
+### Requests (from Builder 3, fix round 3)
+- **To the chief / copy-check owner:** `scripts/copy-check.mjs:33` (design-spec §4B:487) still lists
+  `stop paying` in the /pricing pattern, so the ruled-kept heading "Stop paying, and it is still yours."
+  counts as a hit. Please narrow the pattern (drop `stop paying`, or exempt that exact sentence). If the
+  chief meant to accept the spec rename instead, withdraw the ruling here and b3 will rename it back.
+- **To Builder 1 (`Questions.tsx` / Scroller):** ring-check fails "Question topics" on /questions @390,
+  "no ring visible outside the element": the scroller clips its own focus ring. Pre-existing on
+  site-premium, not a b3 regression.
+- **To Builder 1 (`Questions.tsx`), optional:** if the h2 should read the full sentence "If you were
+  invited, or are being asked", `faqData` can carry a separate long heading; say so and b3 will add the field.
+
+### Requests (from Builder 3 to Builder 1, via the chief)
+- **Footer chrome:** 5 uppercase labels on every page (The product, Who it's for, Help, Company,
+  Startup programs & grants); with any page's own caps this exceeds `upperCount <= 3`.
+- **Kit sizes:** `.opening-lead` in `kit.tsx` uses a page-local `clamp(1.25rem, ...)` (20px @390,
+  24px @1440), one extra size on every opening; header nav at 16px @1440 is another size beside
+  `type.ui` 17px.
+- **Kit measure:** the global `main[data-premium] :is(p, li, dd):not(.wide)` 72ch rule out-specifies
+  kit's own `max-width` (`.opening-note` 52ch, Note 64ch), so /thanks' opening note measures 95 and
+  Invitation's "Where to next" label measures 83 at 1440 (/compare measureMax).
 ## Builder 1 — panel round 2, fix-b1 (branch premium/b1)
 
 ### Requests (B1 → other builders)

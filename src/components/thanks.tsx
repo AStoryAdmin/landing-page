@@ -20,24 +20,24 @@ export default function Thanks() {
         title="After your purchase - A Story"
         path="/thanks"
         noindex
-        description="What happens after an A Story purchase: account setup, your receipt email, and the first conversation."
+        description="What happens after an A Story purchase: account setup, your checkout receipt, and the first conversation."
       />
       <Band>
         <Wrap>
           <IntroGrid>
             <div>
               <Label>Your next chapter</Label>
-              <Title>Your next step with A Story.</Title>
+              <Title>Thank you.</Title>
               <Copy>
                 <p>
-                  If you have completed a purchase, use the same email address
-                  when signing up in the app. It is how we connect your purchase
-                  to your account.
+                  If you’ve completed a purchase, sign up in the app with the
+                  same email you paid with. That connects your purchase to your
+                  account.
                 </p>
               </Copy>
               <Small>
-                This page does not verify a payment. Your checkout receipt is
-                your confirmation.
+                Your checkout receipt is your confirmation. This page does not
+                verify a payment.
               </Small>
             </div>
             <MissionPhoto

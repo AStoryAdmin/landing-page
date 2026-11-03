@@ -26,6 +26,8 @@ import {
 import { looksLikeEmail } from "../../../lib/leads";
 import { track } from "../../../lib/analytics";
 import AccountShell, { CodeField, PasswordField } from "./AccountShell";
+import { ArrowIcon } from "../kit/kit";
+import { PrimaryButton } from "../kit/kit.styles";
 
 type Stage = "signin" | "forgot" | "reset" | "confirm";
 type Invalid = "email" | "password" | "code" | null;
@@ -290,9 +292,9 @@ export default function SignIn() {
               {error}
             </p>
           )}
-          <button type="submit" disabled={busy} aria-busy={busy || undefined}>
-            {submitLabel}
-          </button>
+          <PrimaryButton type="submit" disabled={busy} aria-busy={busy || undefined}>
+            {submitLabel} <ArrowIcon />
+          </PrimaryButton>
           <div className="quiet">
             {stage === "signin" && (
               <button type="button" onClick={() => go("forgot")}>
