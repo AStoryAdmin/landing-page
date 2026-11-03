@@ -103,7 +103,14 @@ const Card = styled.div`
       font-size: ${type.read};
     }
     thead .us {
-      font-size: ${type.lead};
+      font-weight: 600;
+    }
+    /* Token sizes off home (spec §3.1); home keeps its px marks. */
+    .m {
+      font-size: ${type.read};
+    }
+    .m1 {
+      font-size: ${type.ui};
     }
     tbody th {
       position: sticky;

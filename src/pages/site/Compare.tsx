@@ -38,7 +38,16 @@ import {
   Statement,
   onDarkActions,
 } from "./kit/kit.styles";
-import { color, display, font, media, radius, space, type } from "../../styles/theme";
+import {
+  color,
+  display,
+  font,
+  measure,
+  media,
+  radius,
+  space,
+  type,
+} from "../../styles/theme";
 
 /* "Keeps growing after the book - the book isn't the end" says the book is
    an ending (spec §4B). The row reads "Keeps growing after the book" here;
@@ -59,6 +68,10 @@ const Matrix = styled(Chapter)`
     margin-top: 14px;
     font: 400 ${type.note} / 1.55 ${font.body};
     color: ${color.bodyMuted};
+  }
+  /* A note's measure, over the scoped 72ch default (spec §3.1 measureMax). */
+  main[data-premium] & .note {
+    max-inline-size: ${measure.lead};
   }
 `;
 

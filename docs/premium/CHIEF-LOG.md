@@ -186,6 +186,44 @@ Copy-check (`main` innerText after 2 s): /pricing, /reserve with the spec patter
   radio's card draws a 2px chocolate ring at 3px offset.
 
 ### Requests
-- **lib/landscape.ts owner:** `SWITCH[3].title` "A book shouldn't be the end." shows in the /compare
-  opening leaf. Supervisor to rule; I did not edit it (not my file).
-- **Supervisor:** /pricing screen targets not met (above).
+- ~~**lib/landscape.ts owner:** `SWITCH[3].title` "A book shouldn't be the end." shows in the /compare
+  opening leaf.~~ **Done** (supervisor ruling: real hit). `CompareOpening.tsx` maps SWITCH and shows
+  "Keeps growing after the book." for that reason; body unchanged; `lib/landscape.ts` untouched.
+- ~~**Supervisor:** /pricing screen targets not met.~~ **Done**, no exception needed: 7.91 @390, 5.91 @1440.
+
+### Fix round (review must-fix 1-5)
+Measured with the taste measure script (whole document, vite preview :5203, after a full rebuild):
+
+| Page | distinctSizes 390 / 1440 | measureMax 1440 | upperCount | h2 em | Screens 390 / 1440 |
+|---|---|---|---|---|---|
+| /pricing | 7 / 8 | 70 | 6 (5 footer + "Recommended") | 2/6 | 7.91 / 5.91 |
+| /compare | 7 / 8 | 83 ("Where to next", kit) | 5 (footer) | 2/4 | 7.52 / 4.29 |
+| /reserve | 7 / 8 | 75 | 5 (footer) | 1/4 | 4.11 / 3.15 |
+
+Home diff 0 px at 390 and 1440. Copy-check PASS on /pricing, /reserve, /compare, /thanks; /compare
+`main` has no "the end".
+
+- Sizes: `display.sm` and `type.lead` are gone from my rendered styles (plan-card Monthly name, kept
+  list, edition names and prices, table heads, question summaries, compare leaf h3, reserve h3s and
+  "then" line) - mapped to `display.md`, `type.read` or `type.ui`. CompareTable's px marks get token
+  sizes under `IN_MAIN` only (home keeps its px).
+- Pricing table row heads are sentence case; thead and "Recommended" keep caps.
+- **Measure deviation:** my notes (/pricing state Note, film line, question links; /compare sources
+  line) sit on `measure.lead` (52ch), not 64ch. 64ch of Montserrat at 17px measures 85 on the taste
+  script, over its 80. Supervisor can swap back to `measure.read` if the script is changed instead.
+- /pricing length: the decision bar shows only once a plan is chosen by hand (before that it repeated
+  the opening's two actions); on phones the book-section photo (the opening already shows a sample
+  book), the edition taglines and the "With a plan" summary line (each card says its book, and
+  "you pay only the shipping" is back on the cards) are hidden; some spacing moved to `space.*` tokens.
+  No prices, features or delivery lines were removed.
+- /reserve: `<em>` removed from "What happens next." and "The questions you keep meaning to ask."
+
+### Requests (from Builder 3 to Builder 1, via the chief)
+- **Footer chrome:** 5 uppercase labels on every page (The product, Who it's for, Help, Company,
+  Startup programs & grants); with any page's own caps this exceeds `upperCount <= 3`.
+- **Kit sizes:** `.opening-lead` in `kit.tsx` uses a page-local `clamp(1.25rem, ...)` (20px @390,
+  24px @1440), one extra size on every opening; header nav at 16px @1440 is another size beside
+  `type.ui` 17px.
+- **Kit measure:** the global `main[data-premium] :is(p, li, dd):not(.wide)` 72ch rule out-specifies
+  kit's own `max-width` (`.opening-note` 52ch, Note 64ch), so /thanks' opening note measures 95 and
+  Invitation's "Where to next" label measures 83 at 1440 (/compare measureMax).

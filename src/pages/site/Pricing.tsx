@@ -68,6 +68,7 @@ import {
   color,
   display,
   font,
+  measure,
   media,
   motion,
   radius,
@@ -89,6 +90,11 @@ const Plans = styled(Chapter)`
      no shadow. Selection and the Recommended keyline sit on top of it. */
   .state {
     margin: 0 0 ${space.xl};
+  }
+  /* A note's measure, over the scoped 72ch default. 52ch, not 64ch: 64ch of
+     Montserrat measures 85 on the taste script, over its 80 (spec §3.1). */
+  main[data-premium] & .state {
+    max-inline-size: ${measure.lead};
   }
   .plan {
     position: relative;
@@ -230,7 +236,7 @@ const Plans = styled(Chapter)`
     box-shadow: inset 0 0 0 1px ${color.primary};
   }
   .other b {
-    font: 400 ${display.sm} / 1.2 ${font.display};
+    font: 400 ${display.md} / 1.2 ${font.display};
     color: ${color.primary};
   }
   .other span {
@@ -257,13 +263,18 @@ const Plans = styled(Chapter)`
     --focus: ${color.gold};
     --focus-halo: ${color.night};
   }
+  /* Until a plan is chosen by hand the bar would only repeat the opening's
+     two actions, so it waits (spec §4B screen target). */
+  .decide:not(.float) {
+    display: none;
+  }
   .decide.float {
     position: sticky;
     bottom: 16px;
   }
   .decide strong {
     display: block;
-    font: 400 ${display.sm} / 1.2 ${font.display};
+    font: 600 ${type.ui} / 1.3 ${font.body};
   }
   .decide small {
     font: 400 ${type.read} / 1.4 ${font.text};
@@ -301,9 +312,9 @@ const Plans = styled(Chapter)`
       grid-template-columns: minmax(0, 1fr);
     }
   }
-  /* On a phone the card keeps its price, allowance and features; the two
-     lines the comparison table repeats word for word (the allowance note,
-     the Digital Edition) stay in the table (spec §4B screen target). */
+  /* On a phone the card keeps its price, allowance, features and book; the
+     allowance note, which the comparison table repeats word for word, stays
+     in the table (spec §4B screen target). */
   ${media.sm} {
     .plans {
       gap: ${space.md};
@@ -315,8 +326,7 @@ const Plans = styled(Chapter)`
       margin-top: ${space.md};
       padding-top: ${space.sm};
     }
-    .meter-note,
-    .bundle small {
+    .meter-note {
       display: none;
     }
     li {
@@ -327,6 +337,15 @@ const Plans = styled(Chapter)`
     }
     .bundle {
       padding-top: ${space.md};
+    }
+    .state {
+      margin-bottom: ${space.lg};
+    }
+    ul {
+      margin-top: ${space.sm};
+    }
+    .other {
+      padding: ${space.md} ${space.lg};
     }
   }
   ${media.md} {
@@ -347,7 +366,7 @@ const Plans = styled(Chapter)`
  * head selects that plan, the same as the cards above.
  */
 const Compare = styled.div`
-  margin-top: clamp(40px, 5vw, 72px);
+  margin-top: ${space.xl};
   summary {
     display: flex;
     align-items: center;
@@ -428,8 +447,6 @@ const Compare = styled.div`
   tbody th {
     width: 20%;
     font: 600 ${type.label} / 1.4 ${font.body};
-    letter-spacing: ${tracking.eyebrowPremium};
-    text-transform: uppercase;
     color: ${color.bodyMuted};
   }
   thead th {
@@ -445,11 +462,11 @@ const Compare = styled.div`
     cursor: pointer;
   }
   thead button b {
-    font: 400 ${type.lead} / 1.1 ${font.display};
+    font: 600 ${type.ui} / 1.3 ${font.body};
     color: ${color.primary};
   }
   thead button span {
-    font: 400 ${display.sm} / 1 ${font.display};
+    font: 400 ${display.md} / 1 ${font.display};
     color: ${color.primary};
   }
   thead button small {
@@ -564,12 +581,15 @@ const Forever = styled(Chapter)`
   .kept li {
     padding: 20px 0;
     border-top: 1px solid ${color.primaryLine};
-    font: 400 ${display.sm} / 1.35 ${font.display};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.primary};
   }
   /* The film link (spec §2.1): one line under what stays yours. */
   .film {
     margin-top: ${space.xl};
+  }
+  main[data-premium] & .film {
+    max-inline-size: ${measure.lead};
   }
   ${media.md} {
     .kept {
@@ -578,8 +598,7 @@ const Forever = styled(Chapter)`
   }
   ${media.sm} {
     .kept li {
-      padding: ${space.sm} 0;
-      font-size: ${type.lead};
+      padding: ${space.xs} 0;
     }
   }
 `;
@@ -594,6 +613,9 @@ const Asked = styled.section`
     gap: 0 ${space.xl};
     margin-top: ${space.lg};
   }
+  main[data-premium] & .links {
+    max-inline-size: ${measure.lead};
+  }
   details {
     border-top: 1px solid ${color.primaryLineStrong};
     border-bottom: 1px solid ${color.primaryLineStrong};
@@ -604,7 +626,7 @@ const Asked = styled.section`
     display: flex;
     align-items: center;
     cursor: pointer;
-    font: 400 ${display.sm} / 1.3 ${font.display};
+    font: 500 ${type.read} / 1.4 ${font.text};
     color: ${color.primary};
   }
   details p {
@@ -617,6 +639,9 @@ const Asked = styled.section`
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0 clamp(28px, 5vw, 80px);
+  }
+  ${media.sm} {
+    margin-top: ${space.xl};
   }
   ${media.md} {
     .questions {
@@ -676,7 +701,7 @@ const Book = styled(Chapter)`
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(16px, 2vw, 24px);
-    margin: clamp(48px, 6vw, 88px) 0 0;
+    margin: ${space.xxl} 0 0;
     padding: 0;
     list-style: none;
   }
@@ -695,12 +720,12 @@ const Book = styled(Chapter)`
   }
   .editions h3 {
     margin-top: 12px;
-    font: 400 ${display.sm} / 1.15 ${font.display};
+    font: 400 ${display.md} / 1.15 ${font.display};
     color: ${color.primary};
   }
   .editions .cost {
     margin-top: 10px;
-    font: 400 ${display.sm} / 1 ${font.display};
+    font: 400 ${display.md} / 1 ${font.display};
     color: ${color.primary};
   }
   .editions .cost small {
@@ -761,11 +786,31 @@ const Book = styled(Chapter)`
   ${media.sm} {
     .editions {
       gap: ${space.xl} ${space.md};
+      margin-top: ${space.xl};
+    }
+    .editions li {
+      padding-top: ${space.md};
+    }
+    .editions ul {
+      gap: ${space.xxs};
+    }
+    .editions .when {
+      margin-top: ${space.xs};
+    }
+    /* Each card already names its book and that you pay only the shipping,
+       so the summary line under the editions is for wider screens. */
+    .members {
+      display: none;
     }
     .editions h3 {
-      font-size: ${type.lead};
+      margin-top: ${space.xs};
+      font: 500 ${type.read} / 1.3 ${font.text};
     }
-    .editions .tag,
+    /* The tagline is a mood line; on a phone the list under it says what
+       the edition is (spec §4B screen target). */
+    .editions .tag {
+      display: none;
+    }
     .editions ul li {
       font-size: ${type.note};
     }
@@ -775,9 +820,11 @@ const Book = styled(Chapter)`
       grid-template-columns: minmax(0, 1fr);
     }
   }
+  /* On a phone the opening already shows a sample book; the editions
+     carry this section (spec §4B screen target). */
   ${media.sm} {
     .book img {
-      width: 56%;
+      display: none;
     }
   }
 `;
@@ -809,7 +856,7 @@ const HeroObject = styled.div`
     grid-template-columns: minmax(0, 1fr);
     gap: ${space.lg};
     .cover {
-      width: 136px;
+      width: 104px;
     }
   }
 `;
@@ -951,7 +998,7 @@ function HeroPrice() {
         className="cover"
         src="/book-objects/sample-raymond-720.webp"
         srcSet="/book-objects/sample-raymond-360.webp 360w, /book-objects/sample-raymond-720.webp 720w"
-        sizes="(max-width: 860px) 136px, 22vw"
+        sizes="(max-width: 860px) 104px, 22vw"
         width={720}
         height={720}
         alt="The cover of a sample A Story book, The Ledger, for Raymond and Elena"

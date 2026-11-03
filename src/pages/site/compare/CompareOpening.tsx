@@ -64,7 +64,7 @@ const Leaf = styled.div`
     border-top: 1px solid ${color.primaryLine};
   }
   h3 {
-    font: 500 ${display.sm} / 1.2 ${font.display};
+    font: 500 ${display.md} / 1.15 ${font.display};
     color: ${color.primary};
   }
   p {
@@ -76,6 +76,16 @@ const Leaf = styled.div`
     transform: none;
   }
 `;
+
+/* The fourth reason read "A book shouldn't be the end.", which frames the
+   book as an ending (global rule). It gets the wording the spec approved for
+   the same idea in the table (spec §4B, supervisor ruling); the body stays.
+   lib/landscape.ts is left as it is. */
+const REASONS = SWITCH.map((r) =>
+  r.title.startsWith("A book shouldn")
+    ? { ...r, title: "Keeps growing after the book." }
+    : r,
+);
 
 export default function CompareOpening() {
   return (
@@ -92,7 +102,7 @@ export default function CompareOpening() {
         <Leaf>
           <h2>Four reasons to choose A Story</h2>
           <ul>
-            {SWITCH.map((r) => (
+            {REASONS.map((r) => (
               <li key={r.title}>
                 <h3>{r.title}</h3>
                 <p>{r.body}</p>

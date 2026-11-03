@@ -134,7 +134,7 @@ const cardRules = css`
     background: ${color.ivory};
   }
   .held p.h {
-    font: 400 ${display.sm} / 1.2 ${font.display};
+    font: 400 ${display.md} / 1.2 ${font.display};
     color: ${color.primary};
   }
   .held dl {
@@ -164,7 +164,7 @@ const cardRules = css`
     color: ${color.bodyMuted};
   }
   .held dd b {
-    font: 400 ${type.lead} / 1 ${font.display};
+    font: 400 ${display.md} / 1 ${font.display};
     color: ${color.primary};
   }
   .held p.f {
@@ -216,7 +216,7 @@ const cardRules = css`
     background: ${color.ivory};
   }
   .done h3 {
-    font: 400 ${display.sm} / 1.2 ${font.display};
+    font: 400 ${display.md} / 1.2 ${font.display};
     color: ${color.primary};
   }
   .done p {
@@ -397,7 +397,7 @@ const Next = styled(Chapter)`
   .then {
     margin-top: clamp(18px, 2vw, 28px);
     max-width: 40ch;
-    font: 400 ${type.lead} / 1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.primary};
   }
   .then + p {
@@ -422,7 +422,7 @@ const Next = styled(Chapter)`
     border-bottom: 1px solid ${color.primaryLine};
   }
   li h3 {
-    font: 400 ${display.sm} / 1.25 ${font.display};
+    font: 500 ${type.read} / 1.4 ${font.text};
     color: ${color.primary};
   }
   li p {
@@ -1139,7 +1139,7 @@ export default function Reserve() {
           <Frame className="two">
             <div>
               <Statement id="next-title" $size="lg" data-lines>
-                What happens <em>next.</em>
+                What happens next.
               </Statement>
               <p className="then" data-rise>
                 When the calls open, we email you, in the order families
@@ -1234,7 +1234,7 @@ export default function Reserve() {
       <Closing $ground="night" aria-labelledby="closing-title">
         <Frame>
           <Statement id="closing-title" $size="lg">
-            The questions you keep meaning <em>to ask.</em>
+            The questions you keep meaning to ask.
           </Statement>
           <p className="lead">
             {foundingOpen
