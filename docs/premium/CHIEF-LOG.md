@@ -656,3 +656,5 @@ Full report: `docs/premium/RESULT.md`. Tree `site-premium` @ `a2f5338`. Nothing 
 - The worktrees' only uncommitted changes were line-ending noise from the build (`git diff --ignore-cr-at-eol` empty) in `public/_redirects`, `public/robots.txt`, `public/sitemap.xml` and `vercel.json`. Those were restored with `git restore`.
 - The untracked `qa/greenfield/accessibility.json` (a generated a11y output) was copied to the chief scratchpad before removal.
 - The worktrees were then removed with `git worktree remove`, without `--force`. The branches are kept.
+- `asl-b1` and `asl-b4` are fully removed.
+- `asl-b2` and `asl-b3` are deregistered from git, but Windows refused to delete their folders ("Invalid argument", probably a locked file such as a running preview holding `node_modules`). The leftover folders `C:\Users\nguye\Desktop\asl-b2` and `asl-b3` hold no git data and no unmerged work. They are safe to delete by hand once nothing holds them.

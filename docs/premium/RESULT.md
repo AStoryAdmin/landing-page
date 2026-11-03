@@ -126,7 +126,7 @@ New from QA r2: the /pricing CLS 0.265 (above). The redirect rule for a codeless
 Not started (AC7). The audit is `docs/premium/audit-webapp.md`, and its §5 lists 12 candidates in order of visitor impact. The first five: one host for share links, remove "Codes last 30 days" and "N days left", the same words at the door, a way back to the site, and calmer sign-in screens. Its before shots are in `qa/premium-2026-11/webapp-before/`. The work is in the web-app repo under `Desktop\phone app\`, which this team does not touch. It starts when Daniel says the phone version is done, with its own plan and criteria.
 
 ## Housekeeping
-- All four builder branches (`premium/b1` to `premium/b4`) have 0 commits that are not in `site-premium`. Their worktrees were removed with `git worktree remove` (no `--force`) once their only changes were confirmed to be build line-ending noise. Details are in `CHIEF-LOG.md`.
+- All four builder branches (`premium/b1` to `premium/b4`) have 0 commits that are not in `site-premium`. Their worktrees were removed with `git worktree remove` (no `--force`) once their only changes were confirmed to be build line-ending noise. `asl-b2` and `asl-b3` left folders on disk that Windows would not delete. They hold no git data; delete them by hand. Details are in `CHIEF-LOG.md`.
 - `vercel.json` in the main worktree shows as modified with no content change (line endings from `gen-seo-files.mjs`). Left alone.
 
 ## Assumptions (Daniel asleep)
