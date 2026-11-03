@@ -95,6 +95,31 @@ const Steps = styled(Form)`
       margin-bottom: ${space.sm};
     }
   }
+  /* On a phone the size and time chips keep their own widths, 8px
+     between them both ways (two rows each at 390). Only the eight day chips sit in
+     two even columns: four rows either way, but straight edges instead of
+     a ragged run. A column is at least 8.6rem, so at 150% text or at 320
+     the days fall to one full-width column instead of clipping a label.
+     The grid on every group cost the size and time chips a third row each
+     (+52px on /organizations); round 3, B4, fix pass 2. */
+  @media (max-width: 640px) {
+    .chips {
+      gap: 8px;
+    }
+    .chips .chip span {
+      padding: 0 13px;
+    }
+    .chips.days {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 8.6rem), 1fr));
+    }
+    .chips.days .chip span {
+      width: 100%;
+      justify-content: center;
+      padding: 0 12px;
+      white-space: nowrap;
+    }
+  }
   /* One step: the same fields, the step legends read by assistive
      technology only (a legend ignores the global .sr-only clip and spilt
      past the viewport at 390, so it is hidden here, in place). */
@@ -388,7 +413,7 @@ export default function DemoBooking({
           <legend>
             Days that suit you <small>pick any</small>
           </legend>
-          <div className="chips">
+          <div className="chips days">
             {days.map((d) => (
               <label className="chip" key={d}>
                 <input

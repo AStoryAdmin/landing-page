@@ -284,6 +284,12 @@ const Opening = styled(Chapter)`
   padding: calc(clamp(56px, 6vw, 120px) * var(--sy)) 0
     calc(clamp(72px, 7vw, 136px) * var(--sy));
   overflow: clip;
+  /* Round 3 (B4): on a phone the opening ends 56px above the first chapter,
+     not 72, so the page's first idea and its second sit nearer (B1's
+     note on /join, CHIEF-LOG). */
+  ${media.sm} {
+    padding-bottom: calc(56px * var(--sy));
+  }
   .opening-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
@@ -322,6 +328,12 @@ const Opening = styled(Chapter)`
   .opening-note a {
     color: var(--ink);
     text-underline-offset: 3px;
+  }
+  /* Off home, a link in the note keeps 8px from the actions above it:
+     its 44px hit area reached to 3-7px of them at 18px (taste rule 20;
+     round 3, B4 fix pass 2). */
+  ${IN_MAIN} & .opening-note {
+    margin-top: 24px;
   }
 
   /* flip: the object first, the words on the right. */
@@ -623,6 +635,12 @@ const Band = styled(Chapter)`
   .next-rows {
     position: relative;
     display: grid;
+  }
+  /* Off home, 8px between the stacked room links, so no two targets touch
+     (taste rule 20; round 3, B4 fix pass 2). Each row keeps its hairline
+     on top; home keeps its rows flush. */
+  ${IN_MAIN} & .next-rows {
+    row-gap: 8px;
   }
   .next a {
     display: grid;

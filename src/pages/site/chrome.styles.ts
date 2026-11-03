@@ -717,6 +717,16 @@ export const FooterShell = styled.footer`
     gap: 8px 20px;
     padding: 4px 0 18px;
   }
+  /* Two even columns, as before, until a column would be narrower than
+     8rem: then one. At 100% text nothing moves; at 150% on a narrow phone
+     "communities" alone is wider than half the fold and pushed the page
+     10px sideways (round 3, B4 fix pass 2). */
+  .gf-footer-fold .fold-body {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(max(8rem, calc(50% - 10px)), 1fr)
+    );
+  }
 
   /*
    * The five program marks on one cream plate (round 3, jury 1 #5: never one

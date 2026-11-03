@@ -137,6 +137,12 @@ const Reasons = styled(Chapter)`
     .art {
       max-width: 420px;
     }
+    /* One column: the three prints go landscape, so the room stays under
+       2.5 phone screens (taste rule 18; it was 3.1). Same pictures, the
+       crop held at the print's own focus (round 3, B4). */
+    .art [data-crop] .print-window {
+      aspect-ratio: 3 / 2;
+    }
     .invited {
       grid-template-columns: minmax(0, 1fr);
     }
@@ -403,6 +409,11 @@ const Occasions = styled(Chapter)`
     align-items: center;
     gap: ${space.sm} ${space.lg};
     margin-top: ${space.sm};
+  }
+  /* "Our privacy promises" ends the line above: 8px more, so its hit area
+     and the actions' sit 8px apart, not 3 (taste rule 20; round 3, B4). */
+  main[data-premium] & .gift-actions {
+    margin-top: calc(${space.sm} + ${space.xs});
   }
   ${media.md} {
     .gift {
