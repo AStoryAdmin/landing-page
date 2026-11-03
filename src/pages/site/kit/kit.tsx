@@ -329,6 +329,12 @@ const Opening = styled(Chapter)`
     color: var(--ink);
     text-underline-offset: 3px;
   }
+  /* Off home, a link in the note keeps 8px from the actions above it:
+     its 44px hit area reached to 3-7px of them at 18px (taste rule 20;
+     round 3, B4 fix pass 2). */
+  ${IN_MAIN} & .opening-note {
+    margin-top: 24px;
+  }
 
   /* flip: the object first, the words on the right. */
   &[data-flip] .opening-grid:not(.solo) {
@@ -629,6 +635,12 @@ const Band = styled(Chapter)`
   .next-rows {
     position: relative;
     display: grid;
+  }
+  /* Off home, 8px between the stacked room links, so no two targets touch
+     (taste rule 20; round 3, B4 fix pass 2). Each row keeps its hairline
+     on top; home keeps its rows flush. */
+  ${IN_MAIN} & .next-rows {
+    row-gap: 8px;
   }
   .next a {
     display: grid;

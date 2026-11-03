@@ -168,6 +168,11 @@ const Body = styled(Chapter)`
     padding: 0;
     list-style: none;
   }
+  /* 8px between the stacked doors, each keeping its hairline below
+     (taste rule 20; round 3, B4 fix pass 2). */
+  main[data-premium] & .doors {
+    row-gap: 8px;
+  }
   .doors a {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;

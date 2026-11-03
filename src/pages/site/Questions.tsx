@@ -197,6 +197,14 @@ const Answers = styled(Chapter)`
   .tools .scroller-track > li {
     scroll-snap-align: start;
   }
+  /* 8px between the tabs' hit areas, the same 28px between their words
+     (taste rule 20; round 3, B4 fix pass 2). */
+  main[data-premium] & .tools .scroller-track {
+    gap: ${space.xs};
+  }
+  main[data-premium] & .pill {
+    padding-inline: 10px;
+  }
   /* Sentence-case text tabs, the chosen one underlined (jury 1 #20). */
   .pill {
     min-height: 44px;

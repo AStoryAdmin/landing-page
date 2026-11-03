@@ -410,6 +410,11 @@ const Occasions = styled(Chapter)`
     gap: ${space.sm} ${space.lg};
     margin-top: ${space.sm};
   }
+  /* "Our privacy promises" ends the line above: 8px more, so its hit area
+     and the actions' sit 8px apart, not 3 (taste rule 20; round 3, B4). */
+  main[data-premium] & .gift-actions {
+    margin-top: calc(${space.sm} + ${space.xs});
+  }
   ${media.md} {
     .gift {
       grid-template-columns: minmax(0, 1fr);

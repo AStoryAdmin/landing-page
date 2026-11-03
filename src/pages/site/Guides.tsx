@@ -148,6 +148,15 @@ const Index = styled(Chapter)`
   summary.entry::-webkit-details-marker {
     display: none;
   }
+  /* 8px between the stacked rows, each keeping its hairline on top
+     (taste rule 20; round 3, B4 fix pass 2). */
+  main[data-premium] & .contents {
+    display: grid;
+    row-gap: 8px;
+  }
+  main[data-premium] & details {
+    margin-top: 8px;
+  }
   .entry h3 {
     font: 400 ${display.sm} / 1.2 ${font.display};
     color: ${color.primary};

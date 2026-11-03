@@ -608,6 +608,11 @@ const Asked = styled.section`
   main[data-premium] & .links {
     max-inline-size: ${measure.lead};
   }
+  /* The two links wrap onto two lines on a phone: 8px between them
+     (taste rule 20; round 3, B4 fix pass 2). */
+  main[data-premium] & .links {
+    row-gap: 8px;
+  }
   details {
     border-top: 1px solid ${color.primaryLineStrong};
     border-bottom: 1px solid ${color.primaryLineStrong};
