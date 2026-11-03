@@ -3,8 +3,9 @@
  *
  * "Get in touch" was a mailto to contact@astoryapp.com: on a phone with no
  * mail app set up it did nothing, and on a laptop it opened Outlook. The
- * founder asked that anyone on the site can reach daniel@astoryapp.com
- * directly. So the page does both: a form that sends from the page (the
+ * founder asked that anyone on the site can reach him directly (since
+ * 2026-11-02 the address shown is contact@astoryapp.com, so his own inbox
+ * stays off the page). So the page does both: a form that sends from the page (the
  * `demo-request` function, `type: "contact"`, lib/demoRequest.ts), and the
  * address itself, large, with a button that copies it.
  *
@@ -268,7 +269,7 @@ export default function Contact() {
       <EditorialSeo
         title="Contact A Story"
         path="/contact"
-        description="Write to A Story. Messages from this page go straight to Daniel, our co-founder, at daniel@astoryapp.com, and are answered within a working day."
+        description="Write to A Story. Messages from this page go straight to Daniel, our co-founder, and are answered within a working day."
       />
       <PageOpening
         variant="letter"

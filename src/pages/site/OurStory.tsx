@@ -744,7 +744,7 @@ export default function OurStory() {
               the whole family’s memories.
             </p>
             <p className="write">
-              Write to Daniel at{" "}
+              Write to us at{" "}
               <a href={`mailto:${DEMO_EMAIL}`}>{DEMO_EMAIL}</a>. We answer every
               email ourselves.
             </p>
