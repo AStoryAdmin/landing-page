@@ -9,6 +9,7 @@
  * down the page; said here once, they are not repeated.
  */
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { SWITCH } from "../../../lib/landscape";
 import { PageOpening } from "../kit/kit";
 import {
@@ -72,6 +73,25 @@ const Leaf = styled.div`
     font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
   }
+  /* Round 3 (Builder 3, panel: Priya): one line for a library, school or
+     care program, under the four reasons. It says only what A Story's
+     archive is (faqData.ts "Who can see our stories?": private by default)
+     and what StoryCorps is for in one phrase; nothing about its features. */
+  .program {
+    margin-top: clamp(14px, 1.4vw, 20px);
+    padding-top: clamp(14px, 1.4vw, 20px);
+    border-top: 1px solid ${color.primaryLine};
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: ${color.body};
+    max-width: 62ch;
+  }
+  .program a {
+    display: inline-block;
+    padding: 4px 0;
+    color: ${color.primary};
+    font-weight: 600;
+    text-underline-offset: 4px;
+  }
   ${media.motion} {
     transform: none;
   }
@@ -109,6 +129,13 @@ export default function CompareOpening() {
               </li>
             ))}
           </ul>
+          <p className="program">
+            Running a program for a library, a school or a care community?
+            StoryCorps is a public archive, not a private family one. A
+            Story’s archive is private by default, and who may listen is
+            agreed with you before anyone is called.{" "}
+            <Link to="/organizations">A Story for organizations</Link>
+          </p>
         </Leaf>
       }
     />

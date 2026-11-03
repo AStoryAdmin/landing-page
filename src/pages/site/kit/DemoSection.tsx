@@ -137,6 +137,10 @@ export default function DemoSection({
   ground = "ivory",
   rolePlaceholder,
   notePlaceholder,
+  kinds,
+  orgLabel,
+  sizeLegend,
+  compact,
 }: {
   title: ReactNode;
   lead?: ReactNode;
@@ -151,6 +155,12 @@ export default function DemoSection({
   ground?: Ground;
   rolePlaceholder?: string;
   notePlaceholder?: string;
+  /** Passed through to DemoBooking (round 3: the care page's own kinds,
+   *  "Community" label, residents legend and one-step layout). */
+  kinds?: readonly string[];
+  orgLabel?: string;
+  sizeLegend?: string;
+  compact?: boolean;
 }) {
   return (
     <Book $ground={ground} id="book" aria-labelledby="book-title">
@@ -190,6 +200,10 @@ export default function DemoSection({
             source={source}
             rolePlaceholder={rolePlaceholder}
             notePlaceholder={notePlaceholder}
+            kinds={kinds}
+            orgLabel={orgLabel}
+            sizeLegend={sizeLegend}
+            compact={compact}
           />
         </Plate>
       </Frame>

@@ -67,6 +67,7 @@ import {
 } from "./kit/kit.styles";
 import DemoSection from "./kit/DemoSection";
 import { INSTITUTION_KINDS } from "../../lib/demoRequest";
+import { CAN_SAY, NOT_CLAIMED } from "./orgQuestions";
 import { color, display, font, media, shadow, space, type } from "../../styles/theme";
 
 type Kind = (typeof INSTITUTION_KINDS)[number];
@@ -120,13 +121,42 @@ const WHO: { kind: Kind; label: string; title: string; body: string }[] = [
   },
 ];
 
-/* What a place needs before it begins: three lines the site already says
-   (STEPS below, DECIDE below, and the program line on /pricing). */
-const NEED = [
-  "Each person needs an iPhone, and we help them install the app.",
-  "Nothing leaves the archive unless you and the person both say so.",
-  "Program pricing is quoted individually, on the demo.",
-] as const;
+/* What a place needs before it begins (round 3, Builder 3; panel: Denise
+   "the label promises more than it delivers", Priya "a plan for narrators
+   without an iPhone"). Five real requirements, each from a line the site
+   or the app already says:
+   - the iPhone: faqData.ts "Will it ring on another phone or tablet?" and
+     the old NEED line "we help them install the app";
+   - the hour: faqData.ts "the app rings at the hour you picked and they
+     answer and talk", STEPS "at the hour each person picks";
+   - one person on your side: kit/DemoSection.tsx NEXT "A program can begin
+     with one class, one floor or one team", Care.tsx AGREE "Who helps";
+   - consent: DECIDE "Each person agrees before their first call, and can
+     stop at any time", privacy.tsx section 6;
+   - pricing: the program line on /pricing; faqData.ts "no fee per
+     relative". */
+const NEED: readonly [string, string][] = [
+  [
+    "An iPhone for each person, before launch.",
+    "We help them install the app. On other phones it reminds them to write instead.",
+  ],
+  [
+    "An hour each person picks.",
+    "The app rings then, and they answer and talk.",
+  ],
+  [
+    "One person on your side.",
+    "For introductions and support. A program can begin with one class, one floor or one team.",
+  ],
+  [
+    "Each person’s consent, before their first call.",
+    "They agree first, and can stop at any time.",
+  ],
+  [
+    "Pricing, quoted on the demo.",
+    "For the program you describe. Relatives who read and add pay nothing.",
+  ],
+];
 
 const STEPS = [
   [
@@ -176,16 +206,11 @@ const DECIDE = [
    (spec §3.7: no hero lead contains "beta"). */
 const LEAD = `An AI-guided interviewer calls the people your institution was built by in the A Story iPhone app and asks from ${QUESTION_COUNT} questions. You keep their words, and a book if you like.`;
 
-/* Privacy, in short: three labels quoted word for word from the short
-   version of the policy (components/privacy.tsx, PlainSummary), a link to
-   the policy, and one line that sends the rest to the demo. It claims
-   nothing about HIPAA, a BAA, SOC 2 or residency either way (spec §4C,
-   flagged for Daniel). */
-const PRIVACY = [
-  "We never sell data.",
-  "We never train AI on your stories.",
-  "You can delete it all.",
-] as const;
+/* "What we can say today" (round 3): six lines from the privacy policy's
+   short version, the FAQ and the app (orgQuestions.ts names each source),
+   a link to the policy and to /questions#organizations, and one line on
+   what is not claimed. Nothing about HIPAA, a BAA, SOC 2 or residency
+   either way (spec §4C, flagged for Daniel). */
 
 /* The opening's object: one sample book, square like the real one, set
    down on the paper. Its cover is the same capture the home page uses
@@ -262,6 +287,19 @@ const Need = styled(Chapter)`
   }
   li:last-child {
     border-bottom: 1px solid var(--line);
+  }
+  /* Each requirement: the thing itself in the display face, one plain line
+     after it (round 3). */
+  li b {
+    display: block;
+    font: 400 ${display.sm} / 1.2 ${font.display};
+    color: var(--ink);
+  }
+  li span {
+    display: block;
+    margin-top: ${space.xxs};
+    max-width: 56ch;
+    color: var(--muted);
   }
   ${media.md} {
     .row {
@@ -508,6 +546,13 @@ const Program = styled(Chapter)`
     font: 400 ${type.read} / 1.5 ${font.text};
   }
   .privacy li {
+    color: var(--muted);
+  }
+  .privacy li + li {
+    margin-top: ${space.xxs};
+  }
+  .privacy li b {
+    font-weight: 500;
     color: var(--ink);
   }
   .privacy p {
@@ -584,7 +629,10 @@ const Rhythm = styled.div`
   ${media.sm} {
     --sy: 0.55;
     #need-title + ul li {
-      padding: ${space.sm} 0;
+      padding: ${space.xs} 0;
+    }
+    #need-title + ul li span {
+      font-size: ${type.note};
     }
     #who .kinds {
       margin-top: ${space.lg};
@@ -738,8 +786,11 @@ export default function Organizations() {
           <Frame className="row">
             <h2 id="need-title">What you need</h2>
             <ul data-rise>
-              {NEED.map((n) => (
-                <li key={n}>{n}</li>
+              {NEED.map(([t, d]) => (
+                <li key={t}>
+                  <b>{t}</b>
+                  <span>{d}</span>
+                </li>
               ))}
             </ul>
           </Frame>
@@ -852,18 +903,29 @@ export default function Organizations() {
                 </ul>
               </details>
               <div className="privacy">
-                <h3 id="privacy-title">Privacy, in short</h3>
+                <h3 id="privacy-title">What we can say today</h3>
                 <details className="fold" ref={privacy} open>
-                  <summary>Privacy, in short</summary>
+                  <summary>What we can say today</summary>
                   <ul aria-labelledby="privacy-title">
-                    {PRIVACY.map((t) => (
-                      <li key={t}>{t}</li>
+                    {CAN_SAY.map((t) => (
+                      <li key={t.lead}>
+                        <b>{t.lead}</b>
+                        {t.rest && <> {t.rest}</>}
+                      </li>
                     ))}
                   </ul>
                   <p>
-                    <Link to="/privacy">Read the privacy policy</Link>.
-                    Questions about consent, staff access or HIPAA? Bring them
-                    to the demo.
+                    {NOT_CLAIMED}{" "}
+                    <Link to="/privacy">Read the privacy policy</Link>, or the{" "}
+                    <Link to="/questions#organizations">
+                      answers for organizations
+                    </Link>
+                    : staff access, ownership, retention, export and consent.
+                  </p>
+                  <p className="compare">
+                    Looking at StoryCorps as well? It is a public archive, not
+                    a private family one. A Story’s archive is private by
+                    default. <Link to="/compare">How A Story compares</Link>
                   </p>
                 </details>
               </div>

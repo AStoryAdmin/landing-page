@@ -14,6 +14,13 @@
  *
  * Asks only what a first reply needs: who, where, how to answer them. The
  * rest is optional and says so.
+ *
+ * Round 3 (Builder 3, panel: Denise): a page may pass its own `kinds` (the
+ * care page offers care settings, not colleges), `orgLabel` ("Community"
+ * instead of "Institution"), `sizeLegend`, and `compact`, which sets the
+ * same fields as one step with no numbered legends. The field names and
+ * the payload are unchanged (npm run test:contracts); `kind` was always a
+ * free string on the server (supabase/functions/demo-request, clip 80).
  */
 import { useId, useMemo, useState, type FormEvent } from "react";
 import {
@@ -79,6 +86,27 @@ const Steps = styled(Form)`
       margin-bottom: ${space.sm};
     }
   }
+  /* One step: the same fields, the step legends read by assistive
+     technology only (a legend ignores the global .sr-only clip and spilt
+     past the viewport at 390, so it is hidden here, in place). */
+  &[data-compact] {
+    gap: ${space.lg};
+    fieldset.step {
+      gap: ${space.md};
+    }
+    legend.step-legend {
+      position: absolute;
+      left: 0;
+      width: 1px;
+      height: 1px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
 `;
 
 /** The next eight weekdays, starting two working days from today. */
@@ -110,12 +138,23 @@ export default function DemoBooking({
   source = "organizations:demo",
   rolePlaceholder = "Alumni director",
   notePlaceholder = "Our 50th reunion class, before the anniversary next spring.",
+  kinds = INSTITUTION_KINDS,
+  orgLabel = "Institution",
+  sizeLegend = "How many people would take part",
+  compact = false,
 }: {
   initialKind?: string;
   /** Where the request came from, stored with the row ("care:demo"). */
   source?: string;
   rolePlaceholder?: string;
   notePlaceholder?: string;
+  /** The "What kind" options; a page may pass its own. */
+  kinds?: readonly string[];
+  /** The label of the organization field ("Community" on /care-communities). */
+  orgLabel?: string;
+  sizeLegend?: string;
+  /** One step: the same fields with no numbered legends. */
+  compact?: boolean;
 }) {
   const uid = useId();
   const days = useMemo(() => upcomingDays(), []);
@@ -218,9 +257,16 @@ export default function DemoBooking({
   }
 
   return (
-    <Steps onSubmit={submit} noValidate aria-describedby={`${uid}-fine`}>
+    <Steps
+      onSubmit={submit}
+      noValidate
+      aria-describedby={`${uid}-fine`}
+      data-compact={compact || undefined}
+    >
       <fieldset className="step">
-        <legend className="step-legend">1. About you</legend>
+        <legend className="step-legend">
+          {compact ? "About you" : "1. About you"}
+        </legend>
         <div className="two">
           <label
             className="field"
@@ -252,7 +298,7 @@ export default function DemoBooking({
             htmlFor={`${uid}-org`}
             data-invalid={invalid === "organization"}
           >
-            <span>Institution</span>
+            <span>{orgLabel}</span>
             <input
               id={`${uid}-org`}
               autoComplete="organization"
@@ -270,7 +316,7 @@ export default function DemoBooking({
               onChange={(e) => setKind(e.target.value)}
             >
               <option value="">Choose one</option>
-              {INSTITUTION_KINDS.map((k) => (
+              {kinds.map((k) => (
                 <option key={k}>{k}</option>
               ))}
             </select>
@@ -307,10 +353,12 @@ export default function DemoBooking({
       </fieldset>
 
       <fieldset className="step">
-        <legend className="step-legend">2. The demo</legend>
+        <legend className="step-legend">
+          {compact ? "The demo" : "2. The demo"}
+        </legend>
         <fieldset>
           <legend>
-            How many people would take part <small>optional</small>
+            {sizeLegend} <small>optional</small>
           </legend>
           <div className="chips">
             {SIZES.map((s) => (
@@ -396,7 +444,7 @@ export default function DemoBooking({
           {invalid === "name"
             ? "Please add your name."
             : invalid === "organization"
-              ? "Please add your institution."
+              ? `Please add your ${orgLabel.toLowerCase()}.`
               : "That email does not look quite right."}
         </p>
       )}
