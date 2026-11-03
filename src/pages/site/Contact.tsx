@@ -71,6 +71,15 @@ const DOORS = [
   ],
 ] as const;
 
+/* The address as the opening's second action. A flex item keeps its
+   min-content width, and at 320 with 150% text the address is 303px wide
+   and clipped to "contact@astoryapp." (tester, round 3). It may break
+   anywhere inside the column instead; still one 45px line elsewhere. */
+const Mail = styled(TextAnchor)`
+  min-width: 0;
+  overflow-wrap: anywhere;
+`;
+
 /* The opening's object: the person who reads the message (jury 1 #4, #7:
    Daniel's own round portrait, not a stock kitchen photograph). */
 const Reader = styled.figure`
@@ -296,12 +305,12 @@ export default function Contact() {
             <PrimaryAnchor href="#write">
               Send a message <ArrowIcon />
             </PrimaryAnchor>
-            <TextAnchor
+            <Mail
               href={`mailto:${DEMO_EMAIL}`}
               onClick={() => track("contact_mailto")}
             >
               {DEMO_EMAIL}
-            </TextAnchor>
+            </Mail>
           </>
         }
         object={

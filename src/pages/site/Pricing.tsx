@@ -622,9 +622,15 @@ const Asked = styled.section`
     color: ${color.primary};
   }
   details p {
-    padding-bottom: 20px;
+    /* 28px above the answer, so a link in its first line ("Book a demo")
+       keeps 8px clear of the question's 64px row above at 1440 too, where
+       the reading line is 36px (round 3 fix, taste rule 20). */
+    padding: 28px 0 20px;
     font: 400 ${type.read} / 1.65 ${font.text};
     color: ${color.body};
+  }
+  main[data-premium] & details p a:not([class]) {
+    padding-block: 0 26px;
   }
   /* The two questions side by side across the width, not a half column. */
   .questions {
@@ -994,6 +1000,9 @@ const HeroWords = styled(PhonePairs)`
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.18em;
+    /* The link sits inside a span, so the page states its own 44px hit
+       area (measured 26px at 390; taste rule 20, round 3 fix). */
+    padding-block: 13px;
   }
   .opening-lead .gift {
     margin-top: ${space.sm};

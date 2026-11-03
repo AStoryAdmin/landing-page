@@ -143,6 +143,18 @@ const Section = styled(Chapter)`
     text-underline-offset: 0.2em;
     overflow-wrap: anywhere;
   }
+  /* The credit's two addresses land on consecutive lines on a phone, so an
+     inline 13px hit area overlapped the neighbour by about 20px. Each
+     address is an inline block instead: 20px of line, 12px each side (44),
+     4px of margin each side (8px between stacked targets; taste rule 20,
+     round 3 fix). The lines with an address grow; the others keep 1.5. */
+  main[data-premium] & :is(.credit, li.credit) a:not([class]) {
+    display: inline-block;
+    padding-block: 12px;
+    margin-block: 4px;
+    line-height: 20px;
+    vertical-align: baseline;
+  }
   ${media.md} {
     .film {
       grid-template-columns: minmax(0, 1fr);
@@ -270,7 +282,8 @@ const Again = styled.button`
 const Transcript = styled.details`
   summary {
     cursor: pointer;
-    padding: 10px 0;
+    /* 23px of line + 2 × 11 = 45px (measured 43 with 10px; rule 20). */
+    padding: 11px 0;
     font: 600 ${type.note} / 1.45 ${font.ui};
     color: var(--ink, ${color.primary});
   }

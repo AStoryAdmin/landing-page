@@ -246,6 +246,15 @@ const Book = styled.figure`
     font-weight: 600;
     text-underline-offset: 4px;
   }
+  /* The tilted cover's box reaches 2px above the caption, so "Read it"
+     keeps its 44px hit area below the line, with 8px more room above
+     (taste rule 20: 8px between neighbours; round 3 fix, B4). */
+  figcaption {
+    margin-top: 8px;
+  }
+  main[data-premium] & figcaption a:not([class]) {
+    padding-block: 0 26px;
+  }
   ${media.md} {
     a.cover {
       width: min(64vw, 300px);

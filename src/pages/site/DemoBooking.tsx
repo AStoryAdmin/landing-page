@@ -95,14 +95,23 @@ const Steps = styled(Form)`
       margin-bottom: ${space.sm};
     }
   }
-  /* On a phone the eight day chips sit three a row, not two (four rows
-     became three; round 3, B4). Still 44px tall. */
+  /* On a phone the chips sit in two even columns (measured: the ragged
+     flex row gave two a row at 390 and one a row at 320, never three; the
+     widest day chip is 122px and the column 292px). A column is at least
+     8.6rem, so at 150% text or at 320 the grid falls to one full-width
+     column instead of clipping a label. Still 44px tall, 8px between rows
+     (round 3, B4, fix pass). */
   @media (max-width: 640px) {
     .chips {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 8.6rem), 1fr));
       gap: 8px 6px;
     }
     .chips .chip span {
-      padding: 0 13px;
+      width: 100%;
+      justify-content: center;
+      padding: 0 12px;
+      white-space: nowrap;
     }
   }
   /* One step: the same fields, the step legends read by assistive

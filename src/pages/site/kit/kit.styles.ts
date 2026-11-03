@@ -169,8 +169,10 @@ export const Frame = styled.div`
   margin-inline: auto;
   min-width: 0;
   /* The same 44px hit area for plain text links as Chapter gives, for the
-     sections that are not a Chapter (round 3, B4). */
-  ${IN_MAIN} & :is(p, li, dd, figcaption, small) > a:not([class]) {
+     sections that are not a Chapter (round 3, B4). A descendant, not a
+     child: a link inside a span in a paragraph (the pricing status line)
+     is still running text (round 3 fix, tester). */
+  ${IN_MAIN} & :is(p, li, dd, figcaption, small) a:not([class]) {
     padding-block: 13px;
   }
 `;
@@ -203,8 +205,9 @@ export const Chapter = styled.section<{ $ground?: Ground; $tight?: boolean }>`
   }
   /* A plain link inside running text (a credit, "Read it", the privacy
      link in a paragraph) keeps its line and grows a 44px hit area: padding
-     on an inline box adds nothing to the line (taste rule 20). */
-  ${IN_MAIN} & :is(p, li, dd, figcaption, small) > a:not([class]) {
+     on an inline box adds nothing to the line (taste rule 20). A descendant
+     selector, so a link wrapped in a span still counts (round 3 fix). */
+  ${IN_MAIN} & :is(p, li, dd, figcaption, small) a:not([class]) {
     padding-block: 13px;
   }
 `;
