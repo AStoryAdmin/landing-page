@@ -2,7 +2,7 @@ DATA.raymond = {
   id: "raymond", name: "Raymond", full: "Raymond Ortiz", family: "the Ortiz family",
   pronoun: "he", poss: "his",
   born: "March 9, 1951", place: "San Antonio, Texas",
-  cover: { title: "THE LEDGER", date: "1983 – 2022", names: "Raymond & Elena", motto: "Payday is Friday by noon." },
+  cover: { title: "THE LEDGER", date: "ORTIZ PRECISION · 1983 – 2022", names: "Raymond & Elena", motto: "Payday is Friday by noon." },
   title: "The Ledger",
   subtitle: "The life of Raymond Ortiz",
   dedication: { text: "For Elena, who kept the books and kept me. And for the hundred and forty.", sig: "Ray" },
@@ -72,7 +72,7 @@ DATA.raymond = {
           ],
           [
             "In 1991, when we nearly went under, it was her ledger that showed the bank a way through. Not my machines. Her pencil.",
-            "Her name went on the company in 2004. Twenty-one years late. Why so long? Because I was proud and I was stupid, and in 1983 those were the same thing. I thought the company was the machines. It was the machines and the money, and she ran the money. If someone does the work of a partner, put their name on it the first day."
+            "Her name went on the company in 2004. Twenty-one years late. I was proud and I was stupid, and in 1983 those were the same thing. I thought the company was the machines. It was the machines and the money, and she ran the money. If someone does the work of a partner, put their name on it the first day."
           ]
         ],
         kept: "It was the machines and the money, and she ran the money.",
@@ -98,8 +98,8 @@ DATA.raymond = {
           ],
           [
             "That first winter I worked in my coat. The only heat was a kerosene heater and the machine. The mill was the only thing in there making money, so it got the heat first. I’d stand close to it between cuts.",
-            "Was I scared? Every Friday. But I was more scared of being sixty and still complaining about it.",
-            "Was I sure? I wasn’t sure. Nobody’s sure. I was angry, and angry lasts longer than sure. But I knew I could make the part right and make it on time, and in 1983 in this town that was enough to start on. Start with the one thing you can do better than anybody. You learn the rest on the way.",
+            "I was scared every Friday. But I was more scared of being sixty and still complaining about it.",
+            "I wasn’t sure. Nobody’s sure. I was angry, and angry lasts longer than sure. But I knew I could make the part right and make it on time, and in 1983 in this town that was enough to start on.",
             "The first order was $412. Twelve brackets for a chair company. I still have the first one, in a frame, and how it got there is a story for later."
           ]
         ],
@@ -107,7 +107,7 @@ DATA.raymond = {
         voice: { rec: "Sep 14, 2025", len: "0:41", quote: "I had a good job." }
       },
       { id: "m7", title: "Hiring Hector", dateline: "Spring 1984 · aged 33", askedBy: "Maya",
-        headnote: "Hector sits in on this one at the shop and does not say a word until the end.",
+        headnote: "At the shop, standing by the Bridgeport; he runs his thumb along the table to show what Hector did.",
         faces: [
           [
             "By spring of ’84 I had more work than hands. I put a card on the board at the hardware store on Division. Machinist wanted, must own tools. Three men called. Two wanted to know the pay first.",
@@ -126,7 +126,7 @@ DATA.raymond = {
           ],
           [
             "In January 1991 their purchasing manager called to say volumes were being cut in half, effective immediately. No warning. No appeal. He was sorry, and he was reading it off a sheet. I put the phone down and went out on the floor and ran a part myself. I didn’t trust myself to talk to anybody. I had built a company and handed someone else the keys without noticing.",
-            "What would I tell somebody who just landed a customer that big? Congratulations. Now go get three more. Every month one customer is more than a quarter of you, you’re working for them, not with them. After ’91 we turned down work to keep that rule. Good work, sometimes. Tomás runs his own shop by it now. He calls it Dad’s quarter. It’s the reason we were still standing in 2009."
+            "To anybody who just landed a customer that big: congratulations. Now go get three more. Every month one customer is more than a quarter of you, you’re working for them, not with them. After ’91 we turned down work to keep that rule. Good work, sometimes. Tomás runs his own shop by it now. He calls it Dad’s quarter. It’s the reason we were still standing in 2009."
           ]
         ],
         kept: "It felt like winning. It was a trap with a nice paint job.",
@@ -146,7 +146,7 @@ DATA.raymond = {
           [
             "Then I had to tell the fourteen.",
             "I stood on a pallet at the back of the floor at three o’clock and told them the truth. We’d lost a third of our work and I didn’t know if we’d make it. Payroll was covered through June because Elena and I were taking nothing. After that I couldn’t promise. Two men quit that afternoon, and I didn’t blame them. Twelve stayed.",
-            "Why did they stay? Because I told them first. Before the bank, before the customer. People can take bad news. What they can’t take is finding out last.",
+            "They stayed because I told them first. Before the bank, before the customer. People can take bad news. What they can’t take is finding out last.",
             "Nine of the twelve were still there in 2022. They own part of it now. Every one of them got paid that Friday by noon, and every Friday after, and I’d stand on that pallet again tomorrow."
           ]
         ],
@@ -163,7 +163,7 @@ DATA.raymond = {
           ],
           [
             "Everybody went to four days a week. Me included, and my salary went to zero for twelve months. The fifth day became training. We put the whole floor through the new controls on Fridays, on the clock, because the machines were sitting idle anyway and so were the people. Nobody lost a job. Not one.",
-            "Why not lay people off, like everyone else? The people you lay off in a bad year are the people you need to rebuild in the good one. And I’d stood on that pallet in ’91. You can’t ask people to trust you and then let them find out on a Friday. The cuts start in my office. That went on the wall as rule six.",
+            "Everyone else laid people off. The people you lay off in a bad year are the people you need to rebuild in the good one. And I’d stood on that pallet in ’91. You can’t ask people to trust you and then let them find out on a Friday. The cuts start in my office. It’s on the wall in the shop now.",
             "When the orders came back in 2010, we had the only full, trained crew in our corner of Kent County. The banker called to say congratulations. I let it ring."
           ]
         ],
@@ -181,32 +181,32 @@ DATA.raymond = {
             "The honest reason is I didn’t know what the company was without me in it. I’d walked that floor every morning for thirty-six years. If I handed Tomás the keys, I was going to be a man who used to own a machine shop, and I couldn’t see him yet."
           ],
           [
-            "Then in March 2019 a private equity firm put a term sheet on my desk. Good money. They were going to move half the work to Mexico. I kept it in the drawer three months and didn’t tell Tomás, which was wrong.",
+            "Then in March 2019 a private equity firm put a term sheet on my desk. An outfit that buys companies with borrowed money and sells the pieces. Good money. They were going to move half the work to Mexico. I kept it in the drawer three months and didn’t tell Tomás, which was wrong.",
             "Hector found out. He’d been with me since the garage. He asked who was going to tell the twelve who stayed in 1991. I didn’t have an answer, so that was the answer.",
             "It was Elena’s idea and Tomás did the work. Fine. Both."
           ]
         ],
         sides: [
           { heading: "Tomás remembers it differently",
-            body: "You said not yet for five years, Dad. Not a few times. Five years, and I counted. I’d have taken the keys in 2016 and I’d have been fine. What I’ll give him is this: when the term sheet came, he was more scared of it than I was. That’s when I knew he wasn’t keeping the company from me. He was keeping it from them.",
+            body: "You said not yet for five years, Dad. Not a few times. Five years, and I counted. I’d have taken the keys in 2016 and I’d have been fine. What I’ll give him is this: when the term sheet came, he was more scared of it than I was. That’s when I knew he wasn’t keeping the company from me. He was keeping it from them. After the sale I opened my own shop. He didn’t argue. He sent Hector.",
             by: "Tomás Ortiz, his son" },
           { heading: "Elena remembers it too",
             body: "I read an article about a company in Ohio that sold itself to the people who worked there. I cut it out and put it on his desk, under the term sheet, and I left it there a month. He says he found it. He didn’t find it. I moved it to the top every Monday until he read it.",
             by: "Elena Ortiz, his wife" }
         ]
       },
-      { id: "m11", title: "Selling it to the people who built it", dateline: "March 2022 · aged 71", askedBy: "Maya",
+      { id: "m11", title: "Selling it to the people who built it", dateline: "March 25, 2022 · aged 71", askedBy: "Maya",
         headnote: "In the front office, the framed bracket on the wall behind him; the second shift is clocking in.",
         faces: [
           [
             "The private equity offer was the better deal on paper. I’m not going to pretend otherwise. I kept the term sheet in my desk drawer for three months and took it out most nights.",
-            "In the end I took about a fifth less and sold the company to the people who worked there. An employee stock ownership plan. Two years and four lawyers to build, and I understood maybe half of what the lawyers said, and Marisol understood the other half and translated. A hundred and forty people. Every one of them in Grand Rapids. Every one of them still here.",
-            "Did I leave money on the table? I didn’t leave it on the table. I left it in a hundred and forty houses."
+            "In the end I took about a fifth less and sold the company to the people who worked there. An employee stock ownership plan. A piece of it for every one of them. The better part of three years and four lawyers to build, and I understood maybe half of what the lawyers said, and Marisol understood the other half and translated. A hundred and forty people. Every one of them in Grand Rapids. Every one of them still here.",
+            "People ask if I left money on the table. I didn’t leave it on the table. I left it in a hundred and forty houses."
           ],
           [
             "My last day was a Friday in March 2022. Payday. I signed the checks one more time, by hand, the way I had since 1983, and then I walked the floor.",
             "At the end of second shift they called me to the back. Hector had something under a towel. A frame, and in the frame the first bracket I ever made in the garage on Godfrey Avenue. He’d kept it in his toolbox for thirty-eight years. I didn’t know. I’d thought it was gone.",
-            "The real test of building something is whether it runs without you. It does. If it’s still here in fifty years and nobody remembers my name, I did it right."
+            "It runs without me, which was the whole idea. If it’s still here in fifty years and nobody remembers my name, I did it right."
           ]
         ],
         kept: "If it’s still here in fifty years and nobody remembers my name, I did it right.",
@@ -240,7 +240,7 @@ DATA.raymond = {
   ],
 
   learned: [
-    { theme: "Work", quotes: [ { text: "Start with the one thing you can do better than anybody.", from: "m6" } ] },
+    { theme: "Work", quotes: [ { text: "Somebody shows you where your hand is wrong and you don’t make them show you twice.", from: "m2" } ] },
     { theme: "Money", quotes: [ { text: "Every month one customer is more than a quarter of you, you’re working for them, not with them.", from: "m8" } ] },
     { theme: "Hard choices", quotes: [
       { text: "People can take bad news. What they can’t take is finding out last.", from: "m9" },
@@ -279,7 +279,7 @@ DATA.raymond = {
     { who: "Elena Ortiz", relation: "his wife", title: "The kitchen table", dateline: "2026",
       faces: [[
         "The table is the same table. We bought it in 1976 from a man on Leonard Street for forty dollars and it has one short leg, and I did the books on it for twenty-one years with a folded matchbook under the leg. Ray says I kept the books at night. I kept them whenever the children were asleep or at school or outside, and I kept them on the bus to my mother’s.",
-        "A green ledger from the stationery store on Monroe, $3.49. I bought one every August. The first line of the first one is the mill. He thinks that page is about him. It’s about what I had left after it. Eighty dollars. I never told him that. He’s seventy-five. He can read it here."
+        "A green ledger from the stationery store on Monroe, $3.49. I bought one every August. The first line of the first one is the mill. He thinks that page is about him. It’s about the arithmetic under it. Eleven thousand, less the mill, the deposit, tooling and three months’ rent, left seven thousand and change to last until somebody paid us. I never told him how close it was. He’s seventy-five. He can read it here."
       ]] },
     { who: "Marisol Ortiz", relation: "his daughter", title: "The empty ledger", dateline: "2026",
       faces: [[
@@ -299,7 +299,7 @@ DATA.raymond = {
     faces: [[
       "You asked most of the questions in this book, so you get the letter.",
       "I don’t have advice. You’ve heard all of it, and you took the caliper anyway, which tells me you’ll be fine.",
-      "I want to tell you what I didn’t say on the phone. I started that company angry. I stayed in it for the people. Hector, and the twelve, and the sixty-two, and the hundred and forty. Nobody tells you that part when you’re starting. They tell you about the product and the money. The product changes and the money comes and goes. The people are the company. Your grandmother knew that in 1983 and I learned it on a pallet in 1991, and I’d rather you learned it from her.",
+      "I want to tell you what I didn’t say on the phone. I started that company angry. I stayed in it for the people. Hector, and the twelve, and the sixty-two, and the hundred and forty. The people are the company. Your grandmother knew that in 1983 and I learned it on a pallet in 1991, and I’d rather you learned it from her.",
       "You put in writing that everyone at your company gets a share of it. Keep that paper where you can see it. Then go get three more customers.",
       "Tell your father I said he was ready in three. Tell your aunt the green book is hers to fill whenever she wants. And when you’re seventy-five and somebody asks you what you built, I hope you have trouble answering, because it’s too many people to name.",
       "Payday is Friday by noon."

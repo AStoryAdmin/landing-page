@@ -70,6 +70,8 @@ for (const size of sizes) {
             if (!abs && !c.classList.contains('num') && (cr.right > right + 1.5 || cr.left < left - 1.5)) rec.problems.push(`${c.className || c.tagName} runs past the side margin`);
           }
           rec.spare = last === null ? null : Math.round(bottom - last);
+          const top = pr.top + parseFloat(cs.paddingTop);
+          rec.used = last === null ? 0 : Math.round(100 * (last - top) / (bottom - top));
         }
         for (const el of face.querySelectorAll('*')) {
           if (skip.has(el.className && el.className.baseVal !== undefined ? '' : (el.className || '').split(' ')[0])) continue;
@@ -105,6 +107,11 @@ for (const size of sizes) {
       const f = r.faces.find(x => x.folio === String(row.page));
       if (!f) fail(book, size.name, '-', 'Contents', `"${row.name}" says page ${row.page}, but no face carries that folio`);
       else if (f.sec !== row.name) fail(book, size.name, f.i, f.t, `contents says "${row.name}" is on page ${row.page}, but that page is "${f.sec || f.t}"`);
+    }
+    // --sparse: text pages using less than 40% of their height (openers, covers and object pages are not pages of text)
+    if (args.includes('--sparse') && size.name === 'desktop') {
+      const sparse = r.faces.filter(f => f.used !== undefined && f.used < 40 && !/^(Title page|Colophon|Dedication|Epigraph|Final page|Contents|Blank)$/.test(f.t) && f.cls !== 'opener');
+      console.log(`  ${book}: ${sparse.length} sparse face(s)` + (sparse.length ? '\n' + sparse.map(f => `    face ${f.i} "${f.t}": ${f.used}% used`).join('\n') : ''));
     }
     if (size.name === 'desktop') {
       const mem = r.faces.filter(f => f.cls === 'mem');

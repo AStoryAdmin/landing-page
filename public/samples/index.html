@@ -1056,7 +1056,9 @@ html.fonts-wait #stageHost,html.fonts-wait .notes,html.fonts-wait .buy{opacity:0
 .plate{margin:2.2cqw 0 0;break-inside:avoid}
 .plate figure{margin:0;min-width:0}
 .plate .photo{border:1px solid rgba(60,50,40,.18);box-sizing:border-box}
-.plate-one .photo{height:26cqw}
+.plate-one figure{margin:0 auto;max-width:100%}
+.plate-one .plate-note{margin:1cqw 0 0;text-align:center;font:italic 400 2cqw/1.35 var(--f-body);color:var(--ink-soft)}
+.plate-one .photo{height:40cqw}
 .plate-many{display:grid;grid-template-columns:1fr 1fr;gap:1.6cqw}
 .plate-many .photo{height:20cqw}
 .plate figcaption{font:italic 400 2cqw/1.35 var(--f-body);color:var(--ink-soft);margin-top:.8cqw}
@@ -1130,6 +1132,9 @@ sup.mark{font-size:.8em;line-height:0;vertical-align:super;margin-left:.04em;col
 .a-player .a-track{height:4px;border-radius:2px;background:var(--a-line);position:relative}
 .a-player .a-track i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--a-acc)}
 .a-player .a-len{font:500 14px/1 "DM Sans",sans-serif;color:var(--a-soft);font-variant-numeric:tabular-nums}
+/* contents: up to fourteen rows on one page */
+.toc.compact.tight{margin-top:2.4cqw}
+.toc.compact.tight li{padding:.85cqw 0}
 
 </style>
 <div class="scan" id="scan" hidden role="dialog" aria-modal="true" aria-label="What opens when you scan">
@@ -1299,8 +1304,61 @@ function plateFaces(pl, n, chapter){
   return [];
 }
 
+/* ---------- measuring: a hidden face with the page's real CSS ----------
+   Every size on a page is in cqw, so one probe at one size answers for the bench at any size.
+   A face passes when its .pg holds everything with about a line to spare (the phone wraps a little tighter). */
+const probeHost = (() => { const d = document.createElement('div'); d.className = 'single'; d.setAttribute('aria-hidden','true');
+  d.style.cssText = 'position:absolute;left:-9999px;top:0;width:600px;height:600px;visibility:hidden;pointer-events:none;overflow:hidden;perspective:none'; document.body.appendChild(d); return d; })();
+const fits = (cls, html) => fitsFace(cls, html);
+function fitsFace(cls, html, marginFrac = 0.04){
+  probeHost.innerHTML = `<div class="face r ${cls}">${html}</div>`;
+  const face = probeHost.firstChild, pg = face.querySelector('.pg'); if(!pg) return true;
+  const margin = face.clientHeight * marginFrac;
+  if(pg.scrollHeight > pg.clientHeight + 1) return false;
+  const cs = getComputedStyle(pg), pr = pg.getBoundingClientRect(), bottom = pr.bottom - parseFloat(cs.paddingBottom) - margin;
+  for(const c of pg.children){ const r = c.getBoundingClientRect(); if(r.height && getComputedStyle(c).position !== 'absolute' && r.bottom > bottom) return false; }
+  return true;
+}
+/* Fills faces the way the print does: a head on the first face, then blocks (paragraphs, people, quotes)
+   while they fit, never splitting one; the tail (credit, sides, listen, signature) follows the last block,
+   and moves to the next face whole when it does not fit there, splitting only when one piece alone is too big.
+   o = {cls, pgcls, rhead, head, cont(i), open, close, blocks:[html | {html, startHtml}], tail:[html]} */
+function flow(o){
+  const faces = [], blocks = o.blocks.map(b => typeof b === 'string' ? {html:b, startHtml:b} : b), tail = o.tail || [];
+  const fits = (cls, html) => fitsFace(cls, html, o.margin);
+  const render = f => `${grain}${o.rhead ? rhead(o.rhead) : ''}<div class="pg${o.pgcls ? ' ' + o.pgcls : ''}">${f.pre}${f.body.length ? o.open + f.body.join('') + o.close : ''}${f.tail.join('')}</div>`;
+  let bi = 0, ti = 0, i = 0;
+  while(bi < blocks.length || ti < tail.length){
+    const f = {pre: i === 0 ? o.head : (o.cont ? o.cont(i) : ''), body: [], tail: []};
+    while(bi < blocks.length){
+      const h = f.body.length ? blocks[bi].html : blocks[bi].startHtml;
+      if(fits(o.cls, render({...f, body: f.body.concat(h)}))){ f.body.push(h); bi++; }
+      else if(!f.body.length && (i > 0 || !o.head)){ f.body.push(h); bi++; break; }   /* nothing else on this face: place it anyway */
+      else break;
+    }
+    if(bi >= blocks.length && ti < tail.length){
+      const rest = tail.slice(ti);
+      if(fits(o.cls, render({...f, tail: rest}))){ f.tail = rest; ti = tail.length; }
+      else if(!f.body.length && !f.pre){
+        while(ti < tail.length){ const cand = f.tail.concat(tail[ti]); if(fits(o.cls, render({...f, tail: cand})) || !f.tail.length){ f.tail = cand; ti++; } else break; }
+      }
+    }
+    faces.push(f); i++;
+    if(i > 40) break;
+  }
+  if(!faces.length) faces.push({pre:o.head, body:[], tail:[]});
+  return faces.map(f => ({html: render(f), parts: f}));
+}
+/* The fonts the pages are set in must be on hand before anything is measured. */
+const fontsReady = (() => {
+  const want = ['400 16px "EB Garamond"', 'italic 400 16px "EB Garamond"', '500 16px "EB Garamond"', '500 16px "Cormorant Garamond"', 'italic 400 16px "Cormorant Garamond"', 'italic 500 16px "Cormorant Garamond"', '600 16px Montserrat', '500 16px Montserrat', '700 16px Montserrat', '400 16px "Mrs Saint Delafield"', '500 16px Caveat'];
+  const timeout = new Promise(r => setTimeout(r, 3000));
+  const loads = document.fonts ? Promise.all(want.map(f => document.fonts.load(f).catch(() => {}))).then(() => document.fonts.ready).catch(() => {}) : Promise.resolve();
+  return Promise.race([loads, timeout]);
+})();
+
 /* ---------- compileBook: the book the app prints, from a writer's DATA ---------- */
-function compileBook(D){
+function compileBook(D, forceToc){
   const name = D.name, poss = D.poss || 'her', pron = D.pronoun || 'she';
   const cov = COVER_FACES[D.id] || COVER_FACES.carolyn;
   const Pb = {id:D.id, name, full:D.full, she:pron, q:cov.q, cover:cov.cover, family:D.family,
@@ -1326,23 +1384,38 @@ function compileBook(D){
     const marked = `<span class="kept">${found.split(/(\s+)/).map(w => /^\s+$/.test(w) || !w ? w : `<span class="kr"></span>${w}`).join('')}</span>`;
     return [html.slice(0,i) + marked + html.slice(i+found.length), true];
   };
-  const paras = (list, kept, drop) => list.map((p,i) => { const [h, hit] = keptMark(tw(p), kept); return `<p class="${i===0&&drop?'drop ':''}${hit?'has-kept':''}">${h}</p>`; }).join('');
-  const plate = ps => ps.length ? `<div class="plate ${ps.length>1?'plate-many':'plate-one'}">${ps.map(p=>`<figure>${ph(IMG[p.img]||IMG.paint, p.pos||'center', p.caption)}<figcaption>${tw(p.caption)}</figcaption></figure>`).join('')}</div>` : '';
-  const sides = m => (m.sides||[]).map(s => `<aside class="side"><p class="side-head">${tw(s.heading)}</p><p class="side-words">${tw(s.body)}</p><p class="side-by">${tw(s.by)}</p></aside>`).join('');
+  /* the drop cap only when the first paragraph is long enough to wrap round it */
+  const paraBlocks = (list, kept) => list.map((p,i) => { const [h, hit] = keptMark(tw(p), kept); const drop = i===0 && String(p).replace(/<[^>]+>/g,'').length >= 90; return `<p class="${drop?'drop ':''}${hit?'has-kept':''}">${h}</p>`; });
+  /* one photograph shows whole: 40cqw tall, its own width (the sample's five prints are portraits; the tallest is floored at 0.62 and cropped a little by its object-position), centred on the measure */
+  const RATIO = {beach:371/1000, beachd:440/700, kiss:708/770, paint:735/1000, paintd:473/700};
+  const plateW = p => (40 * Math.min(1.9, Math.max(0.62, RATIO[p.img] || 0.75))).toFixed(1);
+  const plate = ps => { if(!ps.length) return ''; if(ps.length > 1) return `<div class="plate plate-many">${ps.map(p=>`<figure>${ph(IMG[p.img]||IMG.paint, p.pos||'center', p.caption)}<figcaption>${tw(p.caption)}</figcaption></figure>`).join('')}</div>`;
+    /* one print: its own width; a caption under a print narrower than half the measure spans the measure instead */
+    const p = ps[0], w = plateW(p), narrow = +w < 39;
+    return `<div class="plate plate-one"><figure style="width:${w}cqw">${ph(IMG[p.img]||IMG.paint, p.pos||'center', p.caption)}${narrow?'':`<figcaption>${tw(p.caption)}</figcaption>`}</figure>${narrow?`<p class="plate-note">${tw(p.caption)}</p>`:''}</div>`; };
+  const sides = m => (m.sides||[]).map(s => `<aside class="side"><p class="side-head">${tw(s.heading)}</p><p class="side-words">${tw(s.body)}</p><p class="side-by">${tw(s.by)}</p></aside>`);
   const listen = m => m.voice ? `<div class="listen">${qrBtn(m.id)}<p>Scan with a phone camera to hear ${tw(name)} tell this.<span class="rec-id">Recording ${tw(m.voice.rec)} · ${tw(m.voice.len)}</span></p></div>` : '';
 
   let n = 0;   /* folio of the last face pushed into body[] */
   const push = f => { body.push(f); n++; return f; };
+  /* a memory (or a family piece): the writer's faces[] are one paragraph sequence; the page breaks are measured */
   const memoryFaces = (m, head, opts={}) => {
-    const faces = (m.faces||[]).filter(f => Array.isArray(f) && f.length).slice(0,2);
-    const photosOn = i => (m.photos||[]).filter(p => (p.face??0)===i);
-    faces.forEach((f, i) => {
-      const last = i === faces.length-1;
-      const top = i===0 ? `<h3 class="mtitle">${tw(m.title)}</h3><span class="mmeta">${tw(m.dateline)}</span>${m.askedBy?`<span class="asked">Asked by ${tw(m.askedBy)}</span>`:''}${m.headnote?`<p class="lede">${tw(m.headnote)}</p>`:''}` : '';
-      const tail = last ? `${opts.credit?`<div class="credit">${tw(opts.credit)}</div>`:''}${sides(m)}${listen(m)}` : '';
-      push({cls:"mem", t:`${m.title}${i?' (continued)':''}`, mid:m.id, html:`${grain}${rhead(head)}<div class="pg">${top}${plate(photosOn(i))}<div class="body">${paras(f, m.kept, i===0)}</div>${tail}</div>${folio(n+1)}`,
-        note:[m.title, i===0 ? (m.headnote ? m.headnote : `${name}’s words, as ${pron} said them.`) : `${name}’s words, continued.`]});
-    });
+    const paraList = (m.faces||[]).flat().filter(p => p && String(p).trim());
+    let photos = m.photos || []; const photosOn = i => photos.filter(p => (p.face??0) === i);
+    const top = `<h3 class="mtitle">${tw(m.title)}</h3><span class="mmeta">${tw(m.dateline)}</span>${m.askedBy?`<span class="asked">Asked by ${tw(m.askedBy)}</span>`:''}${m.headnote?`<p class="lede">${tw(m.headnote)}</p>`:''}`;
+    const tail = [...(opts.credit ? [`<div class="credit">${tw(opts.credit)}</div>`] : []), ...sides(m), ...(listen(m) ? [listen(m)] : [])];
+    const o = {cls:'mem', rhead:head, head: top + plate(photosOn(0)), cont: i => plate(photosOn(i)), open:'<div class="body">', close:'</div>', blocks: paraBlocks(paraList, m.kept), tail};
+    let faces = flow(o);
+    /* a photograph set for a face the text never reached: onto the last face if it fits, else a face of its own */
+    const left = photos.filter(p => (p.face??0) >= faces.length);
+    if(left.length){
+      const last = faces[faces.length-1].parts, withPlate = {...last, pre: plate(left) + last.pre};
+      const html = `${grain}${rhead(head)}<div class="pg">${withPlate.pre}${withPlate.body.length ? o.open + withPlate.body.join('') + o.close : ''}${withPlate.tail.join('')}</div>`;
+      if(faces.length > 1 && fits('mem', html)) faces[faces.length-1] = {html, parts:withPlate};
+      else faces.push({html:`${grain}${rhead(head)}<div class="pg">${plate(left)}</div>`, parts:{pre:plate(left), body:[], tail:[]}});
+    }
+    faces.forEach((f, i) => push({cls:"mem", t:`${m.title}${i?' (continued)':''}`, mid:m.id, html:`${f.html}${folio(n+1)}`,
+      note:[m.title, i===0 ? (m.headnote ? m.headnote : `${name}’s words, as ${pron} said them.`) : `${name}’s words, continued.`]}));
     plateFaces(m.plate, n+1, head).forEach(f => push({...f, note:[f.t, 'An object from the family’s box, printed with the memory it belongs to.']}));
   };
   const opener = (kicker, num, title, years, qlabel, question, sec) => push({cls:"opener", t:title, sec, html:`${grain}<div class="pg">
@@ -1367,7 +1440,7 @@ function compileBook(D){
     (col.keepers||[]).length ? `Kept by ${tw(namesLine(col.keepers))}.` : '',
     contributors.length ? `With memories from ${tw(namesLine(contributors))}.` : '',
     col.conversations ? `Gathered in ${col.conversations} conversations ${tw(col.gathered||'')}.`.replace(/\s+\./,'.') : '',
-    `Nothing on these pages was added that ${pron} did not say.`,
+    `Every word on these pages is ${pron === 'he' ? 'his' : 'hers'}.`,
     `This book is private to ${tw(D.family)}.`,
     `A sample book. ${tw(name)} and ${poss} family are fictional.`,
     `Shaped, designed and printed by A Story.`,
@@ -1386,20 +1459,24 @@ function compileBook(D){
   <div class="epi">${tw(epi.text)}</div>
   <div class="epi-from">— ${tw(name)}${epiFrom?`, from “${tw(epiFrom.title)}”`:''}</div></div>${folio(4)}`, note:["Epigraph", epiFrom ? `One line of ${poss} own, from “${epiFrom.title}”.` : `One line of ${poss} own.`]};
   const tocRows = chapters.length + (D.little&&D.little.length?1:0) + (D.learned&&D.learned.length?1:0) + (D.family_chapter&&D.family_chapter.length?1:0) + (D.people&&D.people.length?1:0) + (D.letter?1:0);
-  const tocFaces = tocRows > 11 ? 2 : 1;
+  /* up to 14 rows on one page (set tighter past 11); the faces are verified at the end and the book is re-laid if they overflow */
+  const tocFaces = forceToc || (tocRows > 14 ? Math.ceil(tocRows / 14) : 1);
   n = 4 + tocFaces;   /* the first body face is folio n+1 */
 
   /* chapters */
-  let chNo = 0;
+  let chNo = 0, littleDone = false;
   chapters.forEach(c => {
     chNo++;
     const years = yearSpan(c.memories.map(m => m.dateline));
     toc.push({name:c.era, years, num:chNo, page:n+1});
     opener(`Chapter ${WORDS[chNo-1]||chNo}`, String(chNo).padStart(2,'0'), c.era, years, 'In this chapter', c.memories.map(m=>m.title).join(', '), c.era);
     c.memories.forEach(m => memoryFaces(m, c.era));
+    if(D.littleAfter && D.littleAfter === c.era) littleFaces();
   });
-  /* little questions */
-  if((D.little||[]).length){
+  /* little questions: after the chapter DATA.littleAfter names, else after the last chapter */
+  if(!littleDone) littleFaces();
+  function littleFaces(){
+    if(littleDone || !(D.little||[]).length) return; littleDone = true;
     toc.push({name:'Little questions', years:'', num:0, page:n+1});
     const items = D.little.slice(0,12);
     for(let i=0;i<items.length;i+=6){
@@ -1416,24 +1493,15 @@ function compileBook(D){
     const lt = `What ${name} learned`;
     toc.push({name:lt, years:'', num:chNo, page:n+1});
     opener(`Chapter ${WORDS[chNo-1]||chNo}`, String(chNo).padStart(2,'0'), lt, '', 'In this chapter', learned.map(g=>g.theme).join(', '), lt);
-    const items = learned.flatMap(g => g.quotes.map((q,i) => ({theme:g.theme, first:i===0, q})));
-    /* flow by estimated height (cqw): a theme head 4.7, each quote line 4.1 (2.75cqw × 1.5), the source line and rules 5.6;
-       the phone wraps tightest (about 50 characters a line), so the face takes 66 of its 82 and a fifth quote starts a new face */
-    const cost = it => (it.first ? 4.7 : 0) + Math.ceil(String(it.q.text||'').replace(/<[^>]+>/g,'').length / 50) * 4.1 + 5.6;
-    const pages = []; let cur = [], used = 0;
-    items.forEach(it => { const c = cost(it); if(cur.length && used + c > 66){ pages.push(cur); cur = []; used = 0; } cur.push(it); used += c; });
-    if(cur.length) pages.push(cur);
-    for(const slice of pages){
-      let h = '', open = false, lastTheme = null;
-      slice.forEach(it => {
-        if(it.theme !== lastTheme){ if(open) h += '</div>'; h += `<div class="lesson-theme"><h3>${tw(it.theme)}${it.first?'':' <small>(continued)</small>'}</h3>`; open = true; lastTheme = it.theme; }
-        const from = mem[it.q.from];
-        const yr = from ? yearsOf(from.dateline)[0] : '';
-        h += `<blockquote class="lesson"><p>${tw(it.q.text)}</p><div class="lesson-from">— from “${from?tw(from.title):'?'}”${yr?` · ${yr}`:''}</div></blockquote>`;
-      });
-      if(open) h += '</div>';
-      push({cls:"mem", t:lt, html:`${grain}${rhead(lt)}<div class="pg">${h}</div>${folio(n+1)}`, note:[lt, `${poss[0].toUpperCase()+poss.slice(1)} exact words, by theme, each from an earlier page.`]});
-    }
+    /* one block per quote; the first of a theme carries the theme's heading, and a quote that opens a later face repeats it as "(continued)" */
+    const blocks = learned.flatMap(g => g.quotes.map((q,i) => {
+      const from = mem[q.from], yr = from ? yearsOf(from.dateline)[0] : '';
+      const quote = `<blockquote class="lesson"><p>${tw(q.text)}</p><div class="lesson-from">— from “${from?tw(from.title):'?'}”${yr?` · ${yr}`:''}</div></blockquote>`;
+      const head = c => `<div class="lesson-theme"><h3>${tw(g.theme)}${c?' <small>(continued)</small>':''}</h3>${quote}</div>`;
+      return i===0 ? {html:head(false), startHtml:head(false)} : {html:quote, startHtml:head(true)};
+    }));
+    flow({cls:'mem', rhead:lt, head:'', open:'', close:'', blocks, tail:[]}).forEach(f =>
+      push({cls:"mem", t:lt, html:`${f.html}${folio(n+1)}`, note:[lt, `${poss[0].toUpperCase()+poss.slice(1)} exact words, by theme, each from an earlier page.`]}));
   }
   /* from the family */
   if((D.family_chapter||[]).length){
@@ -1448,29 +1516,17 @@ function compileBook(D){
   /* the people in this book */
   if((D.people||[]).length){
     toc.push({name:'The people in this book', years:'', num:0, page:n+1});
-    const pp = D.people;
-    for(let i=0;i<pp.length;i+=5){
-      push({cls:"", t:"The people in this book", sec:i===0?'The people in this book':undefined, html:`${grain}${rhead('The people in this book')}<div class="pg people-pg">
-  ${i===0?`<h2 class="h-sec">The people in this book</h2>`:''}
-  <ul class="people">${pp.slice(i,i+5).map(p=>`<li><b>${tw(p.name)}</b><span class="rel">${tw(p.relation)}</span><p>${tw(p.line)}</p></li>`).join('')}</ul>
-  </div>${folio(n+1)}`, note:["The people in this book", `Each person, and one line about them in ${poss} words.`]});
-    }
+    const blocks = D.people.map(p => `<li><b>${tw(p.name)}</b><span class="rel">${tw(p.relation)}</span><p>${tw(p.line)}</p></li>`);
+    flow({cls:'', pgcls:'people-pg', margin:0.08, rhead:'The people in this book', head:`<h2 class="h-sec">The people in this book</h2>`, open:'<ul class="people">', close:'</ul>', blocks, tail:[]}).forEach((f,i) =>
+      push({cls:"", t:"The people in this book", sec:i===0?'The people in this book':undefined, html:`${f.html}${folio(n+1)}`, note:["The people in this book", `Each person, and one line about them in ${poss} words.`]}));
   }
   /* the letter */
   if(D.letter && (D.letter.faces||[]).length){
     toc.push({name:'A letter', years:'', num:0, page:n+1});
-    /* a letter handed in as one face flows onto a second when it is long (the first face holds about 120 words under the "to" line) */
-    let lf = D.letter.faces.filter(f => Array.isArray(f) && f.length).slice(0,2);
-    if(lf.length === 1 && lf[0].reduce((w,p)=>w+wordsOf(p),0) > 125){
-      const a = [], b = []; let w = 0;
-      lf[0].forEach(p => { if(b.length || (a.length && w + wordsOf(p) > 125)) b.push(p); else { a.push(p); w += wordsOf(p); } });
-      lf = b.length ? [a, b] : [a];
-    }
-    lf.forEach((f,i,arr) => push({cls:"", t:"A letter", sec:i===0?'A letter':undefined, html:`${grain}<div class="pg letter">
-  ${i===0?`<div class="to script">${tw(D.letter.to)}</div>`:''}
-  <div class="body">${f.map(p=>`<p>${tw(p)}</p>`).join('')}</div>
-  ${i===arr.length-1&&D.letter.sig?`<div class="sig script">${tw(D.letter.sig)}</div>`:''}
-  </div>${folio(n+1)}`, note:["A letter", `The last thing in ${poss} voice: one letter to the family, as ${pron} wrote it.`]}));
+    /* the letter's paragraphs flow by measurement; the signature follows the last one */
+    const paras = D.letter.faces.flat().filter(p => p && String(p).trim()).map(p => `<p>${tw(p)}</p>`);
+    flow({cls:'', pgcls:'letter', head:`<div class="to script">${tw(D.letter.to)}</div>`, open:'<div class="body">', close:'</div>', blocks:paras, tail: D.letter.sig ? [`<div class="sig script">${tw(D.letter.sig)}</div>`] : []}).forEach((f,i) =>
+      push({cls:"", t:"A letter", sec:i===0?'A letter':undefined, html:`${f.html}${folio(n+1)}`, note:["A letter", `The last thing in ${poss} voice: one letter to the family, as ${pron} wrote it.`]}));
   }
   /* the final page sits on a right-hand page: pad with a blank verso if needed */
   if((body.length + tocFaces) % 2 === 1) push({...flyleaf, note:["", ""]});
@@ -1486,7 +1542,8 @@ function compileBook(D){
   const contentsFaces = [];
   for(let i=0;i<tocFaces;i++) contentsFaces.push({cls:"", t:"Contents", html:`${grain}<div class="pg">
   <span class="kicker">Contents${i?' (continued)':''}</span>
-  <ol class="toc compact">${toc.slice(i*per,(i+1)*per).map(tocLi).join('')}</ol></div>${folio(5+i)}`, note:["Contents", "Each chapter, its years, and its page."]});
+  <ol class="toc compact${per > 11 ? ' tight' : ''}">${toc.slice(i*per,(i+1)*per).map(tocLi).join('')}</ol></div>${folio(5+i)}`, note:["Contents", "Each chapter, its years, and its page."]});
+  if(!forceToc && contentsFaces.some(f => !fits('', f.html))) return compileBook(D, tocFaces + 1);
 
   const front = {cls:"cover nogutter", t:"Front cover", html:cov.html(D.cover||{}), note:["Front cover", `${D.full}’s book, as the family would hold it.`]};
   const faces = [front, {...endpaper, note:["Endpapers","The A Story mark, in the cover colour."]}, {...endpaper}, {...flyleaf, note:["",""]},
@@ -1754,7 +1811,7 @@ function layout(){
 }
 /* Show the bench once its faces are in (or after 2s, whichever is first). */
 (function(){
-  const done = () => { document.documentElement.classList.remove('fonts-wait'); layout(); };
+  const done = () => booted.then(() => { document.documentElement.classList.remove('fonts-wait'); layout(); });
   const t = setTimeout(done, 2000);
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>{ clearTimeout(t); done(); });
   else { clearTimeout(t); done(); }
@@ -1778,7 +1835,7 @@ function useBook(key){
 window.__samples = { DATA, BOOKS, compileBook, useBook, faces: () => FACES, book: () => BOOKS[P.id] };
 booksNav.addEventListener('click', e => { const b = e.target.closest('button[data-book]'); if(!b) return;
   useBook(b.dataset.book); try{ history.replaceState(null,'','#'+b.dataset.book); }catch(err){} });
-useBook((location.hash||'').replace('#','') || 'carolyn');
+const booted = fontsReady.then(() => useBook((location.hash||'').replace('#','') || 'carolyn'));
 </script>
 <script>
 /* /samples#carolyn, #raymond, #tom: follow the hash when it changes after load too. */

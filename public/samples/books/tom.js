@@ -7,6 +7,7 @@ DATA.tom = {
   subtitle: "The life of Thomas Kessler",
   dedication: { text: "For Diane, who wrote every week. And for Danny.", sig: "Tom" },
   epigraph: { text: "Some days the job was just to stay.", from: "m4" },
+  littleAfter: "Growing up",
 
   chapters: [
     { era: "Where we come from", memories: [
@@ -84,7 +85,7 @@ DATA.tom = {
           [
             "When I came home I didn’t talk about him. Not to Diane, not to my kids, not to anybody, for almost fifty years. I thought if I kept it in a box, it couldn’t get out and hurt anybody. It hurt everybody. It just did it quietly.",
             "Mike and Laura grew up with a father who went somewhere at the supper table. They were quiet around me and I let them be. Diane knew there was a name. She waited forty-seven years for it and never once asked.",
-            "Hannah is the one who opened the box. She said, Grandpa, if you don’t tell it, it dies with you. She was right. Silence protects you for a while. Then it costs the people who love you."
+            "It started coming out on the bus back from the Wall, with Mike, and then at the VFW. Hannah got the rest. She said, Grandpa, if you don’t tell it, it dies with you. She was right. Silence protects you for a while. Then it costs the people who love you."
           ]
         ],
         kept: "It hurt everybody. It just did it quietly.",
@@ -106,7 +107,7 @@ DATA.tom = {
           ]
         ],
         sides: [
-          { heading: "Diane remembers it differently", body: "Forty-three. Two came back marked undeliverable because I had the unit wrong, and I sent them again. He counts forty-one because that’s what’s in the box. And it was not nothing. I wrote about the dog because the dog was what I had. You write a boy what you have.", by: "Remembered by Diane Kessler, his wife" }
+          { heading: "Diane remembers it differently", body: "Forty-three. Two came back marked undeliverable because I had the unit wrong, and I sent them again. He counts forty-one because that’s what’s in the box. And it was not nothing. I wrote about the dog because the dog was what I had. You write a boy what you have.", by: "Diane Kessler, his wife" }
         ],
         plate: { kind: "letter", date: "August 30, 1968", to: "Diane,",
           body: [
@@ -169,8 +170,8 @@ DATA.tom = {
           ]
         ],
         sides: [
-          { heading: "Mike remembers it too", body: "He talked the whole way. Not about the Wall. About Danny’s laugh, and a dog in a church basement, and a sergeant who said he was the only medic who ducked. Two and a half hours to the airport and he didn’t stop. I’d waited my whole life for that bus ride. I didn’t say a word. I didn’t want to break it.", by: "Remembered by Mike Kessler, his son" },
-          { heading: "Hannah remembers it differently", body: "I filled out the form. That’s all. I was twelve, and Grandma did the hard part, which was telling him at breakfast. I signed his name, neatly, which is why Dad says I signed him up. And the rubbing isn’t in a drawer. It’s framed, in my room, and he does check. Every time.", by: "Remembered by Hannah Kessler, his granddaughter" }
+          { heading: "Mike remembers it too", body: "He talked the whole way. Not about the Wall. About Danny’s laugh, and a dog in a church basement, and a sergeant who said he was the only medic who ducked. Two and a half hours to the airport and he didn’t stop. I’d waited my whole life for that bus ride. I didn’t say a word. I didn’t want to break it.", by: "Mike Kessler, his son" },
+          { heading: "Hannah remembers it differently", body: "I filled out the form. That’s all. I was twelve, and Grandma did the hard part, which was telling him at breakfast. I signed his name, neatly, which is why Dad says I signed him up. And the rubbing isn’t in a drawer. It’s framed, in my room, and he does check. Every time.", by: "Hannah Kessler, his granddaughter" }
         ],
         plate: null
       }
@@ -193,7 +194,7 @@ DATA.tom = {
         ],
         kept: "nights were quiet until they weren’t, and I was good when they weren’t",
         sides: [
-          { heading: "Laura remembers it too", body: "I started on his floor in 1999, nights, because that’s where the opening was. The first week a charge nurse said, you’re Doc’s girl, and handed me the worst room. That was the whole welcome. He never once told me what to do at work. He’d just ask, did you stay with them. That’s the only question he ever asked me about a shift.", by: "Remembered by Laura Kessler, his daughter" }
+          { heading: "Laura remembers it too", body: "I started on his floor in 1999, nights, because that’s where the opening was. The first week a charge nurse said, you’re Doc’s girl, and handed me the worst room. That was the whole welcome. He never once told me what to do at work. He’d just ask, did you stay with them. That’s the only question he ever asked me about a shift.", by: "Laura Kessler, his daughter" }
         ],
         voice: { rec: "Dec 7, 2025", len: "0:39", quote: "The GI Bill paid for school, and the only thing I knew how to do was what I’d done over there." },
         plate: null
@@ -206,15 +207,15 @@ DATA.tom = {
         faces: [
           [
             "Hannah asked me in 2020, for a history project, and I told her no. I told her it wasn’t a story for a kid. She said, then when? I didn’t have an answer.",
-            "In 2025 she asked again. My friends from that year are mostly gone. If I don’t say it, the only version left is the one in the textbooks, and the textbooks don’t know Danny laughed louder than anyone. So I said yes. Talking doesn’t open the box. It just lets some air in."
+            "In 2025 she asked again. My friends from that year are mostly gone. If I don’t say it, the only version left is the one in the textbooks, and the textbooks don’t know Danny laughed louder than anyone. So I said yes."
           ],
           [
-            "What I want people to understand is simple. I was a kid who did a hard job, then a man who did a useful one, and the two are connected. And that I was wrong to wait. Silence felt like strength. It was just silence. Tell it while you can, to whoever will listen.",
+            "I was wrong to wait. Silence felt like strength. It was just silence. Tell it while you can, to whoever will listen.",
             "Mike and Laura have heard most of this now. Mike cried, which I’ve seen twice in his life. Laura says she learned her job at my dinner table without knowing it. I don’t know what to do with that. I’m glad, and I’m sorry.",
-            "And Hannah. She asked twice. Everybody should have one person who asks twice."
+            "And Hannah. She asked twice."
           ]
         ],
-        kept: "Talking doesn’t open the box. It just lets some air in.",
+        kept: "the textbooks don’t know Danny laughed louder than anyone",
         voice: { rec: "Feb 8, 2026", len: "1:08", quote: "Hannah asked me in 2020, for a history project, and I told her no." },
         plate: null
       },
@@ -290,7 +291,7 @@ DATA.tom = {
   letter: { to: "Hannah,",
     faces: [[
       "You asked twice. I want you to know what that did. The first time, I said no and thought that was the end of it. The second time, I understood that you were going to keep asking, and that someday you’d be asking a stone. I’d rather you asked me.",
-      "Everything in this book I kept in a box for fifty years because I thought the box was keeping it from hurting you. It wasn’t. It was just keeping me from you. Your father grew up with that. Your aunt did. Your grandmother waited through it. Don’t do that to anybody. If something is heavy, say so. The people who love you can carry more than you think, and they’d rather carry it than watch you.",
+      "Everything in this book I kept in a box for fifty years. I thought that kept it from hurting you. It didn’t. It just kept me from you. Your father grew up with that. Your aunt did. Your grandmother waited through it. Don’t do that to anybody. If something is heavy, say so. The people who love you can carry more than you think, and they’d rather carry it than watch you.",
       "Say Danny’s name once a year after I’m gone. Out loud, anywhere. The driveway counts.",
       "And when you leave, wherever you go, you know what I’m going to say. Your great-grandfather said it to me with a draft letter in his hand, and it took me forty years to do it all the way. Do it faster than I did.",
       "Come home."

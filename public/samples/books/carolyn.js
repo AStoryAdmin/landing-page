@@ -11,7 +11,7 @@ DATA.carolyn = {
   chapters: [
     { era: "Where we come from", memories: [
       { id: "m1", title: "Bread and the lake", dateline: "1966 · aged 6", askedBy: "Dylan",
-        headnote: "At the kitchen table on 17th Street. Bread is in the oven for the whole call.",
+        headnote: "On the phone from her kitchen, the first of the eleven conversations. Bread is in the oven for the whole call.",
         faces: [
           [ "Yeast and the lake. That’s the honest answer. Mom baked bread every Saturday whether we needed it or not, and our house sat four blocks from Lake Macatawa, close enough that when the wind came off the water it went right through the screen door.",
             "I was the middle of three, wedged between Tom, who was always in trouble, and Anne, who never was, because Tom used it all up. We didn’t have much, but we had that kitchen table. Dad at the end by the radio. Mom never sat, honestly. She’d lean on the counter. I had the chair by the window because I was the one who did homework." ],
@@ -178,7 +178,7 @@ DATA.carolyn = {
           [ "That winter I took Mom a loaf every morning before we opened. Rye, if it was warm; she could manage rye. One morning in January she didn’t eat any. She held it in her lap like a cat. I cried in the van after and I didn’t tell Rick.",
             "By February she slept most of the day. I baked her lemon cake anyway, so the house would smell right. She died the next morning, early. Anne called me at the shop. I didn’t write any of it down. I didn’t want to remember it, and now I’m glad somebody asked." ],
           [ "A week later I found her recipe cards in a coffee can above the stove. Forty years of her handwriting, flour still in the corners. I knew right away I’d bake every one of them.",
-            "So I give it a job. Every Saturday I take out the next card and bake whatever is on it, in order. I’m on card 212 of 340. Some of them are terrible. Mom made a lot of gelatin salads. For two hours the house smells like her, and I talk to her out loud, and that’s enough.",
+            "So I give it a job. Every Saturday I take out the next card and bake whatever is on it, in order. I’ve been through all 340 once. I’m on card 125 the second time around. Some of them are terrible. Mom made a lot of gelatin salads. For two hours the house smells like her, and I talk to her out loud, and that’s enough.",
             "Ellie bakes with me every other Saturday. The can goes to her. I’ve written it on the lid." ]
         ],
         photos: [],
@@ -189,12 +189,12 @@ DATA.carolyn = {
     ]},
 
     { era: "Faith & what carried me", memories: [
-      { id: "m9", title: "The year I stopped going", dateline: "2017 – 2018 · aged 57",
+      { id: "m9", title: "The year I stopped going", dateline: "2017 – 2018 · aged 56 to 57",
         headnote: "A February evening, the longest of the eleven conversations. The kitchen again; nothing in the oven this time.",
         faces: [
           [ "I’d like to say church. It wasn’t. I stopped going for a while. I was angry, and I didn’t want to sit there being angry in a nice dress.",
             "What carried me was the Saturdays. The cards. My hands knew what to do even when I didn’t. I suppose that was a kind of praying. Pastor Jim said so, anyway, when I went back. Easter, 2018. I brought a lemon cake for coffee hour. That felt like the right way to walk in." ],
-          [ "I had fifty-seven years of her. And I never once asked about her mother. My grandmother, Ida. I know her name and that she came from Friesland. Everything else went with Mom.",
+          [ "I had fifty-six years of her. And I never once asked about her mother. My grandmother, Ida. I know her name and that she came from Friesland. Everything else went with Mom.",
             "I would have asked what she was afraid of. Whether she liked her life. You think there’s time.",
             "Dylan asks me one question every Sunday now, and I answer all of it, even the parts I’d rather not. Ellie and Sam will know more about me than I ever knew about Ida. That much I can do something about." ]
         ],
@@ -207,15 +207,13 @@ DATA.carolyn = {
 
     { era: "Looking back", memories: [
       { id: "m12", title: "A good day, now", dateline: "March 2026 · aged 65", askedBy: "Dylan",
-        headnote: "The last of the eleven conversations, a Sunday morning in March.",
+        headnote: "The last of the eleven conversations, a Saturday morning in March.",
         faces: [
           [ "Coffee, the crossword, one call from Dylan, and bread in the oven. That’s a good day. I don’t need much more than that anymore.",
-            "If I could tell my twenty-year-old self anything, it would be: this is it. Pay attention. The Saturdays at Tunnel Park, the four-loaf days, Mom leaning on the counter. You don’t get told which ones are the ones.",
+            "I think about the Saturdays at Tunnel Park, the four-loaf days, Mom leaning on the counter. You don’t get told which ones are the ones.",
             "Ellie’s coming at ten. I should go find the next card." ]
         ],
-        photos: [
-          { img: "paintd", pos: "50% 35%", caption: "Dylan at the easel, Pine Avenue, 1987.", face: 0 }
-        ],
+        photos: [],
         kept: null,
         sides: [],
         voice: null,
@@ -228,7 +226,7 @@ DATA.carolyn = {
     { theme: "What matters", quotes: [ { text: "Happiness doesn’t announce itself. It just looks like a normal Saturday.", from: "m5" } ] },
     { theme: "Getting through", quotes: [ { text: "If I kept going, it would just be a story.", from: "m2" } ] },
     { theme: "Work", quotes: [ { text: "Everybody comes once to see what you are. You have to earn the second visit.", from: "m6" } ] },
-    { theme: "Loss", quotes: [ { text: "I had fifty-seven years of her. And I never once asked about her mother.", from: "m9" } ] }
+    { theme: "Loss", quotes: [ { text: "I had fifty-six years of her. And I never once asked about her mother.", from: "m9" } ] }
   ],
 
   little: [
@@ -248,13 +246,13 @@ DATA.carolyn = {
   people: [
     { name: "Rick Bennett", relation: "her husband", line: "Held the umbrella." },
     { name: "Dylan Ellison", relation: "her daughter", line: "Painted the dog purple. Still leaves every light on." },
-    { name: "Mark Ellison", relation: "her son-in-law", line: "Asked for a second slice before he had any intentions." },
-    { name: "Ellie Ellison", relation: "her granddaughter", line: "Card 214. Finished the parade with both shoes on." },
+    { name: "Mark Ellison", relation: "her son-in-law", line: "Was given a second slice before he had any intentions." },
+    { name: "Ellie Ellison", relation: "her granddaughter", line: "Card 133, the second time around. Finished the parade with both shoes on." },
     { name: "Sam Ellison", relation: "her grandson", line: "Likes my stories and my car. The car is a 2009 Buick." },
     { name: "Ruth Walsh", relation: "her mother", line: "Baked every Saturday whether we needed it or not. Never sat down." },
     { name: "Frank Walsh", relation: "her father", line: "The end of the table, by the radio. Laughed himself onto the curb." },
     { name: "Anne", relation: "her sister", line: "Never in trouble. Took the picture." },
-    { name: "Tom", relation: "her brother", line: "Always in trouble. Brought nothing, as usual." },
+    { name: "Tom", relation: "her brother", line: "Always in trouble. Used it all up, so Anne never had to be." },
     { name: "Patty Kowalski", relation: "her best friend at ten", line: "We wrote letters until 2009. I kept every one." },
     { name: "Ida", relation: "her grandmother", line: "A name, and Friesland. That’s all I have." }
   ],
@@ -263,16 +261,16 @@ DATA.carolyn = {
     { who: "Dylan Ellison", relation: "her daughter", title: "The box under the bed", dateline: "2026",
       faces: [[
         "There is a box under my parents’ bed with every painting I made between three and six. I found it when I was fifteen and thought it was the most embarrassing thing I had ever seen. Now there’s one under my bed for Ellie and one for Sam.",
-        "Mom taught me that almost anything can be fixed with a warm kitchen and a little patience. I’m still working on the patience. There was a lemon cake on every bad day of my life, including the day I quit my job to start the studio. She didn’t ask why. She just had the cake out by the time I got there."
+        "My mother has never once told me she was worried about me. She bakes instead. There was a lemon cake on every bad day of my life, including the day I quit my job to start the studio. She didn’t ask why. She just had the cake out by the time I got there."
       ]] },
     { who: "Mark Ellison", relation: "her son-in-law", title: "The second slice", dateline: "2026",
       faces: [[
         "Seventeen years ago Carolyn handed me a slice of lemon cake and asked what my intentions were. I said I didn’t have any yet. She gave me a second slice anyway.",
         "I’ve heard the umbrella story more times than I can count, and I think it’s the whole test. Not whether you’d hold it. Whether you’d hold it through the whole dinner and eat with the wrong hand."
       ]] },
-    { who: "Ellie and Sam Ellison", relation: "her grandchildren", title: "Card 214", dateline: "2026",
+    { who: "Ellie and Sam Ellison", relation: "her grandchildren", title: "Card 133", dateline: "2026",
       faces: [[
-        "<i>Ellie, 12:</i> Grandma C, we are on card 214! Next is the green jello one. I am NOT eating it.",
+        "<i>Ellie, 12:</i> Grandma C, we are on card 133 again! Next is the green jello one. I am NOT eating it.",
         "<i>Sam, 9:</i> My favorite things about Grandma are her stories and her car."
       ]] }
   ],
@@ -283,7 +281,6 @@ DATA.carolyn = {
         "I’m proud of the studio. I’m prouder of how you talk to your kids. When it’s your turn, sit down at the table and let them ask you things. Answer all of it. Even the parts you’d rather not." ],
       [ "Ellie, the coffee can is yours. Finish the cards, even the gelatin ones. Then start a can of your own. Somebody will want it someday.",
         "Sam, stories and the car, you said. The car is a 2009 Buick and it’s yours at sixteen if your mother agrees. The stories are already yours.",
-        "There was a woman in Holland, Michigan, who loved the people at her kitchen table more than she ever managed to say out loud. You’re all of them. Pull up a chair.",
         "With all my love," ]
     ],
     sig: "Mom" },

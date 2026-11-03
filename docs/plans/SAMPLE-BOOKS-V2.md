@@ -57,20 +57,21 @@ minutes later", layer bars, stats, summaries, lesson boxes were not necessary.
 
 ## Tasks
 
-| # | Task | Check |
-|---|------|-------|
-| 1 | Research: what great legacy books do; competitors; the 10x list; verdict on each device | `scratchpad/research-great-book.md` |
-| 2 | Design-parity spec: the app book's anatomy, mapping to sample CSS, delete list | `scratchpad/design-parity-spec.md` |
-| 3 | Writers' brief + content schema (this file, §Schema) | writers can start |
-| 4 | Builder: new page templates + CSS + `compileBook(DATA)`; trim the scanned view to listen + archive | page renders Carolyn from DATA |
-| 5 | Writers ×3: Carolyn, Raymond, Tom as DATA files | each passes the word budget + verbatim-quote check |
-| 6 | Integrate, overflow check, counts check | criteria 6–8 |
-| 7 | Cold-reader panel; fix | criterion 9 |
-| 8 | Lint, build, screenshots, commit | criterion 10 |
+| # | Task | Check | State (3 Nov) |
+|---|------|-------|---------------|
+| 1 | Research: what great books do; competitors; the 10x list; verdict on each device | `docs/plans/sample-books-v2/research-great-book.md` | done |
+| 2 | Design-parity spec: the app book's anatomy, mapping to sample CSS, delete list | `docs/plans/sample-books-v2/design-parity-spec.md` | done |
+| 3 | Writers' brief + content schema (this file, §Schema) | writers can start | done |
+| 4 | Builder: compileBook(DATA) + parity CSS + measured text flow; scanned view trimmed to listen + archive | page renders all three from DATA | done |
+| 5 | Writers ×3: Carolyn, Raymond, Tom as DATA files (public/samples/books/*.js) | `check-data.mjs` OK ×3 | done |
+| 6 | Integrate, overflow check, counts check | `node scripts/qa/samples-overflow.mjs <url>` → OK | done |
+| 7 | Cold-reader panel ×2; editor pass | round 1: 7.95 / 7.15 / 7.85; round 2 in `docs/plans/sample-books-v2/panel-round2.md` | round 2 pending |
+| 8 | Lint, build, screenshots, commit; covers re-captured | branch `sample-books-v2` | in progress |
+| 9 | Daniel reviews on the preview, then PR → main → astoryapp.com | live /samples | waits for Daniel |
 
 ## Schema (what a writer hands in)
 
-One JS file per book, `DATA.<id> = { … }`, plain JS object literal, no HTML in strings except `<i>…</i>`. Checked by `scratchpad/check-data.mjs`.
+One JS file per book, `DATA.<id> = { … }`, plain JS object literal, no HTML in strings except `<i>…</i>`. Checked by `scripts/qa/samples-check-data.mjs`.
 
 ```js
 DATA.carolyn = {
@@ -111,7 +112,7 @@ Word budgets per face (the page is fixed-size and cannot scroll): page 1 ≤ 140
 (≤ 90 with a photo); page 2 ≤ 220 (≤ 140 with a photo); minus 60 per side and 40 for the
 listen block on the page that carries them.
 
-## Decisions from the research (3 Nov, `scratchpad/research-great-book.md`)
+## Decisions from the research (3 Nov, `docs/plans/sample-books-v2/research-great-book.md`)
 
 Every competitor book is the same object: prompt as title → prose → photo → QR. StoryWorth
 is verbatim-and-flat ("prompts were automatically inserted into the stories… I really
