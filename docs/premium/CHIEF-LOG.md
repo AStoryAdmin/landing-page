@@ -135,6 +135,33 @@ State: **passed only locally** (Chromium, `vite preview` :5202). Shots in
   layout, not the header, so left alone. The /samples P3 items (large-type button colour, controls row) are
   not in this step.
 
+### Review fixes (supervisor rulings 4–6), re-measured
+State: **passed only locally** (Chromium, `vite preview` :5202, reducedMotion). Shots refreshed.
+
+- Ruling 4a: WAYS hides its 4th item ("Together") at ≤ 640 (`li:nth-child(n + 4)`); 4 from 641 px.
+- Ruling 4b: Four moments `.sheet` ("The transcript, word for word") hidden at ≤ 640. MemoryCard and the
+  "Every call keeps the card and the full transcript" note stay.
+- Ruling 5: /for-families lead is now "Everything around the wedding photos: the story he tells every
+  Thanksgiving, and why everyone in that photograph is laughing." (existing clause only). 3 lines at 390
+  and at 1440 (measured height / line-height). Copy-check `(gone|lose|loses|lost|miss|missed|remembering|passed away)`
+  on rendered text: 0 on /how-it-works, /for-families, /your-story (only hits left are code comments).
+- Ruling 6: "Guided calls are the only paid part." deleted from YourStory.tsx; FREE_TIER line and
+  "What Free includes" link stay.
+
+| Page | Screens 390 / 1440 (before → after) | Target |
+|---|---|---|
+| /how-it-works | 10.27 → **9.80** / 6.98 → **6.98** | ≤ 8 / ≤ 6 |
+| /for-families | 7.51 → 7.48 / 4.72 | ≤ 7.6 |
+| /your-story | 6.43 → 6.40 / 4.06 | ≤ 6.5 |
+
+**Measured exception for Daniel (/how-it-works, ruling 4c):** still 1.80 screens over at 390 and 0.98 over at
+1440 after (a) and (b); no further copy cut, per the ruling. Section heights at 390 (px / screens): hero
+930 / 1.10, #film 1272 / 1.51, Four moments 1417 / 1.68 (was 2.12), Asked 354 / 0.42, **calls (home/Listen,
+not owned) 1343 / 1.59**, Ways 628 / 0.74 (unchanged: it is a one-row scroller, so the hidden 4th item
+saves no height), Volume 720 / 0.85, **closing 687 / 0.81, footer 881 / 1.04**. The residual is the Listen
+block plus closing and footer (3.44 screens together). 1440 is unchanged because both cuts apply at ≤ 640
+only.
+
 ## Builder 1 — P1a shell, review fixes (branch premium/b1)
 
 ### S20 applied: the desktop bar starts at 1180, not 1024 (spec §1.1)

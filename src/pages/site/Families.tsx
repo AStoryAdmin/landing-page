@@ -490,7 +490,7 @@ export default function Families() {
               The stories <em>between you.</em>
             </>
           }
-          lead="Nobody loses the wedding photos. They lose everything around them - the story he tells every Thanksgiving, and why everyone in that photograph is laughing."
+          lead="Everything around the wedding photos: the story he tells every Thanksgiving, and why everyone in that photograph is laughing."
           actions={
             <>
               <PrimaryLink to={START_HREF}>

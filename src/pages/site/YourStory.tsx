@@ -274,7 +274,6 @@ function KeptRoom() {
             <p className="free" data-rise>
               <b>{FREE_TIER.headline}:</b> {lower(FREE_TIER.includes[1])},{" "}
               {lower(FREE_TIER.includes[2])} and the whole family invited.
-              Guided calls are the only paid part.
               <br />
               <TextLink to="/pricing">What Free includes</TextLink>
             </p>

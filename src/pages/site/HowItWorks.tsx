@@ -293,6 +293,13 @@ const Moments = styled(Chapter)`
       transform: none;
     }
   }
+  /* Supervisor ruling (CHIEF-LOG, §4A length): on a phone the typed sheet
+     stays out; the card and the "full transcript" note carry the claim. */
+  @media (max-width: 640px) {
+    .sheet {
+      display: none;
+    }
+  }
 `;
 
 function FourMoments() {
@@ -475,6 +482,12 @@ const Ways = styled(Chapter)`
   @media (min-width: 641px) and (max-width: 1024px) {
     .scroller .scroller-track {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  /* Spec §4A cut: three ways in at 390 (the fourth only from 641px). */
+  @media (max-width: 640px) {
+    .scroller li:nth-child(n + 4) {
+      display: none;
     }
   }
   li {
