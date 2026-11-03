@@ -66,7 +66,13 @@ import { QuoteBand, RuledSteps } from "./rooms/Rooms";
 import DemoSection from "./kit/DemoSection";
 import { TODAY_NOTE } from "../../lib/today";
 import { QUESTION_COUNT } from "../../lib/product";
-import { CAN_SAY, NOT_CLAIMED } from "./orgQuestions";
+import {
+  CAN_SAY,
+  CARE_SAY_ORDER,
+  NOT_STATED,
+} from "./orgQuestions";
+import PrintSheet from "./kit/PrintSheet";
+import { CONTACT } from "../../lib/contact";
 import { color, display, font, media, space, type } from "../../styles/theme";
 
 /* The opening's object: a call in progress in the real app (public/app/
@@ -89,6 +95,19 @@ const Call = styled.figure`
     color: var(--muted);
     text-align: center;
     text-wrap: balance;
+  }
+  /* Round 3 fix 1 (item 12b, Denise): on a wide screen the phone stops
+     under the microphone, so the capture's call-time counter (and the
+     status line above it) never shows; a timer reads as a meter running
+     out. CSS only: the frame is 390:820 with a 2.4cqw bezel, so the screen
+     image is 2.057 x the device width tall; the microphone ends at 1.54 x,
+     the status line starts at 1.61 x, and the band ends at 1.58 x. */
+  @media (min-width: 861px) {
+    .device {
+      aspect-ratio: 1 / 1.58;
+      overflow: hidden;
+      mask-image: linear-gradient(to bottom, #000 97%, transparent 100%);
+    }
   }
   /* Phone: the top of the real phone, bezel and all, cut straight at the
      bottom of a 250 px band and fading only there, so it reads as the app
@@ -158,6 +177,18 @@ const Know = styled(Chapter)`
   .shot .device {
     width: min(100%, 320px);
   }
+  /* Round 3 fix 1 (item 12b, Denise): the memory page stops under "Who's in
+     it / Add people", so the capture's red delete button, its save date and
+     "2 waiting for you" never show. CSS only (same geometry as the hero:
+     "Created by" starts at 1.53 x the device width; the band ends at 1.49 x,
+     fading over its last 10 %). Phones keep their shorter band below. */
+  @media (min-width: 861px) {
+    .shot .device {
+      aspect-ratio: 1 / 1.49;
+      overflow: hidden;
+      mask-image: linear-gradient(to bottom, #000 90%, transparent 100%);
+    }
+  }
   .shot figcaption {
     max-width: 34ch;
     font: 400 ${type.note} / 1.5 ${font.ui};
@@ -197,6 +228,14 @@ const Know = styled(Chapter)`
     .words li {
       padding-top: ${space.sm};
       padding-bottom: ${space.sm};
+    }
+  }
+  /* Round 3 fix 1 (item 12, 8 screens at 390): on a phone the first screen
+     already shows the app, so this room is its words only. */
+  ${media.sm} {
+    padding: ${space.xl} 0;
+    .shot {
+      display: none;
     }
   }
 `;
@@ -318,6 +357,14 @@ const Need = styled(Chapter)`
     font-weight: 500;
     color: var(--ink);
   }
+  /* Round 3 fix 1 (item 12a): what is not stated yet, in the ink, then
+     the ask and the two links, each on its own line. */
+  .say .not-stated {
+    margin-top: ${space.sm};
+    max-width: 56ch;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--ink);
+  }
   .say .ask {
     margin-top: ${space.xs};
     max-width: 56ch;
@@ -331,23 +378,27 @@ const Need = styled(Chapter)`
     font-weight: 600;
     text-underline-offset: 4px;
   }
-  /* Two links in one short paragraph can land on consecutive lines. They
-     stay inline, so every line keeps one even leading (the inline-block
-     made the lines that held a link 54px and the rest 28px, the broken
-     leading the supervisor read in the film credit). The first link's
-     44px hit area reaches up over the line above, every later one's down
-     over the line below, and the paragraph's leading opens to 1.7, so two
-     links on consecutive lines sit 8px or more apart (taste rule 20;
-     round 3, B4 fix pass 2). */
-  main[data-premium] & .say .ask {
-    line-height: 1.7;
+  /* The ways on: one link a line, each a 44px row, 8px apart (taste
+     rule 20; round 3 fix 1). */
+  .say .ways {
+    display: grid;
+    gap: ${space.xs};
+    margin: ${space.xs} 0 0;
+    padding: 0;
+    list-style: none;
   }
-  main[data-premium] & .say .ask a:not([class]) {
-    display: inline;
-    padding-block: 26px 0;
+  .say .ways li {
+    padding: 0;
   }
-  main[data-premium] & .say .ask a:not([class]) ~ a:not([class]) {
-    padding-block: 0 26px;
+  main[data-premium] & .say .ways a:not([class]),
+  .say .ways a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0;
+    color: var(--ink);
+    font-weight: 600;
+    text-underline-offset: 4px;
   }
   /* The folds: on a phone only. From 641 px the summary is hidden and the
      details stay open (closed details with no summary could never open
@@ -461,6 +512,16 @@ const Circle = styled.div`
       padding-bottom: ${space.xxl};
     }
   }
+  /* Round 3 fix 1 (item 12, each line once): on a phone the band is its
+     line to remember and its title. Its three rows repeat lines this page
+     already says above ("An agreed hour", "One link, no account" on the
+     family, "Only the people ... invite"), so the phone, which reads the
+     page top to bottom, skips them (8 screens at 390). */
+  ${media.sm} {
+    > section ul {
+      display: none;
+    }
+  }
   ${media.up.lg} {
     > section .row {
       grid-template-columns: minmax(0, 1fr);
@@ -502,7 +563,7 @@ const FOLD = "(max-width: 640px)";
      NEED ("we help them install the app"), and this page's own line "or a
      staff member starts a conversation together with them";
    - the hour: this page ("at an agreed hour"), faqData.ts "the app rings
-     at the hour you picked and they answer and talk";
+     at the hour your family picked and they answer and talk";
    - one person: AGREE "Who helps" below; kit/DemoSection.tsx NEXT "A
      program can begin with one class, one floor or one team";
    - consent: privacy.tsx section 6; AGREE "Consent" below. The last
@@ -521,7 +582,9 @@ const NEED: readonly [string, string][] = [
   ],
   [
     "The resident’s consent, before the first call.",
-    "Agreed with them, together with who may read or contribute. How that works for a resident who cannot decide alone, we go through on the demo.",
+    /* Round 3 fix 1 (item 12a): the demo half of this line moved into the
+       one "Not stated on this page yet" line (orgQuestions.ts NOT_STATED). */
+    "Agreed with them, together with who may read or contribute.",
   ],
   [
     "Pricing, quoted on the demo.",
@@ -577,6 +640,7 @@ export default function Care() {
         path="/care-communities"
         description="Make room for a resident’s own stories and family perspectives. What you need, what we can say today about privacy and consent, and a small community program."
       />
+      <PrintSheet />
       <Fit>
         <PageOpening
           variant="letter"
@@ -651,21 +715,31 @@ export default function Care() {
           <details className="fold" ref={say} open>
             <summary>What we can say today</summary>
             <ul aria-labelledby="say-title">
-              {CAN_SAY.map((t) => (
+              {CARE_SAY_ORDER.map((i) => CAN_SAY[i]).map((t, i) => (
                 <li key={t.lead}>
                   <b>{t.lead}</b>
-                  {t.rest && <> {t.rest}</>}
+                  {/* The repeats line (CARE_SAY_ORDER[0]) keeps only its
+                      lead here: "never a test" is in Know below. */}
+                  {t.rest && i > 0 && <> {t.rest}</>}
                 </li>
               ))}
             </ul>
+            <p className="not-stated">{NOT_STATED}</p>
             <p className="ask">
-              {NOT_CLAIMED}{" "}
-              <Link to="/privacy">Read the privacy policy</Link>, or the{" "}
-              <Link to="/questions#organizations">
-                answers for organizations
-              </Link>
-              : staff access, ownership, retention, export and consent.
+              Bring them to the demo, or write to{" "}
+              <a href={CONTACT.general}>contact@astoryapp.com</a>; Daniel
+              answers every message himself.
             </p>
+            <ul className="ways" aria-label="Read more">
+              <li>
+                <Link to="/privacy">Read the privacy policy</Link>
+              </li>
+              <li>
+                <Link to="/questions#organizations">
+                  Answers for organizations
+                </Link>
+              </li>
+            </ul>
           </details>
         </Frame>
       </Need>
@@ -756,7 +830,9 @@ export default function Care() {
             A small program, <em>shaped with you.</em>
           </>
         }
-        lead="Begin with the residents and families who want to take part. Community pricing is quoted individually, on the demo."
+        /* Round 3 fix 1 (item 12c): "quoted on the demo" is said once on
+           this page, in "What you need" (Care.tsx NEED). */
+        lead="Begin with the residents and families who want to take part."
         aside={
           <ul aria-label="What we agree before anyone is called">
             {AGREE.map(([t, d]) => (

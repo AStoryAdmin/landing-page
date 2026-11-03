@@ -67,7 +67,9 @@ import {
 } from "./kit/kit.styles";
 import DemoSection from "./kit/DemoSection";
 import { INSTITUTION_KINDS } from "../../lib/demoRequest";
-import { CAN_SAY, NOT_CLAIMED } from "./orgQuestions";
+import { CAN_SAY, NOT_STATED } from "./orgQuestions";
+import PrintSheet from "./kit/PrintSheet";
+import { CONTACT } from "../../lib/contact";
 import { color, display, font, media, shadow, space, type } from "../../styles/theme";
 
 type Kind = (typeof INSTITUTION_KINDS)[number];
@@ -127,7 +129,7 @@ const WHO: { kind: Kind; label: string; title: string; body: string }[] = [
    or the app already says:
    - the iPhone: faqData.ts "Will it ring on another phone or tablet?" and
      the old NEED line "we help them install the app";
-   - the hour: faqData.ts "the app rings at the hour you picked and they
+   - the hour: faqData.ts "the app rings at the hour your family picked and they
      answer and talk", STEPS "at the hour each person picks";
    - one person on your side: kit/DemoSection.tsx NEXT "A program can begin
      with one class, one floor or one team", Care.tsx AGREE "Who helps";
@@ -595,6 +597,36 @@ const Program = styled(Chapter)`
   main[data-premium] & .privacy p a:not([class]) ~ a:not([class]) {
     padding-block: 0 26px;
   }
+  /* Round 3 fix 1 (item 12a): what is not stated yet, in the ink; the ask
+     with its one address; then the two ways on, one 44px row each, 8px
+     apart. */
+  .privacy p.not-stated {
+    color: var(--ink);
+  }
+  main[data-premium] & .privacy p.ask a:not([class]) {
+    padding-block: 13px;
+  }
+  .privacy .ways {
+    display: grid;
+    gap: ${space.xs};
+    margin: ${space.xs} 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .privacy .ways li,
+  .privacy .ways li + li {
+    margin: 0;
+  }
+  main[data-premium] & .privacy .ways a:not([class]),
+  .privacy .ways a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0;
+    color: var(--ink);
+    font-weight: 600;
+    text-underline-offset: 4px;
+  }
   /* On a phone the privacy fold sits flush under "You decide" (one rule
      between them) and its summary names the block, so the h3 steps out
      of the layout; it still names the list (aria-labelledby). */
@@ -754,6 +786,7 @@ export default function Organizations() {
 
   return (
     <>
+      <PrintSheet />
       <EditorialSeo
         title="A Story for schools, libraries and companies"
         path="/organizations"
@@ -942,14 +975,25 @@ export default function Organizations() {
                       </li>
                     ))}
                   </ul>
-                  <p>
-                    {NOT_CLAIMED}{" "}
-                    <Link to="/privacy">Read the privacy policy</Link>, or the{" "}
-                    <Link to="/questions#organizations">
-                      answers for organizations
-                    </Link>
-                    : staff access, ownership, retention, export and consent.
+                  {/* Round 3 fix 1 (item 12a): one place for what the site
+                      does not state yet (orgQuestions.ts NOT_STATED), then
+                      orgQuestions.ts:145's ask, word for word. */}
+                  <p className="not-stated">{NOT_STATED}</p>
+                  <p className="ask">
+                    Bring them to the demo, or write to{" "}
+                    <a href={CONTACT.general}>contact@astoryapp.com</a>;
+                    Daniel answers every message himself.
                   </p>
+                  <ul className="ways" aria-label="Read more">
+                    <li>
+                      <Link to="/privacy">Read the privacy policy</Link>
+                    </li>
+                    <li>
+                      <Link to="/questions#organizations">
+                        Answers for organizations
+                      </Link>
+                    </li>
+                  </ul>
                   <p className="compare">
                     Looking at StoryCorps as well? It is a public archive, not
                     a private family one. A Story’s archive is private by

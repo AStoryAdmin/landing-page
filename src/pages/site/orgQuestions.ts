@@ -64,9 +64,23 @@ export const CAN_SAY: readonly { lead: string; rest: string }[] = [
 
 /** The line under CAN_SAY on both pages: what is not claimed, and where
  *  it is answered. Nothing about HIPAA, a BAA or residency either way
- *  (design-spec §4C, flagged for Daniel). */
-export const NOT_CLAIMED =
-  "HIPAA, a BAA or where data lives: we make no claim on this page. Bring those to the demo, and Daniel answers them directly.";
+ *  (design-spec §4C, flagged for Daniel).
+ *  Round 3 fix 1 (item 12a, Denise and Priya): the run of "bring it to the
+ *  demo" answers on the page becomes this one place. It names what the site
+ *  does not state yet (the facts blocked on Daniel, plan round 3) and claims
+ *  nothing about any of them; the second sentence is this file's ORG_GROUP
+ *  HIPAA answer (orgQuestions.ts:145) word for word. */
+export const NOT_STATED =
+  "Not stated on this page yet: HIPAA and a BAA, where data is stored, export formats, consent for a resident who cannot decide alone, and price.";
+export const NOT_STATED_ASK =
+  "Bring them to the demo, or write to contact@astoryapp.com; Daniel answers every message himself.";
+
+/** Round 3 fix 1 (item 12d): on /care-communities the care-relevant lines
+ *  come first (repeats are fine, nothing appears until "yes", who owns it,
+ *  who listens), then data and export. Indexes into CAN_SAY. The "never a
+ *  test" half of the repeats line is said once on that page, in its own
+ *  steps, so the care list carries the lead only (item 12c). */
+export const CARE_SAY_ORDER = [5, 1, 3, 0, 2, 4] as const;
 
 /** The group on /questions. Each answer names its source in a comment. */
 export const ORG_GROUP = {
