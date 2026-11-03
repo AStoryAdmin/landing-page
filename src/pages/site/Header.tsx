@@ -270,6 +270,19 @@ export default function Header() {
                 onClick={close}
               />
             ))}
+            {/* Drawer only (round 3 fix 1, item 10): the visitor's own
+                pages, in the main list and its one size, before the
+                organizations'. Hidden in the desktop bar (chrome.styles.ts),
+                which does not change. */}
+            {DRAWER_DOORS.map((p) => (
+              <RoomLink
+                key={p}
+                path={p}
+                pathname={location.pathname}
+                onClick={close}
+                className="gf-drawer-only"
+              />
+            ))}
             <div
               className="org-wrap"
               ref={orgWrap}
@@ -326,18 +339,6 @@ export default function Header() {
               </div>
             </div>
             {BAR_AFTER.map((p) => (
-              <RoomLink
-                key={p}
-                path={p}
-                pathname={location.pathname}
-                onClick={close}
-              />
-            ))}
-          </div>
-          {/* Drawer only, first tier: the doors for the invited relative and
-              the storyteller, then help (panel round 2, CHIEF-LOG B1.3). */}
-          <div className="gf-nav-doors">
-            {DRAWER_DOORS.map((p) => (
               <RoomLink
                 key={p}
                 path={p}

@@ -16,10 +16,12 @@
  *     rows (2 on the org pages, no "Book a demo"); hover-then-click keeps it
  *     open; Esc closes it and focus is on the trigger.
  * 1.2 drawer at 390 (and 320 for wrapping): no duplicate labels, no "More",
- *     nesting depth ≤ 2, quiet links ≥ 44px tall; screenshots. Panel round 2
- *     (CHIEF-LOG B1.3): the first tier holds "Invited to a family’s book"
- *     (/join), "Being asked" (/how-it-works#being-asked), "Questions &
- *     answers" and "Contact", none of them in the grey row.
+ *     nesting depth ≤ 2, quiet links ≥ 44px tall; screenshots. Round 3 fix 1
+ *     (item 10): the main list is, in this order and in one font size, How
+ *     it works, Sample books, Pricing, For families, Invited to a family’s
+ *     book, Asked to tell your story?, For organizations, Our story; the
+ *     quiet group is Questions & answers, Compare, Conversation guides and
+ *     Contact.
  * 1.3 footer at 1440: every public route reachable from the footer or the
  *     bar, no href twice in the footer, 17 page links including "Privacy, in
  *     short" (/privacy/#legal-short); at 390 the footer ≤ 1.3 screens with
@@ -200,7 +202,7 @@ for (const path of navPages) {
                 door: items.filter((el) => el.classList.contains('gf-door')).length,
                 maxDepth: Math.max(...items.map(depth)),
                 wrapped: items.filter(wraps).map((el) => el.innerText.trim()),
-                firstTier: [...nav.querySelectorAll('.gf-nav-links > a, .org-toggle, .gf-nav-doors a')].filter(visible).map((el) => ({ label: el.innerText.trim(), href: el.getAttribute('href'), depth: depth(el) })),
+                firstTier: [...nav.querySelectorAll('.gf-nav-links > a, .org-toggle')].filter(visible).map((el) => ({ label: el.innerText.trim(), href: el.getAttribute('href'), depth: depth(el), size: getComputedStyle(el).fontSize })),
                 muted: [...nav.querySelectorAll('.gf-nav-muted a')].filter(visible).map((a) => a.textContent.trim()),
                 shortMuted: [...nav.querySelectorAll('.gf-nav-muted a')].filter((a) => a.getBoundingClientRect().height < 44).map((a) => a.textContent.trim()),
                 overflow: document.documentElement.scrollWidth > innerWidth,
@@ -215,11 +217,15 @@ for (const path of navPages) {
         check(`${tag} Book a demo exactly once`, drawer.labels.filter((l) => l === 'Book a demo').length === 1);
         check(`${tag} no label wraps`, drawer.wrapped.length === 0, JSON.stringify(drawer.wrapped));
         check(`${tag} quiet links ≥ 44px`, drawer.shortMuted.length === 0, JSON.stringify(drawer.shortMuted));
+        const MAIN = ['How it works', 'Sample books', 'Pricing', 'For families', 'Invited to a family’s book', 'Asked to tell your story?', 'For organizations', 'Our story'];
+        const QUIET = ['Questions & answers', 'Compare', 'Conversation guides', 'Contact'];
+        const mainLabels = drawer.firstTier.map((r) => r.label);
+        check(`${tag} main list in order`, JSON.stringify(mainLabels) === JSON.stringify(MAIN), JSON.stringify(mainLabels));
+        check(`${tag} main list one size`, new Set(drawer.firstTier.map((r) => r.size)).size === 1, JSON.stringify([...new Set(drawer.firstTier.map((r) => r.size))]));
+        check(`${tag} quiet group`, JSON.stringify(drawer.muted) === JSON.stringify(QUIET), JSON.stringify(drawer.muted));
         for (const [label, href] of [
             ["Invited to a family’s book", '/join'],
-            ['Being asked', '/how-it-works#being-asked'],
-            ['Questions & answers', '/questions'],
-            ['Contact', '/contact'],
+            ['Asked to tell your story?', '/how-it-works#being-asked'],
         ]) {
             const row = drawer.firstTier.find((r) => r.label === label);
             check(`${tag} first tier: ${label}`, !!row && row.href === href && row.depth === 1 && !drawer.muted.includes(label), JSON.stringify(row ?? null));

@@ -339,7 +339,7 @@ export const HeaderShell = styled.header`
   }
 
   .gf-menu-toggle,
-  .gf-nav-doors,
+  .gf-nav-links > a.gf-drawer-only,
   .gf-nav-muted {
     display: none;
   }
@@ -456,7 +456,13 @@ export const HeaderShell = styled.header`
       gap: 0;
       margin: 0;
     }
-    /* 1. Five large serif rows; "For organizations" opens in place. */
+    /* 1. One run of large serif rows, all one size (round 3 fix 1):
+       How it works, Sample books, Pricing, For families, Invited to a
+       family's book, Asked to tell your story?, For organizations (opens in
+       place), Our story. */
+    .gf-nav-links > a.gf-drawer-only {
+      display: flex;
+    }
     .gf-nav-links > a,
     .org-toggle {
       width: 100%;
@@ -508,25 +514,6 @@ export const HeaderShell = styled.header`
     .org-panel .org-demo svg {
       color: ${color.gold};
     }
-    /* 1b. The doors and help (panel round 2): first-tier rows too, one
-       step smaller than the five, so the drawer still reads top-down. */
-    .gf-nav-doors {
-      display: flex;
-      flex-direction: column;
-    }
-    .gf-nav-doors a {
-      display: flex;
-      align-items: center;
-      min-height: 44px;
-      padding: 10px 0;
-      font: 600 ${display.sm} / 1.15 ${font.display};
-      color: ${color.onDark};
-      text-decoration: none;
-      border-bottom: 1px solid ${color.onDarkLine};
-    }
-    .gf-nav-doors a[aria-current="page"] {
-      color: ${color.gold};
-    }
     /* 2. A hairline, then the quiet group (≥ 7:1 on the cloth). */
     .gf-nav-muted {
       display: grid;
@@ -552,6 +539,11 @@ export const HeaderShell = styled.header`
     @media (max-width: 374px) {
       .gf-nav-muted {
         grid-template-columns: max-content;
+      }
+      /* The main list keeps one size, one step down, so no row wraps. */
+      .gf-nav-links > a,
+      .org-toggle {
+        font-size: ${display.sm};
       }
     }
     /* 3. Sign in as a text link, then the one button, full width. The
