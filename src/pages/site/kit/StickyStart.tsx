@@ -48,6 +48,9 @@ const bare = (path: string) => path.replace(/(.)\/$/, "$1");
 const showsOn = (path: string) =>
   SHOW_ON.has(bare(path)) || path.startsWith("/guides/");
 const DEMO_ON = new Set(["/organizations", "/care-communities"]);
+/* Round 3 fix 1 (item 6): on the gift page every Start carries the gift
+   context to the account door (AppDoor.tsx, ?for=someone). */
+const FOR_SOMEONE = new Set(["/for-families"]);
 
 const Bar = styled.div`
   display: none;
@@ -121,7 +124,10 @@ export default function StickyStart() {
         return;
       }
       const endings = document.querySelectorAll<HTMLElement>(
-        '[aria-labelledby="invitation-title"], footer, #book, #collaborate',
+        /* Round 3 fix 1 (item 8): also any inline action row a page marks
+           with data-inline-actions (/for-families #giving), so two Start
+           buttons are never on screen at once. */
+        '[aria-labelledby="invitation-title"], footer, #book, #collaborate, [data-inline-actions]',
       );
       io = new IntersectionObserver((entries) => {
         for (const e of entries) {
@@ -153,7 +159,14 @@ export default function StickyStart() {
           Book a demo <ArrowIcon />
         </PrimaryAnchor>
       ) : (
-        <PrimaryLink to={START_HREF} tabIndex={shown ? 0 : -1}>
+        <PrimaryLink
+          to={
+            FOR_SOMEONE.has(bare(pathname))
+              ? `${START_HREF}?for=someone`
+              : START_HREF
+          }
+          tabIndex={shown ? 0 : -1}
+        >
           {START_LABEL} <ArrowIcon />
         </PrimaryLink>
       )}

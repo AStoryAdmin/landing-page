@@ -33,7 +33,7 @@ import type { ReactNode } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { OFFERS } from "../../lib/founding";
-import { groups as faqGroups } from "./faqData";
+import { PLANS } from "../../lib/pricing";
 import { ArrowIcon, Invitation, PageOpening, Print } from "./kit/kit";
 import Scroller from "./kit/Scroller";
 import { useReveals } from "./kit/reveals";
@@ -41,7 +41,7 @@ import {
   Chapter,
   Frame,
   PrimaryAnchor,
-  PrimaryLink,
+  SecondaryLink,
   Statement,
   TextAnchor,
   TextLink,
@@ -304,11 +304,24 @@ const OCCASIONS = [
     turned (spec §3.5: at most every other print tilted, never past 2°). */
 const TILTS = [-1.2, 0, 0.8, 0, -0.9];
 
-/** The FAQ's own answer, word for word (faqData.ts, "How does giving A Story
-    work?"), so the two never drift apart. */
-const GIVING = faqGroups
-  .flatMap((g) => g.items)
-  .find((i) => i.q === "How does giving A Story work?");
+/* Round 3 fix 1 (item 8, Maya): "Giving it today" as three steps, each a
+   strict subset of faqData.ts:107 ("How does giving A Story work?"): you set
+   up the archive free; choose a good time for the first call; $1 holds the
+   family's place, and we email you when the calls open. Then the one-time
+   plan (same answer; pricing.ts Express). On this page the line about the
+   plans that renew is left out; /questions keeps the whole answer. No gift
+   button, card, note or date (blocked on Daniel). */
+const GIFT_STEPS = [
+  "Set up the archive for your relative today, free.",
+  "Choose a good time for the first call.",
+  `${OFFERS.reserve.price} holds your family’s place in line, and we email you when the calls open.`,
+];
+const GIFT_ONCE = `${PLANS[2].name} is the one-time plan, ${PLANS[2].price}, and nothing renews.`;
+/** Questions.tsx:431, word for word. */
+const DANIEL = "Daniel answers every email himself.";
+
+/** The gift context, carried by every Start on this page (AppDoor.tsx). */
+const GIFT_START = `${START_HREF}?for=someone`;
 
 /** Verbatim from docs/mission.md, "Phrases worth keeping" (spec S27). */
 const NOT_FINISHED =
@@ -398,6 +411,38 @@ const Occasions = styled(Chapter)`
   .gift p.mission {
     font: italic 400 ${type.lead} / 1.4 ${font.display};
   }
+  /* "Giving it today": a card on the sand, three numbered steps. */
+  .gift-card {
+    padding: clamp(${space.lg}, 3vw, ${space.xl});
+    background: ${color.paper};
+    border: 1px solid ${color.primaryLine};
+    border-radius: 3px;
+  }
+  .gift-card ol {
+    margin: ${space.md} 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+    display: grid;
+    gap: ${space.sm};
+  }
+  .gift-card li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 1.8em minmax(0, 1fr);
+    font: 400 ${type.read} / 1.5 ${font.text};
+    color: ${color.primary};
+    max-width: 48ch;
+  }
+  .gift-card li::before {
+    content: counter(step) ".";
+    font-family: ${font.display};
+    font-weight: 600;
+    color: ${color.accentText};
+  }
+  .gift-card p.once {
+    margin-top: ${space.md};
+  }
   /* Who hears the recordings (lib/hears.ts): one quiet line by the action. */
   .gift p.hears {
     font: 400 ${type.note} / 1.55 ${font.text};
@@ -414,6 +459,14 @@ const Occasions = styled(Chapter)`
      and the actions' sit 8px apart, not 3 (taste rule 20; round 3, B4). */
   main[data-premium] & .gift-actions {
     margin-top: calc(${space.sm} + ${space.xs});
+  }
+  /* Start free and Reserve side by side, also at 390 (Maya, item 8). */
+  .gift-actions[data-inline-actions] {
+    column-gap: ${space.sm};
+  }
+  /* Daniel's line under the two buttons keeps its link 8px clear of them. */
+  main[data-premium] & .gift-actions + p.hears {
+    margin-top: ${space.lg};
   }
   ${media.md} {
     .gift {
@@ -450,13 +503,16 @@ function OccasionsRoom() {
           </Scroller>
         </div>
         <div className="gift" id="giving" data-rise>
-          {GIVING && (
-            <div>
-              <h3>{GIVING.q}</h3>
-              <p>{GIVING.a}</p>
-              <p className="mission">{NOT_FINISHED}</p>
-            </div>
-          )}
+          <div className="gift-card">
+            <h3>Giving it today</h3>
+            <ol>
+              {GIFT_STEPS.map((s) => (
+                <li key={s}>{s}</li>
+              ))}
+            </ol>
+            <p className="once">{GIFT_ONCE}</p>
+            <p className="mission">{NOT_FINISHED}</p>
+          </div>
           {/* Round 3 (B2, Maya): the FAQ answer on the left carries what you
               can give today (set up free, the dollar, we email you) and the
               one-time plan with its price, so this column is only who hears
@@ -469,13 +525,22 @@ function OccasionsRoom() {
               {WHO_HEARS_SHORT} {WHO_OWNS}{" "}
               <TextLink to="/privacy">Our privacy promises</TextLink>
             </p>
-            <div className="gift-actions">
-              <PrimaryAnchor href={`${START_HREF}?for=someone`}>
+            {/* Start free and Reserve side by side; the sticky Start bar
+                steps aside while this row is on screen
+                (kit/StickyStart.tsx, data-inline-actions). */}
+            <div className="gift-actions" data-inline-actions>
+              <PrimaryAnchor href={GIFT_START}>
                 {START_LABEL} <ArrowIcon />
               </PrimaryAnchor>
-              <TextLink to="/reserve">
+              <SecondaryLink to="/reserve">
                 Reserve for {OFFERS.reserve.price}
-              </TextLink>
+              </SecondaryLink>
+            </div>
+            <p className="hears">
+              {DANIEL}{" "}
+              <TextLink to="/our-story">Our story</TextLink>
+            </p>
+            <div className="gift-actions">
               <TextLink to="/pricing">Every plan, side by side</TextLink>
               {/* The film, written for the gift buyer (spec §2.1: in-section
                   links are written for their reader; the /pricing form,
@@ -556,7 +621,8 @@ function PhoneRoom() {
           <div>
             <dt>Yes</dt>
             <dd>
-              The calls ring in the A Story app on it, at the hour you picked.
+              The calls ring in the A Story app on it, at the hour your family
+              picked.
               The app is in a private beta: they install it once, and we help
               you set it up.
             </dd>
@@ -650,9 +716,9 @@ export default function Families() {
           }
           actions={
             <>
-              <PrimaryLink to={START_HREF}>
+              <PrimaryAnchor href={GIFT_START}>
                 {START_LABEL} <ArrowIcon />
-              </PrimaryLink>
+              </PrimaryAnchor>
               {/* The gift buyer's own door (Maya: "no Give-as-a-gift button
                   anywhere"). The film link ("Watch the 49-second film") is
                   in the gift block's actions, where this anchor lands. */}
@@ -682,7 +748,10 @@ export default function Families() {
       <OccasionsRoom />
       <ReasonsRoom />
 
-      <Invitation next={["/how-it-works", "/samples", "/pricing"]} />
+      <Invitation
+        next={["/how-it-works", "/samples", "/pricing"]}
+        startHref={GIFT_START}
+      />
     </>
   );
 }
