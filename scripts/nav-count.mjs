@@ -5,8 +5,11 @@
  *   node scripts/nav-count.mjs [--base http://localhost:5201] [--pages /pricing/,/organizations/]
  *                              [--shots qa/premium-2026-11/after] [--no-footer]
  *
- * 1.1 desktop bar at 1440, 1180, 1024: 4 links + 1 menu button + Sign in +
- *     exactly 1 .gf-button, no label wrapping, no "More"; the org panel has 3
+ * 1.1 desktop bar at 1440, 1280, 1180 (the bar starts at 1180, spec fallback
+ *     S20; at 1179 and 1024 the drawer's Menu button shows instead): 4 links +
+ *     1 menu button + Sign in + exactly 1 .gf-button, no label wrapping, no
+ *     "More"; the chevron ≥ 14px and the button's arrow ≥ 16px wide (nothing
+ *     crushed); the right gutter matches the left (±2px); the org panel has 3
  *     rows (2 on the org pages, no "Book a demo"); hover-then-click keeps it
  *     open; Esc closes it and focus is on the trigger.
  * 1.2 drawer at 390 (and 320 for wrapping): no duplicate labels, no "More",
@@ -53,7 +56,16 @@ const open = async (path, width, height) => {
 
 /* ---- 1.1 desktop bar ---------------------------------------------------- */
 for (const path of navPages) {
-    for (const width of [1440, 1180, 1024]) {
+    /* Below the bar's breakpoint the drawer's Menu button takes over. */
+    for (const width of [1179, 1024]) {
+        await open(path, width, 900);
+        const narrow = await page.evaluate(() => {
+            const shown = (s) => { const e = document.querySelector(s); return !!e && e.getClientRects().length > 0 && getComputedStyle(e).visibility !== 'hidden'; };
+            return { menu: shown('.gf-menu-toggle'), links: shown('.gf-nav-links'), overflow: document.documentElement.scrollWidth > innerWidth };
+        });
+        check(`1.1 ${path} @${width} drawer mode (Menu shown, links hidden, no overflow)`, narrow.menu && !narrow.links && !narrow.overflow, JSON.stringify(narrow));
+    }
+    for (const width of [1440, 1280, 1180]) {
         await open(path, width, 900);
         const bar = await page.evaluate(() => {
             const nav = document.querySelector('nav#site-navigation');
@@ -82,6 +94,13 @@ for (const path of navPages) {
                     return el.getClientRects().length !== 1 || lines.length > 1;
                 }).map((el) => el.innerText.trim()),
                 more: [...document.querySelectorAll('header *')].some((el) => el.childElementCount === 0 && el.textContent.trim() === 'More'),
+                chevron: nav.querySelector('.org-toggle .org-chevron')?.getBoundingClientRect().width ?? 0,
+                arrow: document.querySelector('header .gf-button svg')?.getBoundingClientRect().width ?? null,
+                gutters: (() => {
+                    const logo = document.querySelector('.gf-nav-inner > span').getBoundingClientRect();
+                    const ends = [...document.querySelectorAll('.gf-nav-inner *')].filter((e) => e.getClientRects().length && !(panel && panel.contains(e))).map((e) => e.getBoundingClientRect().right);
+                    return { left: Math.round(logo.left), right: Math.round(innerWidth - Math.max(...ends)) };
+                })(),
             };
         });
         const tag = `1.1 ${path} @${width}`;
@@ -91,6 +110,9 @@ for (const path of navPages) {
         check(`${tag} 1 .gf-button`, bar.primary.length === 1, JSON.stringify(bar.primary));
         check(`${tag} nothing wraps`, bar.wrapped.length === 0, JSON.stringify(bar.wrapped));
         check(`${tag} no "More"`, !bar.more);
+        check(`${tag} chevron ≥ 14px`, bar.chevron >= 14, `${bar.chevron}px`);
+        check(`${tag} button arrow ≥ 16px`, bar.arrow === null || bar.arrow >= 16, `${bar.arrow}px`);
+        check(`${tag} right gutter = left gutter`, Math.abs(bar.gutters.left - bar.gutters.right) <= 2, JSON.stringify(bar.gutters));
         if (isOrg(path)) check(`${tag} button reads Book a demo`, bar.primary[0] === 'Book a demo', bar.primary[0]);
         else check(`${tag} button reads Start free`, bar.primary[0] === 'Start free', bar.primary[0]);
 

@@ -33,11 +33,12 @@ import {
  * outside pointer and a route change close it; Esc gives focus back to the
  * trigger.
  *
- * Below 1024px the rooms open on a full-screen sheet of the same cloth: five
+ * Below 1180px (media.navBar; spec §1.1 fallback S20, the row does not fit
+ * at 1024) the rooms open on a full-screen sheet of the same cloth: five
  * large rows (the org menu becomes a disclosure that opens in place), a
  * quiet 2 × 2 group, then Sign in and the one button.
  */
-const WIDE = "(min-width:1024px)";
+const WIDE = "(min-width:1180px)";
 const HOVER = "(hover: hover) and (pointer: fine)";
 
 function RoomLink({

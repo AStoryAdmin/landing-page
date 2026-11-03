@@ -14,7 +14,7 @@
  * opacity move. It is its own View Transition layer, so it holds still
  * while the page under it changes.
  *
- * Below 1024px (media.navBar) the rooms open on a full-screen sheet of the same cloth.
+ * Below 1180px (media.navBar, spec fallback S20) the rooms open on a full-screen sheet of the same cloth.
  *
  * The footer is the back board: the same cloth, quiet. The wordmark at an
  * ordinary size, the link columns, the five program badges, and one line
@@ -199,6 +199,7 @@ export const HeaderShell = styled.header`
     opacity: 0.7;
   }
   .org-chevron {
+    flex: none;
     width: 14px;
     height: 14px;
     opacity: 0.7;
@@ -312,6 +313,7 @@ export const HeaderShell = styled.header`
       transform ${motion.press};
   }
   .gf-button svg {
+    flex: none;
     width: 16px;
     height: 16px;
     transition: transform ${motion.base};
@@ -333,8 +335,9 @@ export const HeaderShell = styled.header`
     display: none;
   }
 
-  /* 1024-1179px: the gaps give way first; labels never wrap or shrink. */
-  @media (min-width: 1024px) and (max-width: 1179px) {
+  /* 1180-1279px: the gaps give way first; labels, the chevron and the
+     arrow never wrap or shrink (flex: none above). */
+  @media (min-width: 1180px) and (max-width: 1279px) {
     .gf-nav-inner,
     nav {
       gap: 20px;

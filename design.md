@@ -160,14 +160,14 @@ runs with it). No autoplay of anything long; no pinned scroll scenes.
 ## Navigation (premium pass, 2026-11-02)
 - Labels live once, in `src/lib/nav.ts` (header, drawer, footer, "Where to
   next"; `public/samples/index.html` copies them by hand).
-- Bar from 1024px (`media.navBar`; `media.nav` stays 1100px for everything
-  else): How it works · Sample books · Pricing · For organizations ▾ · Our
+- Bar from 1180px (`media.navBar`; the spec's 1024 did not fit, so its
+  fallback S20 moved it; `media.nav` stays 1100px for everything else): How it works · Sample books · Pricing · For organizations ▾ · Our
   story, then Sign in as a quiet link and one filled button (Book a demo on
   /organizations and /care-communities, Start free elsewhere). No "More".
 - The org menu (Care communities · Schools, libraries & companies · Book a
   demo) opens on click or a 120ms hover; the Book a demo row is left out on
   the two org pages. Programs & grants is in the footer only.
-- Drawer below 1024px: five large serif rows (the org menu opens in place),
+- Drawer below 1180px: five large serif rows (the org menu opens in place),
   a hairline, a 2 × 2 quiet group (For families · Your own story · Questions
   & answers · Contact), then Sign in and the full-width button.
 - Footer: four columns, 16 page links and the email, no repeats; the
@@ -189,7 +189,9 @@ pixel-identical outside the header and footer (`scripts/home-diff.mjs`).
   `space.section × --sy`.
 - **Buttons (§3.3):** only the primary carries the arrow; on a phone the
   secondary in a row of actions is a centred text link; one 2px focus ring
-  by ground (`--ring`: chocolate on light, ivory on cloth/teal); press 0.97;
+  by ground (`--ring`: chocolate on light, ivory on cloth/teal/night; set
+  per element on focus from the colour actually behind it,
+  `kit/premium.ts` `useGroundRing`); press 0.97;
   disabled 0.5.
 - **Cards (§3.4):** `Card` only for the /pricing plan cards and the
   sign-in/up form; elsewhere type and hairlines.
