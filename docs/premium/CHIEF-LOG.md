@@ -450,3 +450,209 @@ Home diff 0 px at 390 and 1440. Copy-check PASS on /pricing, /reserve, /compare,
 - **Builder 2 (`HowItWorks.tsx`):** please put `id="being-asked"` on the storyteller section (`<Asked …>` in `BeingAsked()`, ~l.395). The drawer row "Being asked", the /join page and `nav.ts` all link to `/how-it-works#being-asked`; until the id lands they open the top of /how-it-works.
 - **Builder 3 (`faqData.ts`):** /questions sorts the group whose title contains "invited" first and gives it `id="invited"` (matched by title, so no other change is needed). Please keep "invited" in the new group's title.
 - **Routing test owner (`qa/routing/cloudfront.test.mjs`, no owner in §6):** suggest adding `['https://astoryapp.com/join', null, '/join/index.html']` so the codeless /join rule is pinned. The edge still rewrites `/join/AB12` (bad code) to `/join/AB12/index.html` as the test expects; S3 has no such key, so that address shows the not-found page rather than the /join doors. Rewriting it to `/join/index.html` needs the test changed in the same commit.
+
+## Chief: plan for panel round 2, from the round 1 results (2026-11-03)
+
+Panel round 1 scored an average of 6.42; the lowest persona was Harold at 6.29. The target is an average of at least 8.04, with every persona at 7 or above. QA round 1: AC1 to AC4 and the home diff all pass, on a local build only.
+
+The weakest scores are clarity (5 to 7), navigation (5 to 7) and desire (4 to 5). Trust is at 5 for both Denise and Priya.
+
+Root causes, ranked by how many personas hit them:
+1. **The pages disagree on whether you can buy today** (Maya, Harold, Tuan, Priya). /for-families sells "Express, $79 one time". /pricing says "Plans aren't on sale yet" (`Pricing.tsx:817`).
+2. **The iPhone requirement and the private beta are buried** (all 5 personas). The fact sits halfway down the page, though the wording already exists in `lib/today.ts:14` and `Reserve.tsx:807`.
+3. **Neither the invited relative nor the storyteller has a page of their own** (Harold, Tuan).
+   - `/join` without a code sends people straight to the app's "Begin a book" screen.
+   - The paragraph for the storyteller is two screens down on /how-it-works.
+   - Neither appears in the menu.
+4. **The org and care pages never say the interviewer is AI** (Priya). Only the FAQ says it (`faqData.ts:34`).
+5. **First-screen friction.**
+   - The H1 fades in too slowly (Tuan).
+   - The /how-it-works hero has too many buttons (Harold, Tuan).
+   - The music credit is set in body-size type (Harold, Tuan).
+6. **The trust lines are hidden** (Harold, Denise). The short version of the privacy policy (`privacy.tsx:101-118`) never appears on the selling pages.
+
+### Rules for every scope
+- Take copy only from the source lines cited below. Rewording is allowed; new facts, numbers or dates are not.
+- No framing around endings, loss or urgency.
+- `/` must stay at a 0 px `home-diff`.
+- Each builder edits only their own files.
+- Every commit needs a tester pass and a supervisor pass first.
+
+### Out of scope under these rules (logged for Daniel below)
+- Proof from a pilot or a customer.
+- HIPAA/BAA and archival formats (§7.5).
+- Pricing per resident.
+- Whether calls ring on an iPad or an Android phone.
+- The web app's "This book belongs to" field and its puppy illustration (web-app repo, §7.6).
+- The size of the text on the phone screen inside the film (needs a re-encode).
+
+### Rulings on the QA copy-check hits
+- `/pricing`, "Stop paying, and it is still yours.": **keep it.** It reassures the buyer about ownership; it does not frame an ending. This follows the same reasoning as S6 ("cancel").
+- `/compare`, "the book isn't the end": **delete the clause** (b3). Nothing replaces it.
+
+### B1: shell and group D. Doors for the storyteller and the invited relative, the first screen, the menu
+Files: `kit/kit.tsx`, `kit/kit.styles.ts`, `kit/premium.ts`, `lib/nav.ts`, `Header.tsx`, `Footer.tsx`, `chrome.styles.ts`, `OurStory.tsx` and `our-story/*`, `Questions.tsx`, `scripts/nav-count.mjs`.
+
+§6 gives no owner for `AppDoor.tsx` or for how a codeless `/join` redirects. The chief assigns them to b1. The redirect rule lives in three places: `AppDoor.tsx`, the inline script in `index.html` and `deploy/cloudfront-viewer-request.js`. All three must follow the same rule.
+
+1. **First screen shows at once.**
+   - Under `main[data-premium]` only, the `PageOpening` H1, lead and hero actions render at full opacity on first paint, with no rise.
+   - Sections below the first viewport keep their reveal, at 300 ms or less.
+   - Check: Playwright reads the H1's computed opacity 200 ms after load. It must be 1 on 8 non-home pages, at 390 and 1440. The home diff stays at 0 px.
+2. **`/join` with no valid code stays on the site.**
+   - `/join/<code>` and `?ref=` still redirect.
+   - The page uses the normal header and footer and drops the mostly blank book cover.
+   - It must not scroll sideways at 1024 (QA measured scrollWidth 1009).
+   - It has two short blocks, worded only from these sources:
+     - **"Invited by a relative?"**: the join lead in `AppDoor.tsx`, the six-letter code (`Families.tsx:193`), one link and no account (`EveryVoice.tsx:532`), and nothing appears until the storyteller says yes (`FamilyLoop.tsx:47`). It also gets a field for the code; a valid `FAMILY_CODE` opens `APP.join(code)`.
+     - **"Being asked to tell your story?"**: the four lines of the storyteller section on /how-it-works (`HowItWorks.tsx:370-380`) and three labels from the short version of the privacy policy (`privacy.tsx:101,105,118`). It links to `/how-it-works#being-asked` and `/privacy`.
+   - Check: `test:routing` passes. `/join/ABCDEF` still redirects. `/join` answers 200 with the header and footer. scrollWidth equals the viewport width at 390, 1024 and 1440.
+3. **Menu.**
+   - The drawer's first tier gains:
+     - "Invited to a family's book", linking to `/join` (the label is already in `nav.ts:74`).
+     - "Being asked", linking to `/how-it-works#being-asked`.
+   - "Questions & answers" and "Contact" move up from the grey row into the first tier.
+   - The drawer stays at most 2 levels deep, with no duplicates.
+   - The desktop bar stays at 4 links.
+   - The footer gains "Privacy, in short", linking to `/privacy`.
+   - Check: update the expectations in `nav-count.mjs` and run it; every check passes (160 or more) with 0 duplicates.
+4. **/our-story:** remove the "Why now" band of statistics (the 11,200 people turning 65 a day and the AARP percentage). This only cuts copy, so it adds no claim. Check: the rendered text on /our-story contains no "%".
+5. **/questions:** show the new group from b3's `faqData` first, with the anchor `#invited`.
+
+### B2: group A, the film and /samples. Say what it is and what it needs on the first screen
+Files: `Families.tsx`, `HowItWorks.tsx`, `YourStory.tsx`, `kit/Film.tsx`, `public/samples/index.html`.
+
+1. **First screen of /for-families.**
+   - Under the existing lead, add one plain line saying what A Story is. Take it from the /how-it-works hero ("A Story does the asking", and `HowItWorks.tsx:560`, "calls in its iPhone app, listens and follows what they actually say") and from the `TODAY` line (`lib/today.ts:14`).
+   - Leave the lead from ruling 5 untouched.
+   - Check: at 390×844 the H1, the new line and "iPhone … private beta" all fit inside the first viewport. The page stays at 7.6 screens or fewer.
+2. **The gift block on /for-families (`Families.tsx:437`).**
+   - Replace "The easiest to give: Express, $79 one time…" with these points, in this order:
+     1. Plans aren't on sale yet (`Pricing.tsx:817`).
+     2. When they open, Express is the one-time choice and nothing renews (`pricing.ts`).
+     3. Today, $1 holds your place (`Reserve.tsx:988`).
+     4. The iPhone line (`Reserve.tsx:807`, first sentence only).
+   - Links: `/reserve` as the primary action, and `/pricing`.
+   - Check: copy-check is clean. "$79" never appears in the block without "not on sale yet".
+3. **/how-it-works.**
+   - Give the storyteller section `id="being-asked"` and move it to just after the hero, before `#film`.
+   - The hero keeps only 2 actions: "Start free" and "Watch the film · 49 s".
+   - Delete the duplicate "Start free / Hear a sample call" row under the film. "See a sample call" becomes a text link in the Four moments block.
+   - Top-align the call card so the right side of the hero is no longer an empty field.
+   - Set the CC BY music credit (M2) as a caption: small type, `color.muted`, starting with "Music:". It stays visible at all times.
+   - Check:
+     - The hero has 2 buttons or fewer.
+     - `#being-asked` starts within 1.5 screens at 390.
+     - The film's AC3 still passes.
+     - The page at 390 is no longer than round 1's measured 9.80 screens.
+4. **Film (requests from b1).**
+   - The facade's focus ring uses `outline-offset: -4px` and `var(--ring)`.
+   - `Again` uses `var(--ring, …)` instead of a hard-coded colour.
+   - Check: `ring-check.mjs` finds a ring on the facade at 390 and 1440.
+5. **/samples (requests from b1).**
+   - Move the breakpoints from 1100/1101 to 1179/1180.
+   - Fix the focus ring on "How a book is made".
+   - Give the rings on the four "Scan this code" buttons a contrast of at least 3:1.
+   - Check: run `ring-check` on /samples.
+
+### B3: group B. One status, one gift line, one action
+Files: `Pricing.tsx`, `kit/PriceLadder.tsx`, `lib/founding.ts`, `faqData.ts`, `Compare.tsx`, `compare/*`, `Reserve.tsx`. `lib/pricing.ts` has no owner in §6, so the chief assigns it to b3.
+
+1. **First screen of /pricing at 390.**
+   - The status line (`Pricing.tsx:817`) sits directly under the H1, before any price.
+   - Then one line, "Giving it as a gift?", saying Express is one time and nothing renews once plans open. It uses the values in `pricing.ts` and adds no new numbers.
+   - Then a single primary action.
+   - Check: at 390×844 the first viewport shows at most 2 prices and 1 primary button.
+2. **`pricing.ts:142`:** change "A short visit, or a moment that will not wait" to "A short visit". The removed half puts time pressure on a family about an older parent. Check: run copy-check.
+3. **/pricing** gets the "Watch the film · 49 s" link from §2.1, pointing to `/how-it-works#film`.
+4. **`faqData.ts`.**
+   - Add a new first group, "If you were invited, or are being asked". It reuses the existing answers to "Who can see our stories?" and "Can relatives add a different version?". It adds "Do I need an account to add something?", answered from `EveryVoice.tsx:532`.
+   - Add a new question, "Will it ring on another phone or tablet?", answered from `Reserve.tsx:807`: before launch only an iPhone rings, and other phones get a reminder to write. It says nothing more about iPads or Android.
+   - Move the answer that names the "AI-guided interviewer" (`:34`) into the first group of the general section.
+   - Check: `test:contracts` passes, and /questions shows the new group first (b1 renders it).
+5. **/compare.**
+   - Delete "the book isn't the end".
+   - Replace the retired label "How A Story is different" in the SEO title with the label in `nav.ts`, as §1.0 requires.
+   - Check: copy-check on /compare finds 0 hits.
+6. **Request from b1:** remove the page-local `:focus-visible` rules on /pricing's `summary` and `thead button`. Check: `ring-check` finds one ring style on the page.
+
+### B4: group C. Name the AI and the iPhone up front, and show the privacy promises
+Files: `Organizations.tsx`, `Care.tsx`, `DemoBooking.tsx`, `Programs.tsx`, `Contact.tsx`, `sitePages.json`.
+
+1. **Hero leads on /organizations (`:451`) and /care-communities.**
+   - Say "an AI-guided interviewer" (`faqData.ts:34`). Take the question count from the `QUESTION_COUNT` constant; do not type the number.
+   - Move the iPhone and private beta line into the first viewport (`Organizations.tsx:110`, and `Care.tsx:239`, which includes the option of a staff member starting a conversation together with the resident).
+   - Check: at 390 and 1440, both "AI" and "iPhone" are visible before the first scroll.
+2. **A privacy block on both pages.**
+   - Quote the three labels from the short version of the privacy policy (`privacy.tsx:101,105,118`) and link to `/privacy`.
+   - Add one line inviting questions about consent, staff access and HIPAA to the demo. Claim nothing about them.
+   - Check: copy-check passes, and nothing claims HIPAA compliance or a BAA.
+3. **Film links from §2.1, both pointing to `/how-it-works#film`.**
+   - /organizations: "See one conversation become a book · 49 s".
+   - /care-communities: "See a call become a book · 49 s".
+4. **Titles.**
+   - In the SEO title at `Organizations.tsx:439`, replace "A Story for institutions" with the label in `nav.ts`.
+   - Rename "How A Story is different" at `sitePages.json:64` to the §1.0 label, matching b3's /compare title.
+   - Check: grep finds 0 retired labels in `sitePages.json` and in the SEO titles.
+5. **/programs:** add a one-line lead saying these are programs that support the company. Remove nothing. Check: no new names are added.
+
+### Assumptions (Daniel asleep)
+- §6 gave no owner for `AppDoor.tsx`, the redirect rule for a codeless `/join` or `lib/pricing.ts`. They are assigned to b1 and b3 as above.
+- The new redirect rule for a codeless `/join` (edge and inline script) only takes effect on deploy, and Daniel deploys.
+- The expected rise in scores is a judgement, not a measurement. Panel round 2 reruns the same 5 personas on the same pages.
+
+### New flags for Daniel
+- **F-r1-1:** care and org pages need proof from a pilot or a customer (Denise, Priya). That needs a real source.
+- **F-r1-2:** a price range for care communities and organization programs.
+- **F-r1-3:** does a call ring on an iPad? No source says so, and the site says iPhone only.
+- **F-r1-4:** the web app's create-account screen asks whose book it is ("This book belongs to"), which confuses a gift buyer. Its puppy illustration also clashes with the site. Both are in the web-app repo (Phase 2, §7.6).
+- **F-r1-5:** the question text on the phone screen inside the film is too small to read at iPad size. Fixing it needs a re-encode.
+
+## Chief: final report (2026-11-03)
+
+Full report: `docs/premium/RESULT.md`. Tree `site-premium` @ `a2f5338`. Nothing is pushed or deployed.
+
+### Rounds
+| Round | Status | Attempts | Merge |
+|---|---|---|---|
+| P0-copy | passed | 2 | d089c50 |
+| P1a-shell | passed | 2 | aa905a4 |
+| P1b-film | passed | 1 | 8576430 |
+| C-structure | not passed after 3 attempts | 3 | continued in C-finish and fix-b4 |
+| D-pages | passed | 3 | b9b413a |
+| A-pages | passed | 2 | 60871df |
+| B-pages | not passed after 3 attempts | 3 | continued in fix-b3 |
+| C-finish | not passed after 3 attempts | 3 | continued in fix-b4 |
+| fix-b1 | passed | 1 | d82944f |
+| fix-b2 | passed | 1 | 74c52f9 |
+| fix-b3 | passed | 2 | f68c937 |
+| fix-b4 | passed | 3 | a2f5338 |
+
+### Merge notes (from the merger)
+- Every merge passed `npm run lint` and `npm run build:static` (31 routes plus 6 old addresses).
+- The build's `scripts/gen-seo-files.mjs` rewrites line endings in `vercel.json`, with no content change. This happened on every merge. It is build noise, not an edit.
+- **P1a:** pre-merge Builder 1 notes in this file were committed first ("docs(premium): CHIEF-LOG notes from Builder 1 (pre-merge)"). The only conflict was in this log; both sides were kept.
+- **A-pages:** the first two builds failed because port 4179 was held by another build (`scripts/prerender.mjs` hard-codes it). The third passed.
+- **D-pages:** the local `src/lib/guides.json` matched premium/b1 byte for byte. It was backed up to the chief scratchpad (`guides.json.bak`), restored, and then merged.
+- **fix-b1, fix-b3, fix-b4:** the chief's uncommitted round 2 plan in this file blocked the merge. Each time it was set aside with a named stash, restored with `git stash apply <sha>`, and that one entry dropped. A bare `git stash` was never used.
+
+### QA r2 (`qa/premium-2026-11/qa-r2.md`)
+- AC1 to AC4 pass on a local build only. The home diff is 0 px at both 390 and 1440.
+- One copy-check hit is left, on /pricing: "Stop paying, and it is still yours." Ruled: keep (see "Rulings" above).
+- **New regression, not fixed:** /pricing CLS is 0.265 at mobile in 4 of 6 runs; origin/main is 0. The element is `.opening-tail` in the `kit.tsx` wide opening. This must be fixed before deploy. Owner: b1 (`kit.tsx`).
+
+### Panel
+- Baseline average 6.08 (Maya 6.0, Harold 6.14, Tuan 6.14; for Denise and Priya see the audit).
+- Round 1 average 6.42 (Harold lowest at 6.29).
+- No round 2 scores reached the chief, so AC5 is **not done**. Next step: re-score the same 5 personas on a2f5338 and write the scores to `docs/premium/panel.md`.
+
+### Requests (open, for the next session)
+- **b1 (`kit/kit.tsx`, `kit/kit.styles.ts`):** stop the /pricing opening lead from dropping 30 px after load (CLS 0.265). Done when Lighthouse mobile CLS is under 0.1 in 6 of 6 runs and home-diff stays at 0 px.
+- **Panel:** re-score round 2 (AC5).
+- **Daniel:** deploy P0 (`fbe134a`, `87f9799`) first. The §7 flags and F-r1-1 to F-r1-5 are still open.
+
+### Worktrees
+- premium/b1 to b4 each have 0 commits that are not in `site-premium`.
+- The worktrees' only uncommitted changes were line-ending noise from the build (`git diff --ignore-cr-at-eol` empty) in `public/_redirects`, `public/robots.txt`, `public/sitemap.xml` and `vercel.json`. Those were restored with `git restore`.
+- The untracked `qa/greenfield/accessibility.json` (a generated a11y output) was copied to the chief scratchpad before removal.
+- The worktrees were then removed with `git worktree remove`, without `--force`. The branches are kept.
