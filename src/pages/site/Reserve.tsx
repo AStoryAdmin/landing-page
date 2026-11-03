@@ -55,6 +55,7 @@ import { useFoundingTaken } from "../../lib/foundingCount";
 import { track } from "../../lib/analytics";
 import { SITE } from "../../lib/seo";
 import { TODAY_NOTE } from "../../lib/today";
+import { WHO_HEARS_SHORT } from "../../lib/hears";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import ComingSoon from "./kit/ComingSoon";
 import CheckoutDetails, { type CheckoutIntent } from "./CheckoutDetails";
@@ -383,6 +384,11 @@ const HeroCard = styled.div`
 const CenterOpening = styled.div`
   [data-variant="object"] .opening-grid:not(.solo) {
     align-items: center;
+  }
+  /* The note is two lines: who hears the recordings, then today's state. */
+  .opening-note .today {
+    display: block;
+    margin-top: 8px;
   }
 `;
 
@@ -1074,7 +1080,14 @@ export default function Reserve() {
               </>
             }
             lead={`Anyone can start A Story free in a browser. The calls come with a plan. ${reserve.price} holds your family a place in line.`}
-            note={TODAY_NOTE}
+            /* Round 3 (B2): who hears the recordings, by the one paid
+               action on the site (lib/hears.ts, from the privacy summary). */
+            note={
+              <>
+                {WHO_HEARS_SHORT} <Link to="/privacy">Our privacy promises</Link>
+                <span className="today">{TODAY_NOTE}</span>
+              </>
+            }
             object={
               <HeroCard>
                 {card(

@@ -87,7 +87,11 @@ const WORDS: Record<Door, { title: string; lead: string; action: string; seo: st
   },
   "create-account": {
     title: "Start free.",
-    lead: "Make your account in A Story, in your browser. No card.",
+    /* Round 3 (B2, WORDS only): the gift buyer arrives here from
+       /for-families with ?for=someone. The second sentence is from
+       faqData.ts "How does giving A Story work?" and the privacy summary
+       (components/privacy.tsx:93, "The storyteller owns it"). */
+    lead: "Make your account in A Story, in your browser. No card. Setting it up for a parent? You make the account and choose a good time for the first call; their story belongs to them.",
     action: "Start free",
     seo: "Start A Story free",
   },

@@ -1,5 +1,6 @@
 import { BOOK, OTHER_PLANS, PLANS, START } from "../../lib/pricing";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
+import { WHO_HEARS, WHO_OWNS } from "../../lib/hears";
 /*
  * Group B round 2 (chief log B3.4): the first group is for the relative who
  * was invited and the parent who is being asked. It reuses two existing
@@ -92,15 +93,30 @@ export const groups = [
         q: "How much is the printed book?",
         a: `Printing the whole book at home is free. Printed editions run from a ${BOOK.from} Softcover to a $149 Heirloom Edition, and a $499 Full-Service Legacy Edition with an editor of ours; the print-ready Digital Edition is $19. ${BOOK.members} ${BOOK.allowance}, with no page limit. ${BOOK.ships}. ${BOOK.opens}`,
       },
+      /* Round 3 (B2): the gift buyer's answer, from these lines only: the
+         old answer (set up the archive for your relative, choose the hour;
+         nothing to redeem), pricing.ts Express ($79, one time, nothing
+         renews), founding.ts INCLUDES.reserve[0] (we email you when the
+         calls open, in the order families reserved). No date is promised. */
       {
         q: "How does giving A Story work?",
-        a: "You help set up an archive for your relative and choose a good time for the first call. There is no gift card, code, or redemption process. Express is the one-time plan; the annual and monthly plans renew. Reserve for $1 to hold your place.",
+        /* Round 3 (B2, Tuan and Harold): "no code" here sat beside "a
+           six-letter code" on /for-families. One rule now: nothing to redeem,
+           and the relative comes in through the family's code or the link
+           that carries it (lib/app.ts:17, index.html:80-81). */
+        a: `You set up the archive for your relative today, free, and choose a good time for the first call. There is nothing to redeem and no gift card: your relative comes in through the family's six-letter code, or the link that carries it. ${PLANS[2].name} is the one-time plan, ${PLANS[2].price}, and nothing renews; the annual and monthly plans renew. Until the plans open, $1 holds your family's place in line, and we email you when the calls open, in the order families reserved.`,
       },
     ],
   },
   {
     title: "Privacy & ownership",
     items: [
+      /* Round 3 (B2): the privacy summary's own words (lib/hears.ts, from
+         components/privacy.tsx:93-98), for the gift buyer. */
+      {
+        q: "Who hears the recordings?",
+        a: `${WHO_HEARS} ${WHO_OWNS} They decide who can see, hear or download anything.`,
+      },
       {
         q: "What happens if I cancel?",
         a: "Your account returns to Free. Your recordings, transcripts, and photographs remain yours, your archive stays open, and invited family members retain access. Paid guided calls stop; you can keep writing and export your archive.",
