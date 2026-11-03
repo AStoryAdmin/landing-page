@@ -72,6 +72,7 @@ import {
   media,
   motion,
   radius,
+  shadow,
   space,
   tracking,
   type,
@@ -829,8 +830,53 @@ const Book = styled(Chapter)`
    beside it (above it on a phone) as the page's real object. */
 const HeroObject = styled.div`
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 0.3fr) minmax(0, 1fr);
+  gap: ${space.xl};
   align-items: center;
+  /* The sample book's cover with its caption (round 3, supervisor: taste
+     rule 12 wants a real object in the first screen; the caption is what
+     the stray thumbnail lacked). The caption is set in the print caption's
+     own hand, kit.styles.ts figcaption. */
+  .cover {
+    margin: 0;
+  }
+  .cover img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: ${radius.sm};
+    box-shadow: ${shadow.md};
+  }
+  .cover figcaption {
+    margin-top: 12px;
+    font: 500 clamp(19px, 1.2rem + 0.2vw, 24px) / 1.15 ${font.script};
+    color: ${color.primary};
+    text-align: center;
+    text-wrap: balance;
+  }
+  .cover figcaption a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.14em;
+  }
+  ${media.md} {
+    grid-template-columns: minmax(0, 1fr);
+    gap: ${space.lg};
+    /* On a phone the cover and its caption share one short row above the
+       sheet, so the object stays inside the first screen. */
+    .cover {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      align-items: center;
+      column-gap: ${space.md};
+    }
+    .cover figcaption {
+      margin-top: 0;
+      text-align: left;
+    }
+  }
 `;
 
 const Sheet = styled.div`
@@ -881,6 +927,20 @@ const Sheet = styled.div`
     font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.body};
   }
+  /* The sheet's foot (round 3, supervisor): who hears the recordings
+     (lib/hears.ts), the privacy link and the currency, one quiet line under
+     the three columns, so the hero note above stays one line. */
+  .foot {
+    margin: 0;
+    padding: ${space.md} clamp(22px, 2.6vw, 48px);
+    border-top: 1px solid ${color.primaryLine};
+    font: 400 ${type.note} / 1.55 ${font.ui};
+    color: ${color.bodyMuted};
+  }
+  .foot a {
+    color: ${color.primary};
+    text-underline-offset: 3px;
+  }
   ${media.md} {
     .cols {
       grid-template-columns: minmax(0, 1fr);
@@ -912,6 +972,9 @@ const Sheet = styled.div`
       margin-top: ${space.xs};
       font-size: ${type.note};
     }
+    .foot {
+      padding: ${space.md} ${space.lg};
+    }
   }
 `;
 
@@ -933,12 +996,6 @@ const HeroWords = styled(PhonePairs)`
     margin-top: ${space.sm};
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
-  }
-  /* The note is two lines: who hears the recordings (lib/hears.ts), then
-     the currency and today's state. */
-  .opening-note .today {
-    display: block;
-    margin-top: ${space.xs};
   }
   ${media.sm} {
     .film-link {
@@ -990,16 +1047,37 @@ function PriceCard() {
           </p>
         </li>
       </ul>
+      <p className="foot wide">
+        {WHO_HEARS_SHORT} <TextLink to="/privacy">Our privacy promises</TextLink>
+        {" · "}Prices in US dollars.
+      </p>
     </Sheet>
   );
 }
 
-/* The hero's object is the price card alone. The sample-book thumbnail
-   that sat beside it had no caption and read as a stray (round 3, Maya);
-   the book section below shows a sample cover with its own words. */
+/* The hero's object: a real sample book's cover ("The Ledger", one of the
+   three books on /samples) beside the price card, with its caption (round
+   3: the thumbnail without one read as a stray, Maya). An existing asset;
+   /samples is a page in public/, outside the router, so a plain anchor. */
 function HeroPrice() {
   return (
     <HeroObject>
+      <figure className="cover">
+        <img
+          src="/book-objects/sample-raymond-720.webp"
+          srcSet="/book-objects/sample-raymond-360.webp 360w, /book-objects/sample-raymond-720.webp 720w"
+          sizes="(max-width: 860px) 96px, 22vw"
+          width={720}
+          height={720}
+          alt="The cover of a sample A Story book, The Ledger, for Raymond and Elena"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
+        <figcaption>
+          <a href="/samples">The Ledger, one of three sample books</a>
+        </figcaption>
+      </figure>
       <PriceCard />
     </HeroObject>
   );
@@ -1192,16 +1270,16 @@ export default function Pricing() {
                   extra), faqData.ts "no fee per relative", Reserve.tsx:762
                   (the dollar). */}
               <span className="status">
-                Everyone starts free, with no card, and relatives you invite
-                pay nothing. The plans that add the calls aren’t on sale yet;{" "}
+                Everyone starts free, with no card; relatives you invite pay
+                nothing. The calls aren’t on sale yet:{" "}
                 <Link to="/reserve">
                   {OFFERS.reserve.price} holds your place in line
                 </Link>
                 .
               </span>
               <span className="gift">
-                Giving it, or wary of anything that renews? {express.name} is{" "}
-                {expressOnce}, and nothing renews.
+                Giving it, or wary of renewals? {express.name} is {expressOnce},
+                and nothing renews.
               </span>
             </>
           }
@@ -1215,15 +1293,7 @@ export default function Pricing() {
               </TextLink>
             </>
           }
-          note={
-            <>
-              {WHO_HEARS_SHORT}{" "}
-              <TextLink to="/privacy">Our privacy promises</TextLink>
-              <span className="today">
-                Prices in US dollars. {TODAY_NOTE}
-              </span>
-            </>
-          }
+          note={TODAY_NOTE}
           object={<HeroPrice />}
         />
       </HeroWords>

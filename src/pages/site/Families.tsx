@@ -33,7 +33,6 @@ import type { ReactNode } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { OFFERS } from "../../lib/founding";
-import { PLANS } from "../../lib/pricing";
 import { groups as faqGroups } from "./faqData";
 import { ArrowIcon, Invitation, PageOpening, Print } from "./kit/kit";
 import Scroller from "./kit/Scroller";
@@ -47,7 +46,7 @@ import {
   TextAnchor,
   TextLink,
 } from "./kit/kit.styles";
-import { WHO_HEARS, WHO_HEARS_SHORT, WHO_OWNS } from "../../lib/hears";
+import { WHO_HEARS_SHORT, WHO_OWNS } from "../../lib/hears";
 import {
   color,
   curve,
@@ -251,9 +250,6 @@ function ReasonsRoom() {
   );
 }
 
-/** Express is the plan the pricing file itself calls the straightforward gift. */
-const express = PLANS.find((p) => p.id === "express")!;
-
 /* ── The occasions ─────────────────────────────────────────────────────── */
 
 /** Fictional occasion scenes — see docs/image-prompts.md, "For families". */
@@ -393,10 +389,6 @@ const Occasions = styled(Chapter)`
   .gift p.mission {
     font: italic 400 ${type.lead} / 1.4 ${font.display};
   }
-  .gift b {
-    font-weight: 500;
-    color: ${color.accentText};
-  }
   /* Who hears the recordings (lib/hears.ts): one quiet line by the action. */
   .gift p.hears {
     font: 400 ${type.note} / 1.55 ${font.text};
@@ -451,20 +443,16 @@ function OccasionsRoom() {
               <p className="mission">{NOT_FINISHED}</p>
             </div>
           )}
-          {/* Round 3 (B2, Maya): the FAQ answer on the left now carries what
-              you can give today (set up free, the dollar, we email you), so
-              this column is only the one-time plan (pricing.ts Express),
-              who hears the recordings, and the actions. The iPhone line
-              moved up into its own yes/no. The Start action carries
-              ?for=someone so the account door knows it is for someone else
-              (AppDoor WORDS). */}
+          {/* Round 3 (B2, Maya): the FAQ answer on the left carries what you
+              can give today (set up free, the dollar, we email you) and the
+              one-time plan with its price, so this column is only who hears
+              the recordings and the actions (the Express sentence it held
+              repeated the answer, supervisor r3). The iPhone line moved up
+              into its own yes/no. The Start action carries ?for=someone so
+              the account door knows it is for someone else (AppDoor WORDS). */}
           <div>
-            <p>
-              The one-time choice is {express.name}, <b>{express.price}</b>,
-              and nothing renews.
-            </p>
             <p className="hears">
-              {WHO_HEARS} {WHO_OWNS}{" "}
+              {WHO_HEARS_SHORT} {WHO_OWNS}{" "}
               <TextLink to="/privacy">Our privacy promises</TextLink>
             </p>
             <div className="gift-actions">
@@ -623,14 +611,14 @@ export default function Families() {
           }
           lead={
             <>
-              Give it to a parent, or begin together. A Story does the asking:
-              it calls in its iPhone app, in a private beta, and follows what
-              they say.
+              Give it to a parent, or begin together.
               {/* Round 3 (B2, Maya): the gift answer in the first screen,
                   from faqData.ts "How does giving A Story work?" (set up the
                   archive, free), Reserve.tsx:762 (a dollar holds your place)
                   and founding.ts INCLUDES.reserve[0] (we email you when the
-                  calls open). No date is promised. */}
+                  calls open). No date is promised. The iPhone / private
+                  beta line left the lead (taste rule 6, supervisor r3): the
+                  yes/no block directly below states it. */}
               <span className="opening-what">
                 Today you can set up their archive free, and{" "}
                 {OFFERS.reserve.price} holds your family’s place in line for
