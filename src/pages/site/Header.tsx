@@ -3,68 +3,89 @@ import { Link, useLocation } from "react-router-dom";
 import { Wordmark } from "./shared";
 import { ArrowIcon } from "./kit/kit";
 import { HeaderShell } from "./chrome.styles";
-import { APP, START_HREF, START_LABEL } from "../../lib/app";
-const primary = [
-  ["How it works", "/how-it-works"],
-  ["Sample books", "/samples"],
-  ["For families", "/for-families"],
-  ["Pricing", "/pricing"],
-  ["Our story", "/our-story"],
-];
-/* The startup programs left the navigation on 2026-10-16: a credential in
-   the main path read as a notice about the company's stage, not the family's
-   story. /programs stays reachable from the footer. */
-/* /samples is a self-contained page served from public/, outside the React
-   router, so it needs a full navigation - a router Link would show the
-   not-found route. */
-const outsideRouter = (to: string) => to === "/samples" || /^https?:/.test(to);
-const DEMO_PAGES = new Set(["/organizations", "/care-communities"]);
-const groups = [
-  {
-    label: "Explore",
-    items: [
-      [
-        "How A Story is different",
-        "/compare",
-        "Memoir products, family archives, and us.",
-      ],
-      ["Questions & answers", "/questions", "The practical things, explained."],
-      ["Conversation guides", "/guides", "A good place to begin."],
-      ["Privacy", "/privacy", "Their story belongs to them."],
-    ],
-  },
-  {
-    label: "Also for",
-    items: [
-      [
-        "Institutions",
-        "/organizations",
-        "Colleges, schools, libraries, companies, communities. Book a demo.",
-      ],
-      [
-        "Care communities",
-        "/care-communities",
-        "Know the person behind the care.",
-      ],
-      ["Your own story", "/your-story", "Your life belongs here too."],
-      [
-        "Get in touch",
-        "/contact",
-        "Write to Daniel, our co-founder.",
-      ],
-    ],
-  },
-];
+import { START_HREF, START_LABEL } from "../../lib/app";
+import {
+  BAR,
+  BAR_AFTER,
+  DRAWER_MUTED,
+  ORG_MENU_LABEL,
+  SIGN_IN,
+  bare,
+  isFile,
+  isOrgPage,
+  orgMenu,
+  route,
+  type RoutePath,
+} from "../../lib/nav";
+
+/*
+ * The bar (premium pass, 2026-11-02, design spec §1):
+ *   How it works · Sample books · Pricing · For organizations ▾ · Our story
+ *   Sign in  [Start free →]
+ * "More" and its panel are gone; Compare, Q&A, Guides, Privacy, Your own
+ * story and Contact live in the footer and in context links. The labels
+ * come from lib/nav.ts. The startup programs stay out of the bar (2026-10-16)
+ * and out of the org menu: /programs is reached from the footer.
+ *
+ * The org menu copies Radix NavigationMenu: it opens on click, and on hover
+ * after 120ms where there is a pointer that hovers; a click on a panel that
+ * hover opened keeps it open (only a second click closes it). Esc, an
+ * outside pointer and a route change close it; Esc gives focus back to the
+ * trigger.
+ *
+ * Below 1180px (media.navBar; spec §1.1 fallback S20, the row does not fit
+ * at 1024) the rooms open on a full-screen sheet of the same cloth: five
+ * large rows (the org menu becomes a disclosure that opens in place), a
+ * quiet 2 × 2 group, then Sign in and the one button.
+ */
+const WIDE = "(min-width:1180px)";
+const HOVER = "(hover: hover) and (pointer: fine)";
+
+function RoomLink({
+  path,
+  pathname,
+  onClick,
+  className,
+}: {
+  path: RoutePath;
+  pathname: string;
+  onClick: () => void;
+  className?: string;
+}) {
+  const r = route(path);
+  /* /samples is a page in public/, outside the React router: a router Link
+     would show the not-found route, so it needs a full navigation. */
+  return isFile(r.to) ? (
+    <a href={r.to} onClick={onClick} className={className}>
+      {r.label}
+    </a>
+  ) : (
+    <Link
+      to={r.to}
+      onClick={onClick}
+      className={className}
+      aria-current={bare(pathname) === r.to ? "page" : undefined}
+    >
+      {r.label}
+    </Link>
+  );
+}
+
 export default function Header() {
   const [open, setOpen] = useState(false),
-    [more, setMore] = useState(false),
+    [org, setOrg] = useState(false),
     [tucked, setTucked] = useState(false),
     [condensed, setCondensed] = useState(false);
   const header = useRef<HTMLElement>(null),
     toggle = useRef<HTMLButtonElement>(null),
-    moreToggle = useRef<HTMLButtonElement>(null),
-    panel = useRef<HTMLDivElement>(null);
+    orgToggle = useRef<HTMLButtonElement>(null),
+    orgWrap = useRef<HTMLDivElement>(null),
+    hoverTimer = useRef(0),
+    /* How the open panel was opened: a hover-opened panel survives the click
+       that follows it (Radix). */
+    openedBy = useRef<"hover" | "click" | null>(null);
   const location = useLocation();
+  const onOrgPage = isOrgPage(location.pathname);
   /*
    * Two scroll states (phase 2: the bar is always the cloth). Past the top
    * it settles; while the reader moves down it tucks away and comes back as
@@ -98,24 +119,28 @@ export default function Header() {
   useEffect(() => {
     const t = setTimeout(() => {
       setOpen(false);
-      setMore(false);
+      setOrg(false);
+      openedBy.current = null;
     }, 0);
     return () => clearTimeout(t);
   }, [location.pathname, location.hash]);
+  useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
+  /* The desktop panel: Esc and an outside pointer close it. In the drawer
+     the disclosure stays until it is toggled or the drawer closes. */
   useEffect(() => {
-    if (!more) return;
+    if (!org || open) return;
     const key = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setMore(false);
-        moreToggle.current?.focus();
+        setOrg(false);
+        openedBy.current = null;
+        orgToggle.current?.focus();
       }
     };
     const outside = (e: PointerEvent) => {
-      if (
-        !panel.current?.contains(e.target as Node) &&
-        !moreToggle.current?.contains(e.target as Node)
-      )
-        setMore(false);
+      if (!orgWrap.current?.contains(e.target as Node)) {
+        setOrg(false);
+        openedBy.current = null;
+      }
     };
     document.addEventListener("keydown", key);
     document.addEventListener("pointerdown", outside);
@@ -123,11 +148,13 @@ export default function Header() {
       document.removeEventListener("keydown", key);
       document.removeEventListener("pointerdown", outside);
     };
-  }, [more]);
+  }, [org, open]);
   useEffect(() => {
     if (!open) return;
     const old = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    /* The sticky bar steps away while the drawer is open (spec §3.6). */
+    document.body.dataset.navOpen = "";
     const outside = [
       ...document.querySelectorAll<HTMLElement>("main,footer"),
     ].map((el) => ({ el, old: el.inert }));
@@ -152,7 +179,7 @@ export default function Header() {
         }
       }
     };
-    const media = matchMedia("(min-width:1101px)");
+    const media = matchMedia(WIDE);
     const wide = () => {
       if (media.matches) setOpen(false);
     };
@@ -160,6 +187,7 @@ export default function Header() {
     document.addEventListener("keydown", key);
     return () => {
       document.body.style.overflow = old;
+      delete document.body.dataset.navOpen;
       outside.forEach((x) => (x.el.inert = x.old));
       document.removeEventListener("keydown", key);
       media.removeEventListener("change", wide);
@@ -167,18 +195,51 @@ export default function Header() {
   }, [open]);
   const close = () => {
     setOpen(false);
-    setMore(false);
+    setOrg(false);
+    openedBy.current = null;
   };
-  /* "Sign in" opens the web app (2026-10-18): accounts live there now, and
-     there is something to sign into. It was left out of the nav from
-     2026-10-03 until then because it led to an empty page. */
-  const account = [["Sign in", APP.signIn] as const];
+  const toggleDrawer = () => {
+    /* The org disclosure starts open on the two org pages, closed elsewhere. */
+    if (!open) setOrg(onOrgPage);
+    else setOrg(false);
+    setOpen(!open);
+  };
+  const desktopHover = () =>
+    !open && matchMedia(WIDE).matches && matchMedia(HOVER).matches;
+  const onOrgEnter = () => {
+    if (!desktopHover()) return;
+    window.clearTimeout(hoverTimer.current);
+    if (org) return;
+    hoverTimer.current = window.setTimeout(() => {
+      openedBy.current = "hover";
+      setOrg(true);
+    }, 120);
+  };
+  const onOrgLeave = () => {
+    if (!desktopHover()) return;
+    window.clearTimeout(hoverTimer.current);
+    if (openedBy.current !== "hover") return;
+    hoverTimer.current = window.setTimeout(() => {
+      openedBy.current = null;
+      setOrg(false);
+    }, 200);
+  };
+  const onOrgClick = () => {
+    window.clearTimeout(hoverTimer.current);
+    if (org && openedBy.current === "hover") {
+      openedBy.current = "click";
+      return;
+    }
+    openedBy.current = org ? null : "click";
+    setOrg(!org);
+  };
+  const rows = orgMenu(location.pathname);
   return (
     <HeaderShell
       ref={header}
       className={[
         "gf-header",
-        tucked && !open && !more ? "is-tucked" : "",
+        tucked && !open && !org ? "is-tucked" : "",
         condensed ? "is-condensed" : "",
         open ? "is-open" : "",
       ].join(" ")}
@@ -193,45 +254,46 @@ export default function Header() {
           ref={toggle}
           aria-controls="site-navigation"
           aria-expanded={open}
-          onClick={() => setOpen(!open)}
+          onClick={toggleDrawer}
         >
           {open ? "Close" : "Menu"} <i aria-hidden="true" />
         </button>
         <nav id="site-navigation" aria-label="Main navigation">
           <div className="gf-nav-links">
-            {primary.map(([label, to]) =>
-              outsideRouter(to) ? (
-                <a key={to} href={to} onClick={close}>
-                  {label}
-                </a>
-              ) : (
-                <Link
-                  key={to}
-                  to={to}
-                  onClick={close}
-                  aria-current={location.pathname === to ? "page" : undefined}
-                >
-                  {label}
-                </Link>
-              ),
-            )}
+            {BAR.map((p) => (
+              <RoomLink
+                key={p}
+                path={p}
+                pathname={location.pathname}
+                onClick={close}
+              />
+            ))}
             <div
-              className="more-wrap"
+              className="org-wrap"
+              ref={orgWrap}
+              onPointerEnter={onOrgEnter}
+              onPointerLeave={onOrgLeave}
               onBlur={(e) => {
-                if (!e.currentTarget.contains(e.relatedTarget as Node))
-                  setMore(false);
+                if (
+                  !open &&
+                  !e.currentTarget.contains(e.relatedTarget as Node)
+                ) {
+                  setOrg(false);
+                  openedBy.current = null;
+                }
               }}
             >
               <button
-                ref={moreToggle}
-                className="more-toggle"
-                aria-expanded={more}
-                aria-controls="more-panel"
-                onClick={() => setMore(!more)}
+                ref={orgToggle}
+                className="org-toggle"
+                aria-expanded={org}
+                aria-controls="org-panel"
+                aria-current={onOrgPage ? "true" : undefined}
+                onClick={onOrgClick}
               >
-                More{" "}
+                {ORG_MENU_LABEL}
                 <svg
-                  className="more-chevron"
+                  className="org-chevron"
                   viewBox="0 0 20 20"
                   fill="none"
                   stroke="currentColor"
@@ -241,43 +303,53 @@ export default function Header() {
                   <path d="m5 7 5 5 5-5" />
                 </svg>
               </button>
-              <div
-                ref={panel}
-                id="more-panel"
-                className="more-panel"
-                hidden={!more}
-              >
-                <div className="more-groups">
-                  {groups.map((g) => (
-                    <div key={g.label}>
-                      <h2>{g.label}</h2>
-                      {g.items.map(([label, to, description]) => (
-                        <Link key={to} to={to} onClick={close}>
-                          <strong>{label}</strong>
-                          <small>{description}</small>
-                        </Link>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-                <Link className="more-feature" to="/our-story" onClick={close}>
-                  <img src="/mission/31-640.webp" alt="" loading="lazy" />
-                  <small>Our story</small>
-                  <b>Why two founders started asking.</b>
-                  <span>Read the letter →</span>
-                </Link>
+              <div id="org-panel" className="org-panel" hidden={!org}>
+                {rows.map((r) => (
+                  <Link
+                    key={r.to}
+                    to={r.to}
+                    onClick={close}
+                    className={r.to.includes("#") ? "org-demo" : undefined}
+                    aria-current={
+                      bare(location.pathname) === r.to ? "page" : undefined
+                    }
+                  >
+                    <span>
+                      <strong>{r.label}</strong>
+                      {r.hint && <small>{r.hint}</small>}
+                    </span>
+                    {r.to.includes("#") && <ArrowIcon />}
+                  </Link>
+                ))}
               </div>
             </div>
+            {BAR_AFTER.map((p) => (
+              <RoomLink
+                key={p}
+                path={p}
+                pathname={location.pathname}
+                onClick={close}
+              />
+            ))}
+          </div>
+          {/* The drawer's quiet group; not shown in the desktop bar. */}
+          <div className="gf-nav-muted">
+            {DRAWER_MUTED.map((p) => (
+              <RoomLink
+                key={p}
+                path={p}
+                pathname={location.pathname}
+                onClick={close}
+              />
+            ))}
           </div>
           {/* The door for people who already have an account, beside the one action. */}
           <div className="gf-nav-right">
-            {account.map(([label, to]) => (
-              <a key={to} className="gf-signin" href={to} onClick={close}>
-                {label}
-              </a>
-            ))}
+            <a className="gf-signin" href={SIGN_IN.to} onClick={close}>
+              {SIGN_IN.label}
+            </a>
             {/* The institution pages' one action is a demo (2026-10-29). */}
-            {DEMO_PAGES.has(location.pathname.replace(/(.)\/$/, "$1")) ? (
+            {onOrgPage ? (
               <a className="gf-button" href="#book" onClick={close}>
                 Book a demo <ArrowIcon />
               </a>
@@ -286,18 +358,6 @@ export default function Header() {
                 {START_LABEL} <ArrowIcon />
               </a>
             )}
-          </div>
-          <div className="gf-mobile-more">
-            {groups.map((g) => (
-              <div key={g.label}>
-                <h2>{g.label}</h2>
-                {g.items.map(([label, to]) => (
-                  <Link key={to} to={to} onClick={close}>
-                    {label}
-                  </Link>
-                ))}
-              </div>
-            ))}
           </div>
         </nav>
       </div>

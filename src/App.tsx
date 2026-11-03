@@ -1,4 +1,10 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import {
+  PremiumContext,
+  isPremiumPath,
+  useGroundRing,
+} from "./pages/site/kit/premium";
+import { bare } from "./lib/nav";
 import { lazyRoute } from "./lib/lazyRoute";
 import {
   BrowserRouter,
@@ -93,12 +99,23 @@ const RouteFallback = styled.div`
   min-height: 60vh;
 `;
 
+/* The account doors and the thank-you page close on the slim footer (spec §1.3). */
+const SLIM_FOOTER = new Set(["/sign-in", "/sign-up", "/account", "/thanks"]);
+
 function MarketingLayout() {
   const location = useLocation();
+  /* The premium pass covers every page but home (kit/premium.ts). */
+  const premium = isPremiumPath(location.pathname);
+  useEffect(() => {
+    if (premium) document.body.dataset.premium = "";
+    else delete document.body.dataset.premium;
+  }, [premium]);
+  /* The focus ring takes its colour from the ground behind it (spec §3.3). */
+  useGroundRing(premium);
   return (
-    <>
+    <PremiumContext.Provider value={premium}>
       <Navbar />
-      <Main id="main">
+      <Main id="main" data-premium={premium ? "" : undefined}>
         <RouteTransition>
           <RouteErrorBoundary key={location.pathname}>
             <Suspense fallback={<RouteFallback />}>
@@ -108,8 +125,10 @@ function MarketingLayout() {
         </RouteTransition>
         <StickyStart key={location.pathname} />
       </Main>
-      <Footer />
-    </>
+      <Footer
+        variant={SLIM_FOOTER.has(bare(location.pathname)) ? "slim" : undefined}
+      />
+    </PremiumContext.Provider>
   );
 }
 

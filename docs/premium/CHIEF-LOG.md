@@ -80,3 +80,58 @@ No step-down was needed.
 - **Builder 1 → Builder 4 (`sitePages.json`, §1.0):** page names/titles still to follow the nav table (e.g. `/organizations` → "A Story for schools, libraries and companies"). Not touched by B1.
 - **Builder 1 → Builder 2 (`public/samples/index.html`, §1.4):** copy the new bar/drawer/footer from `Header.tsx`/`Footer.tsx`; classes: `.org-wrap/.org-toggle/#org-panel/.org-demo`, `.gf-nav-muted`, `.gf-signin`, `.gf-button`; `nav-count.mjs --pages /samples/` runs Checks 1.1/1.2 on it.
 - **Builder 1 note:** `scripts/home-diff.mjs --p0 auto` only looks for the P0 commit on `site-premium`/HEAD; P0 (`fbe134a`) is not merged yet, so tonight's diff was against bare `origin/main` (0 px at 390 and 1440). After P0 merges, rerun (the cache key changes automatically).
+
+## Builder 1 — P1a shell, review fixes (branch premium/b1)
+
+### S20 applied: the desktop bar starts at 1180, not 1024 (spec §1.1)
+- Measured on the built site (`vite preview`), before the fix: at 1024 the frame is 922 px wide
+  (51 px gutters) but the row needs about 1,006 px with 20 px gaps (logo 108 + links 603 incl. the
+  14 px chevron + button group 255). Even with every gap at 0 it needs about 966 px, so shrinking
+  gaps cannot make it fit. At 1100 (frame 990) it is still about 30 px short. At 1180 (frame 1062)
+  it fits with the default gaps.
+- So per S20: `media.navBar` → `max-width: 1179px` (`styles/theme.ts`), `Header.tsx` `WIDE` →
+  `(min-width:1180px)`. The "gaps give way" rule now covers 1180–1279. `.org-chevron` and the
+  `.gf-button` arrow are `flex: none`, so neither can be crushed again. `media.nav` is unchanged.
+- `scripts/nav-count.mjs` now checks the bar at 1440, 1280, 1180 (chevron ≥ 14 px, arrow ≥ 16 px,
+  right gutter = left gutter ±2 px) and that 1179 and 1024 show the drawer's Menu with no overflow.
+  Result: **160/160 passed** on /pricing/, /organizations/, /care-communities/.
+- iPad landscape (1024–1179) now gets the drawer, as phones do.
+
+### Focus ring by ground (spec §3.3, S11): the four pairs
+The ring colour is now set per element on focus (`kit/premium.ts` `useGroundRing`, wired in
+`App.tsx`, only under `main[data-premium]`): it reads the opaque colour that the ancestors paint
+where the ring is drawn (3–5 px outside the element) and sets `--ring` to chocolate or ivory,
+whichever contrasts more. This covers the light sheets inside cloth sections, page-local dark bands
+and the teal ground without touching other builders' files.
+
+Measured in pixels by the new `scripts/ring-check.mjs` (each tab stop shot with and without its
+outline; median contrast of the changed pixels), every non-home page in `site-routes.mjs` + /samples, 390 and 1440:
+
+| Ring | Ground | Lowest measured | Where |
+|---|---|---|---|
+| chocolate #4A3327 | ivory #F3EBDD | 9.89:1 | /for-families "See a sample call" |
+| chocolate #4A3327 | paper / sheet #FBF8F1–#FFFDF8 | 11.04:1 | /how-it-works credit link |
+| ivory #F3EBDD | cloth / night #3B291D (woven; lowest at sampled #513422) | 8.59:1 | /pricing "Start free" |
+| ivory #F3EBDD | teal #0F4A58 | 7.50:1 | /how-it-works "Rosa hears the aside" |
+
+The review's failing cases now: /pricing "How reserving works" 11.51:1, /reserve "Reserve for $1"
+9.17:1, /care-communities "Book a demo" 11.04:1, /contact links ≥ 9.89:1, /pricing closing
+"Start free" 11.66:1, /how-it-works chips 7.50:1. 354 rings measured; 96 tab stops (form fields,
+hidden radios inside plan cards) draw their own indicator and are not outline rings.
+
+### Requests (B1 → other builders)
+- **Builder 2 (`kit/Film.tsx`):** the facade's focus ring is invisible. The button is exactly the
+  size of its frame, and the frame has `overflow: hidden`, so a ring at `outline-offset: 3px` is
+  clipped (ring-check: "no ring visible", 390 and 1440). Suggest `outline-offset: -4px` with
+  `var(--ring, …)` set to ivory over the poster, or draw the ring on the frame with
+  `:has(.film-facade:focus-visible)`. `Again` hard-codes `color.chocolate`; `var(--ring, …)` would
+  follow the ground.
+- **Builder 2 (`public/samples/index.html`):** the bar now starts at 1180 (S20). The hand copy still
+  switches at 1100 (`@media (max-width:1100px)` and `matchMedia('(min-width:1101px)')`, ~l.787, 924,
+  1045, 3115); please move it to 1179/1180 so the two match. Ring-check also finds on /samples at
+  1440: "How a book is made" ring #101010 on cloth 2.13:1 (390: #FFFFFF 2.83:1), and the four
+  "Scan this code" buttons show no ring outside the element.
+- **Builder 3 (`Pricing.tsx`), for "one ring style" (§3.3 check):** /pricing's own `summary` and
+  `thead button` focus rules draw terracotta (#B85126, 4.67:1) and #7E3315 rings instead of the
+  shared one. They pass 3:1, but the page shows three ring styles. Dropping those page-local
+  `:focus-visible` rules lets the shared ring apply.
