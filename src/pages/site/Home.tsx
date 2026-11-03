@@ -5,6 +5,7 @@ import { Invitation } from "./kit/kit";
 import Intro from "./home/Intro";
 import CodeFromFamily from "./home/CodeFromFamily";
 import Hero from "./home/Hero";
+import Film from "./home/Film";
 import SampleBooks from "./home/SampleBooks";
 import WhatGetsLost from "./home/WhatGetsLost";
 import Listen from "./home/Listen";
@@ -48,6 +49,13 @@ import FoundingBand from "./home/FoundingBand";
  * Story is; they now follow the family book they illustrate. The three-phone
  * call demo became Listen — the same three exchanges set as text, readable
  * at a glance; the full phones stay on How it works.
+ *
+ * 2026-11-02: the film sits straight after the hero. The hero says what A
+ * Story is in one sentence; the film shows one call becoming a page in under
+ * a minute, so a visitor has seen the thing work before reading why it
+ * matters. Inline it is a silent ten-second loop, playing only while in
+ * view; the full film with sound opens in a lightbox from "Watch the film"
+ * (home/Film.tsx) — the shape of every 2026 YC homepage that has a video.
  */
 export default function Home() {
   // Pinned scenes measure the page; re-measure once fonts and images land.
@@ -68,6 +76,7 @@ export default function Home() {
       <CodeFromFamily />
       <Intro />
       <Hero />
+      <Film />
       <WhatGetsLost />
       <StepOne />
       <FamilyBook />
