@@ -191,16 +191,29 @@ const Doors = styled(Chapter)`
     margin-top: ${space.lg};
     max-width: 560px;
   }
+  /* Wraps, never overlaps: in the two-door layout the column can be narrower
+     than field + button (with large text it always is), and a fixed grid let
+     the button lie on top of the code box. */
   .code-row {
-    display: grid;
-    grid-template-columns: minmax(200px, 1fr) auto;
+    display: flex;
+    flex-wrap: wrap;
     gap: ${space.md};
-    align-items: end;
+    align-items: flex-end;
+  }
+  /* Sized by its own label ("Your six-letter code" never wraps), so the
+     button moves to the next line before it can cover the box. */
+  .code-row .field {
+    flex: 1 1 auto;
+  }
+  .code-row > button {
+    flex: 0 0 auto;
   }
   .code-row .field > span {
     white-space: nowrap;
   }
   .code-row input {
+    width: 100%;
+    min-width: 0;
     text-transform: uppercase;
     letter-spacing: 0.12em;
   }
@@ -210,8 +223,11 @@ const Doors = styled(Chapter)`
     }
   }
   ${media.sm} {
-    .code-row {
-      grid-template-columns: minmax(0, 1fr);
+    .code-row .field {
+      flex-basis: 100%;
+    }
+    .code-row .field > span {
+      white-space: normal;
     }
   }
 `;
