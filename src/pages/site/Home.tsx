@@ -5,6 +5,7 @@ import { OTHER_PLANS } from "../../lib/pricing";
 import { Invitation } from "./kit/kit";
 import CodeFromFamily from "./home/CodeFromFamily";
 import Hero from "./home/Hero";
+import Film from "./home/Film";
 import WhatGetsLost from "./home/WhatGetsLost";
 import EveryVoice from "./home/EveryVoice";
 import FamilyBook from "./home/FamilyBook";
@@ -25,6 +26,10 @@ const monthlyPrice = monthly.price.replace(/\/mo$/, "");
  *   1. Hero          the Sunday-dinner photograph filling the window; "Every
  *                    life holds a story worth keeping."; the two doors and
  *                    the honest small print (iPhone app, private beta).
+ *   1b. Film        (2026-11-03) straight after the hero: a silent ten-second
+ *                    loop while in view, the full film with sound in a
+ *                    lightbox from "Watch the film" (home/Film.tsx), so a
+ *                    visitor sees one call become a page before reading why.
  *   2. WhatGetsLost  the milestone pile you can touch; "It's the everyday."
  *                    in a scatter of prints on the cloth, with the three
  *                    things that slip away; "A Story exists to catch what
@@ -57,6 +62,7 @@ export default function Home() {
           large, and the three steps to use it. */}
       <CodeFromFamily />
       <Hero />
+      <Film />
       <WhatGetsLost />
       <EveryVoice />
       <FamilyBook />
