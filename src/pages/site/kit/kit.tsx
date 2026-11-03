@@ -503,23 +503,28 @@ export function PageOpening({
   labelledBy?: string;
 }) {
   const ref = useReveals<HTMLElement>();
+  /* Premium pass, panel round 2 (CHIEF-LOG B1.1): off home the first screen
+     is there on first paint. The title, lead, actions and note carry no
+     arrival, so nothing fades or rises before it can be read. Home keeps
+     its arrivals exactly as before. */
+  const rise = usePremium() ? undefined : true;
   const art = object ?? legacyMedia;
   const titleEl = (
-    <Title id={labelledBy} data-lines>
+    <Title id={labelledBy} data-lines={rise}>
       {title}
     </Title>
   );
   const leadEl = lead ? (
-    <p className="opening-lead" data-rise>
+    <p className="opening-lead" data-rise={rise}>
       {lead}
     </p>
   ) : null;
   const tail =
     actions || note ? (
       <>
-        {actions && <Actions data-rise>{actions}</Actions>}
+        {actions && <Actions data-rise={rise}>{actions}</Actions>}
         {note && (
-          <p className="opening-note" data-rise>
+          <p className="opening-note" data-rise={rise}>
             {note}
           </p>
         )}

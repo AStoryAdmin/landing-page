@@ -21,9 +21,8 @@
  *
  * Each note is signed by hand at its foot, with a small round portrait of
  * its writer and one line of credentials (Bao's ruling, 2026-10-23: a
- * round portrait, never a posed hero). A short "why now" band with two
- * sourced numbers sits between the letters and the close (on this page
- * only). The prints are illustrative album photographs (public/our-story,
+ * round portrait, never a posed hero). The "why now" band of statistics
+ * was removed in panel round 2 (CHIEF-LOG B1.4). The prints are illustrative album photographs (public/our-story,
  * from the pitch decks, and mission 34).
  */
 import { useLayoutEffect, useRef, type ReactNode } from "react";
@@ -34,7 +33,7 @@ import { Actions, Frame, PrimaryLink, SecondaryLink } from "./kit/kit.styles";
 import { color, display, font, media, space, type } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
 import { DEMO_EMAIL } from "../../lib/demoRequest";
-import { riseLines, useScene } from "../../lib/scrollMotion";
+import { useScene } from "../../lib/scrollMotion";
 import { Snapshot } from "./our-story/Snapshot";
 import { benchCloth, benchVars } from "./our-story/bench";
 import { cssOut, layDown, riseIn } from "./our-story/motion";
@@ -363,97 +362,6 @@ const Sheet = styled.article<{ $tilt: number }>`
   }
 `;
 
-/* ── Why now: two sourced numbers, on the paper (Bao's ruling, 2026-10-23:
-   on /our-story only, never Home). A ratio and a count, each with its unit
-   and its source linked. ── */
-const WhyNow = styled.section`
-  background: ${color.sand};
-  color: ${color.primary};
-  padding: calc(clamp(56px, 6vw, 112px) * var(--sy)) 0;
-  .why {
-    display: grid;
-    grid-template-columns: minmax(0, 0.6fr) minmax(0, 2fr);
-    gap: clamp(28px, 5vw, 110px);
-    align-items: start;
-  }
-  h2 {
-    font: 400 ${display.lg} / 1 ${font.display};
-    letter-spacing: -0.02em;
-  }
-  h2 em {
-    font-style: normal;
-    font-weight: 500;
-    color: ${color.accent};
-  }
-  dl {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(28px, 4vw, 96px);
-    margin: 0;
-  }
-  dl > div {
-    padding-top: 18px;
-    border-top: 1px solid ${color.primaryLineStrong};
-  }
-  dt {
-    font: 500 ${display.lg} / 1 ${font.display};
-    letter-spacing: -0.02em;
-    font-variant-numeric: lining-nums;
-    color: ${color.primary};
-  }
-  dt span[aria-hidden] {
-    color: ${color.accent};
-    font-weight: 400;
-  }
-  dd {
-    margin: 14px 0 0;
-    max-width: 38ch;
-    font: 400 ${type.read} / 1.5 ${font.text};
-    color: ${color.body};
-  }
-  /* Each source is a 44px target (jury 2 R2 N3). */
-  dd a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0;
-    font: 500 ${type.note} / 1.4 ${font.body};
-    color: ${color.bodyMuted};
-    text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, ${color.gold} 70%, transparent);
-    text-underline-offset: 4px;
-    transition: color 160ms ${cssOut};
-  }
-  @media (hover: hover) and (pointer: fine) {
-    dd a:hover {
-      color: ${color.primary};
-    }
-  }
-  .sr {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-  ${media.md} {
-    .why,
-    dl {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-  ${media.sm} {
-    padding: calc(${space.xl} * var(--sy)) 0;
-    .why {
-      gap: ${space.lg};
-    }
-    dl {
-      gap: ${space.lg};
-    }
-  }
-`;
-
 /* ── The close, on the ivory page ── */
 const Close = styled.section`
   --ink: ${color.primary};
@@ -608,20 +516,12 @@ function Note({
 
 export default function OurStory() {
   const bench = useScene<HTMLElement>((root) => {
-    const h1 = root.querySelector("h1");
-    if (h1) riseLines(h1, { trigger: false });
-    riseIn([...root.querySelectorAll(".opening .lead, .opening .who")], {
-      delay: 0.25,
-    });
+    /* Panel round 2 (CHIEF-LOG B1.1): the title, lead and note links are
+       there on first paint; only the prints are laid down. */
     layDown([...root.querySelectorAll(".prints [data-snap]")], { delay: 0.2 });
     layDown([...root.querySelectorAll("[data-sheet]")], {
       trigger: root.querySelector(".letters") ?? undefined,
       start: "top 88%",
-    });
-  });
-  const why = useScene<HTMLElement>((root) => {
-    riseIn([...root.querySelectorAll("[data-why]")], {
-      trigger: root.querySelector(".why") ?? undefined,
     });
   });
   const close = useScene<HTMLElement>((root) => {
@@ -756,52 +656,6 @@ export default function OurStory() {
           </div>
         </Frame>
       </Bench>
-
-      <WhyNow ref={why} aria-labelledby="why-title">
-        <Frame className="why">
-          <h2 id="why-title" data-why>
-            Why <em>now.</em>
-          </h2>
-          <dl>
-            <div data-why>
-              <dt>
-                18% <span aria-hidden="true">→</span>
-                <span className="sr">to</span> 30%
-              </dt>
-              <dd>
-                Adults 50 and over who use generative AI, 2024 to 2025.{" "}
-                <a
-                  href="https://www.aarp.org/2026techtrends"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  AARP, 2026 Tech Trends
-                </a>
-              </dd>
-            </div>
-            <div data-why>
-              <dt>11,200</dt>
-              <dd>
-                Americans turn 65 every day, through 2027.{" "}
-                <a
-                  href="https://www.limraconsumer.com/peak65/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Alliance for Lifetime Income, Peak 65
-                </a>
-              </dd>
-            </div>
-            <div data-why>
-              <dt>Voice AI</dt>
-              <dd>
-                Can now hold an unhurried conversation, ask a follow-up about
-                what it just heard, and know when to stop.
-              </dd>
-            </div>
-          </dl>
-        </Frame>
-      </WhyNow>
 
       <Close ref={close} aria-labelledby="close-title">
         <Frame className="row">
