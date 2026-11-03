@@ -422,6 +422,14 @@ const Program = styled(Chapter)`
   .decide > summary {
     display: none;
   }
+  /* Closed details with no summary could never open again, so wider
+     screens show the content either way (the script also reopens them). */
+  @media (min-width: 641px) {
+    .decide::details-content {
+      content-visibility: visible;
+      display: contents;
+    }
+  }
   ${media.sm} {
     .decide {
       margin-top: ${space.md};
@@ -579,9 +587,17 @@ export default function Organizations() {
      open, so they read without script and on every wider screen. */
   const decide = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
-    if (decide.current && window.matchMedia(FOLD).matches) {
+    const fold = window.matchMedia(FOLD);
+    if (decide.current && fold.matches) {
       decide.current.open = false;
     }
+    /* From 641 px the summary is hidden, so closed details could never be
+       opened again (a phone turned sideways). Leaving the fold opens them. */
+    const unfold = (e: MediaQueryListEvent) => {
+      if (!e.matches && decide.current) decide.current.open = true;
+    };
+    fold.addEventListener("change", unfold);
+    return () => fold.removeEventListener("change", unfold);
   }, []);
 
   /* A column picks its kind in the form and goes there. The href does the
