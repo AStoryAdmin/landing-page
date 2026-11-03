@@ -168,9 +168,9 @@ const Bench = styled.section`
   /* Phones (spec §4D, ≤ 5 screens at 390 with the letters folded): the
      bench's spacing tightens; the letters' words are untouched. */
   ${media.sm} {
-    padding: calc(40px * var(--sy)) 0 calc(40px * var(--sy));
+    padding: calc(${space.xl} * var(--sy)) 0 calc(${space.xl} * var(--sy));
     .letters {
-      margin-top: calc(32px * var(--sy));
+      margin-top: calc(${space.xl} * var(--sy));
     }
     .prints {
       padding: 0 0 72px;
@@ -444,12 +444,12 @@ const WhyNow = styled.section`
     }
   }
   ${media.sm} {
-    padding: calc(40px * var(--sy)) 0;
+    padding: calc(${space.xl} * var(--sy)) 0;
     .why {
-      gap: 24px;
+      gap: ${space.lg};
     }
     dl {
-      gap: 20px;
+      gap: ${space.lg};
     }
   }
 `;
@@ -522,7 +522,7 @@ const Close = styled.section`
      doors are the kit's Actions, so on a phone the secondary is a text link
      under the full-width primary (spec §3.3). */
   ${media.sm} {
-    padding: calc(44px * var(--sy)) 0;
+    padding: calc(${space.xl} * var(--sy)) 0;
     .dock {
       display: none;
     }
