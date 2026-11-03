@@ -24,6 +24,11 @@
  * four moments; the ways in as a Scroller on a phone; the closing offers
  * /samples, /pricing and /for-families.
  *
+ * Round 2 (2026-11-03, CHIEF-LOG B2.3): the storyteller's section is
+ * #being-asked, straight after the hero and before the film; the hero keeps
+ * two actions; the Start free row under the film is gone, and the sample
+ * call is a text link in Four moments; the call card sits at the top.
+ *
  * Product truth (Bao's rulings, 2026-10-23): the calls ring in the A Story
  * iPhone app, in a private beta, and the parent installs it. Never a regular
  * phone call, never "no app". Voice clips are in development: the page says
@@ -41,12 +46,10 @@ import Scroller from "./kit/Scroller";
 import { useReveals } from "./kit/reveals";
 import { PhonePairs } from "./rooms/phonePairs";
 import {
-  Actions,
   Chapter,
   Frame,
   Lead,
   PrimaryLink,
-  SecondaryAnchor,
   SplitHead,
   Statement,
   TextAnchor,
@@ -158,6 +161,19 @@ function CallSlip() {
   );
 }
 
+/* The call card sits at the top of its column, level with the title, so
+   the right side of the hero is not an empty field above it (CHIEF-LOG
+   B2.3). `display: contents` keeps the wrapper out of the layout. */
+const HeroTop = styled.div`
+  display: contents;
+  section[data-variant="object"] .opening-grid:not(.solo) {
+    align-items: start;
+  }
+  section[data-variant="object"] .opening-object {
+    align-items: start;
+  }
+`;
+
 /* ── Four moments, beside what one call leaves ─────────────────────────── */
 
 const STEPS = [
@@ -205,6 +221,9 @@ const Moments = styled(Chapter)`
   }
   li:last-child {
     border-bottom: 1px solid ${color.primaryLine};
+  }
+  .sample {
+    margin-top: ${space.md};
   }
   .who {
     padding-top: 0.55em;
@@ -317,17 +336,23 @@ function FourMoments() {
           </Lead>
         </SplitHead>
         <div className="row">
-          <ol data-rise>
-            {STEPS.map((s) => (
-              <li key={s.title}>
-                <p className="who">{s.who}</p>
-                <div>
-                  <h3>{s.title}</h3>
-                  <p>{s.text}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <div data-rise>
+            <ol>
+              {STEPS.map((s) => (
+                <li key={s.title}>
+                  <p className="who">{s.who}</p>
+                  <div>
+                    <h3>{s.title}</h3>
+                    <p>{s.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            {/* The one way to the sample calls (CHIEF-LOG B2.3). */}
+            <p className="sample">
+              <TextAnchor href="#calls">See a sample call</TextAnchor>
+            </p>
+          </div>
           <div className="leaves" data-rise="settle">
             <p className="label">What one call leaves, in the app</p>
             <MemoryCard
@@ -376,13 +401,10 @@ function FourMoments() {
  * No new facts (no call length, no device claim).
  */
 const Asked = styled(Chapter)`
-  padding-top: 0;
   .asked {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     gap: ${space.lg} ${space.xxl};
-    padding-top: calc(${space.xxl} * var(--sy));
-    border-top: 1px solid ${color.primaryLine};
   }
   ul {
     display: grid;
@@ -404,7 +426,12 @@ const Asked = styled(Chapter)`
 
 function BeingAsked() {
   return (
-    <Asked $ground="ivory" aria-labelledby="asked-title">
+    <Asked
+      id="being-asked"
+      $ground="ivory"
+      $tight
+      aria-labelledby="asked-title"
+    >
       <Frame className="asked">
         <Statement id="asked-title" $size="md">
           If you’re the one being asked.
@@ -559,6 +586,7 @@ export default function HowItWorks() {
         path="/how-it-works"
         description="Set it up once. A Story calls in its iPhone app, listens and follows what they actually say. See a sample call, then what the family keeps."
       />
+      <HeroTop>
       <PhonePairs>
         <PageOpening
           variant="object"
@@ -571,31 +599,26 @@ export default function HowItWorks() {
           note={TODAY_NOTE}
           actions={
             <>
+              {/* Two actions (CHIEF-LOG B2.3); the sample call is a text
+                  link in Four moments. */}
               <PrimaryLink to={START_HREF}>
                 {START_LABEL} <ArrowIcon />
               </PrimaryLink>
-              <SecondaryAnchor href="#calls">See a sample call</SecondaryAnchor>
               <TextAnchor href="#film">Watch the film · 49 s</TextAnchor>
             </>
           }
           object={<CallSlip />}
         />
       </PhonePairs>
+      </HeroTop>
 
-      <Film
-        actions={
-          <Actions>
-            <PrimaryLink to={START_HREF}>
-              {START_LABEL} <ArrowIcon />
-            </PrimaryLink>
-            <TextAnchor href="#calls">Hear a sample call</TextAnchor>
-          </Actions>
-        }
-      />
+      {/* The storyteller's door, straight after the hero (CHIEF-LOG B2.3);
+          /join and the menu link to #being-asked. */}
+      <BeingAsked />
+
+      <Film />
 
       <FourMoments />
-
-      <BeingAsked />
 
       {/* One gold word for every other h2 at most (spec §3.1): this title
           and "a way in" stay plain. */}

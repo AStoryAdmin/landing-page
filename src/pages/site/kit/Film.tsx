@@ -109,6 +109,12 @@ const Section = styled(Chapter)`
     display: grid;
     gap: 14px;
   }
+  /* The CC BY credit (M2) as a caption, always shown: small type, the
+     ground's muted ink, starting "Music:" (round 2, CHIEF-LOG B2.3). */
+  .under > .credit {
+    font: 400 ${type.label} / 1.5 ${font.ui};
+    color: var(--muted, ${color.bodyMuted});
+  }
   .credit a,
   details a {
     color: inherit;
@@ -156,12 +162,12 @@ const Screen = styled.div`
   video {
     background: ${color.chocolate};
   }
-  /* The frame clips (overflow: hidden), so a ring drawn by the facade
-     itself would be cut off. The frame draws it instead, outside its own
-     edge, on the section's paper (chocolate, 11:1). */
-  &:has(.film-facade:focus-visible) {
-    outline: 2px solid var(--ring, ${color.chocolate});
-    outline-offset: 3px;
+  /* While the poster is up, the facade rounds and clips its own picture
+     and the frame stops clipping, so the facade's ring is drawn whole,
+     outside its edge, on the section's paper (round 2, CHIEF-LOG B2.4).
+     The player brings the frame's clip back. */
+  &:has(> .film-facade) {
+    overflow: visible;
   }
 `;
 
@@ -169,6 +175,8 @@ const Facade = styled.button`
   all: unset;
   position: absolute;
   inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
   cursor: pointer;
   .play {
     position: absolute;
@@ -199,8 +207,10 @@ const Facade = styled.button`
     margin-left: 4px;
     fill: ${color.ivory};
   }
+  /* The shared ring (global.ts): var(--ring), set by the ground behind. */
   &:focus-visible {
-    outline: none;
+    outline: 2px solid var(--ring, ${color.chocolate});
+    outline-offset: 3px;
   }
   &:active .play {
     transform: scale(0.97);
