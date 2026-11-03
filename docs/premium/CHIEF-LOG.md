@@ -135,3 +135,57 @@ hidden radios inside plan cards) draw their own indicator and are not outline ri
   `thead button` focus rules draw terracotta (#B85126, 4.67:1) and #7E3315 rings instead of the
   shared one. They pass 3:1, but the page shows three ring styles. Dropping those page-local
   `:focus-visible` rules lets the shared ring apply.
+
+## Builder 3 - P2 group B pages (branch premium/b3)
+
+State: **passed only locally** (vite preview :5203, Chromium, 390x844 and 1440x900).
+
+### Measured (full document height / viewport, footer included)
+| Page | 390 | 1440 | Target | Overflow |
+|---|---|---|---|---|
+| /pricing | 9.11 (was 11.2) | 6.12 (was 6.2) | 8 / 6 | 0 |
+| /compare | 7.47 | 4.26 | 8 / 6 | 0 |
+| /reserve | 4.14 | 3.15 | - | 0 |
+| /sign-in?next=/reserve | 1.71 | 1.16 | - | 0 |
+| /sign-up?next=/reserve | 2.37 | 1.32 | - | 0 |
+| /thanks | 1.82 | 1.28 | - | 0 |
+
+/pricing misses both targets (9.11 at 390, 6.12 at 1440). Going further means taking
+plan features or edition lists off the phone; not done without a ruling.
+
+Copy-check (`main` innerText after 2 s): /pricing, /reserve with the spec patterns, /thanks for
+"Stripe", /compare for "isn't the end": 0 hits. /thanks main contains "same email" and
+"Your checkout receipt is your confirmation".
+
+### Decisions and assumptions
+- /pricing hero object: `public/book-objects/sample-raymond-*.webp` ("The Ledger", a /samples
+  cover) beside the PriceCard, eager + fetchpriority high. Sheet on ivory: hairline, no shadow.
+- /pricing hero note is "Prices in US dollars. " + `TODAY_NOTE` (kept the currency fact).
+- PriceCard foot ("Plans aren't on sale yet...", "How reserving works") removed; the buying state is
+  said once in a `Note` under the hero. "Ordering opens soon." removed from the members line.
+- Order: cards, "Whatever you choose, it stays yours.", film link, compare (collapsed), editions,
+  questions + /compare and /questions links. To save height the compare sits inside the "stays
+  yours" section and the questions inside the book section (no extra section padding).
+- On phones the plan cards hide `meterNote` and "Plus the Digital Edition..." (both repeated word for
+  word in the comparison table). Supervisor can veto.
+- Pricing compare at <=640: one DOM; cells reordered per plan with CSS `order` (`--o`) and
+  `display: contents`, label from `data-label`. From 641 the question column is sticky.
+- /compare row "Keeps growing after the book - the book isn't the end" is relabelled in
+  `Compare.tsx` to "Keeps growing after the book" (no full stop, to match the other row labels).
+  `lib/landscape.ts` and home are untouched.
+- CompareTable is shared with home: every new rule is under `main[data-premium]`, and the
+  overflow effect only runs when `usePremium()` is true (home gets only an inert `data-label`).
+- /compare hero is now `wide` on cloth; the leaf runs full width with the four reasons in 2 columns.
+- `deadlineLine()` callers: none (`rg deadlineLine src` finds only its definition and comments).
+  `kit/PriceLadder.tsx` is not imported anywhere; left as is.
+- Sentence case for the remaining small caps in my files (reserve tag, price label, account labels,
+  compare leaf/voices labels, edition badges); "Recommended" and the pricing table heads keep caps at
+  `tracking.eyebrowPremium`.
+- /start, /join, /account: no visual change (redirects); no screenshots taken. `test:routing` passes.
+- B1 ring request done: /pricing's own `summary` / `thead button` focus rules removed; the hidden
+  radio's card draws a 2px chocolate ring at 3px offset.
+
+### Requests
+- **lib/landscape.ts owner:** `SWITCH[3].title` "A book shouldn't be the end." shows in the /compare
+  opening leaf. Supervisor to rule; I did not edit it (not my file).
+- **Supervisor:** /pricing screen targets not met (above).

@@ -25,6 +25,12 @@
  * (2026-11-02, spec D3: the trusted-person and letter lines left this page.)
  * The book section says what a printed book
  * is: Volume I.
+ *
+ * Premium pass (2026-11-02, design spec §4B): the opening is on the ivory
+ * with a sample book beside the price card; the buying state is said once,
+ * under it; then the plan cards (the kit's Card), what stays yours, the film
+ * link, the comparison (one block per plan on a phone, one DOM), the book
+ * editions as open columns, and the questions last.
  */
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -42,12 +48,15 @@ import { checkoutFor, isCheckoutLive } from "../../lib/checkout";
 import { START_HREF, START_LABEL } from "../../lib/app";
 import { OFFERS } from "../../lib/founding";
 import { QUESTION_COUNT } from "../../lib/product";
+import { TODAY_NOTE } from "../../lib/today";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import { PhonePairs } from "./rooms/phonePairs";
 import {
+  Card,
   Chapter,
   Frame,
+  Note,
   PrimaryAnchor,
   SecondaryLink,
   SplitHead,
@@ -57,12 +66,14 @@ import {
 } from "./kit/kit.styles";
 import {
   color,
-  curve,
   display,
   font,
   media,
   motion,
+  radius,
   shadow,
+  space,
+  tracking,
   type,
 } from "../../styles/theme";
 
@@ -74,22 +85,24 @@ const Plans = styled(Chapter)`
     gap: clamp(16px, 2vw, 28px);
     align-items: stretch;
   }
+  /* Each plan is the kit's Card (spec §3.4): paper on the ivory, a hairline,
+     no shadow. Selection and the Recommended keyline sit on top of it. */
+  .state {
+    margin: 0 0 ${space.xl};
+  }
   .plan {
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: clamp(28px, 3vw, 44px);
-    background: ${color.paperPure};
-    border: 1px solid ${color.primaryLine};
     cursor: pointer;
     transition:
       border-color ${motion.base},
-      box-shadow ${motion.slow},
-      transform ${motion.slow};
+      box-shadow ${motion.slow};
   }
-  .plan:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 24px 50px -32px rgba(42, 31, 24, 0.45);
+  ${media.hover} {
+    .plan:hover {
+      border-color: ${color.primaryLineStrong};
+    }
   }
   .plan.featured {
     border-color: color-mix(in srgb, ${color.gold} 80%, transparent);
@@ -112,7 +125,7 @@ const Plans = styled(Chapter)`
   }
   .plan .tag {
     font: 600 ${type.label} / 1.3 ${font.body};
-    letter-spacing: 0.14em;
+    letter-spacing: ${tracking.eyebrowPremium};
     text-transform: uppercase;
     color: ${color.goldOnLight};
   }
@@ -123,9 +136,9 @@ const Plans = styled(Chapter)`
   }
   .price {
     margin: 28px 0 4px;
-    font: 400 clamp(2.8rem, 2rem + 2vw, 4rem) / 1 ${font.display};
+    font: 400 ${display.lg} / 1 ${font.display};
     color: ${color.primary};
-    font-variant-numeric: lining-nums;
+    font-variant-numeric: tabular-nums lining-nums;
   }
   .period {
     font: 500 ${type.read} / 1.4 ${font.text};
@@ -135,7 +148,7 @@ const Plans = styled(Chapter)`
     margin-top: 24px;
     padding-top: 20px;
     border-top: 1px solid ${color.primaryLine};
-    font: 600 16px/1.4 ${font.body};
+    font: 600 ${type.ui} / 1.4 ${font.body};
     color: ${color.primary};
   }
   .meter-note {
@@ -185,9 +198,11 @@ const Plans = styled(Chapter)`
     opacity: 0;
     cursor: pointer;
   }
-  .plan:has(.choose:focus-visible) {
-    outline: 3px solid ${color.accent};
-    outline-offset: 4px;
+  /* The radio is invisible, so its card carries the shared ring (§3.3). */
+  .plan:has(.choose:focus-visible),
+  .other:has(.choose:focus-visible) {
+    outline: 2px solid ${color.chocolate};
+    outline-offset: 3px;
   }
 
   .others {
@@ -286,6 +301,34 @@ const Plans = styled(Chapter)`
       grid-template-columns: minmax(0, 1fr);
     }
   }
+  /* On a phone the card keeps its price, allowance and features; the two
+     lines the comparison table repeats word for word (the allowance note,
+     the Digital Edition) stay in the table (spec §4B screen target). */
+  ${media.sm} {
+    .plans {
+      gap: ${space.md};
+    }
+    .price {
+      margin-top: ${space.md};
+    }
+    .meter {
+      margin-top: ${space.md};
+      padding-top: ${space.sm};
+    }
+    .meter-note,
+    .bundle small {
+      display: none;
+    }
+    li {
+      padding-block: ${space.xxs};
+    }
+    li::before {
+      top: calc(${space.xxs} + 0.75em);
+    }
+    .bundle {
+      padding-top: ${space.md};
+    }
+  }
   ${media.md} {
     .others {
       grid-template-columns: minmax(0, 1fr);
@@ -346,14 +389,10 @@ const Compare = styled.div`
   details[open] summary span {
     transform: rotate(45deg);
   }
-  @media (hover: hover) {
+  ${media.hover} {
     summary:hover span {
       border-color: ${color.primary};
     }
-  }
-  summary:focus-visible {
-    outline: 2px solid ${color.accentText};
-    outline-offset: 4px;
   }
   h2 {
     font: 400 ${display.md} / 1.2 ${font.display};
@@ -363,11 +402,9 @@ const Compare = styled.div`
     margin-top: 28px;
   }
   .grid {
-    border-radius: 20px;
+    border-radius: ${radius.lg};
     background: ${color.paperPure};
-    box-shadow:
-      inset 0 0 0 1px ${color.primaryLine},
-      0 40px 80px -60px rgba(42, 31, 24, 0.45);
+    box-shadow: inset 0 0 0 1px ${color.primaryLine};
     overflow-x: auto;
   }
   table {
@@ -391,7 +428,7 @@ const Compare = styled.div`
   tbody th {
     width: 20%;
     font: 600 ${type.label} / 1.4 ${font.body};
-    letter-spacing: 0.06em;
+    letter-spacing: ${tracking.eyebrowPremium};
     text-transform: uppercase;
     color: ${color.bodyMuted};
   }
@@ -408,20 +445,16 @@ const Compare = styled.div`
     cursor: pointer;
   }
   thead button b {
-    font: 400 24px/1.1 ${font.display};
+    font: 400 ${type.lead} / 1.1 ${font.display};
     color: ${color.primary};
   }
   thead button span {
-    font: 400 28px/1 ${font.display};
+    font: 400 ${display.sm} / 1 ${font.display};
     color: ${color.primary};
   }
   thead button small {
     font: 500 ${type.label} / 1.3 ${font.body};
     color: ${color.bodyMuted};
-  }
-  thead button:focus-visible {
-    outline: 3px solid ${color.accent};
-    outline-offset: 4px;
   }
   .sel {
     background: color-mix(in srgb, ${color.gold} 14%, ${color.paperPure});
@@ -451,17 +484,70 @@ const Compare = styled.div`
     flex: none;
     color: ${color.teal};
   }
-  .note {
-    margin-top: 12px;
-    font: 400 ${type.note} / 1.5 ${font.body};
-    color: ${color.bodyMuted};
-  }
-  ${media.md} {
-    tbody th {
+  /* From 641px the question column stays put while the plans scroll. */
+  @media (min-width: 641px) {
+    tbody th,
+    thead th:first-child {
       position: sticky;
       left: 0;
       z-index: 1;
       background: ${color.paperPure};
+    }
+  }
+  /* To 640px (spec §4B, S12): the same table, one block per plan - its
+     name and price, then each row as "question: answer" (the question from
+     the cell's data-label). The cells are reordered by plan with CSS
+     (--o); there is no second copy of the table. */
+  ${media.sm} {
+    .grid {
+      overflow: visible;
+      border-radius: 0;
+      background: none;
+      box-shadow: none;
+    }
+    table {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      min-width: 0;
+    }
+    thead,
+    tbody,
+    tr {
+      display: contents;
+    }
+    thead th:first-child,
+    tbody th {
+      display: none;
+    }
+    thead th {
+      order: var(--o);
+      margin-top: ${space.lg};
+      padding: ${space.md} 0 ${space.xs};
+      border-bottom: 1px solid ${color.primaryLineStrong};
+      border-radius: 0;
+    }
+    thead th:nth-child(2) {
+      margin-top: 0;
+    }
+    td {
+      order: var(--o);
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: ${space.md};
+      padding: ${space.sm} 0;
+    }
+    td::before {
+      content: attr(data-label);
+      font: 600 ${type.label} / 1.4 ${font.ui};
+      color: ${color.bodyMuted};
+    }
+    tbody tr:last-child > td {
+      border-bottom: 1px solid ${color.primaryLine};
+    }
+    .sel,
+    thead .sel {
+      background: none;
+      box-shadow: none;
     }
   }
 `;
@@ -481,11 +567,32 @@ const Forever = styled(Chapter)`
     font: 400 ${display.sm} / 1.35 ${font.display};
     color: ${color.primary};
   }
-  .stops {
-    margin-top: clamp(40px, 5vw, 64px);
-    font: 400 ${type.read} / 1.7 ${font.text};
-    color: ${color.body};
-    max-width: 62ch;
+  /* The film link (spec §2.1): one line under what stays yours. */
+  .film {
+    margin-top: ${space.xl};
+  }
+  ${media.md} {
+    .kept {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  ${media.sm} {
+    .kept li {
+      padding: ${space.sm} 0;
+      font-size: ${type.lead};
+    }
+  }
+`;
+
+/* The practical questions, last (spec §4B), with the two context links that
+   replace the old "More" menu. */
+const Asked = styled.section`
+  margin-top: ${space.xxl};
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 ${space.xl};
+    margin-top: ${space.lg};
   }
   details {
     border-top: 1px solid ${color.primaryLineStrong};
@@ -500,10 +607,6 @@ const Forever = styled(Chapter)`
     font: 400 ${display.sm} / 1.3 ${font.display};
     color: ${color.primary};
   }
-  summary:focus-visible {
-    outline: 3px solid ${color.accent};
-    outline-offset: 4px;
-  }
   details p {
     padding-bottom: 20px;
     font: 400 ${type.read} / 1.65 ${font.text};
@@ -514,10 +617,8 @@ const Forever = styled(Chapter)`
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0 clamp(28px, 5vw, 80px);
-    margin-top: clamp(48px, 5vw, 88px);
   }
   ${media.md} {
-    .kept,
     .questions {
       grid-template-columns: minmax(0, 1fr);
     }
@@ -579,19 +680,18 @@ const Book = styled(Chapter)`
     padding: 0;
     list-style: none;
   }
+  /* Open columns with a hairline top, not boxes (spec §3.4, S23). */
   .editions li {
     display: flex;
     flex-direction: column;
-    padding: clamp(22px, 2.4vw, 32px);
-    background: ${color.paperPure};
-    box-shadow: 0 1px 2px rgba(42, 31, 24, 0.06);
+    padding: ${space.lg} 0 0;
+    border-top: 1px solid ${color.primaryLineStrong};
   }
   .editions .badge {
-    font: 600 ${type.label} / 1 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    font: 600 ${type.label} / 1.2 ${font.body};
+    letter-spacing: 0.01em;
     color: ${color.accentText};
-    min-height: 11px;
+    min-height: 1.2em;
   }
   .editions h3 {
     margin-top: 12px;
@@ -600,12 +700,13 @@ const Book = styled(Chapter)`
   }
   .editions .cost {
     margin-top: 10px;
-    font: 400 28px/1 ${font.display};
+    font: 400 ${display.sm} / 1 ${font.display};
     color: ${color.primary};
   }
   .editions .cost small {
-    margin-left: 8px;
-    font: 400 14px/1.4 ${font.body};
+    display: block;
+    margin-top: ${space.xs};
+    font: 400 ${type.label} / 1.4 ${font.body};
     color: ${color.bodyMuted};
   }
   .editions .tag {
@@ -624,8 +725,7 @@ const Book = styled(Chapter)`
   }
   .editions ul li {
     padding: 0 0 0 16px;
-    background: none;
-    box-shadow: none;
+    border-top: 0;
     position: relative;
     font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.body};
@@ -657,14 +757,27 @@ const Book = styled(Chapter)`
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
+  /* Two columns on a phone, so every price shows without a scroller (S24). */
   ${media.sm} {
     .editions {
-      grid-template-columns: minmax(0, 1fr);
+      gap: ${space.xl} ${space.md};
+    }
+    .editions h3 {
+      font-size: ${type.lead};
+    }
+    .editions .tag,
+    .editions ul li {
+      font-size: ${type.note};
     }
   }
   ${media.md} {
     .book {
       grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  ${media.sm} {
+    .book img {
+      width: 56%;
     }
   }
 `;
@@ -676,11 +789,36 @@ const Book = styled(Chapter)`
  * the plan cards below carry the detail, and nothing else on the page
  * repeats it.
  */
+/* Premium pass (spec §4B): the opening is on the ivory, so the sheet is a
+   step lighter with a hairline, not a shadow; a sample book's cover sits
+   beside it (above it on a phone) as the page's real object. */
+const HeroObject = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 0.3fr) minmax(0, 1fr);
+  gap: ${space.xl};
+  align-items: center;
+  .cover {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: ${radius.sm};
+    box-shadow: ${shadow.md};
+  }
+  ${media.md} {
+    grid-template-columns: minmax(0, 1fr);
+    gap: ${space.lg};
+    .cover {
+      width: 136px;
+    }
+  }
+`;
+
 const Sheet = styled.div`
   position: relative;
   color: ${color.primary};
   background: ${color.paperPure};
-  box-shadow: ${shadow.lie};
+  border: 1px solid ${color.primaryLine};
   &::before {
     content: "";
     position: absolute;
@@ -703,19 +841,18 @@ const Sheet = styled.div`
   }
   .k {
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   .p {
     margin-top: 12px;
-    font: 500 clamp(2.6rem, 1.8rem + 2.2vw, 4.6rem) / 1 ${font.display};
+    font: 500 ${display.lg} / 1 ${font.display};
     letter-spacing: -0.02em;
-    font-variant-numeric: lining-nums;
+    font-variant-numeric: tabular-nums lining-nums;
   }
   .p small {
     margin-left: 8px;
-    font: 400 clamp(1rem, 0.95rem + 0.2vw, 1.15rem) / 1.3 ${font.text};
+    font: 400 ${type.note} / 1.3 ${font.text};
     letter-spacing: 0;
     color: ${color.bodyMuted};
   }
@@ -724,37 +861,6 @@ const Sheet = styled.div`
     max-width: 30ch;
     font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.body};
-  }
-  .foot {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 6px 28px;
-    margin: 0 clamp(22px, 2.6vw, 48px);
-    padding: 16px 0 clamp(22px, 2.2vw, 34px);
-    border-top: 1px solid ${color.primaryLine};
-    font: 400 ${type.read} / 1.5 ${font.text};
-    color: ${color.body};
-  }
-  /* A 44px target, the underline where it was (jury 2 R2 N3). */
-  .foot a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0;
-    font: 600 ${type.note} / 1.3 ${font.ui};
-    color: ${color.primary};
-    text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, ${color.gold} 80%, transparent);
-    text-underline-offset: 5px;
-    white-space: nowrap;
-    transition: color 160ms ${curve.out};
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .foot a:hover {
-      color: ${color.accentText};
-    }
   }
   ${media.md} {
     .cols {
@@ -766,6 +872,26 @@ const Sheet = styled.div`
     }
     .cols li {
       padding-block: 22px;
+    }
+  }
+  /* On a phone each column is one compact row: the name and the figure on
+     one line, the sentence under them. */
+  ${media.sm} {
+    .cols li {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: baseline;
+      column-gap: ${space.md};
+      padding: ${space.md} ${space.lg};
+    }
+    .p {
+      margin-top: 0;
+      font-size: ${display.md};
+    }
+    .l {
+      grid-column: 1 / -1;
+      margin-top: ${space.xs};
+      font-size: ${type.note};
     }
   }
 `;
@@ -812,14 +938,29 @@ function PriceCard() {
           </p>
         </li>
       </ul>
-      <p className="foot">
-        <span>
-          Plans aren’t on sale yet. {OFFERS.reserve.price} holds your place in
-          line.
-        </span>
-        <Link to="/reserve">How reserving works</Link>
-      </p>
     </Sheet>
+  );
+}
+
+/* The hero's object: a real sample book's cover ("The Ledger", one of the
+   three books on /samples) beside the price card. An existing asset. */
+function HeroPrice() {
+  return (
+    <HeroObject>
+      <img
+        className="cover"
+        src="/book-objects/sample-raymond-720.webp"
+        srcSet="/book-objects/sample-raymond-360.webp 360w, /book-objects/sample-raymond-720.webp 720w"
+        sizes="(max-width: 860px) 136px, 22vw"
+        width={720}
+        height={720}
+        alt="The cover of a sample A Story book, The Ledger, for Raymond and Elena"
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
+      />
+      <PriceCard />
+    </HeroObject>
   );
 }
 
@@ -983,6 +1124,7 @@ export default function Pricing() {
       <PhonePairs>
         <PageOpening
           variant="wide"
+          ground="ivory"
           title={
             <>
               Free to start. Pay for <em>calls.</em>
@@ -999,22 +1141,29 @@ export default function Pricing() {
               </SecondaryLink>
             </>
           }
-          note="Prices in US dollars. The calls ring in the A Story iPhone app, in a private beta."
-          object={<PriceCard />}
+          note={`Prices in US dollars. ${TODAY_NOTE}`}
+          object={<HeroPrice />}
         />
       </PhonePairs>
 
       <Plans ref={plans} $ground="ivory" aria-label="Plans">
         <Frame>
+          {/* The buying state, said once (spec §4B, S2). */}
+          <Note className="state">
+            Plans aren’t on sale yet. Today you can start free, and{" "}
+            {OFFERS.reserve.price} holds your place in line.
+          </Note>
           <div
             className="plans"
             role="radiogroup"
             aria-label="Choose your preferred plan"
+            data-rise
           >
             {PLANS.map((p) => (
-              <article
+              <Card
+                as="article"
+                $ground="ivory"
                 key={p.id}
-                data-rise
                 className={`plan ${p.featured ? "featured" : ""} ${selected === p.id ? "is-selected" : ""}`}
                 onClick={() => setSelected(p.id)}
               >
@@ -1051,7 +1200,7 @@ export default function Pricing() {
                     </small>
                   </p>
                 </div>
-              </article>
+              </Card>
             ))}
           </div>
 
@@ -1061,7 +1210,6 @@ export default function Pricing() {
                 key={p.id}
                 className={`other ${selected === p.id ? "is-selected" : ""}`}
                 onClick={() => setSelected(p.id)}
-                data-rise
               >
                 <input
                   className="choose"
@@ -1079,69 +1227,6 @@ export default function Pricing() {
               </div>
             ))}
           </div>
-
-          <Compare>
-            <details>
-              <summary>
-                <h2 id="compare-title">Compare every plan, side by side</h2>
-                <span aria-hidden="true" />
-              </summary>
-              <div
-                className="grid"
-                tabIndex={0}
-                role="region"
-                aria-label="Plan comparison, scrollable"
-              >
-                <table>
-                  <thead>
-                    <tr>
-                      <th scope="col">
-                        <span className="sr-only">Plan</span>
-                      </th>
-                      {COLS.map((c) => (
-                        <th
-                          key={c.id}
-                          scope="col"
-                          className={selected === c.id ? "sel" : undefined}
-                        >
-                          <button
-                            type="button"
-                            onClick={() => setSelected(c.id)}
-                            aria-pressed={selected === c.id}
-                          >
-                            <b>{c.name}</b>
-                            <span>{c.price}</span>
-                            <small>{c.period}</small>
-                          </button>
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ROWS.map((r) => (
-                      <tr key={r.label}>
-                        <th scope="row">{r.label}</th>
-                        {r.cells.map(([main, sub], i) => (
-                          <td
-                            key={i}
-                            className={
-                              selected === COLS[i].id ? "sel" : undefined
-                            }
-                          >
-                            <strong className={r.yes ? "yes" : undefined}>
-                              {r.yes && <YesTick />}
-                              {main}
-                            </strong>
-                            {sub && <span>{sub}</span>}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </details>
-          </Compare>
 
           <div className={`decide${chosen ? " float" : ""}`} aria-live="polite">
             <div>
@@ -1177,21 +1262,149 @@ export default function Pricing() {
         </Frame>
       </Plans>
 
+      {/* What stays yours sits right after the cards (benchmarks-convert
+          §2.5), then the film link. Renamed from "Stop paying, and it is
+          still yours." (spec §4B). */}
       <Forever ref={forever} $ground="paper" aria-labelledby="forever-title">
         <Frame>
           <SplitHead>
             <Statement id="forever-title" $size="lg" data-lines>
-              Stop paying, and it is still <em>yours.</em>
+              Whatever you choose, it stays <em>yours.</em>
             </Statement>
           </SplitHead>
-          <ul className="kept">
+          <ul className="kept" data-rise>
             {FOREVER.kept.map((k) => (
-              <li key={k} data-rise>
-                {k}
+              <li key={k}>{k}</li>
+            ))}
+          </ul>
+          <p className="film">
+            <TextLink to="/how-it-works#film">
+              Not sure yet? Watch the 49-second film
+            </TextLink>
+          </p>
+          <Compare>
+            <details>
+              <summary>
+                <h2 id="compare-title">Compare every plan, side by side</h2>
+                <span aria-hidden="true" />
+              </summary>
+              <div
+                className="grid"
+                tabIndex={0}
+                role="region"
+                aria-label="Plan comparison, scrollable"
+              >
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">
+                        <span className="sr-only">Plan</span>
+                      </th>
+                      {COLS.map((c, ci) => (
+                        <th
+                          key={c.id}
+                          scope="col"
+                          className={selected === c.id ? "sel" : undefined}
+                          style={{ ["--o" as string]: (ci + 1) * 100 }}
+                        >
+                          <button
+                            type="button"
+                            onClick={() => setSelected(c.id)}
+                            aria-pressed={selected === c.id}
+                          >
+                            <b>{c.name}</b>
+                            <span>{c.price}</span>
+                            <small>{c.period}</small>
+                          </button>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {ROWS.map((r, ri) => (
+                      <tr key={r.label}>
+                        <th scope="row">{r.label}</th>
+                        {r.cells.map(([main, sub], i) => (
+                          <td
+                            key={i}
+                            className={
+                              selected === COLS[i].id ? "sel" : undefined
+                            }
+                            data-label={r.label}
+                            style={{ ["--o" as string]: (i + 1) * 100 + ri + 1 }}
+                          >
+                            <div>
+                              <strong className={r.yes ? "yes" : undefined}>
+                                {r.yes && <YesTick />}
+                                {main}
+                              </strong>
+                              {sub && <span>{sub}</span>}
+                            </div>
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          </Compare>
+        </Frame>
+      </Forever>
+
+      <Book ref={book} $ground="sand" id="book" aria-labelledby="book-title">
+        <Frame className="book">
+          {/* The cover of a real sample book (the /samples page), not the
+              product mock-up whose cover still read "Family name". */}
+          <img
+            src="/book-objects/sample-carolyn-720.webp"
+            srcSet="/book-objects/sample-carolyn-360.webp 360w, /book-objects/sample-carolyn-720.webp 720w"
+            sizes="(max-width: 640px) 56vw, (max-width: 860px) 92vw, 460px"
+            width={720}
+            height={720}
+            alt="The cover of a sample A Story book, Moments & Memories, with family photographs on navy linen"
+            loading="lazy"
+          />
+          <div>
+            <Statement id="book-title" $size="lg" data-lines>
+              Six ways to hold the <em>book.</em>
+            </Statement>
+            <p>
+              From a PDF you print at the library to a linen Heirloom in its
+              box, or an editor of ours doing all of it. {BOOK.pages}.
+            </p>
+            <p>
+              {/* /samples is a page in public/, outside the router: a plain anchor. */}
+              <TextAnchor href="/samples">
+                Flip through three sample books
+              </TextAnchor>
+            </p>
+          </div>
+        </Frame>
+        <Frame>
+          <ul className="editions" aria-label="Book editions" data-rise>
+            {BOOK_EDITIONS.map((e) => (
+              <li key={e.id}>
+                <span className="badge">{e.badge ?? ""}</span>
+                <h3>{e.name}</h3>
+                <p className="cost">
+                  {e.price}
+                  {e.extra && <small>{e.extra} each extra copy</small>}
+                </p>
+                <p className="tag">{e.tagline}</p>
+                <ul>
+                  {e.includes.map((x) => (
+                    <li key={x}>{x}</li>
+                  ))}
+                </ul>
+                <p className="when">{e.delivery}</p>
               </li>
             ))}
           </ul>
-
+          <p className="members">
+            <strong>With a plan:</strong> {BOOK.members} {BOOK.allowance}.
+          </p>
+          <Asked aria-label="Questions">
           <div className="questions">
             <details>
               <summary>What is included in Free?</summary>
@@ -1209,64 +1422,11 @@ export default function Pricing() {
               </p>
             </details>
           </div>
-        </Frame>
-      </Forever>
-
-      <Book ref={book} $ground="sand" id="book" aria-labelledby="book-title">
-        <Frame className="book">
-          {/* The cover of a real sample book (the /samples page), not the
-              product mock-up whose cover still read "Family name". */}
-          <img
-            data-rise
-            data-drift="5"
-            src="/book-objects/sample-carolyn-720.webp"
-            srcSet="/book-objects/sample-carolyn-360.webp 360w, /book-objects/sample-carolyn-720.webp 720w"
-            sizes="(max-width: 860px) 92vw, 460px"
-            width={720}
-            height={720}
-            alt="The cover of a sample A Story book, Moments & Memories, with family photographs on navy linen"
-            loading="lazy"
-          />
-          <div>
-            <Statement id="book-title" $size="lg" data-lines>
-              Six ways to hold the <em>book.</em>
-            </Statement>
-            <p data-rise>
-              From a PDF you print at the library to a linen Heirloom in its
-              box, or an editor of ours doing all of it. {BOOK.pages}.
-            </p>
-            <p data-rise>
-              {/* /samples is a page in public/, outside the router: a plain anchor. */}
-              <TextAnchor href="/samples">
-                Flip through three sample books <ArrowIcon />
-              </TextAnchor>
-            </p>
-          </div>
-        </Frame>
-        <Frame>
-          <ul className="editions" aria-label="Book editions">
-            {BOOK_EDITIONS.map((e) => (
-              <li key={e.id} data-rise>
-                <span className="badge">{e.badge ?? ""}</span>
-                <h3>{e.name}</h3>
-                <p className="cost">
-                  {e.price}
-                  {e.extra && <small>{e.extra} each extra copy</small>}
-                </p>
-                <p className="tag">{e.tagline}</p>
-                <ul>
-                  {e.includes.map((x) => (
-                    <li key={x}>{x}</li>
-                  ))}
-                </ul>
-                <p className="when">{e.delivery}</p>
-              </li>
-            ))}
-          </ul>
-          <p className="members" data-rise>
-            <strong>With a plan:</strong> {BOOK.members} {BOOK.allowance}.
-            Ordering opens soon.
+          <p className="links">
+            <TextLink to="/compare">Compare A Story with others</TextLink>
+            <TextLink to="/questions">All questions &amp; answers</TextLink>
           </p>
+          </Asked>
         </Frame>
       </Book>
     </>

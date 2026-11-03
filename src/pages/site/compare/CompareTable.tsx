@@ -5,9 +5,11 @@
  * (soft grey, never red) — and A Story's column tinted with a teal rule
  * under its name. Easy to follow in a few seconds. Data: lib/landscape.ts.
  */
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import type { Level, Row } from "../../../lib/landscape";
-import { color, font, media, type } from "../../../styles/theme";
+import { IN_MAIN, usePremium } from "../kit/premium";
+import { color, font, media, radius, space, type } from "../../../styles/theme";
 
 const Card = styled.div`
   border-radius: 20px;
@@ -86,6 +88,92 @@ const Card = styled.div`
       z-index: 1;
       min-width: 200px;
       background: ${color.paperPure};
+    }
+  }
+
+  /* Premium pass (spec §4B /compare, S12), off home only. Home's table
+     (home/WhereWeSit) keeps everything above, unchanged.
+     - From 641px: the feature column stays put while the rest scrolls, and
+       the right edge fades while there is more to see.
+     - To 640px: the same table reflows into one block per feature: the
+       feature, then A Story, then each company as "Name: mark", read from
+       each cell's data-label. One DOM, no hidden second copy. */
+  ${IN_MAIN} & {
+    thead th {
+      font-size: ${type.read};
+    }
+    thead .us {
+      font-size: ${type.lead};
+    }
+    tbody th {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: ${color.paperPure};
+    }
+  }
+  ${IN_MAIN} &[data-overflow="end"] {
+    mask-image: linear-gradient(to right, #000 calc(100% - ${space.xxl}), transparent);
+  }
+  ${media.sm} {
+    ${IN_MAIN} & {
+      overflow: visible;
+      mask-image: none;
+    }
+    ${IN_MAIN} & table,
+    ${IN_MAIN} & tbody,
+    ${IN_MAIN} & tr {
+      display: block;
+      min-width: 0;
+    }
+    ${IN_MAIN} & thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+    ${IN_MAIN} & tr {
+      padding: ${space.md} ${space.md} ${space.sm};
+      border-bottom: 1px solid ${color.primaryLine};
+    }
+    ${IN_MAIN} & tbody tr:last-child {
+      border-bottom: 0;
+    }
+    ${IN_MAIN} & tbody th {
+      display: block;
+      position: static;
+      width: auto;
+      min-width: 0;
+      padding: 0 0 ${space.xs};
+      border: 0;
+      background: none;
+    }
+    ${IN_MAIN} & td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: ${space.md};
+      width: auto;
+      min-height: 0;
+      padding: ${space.xxs} 0;
+      border: 0;
+      text-align: left;
+    }
+    ${IN_MAIN} & td::before {
+      content: attr(data-label);
+      font: 500 ${type.note} / 1.3 ${font.ui};
+      color: ${color.bodyMuted};
+    }
+    ${IN_MAIN} & td.us {
+      margin-inline: calc(-1 * ${space.xs});
+      padding-inline: ${space.xs};
+      border-radius: ${radius.sm};
+    }
+    ${IN_MAIN} & td.us::before {
+      font-weight: 600;
+      color: ${color.teal};
     }
   }
 `;
@@ -195,8 +283,29 @@ export default function CompareTable({
   labelWidth?: string;
   usWidth?: string;
 }) {
+  /* Off home: mark the right edge while the table has more to show (the
+     end fade, spec §4B). Home never runs this. */
+  const premium = usePremium();
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!premium || !el) return;
+    const update = () => {
+      const more = el.scrollWidth - el.clientWidth - el.scrollLeft > 2;
+      el.dataset.overflow = more ? "end" : "none";
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    el.addEventListener("scroll", update, { passive: true });
+    return () => {
+      ro.disconnect();
+      el.removeEventListener("scroll", update);
+    };
+  }, [premium]);
   return (
     <Card
+      ref={ref}
       tabIndex={0}
       role="region"
       aria-label={label}
@@ -224,7 +333,11 @@ export default function CompareTable({
             <tr key={r.label}>
               <th scope="row">{r.label}</th>
               {r.cells.map((v, i) => (
-                <td key={i} className={i === 0 ? "us" : undefined}>
+                <td
+                  key={i}
+                  className={i === 0 ? "us" : undefined}
+                  data-label={columns[i]}
+                >
                   <Mark v={v} />
                 </td>
               ))}

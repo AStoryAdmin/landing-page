@@ -54,6 +54,7 @@ import { markOffer, useAccount, useReferralCode } from "../../lib/auth";
 import { useFoundingTaken } from "../../lib/foundingCount";
 import { track } from "../../lib/analytics";
 import { SITE } from "../../lib/seo";
+import { TODAY_NOTE } from "../../lib/today";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import ComingSoon from "./kit/ComingSoon";
 import CheckoutDetails, { type CheckoutIntent } from "./CheckoutDetails";
@@ -98,8 +99,7 @@ const cardRules = css`
   }
   .tag {
     font: 600 ${type.label} / 1 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   .name {
@@ -125,8 +125,7 @@ const cardRules = css`
   }
   .price span {
     font: 600 ${type.label} / 1 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   .held {
@@ -161,11 +160,11 @@ const cardRules = css`
     white-space: nowrap;
   }
   .held s {
-    font: 400 18px / 1 ${font.text};
+    font: 400 ${type.read} / 1 ${font.text};
     color: ${color.bodyMuted};
   }
   .held dd b {
-    font: 400 26px/1 ${font.display};
+    font: 400 ${type.lead} / 1 ${font.display};
     color: ${color.primary};
   }
   .held p.f {
@@ -296,7 +295,7 @@ const cardRules = css`
     padding: 10px 18px;
     border: 1px solid ${color.primaryLine};
     background: ${color.paperPure};
-    font: 500 18px / 1.3 ${font.text};
+    font: 500 ${type.read} / 1.3 ${font.text};
     color: ${color.body};
   }
   .choice span small {
@@ -398,7 +397,7 @@ const Next = styled(Chapter)`
   .then {
     margin-top: clamp(18px, 2vw, 28px);
     max-width: 40ch;
-    font: 400 clamp(1.2rem, 1.05rem + 0.5vw, 1.6rem) / 1.5 ${font.text};
+    font: 400 ${type.lead} / 1.5 ${font.text};
     color: ${color.primary};
   }
   .then + p {
@@ -1074,7 +1073,8 @@ export default function Reserve() {
                 Hold your place <em>for a dollar.</em>
               </>
             }
-            lead={`Anyone can start A Story free in a browser. The calls come with a plan, and they ring in the A Story iPhone app, which is in a private beta. ${reserve.price} holds your family a place in line.`}
+            lead={`Anyone can start A Story free in a browser. The calls come with a plan. ${reserve.price} holds your family a place in line.`}
+            note={TODAY_NOTE}
             object={
               <HeroCard>
                 {card(

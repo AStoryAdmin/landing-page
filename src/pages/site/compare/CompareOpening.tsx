@@ -11,16 +11,34 @@
 import styled from "styled-components";
 import { SWITCH } from "../../../lib/landscape";
 import { PageOpening } from "../kit/kit";
-import { color, display, font, media, shadow, type } from "../../../styles/theme";
+import {
+  color,
+  display,
+  font,
+  media,
+  shadow,
+  space,
+  type,
+} from "../../../styles/theme";
 
+/* Premium pass (spec §4B): the opening is the `wide` composition, so the
+   leaf runs the width of the frame under the words, its four reasons in two
+   columns from 861px. */
 const Leaf = styled.div`
   position: relative;
-  width: min(100%, 720px);
+  width: 100%;
   padding: clamp(28px, 3vw, 56px) clamp(26px, 3vw, 56px);
   color: ${color.primary};
   background: ${color.paperPure};
   box-shadow: ${shadow.lie};
-  transform: rotate(-0.6deg);
+  transform: rotate(-0.3deg);
+  ${media.up.md} {
+    ul {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: ${space.xxl};
+    }
+  }
   &::before {
     content: "";
     position: absolute;
@@ -33,8 +51,7 @@ const Leaf = styled.div`
   }
   h2 {
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   ul {
@@ -63,7 +80,7 @@ const Leaf = styled.div`
 export default function CompareOpening() {
   return (
     <PageOpening
-      flip
+      variant="wide"
       labelledBy="compare-title"
       title={
         <>
