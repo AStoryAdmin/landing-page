@@ -65,8 +65,8 @@ minutes later", layer bars, stats, summaries, lesson boxes were not necessary.
 | 4 | Builder: compileBook(DATA) + parity CSS + measured text flow; scanned view trimmed to listen + archive | page renders all three from DATA | done |
 | 5 | Writers ×3: Carolyn, Raymond, Tom as DATA files (public/samples/books/*.js) | `check-data.mjs` OK ×3 | done |
 | 6 | Integrate, overflow check, counts check | `node scripts/qa/samples-overflow.mjs <url>` → OK | done |
-| 7 | Cold-reader panel ×2; editor pass | round 1: 7.95 / 7.15 / 7.85; round 2 in `docs/plans/sample-books-v2/panel-round2.md` | round 2 pending |
-| 8 | Lint, build, screenshots, commit; covers re-captured | branch `sample-books-v2` | in progress |
+| 7 | Cold-reader panel ×2; editor pass | round 1: 7.95 / 7.15 / 7.85 → round 2: 8.15 / 7.65 / 8.05 (Carolyn / Raymond / Tom); round-2 flags fixed | done |
+| 8 | Lint, build, screenshots, commit; covers re-captured | branch `sample-books-v2` | done |
 | 9 | Daniel reviews on the preview, then PR → main → astoryapp.com | live /samples | waits for Daniel |
 
 ## Schema (what a writer hands in)

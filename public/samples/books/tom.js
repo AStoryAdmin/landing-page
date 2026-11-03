@@ -75,7 +75,7 @@ DATA.tom = {
           caption: "The calendar from the inside of his helmet. He crossed off every day." }
       },
       { id: "m5", title: "The ones I couldn’t save", dateline: "Vietnam, May 1968, and the fifty years after",
-        headnote: "In the living room with the television off; the longest pause on any of the recordings is on this one.",
+        headnote: "In the living room with the television off. Diane is in the kitchen, listening.",
         faces: [
           [
             "Danny Alvarez. From Corpus Christi. We went through training together and ended up in the same company by dumb luck. He laughed louder than anyone I ever met. He had a girl at home too, and we’d read each other’s letters out loud, the parts you could read.",
@@ -171,7 +171,7 @@ DATA.tom = {
         ],
         sides: [
           { heading: "Mike remembers it too", body: "He talked the whole way. Not about the Wall. About Danny’s laugh, and a dog in a church basement, and a sergeant who said he was the only medic who ducked. Two and a half hours to the airport and he didn’t stop. I’d waited my whole life for that bus ride. I didn’t say a word. I didn’t want to break it.", by: "Mike Kessler, his son" },
-          { heading: "Hannah remembers it differently", body: "I filled out the form. That’s all. I was twelve, and Grandma did the hard part, which was telling him at breakfast. I signed his name, neatly, which is why Dad says I signed him up. And the rubbing isn’t in a drawer. It’s framed, in my room, and he does check. Every time.", by: "Hannah Kessler, his granddaughter" }
+          { heading: "Hannah remembers it differently", body: "I filled out the form. That’s all. I was twelve, and Grandma did the hard part, which was telling him at breakfast. I signed his name, neatly, which is why Dad says I signed him up. The rubbing is framed in my room. He looks at it every time he visits.", by: "Hannah Kessler, his granddaughter" }
         ],
         plate: null
       }
@@ -188,7 +188,7 @@ DATA.tom = {
           ],
           [
             "People ask if the war made me a better nurse. A calmer one. And I needed somewhere to put it. Every person I helped in that ER was a small payment on what I couldn’t do for Danny. Maybe that’s not healthy. But it was useful, and useful kept me going.",
-            "Nights, you miss things. Mike’s games. Laura’s plays. I was asleep when they left for school and gone when they came home. Diane did the days.",
+            "Nights, you miss things. Mike’s games. Laura’s plays. I was home for breakfast, asleep by the time they left for school, and gone when they came home. Diane did the days.",
             "When I retired in 2008 the night shift framed my first pay stub and my last one. That’s the whole career, on one wall."
           ]
         ],
@@ -293,11 +293,11 @@ DATA.tom = {
       "You asked twice. I want you to know what that did. The first time, I said no and thought that was the end of it. The second time, I understood that you were going to keep asking, and that someday you’d be asking a stone. I’d rather you asked me.",
       "Everything in this book I kept in a box for fifty years. I thought that kept it from hurting you. It didn’t. It just kept me from you. Your father grew up with that. Your aunt did. Your grandmother waited through it. Don’t do that to anybody. If something is heavy, say so. The people who love you can carry more than you think, and they’d rather carry it than watch you.",
       "Say Danny’s name once a year after I’m gone. Out loud, anywhere. The driveway counts.",
-      "And when you leave, wherever you go, you know what I’m going to say. Your great-grandfather said it to me with a draft letter in his hand, and it took me forty years to do it all the way. Do it faster than I did.",
+      "And when you leave, wherever you go, you know what I’m going to say. Your great-grandfather said it to me with a draft letter in his hand, and it took me most of my life to do it all the way. Do it faster than I did.",
       "Come home."
     ]],
     sig: "Grandpa" },
 
   colophon: { conversations: 13, gathered: "between September 2025 and February 2026", keepers: ["Hannah Kessler", "Laura Kessler"], archiveId: "AS-KESSLER-2026", edition: "First edition, May 25, 2026" },
-  back: { dedicatedTo: "The Kesslers", quote: "“Tell it while you can, to whoever will listen.”" }
+  back: { dedicatedTo: "The Kesslers", quote: "“I married the handwriting.”" }
 };

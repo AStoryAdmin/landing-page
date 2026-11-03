@@ -178,7 +178,7 @@ DATA.carolyn = {
           [ "That winter I took Mom a loaf every morning before we opened. Rye, if it was warm; she could manage rye. One morning in January she didn’t eat any. She held it in her lap like a cat. I cried in the van after and I didn’t tell Rick.",
             "By February she slept most of the day. I baked her lemon cake anyway, so the house would smell right. She died the next morning, early. Anne called me at the shop. I didn’t write any of it down. I didn’t want to remember it, and now I’m glad somebody asked." ],
           [ "A week later I found her recipe cards in a coffee can above the stove. Forty years of her handwriting, flour still in the corners. I knew right away I’d bake every one of them.",
-            "So I give it a job. Every Saturday I take out the next card and bake whatever is on it, in order. I’ve been through all 340 once. I’m on card 125 the second time around. Some of them are terrible. Mom made a lot of gelatin salads. For two hours the house smells like her, and I talk to her out loud, and that’s enough.",
+            "So I give the missing her a job. Every Saturday I take out the next card and bake whatever is on it, in order. I’ve been through all 340 once. I’m on card 125 the second time around. Some of them are terrible. Mom made a lot of gelatin salads. For two hours the house smells like her, and I talk to her out loud, and that’s enough.",
             "Ellie bakes with me every other Saturday. The can goes to her. I’ve written it on the lid." ]
         ],
         photos: [],
@@ -286,5 +286,5 @@ DATA.carolyn = {
     sig: "Mom" },
 
   colophon: { conversations: 11, gathered: "between October 2025 and March 2026", keepers: ["Dylan Ellison", "Mark Ellison"], archiveId: "AS-BENNETT-2026", edition: "First edition, April 23, 2026" },
-  back: { dedicatedTo: "The Bennetts", quote: "“To the Bennetts, who always pulled up a chair.”" }
+  back: { dedicatedTo: "The Bennetts", quote: "“I baked her lemon cake anyway, so the house would smell right.”" }
 };

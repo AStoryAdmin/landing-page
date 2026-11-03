@@ -241,6 +241,7 @@ header.top{width:100%;max-width:1180px;display:flex;flex-wrap:wrap;align-items:f
 .notes{display:flex;flex-direction:column;gap:3.6cqw;margin-top:4.5cqw}
 .tape{position:absolute;top:-1.6cqw;left:50%;width:11cqw;height:3.4cqw;transform:translateX(-50%) rotate(-3deg);background:rgba(235,200,106,.55)}
 .letter .body{font-size:2.72cqw;line-height:1.62}
+.letter .letter-close>p{font:400 2.72cqw/1.62 var(--f-body);color:var(--ink);margin:1.6cqw 0 0}
 .letter .sig{font-size:11cqw;margin-top:1.5cqw;color:var(--ink);line-height:.9}
 .final{align-items:center;justify-content:center;text-align:center;gap:3cqw}
 .final .wm{font:700 4.4cqw/1 var(--f-sans);letter-spacing:.3em;text-transform:uppercase}
@@ -1370,7 +1371,10 @@ function compileBook(D, forceToc){
   all.forEach(m => { mem[m.id] = m; });
   const nMem = all.length, nPhotos = all.reduce((n,m)=>n+(m.photos||[]).length, 0);
   const contributors = [];
-  const addC = who => { const w = String(who||'').replace(/^Remembered by\s+/i,'').split(',')[0].trim(); if(w && !contributors.includes(w)) contributors.push(w); };
+  const addC = who => { const w = String(who||'').replace(/^Remembered by\s+/i,'').split(',')[0].trim(); if(!w) return;
+    /* "Ellie and Sam Ellison" is two people who share a surname */
+    const parts = w.split(/\s+and\s+/), sur = parts.length > 1 ? parts[parts.length-1].split(/\s+/).slice(1).join(' ') : '';
+    parts.map(p => (sur && !/\s/.test(p)) ? `${p} ${sur}` : p).forEach(p => { if(!contributors.includes(p)) contributors.push(p); }); };
   all.forEach(m => (m.sides||[]).forEach(s => addC(s.by)));
   (D.family_chapter||[]).forEach(f => addC(f.who));
 
@@ -1440,7 +1444,7 @@ function compileBook(D, forceToc){
     (col.keepers||[]).length ? `Kept by ${tw(namesLine(col.keepers))}.` : '',
     contributors.length ? `With memories from ${tw(namesLine(contributors))}.` : '',
     col.conversations ? `Gathered in ${col.conversations} conversations ${tw(col.gathered||'')}.`.replace(/\s+\./,'.') : '',
-    `Every word on these pages is ${pron === 'he' ? 'his' : 'hers'}.`,
+    `${pron === 'he' ? 'His' : 'Her'} words as ${pron} said them; the family’s under their own names.`,
     `This book is private to ${tw(D.family)}.`,
     `A sample book. ${tw(name)} and ${poss} family are fictional.`,
     `Shaped, designed and printed by A Story.`,
@@ -1524,17 +1528,22 @@ function compileBook(D, forceToc){
   if(D.letter && (D.letter.faces||[]).length){
     toc.push({name:'A letter', years:'', num:0, page:n+1});
     /* the letter's paragraphs flow by measurement; the signature follows the last one */
-    const paras = D.letter.faces.flat().filter(p => p && String(p).trim()).map(p => `<p>${tw(p)}</p>`);
-    flow({cls:'', pgcls:'letter', head:`<div class="to script">${tw(D.letter.to)}</div>`, open:'<div class="body">', close:'</div>', blocks:paras, tail: D.letter.sig ? [`<div class="sig script">${tw(D.letter.sig)}</div>`] : []}).forEach((f,i) =>
+    const lines = D.letter.faces.flat().filter(p => p && String(p).trim());
+    const paras = lines.map(p => `<p>${tw(p)}</p>`);
+    /* a short closing line ("With all my love,") never leaves its signature */
+    /* …and when it has to turn the page, a paragraph of the letter goes with it */
+    const closing = D.letter.sig && String(lines[lines.length-1]||'').length < 40 && paras.length > 1 ? paras.splice(-2).join('') : '';
+    const sigTail = D.letter.sig ? [`<div class="letter-close">${closing}<div class="sig script">${tw(D.letter.sig)}</div></div>`] : [];
+    flow({cls:'', pgcls:'letter', head:`<div class="to script">${tw(D.letter.to)}</div>`, open:'<div class="body">', close:'</div>', blocks:paras, tail: sigTail}).forEach((f,i) =>
       push({cls:"", t:"A letter", sec:i===0?'A letter':undefined, html:`${f.html}${folio(n+1)}`, note:["A letter", `The last thing in ${poss} voice: one letter to the family, as ${pron} wrote it.`]}));
   }
   /* the final page sits on a right-hand page: pad with a blank verso if needed */
   if((body.length + tocFaces) % 2 === 1) push({...flyleaf, note:["", ""]});
-  const ending = D.ending || `This book is one edition. ${name}’s archive keeps every memory and recording, and the family can keep adding to it.`;
+  const ending = D.ending || `Every conversation in this book is kept in ${name}’s own voice, in the family’s archive${(D.colophon||{}).archiveId ? `, ${(D.colophon||{}).archiveId}` : ''}.`;
   push({cls:"", t:"Final page", html:`${grain}<div class="pg final" style="justify-content:flex-start;padding-top:15cqw">
   ${logo(9,'color:var(--ink)')}
   <div class="wm">A Story</div></div>
-  <div class="archive-end">${qrBtn('archive')}<p><b>The story keeps going</b>${tw(ending)}</p></div>${folio(n+1)}`, note:["The archive", ending]});
+  <div class="archive-end">${qrBtn('archive')}<p><b>The recordings</b>${tw(ending)}</p></div>${folio(n+1)}`, note:["The archive", ending]});
 
   /* contents, now that every folio is known */
   const tocLi = r => `<li><span class="n">${r.num?String(r.num).padStart(2,'0'):''}</span><span class="t">${tw(r.name)}${r.years?` <i>${r.years}</i>`:''}</span><span class="p">${r.page}</span></li>`;

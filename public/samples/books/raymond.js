@@ -15,7 +15,7 @@ DATA.raymond = {
         faces: [
           [
             "My father fixed cars on South Flores Street. Six kids, one bay, and a sign he painted himself. Ortiz Auto. No first name on it, because he said the name was the family’s, not his.",
-            "I was the fourth. The two older boys got the wrenches. I got the broom, and then the parts washer, and then, when I was eleven, the caliper. Six-inch dial, Brown and Sharpe. He’d bought it used from a man who was closing a machine shop on the east side, and it cost him more than he’d admit to my mother.",
+            "I was the fourth boy. The three older ones got the wrenches. I got the broom, and then the parts washer, and then, when I was eleven, the caliper. Six-inch dial, Brown and Sharpe. He’d bought it used from a man who was closing a machine shop on the east side, and it cost him more than he’d admit to my mother.",
             "He put it in my hand and said, this one measures. The rest of the tools in here guess."
           ],
           [
@@ -83,7 +83,7 @@ DATA.raymond = {
         ],
         voice: { rec: "Oct 2, 2025", len: "0:58", quote: "Your grandmother was the most important person in that company, and nobody knew it." },
         plate: { kind: "ledger", title: "Ortiz Precision · 1983",
-          rows: [["Aug","Mill, used","2,300"],["Aug","Rent, Godfrey","180"],["Sep","First order!","412"],["Oct","Kerosene","38"],["Nov","Bracket job","1,150"],["Dec","Payday","Fri"]],
+          rows: [["Aug","Mill, used","2,300"],["Aug","Rent, Godfrey","180"],["Sep","First order","412"],["Oct","Kerosene","38"],["Nov","Bracket job","1,150"],["Dec","Payday","Fri"]],
           caption: "The first page of Elena’s first ledger. She kept twenty-one of them." }
       },
     ]},
@@ -117,7 +117,7 @@ DATA.raymond = {
         ]
       },
       { id: "m8", title: "The customer who was sixty percent", dateline: "1986 – 1991 · aged 35 to 40", askedBy: "Maya",
-        headnote: "In the truck, driving back from Tomás’s shop; the turn signal is on for most of it.",
+        headnote: "In the truck on the way back from Tomás’s shop, on a Thursday afternoon in November.",
         faces: [
           [
             "The most expensive mistake I ever made came in on a Tuesday in 1986, and it looked like the best day of my life.",
@@ -299,7 +299,7 @@ DATA.raymond = {
     faces: [[
       "You asked most of the questions in this book, so you get the letter.",
       "I don’t have advice. You’ve heard all of it, and you took the caliper anyway, which tells me you’ll be fine.",
-      "I want to tell you what I didn’t say on the phone. I started that company angry. I stayed in it for the people. Hector, and the twelve, and the sixty-two, and the hundred and forty. The people are the company. Your grandmother knew that in 1983 and I learned it on a pallet in 1991, and I’d rather you learned it from her.",
+      "I want to tell you what I didn’t say on the phone. I started that company angry. I stayed in it for the people. Hector, and the twelve, and the sixty-two, and the hundred and forty. Your grandmother knew that in 1983 and I learned it on a pallet in 1991, and I’d rather you learned it from her.",
       "You put in writing that everyone at your company gets a share of it. Keep that paper where you can see it. Then go get three more customers.",
       "Tell your father I said he was ready in three. Tell your aunt the green book is hers to fill whenever she wants. And when you’re seventy-five and somebody asks you what you built, I hope you have trouble answering, because it’s too many people to name.",
       "Payday is Friday by noon."
@@ -307,5 +307,5 @@ DATA.raymond = {
     sig: "Grandpa" },
 
   colophon: { conversations: 14, gathered: "between September 2025 and January 2026", keepers: ["Maya Ortiz", "Marisol Ortiz"], archiveId: "AS-ORTIZ-2026", edition: "First edition, March 9, 2026" },
-  back: { dedicatedTo: "The Ortiz family", quote: "“Nobody builds anything alone, whatever the magazines say.”" }
+  back: { dedicatedTo: "The Ortiz family", quote: "“Leave the engine cleaner than you found it.”" }
 };
