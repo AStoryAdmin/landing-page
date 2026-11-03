@@ -2,17 +2,25 @@
  * Conversation guides — help families ask.
  *
  * The index is organised around the moment a reader recognises, not around
- * the library: four questions they could ask tonight, set on cards like the
- * app's daily question; then the guides as an editorial table of contents;
- * then, folded away, the eleven chapters and the depth ladder for anyone who
- * wants to plan a longer conversation.
+ * the library: four questions they could ask tonight, set like the app's
+ * daily question; then the guides as an editorial table of contents; then,
+ * folded away, the eleven chapters and the depth ladder for anyone who wants
+ * to plan a longer conversation.
+ *
+ * Premium pass (2026-11-02, design spec §4D, S23): the opening is on the
+ * paper, so the page reads as a library rather than another cloth hero. The
+ * four questions are leaves with a hairline, no shadow (a light ground). The
+ * guides are an editorial contents list, not a card grid: each row is the
+ * guide's photograph as a 3:2 crop (guidePictures.ts, the one the guide opens
+ * on), its title and one line, with a hairline between rows. Photograph left
+ * and words right on a wide screen; photograph above on a phone.
  */
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import guides from "../../lib/guides.json";
 import { CHAPTERS, DEPTHS } from "../../lib/product";
-import { ArrowIcon, Invitation, PageOpening } from "./kit/kit";
+import { ArrowIcon, Invitation, PageOpening, Picture } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import { Chapter, Frame, Statement } from "./kit/kit.styles";
 import {
@@ -21,9 +29,10 @@ import {
   font,
   media,
   motion,
-  shadow,
+  space,
   type,
 } from "../../styles/theme";
+import { guidePicture } from "./guidePictures";
 
 const STARTERS = [
   ["Everyday life", "What did an ordinary Sunday look like in your house?"],
@@ -33,15 +42,15 @@ const STARTERS = [
 ];
 
 /*
- * The four questions are the opening's object (jury 1 #6): question cards
- * laid on the cloth like the app's daily question, each a leaf of the book's
- * paper, a little turned. The sentence that follows them is said once, as
- * the opening's note.
+ * The four questions are the opening's object (jury 1 #6): question leaves
+ * like the app's daily question. On the paper they are ivory sheets with a
+ * hairline and the foil inset, flat (no shadow on a light ground, §3.4). The
+ * sentence that follows them is said once, as the opening's note.
  */
 const Cards = styled.ul`
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(16px, 2vw, 36px);
+  gap: clamp(${space.md}, 2vw, 36px);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -49,30 +58,27 @@ const Cards = styled.ul`
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    min-height: clamp(180px, 15vw, 280px);
-    padding: clamp(24px, 2.4vw, 40px);
+    gap: ${space.sm};
+    padding: clamp(${space.lg}, 2.4vw, 40px);
     color: ${color.primary};
-    background: ${color.paperPure};
-    box-shadow: ${shadow.lie};
-    transform: rotate(var(--turn));
+    background: ${color.ivory};
+    border: 1px solid ${color.primaryLine};
+    border-radius: 3px;
   }
   li::before {
     content: "";
     position: absolute;
-    inset: 9px;
+    inset: 8px;
     border: 1px solid ${color.foil};
     pointer-events: none;
   }
   small {
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   p {
-    font: italic 400 clamp(1.35rem, 1.1rem + 0.8vw, 2.1rem) / 1.25
-      ${font.display};
+    font: italic 400 ${display.sm} / 1.25 ${font.display};
     color: ${color.primary};
     text-wrap: pretty;
   }
@@ -80,14 +86,12 @@ const Cards = styled.ul`
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   ${media.sm} {
-    grid-template-columns: minmax(0, 1fr);
+    gap: ${space.sm};
     li {
-      min-height: 0;
+      padding: ${space.md};
     }
-  }
-  ${media.motion} {
-    li {
-      transform: none;
+    li::before {
+      inset: 6px;
     }
   }
 `;
@@ -105,80 +109,72 @@ const PhoneTitle = styled.div`
   }
 `;
 
-const TURNS = ["-1.2deg", "0.8deg", "-0.5deg", "1.1deg"];
-
 const Index = styled(Chapter)`
+  padding: calc(${space.section} * var(--sy)) 0;
   .head {
-    margin-bottom: clamp(36px, 4vw, 64px);
+    margin-bottom: clamp(${space.xl}, 4vw, ${space.xxxl});
   }
-  /*
-   * Every row has one anatomy (fix round 3, jury 1 R2 #8): a kicker, the
-   * title and one line, and an arrow. The guides are links; the last two rows
-   * open in place, so their arrow turns down and, once open, up.
-   */
+  /* The contents list: the photograph, the title and one line, a hairline
+     between rows. The guides are links; the last two rows open in place, so
+     their arrow turns down and, once open, up. */
+  .contents {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
   .entry {
     display: grid;
-    grid-template-columns: minmax(0, 0.45fr) minmax(0, 1fr) auto;
-    gap: clamp(16px, 4vw, 64px);
-    align-items: baseline;
-    padding: clamp(24px, 2.6vw, 36px) 0;
+    grid-template-columns: minmax(160px, 0.32fr) minmax(0, 1fr) auto;
+    gap: clamp(${space.lg}, 4vw, ${space.xxxl});
+    align-items: center;
+    padding: clamp(${space.lg}, 2.4vw, ${space.xl}) 0;
     border-top: 1px solid ${color.primaryLineStrong};
     text-decoration: none;
     color: inherit;
     cursor: pointer;
   }
-  /* The entry's own words slide a little under the pointer: transform only. */
-  .entry > * {
-    transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1);
+  .entry img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
   }
-  .entry h3 {
-    transition: color 160ms cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .entry:hover > * {
-      transform: translateX(12px);
-    }
-    .entry:hover h3 {
-      color: ${color.accentText};
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .entry > *,
-    summary.entry svg {
-      transition: none;
-    }
-  }
-  .entry:focus-visible {
-    outline: 3px solid ${color.accent};
-    outline-offset: 4px;
-  }
-  .cat {
-    font: 600 ${type.label} / 1.4 ${font.body};
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: ${color.accentText};
-  }
-  h3 {
-    font: 400 ${display.sm} / 1.25 ${font.display};
-    color: ${color.primary};
-    transition: color ${motion.base};
-  }
-  .entry p {
-    margin-top: 10px;
-    font: 400 ${type.read} / 1.6 ${font.text};
-    color: ${color.body};
-    max-width: 62ch;
-  }
-  .entry svg {
-    width: 20px;
-    height: 20px;
-    color: ${color.accent};
-  }
+  /* The rows without a photograph keep the same text column. */
   summary.entry {
+    grid-template-columns: minmax(0, 1fr) auto;
     list-style: none;
   }
   summary.entry::-webkit-details-marker {
     display: none;
+  }
+  .entry h3 {
+    font: 400 ${display.sm} / 1.2 ${font.display};
+    color: ${color.primary};
+    transition: color ${motion.base};
+  }
+  .entry p {
+    margin-top: ${space.xs};
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: ${color.body};
+    max-width: 62ch;
+  }
+  .entry .cat {
+    display: block;
+    margin-bottom: ${space.xs};
+    font: 600 ${type.label} / 1.4 ${font.ui};
+    letter-spacing: 0.01em;
+    color: ${color.accentText};
+  }
+  .entry svg {
+    width: 20px;
+    height: 20px;
+    color: ${color.accentText};
+  }
+  ${media.hover} {
+    .entry:hover h3 {
+      color: ${color.accentText};
+    }
   }
   summary.entry svg {
     rotate: 90deg;
@@ -190,20 +186,19 @@ const Index = styled(Chapter)`
   details:last-of-type {
     border-bottom: 1px solid ${color.primaryLineStrong};
   }
-  /* The longest title keeps to two lines at 390 (taste-skill headline rule). */
-  ${media.sm} {
-    .entry h3 {
-      font-size: 1.25rem;
+  ${media.motion} {
+    summary.entry svg {
+      transition: none;
     }
   }
   .topics {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px 40px;
-    padding-bottom: 32px;
+    gap: ${space.lg} 40px;
+    padding-bottom: ${space.xl};
   }
   .topics h4 {
-    font: 600 16px/1.4 ${font.body};
+    font: 600 ${type.ui} / 1.4 ${font.ui};
     color: ${color.primary};
   }
   .topics p {
@@ -214,9 +209,9 @@ const Index = styled(Chapter)`
   ${media.md} {
     a.entry {
       grid-template-columns: minmax(0, 1fr);
-      gap: 8px;
+      gap: ${space.md};
     }
-    .entry svg {
+    a.entry svg {
       display: none;
     }
     .topics {
@@ -237,6 +232,7 @@ export default function Guides() {
       <PhoneTitle>
         <PageOpening
           variant="wide"
+          ground="paper"
           title={
             <>
               <span className="ln">A place</span>{" "}
@@ -249,8 +245,8 @@ export default function Guides() {
           note="Ask one, then follow the detail they choose to share."
           object={
             <Cards aria-label="Questions to begin with">
-              {STARTERS.map(([topic, question], i) => (
-                <li key={topic} style={{ ["--turn" as string]: TURNS[i] }}>
+              {STARTERS.map(([topic, question]) => (
+                <li key={topic}>
                   <small>{topic}</small>
                   <p>“{question}”</p>
                 </li>
@@ -260,33 +256,41 @@ export default function Guides() {
         />
       </PhoneTitle>
 
-      <Index ref={index} $ground="paper" aria-labelledby="index-title">
+      <Index ref={index} $ground="ivory" aria-labelledby="index-title">
         <Frame>
           <div className="head">
             <Statement id="index-title" data-lines>
-              For the conversations that take more <em>care.</em>
+              For the conversations that take more care.
             </Statement>
           </div>
-          {guides.map((g) => (
-            <Link
-              className="entry"
-              key={g.slug}
-              to={"/guides/" + g.slug}
-              data-rise
-            >
-              <span className="cat">{g.category}</span>
-              <div>
-                <h3>{g.title}</h3>
-                <p>{g.thesis}</p>
-              </div>
-              <ArrowIcon />
-            </Link>
-          ))}
+          <ul className="contents" data-rise>
+            {guides.map((g) => {
+              const pic = guidePicture(g);
+              return (
+                <li key={g.slug} className="wide">
+                  <Link className="entry" to={"/guides/" + g.slug}>
+                    <Picture
+                      id={pic.id}
+                      alt=""
+                      frame="crop"
+                      sizes="(max-width: 860px) calc(100vw - 32px), 28vw"
+                    />
+                    <div>
+                      <span className="cat">{g.category}</span>
+                      <h3>{g.title}</h3>
+                      <p>{g.thesis}</p>
+                    </div>
+                    <ArrowIcon />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
 
           <details>
             <summary className="entry">
-              <span className="cat">Planning a longer story</span>
               <div>
+                <span className="cat">Planning a longer story</span>
                 <h3>The eleven chapters of a life</h3>
                 <p>
                   From where the family started to looking back: the chapters A
@@ -306,8 +310,8 @@ export default function Guides() {
           </details>
           <details>
             <summary className="entry">
-              <span className="cat">Pacing</span>
               <div>
+                <span className="cat">Pacing</span>
                 <h3>Letting a conversation deepen at their pace</h3>
                 <p>
                   Five steps, from an easy warm-up to what they would say now.
@@ -327,7 +331,7 @@ export default function Guides() {
           </details>
         </Frame>
       </Index>
-      <Invitation />
+      <Invitation next={["/how-it-works", "/questions", "/samples"]} />
     </>
   );
 }
