@@ -813,3 +813,13 @@ Ground rules for this pass: one builder owns every file named here. `/` stays pi
 - "Add one memory or many, whenever you like." is treated as a restatement of `faqData.ts:56` (the archive is open in any browser), not a new fact. If the tester disagrees, keep only the three-step line.
 - Showing Express first on phones is a layout choice. Which plan is "Recommended" (`lib/pricing.ts:116`) does not change.
 - Folding the credit into a `details` keeps the CC BY attribution one press away, and it is also in the transcript. If the supervisor rules that the licence needs it always visible, keep it visible as one short line and fold only the Sources row.
+
+## Round 3 fix 1: builder report
+
+Commits on `site-premium`: 928a0e8, a071654, 43ed2ee, 69044fb, 4554ead, cfb9234. Nothing pushed.
+
+- **Done:** items 1-13 (see the commit messages). **Skipped:** item 14. `pages/site/account/SignUp.tsx` has no puppy and no ornate frame; the screenshot `maya_sign-up_for_someone-fold.png` is the web app's own create-account page (app.astoryapp.com), which the brief lists as Daniel's.
+- **Item 9:** Express was already the first card in the DOM (`Pricing.tsx` PLAN_ORDER), so the plan cards needed no `order`. To get Express into the first phone screen, at 640 px and below the hero price card comes before the sample cover, and its "The calls · $79 one time" row comes first. The change is visual order only. `kit/PriceLadder.tsx` is not used on /pricing and was not changed.
+- **Item 12:** the timer and the delete button are cropped at 861 px and up. Below that, the existing phone bands already hid them. At 390, /care-communities was 8.75 screens. Two cuts bring it to 7.98: the Know room's memory shot is hidden at 640 px and below (the first screen already shows the app), and so are the three rows of the "One circle" band, which repeat lines said above.
+- **Request (B1 / chief):** `public/samples/index.html` has a stale chrome copy, older than the round 2 drawer doors. `node scripts/samples-chrome.mjs --check` fails before it compares anything, at the line "could not find the chrome:script block". The cause is that the file uses CRLF and the regex expects `<script>\n`. The fix is `\r?\n` at `scripts/samples-chrome.mjs:196`, then regenerate. Not done here, because it rewrites the whole /samples chrome.
+- **Environment:** film-check passes in Edge at 1440 and at 390. The WebKit browser is not installed (`webkit-2359` is missing), so that run fails at launch.
