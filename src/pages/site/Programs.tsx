@@ -306,8 +306,9 @@ export default function Programs() {
         /* 2026-11-03 (panel round 2, B4.5): the first sentence says what the
            page is, in the terms this page may claim (membership, and for
            Cartesia a grant; the SEO description above). No new names, and
-           never "supported by" or "backed by". */
-        lead="These are the startup programs A Story belongs to, one of them with a grant. Five programs for companies building with AI and voice have taken A Story in. None of them is an endorsement, an investment or a partnership."
+           never "supported by" or "backed by". Fix round 4: one sentence plus
+           the disclaimer (spec §3.1 lead length). */
+        lead="The startup programs A Story belongs to, one of them with a grant. None is an endorsement, an investment or a partnership."
         object={
           <Plate aria-label="The five programs’ marks">
             {ROWS.map((r) => (
