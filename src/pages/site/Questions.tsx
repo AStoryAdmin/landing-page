@@ -27,7 +27,17 @@ import {
   websiteSchema,
 } from "../../lib/seo";
 import { CONTACT } from "../../lib/contact";
-import { groups } from "./faqData";
+import { groups as faqGroups } from "./faqData";
+
+/* Panel round 2 (CHIEF-LOG B1.5): the group for the invited relative and
+   the storyteller (b3's faqData, "If you were invited, or are being
+   asked") comes first and answers at /questions#invited. Matched by its
+   title so this page needs no change when the copy lands. */
+const INVITED = /invited/i;
+const groups = [...faqGroups].sort(
+  (a, b) => Number(INVITED.test(b.title)) - Number(INVITED.test(a.title)),
+);
+const anchor = (title: string) => (INVITED.test(title) ? "invited" : undefined);
 import { ArrowIcon, Invitation } from "./kit/kit";
 import Scroller from "./kit/Scroller";
 import { useReveals } from "./kit/reveals";
@@ -457,7 +467,11 @@ export default function Questions() {
           {filtered.map((g) => {
             const n = groups.findIndex((x) => x.title === g.title);
             return (
-              <section key={g.title} aria-labelledby={`group-${n}`}>
+              <section
+                key={g.title}
+                id={anchor(g.title)}
+                aria-labelledby={`group-${n}`}
+              >
                 <div className="gh">
                   <h2 id={`group-${n}`}>{g.title}</h2>
                   <small>

@@ -331,6 +331,7 @@ export const HeaderShell = styled.header`
   }
 
   .gf-menu-toggle,
+  .gf-nav-doors,
   .gf-nav-muted {
     display: none;
   }
@@ -499,7 +500,26 @@ export const HeaderShell = styled.header`
     .org-panel .org-demo svg {
       color: ${color.gold};
     }
-    /* 2. A hairline, then the quiet 2 × 2 group (≥ 7:1 on the cloth). */
+    /* 1b. The doors and help (panel round 2): first-tier rows too, one
+       step smaller than the five, so the drawer still reads top-down. */
+    .gf-nav-doors {
+      display: flex;
+      flex-direction: column;
+    }
+    .gf-nav-doors a {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 10px 0;
+      font: 600 ${display.sm} / 1.15 ${font.display};
+      color: ${color.onDark};
+      text-decoration: none;
+      border-bottom: 1px solid ${color.onDarkLine};
+    }
+    .gf-nav-doors a[aria-current="page"] {
+      color: ${color.gold};
+    }
+    /* 2. A hairline, then the quiet group (≥ 7:1 on the cloth). */
     .gf-nav-muted {
       display: grid;
       /* Two columns sized to their words, so no label wraps at 375+; under

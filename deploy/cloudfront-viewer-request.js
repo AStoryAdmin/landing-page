@@ -18,7 +18,9 @@
  *      /account                         → app.astoryapp.com/
  *      /start (not ?intent=demo)        → app.astoryapp.com/create-account
  *    A family code is six letters or digits. The reservation's own sign-in
- *    and sign-up (?next=/reserve...) stay on this site.
+ *    and sign-up (?next=/reserve...) stay on this site. So does /join with
+ *    no valid code (2026-11-03): it is the site's page for the invited
+ *    relative and the storyteller, served from /join/index.html.
  *    Never touched: /l (printed books' listening codes), /p/, /contribute/.
  *    Old addresses (/experience, /faq, …) get a 301 to the page that
  *    replaced them.
