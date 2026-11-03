@@ -5,37 +5,26 @@ Chief of agents, final report. Branch `site-premium` @ `a2f5338` in `C:\Users\ng
 
 ## Read this first
 1. **Deploy the P0 commits first, on their own** (spec §6.1, §7.9). See "Deploy P0 first" below.
-2. **Fix /pricing layout shift before you deploy this branch.** QA r2 measured CLS 0.265 on mobile in 4 of 6 Lighthouse runs (origin/main: 0 in all 6). That is in the "poor" band. The shifting element is `.opening-tail` in the pricing hero (`kit.tsx` wide opening): the lead drops 30 px about 2.7 s after load. Not fixed tonight. Evidence: `qa/premium-2026-11/qa-r2.md` rows 10 and 12, `qa/premium-2026-11/after-r2/logs/pricing-cls-probe.log`.
-3. **AC5 (the panel) is not met on the evidence we have.** Panel round 1 averaged 6.42 against a target of 8.04. A round 2 re-score was planned, but no round 2 scores reached the chief, so there is no final panel number. See "Panel".
+2. **/pricing layout shift: fixed.** Measured after the round-2 merges (commit bc381be takes the first screen off the arrival animation): CLS 0.000 on /pricing, /how-it-works, /organizations, /care-communities, /join and /for-families (iPhone 13 emulation, 4 s after network idle, 2026-11-03).
+3. **AC5 (the panel) is not met.** Final average **6.58** against a target of 8.04 (baseline 6.08); lowest persona Denise 6.14. Full table: `docs/premium/panel.md`. Largest gains: navigation +1.2, clarity +1.0, desire +0.8. Warmth and mobile are flat.
 4. **The film's stills licence (§7.10) is still open.** The film is in the build. If the wedding, porch and family stills can't be documented, pull `#film` and the "Watch the film" links before deploying.
 
 ## Panel (simulated, 5 personas, same rubric)
 
 Target for AC5: close half the gap to 10 from the baseline average, so 6.08 + (10 − 6.08) / 2 = **8.04**, and no persona below 7.
 
-| Persona | Baseline (live origin/main) | Round 1 (after first build) | Final (round 2) |
+| Persona | Baseline (live) | Round 1 | Final (round 2) |
 |---|---|---|---|
-| Maya (adult child, gift buyer) | 6.0 | not recorded per persona | not available |
-| Harold (storyteller, 75+) | 6.14 | 6.29 (lowest) | not available |
-| Tuan (sibling, invited in) | 6.14 | not recorded per persona | not available |
-| Denise (care-community director) | see audit | not recorded per persona | not available |
-| Priya (org buyer) | see audit | not recorded per persona | not available |
-| **Average** | **6.08** | **6.42** | **not available** |
+| Maya (adult child, gift buyer) | 6.00 | — | 6.30 |
+| Harold (storyteller, 75+) | 6.14 | 6.29 | 7.14 |
+| Tuan (sibling, invited in) | 6.14 | — | 6.90 |
+| Denise (care-community director) | 6.00 | — | 6.14 |
+| Priya (org buyer) | 6.10 | — | 6.40 |
+| **Average** | **6.08** | **6.42** | **6.58** |
 
-Notes:
-- Baseline persona values for Maya, Harold and Tuan and the 6.08 average come from the chief's workflow inputs. The Denise and Priya baseline values were never written to a file in this repo (`docs/premium/panel.md`, named in the plan, was never created). From the average, Denise and Priya together come to 12.12, so they average 6.06. That is arithmetic, not their individual scores.
-- Round 1 values come from `CHIEF-LOG.md` ("Chief: plan for panel round 2").
+Per criterion and the final frictions per persona: .
 
-Final panel per criterion: **not available.** The only per-criterion data is round 1's ranges (`CHIEF-LOG.md`):
-
-| Criterion | Round 1 | Final |
-|---|---|---|
-| Clarity | 5 to 7 | not available |
-| Navigation | 5 to 7 | not available |
-| Desire | 4 to 5 | not available |
-| Trust | 5 for both Denise and Priya (others not recorded) | not available |
-
-Round 2's fixes targeted the 6 root causes the panel named in round 1 (`CHIEF-LOG.md`). B1 changed the first screen and added doors for the storyteller and the invited relative. B2 said what A Story is up front and fixed /how-it-works. B3 gave /pricing one status, one gift line and one action. B4 named the AI and the iPhone on the org and care pages and showed the privacy promises. Whether this reaches 8.04 is **not measured**. Next step: run the same 5 personas on `site-premium @ a2f5338` and write the scores to `docs/premium/panel.md`.
+**Why it stops near 6.5:** the frictions that remain are mostly product facts that copy cannot change without inventing claims: plans are not on sale yet and there is nothing to wrap as a gift today; calls ring only on iPhone in a private beta; there are no customer voices or pilot results; org buyers need HIPAA/BAA, security, pricing ranges and archival formats. Each needs a fact from Daniel (spec §7 and flags F-r1-1 to F-r1-5). Harold's /join overlap bug was fixed after the panel (commit 498c8e3).
 
 ## Rounds
 
@@ -130,6 +119,6 @@ Not started (AC7). The audit is `docs/premium/audit-webapp.md`, and its §5 list
 - `vercel.json` in the main worktree shows as modified with no content change (line endings from `gen-seo-files.mjs`). Left alone.
 
 ## Assumptions (Daniel asleep)
-- No round 2 panel scores were given to the chief, so AC5 is reported as not done rather than estimated.
+- AC5 final scores were added after the report from the workflow output (docs/premium/panel.md).
 - Denise and Priya's baseline scores are not in any repo file, so the table says "see audit", as instructed.
 - C-structure, B-pages and C-finish count as superseded by the fix rounds that passed (fix-b3, fix-b4) on the same files. The rounds themselves stay "not passed" above.
