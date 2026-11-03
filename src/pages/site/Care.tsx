@@ -28,7 +28,8 @@
  * opening with the page's own line about how the calls happen (it moved
  * there from the circle's first row). The circle's three roles are three
  * typeset columns on a wide screen. A text link in the residents' room
- * opens the film on /how-it-works.
+ * opens the film on /how-it-works. The today note (lib/today.ts) sits under
+ * the opening's actions, and only the opening's title rises line by line.
  */
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
@@ -36,7 +37,6 @@ import { Link } from "react-router-dom";
 import { ArrowIcon, PageOpening, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import {
-  Actions,
   Chapter,
   Frame,
   PrimaryAnchor,
@@ -46,7 +46,8 @@ import {
 } from "./kit/kit.styles";
 import { QuoteBand, RuledSteps } from "./rooms/Rooms";
 import DemoSection from "./kit/DemoSection";
-import { color, display, font, media, type } from "../../styles/theme";
+import { TODAY_NOTE } from "../../lib/today";
+import { color, display, font, media, space, type } from "../../styles/theme";
 
 const Know = styled(Chapter)`
   scroll-margin-top: 80px;
@@ -90,12 +91,15 @@ const Know = styled(Chapter)`
   /* Phone: the room's rhythm tightened so "What you need" costs no extra
      screen (spec §4C target ≤ 7.9 screens at 390). */
   ${media.md} {
-    padding: 52px 0;
+    padding: ${space.xxl} 0;
     .row {
-      gap: 28px;
+      gap: ${space.lg};
     }
     .pair {
-      padding-bottom: 44px;
+      padding-bottom: ${space.xl};
+    }
+    .pair > figure:first-child {
+      width: min(76%, 640px);
     }
     .words li {
       padding-top: 12px;
@@ -133,11 +137,6 @@ const Fit = styled.div`
     section[data-variant="letter"] .opening-sheet h1 .ln {
       display: block;
       white-space: nowrap;
-    }
-  }
-  @media (max-width: 640px) {
-    ${Actions} > a {
-      flex: 1 1 100%;
     }
   }
   @media (max-width: 860px) {
@@ -181,7 +180,7 @@ const Need = styled(Chapter)`
     color: var(--text, var(--ink));
   }
   ${media.md} {
-    padding: 28px 0 24px;
+    padding: ${space.lg} 0;
     .row {
       grid-template-columns: minmax(0, 1fr);
       gap: 12px;
@@ -198,16 +197,16 @@ const Booking = styled.div`
   display: contents;
   ${media.md} {
     > section {
-      padding: 52px 0;
+      padding: ${space.xxl} 0;
     }
     > section .row {
-      gap: 32px;
+      gap: ${space.lg};
     }
     > section .side ul {
-      margin-top: 18px;
+      margin-top: ${space.sm};
     }
     > section .side li {
-      padding: 12px 0;
+      padding: ${space.sm} 0;
     }
   }
 `;
@@ -218,8 +217,8 @@ const Circle = styled.div`
   display: contents;
   ${media.md} {
     > section {
-      padding-top: 52px;
-      padding-bottom: 52px;
+      padding-top: ${space.xxl};
+      padding-bottom: ${space.xxl};
     }
   }
   ${media.up.lg} {
@@ -275,6 +274,7 @@ export default function Care() {
             </>
           }
           lead="The work they did. The music in the house. The way they made Sunday lunch. Give those stories somewhere to stay, and give the people caring for them a way to learn them."
+          note={TODAY_NOTE}
           actions={
             <>
               <PrimaryAnchor href="#book">
@@ -328,7 +328,7 @@ export default function Care() {
             />
           </div>
           <div className="words">
-            <Statement id="know-title" $size="lg" data-lines>
+            <Statement id="know-title" $size="lg">
               Know the person <em>behind the care.</em>
             </Statement>
             <p data-rise>

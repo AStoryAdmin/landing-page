@@ -19,7 +19,10 @@
  * 2026-11-02 (design-spec §4C): the opening is the cloth's `wide` variant,
  * the title across the window and the plate of marks as the object below
  * it. The footer's own plate of marks is to be left out on /programs
- * (spec §1.3, Footer.tsx), so the marks appear once on this page.
+ * (spec §1.3, Footer.tsx), so the marks appear once on this page. The
+ * closing offers /our-story, /how-it-works and /contact next (spec §3.8);
+ * each program's link is a plain underlined text link, no arrow (§3.3), and
+ * the five rows arrive as one group (§3.10).
  *
  * The founder asked for the missions to be shown big and a little grand
  * (2026-10-15). Grand is allowed in A Story's own voice; the programs' side
@@ -39,7 +42,7 @@ import aaiBoxed from "../../assets/partners/assemblyai-startup-program-lockup-bo
 import googleBoxed from "../../assets/partners/google-for-startups-lockup-boxed.svg";
 import deepgramBoxed from "../../assets/partners/deepgram-startup-program-lockup-boxed.svg";
 import cartesiaBoxed from "../../assets/partners/cartesia-startups-lockup-boxed.svg";
-import { ArrowIcon, Invitation, PageOpening } from "./kit/kit";
+import { Invitation, PageOpening } from "./kit/kit";
 import { Chapter, Frame } from "./kit/kit.styles";
 import { useReveals } from "./kit/reveals";
 import { color, display, font, media, shadow, type } from "../../styles/theme";
@@ -246,7 +249,7 @@ const Ledger = styled(Chapter)`
   }
   .status {
     margin-left: 10px;
-    font: 500 18px / 1.3 ${font.text};
+    font: 500 ${type.read} / 1.3 ${font.text};
     color: var(--label);
   }
   .fit {
@@ -266,10 +269,6 @@ const Ledger = styled(Chapter)`
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 5px;
-  }
-  .out svg {
-    width: 14px;
-    height: 14px;
   }
   .fine {
     margin-top: 24px;
@@ -322,9 +321,9 @@ export default function Programs() {
         data-nosnippet
       >
         <Frame>
-          <ol>
+          <ol data-rise>
             {ROWS.map((r) => (
-              <li key={r.id} data-rise>
+              <li key={r.id}>
                 <div>
                   <h3 id={r.id}>
                     {r.name}
@@ -338,7 +337,7 @@ export default function Programs() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {r.host} <ArrowIcon />
+                  {r.host}
                 </a>
               </li>
             ))}
@@ -346,7 +345,7 @@ export default function Programs() {
         </Frame>
       </Ledger>
 
-      <Invitation />
+      <Invitation next={["/our-story", "/how-it-works", "/contact"]} />
     </>
   );
 }

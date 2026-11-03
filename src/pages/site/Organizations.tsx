@@ -31,6 +31,10 @@
  *     repeating that page.
  *   - A short privacy block links to the policy's own sections. No HIPAA,
  *     BAA, SOC 2 or residency claim either way (flagged for Daniel).
+ *   - Visual system (spec §3): the today note under the opening's actions,
+ *     sentence-case column labels, no arrow on text links, the six kinds in
+ *     the shared Scroller (sideways on a phone, a grid from 641 px), gold
+ *     words in two of five h2s, and reveals on three containers.
  *
  * The path stays /organizations: it is prerendered, in the sitemap and in
  * the guides. ?for=care still preselects the care kind for old links.
@@ -44,6 +48,8 @@ import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
+import Scroller from "./kit/Scroller";
+import { TODAY_NOTE } from "../../lib/today";
 import { PhonePairs } from "./rooms/phonePairs";
 import {
   Actions,
@@ -57,7 +63,7 @@ import {
 } from "./kit/kit.styles";
 import DemoSection from "./kit/DemoSection";
 import { INSTITUTION_KINDS } from "../../lib/demoRequest";
-import { color, display, font, media, shadow, type } from "../../styles/theme";
+import { color, display, font, media, shadow, space, type } from "../../styles/theme";
 
 type Kind = (typeof INSTITUTION_KINDS)[number];
 const CARE: Kind = "Senior living or care community";
@@ -257,13 +263,26 @@ const Who = styled(Chapter)`
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
   }
-  ul {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(28px, 3vw, 48px) clamp(24px, 3vw, 56px);
-    margin: clamp(32px, 4vw, 56px) 0 0;
-    padding: 0;
-    list-style: none;
+  /* The six kinds sit in the shared Scroller (spec §3.9). On a phone it
+     scrolls sideways, one column at a time; from 641 px the same list is a
+     grid of open columns, and the region no longer scrolls. */
+  .kinds {
+    margin-top: ${space.xxl};
+  }
+  @media (min-width: 641px) {
+    .kinds {
+      margin-inline: 0;
+      overflow: visible;
+      mask-image: none;
+    }
+    .kinds .scroller-track {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: ${space.xl} ${space.xxl};
+      width: auto;
+      padding-inline: 0;
+    }
   }
   li {
     display: flex;
@@ -275,8 +294,8 @@ const Who = styled(Chapter)`
   small {
     display: block;
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: ${color.accentText};
   }
   h3 {
@@ -305,10 +324,6 @@ const Who = styled(Chapter)`
     font: 600 ${type.ui} / 1.3 ${font.ui};
     text-underline-offset: 4px;
   }
-  .go a svg {
-    width: 16px;
-    height: 16px;
-  }
   .else {
     margin-top: clamp(22px, 2.4vw, 32px);
     font: 400 ${type.read} / 1.55 ${font.text};
@@ -321,18 +336,13 @@ const Who = styled(Chapter)`
     font-weight: 600;
     text-underline-offset: 4px;
   }
-  ${media.lg} {
-    ul {
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .kinds .scroller-track {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
   ${media.md} {
     .head {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-  ${media.sm} {
-    ul {
       grid-template-columns: minmax(0, 1fr);
     }
   }
@@ -449,9 +459,11 @@ const Program = styled(Chapter)`
 const Rhythm = styled.div`
   @media (min-width: 1025px) {
     --sy: 0.5;
-    #who ul {
-      margin-top: 32px;
-      row-gap: 28px;
+    #who .kinds {
+      margin-top: ${space.xl};
+    }
+    #who .kinds .scroller-track {
+      row-gap: ${space.xl};
     }
     #how ul {
       margin-top: 22px;
@@ -467,6 +479,36 @@ const Rhythm = styled.div`
     }
     #how .privacy li {
       padding: 0;
+    }
+  }
+  /* The same on a phone (spec §4C: at most 8 screens at 390): the section
+     rhythm and the ruled rows step down; words and order are unchanged. */
+  ${media.sm} {
+    --sy: 0.55;
+    #need-title + ul li {
+      padding: ${space.sm} 0;
+    }
+    #who .kinds {
+      margin-top: ${space.xl};
+    }
+    #how ul {
+      margin-top: ${space.lg};
+    }
+    #how li {
+      padding: ${space.sm} 0;
+    }
+    #how .grid {
+      gap: ${space.xxl};
+    }
+    #book .row {
+      gap: ${space.xl};
+    }
+    #book .side ul,
+    #book .side ol {
+      margin-top: ${space.md};
+    }
+    #book .side li {
+      padding: ${space.sm} 0;
     }
   }
 `;
@@ -520,6 +562,7 @@ export default function Organizations() {
               </>
             }
             lead="A Story calls the people your institution was built by, and asks about their lives with follow-up questions that listen. You keep their words, and a book when you want one."
+            note={TODAY_NOTE}
             actions={
               <>
                 <PrimaryAnchor href="#book">
@@ -562,11 +605,9 @@ export default function Organizations() {
         <Need $ground="ivory" $tight aria-labelledby="need-title">
           <Frame className="row">
             <h2 id="need-title">What you need</h2>
-            <ul>
+            <ul data-rise>
               {NEED.map((n) => (
-                <li key={n} data-rise>
-                  {n}
-                </li>
+                <li key={n}>{n}</li>
               ))}
             </ul>
           </Frame>
@@ -575,24 +616,24 @@ export default function Organizations() {
         <Who $ground="paper" id="who" aria-labelledby="who-title">
           <Frame>
             <div className="head">
-              <Statement id="who-title" $size="md" data-lines>
-                Who we work <em>with.</em>
+              <Statement id="who-title" $size="md">
+                Who we work with.
               </Statement>
-              <p data-rise>
+              <p>
                 Any place with people worth hearing from. Pick yours and the
                 demo starts from it.
               </p>
             </div>
-            <ul>
+            <Scroller label="Who we work with" className="kinds">
               {WHO.map((w) => (
-                <li key={w.kind} data-rise="row">
+                <li key={w.kind}>
                   <small>{w.label}</small>
                   <h3>{w.title}</h3>
                   {w.body && <p>{w.body}</p>}
                   <div className="go">
                     {w.kind === CARE ? (
                       <Link to="/care-communities">
-                        See care communities <ArrowIcon />
+                        See care communities
                       </Link>
                     ) : (
                       <a
@@ -600,13 +641,13 @@ export default function Organizations() {
                         onClick={pick(w.kind)}
                         aria-label={`Start the demo here, for ${w.label.toLowerCase()}`}
                       >
-                        Start the demo here <ArrowIcon />
+                        Start the demo here
                       </a>
                     )}
                   </div>
                 </li>
               ))}
-            </ul>
+            </Scroller>
             <p className="else">
               Somewhere else, or not sure it fits?{" "}
               <a
@@ -636,14 +677,14 @@ export default function Organizations() {
           aria-label="How a program runs"
           style={{ scrollMarginTop: 80 }}
         >
-          <Frame className="grid">
+          <Frame className="grid" data-rise>
             <div>
               <Statement as="h2" id="how-title" $size="md">
                 From a demo to an archive.
               </Statement>
               <ul>
                 {STEPS.map(([t, d]) => (
-                  <li key={t} data-rise>
+                  <li key={t}>
                     <Heading>{t}</Heading>
                     <p>{d}</p>
                   </li>
@@ -669,7 +710,7 @@ export default function Organizations() {
               </p>
               <ul>
                 {DECIDE.map(([t, d]) => (
-                  <li key={t} data-rise>
+                  <li key={t}>
                     <Heading>{t}</Heading>
                     <p>{d}</p>
                   </li>

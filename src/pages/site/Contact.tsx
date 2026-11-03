@@ -15,7 +15,10 @@
  * 2026-11-02 (design-spec §4C): the doors are named by what people came
  * for ("Reserve for $1", "Book a demo", "Questions & answers"), with no
  * discount. On a phone the letter and its signature come first, then the
- * form, then the address and the doors.
+ * form, then the address and the doors. Visual system (spec §3): labels in
+ * sentence case, sizes from theme tokens only, and the two blocks below the
+ * opening arrive together, as one group. The doors keep their row arrow, as the
+ * kit's "Where to next" rows do.
  */
 import { useId, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
@@ -92,7 +95,7 @@ const Reader = styled.figure`
     gap: 4px;
   }
   b {
-    font: 500 clamp(28px, 2.2vw, 40px) / 1 ${font.script};
+    font: 500 ${display.sm} / 1 ${font.script};
     color: var(--ink);
   }
   span {
@@ -121,8 +124,8 @@ const Body = styled(Chapter)`
   }
   .address small {
     font: 600 ${type.label} / 1.3 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: var(--label);
   }
   .address a.big {
@@ -166,7 +169,7 @@ const Body = styled(Chapter)`
   }
   .doors b {
     display: block;
-    font: 400 20px / 1.3 ${font.display};
+    font: 400 ${type.d5} / 1.3 ${font.display};
   }
   .doors span {
     display: block;
@@ -198,8 +201,8 @@ const Body = styled(Chapter)`
   .card-head small {
     display: block;
     font: 600 ${type.label} / 1.3 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: ${color.accentText};
   }
   .card-head h2 {

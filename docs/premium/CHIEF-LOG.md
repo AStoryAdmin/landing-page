@@ -181,3 +181,29 @@ hidden radios inside plan cards) draw their own indicator and are not outline ri
   `thead button` focus rules draw terracotta (#B85126, 4.67:1) and #7E3315 rings instead of the
   shared one. They pass 3:1, but the page shows three ring styles. Dropping those page-local
   `:focus-visible` rules lets the shared ring apply.
+
+## Builder 4 — Group C finish: visual system adoption (branch premium/b4)
+
+State: **passed only locally** (Chromium, `vite preview` :5204, reduced motion, 390x844 and 1440x900). Shots: `qa/premium-2026-11/after/{organizations,care-communities,programs,contact}-{390,1440}.png`.
+
+| Page | 390 | target | 1440 | target | Other checks |
+|---|---|---|---|---|---|
+| /organizations | **8.96** (was 10.84) | <= 8 | 5.78 | <= 6 | 1 form; "Book a demo" in main 3; h2 em 2/5; today note; Scroller: first item x=20, next peeks at x=348, ArrowRight scrolls, ring solid #4A3327, no page overflow; "leave with them" absent from dist + og |
+| /care-communities | 7.89 | <= 7.9 | 5.32 | — | img first in first screen (top 123 px); today note; h2 em 2/4; 1 form |
+| /programs | 3.73 | — | 2.78 | — | marks once (opening only; footer plate off); "Where to next" = /our-story, /how-it-works, /contact |
+| /contact | 4.32 | — | 2.67 | — | first form field at 1.66 screens (<= 2); no "%" in main |
+
+Done: today note in the /organizations and /care-communities heroes; /organizations six kinds in `Scroller label="Who we work with"` (sideways at <= 640, a 3-column grid from 641 / 2 columns 641–1024 via page-local overrides of the same DOM); arrows off text links (org column links, /programs host links); sentence-case page-local labels (org columns, /contact address and card labels); no page-local px/clamp font sizes left in the four files; reveals on containers and only the hero title rises by line; `Invitation next` on /programs; /care phone stacked-actions override removed so the kit's §3.3 phone secondary applies.
+
+### Open / requests
+- **/organizations at 390 is 8.96 screens, not <= 8.** Section heights at 390: hero 908, need 365, who 591, line 276, how 1837, book 2643, footer 881. The rest is the demo form (shared field set, unchanged) and the 8 ruled rows of "From a demo to an archive" / "You decide". Getting under 8 needs a content decision, e.g. fold "You decide" + privacy into a `<details>` at <= 640, or drop the iPhone sentence repeated in STEPS row 3 (it is now in "What you need"). Not done without a ruling. **Chief/supervisor to decide.**
+- **Builder 1, `kit/form.styles.ts` (§3.1):** field labels, legends and `small` are still uppercase with wide tracking. Uppercase text elements in main: 18 on /organizations, 19 on /care-communities, 5 on /contact (taste `upperCount <= 3` fails because of these). A `main[data-premium]`-scoped sentence-case rule there fixes all form pages at once; Builder 4 did not restyle forms page by page (system change lands whole).
+- **Owner of `kit/DemoSection.tsx` (unassigned in §6) and `rooms/Rooms.tsx` QuoteBand:** card label "A demo for your institution" is uppercase, `.side b` uses raw `20px`; the QuoteBand h2 "One circle around each resident" is uppercase.
+- /organizations: the Scroller region keeps `tabindex=0` at >= 641 where it does not scroll (one extra tab stop; `Scroller.tsx` is B1's). Option for B1: drop `tabIndex` when `data-overflow="none"`.
+- /care-communities at 390 has 0.01 screen of margin.
+
+### Assumptions
+- Segment columns stay text-only (no crops); adding photos would break the 1440 <= 6 target and no assigned image exists per kind.
+- /contact door rows keep their arrow: they are row links like the kit's "Where to next" rows, not text links.
+- /programs host links lose the arrow (§3.3); they still open in a new tab, as before.
+- "Who we work with." lost its gold word to meet h2 em <= 0.5 (text unchanged).
