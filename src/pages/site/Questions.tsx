@@ -28,16 +28,28 @@ import {
 } from "../../lib/seo";
 import { CONTACT } from "../../lib/contact";
 import { groups as faqGroups } from "./faqData";
+import { ORG_GROUP } from "./orgQuestions";
 
 /* Panel round 2 (CHIEF-LOG B1.5): the group for the invited relative and
    the storyteller (b3's faqData, "If you were invited, or are being
    asked") comes first and answers at /questions#invited. Matched by its
-   title so this page needs no change when the copy lands. */
+   title so this page needs no change when the copy lands.
+   Round 3 (Builder 3, panel: Denise, Priya): the group "For organizations"
+   (orgQuestions.ts: staff access, ownership, retention, export, consent)
+   comes last and answers at /questions#organizations. */
 const INVITED = /invited/i;
-const groups = [...faqGroups].sort(
-  (a, b) => Number(INVITED.test(b.title)) - Number(INVITED.test(a.title)),
-);
-const anchor = (title: string) => (INVITED.test(title) ? "invited" : undefined);
+const groups = [
+  ...[...faqGroups].sort(
+    (a, b) => Number(INVITED.test(b.title)) - Number(INVITED.test(a.title)),
+  ),
+  ORG_GROUP,
+];
+const anchor = (title: string) =>
+  INVITED.test(title)
+    ? "invited"
+    : title === ORG_GROUP.title
+      ? "organizations"
+      : undefined;
 import { ArrowIcon, Invitation } from "./kit/kit";
 import Scroller from "./kit/Scroller";
 import { useReveals } from "./kit/reveals";

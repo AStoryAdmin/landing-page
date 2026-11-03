@@ -659,6 +659,36 @@ Full report: `docs/premium/RESULT.md`. Tree `site-premium` @ `a2f5338`. Nothing 
 - `asl-b1` and `asl-b4` are fully removed.
 - `asl-b2` and `asl-b3` are deregistered from git, but Windows refused to delete their folders ("Invalid argument", probably a locked file such as a running preview holding `node_modules`). The leftover folders `C:\Users\nguye\Desktop\asl-b2` and `asl-b3` hold no git data and no unmerged work. They are safe to delete by hand once nothing holds them.
 
+## Builder 3 — Round 3, Care and organizations (branch round3/b3)
+
+Pages: /care-communities, /organizations, /questions (#organizations), /compare. Files: `Care.tsx`, `Organizations.tsx`, `DemoBooking.tsx`, `kit/DemoSection.tsx` (pass-through props only), `Questions.tsx`, `compare/CompareOpening.tsx`, new `orgQuestions.ts`. `Programs.tsx` and `Contact.tsx` untouched (no panel friction in scope needed a change there).
+
+### Done
+- Care hero and residents' room: the two generated prints are gone; two real app screens (`public/app/talk.webp`, `memory.webp`) in the kit `Phone`, cropped on a phone so the H1 sits at y=515 at 390 (first screen holds an image).
+- "What you need" on both pages lists five real requirements, each from the site or the app (sources in the file comments). "What we can say today" (six sourced lines, `orgQuestions.ts`) replaces "Privacy, in short", plus one line on what is not claimed (HIPAA/BAA/residency → demo).
+- /questions gains "For organizations" (10 answers, each with its source) at `#organizations`; linked from both pages.
+- Care demo form: one step, "Community", care kinds (Senior living, Memory care, Hospice, Something else — from `lib/contact.ts`), residents legend. Payload unchanged; `test:contracts` passes.
+- Compare note (CompareOpening leaf): StoryCorps named only as "a public archive, not a private family one"; links /organizations. The same line sits in the org "What we can say today" fold.
+- Checks: lint, tsc, build:static, test:contracts, test:routing pass; copy-check /questions /compare /contact 0 hits; home-diff 0 px at 390 and 1440; no horizontal overflow at 320/390/1440 on the four pages. Screens at 390: care 8.02, organizations 8.28, questions 6.17, compare 7.8; at 1440: 6.56 / 6.64 / 5.07 / 4.45.
+
+### Fix round (after tester + supervisor, 2026-11-03)
+- Care first screen on a phone: the call screen is lifted 21 % inside the 200 px crop (`Care.tsx` `Call`), the mask fades in at the top and holds solid to 74 %, so the "A STORY" eyebrow, both question lines and "Rose is here with me" are fully inside the band and the status bar / Leave / Topic row is what is cut. The hero image is now an eager `<img fetchpriority="high">` drawn in `Care.tsx` (`HeroShot`): once the frame is lifted, the unloaded lazy img sat outside the clip and Chromium never requested `talk.webp` (memory.webp below did). Desktop (> 860 px) unchanged.
+- Demo form legends (`DemoBooking.tsx` `Steps`): a legend and its `optional` may wrap (`flex-wrap: wrap`), so the care legend no longer pushes OPTIONAL past the edge at 320 / 150 %: scrollWidth 320 of 320 at 100 / 125 / 150 % on /care-communities (was 346).
+- `orgQuestions.ts`: "not a staff note" → "not anything added on their behalf" (faqData.ts:30, no staff-note feature exists); "How long is it kept?" put in the positive ("The archive stays for as long as the account does, with or without a paid plan; a plan covers the guided calls, and everything already recorded keeps working", privacy.tsx:436-439); "in writing if you need it for your administrator" → "or write to contact@astoryapp.com; Daniel answers every message himself" (Questions.tsx:423).
+
+### Assumptions
+- `kit/DemoSection.tsx` has no owner in §6 for this round; it was edited only to pass four props to `DemoBooking`.
+- `orgQuestions.ts` is a new file (faqData.ts belongs to B2 this round); Questions.tsx appends its group last.
+- "Consent from the storyteller or their decision-maker as the app models it": the app code has no decision-maker model (grep for decision-maker, guardian, power of attorney, on behalf of: nothing). The copy therefore states only the storyteller's consent (privacy.tsx §6) and sends the "cannot decide alone" case to the demo without claiming anything.
+- "A quiet hour" has no source; "an agreed hour" / "an hour each person picks" is used instead.
+- No phone number exists anywhere in the site or app code, so none is shown (Denise asked for one).
+
+### Fix round 2 (after the supervisor's must-fixes, 2026-11-03)
+- `orgQuestions.ts` CAN_SAY[0]: "Nobody at A Story listens unless you ask us to help, or someone reports something." (privacy.tsx:108-110 word for word; the /questions answer already kept the clause). Curly apostrophe in "Not a relative’s addition".
+- Care phone hero (`Care.tsx` `Call`, ≤ 860 px): the kit Phone with its bezel, width `min(84vw, 320px)`, a 250 px band cut from the bezel top, mask at the bottom only (solid to 86 %); inside the screen the capture is lifted 16 % so the app's Leave / Topic row slides under the kit status bar and the eyebrow, both question lines and the "Rose is here with me" pill sit in the solid part. Measured at 390: question line 14.2 px rendered, H1 at y 498–565; at 320 / 150 %: question 11.9 px, H1 top 594 (inside 844).
+- "What we can say today" stays open on a phone on /care-communities and /organizations (the useEffect no longer closes it; "What you decide" on /organizations still folds). Care is 8.9 screens at 390 (was 8.02), organizations 9.27 (was 8.28): request for B4 below.
+- `/questions#organizations` gains "Does it work in memory care?": every sentence is already on /care-communities (Care.tsx Know "not a clinical assessment or treatment", RuledSteps "never a test", Circle "at an agreed hour, or together with a staff member", NEED "cannot decide alone ... on the demo"; "can stop at any time" Organizations.tsx:135 / privacy.tsx §6; "memory care" is a care kind in lib/contact.ts). For Denise: "The Questions page doesn't mention HIPAA, dementia or memory care at all."
+
 ## Round 3 requests
 
 ### From Builder 2 (Gift and money, branch round3/b2)
@@ -681,3 +711,8 @@ Full report: `docs/premium/RESULT.md`. Tree `site-premium` @ `a2f5338`. Nothing 
 - **B2 (`faqData.ts:18`):** no change needed; noting that /join's lead now quotes `faqData.ts:26` ("There is no fee per relative") and `home/EveryVoice.tsx:532` verbatim, so those two sentences should not be reworded without updating `AppDoor.tsx`.
 - **B4 (mobile pass):** on /join at 390 the gap between the sample card (end of the opening) and "Being asked to tell your story?" is the opening's bottom padding plus the chapter's top padding (about 1 screen of air). If B4 tightens opening-to-chapter spacing site-wide in `kit.tsx`, /join benefits; B1 left it to the system rather than a page-local px.
 - **Nobody, for Daniel:** "Invited?" is in the desktop bar beside Sign in on every page except /organizations and /care-communities (their wider "Book a demo" leaves no room at 1180 px, the bar's narrowest width). `scripts/nav-count.mjs` now guards both states.
+
+### From Builder 3 (Care and organizations, branch round3/b3)
+- **B4 (mobile pass):** /organizations is 9.27 screens at 390 (target ≤ 8) and /care-communities 8.9, after the supervisor asked that "What we can say today" stay open on a phone (about +0.9 screen on each); the rest is the five "What you need" rows. Candidates: tighter chips in the demo form (8 day chips = 4 rows at 390) and the org form's two step legends.
+- **B2 (`faqData.ts`):** if the FAQ schema should list the organizations group inside `faqData.ts` rather than `orgQuestions.ts`, move `ORG_GROUP` there and drop the import in `Questions.tsx`.
+- **Daniel:** a phone number for the care page; a per-resident price range; whether a staff member's own phone or shared devices are the supported setup; the export formats; a decision-maker consent path (all blocked facts, none stated).
