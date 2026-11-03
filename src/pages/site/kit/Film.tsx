@@ -37,8 +37,10 @@ const PORTRAIT = "(max-width: 600px)";
  * at your memories, unless you ask us to help or someone reports
  * something"), Questions.tsx:411 ("Daniel answers every email himself").
  */
-const CALLER_LINE =
-  "It’s a computer that calls and asks, not a person. Nobody at A Story reads or listens to what you say unless you ask us to help, or someone reports something. If you write to us, Daniel answers himself.";
+/* Round 3 fix 1 (item 4): beside the film, only the short form, its first
+   sentence; the whole line moved to the storyteller's section
+   (HowItWorks.tsx #being-asked) and stays on /join (AppDoor.tsx). */
+const CALLER_LINE = "It’s a computer that calls and asks, not a person.";
 
 type Source = { src: string; poster: string };
 
@@ -132,9 +134,16 @@ const Section = styled(Chapter)`
     grid-template-columns: minmax(0, 1fr);
     gap: 14px;
   }
-  /* The CC BY credit (M2) as a caption, always shown: small type, the
-     ground's muted ink, starting "Music:" (round 2, CHIEF-LOG B2.3). */
-  .under > .credit {
+  /* Round 3 fix 1 (item 11, Harold and Maya): the CC BY credit (M2) and
+     its Sources row fold into one closed "Music credit" under the
+     transcript link, out of the reading line; the words are unchanged and
+     the credit also stays in the transcript. */
+  .under {
+    margin-top: 8px;
+    gap: 8px;
+  }
+  .music .credit {
+    margin: 4px 0 0;
     font: 400 ${type.label} / 1.5 ${font.ui};
     color: var(--muted, ${color.bodyMuted});
     /* The addresses are unbroken words: they wrap rather than widen the
@@ -154,7 +163,7 @@ const Section = styled(Chapter)`
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 8px;
-    margin: -6px 0 0;
+    margin: 0;
     padding: 0;
     list-style: none;
     font: 400 ${type.label} / 1.45 ${font.ui};
@@ -447,8 +456,6 @@ export default function Film({
               Watch again
             </Again>
           )}
-          <Note className="credit">{transcript.credit}</Note>
-          <Sources />
           <Transcript>
             <summary>Read the transcript</summary>
             <ol>
@@ -460,6 +467,11 @@ export default function Film({
               ))}
               <li className="credit">{transcript.credit}</li>
             </ol>
+          </Transcript>
+          <Transcript className="music">
+            <summary>Music credit</summary>
+            <Note className="credit">{transcript.credit}</Note>
+            <Sources />
           </Transcript>
           {actions}
         </div>

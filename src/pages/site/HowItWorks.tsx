@@ -60,6 +60,7 @@ import {
 import { color, display, font, media, shadow, space, type } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
 import { TODAY_NOTE } from "../../lib/today";
+import { DECLINE_HREF } from "./faqData";
 
 const love = SCENARIOS.find((s) => s.id === "love")!;
 const QUESTION = "What did the garage smell like when you were fixing things?";
@@ -431,12 +432,27 @@ const Asked = styled(Chapter)`
     font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
   }
+  /* Two lines that each carry a link sit 8px apart at their 44px hit
+     areas (taste rule 20). */
+  li:has(a) + li:has(a) {
+    margin-top: ${space.md};
+  }
+  /* A link inside a line of the list stays in the line's serif. */
+  li a {
+    color: inherit;
+    font-family: inherit;
+    font-weight: 500;
+  }
   ${media.md} {
     .asked {
       grid-template-columns: minmax(0, 1fr);
     }
   }
 `;
+
+/** AppDoor.tsx CALLER_LINE, word for word (sources listed there). */
+const CALLER_LINE =
+  "It’s a computer that calls and asks, not a person. Nobody at A Story reads or listens to what you say unless you ask us to help, or someone reports something. If you write to us, Daniel answers himself.";
 
 function BeingAsked() {
   return (
@@ -456,6 +472,21 @@ function BeingAsked() {
           <li>
             It rings in the app at the hour your family picked. Nothing to
             type or save. You just talk.
+          </li>
+          {/* Round 3 fix 1 (item 4, Harold and Tuan): the storyteller's
+              reassurance sits in the storyteller's section. Moved from
+              beside the film (kit/Film.tsx, which keeps its first sentence);
+              the same sentence is on /join (AppDoor.tsx CALLER_LINE).
+              "Who is behind A Story" goes to /our-story. The decline line is
+              faqData.ts:73 turned to "you", linked to that answer. */}
+          <li>
+            {CALLER_LINE}{" "}
+            <TextLink to="/our-story">Who is behind A Story</TextLink>
+          </li>
+          <li>
+            <TextLink to={DECLINE_HREF}>
+              You can decline a question, pause, or change the subject.
+            </TextLink>
           </li>
           <li>Nothing appears until you say yes.</li>
           <li>

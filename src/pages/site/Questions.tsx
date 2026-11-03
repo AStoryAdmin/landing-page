@@ -17,7 +17,8 @@
  * Answers come from `faqData.ts` (which reads its figures from pricing.ts and
  * product.ts); the FAQ schema is unchanged.
  */
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Seo from "../../components/ui/Seo";
 import {
@@ -27,7 +28,7 @@ import {
   websiteSchema,
 } from "../../lib/seo";
 import { CONTACT } from "../../lib/contact";
-import { groups as faqGroups } from "./faqData";
+import { faqAnchor, groups as faqGroups } from "./faqData";
 import { ORG_GROUP } from "./orgQuestions";
 
 /* Panel round 2 (CHIEF-LOG B1.5): the group for the invited relative and
@@ -377,10 +378,34 @@ const Answers = styled(Chapter)`
   }
 `;
 
+/*
+ * Round 3 fix 1 (items 4 and 13, Priya and Denise): an address opens what
+ * it names. #organizations opens that group's first two answers, so they
+ * read without a click on each row; #<question> (faqAnchor) opens that one
+ * answer, e.g. the storyteller's "decline a question" link from /join and
+ * /how-it-works. Done after hydration, so the prerendered page is the same.
+ */
+function useOpenFromHash() {
+  const { hash } = useLocation();
+  useEffect(() => {
+    const id = decodeURIComponent(hash.slice(1));
+    if (!id) return;
+    const target = document.getElementById(id);
+    if (!target) return;
+    const rows =
+      target instanceof HTMLDetailsElement
+        ? [target]
+        : [...target.querySelectorAll("details")].slice(0, 2);
+    rows.forEach((d) => (d.open = true));
+    target.scrollIntoView({ block: "start" });
+  }, [hash]);
+}
+
 export default function Questions() {
   const [search, setSearch] = useState("");
   const [topic, setTopic] = useState<string | null>(null);
   const opening = useReveals<HTMLElement>();
+  useOpenFromHash();
   const q = search.toLowerCase();
   const filtered = groups
     .filter((g) => !topic || g.title === topic)
@@ -501,7 +526,7 @@ export default function Questions() {
                 </div>
                 <div className="items">
                   {g.items.map((x) => (
-                    <details key={x.q}>
+                    <details key={x.q} id={faqAnchor(x.q)}>
                       <summary>
                         {x.q}
                         <i aria-hidden="true" />
