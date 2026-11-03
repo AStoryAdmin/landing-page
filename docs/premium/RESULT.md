@@ -22,7 +22,7 @@ Target for AC5: close half the gap to 10 from the baseline average, so 6.08 + (1
 | Priya (org buyer) | 6.10 | — | 6.40 |
 | **Average** | **6.08** | **6.42** | **6.58** |
 
-Per criterion and the final frictions per persona: .
+Per criterion and the final frictions per persona: `docs/premium/panel.md`.
 
 **Why it stops near 6.5:** the frictions that remain are mostly product facts that copy cannot change without inventing claims: plans are not on sale yet and there is nothing to wrap as a gift today; calls ring only on iPhone in a private beta; there are no customer voices or pilot results; org buyers need HIPAA/BAA, security, pricing ranges and archival formats. Each needs a fact from Daniel (spec §7 and flags F-r1-1 to F-r1-5). Harold's /join overlap bug was fixed after the panel (commit 498c8e3).
 
