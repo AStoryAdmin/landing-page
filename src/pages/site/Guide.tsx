@@ -126,6 +126,18 @@ const Head = styled(Chapter)`
       max-width: none;
     }
   }
+  /* Phones (spec §4D, ≤ 6 screens at 390): the photograph sits right under
+     the bar as a wider 16:10 crop, and the head's spacing tightens. The
+     guide's words are untouched. */
+  ${media.sm} {
+    padding: ${space.md} 0 calc(${space.xl} * var(--sy));
+    .back {
+      margin-bottom: ${space.xs};
+    }
+    .lead-image img {
+      aspect-ratio: 16 / 10;
+    }
+  }
 `;
 
 /* The article on the ivory page: the contents rail on the left, the text
@@ -251,6 +263,20 @@ const Article = styled(Chapter)`
     }
     .text {
       justify-self: start;
+    }
+  }
+  /* Phones: the close (the guide's question and the related guides) sits
+     a little nearer the text it closes. */
+  ${media.sm} {
+    padding: calc(${space.xl} * var(--sy)) 0;
+    .view {
+      margin-top: ${space.xl};
+    }
+    .closing {
+      margin-top: ${space.xl};
+    }
+    .related {
+      margin-top: ${space.xl};
     }
   }
 `;

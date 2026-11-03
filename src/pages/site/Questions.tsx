@@ -138,25 +138,39 @@ const Answers = styled(Chapter)`
     position: sticky;
     top: calc(var(--nav-total, 0px) + ${space.sm});
     z-index: 3;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
+    /* The chips take their own width and the search keeps to the right
+       edge; where the two don't fit on one line the search drops under the
+       chips, so the chips are never cut by it. No hairline under the tools:
+       the first group's own hairline is the one rule here. */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     gap: ${space.xs} ${space.lg};
     align-items: center;
     padding: ${space.xs} 0;
     margin-bottom: clamp(${space.xl}, 4vw, ${space.xxxl});
     background: ${color.ivory};
-    border-bottom: 1px solid ${color.primaryLine};
   }
   /* The chips: a scroller (spec §3.9). Each chip takes its own width, and
      the row only scrolls when it is wider than the window. On a wide screen
-     the scroller stops at the search, so it gives back its right bleed. */
+     the scroller gives back both bleeds, so "All" starts on the frame edge
+     and no fade shows; the fade is for the phone. */
   .tools .scroller {
-    margin-inline-end: 0;
+    flex: 0 1 auto;
+    margin-inline: 0;
+    scroll-padding-inline: 0;
+  }
+  .tools .search {
+    flex: 0 1 380px;
+    min-width: 260px;
   }
   .tools .scroller-track {
     grid-auto-columns: max-content;
     gap: ${space.xxs};
-    padding-inline-end: 0;
+    padding-inline: 0;
+  }
+  .tools .scroller-track > li:first-child .pill {
+    padding-inline-start: 0;
   }
   .tools .scroller-track > li {
     scroll-snap-align: start;
@@ -217,13 +231,18 @@ const Answers = styled(Chapter)`
     .tools {
       position: relative;
       top: auto;
+      display: grid;
       grid-template-columns: minmax(0, 1fr);
     }
     .tools .scroller {
-      margin-inline-end: calc(-1 * var(--page-gutter));
+      margin-inline: calc(-1 * var(--page-gutter));
+      scroll-padding-inline: var(--page-gutter);
     }
     .tools .scroller-track {
-      padding-inline-end: var(--page-gutter);
+      padding-inline: var(--page-gutter);
+    }
+    .tools .scroller-track > li:first-child .pill {
+      padding-inline-start: ${space.sm};
     }
   }
   /* A group: its title is type with a hairline above (S23), its answers are
@@ -268,7 +287,9 @@ const Answers = styled(Chapter)`
     min-height: 44px;
     padding: 18px 0;
     cursor: pointer;
-    font: 400 ${display.sm} / 1.3 ${font.display};
+    /* A step below the group's display.sm heading (S23: the group headers
+       are the type structure; the questions are the rows under them). */
+    font: 400 ${type.read} / 1.35 ${font.display};
     color: ${color.primary};
   }
   summary::-webkit-details-marker {
