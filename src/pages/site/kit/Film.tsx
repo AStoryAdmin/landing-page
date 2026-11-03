@@ -156,6 +156,13 @@ const Screen = styled.div`
   video {
     background: ${color.chocolate};
   }
+  /* The frame clips (overflow: hidden), so a ring drawn by the facade
+     itself would be cut off. The frame draws it instead, outside its own
+     edge, on the section's paper (chocolate, 11:1). */
+  &:has(.film-facade:focus-visible) {
+    outline: 2px solid var(--ring, ${color.chocolate});
+    outline-offset: 3px;
+  }
 `;
 
 const Facade = styled.button`
@@ -193,9 +200,7 @@ const Facade = styled.button`
     fill: ${color.ivory};
   }
   &:focus-visible {
-    outline: 2px solid ${color.chocolate};
-    outline-offset: 3px;
-    border-radius: ${radius.lg};
+    outline: none;
   }
   &:active .play {
     transform: scale(0.97);
@@ -224,7 +229,7 @@ const Again = styled.button`
   text-decoration: underline;
   text-underline-offset: 0.28em;
   &:focus-visible {
-    outline: 2px solid ${color.chocolate};
+    outline: 2px solid var(--ring, ${color.chocolate});
     outline-offset: 3px;
   }
 `;
@@ -294,7 +299,7 @@ export default function Film({
   };
 
   return (
-    <Section id={id} $ground="paper" aria-labelledby={`${id}-title`}>
+    <Section id={id} $ground="paper" $tight aria-labelledby={`${id}-title`}>
       <Frame className="film">
         <div className="head">
           <Statement id={`${id}-title`} $size="lg">
@@ -355,7 +360,8 @@ export default function Film({
                     width={1600}
                     height={900}
                     alt=""
-                    loading="lazy"
+                    loading="eager"
+                    fetchPriority="high"
                     decoding="async"
                   />
                 </picture>
