@@ -168,6 +168,11 @@ export const Frame = styled.div`
   width: var(--frame, min(2080px, calc(100% - var(--page-gutter, 24px) * 2)));
   margin-inline: auto;
   min-width: 0;
+  /* The same 44px hit area for plain text links as Chapter gives, for the
+     sections that are not a Chapter (round 3, B4). */
+  ${IN_MAIN} & :is(p, li, dd, figcaption, small) > a:not([class]) {
+    padding-block: 13px;
+  }
 `;
 
 /**
@@ -185,6 +190,23 @@ export const Chapter = styled.section<{ $ground?: Ground; $tight?: boolean }>`
     $tight
       ? "calc(clamp(64px, 6.5vw, 120px) * var(--sy)) 0"
       : "calc(clamp(88px, 9vw, 168px) * var(--sy)) 0"};
+  /* Round 3 (B4, mobile pass): a phone gets its own rhythm, 64px per edge
+     instead of 88 (a tight chapter 52 instead of 64). Only under the
+     premium flag, so home keeps its spacing byte for byte. */
+  ${media.sm} {
+    /* :where keeps this at one class of weight, so an Opening, a Band or any
+       section with its own padding still wins. */
+    :where(${IN_MAIN}) & {
+      padding: ${({ $tight }) =>
+        $tight ? "calc(52px * var(--sy)) 0" : "calc(64px * var(--sy)) 0"};
+    }
+  }
+  /* A plain link inside running text (a credit, "Read it", the privacy
+     link in a paragraph) keeps its line and grows a 44px hit area: padding
+     on an inline box adds nothing to the line (taste rule 20). */
+  ${IN_MAIN} & :is(p, li, dd, figcaption, small) > a:not([class]) {
+    padding-block: 13px;
+  }
 `;
 
 /** A section on the chocolate bookcloth. Same API as Chapter, ground fixed. */
@@ -565,6 +587,10 @@ export const SecondaryAnchor = styled.a`
 const textLink = css`
   display: inline;
   padding-block: 12px;
+  /* 19px of line + 2 × 13 = 45px (measured 43 with 12px; taste rule 20). */
+  ${IN_MAIN} & {
+    padding-block: 13px;
+  }
   font: 600 ${type.note} / 1.45 ${font.ui};
   color: var(--ink, ${color.primary});
   text-decoration-line: underline;

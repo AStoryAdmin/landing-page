@@ -95,6 +95,16 @@ const Steps = styled(Form)`
       margin-bottom: ${space.sm};
     }
   }
+  /* On a phone the eight day chips sit three a row, not two (four rows
+     became three; round 3, B4). Still 44px tall. */
+  @media (max-width: 640px) {
+    .chips {
+      gap: 8px 6px;
+    }
+    .chips .chip span {
+      padding: 0 13px;
+    }
+  }
   /* One step: the same fields, the step legends read by assistive
      technology only (a legend ignores the global .sr-only clip and spilt
      past the viewport at 390, so it is hidden here, in place). */

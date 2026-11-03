@@ -284,6 +284,12 @@ const Opening = styled(Chapter)`
   padding: calc(clamp(56px, 6vw, 120px) * var(--sy)) 0
     calc(clamp(72px, 7vw, 136px) * var(--sy));
   overflow: clip;
+  /* Round 3 (B4): on a phone the opening ends 56px above the first chapter,
+     not 72, so the page's first idea and its second sit nearer (B1's
+     note on /join, CHIEF-LOG). */
+  ${media.sm} {
+    padding-bottom: calc(56px * var(--sy));
+  }
   .opening-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);

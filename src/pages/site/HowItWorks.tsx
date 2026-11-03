@@ -227,6 +227,18 @@ const Moments = styled(Chapter)`
   .sample {
     margin-top: ${space.md};
   }
+  /* The app's card keeps its chapter chip and "Told by" on one line; at
+     320, and at 150% text, they ran past the edge (round 3, B4). Page-local
+     so the card on home does not move. */
+  ${media.sm} {
+    .leaves .card .kicker,
+    .leaves .card .told {
+      white-space: normal;
+    }
+    .leaves .card .foot {
+      flex-wrap: wrap;
+    }
+  }
   .who {
     padding-top: 0.55em;
     font: 600 ${type.label} / 1.3 ${font.ui};

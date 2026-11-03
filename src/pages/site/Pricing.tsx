@@ -113,6 +113,9 @@ const Plans = styled(Chapter)`
   }
   .plan-top {
     display: flex;
+    /* "Recommended" drops under the name at 150% text instead of past the
+       card's edge (round 3, B4; scrollWidth 425 of 390). */
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: baseline;
     gap: 12px;

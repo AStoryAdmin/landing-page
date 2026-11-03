@@ -204,6 +204,14 @@ const Kept = styled(Chapter)`
       width: 100%;
       margin-top: -36px;
     }
+    /* "Told by Maya" wrapped past the edge at 320 (29px; round 3, B4). */
+    .card .foot {
+      flex-wrap: wrap;
+    }
+    .card .told,
+    .card .kicker {
+      white-space: normal;
+    }
   }
   ${media.motion} {
     .card {

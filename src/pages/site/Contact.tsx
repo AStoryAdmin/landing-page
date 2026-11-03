@@ -130,6 +130,8 @@ const Body = styled(Chapter)`
   }
   .address a.big {
     display: inline-block;
+    /* 43px measured with space.xs; 44 is the floor (taste rule 20). */
+    min-height: 44px;
     padding: ${space.xs} 0;
     font: 400 ${display.sm} / 1.2 ${font.display};
     color: var(--ink);

@@ -137,6 +137,12 @@ const Reasons = styled(Chapter)`
     .art {
       max-width: 420px;
     }
+    /* One column: the three prints go landscape, so the room stays under
+       2.5 phone screens (taste rule 18; it was 3.1). Same pictures, the
+       crop held at the print's own focus (round 3, B4). */
+    .art [data-crop] .print-window {
+      aspect-ratio: 3 / 2;
+    }
     .invited {
       grid-template-columns: minmax(0, 1fr);
     }

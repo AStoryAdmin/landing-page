@@ -126,6 +126,9 @@ const Section = styled(Chapter)`
     justify-self: end;
     margin-top: 18px;
     display: grid;
+    /* An implicit column grows to its longest unbreakable word: the credit's
+       addresses pushed it to 400px at 390 / 150% (round 3, B4). */
+    grid-template-columns: minmax(0, 1fr);
     gap: 14px;
   }
   /* The CC BY credit (M2) as a caption, always shown: small type, the
@@ -138,6 +141,7 @@ const Section = styled(Chapter)`
   details a {
     color: inherit;
     text-underline-offset: 0.2em;
+    overflow-wrap: anywhere;
   }
   ${media.md} {
     .film {
@@ -275,6 +279,7 @@ const Transcript = styled.details`
     padding: 0;
     list-style: none;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 8px;
   }
   li {
