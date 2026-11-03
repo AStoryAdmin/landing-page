@@ -303,6 +303,26 @@ Home diff 0 px at 390 and 1440. Copy-check PASS on /pricing, /reserve, /compare,
   The bar keeps the plan name, Start free and "Or reserve for $1". Free and live-checkout lines unchanged.
   Measure (/compare 83, /thanks 95) and uppercase count (footer 5; /pricing 6 with "Recommended") are
   still open and sit in Builder 1's files; the two requests below stand unchanged.
+- Fix round 3 (2026-11-03, review must-fix 1-3):
+  - `faqData.ts` first group title is now "Invited, or being asked" (it is also the /questions topic
+    pill). At 390 the pill is 208 px, x=69 to 277 (was 331 px, x=69 to 400). The h2 uses the same title
+    because `Questions.tsx` (B1) renders `g.title` for both.
+  - /pricing heading restored to "Stop paying, and it is still *yours.*" per the chief ruling (B3),
+    over the spec §4B:477 rename; comment updated.
+  - ring-check `/questions/,/pricing/,/compare/` @390+1440: 95 rings, 1 failing, the pre-existing
+    "Question topics" scroller (B1, also fails on site-premium). The invited pill no longer fails.
+  - copy-check: /compare PASS, /questions PASS, /pricing 1 hit "Stop paying" (ruled innocent; see request).
+
+### Requests (from Builder 3, fix round 3)
+- **To the chief / copy-check owner:** `scripts/copy-check.mjs:33` (design-spec §4B:487) still lists
+  `stop paying` in the /pricing pattern, so the ruled-kept heading "Stop paying, and it is still yours."
+  counts as a hit. Please narrow the pattern (drop `stop paying`, or exempt that exact sentence). If the
+  chief meant to accept the spec rename instead, withdraw the ruling here and b3 will rename it back.
+- **To Builder 1 (`Questions.tsx` / Scroller):** ring-check fails "Question topics" on /questions @390,
+  "no ring visible outside the element": the scroller clips its own focus ring. Pre-existing on
+  site-premium, not a b3 regression.
+- **To Builder 1 (`Questions.tsx`), optional:** if the h2 should read the full sentence "If you were
+  invited, or are being asked", `faqData` can carry a separate long heading; say so and b3 will add the field.
 
 ### Requests (from Builder 3 to Builder 1, via the chief)
 - **Footer chrome:** 5 uppercase labels on every page (The product, Who it's for, Help, Company,

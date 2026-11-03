@@ -9,10 +9,13 @@ import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
  * - "Will it ring on another phone or tablet?": Reserve.tsx:807, and nothing
  *   more about iPads or Android (flag F-r1-3).
  * The AI-guided interviewer answer leads the first general group.
+ * The title doubles as the topic pill on /questions, so it stays short enough
+ * to fit the pill row at 390 px (review fix: the full sentence ran past the
+ * scroller and under its end fade).
  */
 export const groups = [
   {
-    title: "If you were invited, or are being asked",
+    title: "Invited, or being asked",
     items: [
       {
         q: "Who can see our stories?",

@@ -1345,13 +1345,14 @@ export default function Pricing() {
       </Plans>
 
       {/* What stays yours sits right after the cards (benchmarks-convert
-          §2.5), then the film link. Renamed from "Stop paying, and it is
-          still yours." (spec §4B). */}
+          §2.5), then the film link. The heading stays "Stop paying, and it
+          is still yours." by chief ruling (CHIEF-LOG B3), over the spec
+          §4B:477 rename. */}
       <Forever ref={forever} $ground="paper" aria-labelledby="forever-title">
         <Frame>
           <SplitHead>
             <Statement id="forever-title" $size="lg" data-lines>
-              Whatever you choose, it stays <em>yours.</em>
+              Stop paying, and it is still <em>yours.</em>
             </Statement>
           </SplitHead>
           <ul className="kept" data-rise>
