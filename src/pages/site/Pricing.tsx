@@ -700,6 +700,45 @@ const Book = styled(Chapter)`
   .book p + p {
     margin-top: 12px;
   }
+  /* Round 3 fix 1 (item 9, Maya, Denise, Tuan): the six editions fold
+     into one closed row; the prices inside are pricing.ts BOOK_EDITIONS,
+     unchanged. */
+  .editions-fold {
+    margin-top: ${space.xl};
+    border-top: 1px solid ${color.primaryLine};
+    border-bottom: 1px solid ${color.primaryLine};
+  }
+  .editions-fold > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: ${space.md};
+    min-height: 56px;
+    padding-block: ${space.sm};
+    cursor: pointer;
+    list-style: none;
+    font: 600 ${display.sm} / 1.2 ${font.display};
+    color: ${color.primary};
+  }
+  .editions-fold > summary::-webkit-details-marker {
+    display: none;
+  }
+  .editions-fold > summary::after {
+    content: "+";
+    flex: none;
+    font: 400 1.5rem / 1 ${font.ui};
+    color: ${color.accentText};
+  }
+  .editions-fold[open] > summary::after {
+    content: "−";
+  }
+  .editions-fold[open] {
+    padding-bottom: ${space.lg};
+  }
+  .editions-fold:focus-within > summary:focus-visible {
+    outline: 2px solid var(--ring, ${color.chocolate});
+    outline-offset: 3px;
+  }
   .editions {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1010,9 +1049,38 @@ const HeroWords = styled(PhonePairs)`
     padding-block: 13px;
   }
   .opening-lead .gift {
-    margin-top: ${space.sm};
+    /* Its link and the status line's keep their 44px hit areas 8px apart. */
+    margin-top: 32px;
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
+  }
+  .opening-lead .gift a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    padding-block: 13px;
+  }
+  .opening-note .care-link {
+    display: inline-block;
+    padding-block: 11px;
+    font-weight: 600;
+  }
+  /* Round 3 fix 1 (item 9): on a phone the price card comes before the
+     sample cover, and its row for the calls (Express, $79, one time, nothing
+     renews) comes first, so Express is in the first screen. Visual order
+     only (taste rule 19); the DOM is unchanged. */
+  ${media.sm} {
+    .opening-object .cover {
+      order: 2;
+    }
+    .opening-object .cols > li:nth-child(2) {
+      order: -1;
+      border-top: 0;
+    }
+    .opening-object .cols > li:first-child {
+      border-top: 1px solid ${color.primaryLine};
+    }
   }
   ${media.sm} {
     .film-link {
@@ -1294,9 +1362,13 @@ export default function Pricing() {
                 </Link>
                 .
               </span>
+              {/* Round 3 fix 1 (item 9): the Express line goes to its card
+                  (#express), the first card in the DOM (PLAN_ORDER). */}
               <span className="gift">
-                Giving it, or wary of renewals? {express.name} is {expressOnce},
-                and nothing renews.
+                Giving it, or wary of renewals?{" "}
+                <a href="#express">
+                  {express.name} is {expressOnce}, and nothing renews.
+                </a>
               </span>
             </>
           }
@@ -1310,7 +1382,17 @@ export default function Pricing() {
               </TextLink>
             </>
           }
-          note={TODAY_NOTE}
+          note={
+            <>
+              {TODAY_NOTE}{" "}
+              {/* Round 3 fix 1 (item 9, Denise): the organizations' door in
+                  the first screen. The label is the /pricing question
+                  "Care communities and organizations" below. */}
+              <Link to="/care-communities" className="care-link">
+                Care communities and organizations{" "}→
+              </Link>
+            </>
+          }
           object={<HeroPrice />}
         />
       </HeroWords>
@@ -1328,6 +1410,7 @@ export default function Pricing() {
                 as="article"
                 $ground="ivory"
                 key={p.id}
+                id={p.id === "express" ? "express" : undefined}
                 className={`plan ${p.featured ? "featured" : ""} ${selected === p.id ? "is-selected" : ""}`}
                 onClick={() => setSelected(p.id)}
               >
@@ -1550,7 +1633,12 @@ export default function Pricing() {
           </div>
         </Frame>
         <Frame>
-          <ul className="editions" aria-label="Book editions" data-rise>
+          <details className="editions-fold">
+          <summary>
+            Printed books, from {BOOK_EDITIONS[0].price} to{" "}
+            {BOOK_EDITIONS[BOOK_EDITIONS.length - 1].price}
+          </summary>
+          <ul className="editions" aria-label="Book editions">
             {BOOK_EDITIONS.map((e) => (
               <li key={e.id}>
                 <span className="badge">{e.badge ?? ""}</span>
@@ -1569,6 +1657,7 @@ export default function Pricing() {
               </li>
             ))}
           </ul>
+          </details>
           <p className="members">
             <strong>With a plan:</strong> {BOOK.members} {BOOK.allowance}.
           </p>
