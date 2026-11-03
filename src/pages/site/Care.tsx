@@ -90,28 +90,25 @@ const Call = styled.figure`
     text-align: center;
     text-wrap: balance;
   }
-  /* Phone: a band of the screen, not the whole phone. The screen is
-     lifted inside the crop so the band starts just above the "A STORY"
-     eyebrow (at 29 % of the phone's height in talk.webp): the status bar
-     and the Leave / Topic row are the part that is cut, and both lines of
-     the question and the "Rose is here with me" button sit inside the
-     solid part of the mask (round-3 supervisor: the old crop showed the
-     chrome and ~90 px of dark screen, and faded out on the question). */
+  /* Phone: the top of the real phone, bezel and all, cut straight at the
+     bottom of a 250 px band and fading only there, so it reads as the app
+     on a device and not as a cropped screenshot (round-3 supervisor: the
+     frameless band at 236 px set the question at ~10 px and faded through
+     the pill). The phone is as wide as the measure allows (320 px at 390),
+     which lands the question line at about 14 px rendered. Inside the
+     screen, the capture is lifted by 16 % of its own height: the app's
+     Leave / Topic row slides under the kit's status bar, and the "A STORY"
+     eyebrow, both lines of the question and the "Rose is here with me"
+     button all sit in the solid part of the band. */
   @media (max-width: 860px) {
     .device {
-      width: min(60vw, 236px);
-      height: clamp(200px, 50vw, 240px);
+      width: min(84vw, 320px);
+      height: 250px;
       overflow: hidden;
-      mask-image: linear-gradient(
-        to bottom,
-        transparent 0,
-        #000 12%,
-        #000 74%,
-        transparent 100%
-      );
+      mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
     }
-    .device > * {
-      transform: translateY(-21%);
+    .device .screen img {
+      transform: translateY(-16%);
     }
   }
 `;
@@ -515,19 +512,17 @@ const AGREE: [string, string][] = [
 
 export default function Care() {
   const know = useReveals<HTMLElement>();
-  /* "What you need" and "What we can say today" fold on a phone after
-     hydration; the prerendered page ships them open, so they read without
-     script and on wider screens. */
+  /* "What you need" and "What we can say today" are <details> that a
+     phone can fold under one line each, but both ship open and stay open
+     after hydration (round-3 supervisor: the six privacy and consent lines
+     are what Denise and Priya score trust on, so they are not hidden
+     behind a bare "+"). The script only reopens them when a phone turns
+     sideways, where the summary is hidden. */
   const need = useRef<HTMLDetailsElement>(null);
   const say = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     const fold = window.matchMedia(FOLD);
     const folds = [need.current, say.current];
-    if (fold.matches) {
-      /* The requirements stay open: they are what the page is for. Only
-         the second block folds. */
-      if (say.current) say.current.open = false;
-    }
     /* From 641 px the summary is hidden, so closed details could never be
        opened again (a phone turned sideways). Leaving the fold opens them. */
     const unfold = (e: MediaQueryListEvent) => {

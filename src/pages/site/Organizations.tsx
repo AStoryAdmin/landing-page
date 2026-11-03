@@ -682,18 +682,19 @@ export default function Organizations() {
   const [params] = useSearchParams();
   const [kind, setKind] = useState(() => kindFromParams(params));
   const reveal = useReveals<HTMLDivElement>();
-  /* On a phone the decisions and "Privacy, in short" each fold under one
-     line (spec §4C: at most 8 screens at 390; CHIEF-LOG B4 fix round 3).
-     The prerendered page ships them open, so they read without script and
-     on every wider screen. */
+  /* On a phone "What you decide" folds under one line (spec §4C: near 8
+     screens at 390; CHIEF-LOG B4 fix round 3). "What we can say today"
+     stays open on every width (round-3 supervisor, same as /care-
+     communities: the six privacy and consent lines are what trust is
+     scored on, so they are not hidden behind a bare "+"). The prerendered
+     page ships both open, so they read without script and on every wider
+     screen. */
   const decide = useRef<HTMLDetailsElement>(null);
   const privacy = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     const fold = window.matchMedia(FOLD);
     const folds = [decide.current, privacy.current];
-    if (fold.matches) {
-      for (const d of folds) if (d) d.open = false;
-    }
+    if (fold.matches && decide.current) decide.current.open = false;
     /* From 641 px the summary is hidden, so closed details could never be
        opened again (a phone turned sideways). Leaving the fold opens them. */
     const unfold = (e: MediaQueryListEvent) => {

@@ -683,6 +683,12 @@ Pages: /care-communities, /organizations, /questions (#organizations), /compare.
 - "A quiet hour" has no source; "an agreed hour" / "an hour each person picks" is used instead.
 - No phone number exists anywhere in the site or app code, so none is shown (Denise asked for one).
 
+### Fix round 2 (after the supervisor's must-fixes, 2026-11-03)
+- `orgQuestions.ts` CAN_SAY[0]: "Nobody at A Story listens unless you ask us to help, or someone reports something." (privacy.tsx:108-110 word for word; the /questions answer already kept the clause). Curly apostrophe in "Not a relative’s addition".
+- Care phone hero (`Care.tsx` `Call`, ≤ 860 px): the kit Phone with its bezel, width `min(84vw, 320px)`, a 250 px band cut from the bezel top, mask at the bottom only (solid to 86 %); inside the screen the capture is lifted 16 % so the app's Leave / Topic row slides under the kit status bar and the eyebrow, both question lines and the "Rose is here with me" pill sit in the solid part. Measured at 390: question line 14.2 px rendered, H1 at y 498–565; at 320 / 150 %: question 11.9 px, H1 top 594 (inside 844).
+- "What we can say today" stays open on a phone on /care-communities and /organizations (the useEffect no longer closes it; "What you decide" on /organizations still folds). Care is 8.9 screens at 390 (was 8.02), organizations 9.27 (was 8.28): request for B4 below.
+- `/questions#organizations` gains "Does it work in memory care?": every sentence is already on /care-communities (Care.tsx Know "not a clinical assessment or treatment", RuledSteps "never a test", Circle "at an agreed hour, or together with a staff member", NEED "cannot decide alone ... on the demo"; "can stop at any time" Organizations.tsx:135 / privacy.tsx §6; "memory care" is a care kind in lib/contact.ts). For Denise: "The Questions page doesn't mention HIPAA, dementia or memory care at all."
+
 ## Round 3 requests
 
 ### From Builder 1 (Doors, branch round3/b1)
@@ -692,6 +698,6 @@ Pages: /care-communities, /organizations, /questions (#organizations), /compare.
 - **Nobody, for Daniel:** "Invited?" is in the desktop bar beside Sign in on every page except /organizations and /care-communities (their wider "Book a demo" leaves no room at 1180 px, the bar's narrowest width). `scripts/nav-count.mjs` now guards both states.
 
 ### From Builder 3 (Care and organizations, branch round3/b3)
-- **B4 (mobile pass):** /organizations is 8.28 screens at 390 (target ≤ 8) and /care-communities 8.02; the growth is the five "What you need" rows. Candidates: tighter chips in the demo form (8 day chips = 4 rows at 390) and the org form's two step legends.
+- **B4 (mobile pass):** /organizations is 9.27 screens at 390 (target ≤ 8) and /care-communities 8.9, after the supervisor asked that "What we can say today" stay open on a phone (about +0.9 screen on each); the rest is the five "What you need" rows. Candidates: tighter chips in the demo form (8 day chips = 4 rows at 390) and the org form's two step legends.
 - **B2 (`faqData.ts`):** if the FAQ schema should list the organizations group inside `faqData.ts` rather than `orgQuestions.ts`, move `ORG_GROUP` there and drop the import in `Questions.tsx`.
 - **Daniel:** a phone number for the care page; a per-resident price range; whether a staff member's own phone or shared devices are the supported setup; the export formats; a decision-maker consent path (all blocked facts, none stated).

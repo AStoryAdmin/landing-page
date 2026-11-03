@@ -24,7 +24,7 @@ export const CAN_SAY: readonly { lead: string; rest: string }[] = [
        your memories, unless you ask us to help or someone reports
        something." */
     lead: "An AI-guided interviewer asks.",
-    rest: "Nobody at A Story listens unless you ask us to help.",
+    rest: "Nobody at A Story listens unless you ask us to help, or someone reports something.",
   },
   {
     /* faqData.ts:30 "Do I need an account to add something?": "Each person
@@ -33,7 +33,7 @@ export const CAN_SAY: readonly { lead: string; rest: string }[] = [
        added on their behalf; the app has no staff-note feature, so none is
        named. */
     lead: "Nothing appears until the storyteller says yes.",
-    rest: "Not a relative's addition, not anything added on their behalf.",
+    rest: "Not a relative’s addition, not anything added on their behalf.",
   },
   {
     /* privacy.tsx:101 and :105, quoted word for word. */
@@ -99,6 +99,20 @@ export const ORG_GROUP = {
       q: "What if someone tells the same story twice?",
       /* Care.tsx "never a test"; phone-app CallVoiceScreen.js:270. */
       a: "That is fine. It is an invitation, never a test of what someone remembers. A Story reads what has already been told and asks to go deeper instead of asking again.",
+    },
+    {
+      q: "Does it work in memory care?",
+      /* Every sentence is on /care-communities already: Care.tsx Know
+         "A Story records personal stories. It is not a clinical assessment
+         or treatment."; RuledSteps "A photograph, a recipe or a song can
+         open a conversation. It is an invitation, never a test of what
+         someone remembers."; Circle "At an agreed hour, or together with a
+         staff member."; "can stop at any time" (Organizations.tsx:135,
+         privacy.tsx section 6); NEED "How that works for a resident who
+         cannot decide alone, we go through on the demo." The word
+         "memory care" is one of the care kinds lib/contact.ts names. No
+         clinical claim is made. */
+      a: "A Story records personal stories. It is not a clinical assessment or treatment. A photograph, a recipe or a song can open a conversation; it is an invitation, never a test of what someone remembers. A resident talks at an agreed hour, or together with a staff member, and can stop at any time. Consent for a resident who cannot decide alone is a question we go through on the demo, for your setting.",
     },
     {
       q: "How long is it kept?",
