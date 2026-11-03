@@ -50,6 +50,7 @@ import {
   TextLink,
 } from "./kit/kit.styles";
 import { Form } from "./kit/form.styles";
+import { DECLINE_HREF } from "./faqData";
 
 type Door = "join" | "contribute" | "sign-in" | "create-account" | "account";
 
@@ -62,9 +63,25 @@ function destination(door: Door, param: string | undefined, search: string): str
   }
   if (door === "contribute") return param ? APP.contribute(param) : APP.home;
   if (door === "sign-in") return APP.signIn;
-  if (door === "create-account") return APP.createAccount;
+  /* Round 3 fix 1 (item 7, closes B2's request): the gift buyer's
+     ?for=someone goes on to the app, and only that (?ref= and the rest are
+     dropped, qa/routing/cloudfront.test.mjs). index.html and the edge do
+     the same before this page paints. */
+  if (door === "create-account")
+    return forSomeone(search)
+      ? `${APP.createAccount}?for=someone`
+      : APP.createAccount;
   return APP.home;
 }
+
+/** The gift buyer, from /for-families: ?for=someone. */
+const forSomeone = (search: string) =>
+  new URLSearchParams(search).get("for") === "someone";
+
+/* The create-account lead for the gift buyer opens with the second half of
+   the usual lead (AppDoor.tsx:94 before round 3 fix 1), unchanged. */
+const FOR_SOMEONE_LEAD =
+  "Setting it up for a parent? You make the account and choose a good time for the first call; their story belongs to them. Make your account in A Story, in your browser. No card.";
 
 const WORDS: Record<Door, { title: string; lead: string; action: string; seo: string }> = {
   join: {
@@ -108,12 +125,29 @@ export default function AppDoor({ door, path }: { door: Door; path: string }) {
   const { search } = useLocation();
   const given = code ?? new URLSearchParams(search).get("ref") ?? "";
   if (door === "join" && !FAMILY_CODE.test(given)) return <JoinHere given={given} />;
-  return <Leaving door={door} path={path} to={destination(door, code ?? slug, search)} />;
+  return (
+    <Leaving
+      door={door}
+      path={path}
+      to={destination(door, code ?? slug, search)}
+      gift={door === "create-account" && forSomeone(search)}
+    />
+  );
 }
 
 /** A door that leaves for the app: it says where, and goes. */
-function Leaving({ door, path, to }: { door: Door; path: string; to: string }) {
-  const w = WORDS[door];
+function Leaving({
+  door,
+  path,
+  to,
+  gift = false,
+}: {
+  door: Door;
+  path: string;
+  to: string;
+  gift?: boolean;
+}) {
+  const w = gift ? { ...WORDS[door], lead: FOR_SOMEONE_LEAD } : WORDS[door];
   useEffect(() => goToApp(to), [to]);
   return (
     <>
@@ -168,8 +202,10 @@ function Leaving({ door, path, to }: { door: Door; path: string; to: string }) {
 /** The same sentence sits under the film on /how-it-works (kit/Film.tsx). */
 const CALLER_LINE =
   "It’s a computer that calls and asks, not a person. Nobody at A Story reads or listens to what you say unless you ask us to help, or someone reports something. If you write to us, Daniel answers himself.";
-
 const JoinTop = styled.div`
+  > section {
+    padding-bottom: calc(${space.xl} * var(--sy));
+  }
   /* The code form sits in the opening's action row and takes the row. */
   .opening-grid form {
     flex: 1 1 100%;
@@ -211,9 +247,83 @@ const JoinTop = styled.div`
   .opening-grid .error {
     margin-top: ${space.sm};
   }
+  /* Round 3 fix 1 (items 1, 2, 5): under the code box, in the same serif
+     as the lead (one typeface for the words): the code-or-link rule, what
+     you need, and what happens after "Open the invitation". */
+  .join-after {
+    flex: 1 1 100%;
+    display: grid;
+    gap: ${space.sm};
+    max-width: 44ch;
+  }
+  .join-after p,
+  .join-after li {
+    margin: 0;
+    font: 400 ${type.read} / 1.5 ${font.text};
+    color: var(--text, ${color.body});
+  }
+  .join-after .needs {
+    color: var(--ink, ${color.primary});
+  }
+  .join-after ol {
+    margin: ${space.xs} 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+    display: grid;
+    gap: ${space.xs};
+  }
+  .join-after ol li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 1.6em minmax(0, 1fr);
+    color: var(--ink, ${color.primary});
+  }
+  .join-after ol li::before {
+    content: counter(step) ".";
+    color: ${color.accentText};
+  }
+  /* The words and the card start on one line, so neither column leaves a
+     band of empty paper under the shorter one (Harold, 1440). */
+  section[data-variant="object"] .opening-grid:not(.solo) {
+    align-items: start;
+  }
+  section[data-variant="object"] .opening-object {
+    align-items: start;
+  }
   ${media.sm} {
     .code-row > button {
       flex: 1 1 100%;
+    }
+    /* At a phone width the card follows the code box, so its top is in the
+       first screen (taste rule 19: visual order only; the DOM keeps the
+       words first). */
+    section[data-variant] .opening-grid:not(.solo) {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .opening-words,
+    .opening-words > div:has(> form) {
+      display: contents;
+    }
+    .opening-words > h1 {
+      order: 1;
+    }
+    .opening-lead {
+      order: 2;
+    }
+    .opening-words form {
+      order: 3;
+      margin-top: ${space.lg};
+    }
+    .opening-object {
+      order: 4;
+      margin-top: ${space.lg};
+    }
+    .join-after {
+      order: 5;
+      margin-top: ${space.lg};
     }
   }
 `;
@@ -289,11 +399,12 @@ const Addition = styled.figure`
   .added p {
     margin-top: 4px;
   }
+  /* In the serif, like the words beside the card (round 3 fix 1, item 5). */
   .waiting {
     margin: 0;
     padding: ${space.sm} ${space.lg} ${space.md};
-    font: 500 ${type.note} / 1.4 ${font.ui};
-    color: ${color.bodyMuted};
+    font: italic 400 ${type.read} / 1.45 ${font.text};
+    color: ${color.primary};
   }
   figcaption {
     padding: ${space.sm} ${space.lg};
@@ -392,19 +503,39 @@ const Doors = styled(Chapter)`
     height: 1px;
     background: ${color.gold};
   }
-  /* The privacy promises, in the same serif as the lines above them. */
-  .promises {
-    margin-top: ${space.lg};
-  }
-  .promises li {
-    color: var(--ink, ${color.primary});
+  /* Round 3 fix 1 (item 5): the left column carries where the calls ring
+     and the ways on, so it is not an empty column beside the list. */
+  .door-head p {
+    margin: ${space.md} 0 0;
+    max-width: 32ch;
+    font: 400 ${type.read} / 1.5 ${font.text};
+    color: var(--text, ${color.body});
   }
   .links {
     display: flex;
     flex-wrap: wrap;
     gap: ${space.xs} ${space.lg};
-    margin: ${space.lg} 0 0;
+    margin: ${space.md} 0 0;
   }
+  .door-head .links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${space.xs};
+  }
+  /* Two lines that each carry a link sit 8px apart at their 44px hit
+     areas (taste rule 20). */
+  li:has(a) + li:has(a) {
+    margin-top: ${space.md};
+  }
+  /* A link inside a line of the list stays in the line's serif. */
+  li a {
+    color: inherit;
+    font-family: inherit;
+    font-weight: 500;
+  }
+  /* The hero's own close and this rule are the one gap between the two
+     doors (Harold, 1440: an empty band under the hero). */
+  padding-top: 0;
   .links a {
     min-height: 44px;
     display: inline-flex;
@@ -413,6 +544,18 @@ const Doors = styled(Chapter)`
   ${media.md} {
     .door {
       grid-template-columns: minmax(0, 1fr);
+    }
+    /* One column: the ways on follow the list, not the heading. */
+    .door-head .links {
+      display: none;
+    }
+  }
+  .door-foot {
+    display: none;
+  }
+  ${media.md} {
+    .door-foot {
+      display: flex;
     }
   }
 `;
@@ -448,6 +591,7 @@ function JoinHere({ given }: { given: string }) {
           actions={
             /* Without script the form still works: /join?ref=CODE is sent
                on to the app by the inline script and the edge. */
+            <>
             <Form action="/join" method="get" onSubmit={open} noValidate>
               <div className="code-row">
                 <label
@@ -480,34 +624,86 @@ function JoinHere({ given }: { given: string }) {
                 </p>
               )}
             </Form>
+            <div className="join-after">
+              {/* Round 3 fix 1 (items 1, 2, 5), in the serif:
+                    code or link     this file's note before round 3 fix 1
+                    no app needed    faqData.ts:56 ("no app is needed: any
+                                     browser works")
+                    the three steps  "Open the invitation" (the button
+                                     above); writing or photographs,
+                                     faqData.ts:27 and :77; "nothing
+                                     appears until the storyteller says
+                                     yes", faqData.ts:31
+                    one or many      faqData.ts:56 (the archive is open in
+                                     any browser; no limit is stated)
+                  No voice notes: clips are in development (below). */}
+              <p>
+                The relative who invited you sent either a six-letter code or
+                a link. A code goes in the box above. A link needs nothing:
+                open it, and you are in.
+              </p>
+              <p className="needs">
+                No app needed to add yours: any browser works.
+              </p>
+              <ol aria-label="What happens next">
+                <li>Open the invitation.</li>
+                <li>Add a memory in writing, or photographs.</li>
+                <li>It appears once the storyteller says yes.</li>
+              </ol>
+              <p>Add one memory or many, whenever you like.</p>
+            </div>
+            </>
           }
-          note="The relative who invited you sent either a six-letter code or a link. A code goes in the box above. A link needs nothing: open it, and you are in."
           object={<SampleAddition />}
+          objectStill
         />
       </JoinTop>
 
       <Doors $ground="ivory" $tight aria-labelledby="asked-here-title">
         <Frame>
           <section className="door" id="being-asked">
-            <Statement id="asked-here-title" $size="md">
-              Being asked to tell your story?
-            </Statement>
+            {/* Round 3 fix 1 (items 1, 4, 5). Where the calls ring:
+                lib/today.ts:14 (first sentence, verbatim). Decline, pause or
+                change the subject: faqData.ts:73, turned to "you", linked to
+                that answer on /questions. The promises join the list in one
+                run (privacy.tsx:101, 105, 117). */}
+            <div className="door-head">
+              <Statement id="asked-here-title" $size="md">
+                Being asked to tell your story?
+              </Statement>
+              <p>
+                Today the calls ring in the A Story iPhone app, in a private
+                beta.
+              </p>
+              <p className="links">
+                <TextLink to="/how-it-works#being-asked">
+                  How it works for you
+                </TextLink>
+                <TextLink to="/privacy/">Read our privacy policy</TextLink>
+              </p>
+            </div>
             <div>
               <ul>
                 <li>
                   It rings in the app at the hour your family picked. Nothing
                   to type or save. You just talk.
                 </li>
-                <li>{CALLER_LINE}</li>
+                <li>
+                  {CALLER_LINE}{" "}
+                  <TextLink to="/our-story">Who is behind A Story</TextLink>
+                </li>
+                <li>
+                  <TextLink to={DECLINE_HREF}>
+                    You can decline a question, pause, or change the subject.
+                  </TextLink>
+                </li>
                 <li>Nothing appears until you say yes.</li>
                 <li>Your story belongs to you.</li>
-              </ul>
-              <ul className="promises" aria-label="From our privacy policy">
                 <li>We never sell data.</li>
                 <li>We never train AI on your stories.</li>
                 <li>You can delete it all.</li>
               </ul>
-              <p className="links">
+              <p className="links door-foot">
                 <TextLink to="/how-it-works#being-asked">
                   How it works for you
                 </TextLink>

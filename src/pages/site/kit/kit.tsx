@@ -498,6 +498,7 @@ export function PageOpening({
   flip = false,
   ground = "cloth",
   labelledBy = "page-title",
+  objectStill = false,
 }: {
   eyebrow?: string;
   title: ReactNode;
@@ -513,6 +514,9 @@ export function PageOpening({
   flip?: boolean;
   ground?: Ground;
   labelledBy?: string;
+  /** Round 3 fix 1 (taste rule 26): the object is there on first paint,
+      with no settle, even where it starts below the first screen. */
+  objectStill?: boolean;
 }) {
   const ref = useReveals<HTMLElement>();
   /* Premium pass, panel round 2 (CHIEF-LOG B1.1): off home the first screen
@@ -570,7 +574,10 @@ export function PageOpening({
       <Frame className={`opening-grid ${art ? "" : "solo"}`}>
         {words}
         {art && (
-          <div className="opening-object" data-rise="settle">
+          <div
+            className="opening-object"
+            data-rise={objectStill ? undefined : "settle"}
+          >
             {art}
           </div>
         )}
@@ -779,7 +786,10 @@ export function Invitation({
   line = "The archive is free for as long as you like. A plan adds A Story doing the asking.",
   title,
   next,
+  startHref = START_HREF,
 }: {
+  /** Round 3 fix 1: where the closing Start goes (default START_HREF). */
+  startHref?: string;
   line?: string;
   title?: ReactNode;
   /** Off home: the three rooms to offer next, as paths from lib/nav.ts. */
@@ -805,7 +815,7 @@ export function Invitation({
           </h2>
           <p>{line}</p>
           <Actions>
-            <PrimaryAnchor href={START_HREF}>
+            <PrimaryAnchor href={startHref}>
               {START_LABEL} <ArrowIcon />
             </PrimaryAnchor>
           </Actions>

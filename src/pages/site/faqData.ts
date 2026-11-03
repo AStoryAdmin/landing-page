@@ -1,6 +1,19 @@
 import { BOOK, OTHER_PLANS, PLANS, START } from "../../lib/pricing";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
 import { WHO_HEARS, WHO_OWNS } from "../../lib/hears";
+
+/** Round 3 fix 1: each answer on /questions has its own address, made from
+    its question ("What if a question feels too personal?" →
+    #what-if-a-question-feels-too-personal). Questions.tsx opens it. */
+export const faqAnchor = (q: string) =>
+  q
+    .toLowerCase()
+    .replace(/[’']/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+/** The storyteller's answer: decline a question, pause, change the subject. */
+export const DECLINE_HREF = "/questions#what-if-a-question-feels-too-personal";
 /*
  * Group B round 2 (chief log B3.4): the first group is for the relative who
  * was invited and the parent who is being asked. It reuses two existing
@@ -53,7 +66,7 @@ export const groups = [
       },
       {
         q: "Does my family member need to install an app?",
-        a: "To be called, yes. The calls ring in the A Story iPhone app, which is in a private beta. Your parent installs it once on their iPhone, and we help you set it up. After that, the app rings at the hour you picked and they answer and talk. To read or add to the archive, no app is needed: any browser works, at app.astoryapp.com.",
+        a: "To be called, yes. The calls ring in the A Story iPhone app, which is in a private beta. Your parent installs it once on their iPhone, and we help you set it up. After that, the app rings at the hour your family picked and they answer and talk. To read or add to the archive, no app is needed: any browser works, at app.astoryapp.com.",
       },
       {
         q: "Can I use A Story on a computer?",

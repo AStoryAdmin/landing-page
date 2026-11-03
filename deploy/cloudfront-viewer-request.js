@@ -92,12 +92,15 @@ function handler(event) {
     if (/^\/(join\/?)?$/.test(path) && CODE.test(ref)) return redirect(302, APP + '/join/' + ref.toUpperCase());
     m = path.match(/^\/c\/([A-Za-z0-9_-]{1,80})\/?$/);
     if (m) return redirect(302, APP + '/c/' + m[1]);
+    /* Of the sign-up query only ?for=someone (the gift buyer, /for-families)
+       goes on to the app; ?ref= and the rest are dropped (round 3 fix 1). */
+    var make = APP + '/create-account' + (qs['for'] && qs['for'].value === 'someone' ? '?for=someone' : '');
     if (!/^\/reserve/.test(next)) {
         if (/^\/(sign-in|signin|login)\/?$/.test(path)) return redirect(302, APP + '/sign-in');
-        if (/^\/(sign-up|signup)\/?$/.test(path)) return redirect(302, APP + '/create-account');
+        if (/^\/(sign-up|signup)\/?$/.test(path)) return redirect(302, make);
         if (/^\/account\/?$/.test(path)) return redirect(302, APP + '/');
         if (/^\/start\/?$/.test(path) && !(qs.intent && qs.intent.value === 'demo')) {
-            return redirect(302, APP + '/create-account');
+            return redirect(302, make);
         }
     }
 
