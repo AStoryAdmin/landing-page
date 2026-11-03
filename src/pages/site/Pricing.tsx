@@ -50,6 +50,7 @@ import { START_HREF, START_LABEL } from "../../lib/app";
 import { OFFERS } from "../../lib/founding";
 import { QUESTION_COUNT } from "../../lib/product";
 import { TODAY_NOTE } from "../../lib/today";
+import { WHO_HEARS_SHORT } from "../../lib/hears";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import { PhonePairs } from "./rooms/phonePairs";
@@ -832,7 +833,14 @@ const HeroObject = styled.div`
   grid-template-columns: minmax(0, 0.3fr) minmax(0, 1fr);
   gap: ${space.xl};
   align-items: center;
+  /* The sample book's cover with its caption (round 3, supervisor: taste
+     rule 12 wants a real object in the first screen; the caption is what
+     the stray thumbnail lacked). The caption is set in the print caption's
+     own hand, kit.styles.ts figcaption. */
   .cover {
+    margin: 0;
+  }
+  .cover img {
     display: block;
     width: 100%;
     height: auto;
@@ -840,11 +848,33 @@ const HeroObject = styled.div`
     border-radius: ${radius.sm};
     box-shadow: ${shadow.md};
   }
+  .cover figcaption {
+    margin-top: 12px;
+    font: 500 clamp(19px, 1.2rem + 0.2vw, 24px) / 1.15 ${font.script};
+    color: ${color.primary};
+    text-align: center;
+    text-wrap: balance;
+  }
+  .cover figcaption a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.14em;
+  }
   ${media.md} {
     grid-template-columns: minmax(0, 1fr);
     gap: ${space.lg};
+    /* On a phone the cover and its caption share one short row above the
+       sheet, so the object stays inside the first screen. */
     .cover {
-      width: 104px;
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      align-items: center;
+      column-gap: ${space.md};
+    }
+    .cover figcaption {
+      margin-top: 0;
+      text-align: left;
     }
   }
 `;
@@ -897,6 +927,20 @@ const Sheet = styled.div`
     font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.body};
   }
+  /* The sheet's foot (round 3, supervisor): who hears the recordings
+     (lib/hears.ts), the privacy link and the currency, one quiet line under
+     the three columns, so the hero note above stays one line. */
+  .foot {
+    margin: 0;
+    padding: ${space.md} clamp(22px, 2.6vw, 48px);
+    border-top: 1px solid ${color.primaryLine};
+    font: 400 ${type.note} / 1.55 ${font.ui};
+    color: ${color.bodyMuted};
+  }
+  .foot a {
+    color: ${color.primary};
+    text-underline-offset: 3px;
+  }
   ${media.md} {
     .cols {
       grid-template-columns: minmax(0, 1fr);
@@ -928,6 +972,9 @@ const Sheet = styled.div`
       margin-top: ${space.xs};
       font-size: ${type.note};
     }
+    .foot {
+      padding: ${space.md} ${space.lg};
+    }
   }
 `;
 
@@ -958,68 +1005,79 @@ const HeroWords = styled(PhonePairs)`
 `;
 
 /*
- * One opening price for the calls, the same as Home's close (fix round 3,
- * jury 1 R2 #9): "Calls from $19.99 a month". The yearly plan and Express
- * stay in view as the other ways in. Every figure is read from pricing.ts.
+ * Round 3 (B2, Maya and Tuan): the first screen carried six figures ($0,
+ * $19.99, $119, $79, $39 and the $1). It now carries two: the $1 in the
+ * status line and Express, the one-time plan, which is the figure the
+ * subscription-wary reader is looking for. The monthly and yearly plans
+ * are named, not priced, until the cards. Every figure is still read from
+ * pricing.ts (Express: price, period; relatives free: PLANS[0].features[2]).
  */
-const monthly = OTHER_PLANS.find((p) => p.id === "monthly")!;
-/** "$19.99/mo" -> "$19.99" */
-const monthlyPrice = monthly.price.replace(/\/mo$/, "");
-
 function PriceCard() {
-  const individual = PLANS.find((p) => p.id === "individual")!;
   const express = PLANS.find((p) => p.id === "express")!;
+  const [once, days] = express.period.split(" · ");
   return (
     <Sheet>
       <ul className="cols" aria-label="What A Story costs">
         <li>
           <p className="k">The archive</p>
-          <p className="p">$0</p>
+          <p className="p">Free</p>
           <p className="l">
-            Free for as long as you like. Read, write and invite the whole
-            family.
+            For as long as you like, and for every relative you invite to read
+            and add.
           </p>
         </li>
         <li>
-          <p className="k">The calls, from</p>
+          <p className="k">The calls</p>
           <p className="p">
-            {monthlyPrice}
-            <small>a month</small>
+            {express.price}
+            <small>
+              {once}, {days}
+            </small>
           </p>
           <p className="l">
-            Or {individual.price} a year for one storyteller, or{" "}
-            {express.price} once for 30 days. Every plan is side by side below.
+            {express.name}: nothing renews. Or a plan by the month or the
+            year, side by side below.
           </p>
         </li>
         <li>
           <p className="k">The book</p>
           <p className="p">Free</p>
           <p className="l">
-            To print at home, every page. Printed editions from {BOOK.from}.
+            To print at home, every page. Printed editions are below.
           </p>
         </li>
       </ul>
+      <p className="foot wide">
+        {WHO_HEARS_SHORT} <TextLink to="/privacy">Our privacy promises</TextLink>
+        {" · "}Prices in US dollars.
+      </p>
     </Sheet>
   );
 }
 
 /* The hero's object: a real sample book's cover ("The Ledger", one of the
-   three books on /samples) beside the price card. An existing asset. */
+   three books on /samples) beside the price card, with its caption (round
+   3: the thumbnail without one read as a stray, Maya). An existing asset;
+   /samples is a page in public/, outside the router, so a plain anchor. */
 function HeroPrice() {
   return (
     <HeroObject>
-      <img
-        className="cover"
-        src="/book-objects/sample-raymond-720.webp"
-        srcSet="/book-objects/sample-raymond-360.webp 360w, /book-objects/sample-raymond-720.webp 720w"
-        sizes="(max-width: 860px) 104px, 22vw"
-        width={720}
-        height={720}
-        alt="The cover of a sample A Story book, The Ledger, for Raymond and Elena"
-        loading="eager"
-        fetchPriority="high"
-        decoding="async"
-      />
+      <figure className="cover">
+        <img
+          src="/book-objects/sample-raymond-720.webp"
+          srcSet="/book-objects/sample-raymond-360.webp 360w, /book-objects/sample-raymond-720.webp 720w"
+          sizes="(max-width: 860px) 96px, 22vw"
+          width={720}
+          height={720}
+          alt="The cover of a sample A Story book, The Ledger, for Raymond and Elena"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
+        <figcaption>
+          <a href="/samples">The Ledger, one of three sample books</a>
+        </figcaption>
+      </figure>
       <PriceCard />
     </HeroObject>
   );
@@ -1033,6 +1091,11 @@ const express = PLANS.find((p) => p.id === "express")!;
     cards below give it. */
 const expressOnce = express.period.split(" · ")[0];
 const free = OTHER_PLANS.find((p) => p.id === "free")!;
+/* Round 3 (B2, Maya): the one-time plan comes first on the page, so the
+   person who fears renewals meets it before the yearly plans. Individual
+   keeps its "Recommended" tag and its place in the middle. pricing.ts and
+   its order are untouched. */
+const PLAN_ORDER = [express, individual, family];
 
 /** Columns of the comparison, in reading order: from nothing paid to the most shared. */
 const COLS = [
@@ -1201,17 +1264,22 @@ export default function Pricing() {
           }
           lead={
             <>
+              {/* Round 3 (B2): what is free comes first, and the relatives'
+                  line is in the first screen (Tuan). Sources: pricing.ts
+                  START.lead (no card, no time limit; inviting never costs
+                  extra), faqData.ts "no fee per relative", Reserve.tsx:762
+                  (the dollar). */}
               <span className="status">
-                Plans aren’t on sale yet. Today you can start free, with no
-                card, and{" "}
+                Everyone starts free, with no card; relatives you invite pay
+                nothing. The calls aren’t on sale yet:{" "}
                 <Link to="/reserve">
                   {OFFERS.reserve.price} holds your place in line
                 </Link>
                 .
               </span>
               <span className="gift">
-                Giving it as a gift? Once plans open, {express.name} is{" "}
-                {expressOnce}, and nothing renews.
+                Giving it, or wary of renewals? {express.name} is {expressOnce},
+                and nothing renews.
               </span>
             </>
           }
@@ -1225,7 +1293,7 @@ export default function Pricing() {
               </TextLink>
             </>
           }
-          note={`Prices in US dollars. ${TODAY_NOTE}`}
+          note={TODAY_NOTE}
           object={<HeroPrice />}
         />
       </HeroWords>
@@ -1238,7 +1306,7 @@ export default function Pricing() {
             aria-label="Choose your preferred plan"
             data-rise
           >
-            {PLANS.map((p) => (
+            {PLAN_ORDER.map((p) => (
               <Card
                 as="article"
                 $ground="ivory"
