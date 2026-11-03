@@ -658,3 +658,12 @@ Full report: `docs/premium/RESULT.md`. Tree `site-premium` @ `a2f5338`. Nothing 
 - The worktrees were then removed with `git worktree remove`, without `--force`. The branches are kept.
 - `asl-b1` and `asl-b4` are fully removed.
 - `asl-b2` and `asl-b3` are deregistered from git, but Windows refused to delete their folders ("Invalid argument", probably a locked file such as a running preview holding `node_modules`). The leftover folders `C:\Users\nguye\Desktop\asl-b2` and `asl-b3` hold no git data and no unmerged work. They are safe to delete by hand once nothing holds them.
+
+## Round 3 requests
+
+### From Builder 2 (Gift and money, branch round3/b2)
+- **B1 (`AppDoor.tsx` layout, `index.html` pre-paint script, `lib/app.ts`):** the gift Start action on /for-families now links to `https://app.astoryapp.com/create-account?for=someone` straight from the site, so no site-side passthrough is needed for that link. If a site door (`/sign-up?for=someone`, `/start?for=someone`) should also carry the query on to the app, `destination()` in `AppDoor.tsx` and the `/sign-up`/`/start` branches of the inline script drop the query today (`index.html:85,87`). Done when `/sign-up?for=someone` lands on `.../create-account?for=someone` and `qa/routing/cloudfront.test.mjs` still passes (its row 30 expects `/sign-up?ref=FRIEND` → bare `/create-account`, so the rule would be `for` only).
+- **B1 (`/join`, `AppDoor.tsx` layout):** the code-vs-link rule I used on /for-families ("Your six-letter code, or the link that carries it, brings anyone into the family tree", from `index.html:80-81` and `lib/app.ts:17`) is the wording to match on /join so the two pages do not compete.
+- **B4 (mobile pass):** /for-families is 8.3 screens at 390 (round 2: 7.6). The growth is the iPhone yes/no (about 0.5 screen) and the privacy line by each action. If the page must come back under 7.6, the candidates are the occasions row (five prints) and the "Why a family begins" cards, not the yes/no.
+- **Panel / chief:** the /pricing "Stop paying" copy-check hit is the standing ruling (keep); unchanged this round.
+- **Daniel (blocked facts, not stated):** gift in the recipient's name with a printable note (plan item 2) and iPad/Android (item 1) are still not on any page. /for-families says only what is sourced: set up the archive free, $1 holds the place, we email when the calls open, no date.

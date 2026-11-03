@@ -41,10 +41,13 @@ import { useReveals } from "./kit/reveals";
 import {
   Chapter,
   Frame,
+  PrimaryAnchor,
   PrimaryLink,
   Statement,
+  TextAnchor,
   TextLink,
 } from "./kit/kit.styles";
+import { WHO_HEARS, WHO_HEARS_SHORT, WHO_OWNS } from "../../lib/hears";
 import {
   color,
   curve,
@@ -191,7 +194,10 @@ const REASONS: ReasonCard[] = [
         “We were all there. We remember it <em>differently.</em>”
       </>
     ),
-    text: "Invite the family at no extra cost. Anyone joins the family tree with a six-letter code, and up to four iPhones can share one call in the app. Each version is kept in the teller’s name, and nobody’s replaces anybody else’s.",
+    /* Round 3 (B2, Tuan): one rule for code and link. The six-letter code
+       and the link that carries it are the same door (index.html:80-81,
+       lib/app.ts:17: /join/CODE and ?ref=CODE both open the family tree). */
+    text: "Invite the family at no extra cost. Your six-letter code, or the link that carries it, brings anyone into the family tree, and up to four iPhones can share one call in the app. Each version is kept in the teller’s name, and nobody’s replaces anybody else’s.",
     action: (
       <TextLink to="/how-it-works">See what the family adds</TextLink>
     ),
@@ -391,6 +397,11 @@ const Occasions = styled(Chapter)`
     font-weight: 500;
     color: ${color.accentText};
   }
+  /* Who hears the recordings (lib/hears.ts): one quiet line by the action. */
+  .gift p.hears {
+    font: 400 ${type.note} / 1.55 ${font.text};
+    color: ${color.bodyMuted};
+  }
   .gift-actions {
     display: flex;
     flex-wrap: wrap;
@@ -432,7 +443,7 @@ function OccasionsRoom() {
             ))}
           </Scroller>
         </div>
-        <div className="gift" data-rise>
+        <div className="gift" id="giving" data-rise>
           {GIVING && (
             <div>
               <h3>{GIVING.q}</h3>
@@ -440,28 +451,117 @@ function OccasionsRoom() {
               <p className="mission">{NOT_FINISHED}</p>
             </div>
           )}
-          {/* Round 2 (CHIEF-LOG B2.2), in this order and from these lines only:
-              Pricing.tsx:817 (not on sale yet), pricing.ts Express (one time,
-              nothing renews), Reserve.tsx:988 (a dollar holds your place),
-              Reserve.tsx:807 (the iPhone line, first clause). */}
+          {/* Round 3 (B2, Maya): the FAQ answer on the left now carries what
+              you can give today (set up free, the dollar, we email you), so
+              this column is only the one-time plan (pricing.ts Express),
+              who hears the recordings, and the actions. The iPhone line
+              moved up into its own yes/no. The Start action carries
+              ?for=someone so the account door knows it is for someone else
+              (AppDoor WORDS). */}
           <div>
             <p>
-              Plans are not on sale yet. When they open, {express.name} is the
-              one-time choice, <b>{express.price}</b>, and nothing renews.
-              Today, {OFFERS.reserve.price} holds your place in line. Before
-              launch, A Story can only ring an iPhone - on other phones it
-              reminds them to write instead.
+              The one-time choice is {express.name}, <b>{express.price}</b>,
+              and nothing renews.
+            </p>
+            <p className="hears">
+              {WHO_HEARS} {WHO_OWNS}{" "}
+              <TextLink to="/privacy">Our privacy promises</TextLink>
             </p>
             <div className="gift-actions">
-              <PrimaryLink to="/reserve">
-                Reserve for {OFFERS.reserve.price} <ArrowIcon />
-              </PrimaryLink>
-              <TextLink to="/pricing">Compare plans</TextLink>
+              <PrimaryAnchor href={`${START_HREF}?for=someone`}>
+                {START_LABEL} <ArrowIcon />
+              </PrimaryAnchor>
+              <TextLink to="/reserve">
+                Reserve for {OFFERS.reserve.price}
+              </TextLink>
+              <TextLink to="/pricing">Every plan, side by side</TextLink>
             </div>
           </div>
         </div>
       </Frame>
     </Occasions>
+  );
+}
+
+/* ── Does your parent have an iPhone? ──────────────────────────────────── */
+
+/*
+ * Round 3 (B2, Maya and Harold): the iPhone caveat was small grey text a
+ * screen and a half down. It is now a plain yes/no right under the opening,
+ * and every sentence is already on the site: the question is the /reserve
+ * card's legend (Reserve.tsx:784); "yes" is faqData.ts "Does my family
+ * member need to install an app?" (install once, we help, rings at the
+ * hour); "no" is faqData.ts "Will it ring on another phone or tablet?"
+ * (Reserve.tsx:806) and lib/today.ts (any browser). Nothing is said about
+ * iPads or Android beyond that (plan round 3, blocked fact 1).
+ */
+const Phone = styled(Chapter)`
+  padding-block: calc(${space.xl} * var(--sy));
+  .phone {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: ${space.md} ${space.xxl};
+    align-items: start;
+    padding-top: ${space.lg};
+    border-top: 1px solid var(--line);
+  }
+  h2 {
+    font: 600 ${display.sm} / 1.18 ${font.display};
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  dl {
+    margin: 0;
+    display: grid;
+    gap: ${space.md};
+  }
+  dl > div {
+    display: grid;
+    grid-template-columns: 4ch minmax(0, 1fr);
+    gap: ${space.sm};
+    align-items: baseline;
+  }
+  dt {
+    font: 600 ${type.read} / 1.5 ${font.display};
+    color: ${color.accentText};
+  }
+  dd {
+    margin: 0;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--ink);
+    max-width: 52ch;
+  }
+  ${media.md} {
+    .phone {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+`;
+
+function PhoneRoom() {
+  return (
+    <Phone $ground="ivory" $tight aria-labelledby="phone-title">
+      <Frame className="phone">
+        <h2 id="phone-title">Does your parent have an iPhone?</h2>
+        <dl>
+          <div>
+            <dt>Yes</dt>
+            <dd>
+              The calls ring in the A Story app on it, at the hour you picked.
+              They install it once, and we help you set it up.
+            </dd>
+          </div>
+          <div>
+            <dt>No</dt>
+            <dd>
+              Before launch, A Story can only ring an iPhone. On other phones
+              it reminds them to write instead, and writing, the family
+              archive and the book work in any browser.
+            </dd>
+          </div>
+        </dl>
+      </Frame>
+    </Phone>
   );
 }
 
@@ -523,14 +623,18 @@ export default function Families() {
           }
           lead={
             <>
-              Everything around the wedding photos: the story he tells every
-              Thanksgiving, and why everyone in that photograph is laughing.
-              {/* Round 2 (CHIEF-LOG B2.1): what it is, from the /how-it-works
-                  hero ("A Story does the asking"), HowItWorks.tsx:560 and
-                  lib/today.ts:14. No new claim. */}
+              Give it to a parent, or begin together. A Story does the asking:
+              it calls in its iPhone app, in a private beta, and follows what
+              they say.
+              {/* Round 3 (B2, Maya): the gift answer in the first screen,
+                  from faqData.ts "How does giving A Story work?" (set up the
+                  archive, free), Reserve.tsx:762 (a dollar holds your place)
+                  and founding.ts INCLUDES.reserve[0] (we email you when the
+                  calls open). No date is promised. */}
               <span className="opening-what">
-                A Story does the asking: it calls in its iPhone app, in a
-                private beta, and follows what they say.
+                Today you can set up their archive free, and{" "}
+                {OFFERS.reserve.price} holds your family’s place in line for
+                the calls. We email you when they open.
               </span>
             </>
           }
@@ -539,8 +643,15 @@ export default function Families() {
               <PrimaryLink to={START_HREF}>
                 {START_LABEL} <ArrowIcon />
               </PrimaryLink>
-              {/* The one film lives on /how-it-works (spec §2.1). */}
-              <TextLink to="/how-it-works#film">Watch the film · 49 s</TextLink>
+              {/* The gift buyer's own door (Maya: "no Give-as-a-gift button
+                  anywhere"). The film link sits with the gift block. */}
+              <TextAnchor href="#giving">Give it as a gift</TextAnchor>
+            </>
+          }
+          note={
+            <>
+              {WHO_HEARS_SHORT}{" "}
+              <TextLink to="/privacy">Our privacy promises</TextLink>
             </>
           }
           object={
@@ -556,6 +667,7 @@ export default function Families() {
         />
       </Fit>
 
+      <PhoneRoom />
       <OccasionsRoom />
       <ReasonsRoom />
 

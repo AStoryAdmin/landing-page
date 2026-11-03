@@ -26,6 +26,7 @@ import { AS_OF, COMPARE_COLUMNS, COMPARE_ROWS } from "../../lib/landscape";
 import CompareOpening from "./compare/CompareOpening";
 import CompareTable, { CompareLegend } from "./compare/CompareTable";
 import { START_HREF, START_LABEL } from "../../lib/app";
+import { WHO_HEARS } from "../../lib/hears";
 import { ROUTES } from "../../lib/nav";
 import { ArrowIcon, Invitation } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
@@ -37,6 +38,7 @@ import {
   SecondaryLink,
   SplitHead,
   Statement,
+  TextLink,
   onDarkActions,
 } from "./kit/kit.styles";
 import {
@@ -73,6 +75,9 @@ const Matrix = styled(Chapter)`
   /* A note's measure, over the scoped 72ch default (spec §3.1 measureMax). */
   main[data-premium] & .note {
     max-inline-size: ${measure.lead};
+  }
+  .hears {
+    margin-top: ${space.md};
   }
 `;
 
@@ -184,6 +189,11 @@ export default function Compare() {
             </PrimaryAnchor>
             <SecondaryLink to="/pricing">See pricing</SecondaryLink>
           </Actions>
+          {/* Round 3 (B2): who hears the recordings, by the action
+              (lib/hears.ts, from the privacy summary). */}
+          <p className="note hears">
+            {WHO_HEARS} <TextLink to="/privacy">Our privacy promises</TextLink>
+          </p>
         </Frame>
       </Matrix>
 
