@@ -823,3 +823,120 @@ Commits on `site-premium`: 928a0e8, a071654, 43ed2ee, 69044fb, 4554ead, cfb9234.
 - **Item 12:** the timer and the delete button are cropped at 861 px and up. Below that, the existing phone bands already hid them. At 390, /care-communities was 8.75 screens. Two cuts bring it to 7.98: the Know room's memory shot is hidden at 640 px and below (the first screen already shows the app), and so are the three rows of the "One circle" band, which repeat lines said above.
 - **Request (B1 / chief):** `public/samples/index.html` has a stale chrome copy, older than the round 2 drawer doors. `node scripts/samples-chrome.mjs --check` fails before it compares anything, at the line "could not find the chrome:script block". The cause is that the file uses CRLF and the regex expects `<script>\n`. The fix is `\r?\n` at `scripts/samples-chrome.mjs:196`, then regenerate. Not done here, because it rewrites the whole /samples chrome.
 - **Environment:** film-check passes in Edge at 1440 and at 390. The WebKit browser is not installed (`webkit-2359` is missing), so that run fails at launch.
+
+## Round 3 fix 2
+
+Chief brief for one builder, working directly on `site-premium` in `C:\Users\nguye\Desktop\a-story-landing-premium` (HEAD 75c184f). Input: panel r3-1 (Maya 7.43, Harold 7.43, Tuan 8.07, Denise 7.29, Priya 7.00; screenshots in `qa/premium-2026-11/panel-r3-1/`). Three of the five panelists scored a dist that may predate fix 1, so step 0 is a clean `build:static` before anything is re-scored. Nothing below needs a blocked fact.
+
+Out of scope and left with Daniel:
+- a gift in the recipient's name, a gift note or printable;
+- any date or launch window;
+- iPad, Android or shared devices;
+- what happens to unused Express minutes;
+- contributor effort, voice, visibility, edit/delete and reminders;
+- an org price and equipment counts;
+- HIPAA/BAA, export formats and metadata, proxy consent, custom questions;
+- proof, quotes, pilots and counts;
+- a phone number or calendar link;
+- an accessibility statement;
+- real storyteller photos;
+- the app's own create-account page. `index.html:80` sends `/sign-up` straight to the app before paint, so the site-side `?for=someone` wording never shows; only the app can fix Maya #2.
+
+Ground rules: as in fix 1. One builder owns every file named here. Do not edit anything under `home/`; `/` stays pixel-identical except the header and footer. Every new sentence must be copied from a line already in the code, or be a strict subset of one, with its file:line in a source comment and in the report. Nothing may be framed around an ending, expiry or loss. Commit per item group with the trailer `Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>`. No push, no deploy, no bare `git stash`.
+
+### Changes, highest leverage first
+
+1. **State where data is stored instead of saying we make no claim** (`orgQuestions.ts:74` NOT_STATED, `orgQuestions.ts:155-159`). The privacy policy already says "your information is stored and processed in the United States" (`src/components/privacy.tsx:526-527`, section 13). Remove "where data is stored" from NOT_STATED. Retitle the question "What about HIPAA, a BAA, or where data is stored?". Answer:
+   - "Your information is stored and processed in the United States (privacy policy, section 13)." linked to `/privacy#s13`;
+   - then the existing tail of :159: "For HIPAA and a BAA, bring them to the demo, or write to contact@astoryapp.com; Daniel answers every message himself."
+
+   Drop "We make no claim about those on the site." Add "Stored and processed in the United States" as one line in both "What we can say today" lists (Care and Organizations). *Why:* Priya #1 (the site contradicts its own policy) and Denise #3. Lifts Priya and Denise trust.
+
+2. **The "not stated" line becomes a calm agenda under the demo CTA** (`orgQuestions.ts:74`, `Care.tsx` ~586, `Organizations.tsx`). Take it out of the "What we can say today" block. On both pages, put it under the Book a demo action as "Bring these to the demo: HIPAA and a BAA, export formats, consent for a resident who cannot decide alone, and price." This rewords NOT_STATED minus item 1's fact; price stays "quoted on the demo", `Care.tsx:527`. Set it as one line in the same serif, with no warning colour. *Why:* Priya #2 and Denise #3 (it read as a list of reasons to stop). Lifts Denise/Priya trust and premium.
+
+3. **/for-families leads with the gift** (`Families.tsx` ~686-740).
+   - Make the existing lead sentence "Give it to a parent, or begin together." (`Families.tsx:701`) the h1. "The stories between you" becomes the eyebrow, and the meta `title` matches.
+   - Turn "Give it as a gift" from a `TextAnchor` into a secondary button the same height as Start free, still pointing to `#giving`. Put the two side by side at 390 if they fit, otherwise stack them full width.
+   - Keep "Today you can set up their archive free..." at body size, not small.
+
+   *Why:* Maya #1 (the gift path looks secondary on the page she lands on). Lifts Maya clarity/desire/navigation.
+
+4. **/pricing: the Express card answers "can I buy it" and "what about after" on the card** (`Pricing.tsx`, plan card markup ~1427, Express only).
+   - (a) Under $79, add "The calls aren’t on sale yet: $1 holds your place." (`Pricing.tsx:1359` + `Reserve.tsx:762`), with a "Reserve for $1" link to `/reserve`.
+   - (b) Give Express a quiet "One time" tag, styled like "Recommended". It labels the "one time · nothing renews" line already on the card. Do not change which plan is Recommended (`lib/pricing.ts:116`).
+   - (c) Under "one time · 30 days", add "Stop paying, and it is still yours." and link it to the section at `Pricing.tsx:1523`. Say nothing about leftover minutes (blocked).
+
+   *Why:* Maya #4, #5, #6. Lifts Maya clarity/trust/desire.
+
+5. **/pricing first screen: one action, one link, then prices** (`Pricing.tsx` hero ~1150-1170).
+   - Keep the "Giving it, or wary of renewals?" line with its `#express` link, and one primary button.
+   - Move the grey note and the "Care communities and organizations" link into one line under the price strip.
+   - Remove the "The Ledger, one of three sample books" caption above the strip; the sample link already sits lower on the page.
+
+   *Why:* Maya #4 and #10. Lifts Maya clarity/premium/mobile.
+
+6. **/join: two doors in the first screen** (`AppDoor.tsx` /join opening).
+   - Under the h1, add one quiet line with two links: "Got a link? Just open it, and you’re in." (a strict reading of the code-vs-link rule, `index.html:80-81`, `lib/app.ts:17`) and "Asked to tell your story? Start here ↓". The second link goes to the "Being asked" half; give that half the id `#being-asked`. Both links must be in the first screen at 1024 x 150% text and at 390.
+   - Delete step 1 "Open the invitation." because it repeats the button. Fold the remaining steps into the paragraph above them, so the left column has at most 4 blocks (hero, line, code box, one paragraph).
+   - At 390, put the code-vs-link explainer directly under the code box, above the sample card (CSS `order`).
+
+   *Why:* Harold #1, Tuan #3, #4, #9. Lifts Harold navigation/clarity and Tuan premium/clarity/mobile.
+
+7. **One style for the "Being asked" bullets** (`AppDoor.tsx:695-698`, `HowItWorks.tsx` ~488).
+   - Make "You can decline a question, pause, or change the subject." plain text like its neighbours. Either put a small "More on this" link after the list, or link only the word "decline".
+   - Change "Daniel answers himself" to "Daniel, who started A Story, answers himself" (`Questions.tsx:411` plus the /our-story founder note). Keep the "Who is behind A Story" link.
+
+   *Why:* Harold #4 and Tuan #6, #8. Lifts Harold/Tuan trust and premium.
+
+8. **The storyteller's door on /how-it-works and in the footer** (`HowItWorks.tsx` hero actions, `Footer.tsx`, `lib/nav.ts`, `YourStory.tsx`).
+   - In the /how-it-works hero, add a text link "Asked to tell your story? Start here" to `#being-asked`.
+   - In `#being-asked`, state the sourced device line plainly instead of leaving it in a closed FAQ row: "Before launch, A Story can only ring an iPhone. On other phones, it reminds them to write instead." (`faqData.ts:48`).
+   - In the footer's "Who it's for" column, add "Asked to tell your story?" to `/how-it-works#being-asked`, above "Your own story" (the label at `nav.ts:78`).
+   - On `/your-story`, set "Being asked by your family? Start here instead" at body size and move it above the two buttons.
+
+   *Why:* Harold #3, #5, #6. Lifts Harold navigation/clarity/warmth.
+
+9. **Header "Invited?" stays visible on a tablet at 150% text** (`Header.tsx`). At 1024 px with the root font-size at 150%, the link is in the DOM but hidden. Whenever the bar collapses to Menu, keep "Invited?" beside it (it is one short word). Drop it only below 360 px. `scripts/nav-count.mjs` must still pass. *Why:* Harold #2. Lifts Harold navigation.
+
+10. **The film is never covered** (`kit/StickyStart.tsx`, `kit/Film.tsx`). Hide the sticky Start bar while the film player intersects the viewport, with the same IntersectionObserver pattern fix 1 used for the inline action rows. "Voices are synthetic" stays visible (see the assumptions). *Why:* Maya #8. Lifts Maya mobile/premium.
+
+11. **/care resolves** (`App.tsx` `legacy`, `public/_redirects`, `deploy/cloudfront-viewer-request.js:45`, `qa/routing/cloudfront.test.mjs`). Add a 301 from `/care` to `/care-communities` in all three places, and a test row. *Why:* Denise #8. Lifts Denise navigation.
+
+12. **Care and organizations on a phone and in print** (`Care.tsx`, `Organizations.tsx`, `kit/reveals`).
+    - (a) At 640 px and below, put the h1, lead and Book a demo before the hero object (CSS `order`). Cap the phone mock-up and the Ledger image at about 40% of the viewport height, so at 390 the headline starts above y=300. (Denise mobile, Priya #6)
+    - (b) Move "Today the calls ring in the A Story iPhone app, in a private beta" from the /care-communities hero into "What you need", beside "An iPhone for each resident, before launch". It is still said once. (Denise #5)
+    - (c) Every `data-rise` element must be visible under `@media print` and on `beforeprint`. Also make the reveal hook fall back to visible when IntersectionObserver never fires, as in a full-page capture. The "One circle" and "Know the person" bands must never print or screenshot empty. (Denise #7)
+
+    *Why:* lifts Denise mobile/premium/trust and Priya mobile.
+
+13. **Memory care: what happens when a resident is upset** (`orgQuestions.ts`, the "Does it work in memory care?" answer). Replace the repeated hero lines with the sourced behaviour: "They can decline a question, pause, or change the subject, and stop at any time; a story told twice is fine, and nothing appears until they say yes." Sources: `faqData.ts:73`, the existing "can stop at any time" Q&A line, `orgQuestions.ts` CAN_SAY. Make no claim about what staff do. *Why:* Denise #4. Lifts Denise clarity/trust.
+
+14. **The phone menu tells the two family doors apart** (`Header.tsx` drawer, `lib/nav.ts` hints). Under "For families" and "Invited to a family's book", show each item's one-line hint from `nav.ts` in small serif. Write a hint only where one is missing, as a navigation label (e.g. "Giving it, or starting it" / "Someone sent you a code or a link"). The main list stays at 8 items. *Why:* Maya #9. Lifts Maya navigation.
+
+15. **/questions opens by group** (`Questions.tsx`). Add a row of group jump links at the top, and open the first answer in each group by default. *Why:* Maya #10 and Priya. Lifts navigation/clarity. Lowest priority; drop it if time is short.
+
+### Done-checks (the builder shows the output, not a summary)
+- First step and last step: a fresh `npm run build:static`, with the commit hash printed in the report, so the panel scores this HEAD.
+- lint, build:static, test:contracts, test:routing (with the new `/care` row), check, nav-count and copy-check all pass.
+- `node scripts/home-diff.mjs`: 0 px at 1440. At 390, only the known lazy-print noise, with the same main height.
+- No overflow and no small tap targets at 320/390/1024/1440 x 100/150% text, on /join, /how-it-works, /for-families, /pricing, /care-communities, /organizations and /questions.
+- First-screen shots, before and after:
+  - /for-families at 390: gift h1 and two buttons;
+  - /pricing at 390: Express card with the Reserve line;
+  - /join at 390, and at 1024 x 150%: both door links and "Invited?" visible;
+  - /care-communities and /organizations at 390: headline above y=300;
+  - /how-it-works#film at 390: no sticky bar over the player.
+- A Playwright full-page screenshot and a `page.pdf()` of /care-communities, with no empty bands.
+- `#film` and `#being-asked` (on /how-it-works and on /join) land on the right section, and film-check passes.
+- `grep -rn "We make no claim\|where data is stored" src/pages/site` returns nothing.
+- A source table: every new or moved sentence with its file:line.
+
+### Chief's assumptions (Daniel asleep)
+- Item 1 is not a new fact. It repeats the published privacy policy (`privacy.tsx:526-527`). The provider name (Supabase) stays on /privacy only.
+- "Give it to a parent, or begin together." becomes the /for-families h1. It is existing copy, and the home page is untouched.
+- The "One time" tag on Express labels an existing line ("nothing renews"). It is not a recommendation. "Recommended" stays on the yearly plan, as `lib/pricing.ts:116` decided.
+- "Voices are synthetic" stays visible beside the film, because the vision rule is that synthetic voices are always labelled. Maya's friction is noted but not fixed by hiding the label.
+- "Got a link? Just open it, and you’re in." restates the code-vs-link rule (`index.html:80-81`, `lib/app.ts:17`). If the tester rules that "you're in" overstates it, use "Got a link? Just open it."
+- Maya's sign-up handoff can't be fixed on the site. `index.html:80` sends `/sign-up?for=someone` to the app's create-account page before paint, and that page is in the app repo. It stays on the Daniel list.
+- No institutional section on /compare. Comparing against StoryCorps or recorder + OHMS would need claims we have no source for.
+- Denise and Priya trust/desire, and Maya desire, cannot reach 9 until the blocked facts are answered. This pass aims at the highest scores reachable without them, around 8.
