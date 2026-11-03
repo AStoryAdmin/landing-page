@@ -21,9 +21,9 @@
  *
  * 2026-10-16: the page opens with the same ladder as Home (kit/PriceLadder)
  * - the archive, the calls, the book - so the dollar and the founding place
- * are read as early access to the calls before the plans are compared. Two
- * lines the app already supports sit with "What stays yours": the trusted
- * person, and a letter for later. The book section says what a printed book
+ * are read as early access to the calls before the plans are compared.
+ * (2026-11-02, spec D3: the trusted-person and letter lines left this page.)
+ * The book section says what a printed book
  * is: Volume I.
  */
 import { useState } from "react";
@@ -40,11 +40,7 @@ import {
 } from "../../lib/pricing";
 import { checkoutFor, isCheckoutLive } from "../../lib/checkout";
 import { START_HREF, START_LABEL } from "../../lib/app";
-import {
-  OFFERS,
-  RESERVE_DEADLINE_LABEL,
-  reserveDiscountOpen,
-} from "../../lib/founding";
+import { OFFERS } from "../../lib/founding";
 import { QUESTION_COUNT } from "../../lib/product";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
@@ -819,10 +815,7 @@ function PriceCard() {
       <p className="foot">
         <span>
           Plans aren’t on sale yet. {OFFERS.reserve.price} holds your place in
-          line
-          {reserveDiscountOpen()
-            ? `, and ${OFFERS.reserve.discount}% off your first year if you reserve by ${RESERVE_DEADLINE_LABEL}.`
-            : "."}
+          line.
         </span>
         <Link to="/reserve">How reserving works</Link>
       </p>
@@ -1176,9 +1169,7 @@ export default function Pricing() {
               )}
               {selectedId !== "free" && !isCheckoutLive(selectedId) && (
                 <Link to={checkoutFor(selectedId)} className="reserve">
-                  {reserveDiscountOpen()
-                    ? `Or reserve for ${OFFERS.reserve.price}, ${OFFERS.reserve.discount}% off`
-                    : `Or reserve for ${OFFERS.reserve.price}`}
+                  {`Or reserve for ${OFFERS.reserve.price}`}
                 </Link>
               )}
             </div>
@@ -1199,12 +1190,6 @@ export default function Pricing() {
                 {k}
               </li>
             ))}
-            <li data-rise>
-              Name a trusted person, who receives what you wrote if you can’t
-            </li>
-            <li data-rise>
-              Write a letter to one person, delivered on the date you choose
-            </li>
           </ul>
 
           <div className="questions">
