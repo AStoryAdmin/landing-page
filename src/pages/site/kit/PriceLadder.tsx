@@ -22,7 +22,7 @@
  */
 import styled from "styled-components";
 import { BOOK, BOOK_EDITIONS, FREE_TIER, PLANS } from "../../../lib/pricing";
-import { OFFERS, RESERVE_DEADLINE_LABEL } from "../../../lib/founding";
+import { OFFERS } from "../../../lib/founding";
 import { useFoundingStatus } from "./foundingStatus";
 import { useReveals } from "./reveals";
 import {
@@ -272,8 +272,7 @@ export default function PriceLadder({
                     </p>
                     <p>
                       A reservation is <b>{reserve.price}</b>: a place in
-                      line, and {reserve.discount}% off the first year if you
-                      reserve by {RESERVE_DEADLINE_LABEL}.
+                      line.
                     </p>
                     <p>
                       Neither is a different product. Whatever you pay today
@@ -283,12 +282,10 @@ export default function PriceLadder({
                 ) : (
                   <>
                     <p>
-                      <b>Plans aren’t on sale yet.</b> The founding places are
-                      filled. <b>{reserve.price}</b> still holds a place in line
-                      and {reserve.discount}% off your first year if you
-                      reserve by {RESERVE_DEADLINE_LABEL}, and the dollar comes
-                      off that year. We email you when the calls open, in the
-                      order families reserved.
+                      <b>Plans aren’t on sale yet.</b>{" "}
+                      <b>{reserve.price}</b> holds a place in line, and the
+                      dollar comes off your first year. We email you when the
+                      calls open, in the order families reserved.
                     </p>
                   </>
                 )}

@@ -10,7 +10,7 @@ export const groups = [
       },
       {
         q: "Can I sign up today?",
-        a: "Yes. Start free at app.astoryapp.com: make an account in your browser, with no card. The plans where A Story makes the calls open to a few families at a time. Reserve one for $1 and we email you when the calls open, in the order families reserved. Reserve by 2 November to hold 15% off your first year. The dollar is refundable any time before the calls open.",
+        a: "Yes. Start free at app.astoryapp.com: make an account in your browser, with no card. The plans where A Story makes the calls open to a few families at a time. Reserve one for $1 and we email you when the calls open, in the order families reserved. The dollar is refundable any time before the calls open.",
       },
       {
         q: "Does my family member need to install an app?",
@@ -82,14 +82,6 @@ export const groups = [
       {
         q: "Can I take the archive with me?",
         a: "Yes. You can request a PDF or an archive of your audio and transcripts. Your recordings remain yours to keep.",
-      },
-      {
-        q: "Who looks after this if I can’t?",
-        a: "You can name a trusted person in Account. They receive what you have written, and the letters you have left, if you are no longer here.",
-      },
-      {
-        q: "Can I leave a letter for later?",
-        a: "Yes. Write a letter to one person now, give it a date, and it is delivered then.",
       },
     ],
   },
