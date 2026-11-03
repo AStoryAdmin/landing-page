@@ -238,9 +238,12 @@ function ReasonsRoom() {
         <div className="invited">
           <h3>Invited to add to someone’s book?</h3>
           <div>
+            {/* "There is no fee per relative.": faqData.ts:26 (B1's round 3
+                request, Harold: free for me belongs where the door is). */}
             <p>
               Read what’s shared and add what you remember, under your own
-              name. Nothing appears until the storyteller says yes.
+              name. Nothing appears until the storyteller says yes. There is
+              no fee per relative.
             </p>
             <TextLink to="/join">Open your invitation</TextLink>
           </div>
@@ -463,6 +466,12 @@ function OccasionsRoom() {
                 Reserve for {OFFERS.reserve.price}
               </TextLink>
               <TextLink to="/pricing">Every plan, side by side</TextLink>
+              {/* The film, written for the gift buyer (spec §2.1: in-section
+                  links are written for their reader; the /pricing form,
+                  Pricing.tsx:1433). 49 s: CHIEF-LOG film table, 49.408 s. */}
+              <TextLink to="/how-it-works#film">
+                Watch the 49-second film
+              </TextLink>
             </div>
           </div>
         </div>
@@ -478,8 +487,9 @@ function OccasionsRoom() {
  * screen and a half down. It is now a plain yes/no right under the opening,
  * and every sentence is already on the site: the question is the /reserve
  * card's legend (Reserve.tsx:784); "yes" is faqData.ts "Does my family
- * member need to install an app?" (install once, we help, rings at the
- * hour); "no" is faqData.ts "Will it ring on another phone or tablet?"
+ * member need to install an app?" (faqData.ts:56: install once, we help,
+ * rings at the hour, "which is in a private beta"; the beta caveat lives
+ * here, not in the lead, taste rule 6); "no" is faqData.ts "Will it ring on another phone or tablet?"
  * (Reserve.tsx:806) and lib/today.ts (any browser). Nothing is said about
  * iPads or Android beyond that (plan round 3, blocked fact 1).
  */
@@ -536,7 +546,8 @@ function PhoneRoom() {
             <dt>Yes</dt>
             <dd>
               The calls ring in the A Story app on it, at the hour you picked.
-              They install it once, and we help you set it up.
+              The app is in a private beta: they install it once, and we help
+              you set it up.
             </dd>
           </div>
           <div>
@@ -632,7 +643,8 @@ export default function Families() {
                 {START_LABEL} <ArrowIcon />
               </PrimaryLink>
               {/* The gift buyer's own door (Maya: "no Give-as-a-gift button
-                  anywhere"). The film link sits with the gift block. */}
+                  anywhere"). The film link ("Watch the 49-second film") is
+                  in the gift block's actions, where this anchor lands. */}
               <TextAnchor href="#giving">Give it as a gift</TextAnchor>
             </>
           }

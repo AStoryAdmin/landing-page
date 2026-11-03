@@ -100,7 +100,11 @@ export const groups = [
          calls open, in the order families reserved). No date is promised. */
       {
         q: "How does giving A Story work?",
-        a: `You set up the archive for your relative today, free, and choose a good time for the first call. There is nothing to redeem: no gift card and no code. ${PLANS[2].name} is the one-time plan, ${PLANS[2].price}, and nothing renews; the annual and monthly plans renew. Until the plans open, $1 holds your family's place in line, and we email you when the calls open, in the order families reserved.`,
+        /* Round 3 (B2, Tuan and Harold): "no code" here sat beside "a
+           six-letter code" on /for-families. One rule now: nothing to redeem,
+           and the relative comes in through the family's code or the link
+           that carries it (lib/app.ts:17, index.html:80-81). */
+        a: `You set up the archive for your relative today, free, and choose a good time for the first call. There is nothing to redeem and no gift card: your relative comes in through the family's six-letter code, or the link that carries it. ${PLANS[2].name} is the one-time plan, ${PLANS[2].price}, and nothing renews; the annual and monthly plans renew. Until the plans open, $1 holds your family's place in line, and we email you when the calls open, in the order families reserved.`,
       },
     ],
   },
