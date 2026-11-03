@@ -1,6 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { CONTACT } from "../../lib/contact";
 import { SITE } from "../../lib/seo";
+import {
+  FOOTER_GROUPS,
+  FOOTER_SLIM,
+  bare,
+  isFile,
+  route,
+  type RoutePath,
+} from "../../lib/nav";
 import Logo from "../../components/ui/Logo";
 import ProgramMarks from "../../components/ui/ProgramMarks";
 import { NVIDIA_TRADEMARK_NOTE } from "../../components/ui/InceptionBadge";
@@ -14,76 +22,67 @@ import { FooterShell } from "./chrome.styles";
  * the photographs and people in the examples are illustrative lives here
  * once, behind a toggle.
  *
- * Round 2 (jury 1 #11, jury 2 U4):
- *   - four balanced columns of four or five rooms; Start free and Sign in
- *     left, they are in the header on every page;
- *   - the program marks on a single cream plate: one row where it fits,
- *     three and two below that, two by two with a sixth "what each one is"
- *     cell on a phone (round 3: never one mark alone on a row);
- *   - one legal line (the company and NVIDIA's attribution together);
- *   - on a phone the rooms fold into two groups, so the footer is about one
- *     screen instead of two and a half;
+ * Premium pass (2026-11-02, design spec §1.3):
+ *   - four columns, 16 page links and the one email, no repeats; the labels
+ *     come from lib/nav.ts. "Reserve for $1" left (Reserve is reached from
+ *     Pricing) and so did "Write to us" (the address above is the email).
+ *     "Joining a family's book" → /join is the door for someone invited in;
+ *   - the program-marks plate is a figure, not a link ("Programs & grants"
+ *     in the Company column is the way in), and it is not shown on
+ *     /programs itself;
+ *   - on a phone the rooms still fold into two groups;
+ *   - `variant="slim"`: the legal line and Privacy · Terms · Contact only,
+ *     for the account doors, /thanks and /l;
  *   - every link is a 44px target.
  */
-type Room = { to: string; label: string; file?: boolean; mail?: boolean };
-const GROUPS: { title: string; rooms: Room[] }[] = [
-  {
-    title: "The product",
-    rooms: [
-      { to: "/how-it-works", label: "How it works" },
-      /* A page in public/, outside the router: a plain anchor. */
-      { to: "/samples", label: "Sample books", file: true },
-      { to: "/pricing", label: "Pricing" },
-      { to: "/reserve", label: "Reserve for $1" },
-      { to: "/compare", label: "Compare" },
-    ],
-  },
-  {
-    title: "Who it’s for",
-    rooms: [
-      { to: "/for-families", label: "Families" },
-      { to: "/organizations", label: "Institutions" },
-      { to: "/care-communities", label: "Care communities" },
-      { to: "/your-story", label: "Your own story" },
-    ],
-  },
-  {
-    title: "Help",
-    rooms: [
-      { to: "/guides", label: "Conversation guides" },
-      { to: "/questions", label: "Questions & answers" },
-      { to: "/contact", label: "Contact" },
-      { to: CONTACT.general, label: "Write to us", mail: true },
-    ],
-  },
-  {
-    title: "Company",
-    rooms: [
-      { to: "/our-story", label: "Our story" },
-      { to: "/programs", label: "Programs & grants" },
-      { to: "/privacy", label: "Privacy" },
-      { to: "/terms", label: "Terms" },
-    ],
-  },
-];
-
-function RoomLink({ room }: { room: Room }) {
-  return room.file || room.mail ? (
-    <a href={room.to}>{room.label}</a>
+function RoomLink({ path }: { path: RoutePath }) {
+  const r = route(path);
+  return isFile(r.to) ? (
+    <a href={r.to}>{r.label}</a>
   ) : (
-    <Link to={room.to}>{room.label}</Link>
+    <Link to={r.to}>{r.label}</Link>
   );
 }
 
-/** The two folds on a phone: where to look, and who we are. */
+/** The two folds on a phone. */
 const FOLDS = [
-  { title: "Explore A Story", groups: GROUPS.slice(0, 2) },
-  { title: "Help and company", groups: GROUPS.slice(2) },
+  { title: "The product and who it’s for", groups: FOOTER_GROUPS.slice(0, 2) },
+  { title: "Help and company", groups: FOOTER_GROUPS.slice(2) },
 ];
 
-export default function Footer() {
+function LegalLine({ nvidia }: { nvidia: string }) {
+  return (
+    <div className="footer-legal">
+      © {new Date().getFullYear()} A Story Technologies, Inc.{" "}
+      <span className="footer-trademark">{nvidia}</span>{" "}
+      <details className="footer-about">
+        <summary>About the examples</summary>
+        <p>
+          Photographs are AI-generated illustrations. Names and conversations
+          in the demonstrations are fictional, not customer testimonials.
+        </p>
+      </details>
+    </div>
+  );
+}
+
+export default function Footer({ variant }: { variant?: "slim" }) {
+  const { pathname } = useLocation();
   /* NVIDIA's note opens with its own "© year"; the line already has one. */
   const nvidia = NVIDIA_TRADEMARK_NOTE.replace(/^©\s*\d{4}\s*/, "");
+  if (variant === "slim")
+    return (
+      <FooterShell data-variant="slim">
+        <div className="gf-width gf-footer-slim">
+          <LegalLine nvidia={nvidia} />
+          <nav aria-label="Site">
+            {FOOTER_SLIM.map((p) => (
+              <RoomLink key={p} path={p} />
+            ))}
+          </nav>
+        </div>
+      </FooterShell>
+    );
   return (
     <FooterShell>
       <div className="gf-width">
@@ -100,11 +99,11 @@ export default function Footer() {
           </div>
 
           <nav className="gf-footer-links" aria-label="Site">
-            {GROUPS.map((g) => (
+            {FOOTER_GROUPS.map((g) => (
               <div key={g.title}>
                 <h2>{g.title}</h2>
-                {g.rooms.map((r) => (
-                  <RoomLink key={r.label} room={r} />
+                {g.rooms.map((p) => (
+                  <RoomLink key={p} path={p} />
                 ))}
               </div>
             ))}
@@ -123,8 +122,8 @@ export default function Footer() {
                   {f.groups.map((g) => (
                     <div key={g.title}>
                       <h2>{g.title}</h2>
-                      {g.rooms.map((r) => (
-                        <RoomLink key={r.label} room={r} />
+                      {g.rooms.map((p) => (
+                        <RoomLink key={p} path={p} />
                       ))}
                     </div>
                   ))}
@@ -134,40 +133,24 @@ export default function Footer() {
           </nav>
         </div>
 
-        <div className="footer-credential">
-          <p className="footer-programs">Startup programs &amp; grants</p>
-          <Link
-            to="/programs"
-            className="footer-plate"
+        {bare(pathname) !== "/programs" && (
+          <figure
+            className="footer-credential"
             aria-label="Startup programs and grants: A Story is a member of NVIDIA Inception, Google for Startups, the AssemblyAI Startup Program and the Deepgram Startup Program, and a Cartesia Startups grant recipient"
           >
-            <ProgramMarks height={48} className="footer-marks" />
-            {/* On a phone the five marks sit two by two; this fills the
-                sixth cell, so no mark is left alone on a row. */}
-            <span className="footer-plate-more" aria-hidden="true">
-              What each one is
-              <svg viewBox="0 0 20 20" fill="none">
-                <path d="M3 10h13m-5-5 5 5-5 5" stroke="currentColor" strokeWidth="1.6" />
-              </svg>
-            </span>
-          </Link>
-        </div>
+            <figcaption className="footer-programs">
+              Startup programs &amp; grants
+            </figcaption>
+            <div className="footer-plate">
+              <ProgramMarks height={48} className="footer-marks" />
+            </div>
+          </figure>
+        )}
 
         {/* One legal line, with the note about the examples inline at its
             end (round 3, jury 1 #5: it floated alone on the right). */}
         <div className="gf-footer-bottom">
-          <div className="footer-legal">
-            © {new Date().getFullYear()} A Story Technologies, Inc.{" "}
-            <span className="footer-trademark">{nvidia}</span>{" "}
-            <details className="footer-about">
-              <summary>About the examples</summary>
-              <p>
-                Photographs are AI-generated illustrations. Names and
-                conversations in the demonstrations are fictional, not
-                customer testimonials.
-              </p>
-            </details>
-          </div>
+          <LegalLine nvidia={nvidia} />
         </div>
       </div>
     </FooterShell>

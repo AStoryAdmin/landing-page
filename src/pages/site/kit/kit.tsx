@@ -10,14 +10,20 @@
  *   <Bond pose ledge width phone>            the founder's dog lying on a ledge; never blocks a click
  *   <PageOpening variant object note flip ground>
  *                                            split | object | wide | letter; cloth by default
- *   <Invitation title line>                  the cloth close + Where to next; the line varies by page
+ *   <Invitation title line next>             the cloth close + Where to next; the line varies by page
+ *
+ * PREMIUM PASS (2026-11-02, design spec §3): every change is off home only
+ * (kit/premium.ts). <Picture frame="crop"|"print">; Invitation's slash fix,
+ * `next`, per-page closers and no Bond off home.
  */
 import type { CSSProperties, ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { mission } from "../../../lib/mission";
 import { useReveals } from "./reveals";
-import { color, display, font, media, motion, shadow, type } from "../../../styles/theme";
+import { color, display, font, media, motion, shadow, space, type } from "../../../styles/theme";
+import { bare, route, type RoutePath } from "../../../lib/nav";
+import { IN_MAIN, usePremium } from "./premium";
 import {
   Actions,
   Chapter,
@@ -50,13 +56,24 @@ export function Picture({
   sizes,
   priority = false,
   className,
+  frame,
 }: {
   id: string;
   alt: string;
   sizes: string;
   priority?: boolean;
   className?: string;
+  /**
+   * Premium pass (spec §3.5): "crop" is a plain photograph with the md
+   * radius and no border; "print" is the same picture as a <Print> (white
+   * border, photo corners). Leave it out and the picture is bare, as before.
+   */
+  frame?: "crop" | "print";
 }) {
+  if (frame === "print")
+    return (
+      <Print id={id} alt={alt} sizes={sizes} priority={priority} className={className} />
+    );
   const dim = mission[id];
   const widths = [640, 1200, 1800]
     .map((file) => ({ file, width: Math.min(file, dim.width) }))
@@ -64,6 +81,7 @@ export function Picture({
   return (
     <img
       className={className}
+      data-frame={frame}
       src={`/mission/${id}-1200.webp`}
       srcSet={widths
         .map((x) => `/mission/${id}-${x.file}.webp ${x.width}w`)
@@ -555,6 +573,10 @@ const Band = styled(Chapter)`
   ${onDarkActions};
   padding: calc(clamp(64px, 6vw, 120px) * var(--sy)) 0
     calc(clamp(40px, 4vw, 72px) * var(--sy));
+  /* Premium pass (spec §3.2): off home the close is quieter. */
+  ${IN_MAIN} & {
+    padding-top: calc(${space.section} * var(--sy));
+  }
   .band-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -588,6 +610,10 @@ const Band = styled(Chapter)`
     text-transform: uppercase;
     color: var(--label);
     padding-bottom: 16px;
+  }
+  ${IN_MAIN} & .next-label {
+    letter-spacing: 0.01em;
+    text-transform: none;
   }
   .next-rows {
     position: relative;
@@ -649,47 +675,22 @@ const Band = styled(Chapter)`
 
 /**
  * Where a reader can go from here: the rooms this reader has not been in
- * (the current route filters itself out).
+ * (the current route filters itself out). Names and hints come from
+ * lib/nav.ts. This order is also home's (its first three).
  */
-const ROOMS = [
-  {
-    to: "/how-it-works",
-    title: "How it works",
-    hint: "The call, then the card and the book.",
-  },
-  {
-    /* A finished page in public/, outside the router (2026-10-11). */
-    to: "/samples",
-    title: "Sample books",
-    hint: "Three books you can flip through, page by page.",
-    file: true,
-  },
-  {
-    to: "/for-families",
-    title: "For families",
-    hint: "Giving it, and using it together.",
-  },
-  {
-    to: "/pricing",
-    title: "Pricing",
-    hint: "Everyone starts free. Only calls are paid for.",
-  },
-  {
-    to: "/compare",
-    title: "How A Story is different",
-    hint: "Beside the products you may be comparing.",
-  },
-  {
-    to: "/questions",
-    title: "Questions & answers",
-    hint: "The practical things, answered plainly.",
-  },
-  {
-    to: "/our-story",
-    title: "Our story",
-    hint: "Why we started, in our own words.",
-  },
+const ROOM_ORDER: RoutePath[] = [
+  "/how-it-works",
+  "/samples",
+  "/for-families",
+  "/pricing",
+  "/compare",
+  "/questions",
+  "/our-story",
 ];
+const room = (to: RoutePath) => {
+  const r = route(to);
+  return { to: r.to, title: r.label, hint: r.hint ?? "", file: r.file };
+};
 
 /**
  * The closing line by page, so the same promise is never said on every
@@ -717,6 +718,23 @@ const CLOSERS: Record<string, ReactNode> = {
       Begin it for <em>the whole family.</em>
     </>
   ),
+  /* Premium pass: every page that ends on the Invitation has its own line.
+     The words are the site's own (lib/nav.ts hint for /your-story). */
+  "/your-story": (
+    <>
+      Your life belongs here <em>too.</em>
+    </>
+  ),
+  "/questions": (
+    <>
+      Everyone starts <em>free.</em>
+    </>
+  ),
+  "/programs": (
+    <>
+      Everyone starts <em>free.</em>
+    </>
+  ),
 };
 const DEFAULT_CLOSER = (
   <>
@@ -726,17 +744,35 @@ const DEFAULT_CLOSER = (
 
 /**
  * The closing invitation at the foot of a narrative route, on the cloth.
- * `title` replaces the page's closing line; `line` the sentence under it.
+ * `title` replaces the page's closing line; `line` the sentence under it;
+ * `next` (off home) the three rooms "Where to next" offers.
+ *
+ * The live site answers at /how-it-works/ (with the slash), so the path is
+ * compared without it (spec §3.8): before the fix no self-link was filtered
+ * and no page's own closing line was ever found. On home the component takes
+ * its old path and renders exactly what it did (Bond included).
  */
 export function Invitation({
   line = "The archive is free for as long as you like. A plan adds A Story doing the asking.",
   title,
+  next,
 }: {
   line?: string;
   title?: ReactNode;
+  /** Off home: the three rooms to offer next, as paths from lib/nav.ts. */
+  next?: RoutePath[];
 }) {
-  const { pathname } = useLocation();
-  const rooms = ROOMS.filter((r) => r.to !== pathname).slice(0, 3);
+  const { pathname: live } = useLocation();
+  const premium = usePremium();
+  /* Home's path is "/", which the slash fix leaves alone. */
+  const pathname = premium ? bare(live) : live;
+  const rooms = (
+    premium && next
+      ? next.filter((to) => to !== pathname)
+      : ROOM_ORDER.filter((to) => to !== pathname)
+  )
+    .slice(0, 3)
+    .map(room);
   return (
     <Band $ground="cloth" aria-labelledby="invitation-title">
       <Frame className="band-row">
@@ -754,9 +790,9 @@ export function Invitation({
         <nav className="next" aria-label="Where to go next">
           <p className="next-label">Where to next</p>
           <div className="next-rows">
-            <Bond pose="sleep" ledge="right" width={112} />
+            {!premium && <Bond pose="sleep" ledge="right" width={112} />}
             {rooms.map((r) =>
-              "file" in r ? (
+              r.file ? (
                 <a key={r.to} href={r.to}>
                   <span>
                     <b>{r.title}</b>

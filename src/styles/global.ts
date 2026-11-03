@@ -6,6 +6,7 @@ import {
   font,
   layout,
   leading,
+  measure,
   media,
   motion,
   radius,
@@ -224,6 +225,28 @@ const GlobalStyle = createGlobalStyle`
     border-radius: ${radius.sm};
   }
   :focus:not(:focus-visible) { outline: none; }
+
+  /*
+   * Premium pass (2026-11-02, design spec §3.00-3.3). Off home only: every
+   * rule here sits under main[data-premium], which App.tsx sets on every
+   * marketing route except "/". Home keeps everything above, unchanged.
+   *
+   * - A reading measure on running text (a block can opt out with .wide).
+   * - Figures a reader compares set on tabular, lining numbers.
+   * - One focus ring, set by ground (--ring: chocolate on light grounds,
+   *   ivory on cloth and teal; kit.styles groundVars), never a halo alone.
+   */
+  main[data-premium] :is(p, li, dd):not(.wide) { max-inline-size: ${measure.max}; }
+  main[data-premium] :is(.price, [data-num], table td, .tag) {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  /* <Picture frame="crop">: a photograph, the md radius, no border (§3.5). */
+  main[data-premium] img[data-frame="crop"] { border-radius: ${radius.md}; }
+  main[data-premium] :focus-visible {
+    outline: 2px solid var(--ring, ${color.chocolate});
+    outline-offset: 3px;
+    box-shadow: none;
+  }
 
   /* Skip link - first tab stop on every page. */
   .skip-link {

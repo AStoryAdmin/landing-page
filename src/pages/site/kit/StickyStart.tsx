@@ -27,6 +27,7 @@ import { ArrowIcon } from "./kit";
 import { PrimaryAnchor, PrimaryLink } from "./kit.styles";
 import { color, media, motion } from "../../../styles/theme";
 import { START_HREF, START_LABEL } from "../../../lib/app";
+import { IN_BODY } from "./premium";
 
 const SHOW_ON = new Set([
   "/",
@@ -74,6 +75,20 @@ const Bar = styled.div`
     a {
       width: 100%;
       min-height: 56px;
+    }
+    /* Premium pass (spec §3.6), off home only: 56px of content plus the
+       safe area, and out of the way while the menu is open or the film
+       plays (Film.tsx sets body[data-film-playing]). */
+    ${IN_BODY} & {
+      padding: 6px var(--page-gutter) calc(6px + env(safe-area-inset-bottom, 0px));
+    }
+    ${IN_BODY} & a {
+      min-height: 44px;
+    }
+    ${IN_BODY}[data-nav-open] &,
+    ${IN_BODY}[data-film-playing] & {
+      transform: translateY(110%);
+      visibility: hidden;
     }
   }
 `;
