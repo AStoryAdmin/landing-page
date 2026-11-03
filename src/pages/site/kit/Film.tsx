@@ -28,6 +28,18 @@ import { color, font, media, motion, radius, shadow, type } from "../../../style
 const BASE = "/film";
 const PORTRAIT = "(max-width: 600px)";
 
+/*
+ * Round 3 (2026-11-03, plan task 1): the one plain line about who calls and
+ * who can hear, beside the film's "Voices are synthetic". The same sentence
+ * is on /join (AppDoor.tsx). Sources: faqData.ts:46 ("An AI-guided
+ * interviewer asks"), lib/seo.ts:175 ("An AI biographer that calls"),
+ * components/privacy.tsx:98 ("Nobody at A Story reads, listens to or looks
+ * at your memories, unless you ask us to help or someone reports
+ * something"), Questions.tsx:411 ("Daniel answers every email himself").
+ */
+const CALLER_LINE =
+  "It’s a computer that calls and asks, not a person. Nobody at A Story reads or listens to what you say unless you ask us to help, or someone reports something. If you write to us, Daniel answers himself.";
+
 type Source = { src: string; poster: string };
 
 /** Picks orientation and size once, inside the tap (spec §2.3). */
@@ -95,6 +107,13 @@ const Section = styled(Chapter)`
     grid-area: line;
     margin-top: 18px;
     max-width: 40ch;
+    display: grid;
+    gap: 10px;
+  }
+  /* Round 3 (plan task 1, Harold): beside "Voices are synthetic", in plain
+     words, who is calling and who can hear. In the ground's full ink. */
+  .line .caller {
+    color: var(--text, ${color.body});
   }
   .player {
     grid-area: player;
@@ -316,10 +335,13 @@ export default function Film({
             Watch a call become a book.
           </Statement>
         </div>
-        <Note className="line">
-          A 49-second film. The Millers are a fictional family. Voices are
-          synthetic.
-        </Note>
+        <div className="line">
+          <Note>
+            A 49-second film. The Millers are a fictional family. Voices are
+            synthetic.
+          </Note>
+          <Note className="caller">{CALLER_LINE}</Note>
+        </div>
 
         <div className="player">
           <Screen>

@@ -658,3 +658,11 @@ Full report: `docs/premium/RESULT.md`. Tree `site-premium` @ `a2f5338`. Nothing 
 - The worktrees were then removed with `git worktree remove`, without `--force`. The branches are kept.
 - `asl-b1` and `asl-b4` are fully removed.
 - `asl-b2` and `asl-b3` are deregistered from git, but Windows refused to delete their folders ("Invalid argument", probably a locked file such as a running preview holding `node_modules`). The leftover folders `C:\Users\nguye\Desktop\asl-b2` and `asl-b3` hold no git data and no unmerged work. They are safe to delete by hand once nothing holds them.
+
+## Round 3 requests
+
+### From Builder 1 (Doors, branch round3/b1)
+- **B2 (`Families.tsx:193`, `Families.tsx` "Invited to add to someone's book?" block):** Tuan's contradiction is in B2's file: "There is no gift card, code, or redemption process" sits near "Anyone joins the family tree with a six-letter code". Suggested fix in the same words /join now uses: the relative gets either a six-letter code or a link; a link opens on its own, a code goes in the box on /join (`lib/app.ts:17-18`). The "Open your invitation" link to `/join` can also carry the one line "There is no fee per relative." (`faqData.ts:26`).
+- **B2 (`faqData.ts:18`):** no change needed; noting that /join's lead now quotes `faqData.ts:26` ("There is no fee per relative") and `home/EveryVoice.tsx:532` verbatim, so those two sentences should not be reworded without updating `AppDoor.tsx`.
+- **B4 (mobile pass):** on /join at 390 the gap between the sample card (end of the opening) and "Being asked to tell your story?" is the opening's bottom padding plus the chapter's top padding (about 1 screen of air). If B4 tightens opening-to-chapter spacing site-wide in `kit.tsx`, /join benefits; B1 left it to the system rather than a page-local px.
+- **Nobody, for Daniel:** "Invited?" is in the desktop bar beside Sign in on every page except /organizations and /care-communities (their wider "Book a demo" leaves no room at 1180 px, the bar's narrowest width). `scripts/nav-count.mjs` now guards both states.

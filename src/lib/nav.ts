@@ -84,6 +84,10 @@ export const ROUTES = {
 /** The web app's sign-in: a quiet text link beside the one button. */
 export const SIGN_IN = { label: "Sign in", to: APP.signIn } as const;
 
+/** The desktop bar's short form of the /join door (round 3, plan task 1):
+    a quiet link beside Sign in, hidden in the drawer, which has the full row. */
+export const INVITED_LABEL = "Invited?";
+
 export type RoutePath = keyof typeof ROUTES;
 
 export const route = (path: RoutePath): RouteInfo & { to: string } => {
