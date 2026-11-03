@@ -64,27 +64,28 @@ function setPlayingFlag(on: boolean) {
   else document.body.removeAttribute("data-film-playing");
 }
 
-/** The credit, word for word, with its two addresses as links. */
-const LINKS: Record<string, string> = {
-  "creativecommons.org/licenses/by/3.0": "https://creativecommons.org/licenses/by/3.0/",
-  "freepats.zenvoid.org": "https://freepats.zenvoid.org/",
-};
-function Credit() {
-  const parts = transcript.credit.split(
-    /(creativecommons\.org\/licenses\/by\/3\.0|freepats\.zenvoid\.org)/,
-  );
+/** The credit, word for word, as one even caption (round 3, B4 fix pass 2):
+    its two addresses are plain words there and links in the Sources row
+    under it, one 44px line each, so no line of the caption grows (the
+    supervisor read the 52px address lines as broken leading). */
+const LINKS: { label: string; href: string }[] = [
+  {
+    label: "creativecommons.org/licenses/by/3.0",
+    href: "https://creativecommons.org/licenses/by/3.0/",
+  },
+  { label: "freepats.zenvoid.org", href: "https://freepats.zenvoid.org/" },
+];
+function Sources() {
   return (
-    <>
-      {parts.map((p, i) =>
-        LINKS[p] ? (
-          <a key={i} href={LINKS[p]} rel="noopener noreferrer" target="_blank">
-            {p}
+    <ul className="sources" aria-label="Sources for the music credit">
+      {LINKS.map((l) => (
+        <li key={l.href}>
+          <a href={l.href} rel="noopener noreferrer" target="_blank">
+            {l.label}
           </a>
-        ) : (
-          p
-        ),
-      )}
-    </>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -136,24 +137,35 @@ const Section = styled(Chapter)`
   .under > .credit {
     font: 400 ${type.label} / 1.5 ${font.ui};
     color: var(--muted, ${color.bodyMuted});
+    /* The addresses are unbroken words: they wrap rather than widen the
+       column at 320 or 150% text. */
+    overflow-wrap: anywhere;
   }
-  .credit a,
-  details a {
+  .sources a {
     color: inherit;
     text-underline-offset: 0.2em;
     overflow-wrap: anywhere;
   }
-  /* The credit's two addresses land on consecutive lines on a phone, so an
-     inline 13px hit area overlapped the neighbour by about 20px. Each
-     address is an inline block instead: 20px of line, 12px each side (44),
-     4px of margin each side (8px between stacked targets; taste rule 20,
-     round 3 fix). The lines with an address grow; the others keep 1.5. */
-  main[data-premium] & :is(.credit, li.credit) a:not([class]) {
-    display: inline-block;
+  /* The sources: one address a line, each a 44px block (a 1.45 line,
+     12px above and below; the premium selector outranks the kit's 13px
+     inline padding), 8px between them, so the caption above keeps
+     an even 1.5 (taste rule 20; round 3, B4 fix pass 2). */
+  .sources {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    margin: -6px 0 0;
+    padding: 0;
+    list-style: none;
+    font: 400 ${type.label} / 1.45 ${font.ui};
+    color: var(--muted, ${color.bodyMuted});
+  }
+  main[data-premium] & .sources li > a:not([class]),
+  .sources a {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
     padding-block: 12px;
-    margin-block: 4px;
-    line-height: 20px;
-    vertical-align: baseline;
   }
   ${media.md} {
     .film {
@@ -305,6 +317,7 @@ const Transcript = styled.details`
   }
   li.credit {
     margin-top: 6px;
+    overflow-wrap: anywhere;
     font: 400 ${type.note} / 1.55 ${font.ui};
     color: var(--muted, ${color.bodyMuted});
   }
@@ -434,9 +447,8 @@ export default function Film({
               Watch again
             </Again>
           )}
-          <Note className="credit">
-            <Credit />
-          </Note>
+          <Note className="credit">{transcript.credit}</Note>
+          <Sources />
           <Transcript>
             <summary>Read the transcript</summary>
             <ol>
@@ -446,9 +458,7 @@ export default function Film({
                   {l.text}
                 </li>
               ))}
-              <li className="credit">
-                <Credit />
-              </li>
+              <li className="credit">{transcript.credit}</li>
             </ol>
           </Transcript>
           {actions}
