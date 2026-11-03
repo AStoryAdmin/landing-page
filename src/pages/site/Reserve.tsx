@@ -354,7 +354,7 @@ const HeroCard = styled.div`
   ul.inc {
     margin-top: 18px;
   }
-  ul.inc li:nth-child(-n + 3) {
+  ul.inc li:nth-child(-n + 2) {
     display: none;
   }
   .act {
