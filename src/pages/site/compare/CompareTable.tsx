@@ -22,6 +22,11 @@ const Card = styled.div`
     outline: 3px solid ${color.accent};
     outline-offset: 4px;
   }
+  /* Premium pages take the shared ring (spec §3.3); home keeps its own. */
+  ${IN_MAIN} &:focus-visible {
+    outline: 2px solid var(--ring, ${color.chocolate});
+    outline-offset: 3px;
+  }
   table {
     width: 100%;
     min-width: var(--min, 720px);

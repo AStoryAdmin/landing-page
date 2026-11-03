@@ -1,5 +1,5 @@
 /**
- * How A Story is different — the case for switching.
+ * Compare (the /compare page, label from lib/nav.ts) — the case for switching.
  *
  * Pass 11j (founder): the page's job is to say why a family should choose
  * A Story over the memoir product they were about to buy. So it is short:
@@ -26,6 +26,7 @@ import { AS_OF, COMPARE_COLUMNS, COMPARE_ROWS } from "../../lib/landscape";
 import CompareOpening from "./compare/CompareOpening";
 import CompareTable, { CompareLegend } from "./compare/CompareTable";
 import { START_HREF, START_LABEL } from "../../lib/app";
+import { ROUTES } from "../../lib/nav";
 import { ArrowIcon, Invitation } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import {
@@ -143,7 +144,7 @@ export default function Compare() {
   return (
     <>
       <EditorialSeo
-        title="How A Story is different - more than a memoir"
+        title={`${ROUTES["/compare"].label} A Story - more than a memoir`}
         path="/compare"
         description="A Story beside Storyworth, Remento, Storii, Meminto, Spomen and Heirloom: calls that follow up, every family member's version, an archive that keeps growing."
       />

@@ -28,7 +28,8 @@
  *
  * Premium pass (2026-11-02, design spec §4B): the opening is on the ivory
  * with a sample book beside the price card; the buying state is said once,
- * under it; then the plan cards (the kit's Card), what stays yours, the film
+ * directly under the h1, with one gift line and one primary action after it
+ * (chief log B3.1); then the plan cards (the kit's Card), what stays yours, the film
  * link, the comparison (one block per plan on a phone, one DOM), the book
  * editions as open columns, and the questions last.
  */
@@ -56,9 +57,7 @@ import {
   Card,
   Chapter,
   Frame,
-  Note,
   PrimaryAnchor,
-  SecondaryLink,
   SplitHead,
   Statement,
   TextAnchor,
@@ -88,14 +87,6 @@ const Plans = styled(Chapter)`
   }
   /* Each plan is the kit's Card (spec §3.4): paper on the ivory, a hairline,
      no shadow. Selection and the Recommended keyline sit on top of it. */
-  .state {
-    margin: 0 0 ${space.xl};
-  }
-  /* A note's measure, over the scoped 72ch default. 52ch, not 64ch: 64ch of
-     Montserrat measures 85 on the taste script, over its 80 (spec §3.1). */
-  main[data-premium] & .state {
-    max-inline-size: ${measure.lead};
-  }
   .plan {
     position: relative;
     display: flex;
@@ -207,7 +198,7 @@ const Plans = styled(Chapter)`
   /* The radio is invisible, so its card carries the shared ring (§3.3). */
   .plan:has(.choose:focus-visible),
   .other:has(.choose:focus-visible) {
-    outline: 2px solid ${color.chocolate};
+    outline: 2px solid var(--ring, ${color.chocolate});
     outline-offset: 3px;
   }
 
@@ -337,9 +328,6 @@ const Plans = styled(Chapter)`
     }
     .bundle {
       padding-top: ${space.md};
-    }
-    .state {
-      margin-bottom: ${space.lg};
     }
     ul {
       margin-top: ${space.sm};
@@ -943,6 +931,32 @@ const Sheet = styled.div`
   }
 `;
 
+/* The opening's words (chief log B3.1): the status line and the gift line
+   share the lead, each on its own line; the gift line is a step quieter.
+   The film is a text link beside the one primary action. */
+const HeroWords = styled(PhonePairs)`
+  .opening-lead .status,
+  .opening-lead .gift {
+    display: block;
+  }
+  .opening-lead .status a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+  .opening-lead .gift {
+    margin-top: ${space.sm};
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--muted);
+  }
+  ${media.sm} {
+    .film-link {
+      flex: 0 1 auto !important;
+    }
+  }
+`;
+
 /*
  * One opening price for the calls, the same as Home's close (fix round 3,
  * jury 1 R2 #9): "Calls from $19.99 a month". The yearly plan and Express
@@ -1014,6 +1028,10 @@ function HeroPrice() {
 const individual = PLANS.find((p) => p.id === "individual")!;
 const family = PLANS.find((p) => p.id === "family")!;
 const express = PLANS.find((p) => p.id === "express")!;
+/** The gift line's "one time", from pricing.ts ("one time · 30 days"). No price:
+    the first phone screen shows at most two (chief log B3.1), and the plan
+    cards below give it. */
+const expressOnce = express.period.split(" · ")[0];
 const free = OTHER_PLANS.find((p) => p.id === "free")!;
 
 /** Columns of the comparison, in reading order: from nothing paid to the most shared. */
@@ -1168,7 +1186,11 @@ export default function Pricing() {
         path="/pricing"
         description="Compare Individual, Family, Express, Monthly and Free: the call minutes, which plans include a hardcover, and what stays yours whatever you choose."
       />
-      <PhonePairs>
+      {/* Group B round 2 (chief log B3.1): on a phone the first screen says
+          the buying state right under the h1, then one gift line, then one
+          primary action, before any price card. The $1 lives in the status
+          line's link, so it is said once. */}
+      <HeroWords>
         <PageOpening
           variant="wide"
           ground="ivory"
@@ -1177,29 +1199,39 @@ export default function Pricing() {
               Free to start. Pay for <em>calls.</em>
             </>
           }
-          lead={`No card and no time limit. Calls from ${monthlyPrice} a month, and inviting family, writing and reading never cost extra.`}
+          lead={
+            <>
+              <span className="status">
+                Plans aren’t on sale yet. Today you can start free, with no
+                card, and{" "}
+                <Link to="/reserve">
+                  {OFFERS.reserve.price} holds your place in line
+                </Link>
+                .
+              </span>
+              <span className="gift">
+                Giving it as a gift? Once plans open, {express.name} is{" "}
+                {expressOnce}, and nothing renews.
+              </span>
+            </>
+          }
           actions={
             <>
               <PrimaryAnchor href={START_HREF}>
                 {START_LABEL} <ArrowIcon />
               </PrimaryAnchor>
-              <SecondaryLink to="/reserve">
-                Reserve for {OFFERS.reserve.price}
-              </SecondaryLink>
+              <TextLink to="/how-it-works#film" className="film-link">
+                Watch the film · 49 s
+              </TextLink>
             </>
           }
           note={`Prices in US dollars. ${TODAY_NOTE}`}
           object={<HeroPrice />}
         />
-      </PhonePairs>
+      </HeroWords>
 
       <Plans ref={plans} $ground="ivory" aria-label="Plans">
         <Frame>
-          {/* The buying state, said once (spec §4B, S2). */}
-          <Note className="state">
-            Plans aren’t on sale yet. Today you can start free, and{" "}
-            {OFFERS.reserve.price} holds your place in line.
-          </Note>
           <div
             className="plans"
             role="radiogroup"
@@ -1279,7 +1311,7 @@ export default function Pricing() {
             <div>
               <strong>{name}</strong>
               {/* The buying state is said once on this page (spec §4B, S2),
-                  in the line above the plans, so a paid plan that cannot be
+                  in the opening under the h1, so a paid plan that cannot be
                   bought yet gets no second line here. */}
               {selectedId === "free" ? (
                 <small>

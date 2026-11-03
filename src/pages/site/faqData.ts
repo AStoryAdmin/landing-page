@@ -1,12 +1,47 @@
 import { BOOK, OTHER_PLANS, PLANS, START } from "../../lib/pricing";
 import { CHAPTER_COUNT, QUESTION_COUNT } from "../../lib/product";
+/*
+ * Group B round 2 (chief log B3.4): the first group is for the relative who
+ * was invited and the parent who is being asked. It reuses two existing
+ * answers (moved here, not copied, so the FAQ schema lists each question
+ * once) and adds two, each from a cited source:
+ * - "Do I need an account to add something?": home/EveryVoice.tsx:532.
+ * - "Will it ring on another phone or tablet?": Reserve.tsx:807, and nothing
+ *   more about iPads or Android (flag F-r1-3).
+ * The AI-guided interviewer answer leads the first general group.
+ */
 export const groups = [
+  {
+    title: "If you were invited, or are being asked",
+    items: [
+      {
+        q: "Who can see our stories?",
+        a: "Your archive is private by default. You decide who to invite and what to share. Public-story and contribution links are controlled by the family; contributions are reviewed before publication. See the Privacy policy for details.",
+      },
+      {
+        q: "Can relatives add a different version?",
+        a: "Yes. Invite them with your family code or link. They read the memories the family keeps and add their side, with photographs. There is no fee per relative.",
+      },
+      {
+        q: "Do I need an account to add something?",
+        a: "No. Each person adds what they remember, under their own name, through one link and with no account needed. Nothing replaces anything else, and nothing appears until the storyteller says yes.",
+      },
+      {
+        q: "Will it ring on another phone or tablet?",
+        a: "Before launch, A Story can only ring an iPhone. On other phones, it reminds them to write instead.",
+      },
+    ],
+  },
   {
     title: "Getting started",
     items: [
       {
         q: "What is A Story?",
         a: "A Story helps families build a living archive through conversation. Guided calls become memory cards to read and full transcripts. Photographs and family contributions add context, and you can turn part of the archive into a hardcover book.",
+      },
+      {
+        q: "Who asks the questions?",
+        a: `An AI-guided interviewer asks from ${QUESTION_COUNT} questions across ${CHAPTER_COUNT} chapters and follows up on what the storyteller shares. You can explore the scripted sample on How it works.`,
       },
       {
         q: "Can I sign up today?",
@@ -30,20 +65,12 @@ export const groups = [
     title: "Conversation, archive & family",
     items: [
       {
-        q: "Who asks the questions?",
-        a: `An AI-guided interviewer asks from ${QUESTION_COUNT} questions across ${CHAPTER_COUNT} chapters and follows up on what the storyteller shares. You can explore the scripted sample on How it works.`,
-      },
-      {
         q: "What if a question feels too personal?",
         a: "Leave it for another day. The storyteller can decline a question, pause, or change the subject. There is no obligation to tell a memory before they want to.",
       },
       {
         q: "Is the summary the whole record?",
         a: "No. The memory card is a short summary. The full verbatim transcript stays underneath it, and the call audio is kept. Photographs and other relatives’ memories can sit alongside the story.",
-      },
-      {
-        q: "Can relatives add a different version?",
-        a: "Yes. Invite them with your family code or link. They read the memories the family keeps and add their side, with photographs. There is no fee per relative.",
       },
     ],
   },
@@ -71,10 +98,6 @@ export const groups = [
   {
     title: "Privacy & ownership",
     items: [
-      {
-        q: "Who can see our stories?",
-        a: "Your archive is private by default. You decide who to invite and what to share. Public-story and contribution links are controlled by the family; contributions are reviewed before publication. See the Privacy policy for details.",
-      },
       {
         q: "What happens if I cancel?",
         a: "Your account returns to Free. Your recordings, transcripts, and photographs remain yours, your archive stays open, and invited family members retain access. Paid guided calls stop; you can keep writing and export your archive.",
