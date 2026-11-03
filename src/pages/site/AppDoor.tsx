@@ -29,14 +29,24 @@ import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Seo from "../../components/ui/Seo";
 import { APP, FAMILY_CODE, goToApp } from "../../lib/app";
-import { color, font, media, space, type } from "../../styles/theme";
-import { ArrowIcon, PageOpening } from "./kit/kit";
+import { LAKE_MONSTER as M } from "../../lib/homeExamples";
+import {
+  color,
+  display,
+  font,
+  media,
+  radius,
+  shadow,
+  space,
+  type,
+} from "../../styles/theme";
+import { ArrowIcon, PageOpening, Picture } from "./kit/kit";
 import {
   Chapter,
   Frame,
-  Heading,
   PrimaryButton,
   PrimaryLink,
+  Statement,
   TextLink,
 } from "./kit/kit.styles";
 import { Form } from "./kit/form.styles";
@@ -127,37 +137,246 @@ function Leaving({ door, path, to }: { door: Door; path: string; to: string }) {
 
 /* ── /join with no code: the two doors ─────────────────────────────────── */
 
-const Doors = styled(Chapter)`
-  padding-top: 0;
-  .doors {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: ${space.xxl} clamp(${space.xl}, 5vw, 96px);
-    align-items: start;
+/*
+ * Round 3 (2026-11-03, plan task 1, Doors). The first screen is the whole
+ * invited door: what is asked of you, the code box with an example, the one
+ * rule for a code versus a link, and a sample addition beside the words so
+ * the page shows what you are stepping into. The storyteller's door follows,
+ * with the privacy promises set in the same serif as the rest.
+ * Every sentence has a source in the site:
+ *   one link, no account, own name   home/EveryVoice.tsx:532
+ *   no fee per relative              faqData.ts:26
+ *   six-letter code                  Families.tsx:193, lib/app.ts:27
+ *   a link opens on its own          lib/app.ts:17-18 (/join/CODE, /c/SLUG)
+ *   nothing until "yes"              home/FamilyLoop.tsx:47
+ *   the hour your family picked      home/ThreeSteps.tsx:47 (the family's
+ *                                    line, turned to the storyteller)
+ *   a computer calls, not a person   faqData.ts:46 ("An AI-guided
+ *                                    interviewer asks"), lib/seo.ts:175
+ *   nobody at A Story reads/listens  components/privacy.tsx:98
+ *   Daniel answers himself           Questions.tsx:411
+ *   privacy promises                 components/privacy.tsx:101, 105, 117
+ *   the sample addition              lib/homeExamples.ts LAKE_MONSTER (a
+ *                                    fictional family; the footer says so)
+ *   "six letters or digits"          deploy/cloudfront-viewer-request.js:20
+ */
+
+/** The same sentence sits under the film on /how-it-works (kit/Film.tsx). */
+const CALLER_LINE =
+  "It’s a computer that calls and asks, not a person. Nobody at A Story reads or listens to what you say unless you ask us to help, or someone reports something. If you write to us, Daniel answers himself.";
+
+const JoinTop = styled.div`
+  /* The code form sits in the opening's action row and takes the row. */
+  .opening-grid form {
+    flex: 1 1 100%;
+    margin: 0;
   }
-  .door {
+  .code-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: ${space.md} ${space.lg};
+    align-items: flex-end;
+  }
+  /* Sized to the code itself (six letters), so the button sits beside it at
+     every width and wraps under it with large text; it never covers the box. */
+  .code-row .field {
+    flex: 0 1 auto;
+    width: 9em;
+    max-width: 100%;
+  }
+  .code-row .field > span {
+    font: 500 ${type.note} / 1.3 ${font.ui};
+    letter-spacing: 0.01em;
+    text-transform: none;
+    color: var(--muted, ${color.bodyMuted});
+    white-space: nowrap;
+  }
+  .code-row input {
+    width: 100%;
     min-width: 0;
-    padding-top: ${space.lg};
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  .code-row input::placeholder {
+    font-style: normal;
+    letter-spacing: 0.14em;
+  }
+  .code-row > button {
+    flex: 0 0 auto;
+  }
+  .opening-grid .error {
+    margin-top: ${space.sm};
+  }
+  ${media.sm} {
+    .code-row > button {
+      flex: 1 1 100%;
+    }
+  }
+`;
+
+/* The sample addition: one memory the family keeps, and what two relatives
+   added to it, drawn as a card on the paper. Type-led, with the photograph
+   the home page already uses for this memory. */
+const Addition = styled.figure`
+  margin: 0;
+  width: min(100%, 520px);
+  background: ${color.paper};
+  border: 1px solid ${color.primaryLine};
+  border-radius: ${radius.lg};
+  box-shadow: ${shadow.md};
+  overflow: hidden;
+  .memory {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: ${space.md};
+    align-items: start;
+    padding: ${space.lg};
+    border-bottom: 1px solid ${color.primaryLine};
+  }
+  .memory img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: ${radius.sm};
+  }
+  .memory small,
+  .added small {
+    display: block;
+    font: 500 ${type.note} / 1.4 ${font.ui};
+    color: ${color.bodyMuted};
+  }
+  .memory h2 {
+    margin: 2px 0 6px;
+    font: 600 ${display.sm} / 1.1 ${font.display};
+    letter-spacing: -0.005em;
+    color: ${color.primary};
+  }
+  .memory p,
+  .added p {
+    margin: 0;
+    font: italic 400 ${type.read} / 1.45 ${font.text};
+    color: ${color.body};
+  }
+  .added {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: ${space.sm} ${space.md};
+    align-items: start;
+    padding: ${space.md} ${space.lg};
+  }
+  .added + .added {
+    padding-top: 0;
+  }
+  .seal {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid ${color.gold};
+    font: 600 ${type.note} / 1 ${font.ui};
+    color: ${color.primary};
+  }
+  .added strong {
+    font: 600 ${type.ui} / 1.3 ${font.ui};
+    color: ${color.primary};
+  }
+  .added p {
+    margin-top: 4px;
+  }
+  .waiting {
+    margin: 0;
+    padding: ${space.sm} ${space.lg} ${space.md};
+    font: 500 ${type.note} / 1.4 ${font.ui};
+    color: ${color.bodyMuted};
+  }
+  figcaption {
+    padding: ${space.sm} ${space.lg};
+    border-top: 1px solid ${color.primaryLine};
+    background: ${color.ivory};
+    font: 400 ${type.note} / 1.5 ${font.ui};
+    color: ${color.bodyMuted};
+  }
+  ${media.sm} {
+    .memory {
+      grid-template-columns: 88px minmax(0, 1fr);
+      padding: ${space.md};
+    }
+    .added,
+    .waiting,
+    figcaption {
+      padding-left: ${space.md};
+      padding-right: ${space.md};
+    }
+  }
+`;
+
+function SampleAddition() {
+  return (
+    <Addition aria-label="A sample addition to a family memory">
+      <div className="memory">
+        <Picture
+          id={M.photo}
+          alt={M.alt}
+          sizes="(max-width: 640px) 88px, 112px"
+          priority
+        />
+        <div>
+          <small>Told by {M.teller.name} · in a call</small>
+          <h2>{M.title}</h2>
+          <p>“{M.told}”</p>
+        </div>
+      </div>
+      {/* Sarah and Uncle Ben: Lily's addition is a voice note, and clips in
+          a person's own voice are still in development (HowItWorks.tsx
+          "Clips … are in development"; home/EveryVoice.tsx draws hers as a
+          drawing for the same reason). */}
+      {[M.added[0], M.added[2]].map((a) => (
+        <div className="added" key={a.name}>
+          <span className="seal" aria-hidden="true">
+            {a.initial}
+          </span>
+          <div>
+            <strong>{a.name}</strong>
+            <small>
+              {a.role} · {a.kind}
+            </small>
+            <p>“{a.quote}”</p>
+          </div>
+        </div>
+      ))}
+      <p className="waiting">
+        {M.added.length} additions waiting for {M.teller.name.split(" ").pop()}{" "}
+        to say yes.
+      </p>
+      <figcaption>
+        What an addition looks like. A sample: the family is fictional.
+      </figcaption>
+    </Addition>
+  );
+}
+
+const Doors = styled(Chapter)`
+  .door {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: ${space.lg} ${space.xxl};
+    padding-top: ${space.xl};
     border-top: 1px solid ${color.primaryLine};
   }
-  .door > p {
-    margin-top: ${space.md};
-    font: 400 ${type.read} / 1.55 ${font.text};
-    color: var(--text, ${color.body});
-    max-width: 52ch;
-  }
   ul {
-    margin: ${space.md} 0 0;
+    margin: 0;
     padding: 0;
     list-style: none;
     display: grid;
     gap: ${space.sm};
-    max-width: 52ch;
+    max-width: 56ch;
   }
   li {
     position: relative;
     padding-left: 22px;
-    font: 400 ${type.read} / 1.5 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--text, ${color.body});
   }
   li::before {
@@ -169,65 +388,27 @@ const Doors = styled(Chapter)`
     height: 1px;
     background: ${color.gold};
   }
+  /* The privacy promises, in the same serif as the lines above them. */
   .promises {
     margin-top: ${space.lg};
   }
   .promises li {
-    font: 500 ${type.note} / 1.5 ${font.ui};
     color: var(--ink, ${color.primary});
   }
   .links {
     display: flex;
     flex-wrap: wrap;
     gap: ${space.xs} ${space.lg};
-    margin-top: ${space.lg};
+    margin: ${space.lg} 0 0;
   }
   .links a {
     min-height: 44px;
     display: inline-flex;
     align-items: center;
   }
-  form {
-    margin-top: ${space.lg};
-    max-width: 560px;
-  }
-  /* Wraps, never overlaps: in the two-door layout the column can be narrower
-     than field + button (with large text it always is), and a fixed grid let
-     the button lie on top of the code box. */
-  .code-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: ${space.md};
-    align-items: flex-end;
-  }
-  /* Sized by its own label ("Your six-letter code" never wraps), so the
-     button moves to the next line before it can cover the box. */
-  .code-row .field {
-    flex: 1 1 auto;
-  }
-  .code-row > button {
-    flex: 0 0 auto;
-  }
-  .code-row .field > span {
-    white-space: nowrap;
-  }
-  .code-row input {
-    width: 100%;
-    min-width: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-  }
   ${media.md} {
-    .doors {
+    .door {
       grid-template-columns: minmax(0, 1fr);
-    }
-  }
-  ${media.sm} {
-    .code-row .field {
-      flex-basis: 100%;
-    }
-    .code-row .field > span {
-      white-space: normal;
     }
   }
 `;
@@ -251,28 +432,18 @@ function JoinHere({ given }: { given: string }) {
       <Seo
         title="Invited to a family’s book - A Story"
         path="/join"
-        description="Invited by a relative, or being asked to tell your story: where to begin with A Story."
+        description="Invited by a relative, or being asked to tell your story: where to begin with A Story. One link, no account, no fee for relatives."
         noindex
       />
-      <PageOpening
-        ground="ivory"
-        title="Joining a family’s book."
-        lead={WORDS.join.lead}
-      />
-      <Doors $ground="ivory" aria-label="Two ways in">
-        <Frame className="doors">
-          <section className="door" aria-labelledby="invited-title">
-            <Heading as="h2" id="invited-title">Invited by a relative?</Heading>
-            <ul>
-              <li>Anyone joins the family tree with a six-letter code.</li>
-              <li>
-                Add what you remember, under your own name, through one link
-                and with no account needed.
-              </li>
-              <li>Nothing appears until the storyteller says yes.</li>
-            </ul>
-            {/* Without script the form still works: /join?ref=CODE is sent
-                on to the app by the inline script and the edge. */}
+      <JoinTop>
+        <PageOpening
+          ground="ivory"
+          variant="object"
+          title="Joining a family’s book."
+          lead="Someone in your family invited you. Add what you remember, under your own name, through one link and with no account needed. There is no fee per relative."
+          actions={
+            /* Without script the form still works: /join?ref=CODE is sent
+               on to the app by the inline script and the edge. */
             <Form action="/join" method="get" onSubmit={open} noValidate>
               <div className="code-row">
                 <label
@@ -286,6 +457,7 @@ function JoinHere({ given }: { given: string }) {
                     name="ref"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
+                    placeholder="ABC123"
                     maxLength={6}
                     autoComplete="off"
                     autoCapitalize="characters"
@@ -304,31 +476,40 @@ function JoinHere({ given }: { given: string }) {
                 </p>
               )}
             </Form>
-          </section>
+          }
+          note="The relative who invited you sent either a six-letter code or a link. A code goes in the box above. A link needs nothing: open it, and you are in."
+          object={<SampleAddition />}
+        />
+      </JoinTop>
 
-          <section className="door" id="being-asked" aria-labelledby="asked-here-title">
-            <Heading as="h2" id="asked-here-title">
+      <Doors $ground="ivory" $tight aria-labelledby="asked-here-title">
+        <Frame>
+          <section className="door" id="being-asked">
+            <Statement id="asked-here-title" $size="md">
               Being asked to tell your story?
-            </Heading>
-            <ul>
-              <li>
-                It rings in the app at the hour you picked. Nothing to type or
-                save. You just talk.
-              </li>
-              <li>Nothing appears until you say yes.</li>
-              <li>Your story belongs to you.</li>
-            </ul>
-            <ul className="promises" aria-label="From our privacy policy">
-              <li>We never sell data.</li>
-              <li>We never train AI on your stories.</li>
-              <li>You can delete it all.</li>
-            </ul>
-            <p className="links">
-              <TextLink to="/how-it-works#being-asked">
-                How it works for you
-              </TextLink>
-              <TextLink to="/privacy/">Read our privacy policy</TextLink>
-            </p>
+            </Statement>
+            <div>
+              <ul>
+                <li>
+                  It rings in the app at the hour your family picked. Nothing
+                  to type or save. You just talk.
+                </li>
+                <li>{CALLER_LINE}</li>
+                <li>Nothing appears until you say yes.</li>
+                <li>Your story belongs to you.</li>
+              </ul>
+              <ul className="promises" aria-label="From our privacy policy">
+                <li>We never sell data.</li>
+                <li>We never train AI on your stories.</li>
+                <li>You can delete it all.</li>
+              </ul>
+              <p className="links">
+                <TextLink to="/how-it-works#being-asked">
+                  How it works for you
+                </TextLink>
+                <TextLink to="/privacy/">Read our privacy policy</TextLink>
+              </p>
+            </div>
           </section>
         </Frame>
       </Doors>

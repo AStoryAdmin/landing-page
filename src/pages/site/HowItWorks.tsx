@@ -34,6 +34,8 @@
  * phone call, never "no app". Voice clips are in development: the page says
  * so once and promises the card and the transcript.
  */
+import { useLayoutEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { SCENARIOS } from "../../lib/demoScripts";
@@ -437,9 +439,11 @@ function BeingAsked() {
           If you’re the one being asked.
         </Statement>
         <ul>
+          {/* Round 3 (plan task 1): the hour is the family's choice, not the
+              storyteller's (Harold). */}
           <li>
-            It rings in the app at the hour you picked. Nothing to type or
-            save. You just talk.
+            It rings in the app at the hour your family picked. Nothing to
+            type or save. You just talk.
           </li>
           <li>Nothing appears until you say yes.</li>
           <li>
@@ -575,9 +579,71 @@ const Volume = styled(Chapter)`
   }
 `;
 
+/*
+ * Round 3 (2026-11-03, plan task 1): a deep link to #film or #being-asked
+ * showed the top of the page for up to two seconds (measured on the local
+ * build with motion on: the ScrollTrigger refresh that fonts.ready and load
+ * fire scrolls the window to 0 while it measures the pinned scenes, and the
+ * router's own follow only catches up later; any wheel or touch in between
+ * cancels it, which is how Maya "sat at the top"). This holds the target in
+ * place: an instant jump on the first commit, again after those two events,
+ * and on every frame for a short while, until the reader moves. The offset
+ * is the router's (RouteTransition.tsx): the header's height plus 24px.
+ */
+function useArrivalAnchor() {
+  const { hash } = useLocation();
+  useLayoutEffect(() => {
+    const id = hash.slice(1);
+    if (!id) return;
+    let stopped = false;
+    const jump = () => {
+      const el = document.getElementById(id);
+      if (!el || stopped) return;
+      const root = document.documentElement;
+      const nav =
+        parseFloat(getComputedStyle(root).getPropertyValue("--nav-total")) ||
+        88;
+      const top = Math.round(
+        el.getBoundingClientRect().top + window.scrollY - nav - 24,
+      );
+      if (Math.abs(window.scrollY - top) < 2) return;
+      /* An instant jump, whatever the stylesheet's scroll-behavior says. */
+      const previous = root.style.scrollBehavior;
+      root.style.scrollBehavior = "auto";
+      void getComputedStyle(root).scrollBehavior;
+      window.scrollTo({ top, left: 0, behavior: "instant" });
+      root.style.scrollBehavior = previous;
+    };
+    const stop = () => {
+      stopped = true;
+    };
+    const inputs = ["wheel", "touchstart", "pointerdown", "keydown"] as const;
+    inputs.forEach((e) => window.addEventListener(e, stop, { passive: true }));
+    jump();
+    let raf = 0;
+    const until = performance.now() + 3000;
+    const follow = () => {
+      if (stopped) return;
+      jump();
+      if (performance.now() < until) raf = requestAnimationFrame(follow);
+    };
+    raf = requestAnimationFrame(follow);
+    const settled = () => setTimeout(jump, 0);
+    document.fonts?.ready.then(settled);
+    window.addEventListener("load", settled, { once: true });
+    return () => {
+      stop();
+      cancelAnimationFrame(raf);
+      window.removeEventListener("load", settled);
+      inputs.forEach((e) => window.removeEventListener(e, stop));
+    };
+  }, [hash]);
+}
+
 export default function HowItWorks() {
   const ways = useReveals<HTMLElement>();
   const volume = useReveals<HTMLElement>();
+  useArrivalAnchor();
 
   return (
     <>

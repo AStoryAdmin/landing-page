@@ -8,6 +8,9 @@
  * 1.1 desktop bar at 1440, 1280, 1180 (the bar starts at 1180, spec fallback
  *     S20; at 1179 and 1024 the drawer's Menu button shows instead): 4 links +
  *     1 menu button + Sign in + exactly 1 .gf-button, no label wrapping, no
+ *     "More"; round 3 (plan task 1): plus exactly one quiet .gf-door that
+ *     reads "Invited?" and goes to /join, counted apart from the 4 links
+ *     (absent on the two org pages, where "Book a demo" takes the room); no
  *     "More"; the chevron ≥ 14px and the button's arrow ≥ 16px wide (nothing
  *     crushed); the right gutter matches the left (±2px); the org panel has 3
  *     rows (2 on the org pages, no "Book a demo"); hover-then-click keeps it
@@ -79,7 +82,8 @@ for (const path of navPages) {
                 (el) => visible(el) && !(panel && panel.contains(el)),
             );
             return {
-                links: items.filter((el) => el.tagName === 'A' && !el.classList.contains('gf-button') && !el.classList.contains('gf-signin')).map((el) => el.textContent.trim()),
+                links: items.filter((el) => el.tagName === 'A' && !el.classList.contains('gf-button') && !el.classList.contains('gf-signin') && !el.classList.contains('gf-door')).map((el) => el.textContent.trim()),
+                door: items.filter((el) => el.classList.contains('gf-door')).map((el) => ({ label: el.textContent.trim(), href: el.getAttribute('href') })),
                 buttons: items.filter((el) => el.tagName === 'BUTTON').map((el) => el.textContent.trim()),
                 signIn: items.filter((el) => el.classList.contains('gf-signin')).length,
                 primary: items.filter((el) => el.classList.contains('gf-button')).map((el) => el.textContent.trim()),
@@ -111,6 +115,8 @@ for (const path of navPages) {
         check(`${tag} 4 links`, bar.links.length === 4, JSON.stringify(bar.links));
         check(`${tag} 1 menu button`, bar.buttons.length === 1, JSON.stringify(bar.buttons));
         check(`${tag} Sign in`, bar.signIn === 1);
+        if (isOrg(path)) check(`${tag} no .gf-door on an org page`, bar.door.length === 0, JSON.stringify(bar.door));
+        else check(`${tag} 1 .gf-door "Invited?" → /join`, bar.door.length === 1 && bar.door[0].label === 'Invited?' && bar.door[0].href === '/join', JSON.stringify(bar.door));
         check(`${tag} 1 .gf-button`, bar.primary.length === 1, JSON.stringify(bar.primary));
         check(`${tag} nothing wraps`, bar.wrapped.length === 0, JSON.stringify(bar.wrapped));
         check(`${tag} no "More"`, !bar.more);
@@ -191,6 +197,7 @@ for (const path of navPages) {
             };
             return {
                 labels: items.map((el) => el.innerText.trim()),
+                door: items.filter((el) => el.classList.contains('gf-door')).length,
                 maxDepth: Math.max(...items.map(depth)),
                 wrapped: items.filter(wraps).map((el) => el.innerText.trim()),
                 firstTier: [...nav.querySelectorAll('.gf-nav-links > a, .org-toggle, .gf-nav-doors a')].filter(visible).map((el) => ({ label: el.innerText.trim(), href: el.getAttribute('href'), depth: depth(el) })),
@@ -202,6 +209,7 @@ for (const path of navPages) {
         const dups = drawer.labels.filter((l, i, a) => a.indexOf(l) !== i);
         const tag = `1.2 ${path} @${width}`;
         check(`${tag} no duplicates`, dups.length === 0, JSON.stringify(dups));
+        check(`${tag} "Invited?" hidden in the drawer`, drawer.door === 0, String(drawer.door));
         check(`${tag} no "More"`, !drawer.labels.includes('More'));
         check(`${tag} depth ≤ 2`, drawer.maxDepth <= 2, String(drawer.maxDepth));
         check(`${tag} Book a demo exactly once`, drawer.labels.filter((l) => l === 'Book a demo').length === 1);
