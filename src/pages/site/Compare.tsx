@@ -1,5 +1,5 @@
 /**
- * How A Story is different — the case for switching.
+ * Compare (the /compare page, label from lib/nav.ts) — the case for switching.
  *
  * Pass 11j (founder): the page's job is to say why a family should choose
  * A Story over the memoir product they were about to buy. So it is short:
@@ -25,16 +25,39 @@ import EditorialSeo from "../../components/ui/EditorialSeo";
 import { AS_OF, COMPARE_COLUMNS, COMPARE_ROWS } from "../../lib/landscape";
 import CompareOpening from "./compare/CompareOpening";
 import CompareTable, { CompareLegend } from "./compare/CompareTable";
-import { Invitation } from "./kit/kit";
+import { START_HREF, START_LABEL } from "../../lib/app";
+import { ROUTES } from "../../lib/nav";
+import { ArrowIcon, Invitation } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import {
+  Actions,
   Chapter,
   Frame,
+  PrimaryAnchor,
+  SecondaryLink,
   SplitHead,
   Statement,
   onDarkActions,
 } from "./kit/kit.styles";
-import { color, display, font, media, type } from "../../styles/theme";
+import {
+  color,
+  display,
+  font,
+  measure,
+  media,
+  radius,
+  space,
+  type,
+} from "../../styles/theme";
+
+/* "Keeps growing after the book - the book isn't the end" says the book is
+   an ending (spec §4B). The row reads "Keeps growing after the book" here;
+   lib/landscape.ts (not this builder's file) and home keep their wording. */
+const ROWS = COMPARE_ROWS.map((r) =>
+  r.label.startsWith("Keeps growing after the book")
+    ? { ...r, label: "Keeps growing after the book" }
+    : r,
+);
 
 const Matrix = styled(Chapter)`
   .lead {
@@ -46,6 +69,10 @@ const Matrix = styled(Chapter)`
     margin-top: 14px;
     font: 400 ${type.note} / 1.55 ${font.body};
     color: ${color.bodyMuted};
+  }
+  /* A note's measure, over the scoped 72ch default (spec §3.1 measureMax). */
+  main[data-premium] & .note {
+    max-inline-size: ${measure.lead};
   }
 `;
 
@@ -80,15 +107,14 @@ const Moment = styled(Chapter)`
     grid-template-columns: 150px 1fr;
     gap: 18px;
     align-items: baseline;
-    padding: 20px 24px;
-    border-radius: 16px;
+    padding: ${space.lg};
+    border-radius: ${radius.lg};
     background: color-mix(in srgb, ${color.ivory} 8%, transparent);
     box-shadow: inset 0 0 0 1px ${color.onDarkLine};
   }
   .voices small {
     font: 600 ${type.label} / 1.3 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.goldOnTeal};
   }
   .voices q {
@@ -118,7 +144,7 @@ export default function Compare() {
   return (
     <>
       <EditorialSeo
-        title="How A Story is different - more than a memoir"
+        title={`${ROUTES["/compare"].label} A Story - more than a memoir`}
         path="/compare"
         description="A Story beside Storyworth, Remento, Storii, Meminto, Spomen and Heirloom: calls that follow up, every family member's version, an archive that keeps growing."
       />
@@ -140,7 +166,7 @@ export default function Compare() {
           <div data-rise>
             <CompareTable
               columns={COMPARE_COLUMNS}
-              rows={COMPARE_ROWS}
+              rows={ROWS}
               label="A Story compared with Storyworth, Remento, Storii, Meminto, Spomen and Heirloom, scrollable"
               minWidth="1060px"
               labelWidth="32%"
@@ -152,6 +178,12 @@ export default function Compare() {
             From each company’s public pages, {AS_OF}. Features change; we
             update this as they do.
           </p>
+          <Actions>
+            <PrimaryAnchor href={START_HREF}>
+              {START_LABEL} <ArrowIcon />
+            </PrimaryAnchor>
+            <SecondaryLink to="/pricing">See pricing</SecondaryLink>
+          </Actions>
         </Frame>
       </Matrix>
 
@@ -186,7 +218,7 @@ export default function Compare() {
         </Frame>
       </Moment>
 
-      <Invitation />
+      <Invitation next={["/pricing", "/samples", "/how-it-works"]} />
     </>
   );
 }

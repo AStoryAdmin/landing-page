@@ -139,7 +139,7 @@ export const PLANS: Plan[] = [
     {
         id: 'express',
         name: 'Express',
-        who: 'A short visit, or a moment that will not wait',
+        who: 'A short visit',
         price: '$79',
         amount: '79',
         period: 'one time · 30 days',

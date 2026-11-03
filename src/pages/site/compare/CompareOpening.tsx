@@ -11,16 +11,34 @@
 import styled from "styled-components";
 import { SWITCH } from "../../../lib/landscape";
 import { PageOpening } from "../kit/kit";
-import { color, display, font, media, shadow, type } from "../../../styles/theme";
+import {
+  color,
+  display,
+  font,
+  media,
+  shadow,
+  space,
+  type,
+} from "../../../styles/theme";
 
+/* Premium pass (spec §4B): the opening is the `wide` composition, so the
+   leaf runs the width of the frame under the words, its four reasons in two
+   columns from 861px. */
 const Leaf = styled.div`
   position: relative;
-  width: min(100%, 720px);
+  width: 100%;
   padding: clamp(28px, 3vw, 56px) clamp(26px, 3vw, 56px);
   color: ${color.primary};
   background: ${color.paperPure};
   box-shadow: ${shadow.lie};
-  transform: rotate(-0.6deg);
+  transform: rotate(-0.3deg);
+  ${media.up.md} {
+    ul {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: ${space.xxl};
+    }
+  }
   &::before {
     content: "";
     position: absolute;
@@ -33,8 +51,7 @@ const Leaf = styled.div`
   }
   h2 {
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   ul {
@@ -47,7 +64,7 @@ const Leaf = styled.div`
     border-top: 1px solid ${color.primaryLine};
   }
   h3 {
-    font: 500 ${display.sm} / 1.2 ${font.display};
+    font: 500 ${display.md} / 1.15 ${font.display};
     color: ${color.primary};
   }
   p {
@@ -60,10 +77,20 @@ const Leaf = styled.div`
   }
 `;
 
+/* The fourth reason read "A book shouldn't be the end.", which frames the
+   book as an ending (global rule). It gets the wording the spec approved for
+   the same idea in the table (spec §4B, supervisor ruling); the body stays.
+   lib/landscape.ts is left as it is. */
+const REASONS = SWITCH.map((r) =>
+  r.title.startsWith("A book shouldn")
+    ? { ...r, title: "Keeps growing after the book." }
+    : r,
+);
+
 export default function CompareOpening() {
   return (
     <PageOpening
-      flip
+      variant="wide"
       labelledBy="compare-title"
       title={
         <>
@@ -75,7 +102,7 @@ export default function CompareOpening() {
         <Leaf>
           <h2>Four reasons to choose A Story</h2>
           <ul>
-            {SWITCH.map((r) => (
+            {REASONS.map((r) => (
               <li key={r.title}>
                 <h3>{r.title}</h3>
                 <p>{r.body}</p>

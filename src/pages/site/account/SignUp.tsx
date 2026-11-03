@@ -26,6 +26,8 @@ import {
 import { looksLikeEmail } from "../../../lib/leads";
 import { track } from "../../../lib/analytics";
 import AccountShell, { CodeField, PasswordField } from "./AccountShell";
+import { ArrowIcon } from "../kit/kit";
+import { PrimaryButton } from "../kit/kit.styles";
 
 /** Long enough that a double-click cannot send two emails. */
 const RESEND_WAIT = 30;
@@ -250,9 +252,9 @@ export default function SignUp() {
                 )}
               </p>
             )}
-            <button type="submit" disabled={busy} aria-busy={busy || undefined}>
-              {busy ? "Creating your account…" : "Create account"}
-            </button>
+            <PrimaryButton type="submit" disabled={busy} aria-busy={busy || undefined}>
+              {busy ? "Creating your account…" : "Create account"} <ArrowIcon />
+            </PrimaryButton>
             <p className="legal">
               By creating an account you agree to our{" "}
               <Link to="/terms">Terms</Link> and{" "}
@@ -272,9 +274,9 @@ export default function SignUp() {
                 {error}
               </p>
             )}
-            <button type="submit" disabled={busy} aria-busy={busy || undefined}>
-              {busy ? "Checking…" : "Confirm and continue"}
-            </button>
+            <PrimaryButton type="submit" disabled={busy} aria-busy={busy || undefined}>
+              {busy ? "Checking…" : "Confirm and continue"} <ArrowIcon />
+            </PrimaryButton>
             <div className="quiet">
               <button type="button" onClick={resend} disabled={wait > 0}>
                 {wait > 0 ? `Send another in ${wait}s` : "Send another code"}

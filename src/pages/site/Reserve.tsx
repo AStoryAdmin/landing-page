@@ -54,6 +54,7 @@ import { markOffer, useAccount, useReferralCode } from "../../lib/auth";
 import { useFoundingTaken } from "../../lib/foundingCount";
 import { track } from "../../lib/analytics";
 import { SITE } from "../../lib/seo";
+import { TODAY_NOTE } from "../../lib/today";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import ComingSoon from "./kit/ComingSoon";
 import CheckoutDetails, { type CheckoutIntent } from "./CheckoutDetails";
@@ -98,8 +99,7 @@ const cardRules = css`
   }
   .tag {
     font: 600 ${type.label} / 1 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   .name {
@@ -125,8 +125,7 @@ const cardRules = css`
   }
   .price span {
     font: 600 ${type.label} / 1 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   .held {
@@ -135,7 +134,7 @@ const cardRules = css`
     background: ${color.ivory};
   }
   .held p.h {
-    font: 400 ${display.sm} / 1.2 ${font.display};
+    font: 400 ${display.md} / 1.2 ${font.display};
     color: ${color.primary};
   }
   .held dl {
@@ -161,11 +160,11 @@ const cardRules = css`
     white-space: nowrap;
   }
   .held s {
-    font: 400 18px / 1 ${font.text};
+    font: 400 ${type.read} / 1 ${font.text};
     color: ${color.bodyMuted};
   }
   .held dd b {
-    font: 400 26px/1 ${font.display};
+    font: 400 ${display.md} / 1 ${font.display};
     color: ${color.primary};
   }
   .held p.f {
@@ -217,7 +216,7 @@ const cardRules = css`
     background: ${color.ivory};
   }
   .done h3 {
-    font: 400 ${display.sm} / 1.2 ${font.display};
+    font: 400 ${display.md} / 1.2 ${font.display};
     color: ${color.primary};
   }
   .done p {
@@ -296,7 +295,7 @@ const cardRules = css`
     padding: 10px 18px;
     border: 1px solid ${color.primaryLine};
     background: ${color.paperPure};
-    font: 500 18px / 1.3 ${font.text};
+    font: 500 ${type.read} / 1.3 ${font.text};
     color: ${color.body};
   }
   .choice span small {
@@ -398,7 +397,7 @@ const Next = styled(Chapter)`
   .then {
     margin-top: clamp(18px, 2vw, 28px);
     max-width: 40ch;
-    font: 400 clamp(1.2rem, 1.05rem + 0.5vw, 1.6rem) / 1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.primary};
   }
   .then + p {
@@ -423,7 +422,7 @@ const Next = styled(Chapter)`
     border-bottom: 1px solid ${color.primaryLine};
   }
   li h3 {
-    font: 400 ${display.sm} / 1.25 ${font.display};
+    font: 500 ${type.read} / 1.4 ${font.text};
     color: ${color.primary};
   }
   li p {
@@ -1074,7 +1073,8 @@ export default function Reserve() {
                 Hold your place <em>for a dollar.</em>
               </>
             }
-            lead={`Anyone can start A Story free in a browser. The calls come with a plan, and they ring in the A Story iPhone app, which is in a private beta. ${reserve.price} holds your family a place in line.`}
+            lead={`Anyone can start A Story free in a browser. The calls come with a plan. ${reserve.price} holds your family a place in line.`}
+            note={TODAY_NOTE}
             object={
               <HeroCard>
                 {card(
@@ -1139,7 +1139,7 @@ export default function Reserve() {
           <Frame className="two">
             <div>
               <Statement id="next-title" $size="lg" data-lines>
-                What happens <em>next.</em>
+                What happens next.
               </Statement>
               <p className="then" data-rise>
                 When the calls open, we email you, in the order families
@@ -1234,7 +1234,7 @@ export default function Reserve() {
       <Closing $ground="night" aria-labelledby="closing-title">
         <Frame>
           <Statement id="closing-title" $size="lg">
-            The questions you keep meaning <em>to ask.</em>
+            The questions you keep meaning to ask.
           </Statement>
           <p className="lead">
             {foundingOpen
