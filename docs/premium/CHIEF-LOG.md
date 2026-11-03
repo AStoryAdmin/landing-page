@@ -679,6 +679,14 @@ Pages: /care-communities, /organizations, /questions (#organizations), /compare.
 - No phone number exists anywhere in the site or app code, so none is shown (Denise asked for one).
 
 ## Round 3 requests
+
+### From Builder 1 (Doors, branch round3/b1)
+- **B2 (`Families.tsx:193`, `Families.tsx` "Invited to add to someone's book?" block):** Tuan's contradiction is in B2's file: "There is no gift card, code, or redemption process" sits near "Anyone joins the family tree with a six-letter code". Suggested fix in the same words /join now uses: the relative gets either a six-letter code or a link; a link opens on its own, a code goes in the box on /join (`lib/app.ts:17-18`). The "Open your invitation" link to `/join` can also carry the one line "There is no fee per relative." (`faqData.ts:26`).
+- **B2 (`faqData.ts:18`):** no change needed; noting that /join's lead now quotes `faqData.ts:26` ("There is no fee per relative") and `home/EveryVoice.tsx:532` verbatim, so those two sentences should not be reworded without updating `AppDoor.tsx`.
+- **B4 (mobile pass):** on /join at 390 the gap between the sample card (end of the opening) and "Being asked to tell your story?" is the opening's bottom padding plus the chapter's top padding (about 1 screen of air). If B4 tightens opening-to-chapter spacing site-wide in `kit.tsx`, /join benefits; B1 left it to the system rather than a page-local px.
+- **Nobody, for Daniel:** "Invited?" is in the desktop bar beside Sign in on every page except /organizations and /care-communities (their wider "Book a demo" leaves no room at 1180 px, the bar's narrowest width). `scripts/nav-count.mjs` now guards both states.
+
+### From Builder 3 (Care and organizations, branch round3/b3)
 - **B4 (mobile pass):** /organizations is 8.28 screens at 390 (target ≤ 8) and /care-communities 8.02; the growth is the five "What you need" rows. Candidates: tighter chips in the demo form (8 day chips = 4 rows at 390) and the org form's two step legends.
 - **B2 (`faqData.ts`):** if the FAQ schema should list the organizations group inside `faqData.ts` rather than `orgQuestions.ts`, move `ORG_GROUP` there and drop the import in `Questions.tsx`.
 - **Daniel:** a phone number for the care page; a per-resident price range; whether a staff member's own phone or shared devices are the supported setup; the export formats; a decision-maker consent path (all blocked facts, none stated).
