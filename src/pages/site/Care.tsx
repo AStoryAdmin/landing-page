@@ -111,6 +111,17 @@ const Call = styled.figure`
       transform: translateY(-16%);
     }
   }
+  /* A short phone screen (320 x 568, an SE held upright): the band stops
+     just under the "Rose is here with me" pill instead of 60px below it,
+     so the whole title is in the first screen (tester, round 3: its h1
+     ended at 624 of 568). Same crop, same fade, less empty screen. */
+  @media (max-width: 860px) and (max-height: 700px) {
+    gap: ${space.xs};
+    .device {
+      height: 205px;
+      mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
+    }
+  }
 `;
 
 /* The hero screen (public/app/talk.webp), drawn like the kit AppShot but
@@ -238,6 +249,16 @@ const Fit = styled.div`
       order: -1;
     }
   }
+  /* A short phone screen: the phone and the sheet a little closer, and the
+     sheet's top margin a little less, so the title ends inside 568px. */
+  @media (max-width: 860px) and (max-height: 700px) {
+    section[data-variant] .opening-grid {
+      row-gap: ${space.lg};
+    }
+    section[data-variant="letter"] .opening-sheet {
+      padding-top: ${space.lg};
+    }
+  }
 `;
 
 /* What you need, then what we can say today: straight after the opening
@@ -309,6 +330,24 @@ const Need = styled(Chapter)`
     color: var(--ink);
     font-weight: 600;
     text-underline-offset: 4px;
+  }
+  /* Two links in one short paragraph can land on consecutive lines. They
+     stay inline, so every line keeps one even leading (the inline-block
+     made the lines that held a link 54px and the rest 28px, the broken
+     leading the supervisor read in the film credit). The first link's
+     44px hit area reaches up over the line above, every later one's down
+     over the line below, and the paragraph's leading opens to 1.7, so two
+     links on consecutive lines sit 8px or more apart (taste rule 20;
+     round 3, B4 fix pass 2). */
+  main[data-premium] & .say .ask {
+    line-height: 1.7;
+  }
+  main[data-premium] & .say .ask a:not([class]) {
+    display: inline;
+    padding-block: 26px 0;
+  }
+  main[data-premium] & .say .ask a:not([class]) ~ a:not([class]) {
+    padding-block: 0 26px;
   }
   /* The folds: on a phone only. From 641 px the summary is hidden and the
      details stay open (closed details with no summary could never open

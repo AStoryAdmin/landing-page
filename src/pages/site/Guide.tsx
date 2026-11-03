@@ -138,6 +138,15 @@ const Head = styled(Chapter)`
       aspect-ratio: 16 / 10;
     }
   }
+  /* A short phone screen (320 x 568): the photograph a wider band, so a
+     five-line title still ends inside the first screen (plan task 4; it
+     ended at 608 of 568 on the care-community guide). Same photograph,
+     centred crop. */
+  @media (max-width: 860px) and (max-height: 700px) {
+    .lead-image img {
+      aspect-ratio: 12 / 5;
+    }
+  }
 `;
 
 /* The article on the ivory page: the contents rail on the left, the text
@@ -155,6 +164,14 @@ const Article = styled(Chapter)`
     align-self: start;
     display: grid;
     gap: 2px;
+  }
+  /* 8px between the contents links and between the related rows, so no
+     two targets touch (taste rule 20; round 3, B4 fix pass 2). */
+  main[data-premium] & nav {
+    gap: 8px;
+  }
+  main[data-premium] & .related a + a {
+    margin-top: 8px;
   }
   nav small {
     margin-bottom: ${space.xs};
