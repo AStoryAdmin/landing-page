@@ -5,6 +5,16 @@ import {
   riseLines,
   useScene,
 } from "../../../lib/scrollMotion";
+import { IN_MAIN } from "./premium";
+
+/*
+ * Premium pass, panel round 2 (CHIEF-LOG B1.1): off home every arrival
+ * takes 300 ms or less, with no cascade, and a headline fades up as one
+ * block instead of rising line by line. The page opening's first screen
+ * has no arrival at all there (kit.tsx PageOpening). Home keeps the
+ * timings below unchanged.
+ */
+const QUICK = 0.3;
 
 /**
  * The shared arrivals for every route (phase 2, 2026-10-23). Mark elements
@@ -31,15 +41,34 @@ import {
  */
 export function useReveals<T extends HTMLElement>() {
   return useScene<T>((root) => {
-    root.querySelectorAll<HTMLElement>("[data-lines]").forEach((el) =>
-      riseLines(el, { delay: Number(el.dataset.lines) || 0 }),
-    );
+    const quick = !!root.closest(IN_MAIN);
+    /* Off home, whatever starts on the first screen (and the page's H1,
+       wherever it sits) is simply there: no arrival to wait for. */
+    const still = (el: HTMLElement) =>
+      quick &&
+      (el.tagName === "H1" ||
+        el.getBoundingClientRect().top + window.scrollY < window.innerHeight);
+    root.querySelectorAll<HTMLElement>("[data-lines]").forEach((el) => {
+      if (still(el)) return;
+      if (!quick) {
+        riseLines(el, { delay: Number(el.dataset.lines) || 0 });
+        return;
+      }
+      gsap.fromTo(el, { y: 12, opacity: 0 }, {
+        y: 0,
+        opacity: 1,
+        duration: QUICK,
+        clearProps: "transform,opacity",
+        scrollTrigger: arrival(el, "top 88%"),
+      });
+    });
     root.querySelectorAll<HTMLElement>("[data-drift]").forEach((el) =>
       drift(el, Number(el.dataset.drift) || 5),
     );
 
     const groups = new Map<Element, HTMLElement[]>();
     root.querySelectorAll<HTMLElement>("[data-rise]").forEach((el) => {
+      if (still(el)) return;
       const parent = el.parentElement ?? root;
       const group = groups.get(parent);
       if (group) group.push(el);
@@ -54,8 +83,8 @@ export function useReveals<T extends HTMLElement>() {
         gsap.fromTo(els, { opacity: 0, scale: 1.03 }, {
           opacity: 1,
           scale: 1,
-          duration: 0.8,
-          stagger: many ? 0.08 : 0,
+          duration: quick ? QUICK : 0.8,
+          stagger: many && !quick ? 0.08 : 0,
           clearProps: "transform,opacity",
           scrollTrigger: trigger,
         });
@@ -67,8 +96,8 @@ export function useReveals<T extends HTMLElement>() {
       gsap.fromTo(els, { y: kind === "row" ? 12 : many ? 18 : 24, opacity: 0 }, {
         y: 0,
         opacity: 1,
-        duration: kind === "row" ? 0.6 : 0.7,
-        stagger: many ? (kind === "row" ? 0.05 : 0.06) : 0,
+        duration: quick ? QUICK : kind === "row" ? 0.6 : 0.7,
+        stagger: many && !quick ? (kind === "row" ? 0.05 : 0.06) : 0,
         /* hand the element back to its own CSS (a tilt, a hover lift) */
         clearProps: "transform,opacity",
         scrollTrigger: trigger,
@@ -80,6 +109,7 @@ export function useReveals<T extends HTMLElement>() {
      * pixels, takes the last of its turn and its shadow comes with it.
      */
     root.querySelectorAll<HTMLElement>("[data-print]").forEach((el) => {
+      if (still(el)) return;
       const turn = Number(gsap.getProperty(el, "rotation")) || 0;
       gsap.fromTo(
         el,
@@ -89,7 +119,7 @@ export function useReveals<T extends HTMLElement>() {
           y: 0,
           rotation: turn,
           scale: 1,
-          duration: 0.85,
+          duration: quick ? QUICK : 0.85,
           clearProps: "transform,opacity",
           scrollTrigger: arrival(el),
         },

@@ -66,7 +66,9 @@
          (/?ref=CODE, /join?ref=CODE, /join/CODE), contribute links (/c/SLUG) and the
          site's old sign-in, sign-up, account and start pages go to app.astoryapp.com;
          www goes to the bare domain. The reservation's own sign-in (?next=/reserve)
-         stays here. deploy/cloudfront-viewer-request.js does the same at the edge;
+         stays here. /join with no valid six-letter code also stays here: it is the
+         site's own page for the invited relative and the storyteller (2026-11-03).
+         deploy/cloudfront-viewer-request.js does the same at the edge;
          src/pages/site/AppDoor.tsx is the fallback. Skipped while prerendering. -->
     <script>
       (function () {

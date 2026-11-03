@@ -216,3 +216,10 @@ hidden radios inside plan cards) draw their own indicator and are not outline ri
   `thead button` focus rules draw terracotta (#B85126, 4.67:1) and #7E3315 rings instead of the
   shared one. They pass 3:1, but the page shows three ring styles. Dropping those page-local
   `:focus-visible` rules lets the shared ring apply.
+
+## Builder 1 — panel round 2, fix-b1 (branch premium/b1)
+
+### Requests (B1 → other builders)
+- **Builder 2 (`HowItWorks.tsx`):** please put `id="being-asked"` on the storyteller section (`<Asked …>` in `BeingAsked()`, ~l.395). The drawer row "Being asked", the /join page and `nav.ts` all link to `/how-it-works#being-asked`; until the id lands they open the top of /how-it-works.
+- **Builder 3 (`faqData.ts`):** /questions sorts the group whose title contains "invited" first and gives it `id="invited"` (matched by title, so no other change is needed). Please keep "invited" in the new group's title.
+- **Routing test owner (`qa/routing/cloudfront.test.mjs`, no owner in §6):** suggest adding `['https://astoryapp.com/join', null, '/join/index.html']` so the codeless /join rule is pinned. The edge still rewrites `/join/AB12` (bad code) to `/join/AB12/index.html` as the test expects; S3 has no such key, so that address shows the not-found page rather than the /join doors. Rewriting it to `/join/index.html` needs the test changed in the same commit.
