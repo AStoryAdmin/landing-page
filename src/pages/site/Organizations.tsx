@@ -29,8 +29,11 @@
  *     times in the page: the opening, after "From a demo to an archive", and
  *     the form. The care column sends people to /care-communities instead of
  *     repeating that page.
- *   - A short privacy block links to the policy's own sections. No HIPAA,
- *     BAA, SOC 2 or residency claim either way (flagged for Daniel).
+ *   - A short privacy block quotes three labels from the policy's short
+ *     version and links to /privacy. No HIPAA, BAA, SOC 2 or residency
+ *     claim either way (flagged for Daniel); those questions go to the demo.
+ *   - 2026-11-03 (panel round 2): the opening's lead names the AI-guided
+ *     interviewer and the iPhone app, so both are read before the scroll.
  *   - Visual system (spec §3): the today note under the opening's actions,
  *     sentence-case column labels, no arrow on text links, the six kinds in
  *     the shared Scroller (sideways on a phone, a grid from 641 px), gold
@@ -50,6 +53,7 @@ import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import Scroller from "./kit/Scroller";
 import { TODAY_NOTE } from "../../lib/today";
+import { QUESTION_COUNT } from "../../lib/product";
 import { PhonePairs } from "./rooms/phonePairs";
 import {
   Actions,
@@ -162,12 +166,24 @@ const DECIDE = [
   ],
 ] as const;
 
-/* The privacy policy's own section titles (components/privacy.tsx). */
+/* The opening's lead names what does the asking and where the calls ring,
+   so both are read before the first scroll (CHIEF-LOG panel round 2, B4.1).
+   "An AI-guided interviewer" and the question count are the FAQ's own
+   answer (faqData.ts, "Who asks the questions?"); the count is the
+   constant, never typed. The iPhone is the app the calls ring in (NEED
+   below, lib/today.ts); "private beta" stays in the note under the actions
+   (spec §3.7: no hero lead contains "beta"). */
+const LEAD = `An AI-guided interviewer calls the people your institution was built by, in the A Story iPhone app, and asks from ${QUESTION_COUNT} questions with follow-ups that listen. You keep their words, and a book when you want one.`;
+
+/* Privacy, in short: three labels quoted word for word from the short
+   version of the policy (components/privacy.tsx, PlainSummary), a link to
+   the policy, and one line that sends the rest to the demo. It claims
+   nothing about HIPAA, a BAA, SOC 2 or residency either way (spec §4C,
+   flagged for Daniel). */
 const PRIVACY = [
-  ["Consent of the person being recorded", "/privacy#s6"],
-  ["Your stories, your control", "/privacy#s4"],
-  ["How we use artificial intelligence", "/privacy#s5"],
-  ["Where your information is stored", "/privacy#s13"],
+  "We never sell data.",
+  "We never train AI on your stories.",
+  "You can delete it all.",
 ] as const;
 
 /* The opening's object: one sample book, square like the real one, set
@@ -490,7 +506,16 @@ const Program = styled(Chapter)`
     border: 0;
     font: 400 ${type.read} / 1.5 ${font.text};
   }
-  .privacy li a {
+  .privacy li {
+    color: var(--ink);
+  }
+  .privacy p {
+    margin-top: ${space.xs};
+    max-width: 46ch;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--muted);
+  }
+  .privacy p a {
     display: inline-block;
     padding: ${space.xxs} 0;
     color: var(--ink);
@@ -529,9 +554,6 @@ const Rhythm = styled.div`
       padding: ${space.sm} 0;
     }
     #how .privacy ul {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: ${space.lg};
       margin-top: ${space.xxs};
     }
     #how .privacy li {
@@ -556,6 +578,9 @@ const Rhythm = styled.div`
     }
     #how li {
       padding: ${space.sm} 0;
+    }
+    #how .privacy li {
+      padding: ${space.xxs} 0;
     }
     #how .grid {
       gap: ${space.xl};
@@ -582,8 +607,9 @@ export default function Organizations() {
   const [params] = useSearchParams();
   const [kind, setKind] = useState(() => kindFromParams(params));
   const reveal = useReveals<HTMLDivElement>();
-  /* On a phone the decisions and the privacy links fold under one line
-     (spec §4C: at most 8 screens at 390). The prerendered page ships them
+  /* On a phone the decisions fold under one line (spec §4C: at most 8
+     screens at 390); "Privacy, in short" stays open below them (CHIEF-LOG
+     panel round 2, B4.2). The prerendered page ships them
      open, so they read without script and on every wider screen. */
   const decide = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
@@ -638,7 +664,7 @@ export default function Organizations() {
                 The people who made the <em>place.</em>
               </>
             }
-            lead="A Story calls the people your institution was built by, and asks about their lives with follow-up questions that listen. You keep their words, and a book when you want one."
+            lead={LEAD}
             note={TODAY_NOTE}
             actions={
               <>
@@ -786,7 +812,7 @@ export default function Organizations() {
                 called.
               </p>
               <details className="decide" ref={decide} open>
-                <summary>What you decide, and privacy</summary>
+                <summary>What you decide</summary>
                 <ul>
                   {DECIDE.map(([t, d]) => (
                     <li key={t}>
@@ -795,17 +821,19 @@ export default function Organizations() {
                     </li>
                   ))}
                 </ul>
-                <div className="privacy">
-                  <h3 id="privacy-title">Privacy, in the policy itself</h3>
-                  <ul aria-labelledby="privacy-title">
-                    {PRIVACY.map(([t, to]) => (
-                      <li key={to}>
-                        <a href={to}>{t}</a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
               </details>
+              <div className="privacy">
+                <h3 id="privacy-title">Privacy, in short</h3>
+                <ul aria-labelledby="privacy-title">
+                  {PRIVACY.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+                <p>
+                  <Link to="/privacy">Read the privacy policy</Link>. Questions
+                  about consent, staff access or HIPAA? Bring them to the demo.
+                </p>
+              </div>
             </div>
           </Frame>
         </Program>

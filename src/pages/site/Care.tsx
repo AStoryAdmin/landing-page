@@ -30,6 +30,11 @@
  * typeset columns on a wide screen. A text link in the residents' room
  * opens the film on /how-it-works. The today note (lib/today.ts) sits under
  * the opening's actions, and only the opening's title rises line by line.
+ *
+ * 2026-11-03 (panel round 2): the opening's lead names the AI-guided
+ * interviewer, the iPhone app and the staff-member option, and "Privacy, in
+ * short" follows "What you need" (three labels from the policy's short
+ * version, a link to /privacy, HIPAA questions sent to the demo).
  */
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
@@ -47,6 +52,7 @@ import {
 import { QuoteBand, RuledSteps } from "./rooms/Rooms";
 import DemoSection from "./kit/DemoSection";
 import { TODAY_NOTE } from "../../lib/today";
+import { QUESTION_COUNT } from "../../lib/product";
 import { color, display, font, media, space, type } from "../../styles/theme";
 
 const Know = styled(Chapter)`
@@ -171,7 +177,7 @@ const Need = styled(Chapter)`
     font: 400 ${display.sm} / 1.2 ${font.display};
     color: var(--ink);
   }
-  p {
+  .row > p {
     max-width: 56ch;
     padding: ${space.md} 0;
     border-top: 1px solid var(--line);
@@ -179,14 +185,47 @@ const Need = styled(Chapter)`
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--text, var(--ink));
   }
+  /* Privacy, in short: the same two columns, the three labels as one
+     ruled list, then the line that sends the rest to the demo. */
+  .privacy {
+    margin-top: clamp(${space.lg}, 3vw, ${space.xl});
+  }
+  .privacy ul {
+    margin: 0;
+    padding: ${space.sm} 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .privacy li {
+    padding: ${space.xxs} 0;
+    font: 400 ${type.read} / 1.5 ${font.text};
+    color: var(--ink);
+  }
+  .privacy .ask {
+    margin-top: ${space.xs};
+    max-width: 56ch;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--muted);
+  }
+  .privacy .ask a {
+    display: inline-block;
+    padding: ${space.xxs} 0;
+    color: var(--ink);
+    font-weight: 600;
+    text-underline-offset: 4px;
+  }
   ${media.md} {
     padding: ${space.lg} 0;
     .row {
       grid-template-columns: minmax(0, 1fr);
       gap: ${space.sm};
     }
-    p {
+    .row > p {
       padding: ${space.sm} 0;
+    }
+    .privacy ul {
+      padding: ${space.xs} 0;
     }
   }
 `;
@@ -243,6 +282,26 @@ const Circle = styled.div`
   }
 `;
 
+/* The opening's lead names what does the asking and how the calls happen,
+   so both are read before the first scroll (CHIEF-LOG panel round 2, B4.1).
+   "An AI-guided interviewer" and the question count are the FAQ's own
+   answer (faqData.ts, "Who asks the questions?"); the count is the
+   constant, never typed. The iPhone and the staff member come from "What
+   you need" below; "private beta" stays in the note under the actions and
+   in that block (spec §3.7: no hero lead contains "beta"). */
+const LEAD = `An AI-guided interviewer asks each resident about their life, from ${QUESTION_COUNT} questions, in the A Story iPhone app or together with a staff member. The people caring for them get a way to learn those stories.`;
+
+/* Privacy, in short: three labels quoted word for word from the short
+   version of the policy (components/privacy.tsx, PlainSummary), a link to
+   the policy, and one line that sends the rest to the demo. It claims
+   nothing about HIPAA, a BAA, SOC 2 or residency either way (spec §4C,
+   flagged for Daniel). */
+const PRIVACY = [
+  "We never sell data.",
+  "We never train AI on your stories.",
+  "You can delete it all.",
+] as const;
+
 /* What a care community and A Story settle on the demo, before anyone is
    called (the checklist that used to be the BeginCard). */
 const AGREE: [string, string][] = [
@@ -273,7 +332,7 @@ export default function Care() {
               </span>
             </>
           }
-          lead="The work they did. The music in the house. The way they made Sunday lunch. Give those stories somewhere to stay, and give the people caring for them a way to learn them."
+          lead={LEAD}
           note={TODAY_NOTE}
           actions={
             <>
@@ -303,6 +362,20 @@ export default function Care() {
             A Story calls in its iPhone app at an agreed hour (in a private
             beta), or a staff member starts a conversation together with them.
           </p>
+        </Frame>
+        <Frame className="row privacy">
+          <h2 id="privacy-title">Privacy, in short</h2>
+          <div>
+            <ul aria-labelledby="privacy-title">
+              {PRIVACY.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+            <p className="ask">
+              <Link to="/privacy">Read the privacy policy</Link>. Questions
+              about consent, staff access or HIPAA? Bring them to the demo.
+            </p>
+          </div>
         </Frame>
       </Need>
 
