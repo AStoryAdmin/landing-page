@@ -21,12 +21,21 @@
  * used nowhere else) in place of the text plate, so every reason is a print.
  *
  * `#your-own-story` is linked from the header and a legacy redirect.
+ *
+ * Premium pass (2026-11-02, design spec §4A, D10): the opening is on ivory
+ * with "Watch the film · 49 s" beside Start free; the reason card about
+ * someone who has died is gone (with its photograph and its guides link),
+ * so three reasons sit in one row; the occasions are a Scroller; the FAQ's
+ * own answer on giving sits under them beside Express; invited family get
+ * a short way in to /join.
  */
 import type { ReactNode } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { PLANS } from "../../lib/pricing";
+import { groups as faqGroups } from "./faqData";
 import { ArrowIcon, Invitation, PageOpening, Print } from "./kit/kit";
+import Scroller from "./kit/Scroller";
 import { useReveals } from "./kit/reveals";
 import {
   Chapter,
@@ -35,7 +44,15 @@ import {
   Statement,
   TextLink,
 } from "./kit/kit.styles";
-import { color, curve, display, font, media, type } from "../../styles/theme";
+import {
+  color,
+  curve,
+  display,
+  font,
+  media,
+  space,
+  type,
+} from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
 
 /* ── The reasons ───────────────────────────────────────────────────────── */
@@ -53,7 +70,7 @@ const Reasons = styled(Chapter)`
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(28px, 2.6vw, 56px);
     margin-top: clamp(36px, 4vw, 64px);
     /* Rows stretch, so every "where next" link sits on one line. */
@@ -71,8 +88,7 @@ const Reasons = styled(Chapter)`
   .kicker {
     margin-top: 22px;
     font: 600 ${type.label} / 1.3 ${font.body};
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: var(--label);
   }
   h3 {
@@ -94,17 +110,32 @@ const Reasons = styled(Chapter)`
   article > div:last-child {
     margin-top: auto;
   }
-  ${media.xl} {
-    .grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  /* For family who were invited (Tuan): the door to /join. */
+  .invited {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: ${space.md} ${space.xxl};
+    align-items: baseline;
+    margin-top: calc(${space.xxxl} * var(--sy));
+    padding-top: ${space.lg};
+    border-top: 1px solid var(--line);
   }
-  ${media.sm} {
+  .invited h3 {
+    margin-top: 0;
+  }
+  .invited p {
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--ink);
+  }
+  ${media.md} {
     .grid {
       grid-template-columns: minmax(0, 1fr);
     }
     .art {
       max-width: 420px;
+    }
+    .invited {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 `;
@@ -128,9 +159,7 @@ const REASONS: ReasonCard[] = [
     ),
     text: "You may know where they grew up without knowing what it felt like. They install A Story on their iPhone once, you choose a comfortable hour, and the call rings in the app.",
     action: (
-      <TextLink to="/how-it-works#calls">
-        See a sample call <ArrowIcon />
-      </TextLink>
+      <TextLink to="/how-it-works#calls">See a sample call</TextLink>
     ),
     photo: {
       id: "09",
@@ -147,9 +176,7 @@ const REASONS: ReasonCard[] = [
     ),
     text: "You don’t have to wait until your life feels finished. Talk about a decision, a friendship, an ordinary week - or write, when you’d rather write.",
     action: (
-      <TextLink to="/your-story">
-        Begin with your own story <ArrowIcon />
-      </TextLink>
+      <TextLink to="/your-story">Begin with your own story</TextLink>
     ),
     photo: {
       id: "25",
@@ -165,32 +192,11 @@ const REASONS: ReasonCard[] = [
     ),
     text: "Invite the family at no extra cost. Anyone joins the family tree with a six-letter code, and up to four iPhones can share one call in the app. Each version is kept in the teller’s name, and nobody’s replaces anybody else’s.",
     action: (
-      <TextLink to="/how-it-works">
-        See what the family adds <ArrowIcon />
-      </TextLink>
+      <TextLink to="/how-it-works">See what the family adds</TextLink>
     ),
     photo: {
       id: "28",
       alt: "A family laughing together in a living room, 1986",
-    },
-  },
-  {
-    kicker: "Someone who has already gone",
-    title: (
-      <>
-        A memory you can still <em>add to.</em>
-      </>
-    ),
-    text: "Write what you remember: what their kitchen smelled like, the thing they always said. A shared archive can hold their memory without speaking for them.",
-    action: (
-      <TextLink to="/guides">
-        Guides for remembering someone <ArrowIcon />
-      </TextLink>
-    ),
-    photo: {
-      id: "15",
-      alt: "Someone in their armchair by the lamp, an evening at home in 1986",
-      focus: "36% 50%",
     },
   },
 ];
@@ -201,11 +207,11 @@ function ReasonsRoom() {
     <Reasons ref={ref} $ground="ivory" aria-labelledby="reasons-title">
       <Frame>
         <Statement id="reasons-title" $size="lg" data-lines>
-          Why a family <em>begins.</em>
+          Why a family begins.
         </Statement>
-        <div className="grid">
+        <div className="grid" data-rise>
           {REASONS.map((r) => (
-            <article key={r.kicker} id={r.id} data-rise>
+            <article key={r.kicker} id={r.id}>
               <div className="art">
                 <Print
                   id={r.photo.id}
@@ -221,6 +227,17 @@ function ReasonsRoom() {
               <div>{r.action}</div>
             </article>
           ))}
+        </div>
+        {/* Source: home/FamilyLoop.tsx:47, turned to "you". */}
+        <div className="invited">
+          <h3>Invited to add to someone’s book?</h3>
+          <div>
+            <p>
+              Read what’s shared and add what you remember, under your own
+              name. Nothing appears until the storyteller says yes.
+            </p>
+            <TextLink to="/join">Open your invitation</TextLink>
+          </div>
         </div>
       </Frame>
     </Reasons>
@@ -271,19 +288,42 @@ const OCCASIONS = [
   },
 ];
 
-/** The frieze's prints are laid down by hand: each a little turned. */
-const TILTS = [-1.2, 0.8, -0.6, 1.1, -0.9];
+/** The frieze's prints are laid down by hand: every other one a little
+    turned (spec §3.5: at most every other print tilted, never past 2°). */
+const TILTS = [-1.2, 0, 0.8, 0, -0.9];
+
+/** The FAQ's own answer, word for word (faqData.ts, "How does giving A Story
+    work?"), so the two never drift apart. */
+const GIVING = faqGroups
+  .flatMap((g) => g.items)
+  .find((i) => i.q === "How does giving A Story work?");
+
+/** Verbatim from docs/mission.md, "Phrases worth keeping" (spec S27). */
+const NOT_FINISHED =
+  "It never assumes the story is finished, because it isn’t. Today is part of it too.";
 
 const Occasions = styled(Chapter)`
   .row {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: clamp(14px, 1.6vw, 24px);
-    margin-top: clamp(36px, 4vw, 64px);
+    margin-top: calc(${space.xxl} * var(--sy));
   }
-  .row:focus-visible {
-    outline: 3px solid ${color.accent};
-    outline-offset: 4px;
+  /* A Scroller below 1025px (spec §3.9); from there the five prints are one
+     row that needs no scrolling. */
+  @media (min-width: 1025px) {
+    .scroller {
+      margin-inline: 0;
+      overflow: visible;
+      mask-image: none;
+    }
+    .scroller .scroller-track {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: ${space.lg};
+      width: auto;
+      padding-inline: 0;
+    }
+  }
+  .scroller .scroller-track {
+    padding-block: ${space.xs} ${space.md};
   }
   /*
    * A frieze of prints, not five tiles. Five identical rounded cards in a row
@@ -311,48 +351,48 @@ const Occasions = styled(Chapter)`
     padding: 16px 0 0;
   }
   .occ small {
-    font: italic 400 20px / 1.3 ${font.display};
+    font: italic 400 ${type.read} / 1.3 ${font.display};
     letter-spacing: 0;
     text-transform: none;
     color: ${color.bodyMuted};
   }
   .occ p {
     margin-top: 6px;
-    font: 400 20px/1.28 ${font.display};
+    font: 400 ${type.read} / 1.28 ${font.display};
     color: ${color.primary};
   }
+  /* Giving it (Maya): the FAQ's answer and the mission line, beside the
+     one plan that never renews. */
   .gift {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px 40px;
-    margin-top: clamp(32px, 4vw, 56px);
-    padding-top: 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: ${space.lg} ${space.xxl};
+    margin-top: calc(${space.xxl} * var(--sy));
+    padding-top: ${space.lg};
     border-top: 1px solid var(--line);
+  }
+  .gift h3 {
+    font: 600 ${display.sm} / 1.18 ${font.display};
+    color: ${color.primary};
   }
   /* Running text, not a statement: four lines of display serif read as a
      headline (taste-skill statement rule). */
   .gift p {
-    font: 400 clamp(1.15rem, 1.05rem + 0.35vw, 1.4rem) / 1.55 ${font.text};
+    margin-top: ${space.sm};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.primary};
     max-width: 52ch;
+  }
+  .gift p.mission {
+    font: italic 400 ${type.lead} / 1.4 ${font.display};
   }
   .gift b {
     font-weight: 500;
     color: ${color.accentText};
   }
-  ${media.lg} {
-    .row {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      margin-inline: calc(var(--page-gutter) * -1);
-      padding: 0 var(--page-gutter) 16px;
-    }
-    .occ {
-      flex: 0 0 min(260px, 70vw);
-      scroll-snap-align: start;
+  ${media.md} {
+    .gift {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 `;
@@ -363,39 +403,43 @@ function OccasionsRoom() {
     <Occasions ref={ref} $ground="sand" aria-labelledby="occasions-title">
       <Frame>
         <Statement id="occasions-title" $size="lg" data-lines>
-          The gift of a good <em>question.</em>
+          The gift of a good question.
         </Statement>
-        <div
-          className="row"
-          tabIndex={0}
-          role="region"
-          aria-label="Occasions, scrollable"
-        >
-          {OCCASIONS.map((o) => (
-            <article key={o.slot} className="occ" data-rise>
-              <Print
-                id={o.photo}
-                alt={o.alt}
-                ratio="4 / 5"
-                tilt={TILTS[OCCASIONS.indexOf(o)]}
-                sizes="(max-width: 1024px) 70vw, 18vw"
-              />
-              <div>
-                <small>{o.name}</small>
-                <p>{o.line}</p>
-              </div>
-            </article>
-          ))}
+        <div className="row" data-rise>
+          <Scroller label="Occasions">
+            {OCCASIONS.map((o, i) => (
+              <li key={o.slot} className="occ">
+                <Print
+                  id={o.photo}
+                  alt={o.alt}
+                  ratio="4 / 5"
+                  tilt={TILTS[i] || undefined}
+                  sizes="(max-width: 1024px) 80vw, 18vw"
+                />
+                <div>
+                  <small>{o.name}</small>
+                  <p>{o.line}</p>
+                </div>
+              </li>
+            ))}
+          </Scroller>
         </div>
         <div className="gift" data-rise>
-          <p>
-            The easiest to give: {express.name}, <b>{express.price}</b> one
-            time. About a month of calls in the A Story app, and a Classic
-            Hardcover once printed ordering opens. Nothing renews.
-          </p>
-          <TextLink to="/pricing">
-            Compare plans <ArrowIcon />
-          </TextLink>
+          {GIVING && (
+            <div>
+              <h3>{GIVING.q}</h3>
+              <p>{GIVING.a}</p>
+              <p className="mission">{NOT_FINISHED}</p>
+            </div>
+          )}
+          <div>
+            <p>
+              The easiest to give: {express.name}, <b>{express.price}</b> one
+              time. About a month of calls in the A Story app, and a Classic
+              Hardcover once printed ordering opens. Nothing renews.
+            </p>
+            <TextLink to="/pricing">Compare plans</TextLink>
+          </div>
         </div>
       </Frame>
     </Occasions>
@@ -440,6 +484,7 @@ export default function Families() {
         <PageOpening
           variant="object"
           flip
+          ground="ivory"
           title={
             <>
               The stories <em>between you.</em>
@@ -447,9 +492,13 @@ export default function Families() {
           }
           lead="Nobody loses the wedding photos. They lose everything around them - the story he tells every Thanksgiving, and why everyone in that photograph is laughing."
           actions={
-            <PrimaryLink to={START_HREF}>
-              {START_LABEL} <ArrowIcon />
-            </PrimaryLink>
+            <>
+              <PrimaryLink to={START_HREF}>
+                {START_LABEL} <ArrowIcon />
+              </PrimaryLink>
+              {/* The one film lives on /how-it-works (spec §2.1). */}
+              <TextLink to="/how-it-works#film">Watch the film · 49 s</TextLink>
+            </>
           }
           object={
             <Print
@@ -467,7 +516,7 @@ export default function Families() {
       <OccasionsRoom />
       <ReasonsRoom />
 
-      <Invitation />
+      <Invitation next={["/how-it-works", "/samples", "/pricing"]} />
     </>
   );
 }

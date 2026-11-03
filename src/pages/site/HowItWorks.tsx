@@ -18,6 +18,12 @@
  * 4. Everyone has a way in: four ways, in words, on one row.
  * 5. The book.
  *
+ * Premium pass (2026-11-02, design spec §4A): the film (kit/Film.tsx) after
+ * the opening; the lead cut to two sentences with the "today" note under the
+ * actions; "If you're the one being asked" for the storyteller after the
+ * four moments; the ways in as a Scroller on a phone; the closing offers
+ * /samples, /pricing and /for-families.
+ *
  * Product truth (Bao's rulings, 2026-10-23): the calls ring in the A Story
  * iPhone app, in a private beta, and the parent installs it. Never a regular
  * phone call, never "no app". Voice clips are in development: the page says
@@ -31,6 +37,7 @@ import CallStills from "./home/Listen";
 import MemoryCard from "./app/MemoryCard";
 import { ArrowIcon, Invitation, PageOpening, Picture } from "./kit/kit";
 import Film from "./kit/Film";
+import Scroller from "./kit/Scroller";
 import { useReveals } from "./kit/reveals";
 import { PhonePairs } from "./rooms/phonePairs";
 import {
@@ -45,8 +52,9 @@ import {
   TextAnchor,
   TextLink,
 } from "./kit/kit.styles";
-import { color, display, font, media, shadow, type } from "../../styles/theme";
+import { color, display, font, media, shadow, space, type } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
+import { TODAY_NOTE } from "../../lib/today";
 
 const love = SCENARIOS.find((s) => s.id === "love")!;
 const QUESTION = "What did the garage smell like when you were fixing things?";
@@ -102,8 +110,7 @@ const Slip = styled.figure`
   }
   blockquote {
     margin: clamp(18px, 2vw, 28px) 0 0;
-    font: italic 400 clamp(1.7rem, 1.1rem + 1.9vw, 3.4rem) / 1.16
-      ${font.display};
+    font: italic 400 ${display.md} / 1.16 ${font.display};
     letter-spacing: -0.01em;
     text-wrap: balance;
   }
@@ -202,8 +209,7 @@ const Moments = styled(Chapter)`
   .who {
     padding-top: 0.55em;
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   h3 {
@@ -226,8 +232,7 @@ const Moments = styled(Chapter)`
   }
   .leaves > p.label {
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
     margin-bottom: 14px;
   }
@@ -249,8 +254,7 @@ const Moments = styled(Chapter)`
   .sheet-head {
     margin-bottom: 10px;
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   .sheet p:not(.sheet-head) {
@@ -294,7 +298,7 @@ const Moments = styled(Chapter)`
 function FourMoments() {
   const ref = useReveals<HTMLElement>();
   return (
-    <Moments ref={ref} $ground="ivory" aria-labelledby="moments-title">
+    <Moments ref={ref} $ground="ivory" $tight aria-labelledby="moments-title">
       <Frame>
         <SplitHead>
           <Statement id="moments-title" $size="lg" data-lines>
@@ -306,9 +310,9 @@ function FourMoments() {
           </Lead>
         </SplitHead>
         <div className="row">
-          <ol>
+          <ol data-rise>
             {STEPS.map((s) => (
-              <li key={s.title} data-rise>
+              <li key={s.title}>
                 <p className="who">{s.who}</p>
                 <div>
                   <h3>{s.title}</h3>
@@ -353,6 +357,67 @@ function FourMoments() {
   );
 }
 
+/* ── For the storyteller ────────────────────────────────────────────────── */
+
+/*
+ * Harold's section (spec §4A): four lines for the person being asked, made
+ * only of sentences already on the site, turned to "you":
+ *   home/ThreeSteps.tsx:47  "It rings in the app at the hour you picked.
+ *                            Nothing to type or save. They just talk."
+ *   home/FamilyLoop.tsx:47  "Nothing appears until the storyteller says yes."
+ *   the old nav hint        "Their story belongs to them."
+ * No new facts (no call length, no device claim).
+ */
+const Asked = styled(Chapter)`
+  padding-top: 0;
+  .asked {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: ${space.lg} ${space.xxl};
+    padding-top: calc(${space.xxl} * var(--sy));
+    border-top: 1px solid ${color.primaryLine};
+  }
+  ul {
+    display: grid;
+    gap: ${space.sm};
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: ${color.body};
+  }
+  ${media.md} {
+    .asked {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+`;
+
+function BeingAsked() {
+  return (
+    <Asked $ground="ivory" aria-labelledby="asked-title">
+      <Frame className="asked">
+        <Statement id="asked-title" $size="md">
+          If you’re the one being asked.
+        </Statement>
+        <ul>
+          <li>
+            It rings in the app at the hour you picked. Nothing to type or
+            save. You just talk.
+          </li>
+          <li>Nothing appears until you say yes.</li>
+          <li>
+            Your story belongs to you.{" "}
+            <TextLink to="/privacy/">Read our privacy policy</TextLink>
+          </li>
+        </ul>
+      </Frame>
+    </Asked>
+  );
+}
+
 /* ── Everyone has a way in ─────────────────────────────────────────────── */
 
 const WAYS = [
@@ -378,14 +443,39 @@ const WAYS = [
   },
 ];
 
+/* Under the heading, one line from docs/mission.md "Phrases worth keeping",
+   verbatim (spec S27): many voices on one moment. */
+const NARRATORS = "Not one narrator, but everyone who was in the room.";
+
 const Ways = styled(Chapter)`
-  ul {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(24px, 3vw, 56px);
-    margin: calc(clamp(28px, 3.4vw, 56px) * var(--sy)) 0 0;
-    padding: 0;
-    list-style: none;
+  .narrators {
+    margin-top: ${space.lg};
+    font: italic 400 ${type.lead} / 1.4 ${font.display};
+    color: ${color.primary};
+  }
+  .list {
+    margin-top: calc(${space.xxl} * var(--sy));
+  }
+  /* A Scroller on a phone (spec §3.9: one row, the next way peeking). From
+     641px the same list is a grid of four, then of two. */
+  @media (min-width: 641px) {
+    .scroller {
+      margin-inline: 0;
+      overflow: visible;
+      mask-image: none;
+    }
+    .scroller .scroller-track {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: ${space.xxl};
+      width: auto;
+      padding-inline: 0;
+    }
+  }
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .scroller .scroller-track {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
   li {
     padding-top: 18px;
@@ -394,8 +484,7 @@ const Ways = styled(Chapter)`
   small {
     display: block;
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   h3 {
@@ -407,16 +496,6 @@ const Ways = styled(Chapter)`
     margin-top: 10px;
     font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
-  }
-  ${media.lg} {
-    ul {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  ${media.sm} {
-    ul {
-      grid-template-columns: minmax(0, 1fr);
-    }
   }
 `;
 
@@ -439,7 +518,7 @@ const Volume = styled(Chapter)`
      headline (taste-skill statement rule). */
   .price {
     margin: 22px 0 28px;
-    font: 400 clamp(1.15rem, 1.05rem + 0.35vw, 1.4rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
     max-width: 44ch;
   }
@@ -475,7 +554,8 @@ export default function HowItWorks() {
               A Story does the <em>asking.</em>
             </>
           }
-          lead="You set it up once and choose the hour. A Story calls, asks about their life and follows whatever they say. For now the calls ring through the A Story app on iPhone, in a private beta. Writing, the family archive and the book work in any browser today."
+          lead="You set it up once and choose the hour. A Story calls, asks about their life and follows whatever they say."
+          note={TODAY_NOTE}
           actions={
             <>
               <PrimaryLink to={START_HREF}>
@@ -502,40 +582,45 @@ export default function HowItWorks() {
 
       <FourMoments />
 
+      <BeingAsked />
+
+      {/* One gold word for every other h2 at most (spec §3.1): this title
+          and "a way in" stay plain. */}
       <CallStills
         id="calls"
         more={false}
-        title={
-          <>
-            Good listening changes the next <em>question.</em>
-          </>
-        }
+        title={<>Good listening changes the next question.</>}
       />
 
-      <Ways ref={ways} $ground="paper" aria-labelledby="ways-title">
+      <Ways ref={ways} $ground="paper" $tight aria-labelledby="ways-title">
         <Frame>
           <SplitHead>
-            <Statement id="ways-title" $size="lg" data-lines>
-              Everyone in the family has a way <em>in.</em>
-            </Statement>
+            <div>
+              <Statement id="ways-title" $size="lg" data-lines>
+                Everyone in the family has a way in.
+              </Statement>
+              <p className="narrators">{NARRATORS}</p>
+            </div>
             <Lead data-rise>
               Everyone who knows her stories can add their part, and a memoir
               someone typed years ago comes in as it is.
             </Lead>
           </SplitHead>
-          <ul>
-            {WAYS.map((w) => (
-              <li key={w.k} data-rise>
-                <small>{w.k}</small>
-                <h3>{w.t}</h3>
-                <p>{w.d}</p>
-              </li>
-            ))}
-          </ul>
+          <div className="list" data-rise>
+            <Scroller label="Ways in">
+              {WAYS.map((w) => (
+                <li key={w.k}>
+                  <small>{w.k}</small>
+                  <h3>{w.t}</h3>
+                  <p>{w.d}</p>
+                </li>
+              ))}
+            </Scroller>
+          </div>
         </Frame>
       </Ways>
 
-      <Volume ref={volume} $ground="sand" aria-labelledby="volume-title">
+      <Volume ref={volume} $ground="sand" $tight aria-labelledby="volume-title">
         <Frame className="vol">
           <div data-print data-drift="4">
             <Picture
@@ -548,25 +633,27 @@ export default function HowItWorks() {
             <Statement id="volume-title" $size="lg" data-lines>
               When a chapter is ready, make it a <em>volume.</em>
             </Statement>
-            <p className="price" data-rise>
-              The stories and photographs, bound as a book. Print it at home
-              free, or order a printed edition from {BOOK.from} once ordering
-              opens. Individual, Family and Express include a Classic Hardcover.
-            </p>
-            <div className="links" data-rise>
-              {/* /samples is a page in public/, outside the router: a plain anchor. */}
-              <TextAnchor href="/samples">
-                Flip through three sample books <ArrowIcon />
-              </TextAnchor>
-              <TextLink to="/pricing#book">
-                See book options <ArrowIcon />
-              </TextLink>
+            <div data-rise>
+              {/* Two sentences (spec §4A). The plans that include a
+                  hardcover are on /pricing. */}
+              <p className="price">
+                The stories and photographs, bound as a book. Print it at home
+                free, or order a printed edition from {BOOK.from} once ordering
+                opens.
+              </p>
+              <div className="links">
+                {/* /samples is a page in public/, outside the router: a plain anchor. */}
+                <TextAnchor href="/samples">
+                  Flip through three sample books
+                </TextAnchor>
+                <TextLink to="/pricing#book">See book options</TextLink>
+              </div>
             </div>
           </div>
         </Frame>
       </Volume>
 
-      <Invitation />
+      <Invitation next={["/samples", "/pricing", "/for-families"]} />
     </>
   );
 }
