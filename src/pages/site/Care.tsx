@@ -35,7 +35,14 @@
  * interviewer, the iPhone app and the staff-member option, and "Privacy, in
  * short" follows "What you need" (three labels from the policy's short
  * version, a link to /privacy, HIPAA questions sent to the demo).
+ *
+ * Fix round 3: the lead is one sentence (spec §3.1 line limits), and on a
+ * phone "Privacy, in short" folds under one line, closed after hydration
+ * below 641 px, open in the prerender and on wider screens (spec §4C: at
+ * most 7.9 screens at 390), the same pattern as "You decide" on
+ * /organizations.
  */
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { Link } from "react-router-dom";
@@ -215,6 +222,18 @@ const Need = styled(Chapter)`
     font-weight: 600;
     text-underline-offset: 4px;
   }
+  /* The fold: on a phone only. From 641 px the summary is hidden and the
+     details stay open (closed details with no summary could never open
+     again, so the content shows either way). */
+  .fold > summary {
+    display: none;
+  }
+  @media (min-width: 641px) {
+    .fold::details-content {
+      content-visibility: visible;
+      display: contents;
+    }
+  }
   ${media.md} {
     padding: ${space.lg} 0;
     .row {
@@ -226,6 +245,50 @@ const Need = styled(Chapter)`
     }
     .privacy ul {
       padding: ${space.xs} 0;
+    }
+  }
+  /* On a phone the fold sits flush under "What you need" (its rule is the
+     fold's top rule) and its summary names the block, so the h2 steps out
+     of the layout; it still names the list (aria-labelledby). */
+  ${media.sm} {
+    .privacy {
+      margin-top: 0;
+    }
+    .privacy > h2 {
+      display: none;
+    }
+    .fold {
+      border-bottom: 1px solid var(--line);
+    }
+    .fold > summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: ${space.md};
+      min-height: 44px;
+      padding: ${space.xs} 0;
+      cursor: pointer;
+      list-style: none;
+      color: var(--ink);
+      font: 600 ${type.ui} / 1.3 ${font.ui};
+    }
+    .fold > summary::-webkit-details-marker {
+      display: none;
+    }
+    .fold > summary::after {
+      content: "+";
+      font: 400 ${display.sm} / 1 ${font.display};
+      color: var(--muted);
+    }
+    .fold[open] > summary::after {
+      content: "−";
+    }
+    .fold > summary:focus-visible {
+      outline: 2px solid ${color.primary};
+      outline-offset: 2px;
+    }
+    .fold[open] {
+      padding-bottom: ${space.sm};
     }
   }
 `;
@@ -289,7 +352,10 @@ const Circle = styled.div`
    constant, never typed. The iPhone and the staff member come from "What
    you need" below; "private beta" stays in the note under the actions and
    in that block (spec §3.7: no hero lead contains "beta"). */
-const LEAD = `An AI-guided interviewer asks each resident about their life, from ${QUESTION_COUNT} questions, in the A Story iPhone app or together with a staff member. The people caring for them get a way to learn those stories.`;
+const LEAD = `An AI-guided interviewer asks each resident about their life, from ${QUESTION_COUNT} questions, in the A Story iPhone app or with a staff member beside them.`;
+
+/* Where "Privacy, in short" folds (the same width as media.sm). */
+const FOLD = "(max-width: 640px)";
 
 /* Privacy, in short: three labels quoted word for word from the short
    version of the policy (components/privacy.tsx, PlainSummary), a link to
@@ -313,6 +379,20 @@ const AGREE: [string, string][] = [
 
 export default function Care() {
   const know = useReveals<HTMLElement>();
+  /* "Privacy, in short" folds on a phone after hydration; the prerendered
+     page ships it open, so it reads without script and on wider screens. */
+  const privacy = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    const fold = window.matchMedia(FOLD);
+    if (privacy.current && fold.matches) privacy.current.open = false;
+    /* From 641 px the summary is hidden, so closed details could never be
+       opened again (a phone turned sideways). Leaving the fold opens them. */
+    const unfold = (e: MediaQueryListEvent) => {
+      if (!e.matches && privacy.current) privacy.current.open = true;
+    };
+    fold.addEventListener("change", unfold);
+    return () => fold.removeEventListener("change", unfold);
+  }, []);
   return (
     <>
       <EditorialSeo
@@ -365,7 +445,8 @@ export default function Care() {
         </Frame>
         <Frame className="row privacy">
           <h2 id="privacy-title">Privacy, in short</h2>
-          <div>
+          <details className="fold" ref={privacy} open>
+            <summary>Privacy, in short</summary>
             <ul aria-labelledby="privacy-title">
               {PRIVACY.map((t) => (
                 <li key={t}>{t}</li>
@@ -375,7 +456,7 @@ export default function Care() {
               <Link to="/privacy">Read the privacy policy</Link>. Questions
               about consent, staff access or HIPAA? Bring them to the demo.
             </p>
-          </div>
+          </details>
         </Frame>
       </Need>
 

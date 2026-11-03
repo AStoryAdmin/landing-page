@@ -76,7 +76,8 @@ const CARE: Kind = "Senior living or care community";
    browser lands on the anchor after the page loads. */
 const FILM = "/how-it-works#film";
 
-/* Where "You decide" folds (the same width as media.sm). */
+/* Where "You decide" and "Privacy, in short" fold (the same width as
+   media.sm). */
 const FOLD = "(max-width: 640px)";
 
 const WHO: { kind: Kind; label: string; title: string; body: string }[] = [
@@ -173,7 +174,7 @@ const DECIDE = [
    constant, never typed. The iPhone is the app the calls ring in (NEED
    below, lib/today.ts); "private beta" stays in the note under the actions
    (spec §3.7: no hero lead contains "beta"). */
-const LEAD = `An AI-guided interviewer calls the people your institution was built by, in the A Story iPhone app, and asks from ${QUESTION_COUNT} questions with follow-ups that listen. You keep their words, and a book when you want one.`;
+const LEAD = `An AI-guided interviewer calls the people your institution was built by in the A Story iPhone app and asks from ${QUESTION_COUNT} questions. You keep their words, and a book if you like.`;
 
 /* Privacy, in short: three labels quoted word for word from the short
    version of the policy (components/privacy.tsx, PlainSummary), a link to
@@ -433,26 +434,26 @@ const Program = styled(Chapter)`
     font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted);
   }
-  /* "You decide": a fold on a phone only. From 641 px the summary is
-     hidden and the details stay open. */
-  .decide > summary {
+  /* "You decide" and "Privacy, in short": folds on a phone only. From
+     641 px the summaries are hidden and the details stay open. */
+  .fold > summary {
     display: none;
   }
   /* Closed details with no summary could never open again, so wider
      screens show the content either way (the script also reopens them). */
   @media (min-width: 641px) {
-    .decide::details-content {
+    .fold::details-content {
       content-visibility: visible;
       display: contents;
     }
   }
   ${media.sm} {
-    .decide {
+    .fold {
       margin-top: ${space.md};
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
     }
-    .decide > summary {
+    .fold > summary {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -464,22 +465,22 @@ const Program = styled(Chapter)`
       color: var(--ink);
       font: 600 ${type.ui} / 1.3 ${font.ui};
     }
-    .decide > summary::-webkit-details-marker {
+    .fold > summary::-webkit-details-marker {
       display: none;
     }
-    .decide > summary::after {
+    .fold > summary::after {
       content: "+";
       font: 400 ${display.sm} / 1 ${font.display};
       color: var(--muted);
     }
-    .decide[open] > summary::after {
+    .fold[open] > summary::after {
       content: "−";
     }
-    .decide > summary:focus-visible {
+    .fold > summary:focus-visible {
       outline: 2px solid ${color.primary};
       outline-offset: 2px;
     }
-    .decide[open] {
+    .fold[open] {
       padding-bottom: ${space.md};
     }
     .decide > ul {
@@ -521,6 +522,24 @@ const Program = styled(Chapter)`
     color: var(--ink);
     font-weight: 600;
     text-underline-offset: 4px;
+  }
+  /* On a phone the privacy fold sits flush under "You decide" (one rule
+     between them) and its summary names the block, so the h3 steps out
+     of the layout; it still names the list (aria-labelledby). */
+  ${media.sm} {
+    .privacy {
+      margin-top: 0;
+    }
+    .privacy h3 {
+      display: none;
+    }
+    .privacy .fold {
+      margin-top: 0;
+      border-top: 0;
+    }
+    .privacy .fold > ul {
+      margin-top: 0;
+    }
   }
   ${media.md} {
     .grid {
@@ -568,10 +587,18 @@ const Rhythm = styled.div`
       padding: ${space.sm} 0;
     }
     #who .kinds {
-      margin-top: ${space.xl};
+      margin-top: ${space.lg};
     }
     #how ul {
       margin-top: ${space.md};
+    }
+    /* "You decide" and its two folds sit closer on a phone (fix round 3:
+       back to <= 8 screens with "Privacy, in short" folded). */
+    #how .lead {
+      margin-top: ${space.xs};
+    }
+    #how .decide {
+      margin-top: ${space.xs};
     }
     #how .decide > ul {
       margin-top: 0;
@@ -583,7 +610,7 @@ const Rhythm = styled.div`
       padding: ${space.xxs} 0;
     }
     #how .grid {
-      gap: ${space.xl};
+      gap: ${space.lg};
     }
     #book .row {
       gap: ${space.xl};
@@ -607,20 +634,22 @@ export default function Organizations() {
   const [params] = useSearchParams();
   const [kind, setKind] = useState(() => kindFromParams(params));
   const reveal = useReveals<HTMLDivElement>();
-  /* On a phone the decisions fold under one line (spec §4C: at most 8
-     screens at 390); "Privacy, in short" stays open below them (CHIEF-LOG
-     panel round 2, B4.2). The prerendered page ships them
-     open, so they read without script and on every wider screen. */
+  /* On a phone the decisions and "Privacy, in short" each fold under one
+     line (spec §4C: at most 8 screens at 390; CHIEF-LOG B4 fix round 3).
+     The prerendered page ships them open, so they read without script and
+     on every wider screen. */
   const decide = useRef<HTMLDetailsElement>(null);
+  const privacy = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     const fold = window.matchMedia(FOLD);
-    if (decide.current && fold.matches) {
-      decide.current.open = false;
+    const folds = [decide.current, privacy.current];
+    if (fold.matches) {
+      for (const d of folds) if (d) d.open = false;
     }
     /* From 641 px the summary is hidden, so closed details could never be
        opened again (a phone turned sideways). Leaving the fold opens them. */
     const unfold = (e: MediaQueryListEvent) => {
-      if (!e.matches && decide.current) decide.current.open = true;
+      if (!e.matches) for (const d of folds) if (d) d.open = true;
     };
     fold.addEventListener("change", unfold);
     return () => fold.removeEventListener("change", unfold);
@@ -811,7 +840,7 @@ export default function Organizations() {
                 different decisions. We make them with you, before anyone is
                 called.
               </p>
-              <details className="decide" ref={decide} open>
+              <details className="decide fold" ref={decide} open>
                 <summary>What you decide</summary>
                 <ul>
                   {DECIDE.map(([t, d]) => (
@@ -824,15 +853,19 @@ export default function Organizations() {
               </details>
               <div className="privacy">
                 <h3 id="privacy-title">Privacy, in short</h3>
-                <ul aria-labelledby="privacy-title">
-                  {PRIVACY.map((t) => (
-                    <li key={t}>{t}</li>
-                  ))}
-                </ul>
-                <p>
-                  <Link to="/privacy">Read the privacy policy</Link>. Questions
-                  about consent, staff access or HIPAA? Bring them to the demo.
-                </p>
+                <details className="fold" ref={privacy} open>
+                  <summary>Privacy, in short</summary>
+                  <ul aria-labelledby="privacy-title">
+                    {PRIVACY.map((t) => (
+                      <li key={t}>{t}</li>
+                    ))}
+                  </ul>
+                  <p>
+                    <Link to="/privacy">Read the privacy policy</Link>.
+                    Questions about consent, staff access or HIPAA? Bring them
+                    to the demo.
+                  </p>
+                </details>
               </div>
             </div>
           </Frame>

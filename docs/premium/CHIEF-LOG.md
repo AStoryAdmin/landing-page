@@ -304,3 +304,26 @@ State: **passed only locally** (Chromium, `vite preview` :5204, reduced motion).
 - **Check 3.2:** `git diff site-premium..premium/b4 -- src` adds 0 raw-px padding/margin/gap lines. All five Group C files now have 0 (was Org 25, Care 13, DemoBooking 11, Contact 14, Programs 10). Values were snapped to the nearest `space.*` token (ties to the smaller); maxima above 64 px are `calc()` sums of tokens.
 - Checks: one `<form>` on /organizations, /care-communities, /contact; "Book a demo" in main 3 / 2 / 1; no "%" on /contact; first-screen `img` on /care-communities at 390; "leave with them" absent from `dist/organizations/index.html`; no horizontal overflow at 390.
 - **Still blocked (unchanged, needs chief assignment):** uppercase count (form labels/legends/`small` in B1's `kit/form.styles.ts`; card label in unowned `kit/DemoSection.tsx`; QuoteBand h2 in unowned `rooms/Rooms.tsx`). Builder 4 did not restyle forms page-locally (a §3 system change lands whole).
+
+## Builder 4 — Group C fix round 3 (branch premium/b4)
+
+State: **passed only locally** (Chromium, `vite preview` :5204, reduced motion, measured after hydration). Shots: `qa/premium-2026-11/after/{organizations,care-communities,programs,contact}-{390,1440}.png`. Fixes the review of e5d95b2 (which had added "Privacy, in short" open on phones and longer leads).
+
+| Page | 390 screens | target | 1440 screens | hero lead lines 390 / 1440 (<= 5 / <= 3) |
+|---|---|---|---|---|
+| /organizations | **7.99** (6740 px; e5d95b2 8.32) | <= 8 | 5.74 | 4 / 3 |
+| /care-communities | **7.88** (6652 px; e5d95b2 8.24) | <= 7.9 | 5.58 | 4 / 3 (was 6 / 4) |
+| /programs | 3.76 | — | 2.78 | — |
+| /contact | 4.27 | — | 2.66 | — |
+
+Section heights at 390 (px): /organizations who 575, how 1055 (was ~1300), book 2621, footer 881; /care-communities know 1038, book 2791, footer 881.
+
+- **"Privacy, in short" folds on phones on both pages**, the same pattern as "You decide": `<details class="fold">` with the summary "Privacy, in short", closed after hydration below 641 px, shipped open in the prerender (checked in `dist/*/index.html`) and on every wider screen (summary hidden, `::details-content` shown). Turning a phone sideways past 640 px reopens it. On a phone the heading steps out of the layout (the summary names the block) but still names the list via `aria-labelledby`. Click and Enter both toggle it; the three labels and the /privacy link show when open. 1440 layout unchanged.
+- **Care lead** is now one sentence: "An AI-guided interviewer asks each resident about their life, from ${QUESTION_COUNT} questions, in the A Story iPhone app or with a staff member beside them." (the reviewer's wording). The dropped sentence ("The people caring for them get a way to learn those stories.") is said again by "Know the person behind the care."
+- **Organizations lead**: "An AI-guided interviewer calls the people your institution was built by in the A Story iPhone app and asks from ${QUESTION_COUNT} questions. You keep their words, and a book if you like." ("with follow-ups that listen" dropped; 5 lines -> 4 at 390). Wording follows faqData.ts:34 ("asks from N questions").
+- **Organizations phone spacing** (390 only, `Rhythm` at media.sm, tokens only): `#who .kinds` margin xl -> lg, `#how .grid` gap xl -> lg, "You decide" lead and fold margin md -> xs. Together with the fold and lead, the page is 12 px under 8 screens: any new line in /organizations above the form will push it over again.
+- Checks: `npm run lint` pass; `npm run build:static` pass; 'AI' and 'iPhone' visible in the first viewport at 390 and 1440 on both pages; no horizontal overflow at 390; `node scripts/copy-check.mjs --base http://localhost:5204`: /contact PASS, no pattern hits on Group C pages (the hits on /pricing "Stop paying" and /compare "the book isn't the end" are not Builder 4 files); no HIPAA-compliance or BAA claim in either page's text (only the source comments say the block claims nothing). Retired labels: 0 in Builder 4 files; "How A Story is different" remains in `Compare.tsx` (Builder 3) and in nav.ts's retired-label comment.
+
+### Assumptions (Daniel asleep)
+- Folding privacy on phones is acceptable trust-wise because it stays one tap away, is open with no script, and is open on every screen from 641 px; no length waiver was needed, so none is requested.
+- Shortening both leads is a copy cut, not a new claim; no number, price, date or count was added.
