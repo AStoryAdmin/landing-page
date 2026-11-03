@@ -442,7 +442,36 @@ const Program = styled(Chapter)`
   }
 `;
 
-const kindFromParams = (params: URLSearchParams): string =>
+/* Page rhythm on a wide screen (spec §4C: at most 6 screens at 1440x900).
+   The rooms after the opening keep their order and words; only the section
+   rhythm (--sy, styles/global.ts) and a few inner gaps step down, and only
+   on this page. */
+const Rhythm = styled.div`
+  @media (min-width: 1025px) {
+    --sy: 0.5;
+    #who ul {
+      margin-top: 32px;
+      row-gap: 28px;
+    }
+    #how ul {
+      margin-top: 22px;
+    }
+    #how li {
+      padding: 14px 0;
+    }
+    #how .privacy ul {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 24px;
+      margin-top: 6px;
+    }
+    #how .privacy li {
+      padding: 0;
+    }
+  }
+`;
+
+const kindFromParams =(params: URLSearchParams): string =>
   params.get("for") === "care"
     ? CARE
     : (INSTITUTION_KINDS.find((k) => k === params.get("kind")) ?? "");
@@ -529,7 +558,7 @@ export default function Organizations() {
         </Opening>
       </PhonePairs>
 
-      <div ref={reveal}>
+      <Rhythm ref={reveal}>
         <Need $ground="ivory" $tight aria-labelledby="need-title">
           <Frame className="row">
             <h2 id="need-title">What you need</h2>
@@ -673,7 +702,7 @@ export default function Organizations() {
             </>
           }
         />
-      </div>
+      </Rhythm>
     </>
   );
 }

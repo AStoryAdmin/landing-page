@@ -100,3 +100,24 @@ State: **passed only locally** (Chromium preview on :5204, 390x844 and 1440x900)
 ### Assumptions
 - Hero caption uses the label the site already gives this book: "A sample book: a founder's ledger." (home/CallBecomes.tsx:44, samples/index.html:1315).
 - Privacy links are a plain list with a sentence-case heading (no separators), per review item 10.
+
+## Builder 4 — Group C structure, fix round 2 (branch premium/b4)
+
+State: **passed only locally** (Chromium preview on :5204, reduced motion, 390x844 and 1440x900).
+
+| Page | 390 | target | 1440 | target |
+|---|---|---|---|---|
+| /organizations | 10.84 | <= 8 | **5.87** (was 6.68) | <= 6 |
+| /care-communities | 7.89 | <= 7.9 | 5.28 (was 5.39) | — |
+| /programs | 4.05 | — | 3.02 | — |
+| /contact | 4.35 | — | 2.71 | — |
+
+- /organizations at 1440 now meets <= 6: page-local `Rhythm` wrapper in `Organizations.tsx` (>= 1025 px only) sets `--sy: 0.5` for the rooms after the opening, tightens the "Who we work with" and "From a demo to an archive" row gaps, and sets the four privacy links as a 2x2 list. `DemoBooking.tsx` tightens its step gaps at >= 1025 px (also shortens /care-communities at 1440). No words, order or phone layout changed; the hero is untouched.
+- Checks unchanged: one `<form>` on each org page, "Book a demo" in main 3 (/organizations) and 2 (/care-communities).
+
+### Still open (blocked on Builder 1)
+- **Chief: accept /organizations at 390 (10.84 vs <= 8) in writing until `kit/Scroller.tsx` lands.** The six segment columns are 1892 px at 390; the Scroller is the planned cut. Builder 4 adopts it in round 2 and re-measures.
+- `Header.tsx` / `nav.ts` / `Footer.tsx` (§1.1, §1.2, M11): "Institutions" label and the "Book a demo" row on the org pages.
+- `Footer.tsx` §1.3 and `Invitation` `next` prop (kit.tsx has no `next` yet): /programs marks still 6 in the DOM; Builder 4 passes `next={["/our-story","/how-it-works","/contact"]}` once the prop exists.
+- `lib/today.ts` (§3.7): Today note in the /organizations and /care-communities hero.
+- For the supervisor: the `\bmiss\b` copy-check hit on /care-communities ("who they miss") predates this round (d089c50); not edited.

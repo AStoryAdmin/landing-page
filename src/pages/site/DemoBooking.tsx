@@ -56,6 +56,20 @@ const Steps = styled(Form)`
     text-transform: none;
     color: ${color.primary};
   }
+  /* A wide screen reads the two steps at a glance; tighter rows keep the
+     card near one screen (spec §4C page lengths). */
+  @media (min-width: 1025px) {
+    gap: 24px;
+    fieldset.step {
+      gap: 18px;
+    }
+    .two {
+      row-gap: 18px;
+    }
+    legend.step-legend {
+      margin-bottom: 10px;
+    }
+  }
   @media (max-width: 860px) {
     gap: 26px;
     fieldset.step {
