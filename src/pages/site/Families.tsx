@@ -32,6 +32,7 @@
 import type { ReactNode } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
+import { OFFERS } from "../../lib/founding";
 import { PLANS } from "../../lib/pricing";
 import { groups as faqGroups } from "./faqData";
 import { ArrowIcon, Invitation, PageOpening, Print } from "./kit/kit";
@@ -390,6 +391,13 @@ const Occasions = styled(Chapter)`
     font-weight: 500;
     color: ${color.accentText};
   }
+  .gift-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: ${space.sm} ${space.lg};
+    margin-top: ${space.sm};
+  }
   ${media.md} {
     .gift {
       grid-template-columns: minmax(0, 1fr);
@@ -432,13 +440,24 @@ function OccasionsRoom() {
               <p className="mission">{NOT_FINISHED}</p>
             </div>
           )}
+          {/* Round 2 (CHIEF-LOG B2.2), in this order and from these lines only:
+              Pricing.tsx:817 (not on sale yet), pricing.ts Express (one time,
+              nothing renews), Reserve.tsx:988 (a dollar holds your place),
+              Reserve.tsx:807 (the iPhone line, first clause). */}
           <div>
             <p>
-              The easiest to give: {express.name}, <b>{express.price}</b> one
-              time. About a month of calls in the A Story app, and a Classic
-              Hardcover once printed ordering opens. Nothing renews.
+              Plans are not on sale yet. When they open, {express.name} is the
+              one-time choice, <b>{express.price}</b>, and nothing renews.
+              Today, {OFFERS.reserve.price} holds your place in line. Before
+              launch, A Story can only ring an iPhone - on other phones it
+              reminds them to write instead.
             </p>
-            <TextLink to="/pricing">Compare plans</TextLink>
+            <div className="gift-actions">
+              <PrimaryLink to="/reserve">
+                Reserve for {OFFERS.reserve.price} <ArrowIcon />
+              </PrimaryLink>
+              <TextLink to="/pricing">Compare plans</TextLink>
+            </div>
           </div>
         </div>
       </Frame>
@@ -455,6 +474,13 @@ const Fit = styled.div`
   section[data-variant="object"] .opening-object > figure {
     width: 100%;
   }
+  /* What A Story is, one plain line under the lead (CHIEF-LOG B2.1). */
+  .opening-what {
+    display: block;
+    margin-top: ${space.sm};
+    font: 400 ${type.read} / 1.5 ${font.text};
+    color: var(--text);
+  }
   @media (max-width: 860px) {
     section[data-variant] .opening-grid h1 {
       max-width: none;
@@ -468,6 +494,11 @@ const Fit = styled.div`
   @media (max-width: 480px) {
     section[data-variant] .opening-grid h1 {
       font-size: 2.5rem;
+    }
+    /* Round 2: the line saying what A Story is costs the phone page a few
+       lines; the opening print gives them back (7.6 screens, CHIEF-LOG B2.1). */
+    section[data-variant="object"] .opening-object > figure {
+      width: 85%;
     }
   }
 `;
@@ -490,7 +521,19 @@ export default function Families() {
               The stories <em>between you.</em>
             </>
           }
-          lead="Everything around the wedding photos: the story he tells every Thanksgiving, and why everyone in that photograph is laughing."
+          lead={
+            <>
+              Everything around the wedding photos: the story he tells every
+              Thanksgiving, and why everyone in that photograph is laughing.
+              {/* Round 2 (CHIEF-LOG B2.1): what it is, from the /how-it-works
+                  hero ("A Story does the asking"), HowItWorks.tsx:560 and
+                  lib/today.ts:14. No new claim. */}
+              <span className="opening-what">
+                A Story does the asking: it calls in its iPhone app, in a
+                private beta, and follows what they say.
+              </span>
+            </>
+          }
           actions={
             <>
               <PrimaryLink to={START_HREF}>
