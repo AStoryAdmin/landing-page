@@ -81,6 +81,87 @@ No step-down was needed.
 - **Builder 1 → Builder 2 (`public/samples/index.html`, §1.4):** copy the new bar/drawer/footer from `Header.tsx`/`Footer.tsx`; classes: `.org-wrap/.org-toggle/#org-panel/.org-demo`, `.gf-nav-muted`, `.gf-signin`, `.gf-button`; `nav-count.mjs --pages /samples/` runs Checks 1.1/1.2 on it.
 - **Builder 1 note:** `scripts/home-diff.mjs --p0 auto` only looks for the P0 commit on `site-premium`/HEAD; P0 (`fbe134a`) is not merged yet, so tonight's diff was against bare `origin/main` (0 px at 390 and 1440). After P0 merges, rerun (the cache key changes automatically).
 
+## Builder 2 — P2 group A pages + /samples chrome (branch premium/b2)
+
+State: **passed only locally** (Chromium, `vite preview` :5202). Shots in
+`qa/premium-2026-11/after/{how-it-works,for-families,your-story,samples}-{390,1440}.png`.
+
+### Measured (main innerText after hydration, scripted)
+| Page | Screens 390 / 1440 | Target | h2 with gold / h2 | Copy-check hits | Overflow |
+|---|---|---|---|---|---|
+| /how-it-works | 10.27 / 6.98 | ≤ 8 / ≤ 6 | 3 / 7 | 0 | none |
+| /for-families | 7.51 / 4.72 | ≤ 7.6 | 1 / 3 | 2 (hero lead, below) | none |
+| /your-story | 6.43 / 4.06 | ≤ 6.5 | 1 / 3 | 0 | none |
+| /samples | 3.16 / 2.39 | — | — | — | none |
+
+- /for-families: `REASONS` has 3 entries, one row of 3 at 1440, no "Guides for remembering someone";
+  first occasion at x = 20 (390). /how-it-works: Bond gone, "Where to next" = samples, pricing, for-families;
+  "Watch the film" link in the first screen at 390 (y 466); poster top at 815 px at 1440, so per S14 the
+  poster is now `loading="eager" fetchpriority="high"` (the hero has no image to demote).
+- `nav-count.mjs --pages /samples/`: **56/56 passed** (bar at 1440/1280/1180, drawer at 1179/1024/390/320, footer).
+- `film-check.mjs`: Edge 390 and 1440 pass as before; WebKit still blocked (build 2359 not installed).
+- `npm run lint`, `npm run build:static`: pass.
+
+### For the supervisor
+- **/how-it-works is over its screen target** (10.27 vs ≤ 8 at 390; 6.98 vs ≤ 6 at 1440). Done: spec's cuts
+  (lead, Volume to 2 sentences, WAYS scroller) plus `$tight` padding on Film, Moments, Ways, Volume. At 390
+  the footer (881 px) and closing (687 px) alone are ~1.9 screens; the sample-calls block (home/Listen.tsx,
+  1,343 px) and Four moments with the card and transcript (~1,700 px) are the rest. Reaching 8 needs a
+  content cut the spec doesn't name (e.g. the transcript sheet or the card on phones). Not done; your call.
+- **Copy-check hit, /for-families hero lead** (not edited, per M7): "Nobody loses the wedding photos. They
+  lose everything around them - …". It is loss framing in the first screen. Real or innocent?
+- /your-story Kept block (not in the spec, not edited): sample card "The ferry, the last summer … He was the
+  first one of us to go." and "Guided calls are the only paid part." (books are paid too, like the deleted
+  /pricing hint). Flagging both.
+
+### Assumptions (Daniel asleep)
+- "If you're the one being asked" turns all three sourced lines to "you": "…You just talk.", "Nothing
+  appears until you say yes.", "Your story belongs to you." + link "Read our privacy policy" → `/privacy/`.
+  The first line keeps the spec's "at the hour you picked", although the family usually picks it.
+- /for-families "Invited to add to someone's book?" uses FamilyLoop.tsx:47 turned to "you": "Read what's
+  shared and add what you remember, under your own name. Nothing appears until the storyteller says yes."
+- The giving block reads the FAQ answer from `faqData.ts` at build time (heading = the FAQ's own question),
+  so it follows Builder 3's P0 edits. Today it has no discount sentence; "Reserve for $1 to hold your place"
+  stays.
+- WAYS keeps all 4 items (scroller at ≤ 640, grid of 4 / 2 above); the spec's "3 items" read as "one row".
+- Arrows removed from every text/secondary link on my pages (§3.3); page-local caps labels set in sentence
+  case; occasions and /your-story wall: every other print tilted (§3.5).
+- /your-story hero object is photo 45 as a crop (it was three tilted snapshots on cloth).
+- Film facade ring: drawn by the frame via `:has(.film-facade:focus-visible)` (B1's request); "Watch again"
+  uses `var(--ring)`.
+- /samples chrome is now generated: `scripts/samples-chrome.mjs` copies header, footer, their styled-components
+  rules and the Header.tsx behaviour from the built site into marked blocks (`--check` reports drift). The
+  bar switches at 1180 there too. The two `@media (max-width:1100px)` rules at ~l.787/924 are the book's own
+  layout, not the header, so left alone. The /samples P3 items (large-type button colour, controls row) are
+  not in this step.
+
+### Review fixes (supervisor rulings 4–6), re-measured
+State: **passed only locally** (Chromium, `vite preview` :5202, reducedMotion). Shots refreshed.
+
+- Ruling 4a: WAYS hides its 4th item ("Together") at ≤ 640 (`li:nth-child(n + 4)`); 4 from 641 px.
+- Ruling 4b: Four moments `.sheet` ("The transcript, word for word") hidden at ≤ 640. MemoryCard and the
+  "Every call keeps the card and the full transcript" note stay.
+- Ruling 5: /for-families lead is now "Everything around the wedding photos: the story he tells every
+  Thanksgiving, and why everyone in that photograph is laughing." (existing clause only). 3 lines at 390
+  and at 1440 (measured height / line-height). Copy-check `(gone|lose|loses|lost|miss|missed|remembering|passed away)`
+  on rendered text: 0 on /how-it-works, /for-families, /your-story (only hits left are code comments).
+- Ruling 6: "Guided calls are the only paid part." deleted from YourStory.tsx; FREE_TIER line and
+  "What Free includes" link stay.
+
+| Page | Screens 390 / 1440 (before → after) | Target |
+|---|---|---|
+| /how-it-works | 10.27 → **9.80** / 6.98 → **6.98** | ≤ 8 / ≤ 6 |
+| /for-families | 7.51 → 7.48 / 4.72 | ≤ 7.6 |
+| /your-story | 6.43 → 6.40 / 4.06 | ≤ 6.5 |
+
+**Measured exception for Daniel (/how-it-works, ruling 4c):** still 1.80 screens over at 390 and 0.98 over at
+1440 after (a) and (b); no further copy cut, per the ruling. Section heights at 390 (px / screens): hero
+930 / 1.10, #film 1272 / 1.51, Four moments 1417 / 1.68 (was 2.12), Asked 354 / 0.42, **calls (home/Listen,
+not owned) 1343 / 1.59**, Ways 628 / 0.74 (unchanged: it is a one-row scroller, so the hidden 4th item
+saves no height), Volume 720 / 0.85, **closing 687 / 0.81, footer 881 / 1.04**. The residual is the Listen
+block plus closing and footer (3.44 screens together). 1440 is unchanged because both cuts apply at ≤ 640
+only.
+
 ## Builder 1 — P1a shell, review fixes (branch premium/b1)
 
 ### S20 applied: the desktop bar starts at 1180, not 1024 (spec §1.1)
