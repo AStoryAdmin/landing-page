@@ -75,6 +75,52 @@ No step-down was needed.
   sets `body[data-film-playing]` on play and removes it on pause/ended/unmount, so
   `body[data-film-playing] &{ display:none }` (or the equivalent) is enough.
 - **Deploy (§7.14):** `.vtt` Content-Type on S3 is still the open flag.
+
+## Builder 4 — Group C structure, fix round (branch premium/b4)
+
+State: **passed only locally** (Chromium preview on :5204, 390x844 and 1440x900).
+
+### Measured after this round (document height / viewport height)
+| Page | 390 | target | 1440 | target |
+|---|---|---|---|---|
+| /organizations | 10.84 | ≤ 8 (baseline 12.9) | 6.68 | ≤ 6 (baseline 7.56) |
+| /care-communities | 7.89 | ≤ 7.9 (baseline 7.91) | 5.39 | — |
+| /programs | 4.05 | — | 3.02 | — |
+| /contact | 4.35 | — | 2.71 | — |
+
+- /care-communities now meets ≤ 7.9 at 390 with page-local phone spacing in `Care.tsx` (What you need, residents room, circle band, booking room) and a tighter phone gap in `DemoBooking.tsx`. The margin is 0.01 screen: any later kit change that adds height on this page will push it over.
+- Film links (/organizations x2, /care-communities x1) now land on `/how-it-works#film` with `#film` present (Builder 2's film is merged into site-premium). Each link keeps "· 49 s" together with non-breaking spaces.
+
+### Requests
+- **Chief: accept /organizations overage until Builder 1's `kit/Scroller.tsx` lands.** At 390 the segment cards in a Scroller are the planned cut (spec §4C); Builder 4 adopts it in round 2. At 1440 (6.68 vs ≤ 6) the gap is mostly section padding (three 117 px top/bottom bands); Builder 4 did not override kit padding page-locally there so it doesn't fight Builder 1's §3 spacing under `main[data-premium]`. Re-measure after both land.
+- **Builder 1, `lib/today.ts` (§3.7):** Builder 4 adds the Today note under the hero on /organizations and /care-communities when it exists.
+- **Builder 1, `Footer.tsx` (§1.3) and `kit.tsx` `Invitation`:** suppress the footer program plate on /programs (marks currently 6 in the DOM: 5 opening + plate); Builder 4 then passes `next={["/our-story","/how-it-works","/contact"]}`.
+- **Builder 1, `Header.tsx` / `nav.ts` / `Footer.tsx` (§1.1, §1.2, M11):** label "Schools, libraries & companies" (drawer and More panel still read "Institutions"), and no "Book a demo" row on /organizations and /care-communities.
+
+### Assumptions
+- Hero caption uses the label the site already gives this book: "A sample book: a founder's ledger." (home/CallBecomes.tsx:44, samples/index.html:1315).
+- Privacy links are a plain list with a sentence-case heading (no separators), per review item 10.
+
+## Builder 4 — Group C structure, fix round 2 (branch premium/b4)
+
+State: **passed only locally** (Chromium preview on :5204, reduced motion, 390x844 and 1440x900).
+
+| Page | 390 | target | 1440 | target |
+|---|---|---|---|---|
+| /organizations | 10.84 | <= 8 | **5.87** (was 6.68) | <= 6 |
+| /care-communities | 7.89 | <= 7.9 | 5.28 (was 5.39) | — |
+| /programs | 4.05 | — | 3.02 | — |
+| /contact | 4.35 | — | 2.71 | — |
+
+- /organizations at 1440 now meets <= 6: page-local `Rhythm` wrapper in `Organizations.tsx` (>= 1025 px only) sets `--sy: 0.5` for the rooms after the opening, tightens the "Who we work with" and "From a demo to an archive" row gaps, and sets the four privacy links as a 2x2 list. `DemoBooking.tsx` tightens its step gaps at >= 1025 px (also shortens /care-communities at 1440). No words, order or phone layout changed; the hero is untouched.
+- Checks unchanged: one `<form>` on each org page, "Book a demo" in main 3 (/organizations) and 2 (/care-communities).
+
+### Still open (blocked on Builder 1)
+- **Chief: accept /organizations at 390 (10.84 vs <= 8) in writing until `kit/Scroller.tsx` lands.** The six segment columns are 1892 px at 390; the Scroller is the planned cut. Builder 4 adopts it in round 2 and re-measures.
+- `Header.tsx` / `nav.ts` / `Footer.tsx` (§1.1, §1.2, M11): "Institutions" label and the "Book a demo" row on the org pages.
+- `Footer.tsx` §1.3 and `Invitation` `next` prop (kit.tsx has no `next` yet): /programs marks still 6 in the DOM; Builder 4 passes `next={["/our-story","/how-it-works","/contact"]}` once the prop exists.
+- `lib/today.ts` (§3.7): Today note in the /organizations and /care-communities hero.
+- For the supervisor: the `\bmiss\b` copy-check hit on /care-communities ("who they miss") predates this round (d089c50); not edited.
 - **Builder 1 → B2 film request: done** in `premium/b1` (`StickyStart.tsx`: `body[data-premium][data-film-playing]` hides the bar; also `[data-nav-open]`).
 - **Builder 1 → all page builders (P1a shell landed on `premium/b1`):** `Invitation` now takes `next={["/a","/b","/c"]}` (paths from `lib/nav.ts`); `TODAY_NOTE` is in `lib/today.ts` (hero `note`); `Scroller` is `kit/Scroller.tsx` (required `label`, children are `<li>`, place directly in a `<Frame>`); `Card` and `ScrollerRegion` are exported from `kit.styles.ts`; `<Picture frame="crop"|"print">`. Every new rule is scoped to `main[data-premium]` (off home).
 - **Builder 1 → Builder 4 (`sitePages.json`, §1.0):** page names/titles still to follow the nav table (e.g. `/organizations` → "A Story for schools, libraries and companies"). Not touched by B1.
@@ -216,6 +262,71 @@ hidden radios inside plan cards) draw their own indicator and are not outline ri
   `thead button` focus rules draw terracotta (#B85126, 4.67:1) and #7E3315 rings instead of the
   shared one. They pass 3:1, but the page shows three ring styles. Dropping those page-local
   `:focus-visible` rules lets the shared ring apply.
+
+## Builder 4 — Group C finish: visual system adoption (branch premium/b4)
+
+State: **passed only locally** (Chromium, `vite preview` :5204, reduced motion, 390x844 and 1440x900). Shots: `qa/premium-2026-11/after/{organizations,care-communities,programs,contact}-{390,1440}.png`.
+
+| Page | 390 | target | 1440 | target | Other checks |
+|---|---|---|---|---|---|
+| /organizations | **8.96** (was 10.84) | <= 8 | 5.78 | <= 6 | 1 form; "Book a demo" in main 3; h2 em 2/5; today note; Scroller: first item x=20, next peeks at x=348, ArrowRight scrolls, ring solid #4A3327, no page overflow; "leave with them" absent from dist + og |
+| /care-communities | 7.89 | <= 7.9 | 5.32 | — | img first in first screen (top 123 px); today note; h2 em 2/4; 1 form |
+| /programs | 3.73 | — | 2.78 | — | marks once (opening only; footer plate off); "Where to next" = /our-story, /how-it-works, /contact |
+| /contact | 4.32 | — | 2.67 | — | first form field at 1.66 screens (<= 2); no "%" in main |
+
+Done: today note in the /organizations and /care-communities heroes; /organizations six kinds in `Scroller label="Who we work with"` (sideways at <= 640, a 3-column grid from 641 / 2 columns 641–1024 via page-local overrides of the same DOM); arrows off text links (org column links, /programs host links); sentence-case page-local labels (org columns, /contact address and card labels); no page-local px/clamp font sizes left in the four files; reveals on containers and only the hero title rises by line; `Invitation next` on /programs; /care phone stacked-actions override removed so the kit's §3.3 phone secondary applies.
+
+### Open / requests
+- **/organizations at 390 is 8.96 screens, not <= 8.** Section heights at 390: hero 908, need 365, who 591, line 276, how 1837, book 2643, footer 881. The rest is the demo form (shared field set, unchanged) and the 8 ruled rows of "From a demo to an archive" / "You decide". Getting under 8 needs a content decision, e.g. fold "You decide" + privacy into a `<details>` at <= 640, or drop the iPhone sentence repeated in STEPS row 3 (it is now in "What you need"). Not done without a ruling. **Chief/supervisor to decide.**
+- **Builder 1, `kit/form.styles.ts` (§3.1):** field labels, legends and `small` are still uppercase with wide tracking. Uppercase text elements in main: 18 on /organizations, 19 on /care-communities, 5 on /contact (taste `upperCount <= 3` fails because of these). A `main[data-premium]`-scoped sentence-case rule there fixes all form pages at once; Builder 4 did not restyle forms page by page (system change lands whole).
+- **Owner of `kit/DemoSection.tsx` (unassigned in §6) and `rooms/Rooms.tsx` QuoteBand:** card label "A demo for your institution" is uppercase, `.side b` uses raw `20px`; the QuoteBand h2 "One circle around each resident" is uppercase.
+- /organizations: the Scroller region keeps `tabindex=0` at >= 641 where it does not scroll (one extra tab stop; `Scroller.tsx` is B1's). Option for B1: drop `tabIndex` when `data-overflow="none"`.
+- /care-communities at 390 has 0.01 screen of margin.
+
+### Assumptions
+- Segment columns stay text-only (no crops); adding photos would break the 1440 <= 6 target and no assigned image exists per kind.
+- /contact door rows keep their arrow: they are row links like the kit's "Where to next" rows, not text links.
+- /programs host links lose the arrow (§3.3); they still open in a new tab, as before.
+- "Who we work with." lost its gold word to meet h2 em <= 0.5 (text unchanged).
+
+## Builder 4 — Group C finish, review fixes (branch premium/b4)
+
+State: **passed only locally** (Chromium, `vite preview` :5204, reduced motion). Shots: `qa/premium-2026-11/after/{organizations,care-communities,programs,contact}-{390,1440}.png`.
+
+| Page | 390 screens | target | 1440 screens | target |
+|---|---|---|---|---|
+| /organizations | **7.97** (6727 px; was 8.96) | <= 8 | 5.67 | <= 6 |
+| /care-communities | 7.86 | <= 7.9 | 5.30 | — |
+| /programs | 3.69 | — | 2.74 | — |
+| /contact | 4.27 (first field at 1.35) | form <= 2 | 2.66 | — |
+
+- **Decision (Daniel asleep, no chief ruling found): both options applied on /organizations.** (a) The iPhone sentence is removed from the "A Story makes the calls." step; it is said once, in "What you need". (b) At <= 640 px "You decide" keeps its h2 and lead; the four decision rows and the privacy links fold into `<details>` with the summary "What you decide, and privacy" (closed after hydration on phones; prerendered open, so no-script and >= 641 px read everything; summary hidden from 641 px). Neither alone reached 8 screens (fold ~700 px, sentence ~58 px). Reversible in `Organizations.tsx` (`FOLD`, `.decide`).
+- **Check 3.2:** `git diff site-premium..premium/b4 -- src` adds 0 raw-px padding/margin/gap lines. All five Group C files now have 0 (was Org 25, Care 13, DemoBooking 11, Contact 14, Programs 10). Values were snapped to the nearest `space.*` token (ties to the smaller); maxima above 64 px are `calc()` sums of tokens.
+- Checks: one `<form>` on /organizations, /care-communities, /contact; "Book a demo" in main 3 / 2 / 1; no "%" on /contact; first-screen `img` on /care-communities at 390; "leave with them" absent from `dist/organizations/index.html`; no horizontal overflow at 390.
+- **Still blocked (unchanged, needs chief assignment):** uppercase count (form labels/legends/`small` in B1's `kit/form.styles.ts`; card label in unowned `kit/DemoSection.tsx`; QuoteBand h2 in unowned `rooms/Rooms.tsx`). Builder 4 did not restyle forms page-locally (a §3 system change lands whole).
+
+## Builder 4 — Group C fix round 3 (branch premium/b4)
+
+State: **passed only locally** (Chromium, `vite preview` :5204, reduced motion, measured after hydration). Shots: `qa/premium-2026-11/after/{organizations,care-communities,programs,contact}-{390,1440}.png`. Fixes the review of e5d95b2 (which had added "Privacy, in short" open on phones and longer leads).
+
+| Page | 390 screens | target | 1440 screens | hero lead lines 390 / 1440 (<= 5 / <= 3) |
+|---|---|---|---|---|
+| /organizations | **7.99** (6740 px; e5d95b2 8.32) | <= 8 | 5.74 | 4 / 3 |
+| /care-communities | **7.88** (6652 px; e5d95b2 8.24) | <= 7.9 | 5.58 | 4 / 3 (was 6 / 4) |
+| /programs | 3.76 | — | 2.78 | — |
+| /contact | 4.27 | — | 2.66 | — |
+
+Section heights at 390 (px): /organizations who 575, how 1055 (was ~1300), book 2621, footer 881; /care-communities know 1038, book 2791, footer 881.
+
+- **"Privacy, in short" folds on phones on both pages**, the same pattern as "You decide": `<details class="fold">` with the summary "Privacy, in short", closed after hydration below 641 px, shipped open in the prerender (checked in `dist/*/index.html`) and on every wider screen (summary hidden, `::details-content` shown). Turning a phone sideways past 640 px reopens it. On a phone the heading steps out of the layout (the summary names the block) but still names the list via `aria-labelledby`. Click and Enter both toggle it; the three labels and the /privacy link show when open. 1440 layout unchanged.
+- **Care lead** is now one sentence: "An AI-guided interviewer asks each resident about their life, from ${QUESTION_COUNT} questions, in the A Story iPhone app or with a staff member beside them." (the reviewer's wording). The dropped sentence ("The people caring for them get a way to learn those stories.") is said again by "Know the person behind the care."
+- **Organizations lead**: "An AI-guided interviewer calls the people your institution was built by in the A Story iPhone app and asks from ${QUESTION_COUNT} questions. You keep their words, and a book if you like." ("with follow-ups that listen" dropped; 5 lines -> 4 at 390). Wording follows faqData.ts:34 ("asks from N questions").
+- **Organizations phone spacing** (390 only, `Rhythm` at media.sm, tokens only): `#who .kinds` margin xl -> lg, `#how .grid` gap xl -> lg, "You decide" lead and fold margin md -> xs. Together with the fold and lead, the page is 12 px under 8 screens: any new line in /organizations above the form will push it over again.
+- Checks: `npm run lint` pass; `npm run build:static` pass; 'AI' and 'iPhone' visible in the first viewport at 390 and 1440 on both pages; no horizontal overflow at 390; `node scripts/copy-check.mjs --base http://localhost:5204`: /contact PASS, no pattern hits on Group C pages (the hits on /pricing "Stop paying" and /compare "the book isn't the end" are not Builder 4 files); no HIPAA-compliance or BAA claim in either page's text (only the source comments say the block claims nothing). Retired labels: 0 in Builder 4 files; "How A Story is different" remains in `Compare.tsx` (Builder 3) and in nav.ts's retired-label comment.
+
+### Assumptions (Daniel asleep)
+- Folding privacy on phones is acceptable trust-wise because it stays one tap away, is open with no script, and is open on every screen from 641 px; no length waiver was needed, so none is requested.
+- Shortening both leads is a copy cut, not a new claim; no number, price, date or count was added.
 
 ## Builder 3 - P2 group B pages (branch premium/b3)
 

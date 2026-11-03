@@ -26,6 +26,8 @@ import { track } from "../../lib/analytics";
 import { ArrowIcon } from "./kit/kit";
 import { PrimaryButton, TextAnchor } from "./kit/kit.styles";
 import { Done, Form } from "./kit/form.styles";
+import styled from "styled-components";
+import { color, display, font, space } from "../../styles/theme";
 
 const SIZES = [
   "Under 10",
@@ -35,6 +37,49 @@ const SIZES = [
   "Not sure yet",
 ] as const;
 const PARTS = ["Morning", "Midday", "Afternoon"] as const;
+
+/* Two steps on one page (2026-11-02, design-spec §4C): who you are, then
+   the demo itself. Plain fieldsets with a legend each, no wizard; the
+   fields, names and payload are unchanged (npm run test:contracts). */
+const Steps = styled(Form)`
+  gap: ${space.xl};
+  fieldset.step {
+    display: grid;
+    gap: ${space.lg};
+  }
+  legend.step-legend {
+    margin-bottom: ${space.md};
+    padding-bottom: ${space.xs};
+    border-bottom: 1px solid ${color.primaryLine};
+    font: 400 ${display.sm} / 1.2 ${font.display};
+    letter-spacing: 0;
+    text-transform: none;
+    color: ${color.primary};
+  }
+  /* A wide screen reads the two steps at a glance; tighter rows keep the
+     card near one screen (spec §4C page lengths). */
+  @media (min-width: 1025px) {
+    gap: ${space.lg};
+    fieldset.step {
+      gap: ${space.md};
+    }
+    .two {
+      row-gap: ${space.md};
+    }
+    legend.step-legend {
+      margin-bottom: ${space.xs};
+    }
+  }
+  @media (max-width: 860px) {
+    gap: ${space.lg};
+    fieldset.step {
+      gap: ${space.md};
+    }
+    legend.step-legend {
+      margin-bottom: ${space.sm};
+    }
+  }
+`;
 
 /** The next eight weekdays, starting two working days from today. */
 const upcomingDays = (now = new Date()): string[] => {
@@ -173,162 +218,168 @@ export default function DemoBooking({
   }
 
   return (
-    <Form onSubmit={submit} noValidate aria-describedby={`${uid}-fine`}>
-      <div className="two">
-        <label
-          className="field"
-          htmlFor={`${uid}-name`}
-          data-invalid={invalid === "name"}
-        >
-          <span>Your name</span>
-          <input
-            id={`${uid}-name`}
-            autoComplete="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </label>
-        <label className="field" htmlFor={`${uid}-role`}>
-          <span>
-            Your role <small>optional</small>
-          </span>
-          <input
-            id={`${uid}-role`}
-            autoComplete="organization-title"
-            placeholder={rolePlaceholder}
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          />
-        </label>
-        <label
-          className="field"
-          htmlFor={`${uid}-org`}
-          data-invalid={invalid === "organization"}
-        >
-          <span>Institution</span>
-          <input
-            id={`${uid}-org`}
-            autoComplete="organization"
-            value={organization}
-            onChange={(e) => setOrganization(e.target.value)}
-          />
-        </label>
-        <label className="field" htmlFor={`${uid}-kind`}>
-          <span>
-            What kind <small>optional</small>
-          </span>
-          <select
-            id={`${uid}-kind`}
-            value={kind}
-            onChange={(e) => setKind(e.target.value)}
+    <Steps onSubmit={submit} noValidate aria-describedby={`${uid}-fine`}>
+      <fieldset className="step">
+        <legend className="step-legend">1. About you</legend>
+        <div className="two">
+          <label
+            className="field"
+            htmlFor={`${uid}-name`}
+            data-invalid={invalid === "name"}
           >
-            <option value="">Choose one</option>
-            {INSTITUTION_KINDS.map((k) => (
-              <option key={k}>{k}</option>
+            <span>Your name</span>
+            <input
+              id={`${uid}-name`}
+              autoComplete="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </label>
+          <label className="field" htmlFor={`${uid}-role`}>
+            <span>
+              Your role <small>optional</small>
+            </span>
+            <input
+              id={`${uid}-role`}
+              autoComplete="organization-title"
+              placeholder={rolePlaceholder}
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            />
+          </label>
+          <label
+            className="field"
+            htmlFor={`${uid}-org`}
+            data-invalid={invalid === "organization"}
+          >
+            <span>Institution</span>
+            <input
+              id={`${uid}-org`}
+              autoComplete="organization"
+              value={organization}
+              onChange={(e) => setOrganization(e.target.value)}
+            />
+          </label>
+          <label className="field" htmlFor={`${uid}-kind`}>
+            <span>
+              What kind <small>optional</small>
+            </span>
+            <select
+              id={`${uid}-kind`}
+              value={kind}
+              onChange={(e) => setKind(e.target.value)}
+            >
+              <option value="">Choose one</option>
+              {INSTITUTION_KINDS.map((k) => (
+                <option key={k}>{k}</option>
+              ))}
+            </select>
+          </label>
+          <label
+            className="field"
+            htmlFor={`${uid}-email`}
+            data-invalid={invalid === "email"}
+          >
+            <span>Work email</span>
+            <input
+              id={`${uid}-email`}
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </label>
+          <label className="field" htmlFor={`${uid}-phone`}>
+            <span>
+              Phone <small>optional</small>
+            </span>
+            <input
+              id={`${uid}-phone`}
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset className="step">
+        <legend className="step-legend">2. The demo</legend>
+        <fieldset>
+          <legend>
+            How many people would take part <small>optional</small>
+          </legend>
+          <div className="chips">
+            {SIZES.map((s) => (
+              <label className="chip" key={s}>
+                <input
+                  type="radio"
+                  name={`${uid}-size`}
+                  checked={size === s}
+                  onChange={() => setSize(s)}
+                />
+                <span>{s}</span>
+              </label>
             ))}
-          </select>
-        </label>
-        <label
-          className="field"
-          htmlFor={`${uid}-email`}
-          data-invalid={invalid === "email"}
-        >
-          <span>Work email</span>
-          <input
-            id={`${uid}-email`}
-            type="email"
-            inputMode="email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </label>
-        <label className="field" htmlFor={`${uid}-phone`}>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>
+            Days that suit you <small>pick any</small>
+          </legend>
+          <div className="chips">
+            {days.map((d) => (
+              <label className="chip" key={d}>
+                <input
+                  type="checkbox"
+                  checked={picked.includes(d)}
+                  onChange={() => toggle(picked, setPicked, d)}
+                />
+                <span>{d}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>
+            Time of day <small>pick any</small>
+          </legend>
+          <div className="chips">
+            {PARTS.map((p) => (
+              <label className="chip" key={p}>
+                <input
+                  type="checkbox"
+                  checked={parts.includes(p)}
+                  onChange={() => toggle(parts, setParts, p)}
+                />
+                <span>{p}</span>
+              </label>
+            ))}
+          </div>
+          <p className="hint">
+            Thirty minutes on a video call
+            {timezone ? `, in your time (${timezone.replace(/_/g, " ")})` : ""}.
+            We confirm one of these by email.
+          </p>
+        </fieldset>
+
+        <label className="field" htmlFor={`${uid}-note`}>
           <span>
-            Phone <small>optional</small>
+            Whose stories, and why now <small>optional</small>
           </span>
-          <input
-            id={`${uid}-phone`}
-            type="tel"
-            inputMode="tel"
-            autoComplete="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+          <textarea
+            id={`${uid}-note`}
+            placeholder={notePlaceholder}
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
           />
         </label>
-      </div>
-
-      <fieldset>
-        <legend>
-          How many people would take part <small>optional</small>
-        </legend>
-        <div className="chips">
-          {SIZES.map((s) => (
-            <label className="chip" key={s}>
-              <input
-                type="radio"
-                name={`${uid}-size`}
-                checked={size === s}
-                onChange={() => setSize(s)}
-              />
-              <span>{s}</span>
-            </label>
-          ))}
-        </div>
       </fieldset>
-
-      <fieldset>
-        <legend>
-          Days that suit you <small>pick any</small>
-        </legend>
-        <div className="chips">
-          {days.map((d) => (
-            <label className="chip" key={d}>
-              <input
-                type="checkbox"
-                checked={picked.includes(d)}
-                onChange={() => toggle(picked, setPicked, d)}
-              />
-              <span>{d}</span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>
-          Time of day <small>pick any</small>
-        </legend>
-        <div className="chips">
-          {PARTS.map((p) => (
-            <label className="chip" key={p}>
-              <input
-                type="checkbox"
-                checked={parts.includes(p)}
-                onChange={() => toggle(parts, setParts, p)}
-              />
-              <span>{p}</span>
-            </label>
-          ))}
-        </div>
-        <p className="hint">
-          Thirty minutes on a video call
-          {timezone ? `, in your time (${timezone.replace(/_/g, " ")})` : ""}.
-          We confirm one of these by email.
-        </p>
-      </fieldset>
-
-      <label className="field" htmlFor={`${uid}-note`}>
-        <span>
-          Whose stories, and why now <small>optional</small>
-        </span>
-        <textarea
-          id={`${uid}-note`}
-          placeholder={notePlaceholder}
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-        />
-      </label>
 
       <label className="trap" aria-hidden="true">
         Website
@@ -369,6 +420,6 @@ export default function DemoBooking({
         No payment, and no mailing list. We use these details only to arrange
         the demo.
       </p>
-    </Form>
+    </Steps>
   );
 }

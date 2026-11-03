@@ -8,17 +8,36 @@
  * lib/demoRequest.ts).
  *
  * 2026-10-29, at the founder's request ("so they book a demo"; care should
- * not read as the main audience; a place to offer a collaboration):
+ * not read as the main audience; a place to offer a collaboration): the
+ * booking room became kit/DemoSection.tsx, shared with the care page, and
+ * "Who we work with" listed six kinds of place, care among them and not
+ * first. Each kind picks itself in the demo form and takes the reader there
+ * (?kind=…#book still works without script).
  *
- *   - The opening has two actions: Book a demo, and Propose a collaboration.
- *     Its object is four prints only; the words that sat under them were a
- *     second page inside the opening and pushed everything down.
- *   - "Who we work with": six kinds of place in identical tiles, care among
- *     them and not first. Each tile picks its kind in the demo form and
- *     takes the reader there (?kind=…#book still works without script).
- *   - The booking room is kit/DemoSection.tsx, shared with the care page.
- *   - #collaborate: for an idea that is not a program - a class project, an
- *     event together, a heritage project, a grant (CollaborationForm.tsx).
+ * 2026-11-02, premium pass (docs/premium/design-spec.md §4 Group C):
+ *   - One form on the page. "Propose a collaboration" is no longer mounted
+ *     (CollaborationForm.tsx is kept); another idea goes to /contact.
+ *   - The opening stands on paper with one real object, the square sample
+ *     book "The Ledger" (labelled "a founder's ledger", as on home and
+ *     /samples), instead of
+ *     four tilted prints.
+ *   - "What you need" follows the opening: three lines the site already
+ *     says (STEPS, DECIDE, and the program line on /pricing), so the iPhone
+ *     requirement is read early.
+ *   - The six kinds are open columns (a hairline on top, no box). Their
+ *     action reads "Start the demo here", so "Book a demo" appears three
+ *     times in the page: the opening, after "From a demo to an archive", and
+ *     the form. The care column sends people to /care-communities instead of
+ *     repeating that page.
+ *   - A short privacy block quotes three labels from the policy's short
+ *     version and links to /privacy. No HIPAA, BAA, SOC 2 or residency
+ *     claim either way (flagged for Daniel); those questions go to the demo.
+ *   - 2026-11-03 (panel round 2): the opening's lead names the AI-guided
+ *     interviewer and the iPhone app, so both are read before the scroll.
+ *   - Visual system (spec §3): the today note under the opening's actions,
+ *     sentence-case column labels, no arrow on text links, the six kinds in
+ *     the shared Scroller (sideways on a phone, a grid from 641 px), gold
+ *     words in two of five h2s, and reveals on three containers.
  *
  * The path stays /organizations: it is prerendered, in the sitemap and in
  * the guides. ?for=care still preselects the care kind for old links.
@@ -26,36 +45,40 @@
  * Pricing is quoted per program, and the page says so rather than inventing
  * a number (lib/pricing.ts mirrors the app, which has no institution plan).
  */
-import { useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
-import { ArrowIcon, PageOpening, Print } from "./kit/kit";
+import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
+import Scroller from "./kit/Scroller";
+import { TODAY_NOTE } from "../../lib/today";
+import { QUESTION_COUNT } from "../../lib/product";
 import { PhonePairs } from "./rooms/phonePairs";
 import {
+  Actions,
   Chapter,
   Frame,
   Heading,
-  Plate,
   PrimaryAnchor,
   SecondaryAnchor,
   Statement,
+  TextAnchor,
 } from "./kit/kit.styles";
 import DemoSection from "./kit/DemoSection";
-import CollaborationForm from "./CollaborationForm";
 import { INSTITUTION_KINDS } from "../../lib/demoRequest";
-import { color, display, font, media, type } from "../../styles/theme";
+import { color, display, font, media, shadow, space, type } from "../../styles/theme";
 
 type Kind = (typeof INSTITUTION_KINDS)[number];
 const CARE: Kind = "Senior living or care community";
 
-const PRINTS = [
-  ["04", "A graduation, 1994"],
-  ["40", "The bound pages of an A Story volume, close up"],
-  ["08", "A person repairing a fan at a workbench"],
-  ["18", "An older woman on a porch in the rain, with her son beside her, 1960"],
-] as const;
+/* The film on /how-it-works (kit/Film.tsx, Builder 2). A plain href, so the
+   browser lands on the anchor after the page loads. */
+const FILM = "/how-it-works#film";
+
+/* Where "You decide" and "Privacy, in short" fold (the same width as
+   media.sm). */
+const FOLD = "(max-width: 640px)";
 
 const WHO: { kind: Kind; label: string; title: string; body: string }[] = [
   {
@@ -89,12 +112,21 @@ const WHO: { kind: Kind; label: string; title: string; body: string }[] = [
     body: "The people who started the association, the congregation or the festival. Their accounts kept together for the generation that comes next.",
   },
   {
+    /* Care has its own page; this column only points there. */
     kind: CARE,
     label: "Senior living and care",
     title: "Know the person behind the care.",
-    body: "Residents tell the stories they want kept, and families add theirs. Staff learn who someone was before they came to you.",
+    body: "",
   },
 ];
+
+/* What a place needs before it begins: three lines the site already says
+   (STEPS below, DECIDE below, and the program line on /pricing). */
+const NEED = [
+  "Each person needs an iPhone, and we help them install the app.",
+  "Nothing leaves the archive unless you and the person both say so.",
+  "Program pricing is quoted individually, on the demo.",
+] as const;
 
 const STEPS = [
   [
@@ -107,7 +139,8 @@ const STEPS = [
   ],
   [
     "A Story makes the calls.",
-    "Guided conversations in the A Story iPhone app, now in a private beta, at the hour each person picks. Each person needs an iPhone, and we help them install the app.",
+    /* The iPhone requirement is said once, in "What you need" above. */
+    "Guided conversations in the A Story iPhone app, now in a private beta, at the hour each person picks.",
   ],
   [
     "You keep the archive.",
@@ -134,52 +167,116 @@ const DECIDE = [
   ],
 ] as const;
 
-const COLLABORATIONS = [
-  [
-    "A class or a research project",
-    "Students or researchers recording a community, with the archive as what they hand in.",
-  ],
-  [
-    "An event or a program together",
-    "A reunion, an exhibition, a heritage month, an evening of stories.",
-  ],
-  [
-    "A grant or a funding partnership",
-    "Funding that brings A Story to people who could not otherwise have it.",
-  ],
-  [
-    "Bringing A Story to your members",
-    "An association, a network or a platform whose people would want it.",
-  ],
+/* The opening's lead names what does the asking and where the calls ring,
+   so both are read before the first scroll (CHIEF-LOG panel round 2, B4.1).
+   "An AI-guided interviewer" and the question count are the FAQ's own
+   answer (faqData.ts, "Who asks the questions?"); the count is the
+   constant, never typed. The iPhone is the app the calls ring in (NEED
+   below, lib/today.ts); "private beta" stays in the note under the actions
+   (spec §3.7: no hero lead contains "beta"). */
+const LEAD = `An AI-guided interviewer calls the people your institution was built by in the A Story iPhone app and asks from ${QUESTION_COUNT} questions. You keep their words, and a book if you like.`;
+
+/* Privacy, in short: three labels quoted word for word from the short
+   version of the policy (components/privacy.tsx, PlainSummary), a link to
+   the policy, and one line that sends the rest to the demo. It claims
+   nothing about HIPAA, a BAA, SOC 2 or residency either way (spec §4C,
+   flagged for Daniel). */
+const PRIVACY = [
+  "We never sell data.",
+  "We never train AI on your stories.",
+  "You can delete it all.",
 ] as const;
 
-/* The opening's object: four prints on the cloth, nothing written under
-   them (the words moved to "Who we work with"). Two by two on a phone. */
-const Prints = styled.ul`
+/* The opening's object: one sample book, square like the real one, set
+   down on the paper. Its cover is the same capture the home page uses
+   (public/book-objects, from /samples). On a phone it comes before the
+   words, so the first screen holds the object (spec §4 rule 12). */
+const Book = styled.figure`
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(20px, 2.6vw, 52px);
+  justify-items: center;
+  gap: ${space.md};
   margin: 0;
-  padding: 0;
-  list-style: none;
-  li {
-    min-width: 0;
+  a.cover {
+    display: block;
+    width: min(100%, 520px);
+    aspect-ratio: 1;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: ${shadow.lie};
+    transform: rotate(-1.2deg);
   }
-  li > figure {
-    max-width: 420px;
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  figcaption {
+    font: 400 ${type.note} / 1.5 ${font.ui};
+    color: var(--muted);
+    text-align: center;
+  }
+  figcaption a {
+    color: var(--ink);
+    font-weight: 600;
+    text-underline-offset: 4px;
   }
   ${media.md} {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    a.cover {
+      width: min(64vw, 300px);
+    }
   }
 `;
 
-/* Six kinds of place in identical tiles: same height, same parts, the
+const Opening = styled.div`
+  display: contents;
+  @media (max-width: 860px) {
+    section[data-variant] .opening-object {
+      order: -1;
+    }
+  }
+`;
+
+/* What you need: three ruled lines straight after the opening. */
+const Need = styled(Chapter)`
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+    gap: clamp(${space.lg}, 5vw, calc(${space.xxxl} + ${space.xxl}));
+    align-items: start;
+  }
+  h2 {
+    font: 400 ${display.sm} / 1.2 ${font.display};
+    color: var(--ink);
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    padding: ${space.md} 0;
+    border-top: 1px solid var(--line);
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--text, var(--ink));
+  }
+  li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+  ${media.md} {
+    .row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+`;
+
+/* Six kinds of place as open columns: a hairline on top, no box, the
    action in the same place on each. */
 const Who = styled(Chapter)`
   .head {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(24px, 4vw, 80px);
+    gap: clamp(${space.lg}, 4vw, calc(${space.xxxl} + ${space.md}));
     align-items: end;
   }
   .head p {
@@ -187,88 +284,86 @@ const Who = styled(Chapter)`
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
   }
-  ul {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(16px, 1.6vw, 28px);
-    margin: clamp(32px, 4vw, 56px) 0 0;
-    padding: 0;
-    list-style: none;
+  /* The six kinds sit in the shared Scroller (spec §3.9). On a phone it
+     scrolls sideways, one column at a time; from 641 px the same list is a
+     grid of open columns, and the region no longer scrolls. */
+  .kinds {
+    margin-top: ${space.xxl};
+  }
+  @media (min-width: 641px) {
+    .kinds {
+      margin-inline: 0;
+      overflow: visible;
+      mask-image: none;
+    }
+    .kinds .scroller-track {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: ${space.xl} ${space.xxl};
+      width: auto;
+      padding-inline: 0;
+    }
   }
   li {
     display: flex;
     flex-direction: column;
     min-width: 0;
-    padding: clamp(24px, 2.4vw, 36px);
-    background: ${color.paperPure};
-    border: 1px solid var(--line);
-    border-radius: 4px;
+    padding-top: clamp(${space.md}, 1.8vw, ${space.lg});
+    border-top: 1px solid var(--line);
   }
   small {
     display: block;
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: ${color.accentText};
   }
   h3 {
-    margin-top: 12px;
+    margin-top: ${space.sm};
     font: 500 ${display.sm} / 1.2 ${font.display};
     color: var(--ink);
   }
   li p {
-    margin-top: 10px;
+    margin-top: ${space.xs};
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--text);
   }
   .go {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 20px;
+    gap: ${space.xxs} ${space.md};
     margin-top: auto;
-    padding-top: 18px;
+    padding-top: ${space.sm};
   }
   .go a {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: ${space.xs};
     min-height: 44px;
     color: var(--ink);
     font: 600 ${type.ui} / 1.3 ${font.ui};
     text-underline-offset: 4px;
   }
-  .go a svg {
-    width: 16px;
-    height: 16px;
-  }
-  .go a.more {
-    font-weight: 500;
-    color: var(--muted);
-  }
   .else {
-    margin-top: clamp(22px, 2.4vw, 32px);
+    margin-top: clamp(${space.lg}, 2.4vw, ${space.xl});
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
   }
   .else a {
     display: inline-block;
-    padding: 10px 0;
+    padding: ${space.xs} 0;
     color: var(--ink);
     font-weight: 600;
     text-underline-offset: 4px;
   }
-  ${media.lg} {
-    ul {
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .kinds .scroller-track {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
   ${media.md} {
     .head {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-  ${media.sm} {
-    ul {
       grid-template-columns: minmax(0, 1fr);
     }
   }
@@ -280,7 +375,7 @@ const Line = styled(Chapter)`
     display: block;
     width: 9px;
     height: 9px;
-    margin: 0 auto clamp(28px, 3vw, 40px);
+    margin: 0 auto clamp(${space.lg}, 3vw, ${space.xl});
     border: 1px solid ${color.gold};
     transform: rotate(45deg);
   }
@@ -305,31 +400,31 @@ const Line = styled(Chapter)`
 
 /* How a program runs, and what the institution decides: one room, two
    columns of ruled rows (no numerals, no thread, no bordered 2x2 grid;
-   jury 1 #10, jury 2 U5). The collaboration room uses the same rows. */
+   jury 1 #10, jury 2 U5). */
 const Program = styled(Chapter)`
   .grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(40px, 6vw, 140px);
+    gap: clamp(${space.xl}, 6vw, calc(${space.xxxl} + ${space.xxxl} + ${space.sm}));
     align-items: start;
   }
   .lead {
-    margin-top: 16px;
+    margin-top: ${space.md};
     max-width: 46ch;
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
   }
   ul {
     display: grid;
-    margin: clamp(26px, 3vw, 44px) 0 0;
+    margin: clamp(${space.lg}, 3vw, ${space.xxl}) 0 0;
     padding: 0;
     list-style: none;
   }
   li {
     display: grid;
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-    gap: 6px clamp(18px, 2.4vw, 40px);
-    padding: 20px 0;
+    gap: ${space.xxs} clamp(${space.md}, 2.4vw, ${space.xl});
+    padding: ${space.md} 0;
     border-top: 1px solid var(--line);
   }
   li:last-child {
@@ -339,17 +434,112 @@ const Program = styled(Chapter)`
     font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted);
   }
-  .foot {
-    margin-top: 22px;
-    font: 400 ${type.read} / 1.6 ${font.text};
+  /* "You decide" and "Privacy, in short": folds on a phone only. From
+     641 px the summaries are hidden and the details stay open. */
+  .fold > summary {
+    display: none;
+  }
+  /* Closed details with no summary could never open again, so wider
+     screens show the content either way (the script also reopens them). */
+  @media (min-width: 641px) {
+    .fold::details-content {
+      content-visibility: visible;
+      display: contents;
+    }
+  }
+  ${media.sm} {
+    .fold {
+      margin-top: ${space.md};
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .fold > summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: ${space.md};
+      min-height: 44px;
+      padding: ${space.xs} 0;
+      cursor: pointer;
+      list-style: none;
+      color: var(--ink);
+      font: 600 ${type.ui} / 1.3 ${font.ui};
+    }
+    .fold > summary::-webkit-details-marker {
+      display: none;
+    }
+    .fold > summary::after {
+      content: "+";
+      font: 400 ${display.sm} / 1 ${font.display};
+      color: var(--muted);
+    }
+    .fold[open] > summary::after {
+      content: "−";
+    }
+    .fold > summary:focus-visible {
+      outline: 2px solid ${color.primary};
+      outline-offset: 2px;
+    }
+    .fold[open] {
+      padding-bottom: ${space.md};
+    }
+    .decide > ul {
+      margin-top: 0;
+    }
+  }
+  .privacy {
+    margin-top: clamp(${space.lg}, 3vw, ${space.xl});
+  }
+  .privacy h3 {
+    font: 600 ${type.label} / 1.3 ${font.ui};
+    letter-spacing: 0.01em;
+    text-transform: none;
+    color: var(--label);
+  }
+  .privacy ul {
+    display: block;
+    margin: ${space.xxs} 0 0;
+  }
+  .privacy li,
+  .privacy li:last-child {
+    display: block;
+    padding: 0;
+    border: 0;
+    font: 400 ${type.read} / 1.5 ${font.text};
+  }
+  .privacy li {
+    color: var(--ink);
+  }
+  .privacy p {
+    margin-top: ${space.xs};
+    max-width: 46ch;
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
   }
-  .foot a {
+  .privacy p a {
     display: inline-block;
-    padding: 9px 0;
+    padding: ${space.xxs} 0;
     color: var(--ink);
     font-weight: 600;
     text-underline-offset: 4px;
+  }
+  /* On a phone the privacy fold sits flush under "You decide" (one rule
+     between them) and its summary names the block, so the h3 steps out
+     of the layout; it still names the list (aria-labelledby). */
+  ${media.sm} {
+    .privacy {
+      margin-top: 0;
+    }
+    .privacy h3 {
+      display: none;
+    }
+    .privacy .fold {
+      margin-top: 0;
+      border-top: 0;
+    }
+    .privacy .fold > ul {
+      margin-top: 0;
+    }
   }
   ${media.md} {
     .grid {
@@ -363,46 +553,79 @@ const Program = styled(Chapter)`
   }
 `;
 
-const Collaborate = styled(Program)`
-  scroll-margin-top: 80px;
-  .grid {
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    gap: clamp(40px, 6vw, 110px);
+/* Page rhythm on a wide screen (spec §4C: at most 6 screens at 1440x900).
+   The rooms after the opening keep their order and words; only the section
+   rhythm (--sy, styles/global.ts) and a few inner gaps step down, and only
+   on this page. */
+const Rhythm = styled.div`
+  @media (min-width: 1025px) {
+    --sy: 0.5;
+    #who .kinds {
+      margin-top: ${space.xl};
+    }
+    #who .kinds .scroller-track {
+      row-gap: ${space.xl};
+    }
+    #how ul {
+      margin-top: ${space.lg};
+    }
+    #how li {
+      padding: ${space.sm} 0;
+    }
+    #how .privacy ul {
+      margin-top: ${space.xxs};
+    }
+    #how .privacy li {
+      padding: 0;
+    }
   }
-  li {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .card {
-    background: ${color.paperPure};
-    box-shadow:
-      0 1px 1px rgba(42, 31, 24, 0.06),
-      0 40px 80px -48px rgba(42, 31, 24, 0.45);
-  }
-  .card-head {
-    margin-bottom: clamp(26px, 3vw, 36px);
-    padding-bottom: clamp(20px, 2.4vw, 28px);
-    border-bottom: 1px solid ${color.primaryLine};
-  }
-  .card-head small {
-    display: block;
-    font: 600 ${type.label} / 1.3 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: ${color.accentText};
-  }
-  .card-head h3 {
-    margin-top: 10px;
-    font: 400 ${display.sm} / 1.2 ${font.display};
-    color: ${color.primary};
-  }
-  ${media.md} {
-    .grid {
-      grid-template-columns: minmax(0, 1fr);
+  /* The same on a phone (spec §4C: at most 8 screens at 390): the section
+     rhythm and the ruled rows step down; words and order are unchanged. */
+  ${media.sm} {
+    --sy: 0.55;
+    #need-title + ul li {
+      padding: ${space.sm} 0;
+    }
+    #who .kinds {
+      margin-top: ${space.lg};
+    }
+    #how ul {
+      margin-top: ${space.md};
+    }
+    /* "You decide" and its two folds sit closer on a phone (fix round 3:
+       back to <= 8 screens with "Privacy, in short" folded). */
+    #how .lead {
+      margin-top: ${space.xs};
+    }
+    #how .decide {
+      margin-top: ${space.xs};
+    }
+    #how .decide > ul {
+      margin-top: 0;
+    }
+    #how li {
+      padding: ${space.sm} 0;
+    }
+    #how .privacy li {
+      padding: ${space.xxs} 0;
+    }
+    #how .grid {
+      gap: ${space.lg};
+    }
+    #book .row {
+      gap: ${space.xl};
+    }
+    #book .side ul,
+    #book .side ol {
+      margin-top: ${space.md};
+    }
+    #book .side li {
+      padding: ${space.sm} 0;
     }
   }
 `;
 
-const kindFromParams = (params: URLSearchParams): string =>
+const kindFromParams =(params: URLSearchParams): string =>
   params.get("for") === "care"
     ? CARE
     : (INSTITUTION_KINDS.find((k) => k === params.get("kind")) ?? "");
@@ -411,8 +634,28 @@ export default function Organizations() {
   const [params] = useSearchParams();
   const [kind, setKind] = useState(() => kindFromParams(params));
   const reveal = useReveals<HTMLDivElement>();
+  /* On a phone the decisions and "Privacy, in short" each fold under one
+     line (spec §4C: at most 8 screens at 390; CHIEF-LOG B4 fix round 3).
+     The prerendered page ships them open, so they read without script and
+     on every wider screen. */
+  const decide = useRef<HTMLDetailsElement>(null);
+  const privacy = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    const fold = window.matchMedia(FOLD);
+    const folds = [decide.current, privacy.current];
+    if (fold.matches) {
+      for (const d of folds) if (d) d.open = false;
+    }
+    /* From 641 px the summary is hidden, so closed details could never be
+       opened again (a phone turned sideways). Leaving the fold opens them. */
+    const unfold = (e: MediaQueryListEvent) => {
+      if (!e.matches) for (const d of folds) if (d) d.open = true;
+    };
+    fold.addEventListener("change", unfold);
+    return () => fold.removeEventListener("change", unfold);
+  }, []);
 
-  /* A tile picks its kind in the form and goes there. The href does the
+  /* A column picks its kind in the form and goes there. The href does the
      same without script (the prerendered page). */
   const pick = (k: Kind) => (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -429,99 +672,123 @@ export default function Organizations() {
       .getElementById("book")
       ?.scrollIntoView({ behavior: still ? "auto" : "smooth" });
     /* Keyboard and screen reader users land on the form too, not on the
-       next tile. */
+       next column. */
     document.getElementById("book-title")?.focus({ preventScroll: true });
   };
 
   return (
     <>
       <EditorialSeo
-        title="A Story for institutions - book a demo"
+        title="A Story for schools, libraries and companies"
         path="/organizations"
-        description="Colleges, schools, libraries, companies, community groups and care communities can use A Story to record the people they were built by, in their own words. Book a thirty-minute demo, or propose a collaboration."
+        description="Colleges, schools, libraries, companies, community groups and care communities can use A Story to record the people they were built by, in their own words. Book a thirty-minute demo."
       />
       <PhonePairs>
-        <PageOpening
-          variant="wide"
-          title={
-            <>
-              The people who made the <em>place.</em>
-            </>
-          }
-          lead="A Story calls the people your institution was built by, and asks about their lives with follow-up questions that listen. The calls ring in the A Story iPhone app, in a private beta. You keep their words, and a book when you want one."
-          actions={
-            <>
-              <PrimaryAnchor href="#book">
-                Book a demo <ArrowIcon />
-              </PrimaryAnchor>
-              <SecondaryAnchor href="#collaborate">
-                Propose a collaboration
-              </SecondaryAnchor>
-            </>
-          }
-          object={
-            <Prints>
-              {PRINTS.map(([id, alt], i) => (
-                <li key={id}>
-                  <Print
-                    id={id}
-                    alt={alt}
-                    ratio="4 / 5"
-                    tilt={[-1.4, 0.9, -0.7, 1.2][i]}
-                    sizes="(max-width: 860px) 46vw, 24vw"
-                    priority={i < 2}
+        <Opening>
+          <PageOpening
+            ground="paper"
+            variant="split"
+            title={
+              <>
+                The people who made the <em>place.</em>
+              </>
+            }
+            lead={LEAD}
+            note={TODAY_NOTE}
+            actions={
+              <>
+                <PrimaryAnchor href="#book">
+                  Book a demo <ArrowIcon />
+                </PrimaryAnchor>
+                <SecondaryAnchor href={FILM}>
+                  Watch the film&nbsp;·&nbsp;49&nbsp;s
+                </SecondaryAnchor>
+              </>
+            }
+            object={
+              <Book>
+                <a
+                  className="cover"
+                  href="/samples#raymond"
+                  aria-label="The Ledger, a sample book. Open it"
+                >
+                  <img
+                    src="/book-objects/sample-raymond-720.webp"
+                    srcSet="/book-objects/sample-raymond-360.webp 360w, /book-objects/sample-raymond-720.webp 720w"
+                    sizes="(max-width: 860px) 64vw, 520px"
+                    width={720}
+                    height={720}
+                    alt=""
+                    fetchPriority="high"
+                    decoding="async"
                   />
-                </li>
-              ))}
-            </Prints>
-          }
-        />
+                </a>
+                <figcaption>
+                  A sample book: a founder’s ledger.{" "}
+                  <a href="/samples#raymond">Read it</a>
+                </figcaption>
+              </Book>
+            }
+          />
+        </Opening>
       </PhonePairs>
 
-      <div ref={reveal}>
-        <Who $ground="ivory" id="who" aria-labelledby="who-title">
+      <Rhythm ref={reveal}>
+        <Need $ground="ivory" $tight aria-labelledby="need-title">
+          <Frame className="row">
+            <h2 id="need-title">What you need</h2>
+            <ul data-rise>
+              {NEED.map((n) => (
+                <li key={n}>{n}</li>
+              ))}
+            </ul>
+          </Frame>
+        </Need>
+
+        <Who $ground="paper" id="who" aria-labelledby="who-title">
           <Frame>
             <div className="head">
-              <Statement id="who-title" $size="md" data-lines>
-                Who we work <em>with.</em>
+              <Statement id="who-title" $size="md">
+                Who we work with.
               </Statement>
-              <p data-rise>
+              <p>
                 Any place with people worth hearing from. Pick yours and the
                 demo starts from it.
               </p>
             </div>
-            <ul>
+            <Scroller label="Who we work with" className="kinds">
               {WHO.map((w) => (
-                <li key={w.kind} data-rise="row">
+                <li key={w.kind}>
                   <small>{w.label}</small>
                   <h3>{w.title}</h3>
-                  <p>{w.body}</p>
+                  {w.body && <p>{w.body}</p>}
                   <div className="go">
-                    <a
-                      href={`?kind=${encodeURIComponent(w.kind)}#book`}
-                      onClick={pick(w.kind)}
-                      aria-label={`Book a demo for ${w.label.toLowerCase()}`}
-                    >
-                      Book a demo <ArrowIcon />
-                    </a>
-                    {w.kind === CARE && (
-                      <Link className="more" to="/care-communities">
-                        More for care communities
+                    {w.kind === CARE ? (
+                      <Link to="/care-communities">
+                        See care communities
                       </Link>
+                    ) : (
+                      <a
+                        href={`?kind=${encodeURIComponent(w.kind)}#book`}
+                        onClick={pick(w.kind)}
+                        aria-label={`Start the demo here, for ${w.label.toLowerCase()}`}
+                      >
+                        Start the demo here
+                      </a>
                     )}
                   </div>
                 </li>
               ))}
-            </ul>
+            </Scroller>
             <p className="else">
               Somewhere else, or not sure it fits?{" "}
               <a
                 href={`?kind=${encodeURIComponent("Something else")}#book`}
                 onClick={pick("Something else")}
               >
-                Book a demo anyway
-              </a>{" "}
-              or <a href="#collaborate">tell us your idea</a>.
+                Start the demo anyway
+              </a>
+              .
             </p>
           </Frame>
         </Who>
@@ -542,19 +809,27 @@ export default function Organizations() {
           aria-label="How a program runs"
           style={{ scrollMarginTop: 80 }}
         >
-          <Frame className="grid">
+          <Frame className="grid" data-rise>
             <div>
               <Statement as="h2" id="how-title" $size="md">
                 From a demo to an archive.
               </Statement>
               <ul>
                 {STEPS.map(([t, d]) => (
-                  <li key={t} data-rise>
+                  <li key={t}>
                     <Heading>{t}</Heading>
                     <p>{d}</p>
                   </li>
                 ))}
               </ul>
+              <Actions>
+                <PrimaryAnchor href="#book">
+                  Book a demo <ArrowIcon />
+                </PrimaryAnchor>
+                <TextAnchor href={FILM}>
+                  See one conversation become a book&nbsp;·&nbsp;49&nbsp;s
+                </TextAnchor>
+              </Actions>
             </div>
             <div>
               <Statement as="h2" id="decide-title" $size="md">
@@ -565,19 +840,33 @@ export default function Organizations() {
                 different decisions. We make them with you, before anyone is
                 called.
               </p>
-              <ul>
-                {DECIDE.map(([t, d]) => (
-                  <li key={t} data-rise>
-                    <Heading>{t}</Heading>
-                    <p>{d}</p>
-                  </li>
-                ))}
-              </ul>
-              <p className="foot">
-                Pricing is quoted for each program, by how many people take part
-                and whether you want printed books. We tell you on the demo, not
-                after it. <Link to="/privacy">How we handle privacy</Link>
-              </p>
+              <details className="decide fold" ref={decide} open>
+                <summary>What you decide</summary>
+                <ul>
+                  {DECIDE.map(([t, d]) => (
+                    <li key={t}>
+                      <Heading>{t}</Heading>
+                      <p>{d}</p>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+              <div className="privacy">
+                <h3 id="privacy-title">Privacy, in short</h3>
+                <details className="fold" ref={privacy} open>
+                  <summary>Privacy, in short</summary>
+                  <ul aria-labelledby="privacy-title">
+                    {PRIVACY.map((t) => (
+                      <li key={t}>{t}</li>
+                    ))}
+                  </ul>
+                  <p>
+                    <Link to="/privacy">Read the privacy policy</Link>.
+                    Questions about consent, staff access or HIPAA? Bring them
+                    to the demo.
+                  </p>
+                </details>
+              </div>
             </div>
           </Frame>
         </Program>
@@ -589,42 +878,13 @@ export default function Organizations() {
             </>
           }
           kind={kind}
+          footer={
+            <>
+              Another idea? <Link to="/contact">Write to us.</Link>
+            </>
+          }
         />
-
-        <Collaborate
-          $ground="paper"
-          id="collaborate"
-          aria-labelledby="collaborate-title"
-        >
-          <Frame className="grid">
-            <div>
-              <Statement id="collaborate-title" $size="md">
-                Another idea? <em>Build it with us.</em>
-              </Statement>
-              <p className="lead">
-                Not every partnership starts with a program. If you see a way to
-                work together, tell us. A rough idea is enough, and it goes
-                straight to Daniel.
-              </p>
-              <ul>
-                {COLLABORATIONS.map(([t, d]) => (
-                  <li key={t} data-rise>
-                    <Heading>{t}</Heading>
-                    <p>{d}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <Plate className="card" data-rise>
-              <div className="card-head">
-                <small>Propose a collaboration</small>
-                <h3>What would you like to do together?</h3>
-              </div>
-              <CollaborationForm />
-            </Plate>
-          </Frame>
-        </Collaborate>
-      </div>
+      </Rhythm>
     </>
   );
 }

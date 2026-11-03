@@ -41,12 +41,12 @@
   },
   {
     "path": "/organizations",
-    "name": "Organizations",
+    "name": "Schools, libraries & companies",
     "og": "organizations",
     "photo": "08",
     "phrase": [
-      "The knowledge people carry",
-      "should not leave with them."
+      "The people who made the place.",
+      "In their own words."
     ]
   },
   {
@@ -61,7 +61,7 @@
   },
   {
     "path": "/compare",
-    "name": "How A Story is different",
+    "name": "Compare",
     "og": "compare",
     "photo": "S01",
     "phrase": [

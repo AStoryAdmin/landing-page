@@ -21,36 +21,59 @@
  * booking form itself (kit/DemoSection.tsx) with the care kind picked and
  * what we agree before anyone is called beside it, plus a door to
  * /organizations for every other kind of place.
+ *
+ * 2026-11-02, premium pass (docs/premium/design-spec.md §4 Group C): on a
+ * phone the photograph comes before the leaf (CSS order, same DOM), so the
+ * first screen is not all text. "What you need" sits straight after the
+ * opening with the page's own line about how the calls happen (it moved
+ * there from the circle's first row). The circle's three roles are three
+ * typeset columns on a wide screen. A text link in the residents' room
+ * opens the film on /how-it-works. The today note (lib/today.ts) sits under
+ * the opening's actions, and only the opening's title rises line by line.
+ *
+ * 2026-11-03 (panel round 2): the opening's lead names the AI-guided
+ * interviewer, the iPhone app and the staff-member option, and "Privacy, in
+ * short" follows "What you need" (three labels from the policy's short
+ * version, a link to /privacy, HIPAA questions sent to the demo).
+ *
+ * Fix round 3: the lead is one sentence (spec §3.1 line limits), and on a
+ * phone "Privacy, in short" folds under one line, closed after hydration
+ * below 641 px, open in the prerender and on wider screens (spec §4C: at
+ * most 7.9 screens at 390), the same pattern as "You decide" on
+ * /organizations.
  */
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { Link } from "react-router-dom";
 import { ArrowIcon, PageOpening, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import {
-  Actions,
   Chapter,
   Frame,
   PrimaryAnchor,
   SecondaryAnchor,
   Statement,
+  TextAnchor,
 } from "./kit/kit.styles";
 import { QuoteBand, RuledSteps } from "./rooms/Rooms";
 import DemoSection from "./kit/DemoSection";
-import { color, font, media, type } from "../../styles/theme";
+import { TODAY_NOTE } from "../../lib/today";
+import { QUESTION_COUNT } from "../../lib/product";
+import { color, display, font, media, space, type } from "../../styles/theme";
 
 const Know = styled(Chapter)`
-  scroll-margin-top: 80px;
+  scroll-margin-top: calc(${space.xxxl} + ${space.md});
   .row {
     display: grid;
     grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-    gap: clamp(40px, 6vw, 140px);
+    gap: clamp(${space.xl}, 6vw, calc(${space.xxxl} + ${space.xxxl} + ${space.sm}));
     align-items: center;
   }
   /* Two prints laid on each other, the smaller over the larger's corner. */
   .pair {
     position: relative;
-    padding: 0 0 clamp(60px, 7vw, 120px) 0;
+    padding: 0 0 clamp(${space.xxxl}, 7vw, calc(${space.xxxl} + ${space.xxl})) 0;
   }
   .pair > figure:first-child {
     width: min(86%, 640px);
@@ -61,11 +84,14 @@ const Know = styled(Chapter)`
     bottom: 0;
     width: min(46%, 340px);
   }
-  .words > p {
-    margin: 18px 0 clamp(22px, 2.4vw, 34px);
+  .words > p:not(.film) {
+    margin: ${space.md} 0 clamp(${space.lg}, 2.4vw, ${space.xl});
     max-width: 44ch;
     font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
+  }
+  .words > p.film {
+    margin-top: clamp(${space.md}, 2.2vw, ${space.xl});
   }
   ${media.lg} {
     .row {
@@ -73,6 +99,24 @@ const Know = styled(Chapter)`
     }
     .pair {
       max-width: 640px;
+    }
+  }
+  /* Phone: the room's rhythm tightened so "What you need" costs no extra
+     screen (spec §4C target ≤ 7.9 screens at 390). */
+  ${media.md} {
+    padding: ${space.xxl} 0;
+    .row {
+      gap: ${space.lg};
+    }
+    .pair {
+      padding-bottom: ${space.xl};
+    }
+    .pair > figure:first-child {
+      width: min(76%, 640px);
+    }
+    .words li {
+      padding-top: ${space.sm};
+      padding-bottom: ${space.sm};
     }
   }
 `;
@@ -108,11 +152,6 @@ const Fit = styled.div`
       white-space: nowrap;
     }
   }
-  @media (max-width: 640px) {
-    ${Actions} > a {
-      flex: 1 1 100%;
-    }
-  }
   @media (max-width: 860px) {
     section[data-variant] .opening-grid h1 {
       max-width: none;
@@ -123,7 +162,211 @@ const Fit = styled.div`
       font-size: 2.1rem;
     }
   }
+  /* On a phone the photograph comes first, so the first screen holds it
+     (the kit puts a flipped object back after the words below 861 px). */
+  @media (max-width: 860px) {
+    section[data-variant][data-flip] .opening-object {
+      order: -1;
+    }
+  }
 `;
+
+/* What you need: the one line about how the calls happen, straight after
+   the opening (Denise and Priya look for it first). */
+const Need = styled(Chapter)`
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+    gap: clamp(${space.lg}, 5vw, calc(${space.xxxl} + ${space.xxl}));
+    align-items: start;
+  }
+  h2 {
+    font: 400 ${display.sm} / 1.2 ${font.display};
+    color: var(--ink);
+  }
+  .row > p {
+    max-width: 56ch;
+    padding: ${space.md} 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--text, var(--ink));
+  }
+  /* Privacy, in short: the same two columns, the three labels as one
+     ruled list, then the line that sends the rest to the demo. */
+  .privacy {
+    margin-top: clamp(${space.lg}, 3vw, ${space.xl});
+  }
+  .privacy ul {
+    margin: 0;
+    padding: ${space.sm} 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .privacy li {
+    padding: ${space.xxs} 0;
+    font: 400 ${type.read} / 1.5 ${font.text};
+    color: var(--ink);
+  }
+  .privacy .ask {
+    margin-top: ${space.xs};
+    max-width: 56ch;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--muted);
+  }
+  .privacy .ask a {
+    display: inline-block;
+    padding: ${space.xxs} 0;
+    color: var(--ink);
+    font-weight: 600;
+    text-underline-offset: 4px;
+  }
+  /* The fold: on a phone only. From 641 px the summary is hidden and the
+     details stay open (closed details with no summary could never open
+     again, so the content shows either way). */
+  .fold > summary {
+    display: none;
+  }
+  @media (min-width: 641px) {
+    .fold::details-content {
+      content-visibility: visible;
+      display: contents;
+    }
+  }
+  ${media.md} {
+    padding: ${space.lg} 0;
+    .row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: ${space.sm};
+    }
+    .row > p {
+      padding: ${space.sm} 0;
+    }
+    .privacy ul {
+      padding: ${space.xs} 0;
+    }
+  }
+  /* On a phone the fold sits flush under "What you need" (its rule is the
+     fold's top rule) and its summary names the block, so the h2 steps out
+     of the layout; it still names the list (aria-labelledby). */
+  ${media.sm} {
+    .privacy {
+      margin-top: 0;
+    }
+    .privacy > h2 {
+      display: none;
+    }
+    .fold {
+      border-bottom: 1px solid var(--line);
+    }
+    .fold > summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: ${space.md};
+      min-height: 44px;
+      padding: ${space.xs} 0;
+      cursor: pointer;
+      list-style: none;
+      color: var(--ink);
+      font: 600 ${type.ui} / 1.3 ${font.ui};
+    }
+    .fold > summary::-webkit-details-marker {
+      display: none;
+    }
+    .fold > summary::after {
+      content: "+";
+      font: 400 ${display.sm} / 1 ${font.display};
+      color: var(--muted);
+    }
+    .fold[open] > summary::after {
+      content: "−";
+    }
+    .fold > summary:focus-visible {
+      outline: 2px solid ${color.primary};
+      outline-offset: 2px;
+    }
+    .fold[open] {
+      padding-bottom: ${space.sm};
+    }
+  }
+`;
+
+/* The booking room on a phone: the same parts, closer together (the
+   section and its list are kit/DemoSection.tsx; only spacing changes here). */
+const Booking = styled.div`
+  display: contents;
+  ${media.md} {
+    > section {
+      padding: ${space.xxl} 0;
+    }
+    > section .row {
+      gap: ${space.lg};
+    }
+    > section .side ul {
+      margin-top: ${space.sm};
+    }
+    > section .side li {
+      padding: ${space.sm} 0;
+    }
+  }
+`;
+
+/* The circle around each resident: on a wide screen the line to remember
+   sits above three typeset columns, one per role (no cards). */
+const Circle = styled.div`
+  display: contents;
+  ${media.md} {
+    > section {
+      padding-top: ${space.xxl};
+      padding-bottom: ${space.xxl};
+    }
+  }
+  ${media.up.lg} {
+    > section .row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: clamp(${space.xl}, 4vw, ${space.xxxl});
+    }
+    > section blockquote {
+      max-width: 22ch;
+    }
+    > section ul {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(${space.lg}, 3vw, ${space.xxl});
+    }
+    > section li,
+    > section li:last-child {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      border-bottom: 0;
+    }
+  }
+`;
+
+/* The opening's lead names what does the asking and how the calls happen,
+   so both are read before the first scroll (CHIEF-LOG panel round 2, B4.1).
+   "An AI-guided interviewer" and the question count are the FAQ's own
+   answer (faqData.ts, "Who asks the questions?"); the count is the
+   constant, never typed. The iPhone and the staff member come from "What
+   you need" below; "private beta" stays in the note under the actions and
+   in that block (spec §3.7: no hero lead contains "beta"). */
+const LEAD = `An AI-guided interviewer asks each resident about their life, from ${QUESTION_COUNT} questions, in the A Story iPhone app or with a staff member beside them.`;
+
+/* Where "Privacy, in short" folds (the same width as media.sm). */
+const FOLD = "(max-width: 640px)";
+
+/* Privacy, in short: three labels quoted word for word from the short
+   version of the policy (components/privacy.tsx, PlainSummary), a link to
+   the policy, and one line that sends the rest to the demo. It claims
+   nothing about HIPAA, a BAA, SOC 2 or residency either way (spec §4C,
+   flagged for Daniel). */
+const PRIVACY = [
+  "We never sell data.",
+  "We never train AI on your stories.",
+  "You can delete it all.",
+] as const;
 
 /* What a care community and A Story settle on the demo, before anyone is
    called (the checklist that used to be the BeginCard). */
@@ -136,6 +379,20 @@ const AGREE: [string, string][] = [
 
 export default function Care() {
   const know = useReveals<HTMLElement>();
+  /* "Privacy, in short" folds on a phone after hydration; the prerendered
+     page ships it open, so it reads without script and on wider screens. */
+  const privacy = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    const fold = window.matchMedia(FOLD);
+    if (privacy.current && fold.matches) privacy.current.open = false;
+    /* From 641 px the summary is hidden, so closed details could never be
+       opened again (a phone turned sideways). Leaving the fold opens them. */
+    const unfold = (e: MediaQueryListEvent) => {
+      if (!e.matches && privacy.current) privacy.current.open = true;
+    };
+    fold.addEventListener("change", unfold);
+    return () => fold.removeEventListener("change", unfold);
+  }, []);
   return (
     <>
       <EditorialSeo
@@ -155,7 +412,8 @@ export default function Care() {
               </span>
             </>
           }
-          lead="The work they did. The music in the house. The way they made Sunday lunch. Give those stories somewhere to stay, and give the people caring for them a way to learn them."
+          lead={LEAD}
+          note={TODAY_NOTE}
           actions={
             <>
               <PrimaryAnchor href="#book">
@@ -176,6 +434,31 @@ export default function Care() {
           }
         />
       </Fit>
+
+      <Need $ground="paper" $tight aria-labelledby="need-title">
+        <Frame className="row">
+          <h2 id="need-title">What you need</h2>
+          <p>
+            A Story calls in its iPhone app at an agreed hour (in a private
+            beta), or a staff member starts a conversation together with them.
+          </p>
+        </Frame>
+        <Frame className="row privacy">
+          <h2 id="privacy-title">Privacy, in short</h2>
+          <details className="fold" ref={privacy} open>
+            <summary>Privacy, in short</summary>
+            <ul aria-labelledby="privacy-title">
+              {PRIVACY.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+            <p className="ask">
+              <Link to="/privacy">Read the privacy policy</Link>. Questions
+              about consent, staff access or HIPAA? Bring them to the demo.
+            </p>
+          </details>
+        </Frame>
+      </Need>
 
       <Know
         ref={know}
@@ -199,7 +482,7 @@ export default function Care() {
             />
           </div>
           <div className="words">
-            <Statement id="know-title" $size="lg" data-lines>
+            <Statement id="know-title" $size="lg">
               Know the person <em>behind the care.</em>
             </Statement>
             <p data-rise>
@@ -222,10 +505,16 @@ export default function Care() {
                 ],
               ]}
             />
+            <p className="film">
+              <TextAnchor href="/how-it-works#film">
+                See a call become a book&nbsp;·&nbsp;49&nbsp;s
+              </TextAnchor>
+            </p>
           </div>
         </Frame>
       </Know>
 
+      <Circle>
       <QuoteBand
         quote={
           <>
@@ -236,7 +525,7 @@ export default function Care() {
         steps={[
           [
             "The resident talks, when they like.",
-            "A Story calls in its iPhone app at an agreed hour (in a private beta), or a staff member starts a conversation together with them.",
+            "At an agreed hour, or together with a staff member.",
           ],
           [
             "The family adds what they know.",
@@ -248,7 +537,9 @@ export default function Care() {
           ],
         ]}
       />
+      </Circle>
 
+      <Booking>
       <DemoSection
         title={
           <>
@@ -270,7 +561,7 @@ export default function Care() {
           <>
             Not a care community?{" "}
             <Link to="/organizations">
-              A Story for colleges, libraries and more
+              A Story for schools, libraries and companies
             </Link>
           </>
         }
@@ -281,6 +572,7 @@ export default function Care() {
         cardLabel="A demo for your community"
         cardTitle="Tell us about your residents, and when suits you."
       />
+      </Booking>
     </>
   );
 }
