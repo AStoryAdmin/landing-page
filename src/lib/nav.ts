@@ -17,6 +17,10 @@ export type RouteInfo = {
   hint?: string;
   /** A finished page in public/, outside the React router: a plain anchor. */
   file?: boolean;
+  /** The address links use when it differs from the key (spec §4D: the
+      legal pages are linked in their slash form, the one S3 answers with
+      a 200 whatever the CloudFront setup). */
+  href?: string;
 };
 
 export const ROUTES = {
@@ -65,8 +69,8 @@ export const ROUTES = {
   "/guides": { label: "Conversation guides", hint: "A good place to begin." },
   "/contact": { label: "Contact", hint: "A person reads every message." },
   "/programs": { label: "Programs & grants" },
-  "/privacy": { label: "Privacy" },
-  "/terms": { label: "Terms" },
+  "/privacy": { label: "Privacy", href: "/privacy/" },
+  "/terms": { label: "Terms", href: "/terms/" },
   "/join": { label: "Joining a family's book" },
 } as const satisfies Record<string, RouteInfo>;
 
@@ -75,10 +79,10 @@ export const SIGN_IN = { label: "Sign in", to: APP.signIn } as const;
 
 export type RoutePath = keyof typeof ROUTES;
 
-export const route = (path: RoutePath): RouteInfo & { to: string } => ({
-  to: path,
-  ...(ROUTES[path] as RouteInfo),
-});
+export const route = (path: RoutePath): RouteInfo & { to: string } => {
+  const info = ROUTES[path] as RouteInfo;
+  return { ...info, to: info.href ?? path };
+};
 
 /** A pathname without its trailing slash ("/pricing/" → "/pricing"; "/" stays). */
 export const bare = (pathname: string) => pathname.replace(/(.)\/$/, "$1");
