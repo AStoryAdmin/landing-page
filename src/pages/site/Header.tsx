@@ -7,6 +7,7 @@ import { START_HREF, START_LABEL } from "../../lib/app";
 import {
   BAR,
   BAR_AFTER,
+  DRAWER_DOORS,
   DRAWER_MUTED,
   ORG_MENU_LABEL,
   SIGN_IN,
@@ -324,6 +325,18 @@ export default function Header() {
               </div>
             </div>
             {BAR_AFTER.map((p) => (
+              <RoomLink
+                key={p}
+                path={p}
+                pathname={location.pathname}
+                onClick={close}
+              />
+            ))}
+          </div>
+          {/* Drawer only, first tier: the doors for the invited relative and
+              the storyteller, then help (panel round 2, CHIEF-LOG B1.3). */}
+          <div className="gf-nav-doors">
+            {DRAWER_DOORS.map((p) => (
               <RoomLink
                 key={p}
                 path={p}

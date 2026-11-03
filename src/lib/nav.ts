@@ -71,7 +71,14 @@ export const ROUTES = {
   "/programs": { label: "Programs & grants" },
   "/privacy": { label: "Privacy", href: "/privacy/" },
   "/terms": { label: "Terms", href: "/terms/" },
-  "/join": { label: "Joining a family's book" },
+  /* Panel round 2 (CHIEF-LOG B1.3): the two doors for the people a book is
+     made with. The /join label is the chief's wording; the hash row needs
+     id="being-asked" on the storyteller section of /how-it-works (b2). */
+  "/join": { label: "Invited to a family’s book" },
+  "/how-it-works#being-asked": { label: "Being asked" },
+  /* The short version at the top of the privacy policy (privacy.tsx:89-122,
+     LegalLayout's h2#legal-short). */
+  "/privacy#legal-short": { label: "Privacy, in short", href: "/privacy/#legal-short" },
 } as const satisfies Record<string, RouteInfo>;
 
 /** The web app's sign-in: a quiet text link beside the one button. */
@@ -101,15 +108,21 @@ export const orgMenu = (pathname: string) =>
     .filter((p) => !(p === "/organizations#book" && isOrgPage(pathname)))
     .map(route);
 
-/** The drawer's quiet 2 × 2 group, under the five large rows. */
-export const DRAWER_MUTED: RoutePath[] = [
-  "/for-families",
-  "/your-story",
+/** The drawer's second set of first-tier rows, under the five large ones and
+    not in the desktop bar (panel round 2, CHIEF-LOG B1.3): the two doors for
+    the invited relative and the storyteller, then help. */
+export const DRAWER_DOORS: RoutePath[] = [
+  "/join",
+  "/how-it-works#being-asked",
   "/questions",
   "/contact",
 ];
 
-/** The footer's four columns: 16 page links, no repeats (spec §1.3). */
+/** The drawer's quiet group, under the rows. */
+export const DRAWER_MUTED: RoutePath[] = ["/for-families", "/your-story"];
+
+/** The footer's four columns: 17 page links, no repeats (spec §1.3; "Privacy,
+    in short" added in panel round 2, CHIEF-LOG B1.3). */
 export const FOOTER_GROUPS: { title: string; rooms: RoutePath[] }[] = [
   {
     title: "The product",
@@ -125,7 +138,10 @@ export const FOOTER_GROUPS: { title: string; rooms: RoutePath[] }[] = [
       "/organizations",
     ],
   },
-  { title: "Help", rooms: ["/questions", "/guides", "/contact"] },
+  {
+    title: "Help",
+    rooms: ["/questions", "/guides", "/privacy#legal-short", "/contact"],
+  },
   {
     title: "Company",
     rooms: ["/our-story", "/programs", "/privacy", "/terms"],

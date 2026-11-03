@@ -327,3 +327,10 @@ Section heights at 390 (px): /organizations who 575, how 1055 (was ~1300), book 
 ### Assumptions (Daniel asleep)
 - Folding privacy on phones is acceptable trust-wise because it stays one tap away, is open with no script, and is open on every screen from 641 px; no length waiver was needed, so none is requested.
 - Shortening both leads is a copy cut, not a new claim; no number, price, date or count was added.
+
+## Builder 1 — panel round 2, fix-b1 (branch premium/b1)
+
+### Requests (B1 → other builders)
+- **Builder 2 (`HowItWorks.tsx`):** please put `id="being-asked"` on the storyteller section (`<Asked …>` in `BeingAsked()`, ~l.395). The drawer row "Being asked", the /join page and `nav.ts` all link to `/how-it-works#being-asked`; until the id lands they open the top of /how-it-works.
+- **Builder 3 (`faqData.ts`):** /questions sorts the group whose title contains "invited" first and gives it `id="invited"` (matched by title, so no other change is needed). Please keep "invited" in the new group's title.
+- **Routing test owner (`qa/routing/cloudfront.test.mjs`, no owner in §6):** suggest adding `['https://astoryapp.com/join', null, '/join/index.html']` so the codeless /join rule is pinned. The edge still rewrites `/join/AB12` (bad code) to `/join/AB12/index.html` as the test expects; S3 has no such key, so that address shows the not-found page rather than the /join doors. Rewriting it to `/join/index.html` needs the test changed in the same commit.
