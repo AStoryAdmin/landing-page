@@ -30,9 +30,11 @@ import { BOOK } from "../../lib/pricing";
 import CallStills from "./home/Listen";
 import MemoryCard from "./app/MemoryCard";
 import { ArrowIcon, Invitation, PageOpening, Picture } from "./kit/kit";
+import Film from "./kit/Film";
 import { useReveals } from "./kit/reveals";
 import { PhonePairs } from "./rooms/phonePairs";
 import {
+  Actions,
   Chapter,
   Frame,
   Lead,
@@ -480,11 +482,23 @@ export default function HowItWorks() {
                 {START_LABEL} <ArrowIcon />
               </PrimaryLink>
               <SecondaryAnchor href="#calls">See a sample call</SecondaryAnchor>
+              <TextAnchor href="#film">Watch the film · 49 s</TextAnchor>
             </>
           }
           object={<CallSlip />}
         />
       </PhonePairs>
+
+      <Film
+        actions={
+          <Actions>
+            <PrimaryLink to={START_HREF}>
+              {START_LABEL} <ArrowIcon />
+            </PrimaryLink>
+            <TextAnchor href="#calls">Hear a sample call</TextAnchor>
+          </Actions>
+        }
+      />
 
       <FourMoments />
 
