@@ -23,8 +23,8 @@ import bank from './questionBank.json';
  * start of every build, into questionBank.json. It said 504 for weeks after
  * the app had 547; do not type the number by hand.
  */
-// What the app ships today (547 on 2026-10-23). Daniel's bank v2 (620) is not in the
-// app yet; the site says what a family gets now.
+// What the app ships today: 620 since bank v2 (in the web app and the phone app; the
+// site said 547 until 2026-11-04 because the counter missed "Desktop/phone app/").
 export const QUESTION_COUNT: number = bank.questions;
 
 /** How many chapters a life is told in here. */

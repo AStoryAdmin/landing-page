@@ -16,6 +16,11 @@ const out = new URL('../src/lib/questionBank.json', import.meta.url);
 const sources = [
     ['web-app/src/app-core/data/interview.js', new URL('../../web-app/src/app-core/data/interview.js', import.meta.url)],
     ['phone-app/src/data/interview.js', new URL('../../phone-app/src/data/interview.js', import.meta.url)],
+    /* On Daniel's computer both apps sit in "Desktop/phone app/", one level
+       further down. Without these the build kept 547 for two weeks after the
+       app reached 620 (found 2026-11-04). */
+    ['phone app/web-app/src/app-core/data/interview.js', new URL('../../phone%20app/web-app/src/app-core/data/interview.js', import.meta.url)],
+    ['phone app/phone-app/src/data/interview.js', new URL('../../phone%20app/phone-app/src/data/interview.js', import.meta.url)],
 ];
 
 const found = sources.find(([, url]) => existsSync(url));
