@@ -25,6 +25,7 @@ import EditorialSeo from "../../components/ui/EditorialSeo";
 import { INVITE_INTENT, looksLikeEmail, submitLead } from "../../lib/leads";
 import { track } from "../../lib/analytics";
 import { SITE } from "../../lib/seo";
+import { WRITE_TO_DANIEL } from "./orgQuestions";
 import { route } from "../../lib/nav";
 import { Phone } from "./app/Phone";
 import { ArrowIcon } from "./kit/kit";
@@ -212,6 +213,15 @@ const Opening = styled(Chapter)`
     margin: 0;
     font: 400 ${type.note} / 1.5 ${font.body};
     color: ${color.body};
+  }
+  /* Phone-first fix 2 (item 10): the address, selected whole in one tap. */
+  .fallback .address {
+    justify-self: center;
+    font: 500 ${type.note} / 1.5 ${font.ui};
+    color: ${color.primary};
+    user-select: all;
+    -webkit-user-select: all;
+    overflow-wrap: anywhere;
   }
 
   /* The phone during a call: the app itself, as on /care-communities. */
@@ -433,18 +443,21 @@ export default function GetTheApp() {
                    the same state whatever the reason (lib/leads.ts
                    "unconfigured" or "failed"): one more step, no error
                    wording. The mailto is lib/leads.ts inviteMailto. */
+                /* Phone-first fix 2 (item 10, Maya #1, Harold #3, Tuan #3,
+                   Priya #4): it reads as finished. "Daniel answers every
+                   message himself" is orgQuestions.ts WRITE_TO_DANIEL. The
+                   address is plain text anyone can select in one tap, for a
+                   phone with no mail app. */
                 <div className="fallback">
-                  <h2>One more step</h2>
+                  <h2>Almost there</h2>
                   <p>
-                    Your request is written as an email to us. Press send, and
-                    it reaches Daniel.
+                    Your request is ready as an email to us. Press send, and
+                    it reaches Daniel. {WRITE_TO_DANIEL}
                   </p>
                   <PrimaryAnchor href={sent.mailto} className="go">
                     Open the email <ArrowIcon />
                   </PrimaryAnchor>
-                  <p>
-                    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-                  </p>
+                  <p className="address">{SITE.email}</p>
                 </div>
               ) : (
                 <Form onSubmit={onSubmit} noValidate>
@@ -471,12 +484,12 @@ export default function GetTheApp() {
                     </p>
                   )}
                   {/* Item 7b: what the form already does ("We'll send your
-                      invite to <email>"), said before it is sent. */}
-                  {gift && (
-                    <p className="gift-note">
-                      Use your own email. The invite comes to you.
-                    </p>
-                  )}
+                      invite to <email>"), said before it is sent.
+                      Phone-first fix 2 (item 9a, Maya #2): for everyone,
+                      not only ?for=someone. */}
+                  <p className="gift-note">
+                    Use your own email. The invite comes to you.
+                  </p>
                   <fieldset
                     aria-describedby={tried && !answerOk ? `${ids}-answer` : undefined}
                   >
@@ -563,9 +576,11 @@ export default function GetTheApp() {
         <Frame className="row">
           <h2 id="after-title">After you ask</h2>
           <div>
-            {/* faqData.ts:69 and :40. */}
+            {/* faqData.ts:69 and :40. Phone-first fix 2 (item 9b, Maya #2,
+                Harold): step 1 says whose address it is (the thank-you,
+                "We'll send your invite to <email>"). */}
             <ol>
-              <li>We email your invite to the address you gave.</li>
+              <li>We email the invite to you, at the address you gave.</li>
               <li>
                 Your parent installs the app once on their iPhone, and we help
                 you set it up.
