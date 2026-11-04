@@ -45,6 +45,7 @@ import {
   BOOK_EDITIONS,
 } from "../../lib/pricing";
 import { checkoutFor, isCheckoutLive } from "../../lib/checkout";
+import { ORG_TAB_LABEL } from "../../lib/nav";
 import { START_HREF, START_LABEL } from "../../lib/app";
 import { QUESTION_COUNT } from "../../lib/product";
 import TodayNow from "./TodayNow";
@@ -78,6 +79,12 @@ import {
 
 const Plans = styled(Chapter)`
   padding-top: 0;
+  /* Phone-first fix 3 (item 6b): one label over the three cards. */
+  .plans-label {
+    margin: 0 0 ${space.sm};
+    font: 600 ${type.ui} / 1.3 ${font.ui};
+    color: ${color.primary};
+  }
   .plans {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -355,19 +362,21 @@ const Plans = styled(Chapter)`
       grid-template-columns: minmax(0, 1fr);
     }
   }
-  /* Phone-first fix 2 (item 11b): "What's included" is a fold on a phone
-     only. From 641 px the summary is hidden and the details stay open, so
-     the laptop card is as it was. */
+  /* Phone-first fix 2 (item 11b): "What's included" is a fold on a phone.
+     Phone-first fix 3 (item 6c): also wherever the header shows Menu
+     (media.navBar, below 1180 px, which covers 1024 px at 150 % text).
+     From 1180 px the summary is hidden and the details stay open, so the
+     laptop card is as it was. */
   .included > summary {
     display: none;
   }
-  @media (min-width: 641px) {
+  @media (min-width: 1180px) {
     .included::details-content {
       content-visibility: visible;
       display: contents;
     }
   }
-  ${media.sm} {
+  ${media.navBar} {
     .included {
       margin-top: ${space.md};
       border-top: 1px solid ${color.primaryLine};
@@ -410,7 +419,8 @@ const Plans = styled(Chapter)`
   }
 `;
 
-const INCLUDED_FOLD = "(max-width: 640px)";
+/** The header's own breakpoint (theme.ts media.navBar), as a media query. */
+const INCLUDED_FOLD = media.navBar.replace(/^@media\s+/, "");
 
 /*
  * Compare every plan — the founder asked for a layout that makes the plans
@@ -1264,6 +1274,15 @@ function HeroPrice() {
             Care communities and organizations{" "}→
           </Link>
         </p>
+        {/* Phone-first fix 3 (item 5, Denise #3): where an organization's
+            price is. Source: orgQuestions.ts DEMO_AGENDA ("price is quoted
+            on the demo"); the link label is lib/nav.ts ORG_TAB_LABEL. */}
+        <p className="org-price">
+          Care communities, schools and libraries: priced on the demo.{" "}
+          <Link to="/organizations" className="care-link">
+            {ORG_TAB_LABEL}{" "}→
+          </Link>
+        </p>
         <TextLink to="/how-it-works#film" className="film-link">
           Watch the film · 49 s
         </TextLink>
@@ -1474,10 +1493,15 @@ export default function Pricing() {
                   inviting, writing and reading never cost extra; the calls
                   ring in the A Story iPhone app, in a private beta),
                   faqData.ts "no fee per relative", plan :16 (by invite). */}
+              {/* Phone-first fix 3 (item 6a, Maya #3, Harold #5): what today
+                  costs. The invite form asks for an email and the iPhone
+                  question only, no payment (GetTheApp.tsx form fields);
+                  "no card", pricing.ts START.lead. */}
               <span className="status">
                 Relatives you invite read and add free, with no card. The
                 calls ring in the A Story iPhone app, by invite in a private
-                beta, and aren’t on sale yet.
+                beta, and aren’t on sale yet. Asking for an invite is free,
+                with no card.
               </span>
               {/* Round 3 fix 1 (item 9): the Express line goes to its card
                   (#express), the first card in the DOM (PLAN_ORDER). */}
@@ -1503,6 +1527,9 @@ export default function Pricing() {
 
       <Plans ref={plans} $ground="ivory" aria-label="Plans">
         <Frame>
+          {/* Phone-first fix 3 (item 6b): the cards' state, said once for
+              all three (it was a note on the Express card). */}
+          <p className="plans-label">When the calls go on sale</p>
           <div
             ref={cards}
             className="plans"
@@ -1550,22 +1577,13 @@ export default function Pricing() {
                         section below (the archive stays with or without a
                         plan, orgQuestions.ts ORG_GROUP "How long is it
                         kept?", privacy.tsx section 9)
-                      "Prices for when the calls go on sale; today it is by
-                        invite."  the status line above ("by invite in a
-                        private beta, and aren’t on sale yet"); no date.
+                    Phone-first fix 3 (item 6b): "Prices for when the calls
+                    go on sale" became the one label above the cards.
                     Nothing about leftover minutes (blocked on Daniel). */}
                 {p.id === "express" && (
-                  <>
-                    <p className="card-note">
-                      <a href="#yours">Whatever you choose, it stays yours.</a>
-                    </p>
-                    {!isCheckoutLive(p.id) && (
-                      <p className="card-note">
-                        Prices for when the calls go on sale; today it is by
-                        invite.
-                      </p>
-                    )}
-                  </>
+                  <p className="card-note">
+                    <a href="#yours">Whatever you choose, it stays yours.</a>
+                  </p>
                 )}
                 <details className="included" open>
                   <summary>What’s included</summary>
