@@ -25,6 +25,7 @@ import EditorialSeo from "../../components/ui/EditorialSeo";
 import { INVITE_INTENT, looksLikeEmail, submitLead } from "../../lib/leads";
 import { track } from "../../lib/analytics";
 import { SITE } from "../../lib/seo";
+import { CONTACT } from "../../lib/contact";
 import { WRITE_TO_DANIEL } from "./orgQuestions";
 import { route } from "../../lib/nav";
 import { Phone } from "./app/Phone";
@@ -280,6 +281,65 @@ const Opening = styled(Chapter)`
   }
 `;
 
+/* Phone-first fix 3 (item 10): the storyteller's band, in After's two
+   columns: the question, then three short lines, the last with a face. */
+const Asked = styled(Chapter)`
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(${space.xl}, 6vw, 128px);
+    align-items: start;
+  }
+  h2 {
+    margin: 0;
+    font: 600 ${display.md} / 1.1 ${font.display};
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li,
+  .daniel {
+    max-width: 56ch;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--text);
+  }
+  li + li {
+    margin-top: ${space.xs};
+  }
+  .daniel {
+    display: flex;
+    align-items: center;
+    gap: ${space.md};
+    margin: ${space.md} 0 0;
+  }
+  .daniel .face {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .daniel a {
+    color: var(--ink);
+    font-weight: 500;
+    text-underline-offset: 0.18em;
+    overflow-wrap: anywhere;
+  }
+  .more {
+    margin: ${space.md} 0 0;
+  }
+  ${media.md} {
+    .row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: ${space.md};
+    }
+  }
+`;
+
 /* After you ask: three short steps and the door for invited relatives. */
 const After = styled(Chapter)`
   .row {
@@ -416,11 +476,6 @@ export default function GetTheApp() {
                 Giving it as a gift?{" "}
                 <TextLink to={FAMILIES.to}>
                   <ArrowIcon /> {FAMILIES.label}
-                </TextLink>
-              </li>
-              <li>
-                <TextLink to={BEING_ASKED.to}>
-                  {BEING_ASKED.label} Start here
                 </TextLink>
               </li>
             </ul>
@@ -571,6 +626,45 @@ export default function GetTheApp() {
           </figure>
         </Frame>
       </Opening>
+
+      {/* Phone-first fix 3 (item 10, Harold #1, Maya #4): the storyteller's
+          band, after the opening (so at 390 it sits below the form, and the
+          form's first screen is unchanged). The three lines are the ones
+          /join says (AppDoor.tsx COMPUTER_LINE and "You can stop at any
+          time", :233, :842; DANIEL_ANSWERS, :234, after the public address,
+          lib/contact.ts); "can stop at any time" is orgQuestions.ts:130.
+          Daniel's face is the /our-story photograph, as on /join. */}
+      <Asked $ground="paper" $tight aria-labelledby="asked-title">
+        <Frame className="row">
+          <h2 id="asked-title">Being called by A Story?</h2>
+          <div>
+            <ul aria-label="If A Story calls you">
+              <li>It’s a computer that calls and asks, not a person.</li>
+              <li>You can stop at any time.</li>
+            </ul>
+            <p className="daniel">
+              <img
+                className="face"
+                src="/our-story/daniel-320.webp"
+                width={48}
+                height={48}
+                alt="Daniel Hoang Nguyen, co-founder"
+                loading="lazy"
+                decoding="async"
+              />
+              <span>
+                Write to <a href={CONTACT.general}>{SITE.email}</a>; Daniel,
+                who started A Story, answers himself.
+              </span>
+            </p>
+            <p className="more">
+              <TextLink to={BEING_ASKED.to}>
+                How it works for you
+              </TextLink>
+            </p>
+          </div>
+        </Frame>
+      </Asked>
 
       <After $ground="ivory" $tight aria-labelledby="after-title">
         <Frame className="row">
