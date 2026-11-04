@@ -387,6 +387,7 @@ const Answers = styled(Chapter)`
     transform: rotate(45deg);
   }
   details p {
+    overflow-wrap: anywhere;
     padding: 0 0 ${space.lg};
     font: 400 ${type.read} / 1.7 ${font.text};
     color: ${color.body};
