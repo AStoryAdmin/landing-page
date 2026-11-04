@@ -4,8 +4,7 @@
  * Every figure and allowance comes from `pricing.ts` (which mirrors the
  * app) and every destination from `checkout.ts`; the page only arranges
  * them. Choose a plan, and the one action at the bottom follows the choice
- * to checkout or — while checkout is unconfigured — to /reserve with the
- * choice carried along.
+ * to checkout or — while checkout is unconfigured — to Start free.
  *
  * Until 2026-10-01 each plan also had an "Include the book" checkbox that
  * swapped its price for a bundle ($154, $319). The app never sold those: a
@@ -47,7 +46,6 @@ import {
 } from "../../lib/pricing";
 import { checkoutFor, isCheckoutLive } from "../../lib/checkout";
 import { START_HREF, START_LABEL } from "../../lib/app";
-import { OFFERS } from "../../lib/founding";
 import { QUESTION_COUNT } from "../../lib/product";
 import { TODAY_NOTE } from "../../lib/today";
 import { WHO_HEARS_SHORT } from "../../lib/hears";
@@ -305,22 +303,6 @@ const Plans = styled(Chapter)`
     flex-wrap: wrap;
     align-items: center;
     gap: 12px 24px;
-  }
-  /* An inline link with a real underline, so a wrapped second line is
-     underlined under its words, never struck through (jury 3, B1). */
-  .decide .reserve {
-    display: inline-block;
-    padding: 12px 0;
-    background: none;
-    font: 500 ${type.ui} / 1.4 ${font.body};
-    color: ${color.ivory};
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-decoration-color: color-mix(in srgb, ${color.gold} 80%, transparent);
-    text-underline-offset: 5px;
-  }
-  .decide .reserve svg {
-    display: none;
   }
   .all-plans {
     margin-top: 18px;
@@ -1392,8 +1374,7 @@ export default function Pricing() {
       />
       {/* Group B round 2 (chief log B3.1): on a phone the first screen says
           the buying state right under the h1, then one gift line, then one
-          primary action, before any price card. The $1 lives in the status
-          line's link, so it is said once. */}
+          primary action, before any price card. */}
       <HeroWords>
         <PageOpening
           variant="wide"
@@ -1408,15 +1389,10 @@ export default function Pricing() {
               {/* Round 3 (B2): what is free comes first, and the relatives'
                   line is in the first screen (Tuan). Sources: pricing.ts
                   START.lead (no card, no time limit; inviting never costs
-                  extra), faqData.ts "no fee per relative", Reserve.tsx:762
-                  (the dollar). */}
+                  extra), faqData.ts "no fee per relative". */}
               <span className="status">
                 Everyone starts free, with no card; relatives you invite pay
-                nothing. The calls aren’t on sale yet:{" "}
-                <Link to="/reserve">
-                  {OFFERS.reserve.price} holds your place in line
-                </Link>
-                .
+                nothing. The calls aren’t on sale yet.
               </span>
               {/* Round 3 fix 1 (item 9): the Express line goes to its card
                   (#express), the first card in the DOM (PLAN_ORDER). */}
@@ -1485,10 +1461,8 @@ export default function Pricing() {
                       "Stop paying, and it is still yours."  this page's
                                                              heading below
                                                              (#yours)
-                      "The calls aren’t on sale yet: $1 holds your place."
-                                                             the status line
-                                                             above, and
-                                                             Reserve.tsx:762
+                      "The calls aren’t on sale yet."    the status line
+                                                             above
                     Nothing about leftover minutes (blocked on Daniel). */}
                 {p.id === "express" && (
                   <>
@@ -1497,11 +1471,8 @@ export default function Pricing() {
                     </p>
                     {!isCheckoutLive(p.id) && (
                       <p className="card-note">
-                        The calls aren’t on sale yet:{" "}
-                        {OFFERS.reserve.price} holds your place.{" "}
-                        <Link to={checkoutFor(p.id)}>
-                          Reserve for {OFFERS.reserve.price}
-                        </Link>
+                        The calls aren’t on sale yet. Start free today, in
+                        your browser.
                       </p>
                     )}
                   </>
@@ -1565,8 +1536,7 @@ export default function Pricing() {
             </div>
             <div className="decide-actions">
               {/* One primary action on this page: Start free. Plans that
-                  cannot be bought yet offer the $1 reservation beside it, the
-                  only place on the site that still does. */}
+                  cannot be bought yet show Start free too. */}
               {isCheckoutLive(selectedId) ? (
                 <PrimaryAnchor href={checkoutFor(selectedId)}>
                   Choose {name} <ArrowIcon />
@@ -1575,11 +1545,6 @@ export default function Pricing() {
                 <PrimaryAnchor href={START_HREF}>
                   {START_LABEL} <ArrowIcon />
                 </PrimaryAnchor>
-              )}
-              {selectedId !== "free" && !isCheckoutLive(selectedId) && (
-                <Link to={checkoutFor(selectedId)} className="reserve">
-                  {`Or reserve for ${OFFERS.reserve.price}`}
-                </Link>
               )}
             </div>
           </div>

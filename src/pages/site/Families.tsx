@@ -32,7 +32,6 @@
 import type { ReactNode } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
-import { OFFERS } from "../../lib/founding";
 import { PLANS } from "../../lib/pricing";
 import { ArrowIcon, Invitation, PageOpening, Print } from "./kit/kit";
 import Scroller from "./kit/Scroller";
@@ -42,7 +41,6 @@ import {
   Frame,
   PrimaryAnchor,
   SecondaryAnchor,
-  SecondaryLink,
   Statement,
   TextLink,
 } from "./kit/kit.styles";
@@ -306,15 +304,14 @@ const TILTS = [-1.2, 0, 0.8, 0, -0.9];
 
 /* Round 3 fix 1 (item 8, Maya): "Giving it today" as three steps, each a
    strict subset of faqData.ts:107 ("How does giving A Story work?"): you set
-   up the archive free; choose a good time for the first call; $1 holds the
-   family's place, and we email you when the calls open. Then the one-time
+   up the archive free; choose a good time for the first call (the third
+   step, the $1 reservation, left on 2026-11-03). Then the one-time
    plan (same answer; pricing.ts Express). On this page the line about the
    plans that renew is left out; /questions keeps the whole answer. No gift
    button, card, note or date (blocked on Daniel). */
 const GIFT_STEPS = [
   "Set up the archive for your relative today, free.",
   "Choose a good time for the first call.",
-  `${OFFERS.reserve.price} holds your family’s place in line, and we email you when the calls open.`,
 ];
 const GIFT_ONCE = `${PLANS[2].name} is the one-time plan, ${PLANS[2].price}, and nothing renews.`;
 /** Questions.tsx:431, word for word. */
@@ -460,7 +457,7 @@ const Occasions = styled(Chapter)`
   main[data-premium] & .gift-actions {
     margin-top: calc(${space.sm} + ${space.xs});
   }
-  /* Start free and Reserve side by side, also at 390 (Maya, item 8). */
+  /* The inline actions row (Maya, item 8). */
   .gift-actions[data-inline-actions] {
     column-gap: ${space.sm};
   }
@@ -514,7 +511,7 @@ function OccasionsRoom() {
             <p className="mission">{NOT_FINISHED}</p>
           </div>
           {/* Round 3 (B2, Maya): the FAQ answer on the left carries what you
-              can give today (set up free, the dollar, we email you) and the
+              can give today (set up free, choose the first call) and the
               one-time plan with its price, so this column is only who hears
               the recordings and the actions (the Express sentence it held
               repeated the answer, supervisor r3). The iPhone line moved up
@@ -525,16 +522,12 @@ function OccasionsRoom() {
               {WHO_HEARS_SHORT} {WHO_OWNS}{" "}
               <TextLink to="/privacy">Our privacy promises</TextLink>
             </p>
-            {/* Start free and Reserve side by side; the sticky Start bar
-                steps aside while this row is on screen
-                (kit/StickyStart.tsx, data-inline-actions). */}
+            {/* Start free; the sticky Start bar steps aside while this row
+                is on screen (kit/StickyStart.tsx, data-inline-actions). */}
             <div className="gift-actions" data-inline-actions>
               <PrimaryAnchor href={GIFT_START}>
                 {START_LABEL} <ArrowIcon />
               </PrimaryAnchor>
-              <SecondaryLink to="/reserve">
-                Reserve for {OFFERS.reserve.price}
-              </SecondaryLink>
             </div>
             <p className="hears">
               {DANIEL}{" "}
@@ -719,16 +712,15 @@ export default function Families() {
             <>
               {/* Round 3 (B2, Maya): the gift answer in the first screen,
                   from faqData.ts "How does giving A Story work?" (set up the
-                  archive, free), Reserve.tsx:762 (a dollar holds your place)
-                  and founding.ts INCLUDES.reserve[0] (we email you when the
-                  calls open). No date is promised. The iPhone / private
+                  archive, free) and lib/today.ts (any browser). The $1
+                  reservation half of this line left on 2026-11-03. No date
+                  is promised. The iPhone / private
                   beta line left the lead (taste rule 6, supervisor r3): the
                   yes/no block directly below states it. */}
               {/* Round 3 fix 2 (item 3): with the first sentence now the
                   h1, this line is the whole lead, at the lead's size. */}
-              Today you can set up their archive free, and{" "}
-              {OFFERS.reserve.price} holds your family’s place in line for
-              the calls. We email you when they open.
+              Today you can set up their archive free, in your browser, with
+              no card.
             </>
           }
           actions={

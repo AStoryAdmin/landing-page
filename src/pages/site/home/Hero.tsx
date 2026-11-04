@@ -6,7 +6,7 @@
  * dinner, everyone listening, nobody writing it down - the thing A Story is
  * trying to catch. The headline is the app's own line ("Every life holds a
  * story worth keeping.", Bao 2026-10-23), then one sentence on what A Story
- * is, the two doors, and the honest small print: the calls ring in the A
+ * is, the door (Start free), and the honest small print: the calls ring in the A
  * Story iPhone app, in private beta, which the parent installs.
  *
  * Type floor (Bao, 2026-10-24: "i despised the small text everywhere"): the
@@ -21,11 +21,10 @@
  */
 import styled from "styled-components";
 import { ArrowIcon, Picture } from "../kit/kit";
-import { Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
+import { Frame, PrimaryLink, onDarkActions } from "../kit/kit.styles";
 import { gsap, openMasks, SplitText, useScene } from "../../../lib/scrollMotion";
 import { color, font, media } from "../../../styles/theme";
 import { START_HREF, START_LABEL } from "../../../lib/app";
-import { OFFERS } from "../../../lib/founding";
 
 const Scene = styled.section`
   --ink: ${color.onDark};
@@ -190,14 +189,10 @@ export default function Hero() {
           <PrimaryLink to={START_HREF}>
             {START_LABEL} <ArrowIcon />
           </PrimaryLink>
-          <TextLink to="/reserve">
-            Reserve for {OFFERS.reserve.price} <ArrowIcon />
-          </TextLink>
         </div>
         <p className="hero-small">
-          Start free in your browser, no card, or reserve for $1 and we’ll email
-          you when the calls open. The calls are in private beta and ring in the
-          A Story app on your parent’s iPhone.
+          Start free in your browser, no card. The calls are in private beta and
+          ring in the A Story app on your parent’s iPhone.
         </p>
       </Frame>
     </Scene>

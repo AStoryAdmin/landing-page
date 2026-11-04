@@ -9,12 +9,12 @@
  * `demo-request` function, `type: "contact"`, lib/demoRequest.ts), and the
  * address itself, large, with a button that copies it.
  *
- * The other doors - book a demo, reserve, questions - are beside the form,
+ * The other doors - book a demo, questions - are beside the form,
  * so someone who came here for one of those finds it without writing.
  *
  * 2026-11-02 (design-spec §4C): the doors are named by what people came
- * for ("Reserve for $1", "Book a demo", "Questions & answers"), with no
- * discount. On a phone the letter and its signature come first, then the
+ * for ("Book a demo", "Questions & answers"; "Reserve for $1" left on
+ * 2026-11-03), with no discount. On a phone the letter and its signature come first, then the
  * form, then the address and the doors. Visual system (spec §3): labels in
  * sentence case, sizes from theme tokens only, and the two blocks below the
  * opening arrive together, as one group. The doors keep their row arrow, as the
@@ -51,14 +51,8 @@ const TOPICS = [
   "Something else",
 ] as const;
 
-/* The other doors, by what people came for (design-spec §4C). The $1 line
-   is lib/founding.ts INCLUDES.reserve: no discount is mentioned. */
+/* The other doors, by what people came for (design-spec §4C). */
 const DOORS = [
-  [
-    "Reserve for $1",
-    "It holds your place in line, and the dollar comes off your first year.",
-    "/reserve",
-  ],
   [
     "Book a demo",
     "For a school, library, company or care community.",

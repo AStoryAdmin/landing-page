@@ -11,11 +11,9 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import Seo from "../../../components/ui/Seo";
 import { signOut, useAccount } from "../../../lib/auth";
-import { OFFERS, waitlistLabel } from "../../../lib/founding";
+import { waitlistLabel } from "../../../lib/founding";
 import { track } from "../../../lib/analytics";
 import AccountShell from "./AccountShell";
-import { ArrowIcon } from "../kit/kit";
-import { PrimaryLink } from "../kit/kit.styles";
 
 const longDate = (iso: string) =>
   new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" });
@@ -58,7 +56,7 @@ export default function Account() {
         intro={
           holds
             ? "Nothing more to do today. We will email you when payment opens, or when it is your turn."
-            : `Reserve for ${OFFERS.reserve.price} to hold your place.`
+            : "Start free in A Story, in your browser."
         }
       >
         <dl className="details">
@@ -89,10 +87,6 @@ export default function Account() {
           )}
         </dl>
         <div style={{ display: "grid", gap: 18, marginTop: 28 }}>
-          <PrimaryLink className="go" to="/reserve">
-            {holds ? "Your reservation" : `Reserve for ${OFFERS.reserve.price}`}{" "}
-            <ArrowIcon />
-          </PrimaryLink>
           <div className="quiet" style={{ justifyContent: "center" }}>
             <button type="button" onClick={onSignOut}>
               Sign out
