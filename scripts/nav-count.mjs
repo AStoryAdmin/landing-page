@@ -203,7 +203,8 @@ for (const path of navPages) {
                 door: items.filter((el) => el.classList.contains('gf-door')).length,
                 maxDepth: Math.max(...items.map(depth)),
                 wrapped: items.filter(wraps).map((el) => el.innerText.trim()),
-                firstTier: [...nav.querySelectorAll('.gf-nav-links > a, .org-toggle')].filter(visible).map((el) => ({ label: el.innerText.trim(), href: el.getAttribute('href'), depth: depth(el), size: getComputedStyle(el).fontSize })),
+                /* Round 3 fix 2 (item 14): a row with a hint keeps its label in <strong>. */
+                firstTier: [...nav.querySelectorAll('.gf-nav-links > a, .org-toggle')].filter(visible).map((el) => ({ label: (el.querySelector(':scope > span > strong') ?? el).innerText.trim(), href: el.getAttribute('href'), depth: depth(el), size: getComputedStyle(el).fontSize })),
                 muted: [...nav.querySelectorAll('.gf-nav-muted a')].filter(visible).map((a) => a.textContent.trim()),
                 shortMuted: [...nav.querySelectorAll('.gf-nav-muted a')].filter((a) => a.getBoundingClientRect().height < 44).map((a) => a.textContent.trim()),
                 overflow: document.documentElement.scrollWidth > innerWidth,

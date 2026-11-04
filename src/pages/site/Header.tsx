@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import styled from "styled-components";
 import { Wordmark } from "./shared";
 import { ArrowIcon } from "./kit/kit";
 import { HeaderShell } from "./chrome.styles";
+import { color, font, media, type } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
 import {
   BAR,
@@ -41,6 +43,56 @@ import {
  * quiet 2 × 2 group, then Sign in and the one button.
  */
 const WIDE = "(min-width:1180px)";
+
+/*
+ * Round 3 fix 2 (item 9, Harold #2): whenever the bar folds to Menu (below
+ * 1180 px, media.navBar), the invited relative's short door stays in the
+ * bar beside Menu, at any text size; the drawer keeps its full row. It
+ * steps out below 360 px, where the wordmark and Menu need the room, and
+ * while the drawer is open. Not on the two org pages (as in the desktop
+ * bar). A different class from the desktop .gf-door, so
+ * scripts/nav-count.mjs counts the desktop bar as before.
+ */
+const BarDoor = styled(Link)`
+  display: none;
+  ${media.navBar} {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-left: auto;
+    margin-right: -8px;
+    padding: 0 4px;
+    color: inherit;
+    font: 500 ${type.ui} / 1 ${font.ui};
+    text-decoration: none;
+    white-space: nowrap;
+    position: relative;
+    z-index: 2;
+    .is-open & {
+      display: none;
+    }
+  }
+  @media (max-width: 359px) {
+    display: none;
+  }
+`;
+
+/*
+ * Round 3 fix 2 (item 14, Maya #9): in the drawer, the two family rows
+ * carry their one-line hint (lib/nav.ts) under the label, in a small serif,
+ * so "For families" and "Invited to a family's book" read apart. The label
+ * stays in <strong>, which nav-count reads.
+ */
+const HINTED: RoutePath[] = ["/for-families", "/join"];
+const Hinted = styled.span`
+  display: grid;
+  gap: 4px;
+  small {
+    font: 400 ${type.note} / 1.4 ${font.text};
+    letter-spacing: 0;
+    color: ${color.onDarkMuted};
+  }
+`;
 const HOVER = "(hover: hover) and (pointer: fine)";
 
 function RoomLink({
@@ -55,11 +107,20 @@ function RoomLink({
   className?: string;
 }) {
   const r = route(path);
+  const label =
+    HINTED.includes(path) && r.hint ? (
+      <Hinted>
+        <strong>{r.label}</strong>
+        <small>{r.hint}</small>
+      </Hinted>
+    ) : (
+      r.label
+    );
   /* /samples is a page in public/, outside the React router: a router Link
      would show the not-found route, so it needs a full navigation. */
   return isFile(r.to) ? (
     <a href={r.to} onClick={onClick} className={className}>
-      {r.label}
+      {label}
     </a>
   ) : (
     <Link
@@ -68,7 +129,7 @@ function RoomLink({
       className={className}
       aria-current={bare(pathname) === r.to ? "page" : undefined}
     >
-      {r.label}
+      {label}
     </Link>
   );
 }
@@ -251,6 +312,11 @@ export default function Header() {
         <span onClick={close}>
           <Wordmark light />
         </span>
+        {!onOrgPage && (
+          <BarDoor to="/join" onClick={close} className="gf-bar-door">
+            {INVITED_LABEL}
+          </BarDoor>
+        )}
         <button
           className="gf-menu-toggle"
           ref={toggle}

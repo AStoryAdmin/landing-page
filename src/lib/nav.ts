@@ -74,7 +74,14 @@ export const ROUTES = {
   /* Panel round 2 (CHIEF-LOG B1.3): the two doors for the people a book is
      made with. The /join label is the chief's wording; the hash row needs
      id="being-asked" on the storyteller section of /how-it-works (b2). */
-  "/join": { label: "Invited to a family’s book" },
+  /* Round 3 fix 2 (item 14, Maya #9): the drawer shows this hint under the
+     label, beside "For families"'s, so the two read apart. A navigation
+     line, not a claim (AppDoor.tsx: "The relative who invited you sent
+     either a six-letter code or a link."). */
+  "/join": {
+    label: "Invited to a family’s book",
+    hint: "Someone sent you a code or a link.",
+  },
   /* Round 3 fix 1 (item 10, Harold): says whom it is for. A menu label,
      not a claim. */
   "/how-it-works#being-asked": { label: "Asked to tell your story?" },
