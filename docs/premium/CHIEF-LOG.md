@@ -951,3 +951,14 @@ Commits on `site-premium` (base 104779a): 07e1b35, 96b2c37, 79e19ab, 32ef203, 5c
 - **copy-check:** one HIT on /pricing, "Stop paying" (the section heading kept by chief ruling, CHIEF-LOG B3, and now the Express card's link to it, as the brief asked).
 - **film-check:** Edge 1440 and 390 pass; WebKit still not installed.
 - **Request (B1 / chief):** `public/samples/index.html` copies the footer by hand and now lacks "Asked to tell your story?" and the drawer hints; it needs the samples-chrome regeneration logged in fix 1 (`scripts/samples-chrome.mjs:196`, `\r?\n`).
+
+## Phone-first requests
+
+From Builder B (pf/b, plan tasks 4-5), 2026-11-03. Each item is in a file B does not own.
+
+- **Phone-first B-1 (routing, chief):** `/start`, `/sign-up` and `/signup` still send strangers to `app.astoryapp.com/create-account`. This happens in `index.html:80,87,89`, `deploy/cloudfront-viewer-request.js:17-19,99` and is pinned by `qa/routing/cloudfront.test.mjs:30-37`. B left them alone so routing stays identical. The options: point them at `/get-the-app`, or keep them and let the web app's invite-only page catch strangers (`docs/premium/webapp-invite-only-brief.md`). The site's own fallback for that door (AppDoor `create-account`) no longer links to create-account: it shows START_* and "I have a family code" → /join.
+- **Phone-first B-2 (kit, Builder A):** `kit/kit.tsx:770-786`, the closing Invitation on every page off home, still reads "Everyone starts *free.*" / "The archive is free for as long as you like. A plan adds A Story doing the asking." Suggested wording, sourced (lib/today.ts:13, faqData.ts:40): title "It starts with *one call.*", line "The calls ring in the A Story iPhone app, by invite. The family reads and adds free."
+- **Phone-first B-3 (kit, Builder A):** `kit/ComingSoon.tsx:79` reads "Writing, the archive and the book work today in any browser, at app.astoryapp.com". In a phone-first stage this invites strangers to the web app. Suggested: "The family reads and adds in any browser, through the family's link."
+- **Phone-first B-4 (home, Builder A):** `home/ThreeSteps.tsx:57` "... free, on a phone or at app.astoryapp.com" and `home/CodeFromFamily.tsx:61` "Open A Story in your browser". These are fine for a relative with a code, so they need no change unless the chief wants app.astoryapp.com gone from home.
+- **Phone-first B-5 (nav, Builder A):** the `/pricing` hint in `lib/nav.ts` "Everyone starts free. Writing and reading never cost extra." Suggested: "Free for the family. Plans for the calls." (the new /pricing h1).
+- **Not fixed, needs Daniel or an asset:** the "Public" badge in `memory.webp` on /care-communities (Denise); the "looking for our first partners" line (panel-r3 table item 8, a new claim); the privacy short line (item 12).
