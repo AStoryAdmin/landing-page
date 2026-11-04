@@ -157,12 +157,16 @@ export default function Hero() {
       autoSplit: true,
       onSplit: (split) => {
         openMasks(split.masks);
+        /* Phone-first fix 3 (item 9, Maya #7): a shorter, earlier rise so
+           the whole headline is read by 600 ms on a slow phone (was 1.2 s,
+           0.1 s apart, after 0.1 s). Timing only: the settled layout, the
+           reduced-motion and no-JS paths are unchanged. */
         return gsap.from(split.lines, {
           yPercent: 110,
-          duration: 1.2,
+          duration: 0.7,
           ease: "house-out",
-          stagger: 0.1,
-          delay: 0.1,
+          stagger: 0.06,
+          delay: 0,
         });
       },
     });
