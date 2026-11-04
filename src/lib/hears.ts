@@ -12,13 +12,20 @@ export const WHO_HEARS =
   "Only your family hears the recordings. Nobody at A Story reads, listens to or looks at your memories, unless you ask us to help or someone reports something.";
 
 /**
- * The same point in the summary's own short form ("Only your family sees it.
- * Not even us.", privacy.tsx:96), for a hero note on a phone, where the full
+ * The same point, short, for a hero note on a phone, where the full
  * sentence cost the first screen its photograph. The link beside it goes to
  * the full sentence.
+ *
+ * Phone-first fix 2 (item 8, Maya #6; Denise, Priya): "Not even us." said
+ * more than the policy's own text, which keeps the case where someone asks
+ * us to help (components/privacy.tsx:98, "Nobody at A Story reads, listens
+ * to or looks at your memories, unless you ask us to help or someone
+ * reports something."). The second sentence is that text, shortened. The
+ * policy summary's label (privacy.tsx:97, "Only your family sees it. Not
+ * even us.") is left for Daniel.
  */
 export const WHO_HEARS_SHORT =
-  "Only your family hears the recordings. Not even us.";
+  "Only your family hears the recordings. Nobody at A Story listens unless you ask us to help.";
 
 /** The storyteller owns it (privacy.tsx:93-94), for the gift pages. */
 export const WHO_OWNS =
