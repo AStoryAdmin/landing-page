@@ -116,7 +116,7 @@ export const anyCheckoutLive = (): boolean => Object.values(LINKS).some(Boolean)
  * decided to buy. See src/lib/leads.ts for what replaced it.
  */
 export const checkoutFor = (id: string): string =>
-    LINKS[id] || `/reserve?plan=${encodeURIComponent(id)}`;
+    LINKS[id] || `/start?plan=${encodeURIComponent(id)}`;
 
 /**
  * Where "Book a demo" goes — the same two-field form, asking for the same
@@ -134,7 +134,7 @@ export const DEMO_HREF = '/organizations#book';
  * Since 2026-10-18 A Story is open: every "Start" opens the web app's
  * create-account page (lib/app.ts). Before that it said "Join the waitlist"
  * (to 2026-09-29) and then "Reserve for $1". The $1 reservation and the $29
- * founding place stay, as the secondary action on Pricing only.
+ * founding place stopped on 2026-11-02; /reserve now goes to /pricing.
  *
  * The names still say WAITLIST because older components import them.
  */

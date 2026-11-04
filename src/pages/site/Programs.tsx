@@ -16,6 +16,14 @@
  * founder asked for a brief page. The night band, the giant verbs and the
  * question block are gone; one list holds the five.
  *
+ * 2026-11-02 (design-spec §4C): the opening is the cloth's `wide` variant,
+ * the title across the window and the plate of marks as the object below
+ * it. The footer's own plate of marks is to be left out on /programs
+ * (spec §1.3, Footer.tsx), so the marks appear once on this page. The
+ * closing offers /our-story, /how-it-works and /contact next (spec §3.8);
+ * each program's link is a plain underlined text link, no arrow (§3.3), and
+ * the five rows arrive as one group (§3.10).
+ *
  * The founder asked for the missions to be shown big and a little grand
  * (2026-10-15). Grand is allowed in A Story's own voice; the programs' side
  * stays a paraphrase of what each program is for, never a quotation.
@@ -34,10 +42,10 @@ import aaiBoxed from "../../assets/partners/assemblyai-startup-program-lockup-bo
 import googleBoxed from "../../assets/partners/google-for-startups-lockup-boxed.svg";
 import deepgramBoxed from "../../assets/partners/deepgram-startup-program-lockup-boxed.svg";
 import cartesiaBoxed from "../../assets/partners/cartesia-startups-lockup-boxed.svg";
-import { ArrowIcon, Invitation, PageOpening } from "./kit/kit";
+import { Invitation, PageOpening } from "./kit/kit";
 import { Chapter, Frame } from "./kit/kit.styles";
 import { useReveals } from "./kit/reveals";
-import { color, display, font, media, shadow, type } from "../../styles/theme";
+import { color, display, font, media, shadow, space, type } from "../../styles/theme";
 import { PROGRAMS, faqSchema } from "../../lib/seo";
 
 type Row = {
@@ -157,12 +165,12 @@ const Plate = styled.div`
   align-content: center;
   justify-content: center;
   /* Half a gap each side of the line break: one gap between the rows. */
-  gap: clamp(13px, 1.5vw, 22px) clamp(18px, 2vw, 32px);
+  gap: clamp(${space.sm}, 1.5vw, ${space.lg}) clamp(${space.md}, 2vw, ${space.xl});
   width: min(100%, 820px);
-  padding: clamp(30px, 3.4vw, 60px);
+  padding: clamp(${space.xl}, 3.4vw, ${space.xxxl});
   background: ${color.paperPure};
   box-shadow: ${shadow.lie};
-  --gap-x: clamp(18px, 2vw, 32px);
+  --gap-x: clamp(${space.md}, 2vw, ${space.xl});
   &::before {
     content: "";
     position: absolute;
@@ -196,7 +204,7 @@ const Plate = styled.div`
   }
   ${media.sm} {
     flex-direction: column;
-    row-gap: clamp(26px, 3vw, 44px);
+    row-gap: clamp(${space.lg}, 3vw, ${space.xxl});
     &::after {
       content: none;
     }
@@ -221,9 +229,9 @@ const Ledger = styled(Chapter)`
     display: grid;
     /* The marks are set large in the opening; the rows say what each is. */
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 8px clamp(24px, 3vw, 48px);
+    gap: ${space.xs} clamp(${space.lg}, 3vw, ${space.xxl});
     align-items: center;
-    padding: calc(clamp(18px, 2vw, 26px) * var(--sy)) 0;
+    padding: calc(clamp(${space.md}, 2vw, ${space.lg}) * var(--sy)) 0;
     border-bottom: 1px solid ${color.primaryLine};
   }
   .mark img {
@@ -240,12 +248,12 @@ const Ledger = styled(Chapter)`
     color: var(--ink);
   }
   .status {
-    margin-left: 10px;
-    font: 500 18px / 1.3 ${font.text};
+    margin-left: ${space.xs};
+    font: 500 ${type.read} / 1.3 ${font.text};
     color: var(--label);
   }
   .fit {
-    margin-top: 6px;
+    margin-top: ${space.xxs};
     max-width: 62ch;
     font: 400 ${type.read} / 1.5 ${font.text};
     color: var(--muted);
@@ -253,7 +261,7 @@ const Ledger = styled(Chapter)`
   .out {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: ${space.xs};
     min-height: 44px;
     font: 600 ${type.ui} / 1.3 ${font.body};
     color: var(--ink);
@@ -262,12 +270,8 @@ const Ledger = styled(Chapter)`
     text-decoration-thickness: 1px;
     text-underline-offset: 5px;
   }
-  .out svg {
-    width: 14px;
-    height: 14px;
-  }
   .fine {
-    margin-top: 24px;
+    margin-top: ${space.lg};
     max-width: 80ch;
     font: 400 ${type.note} / 1.55 ${font.body};
     color: var(--muted);
@@ -292,13 +296,22 @@ export default function Programs() {
       />
 
       <PageOpening
+        variant="wide"
         labelledBy="programs-title"
         title={
           <>
-            Startup programs <em>and grants.</em>
+            {/* Phone-first pass (panel r3, Priya: "Startup programs and
+                grants" read as programs for institutions). The page is
+                about the programs A Story itself belongs to. */}
+            The programs A Story <em>belongs to.</em>
           </>
         }
-        lead="Five programs for companies building with AI and voice have taken A Story in. None of them is an endorsement, an investment or a partnership."
+        /* 2026-11-03 (panel round 2, B4.5): the first sentence says what the
+           page is, in the terms this page may claim (membership, and for
+           Cartesia a grant; the SEO description above). No new names, and
+           never "supported by" or "backed by". Fix round 4: one sentence plus
+           the disclaimer (spec §3.1 lead length). */
+        lead="Startup programs for the company behind A Story, one of them with a grant. None is an endorsement, an investment or a partnership."
         object={
           <Plate aria-label="The five programs’ marks">
             {ROWS.map((r) => (
@@ -316,9 +329,9 @@ export default function Programs() {
         data-nosnippet
       >
         <Frame>
-          <ol>
+          <ol data-rise>
             {ROWS.map((r) => (
-              <li key={r.id} data-rise>
+              <li key={r.id}>
                 <div>
                   <h3 id={r.id}>
                     {r.name}
@@ -332,7 +345,7 @@ export default function Programs() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {r.host} <ArrowIcon />
+                  {r.host}
                 </a>
               </li>
             ))}
@@ -340,7 +353,7 @@ export default function Programs() {
         </Frame>
       </Ledger>
 
-      <Invitation />
+      <Invitation next={["/our-story", "/how-it-works", "/contact"]} />
     </>
   );
 }

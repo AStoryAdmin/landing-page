@@ -3,19 +3,29 @@
  *
  * "Get in touch" was a mailto to contact@astoryapp.com: on a phone with no
  * mail app set up it did nothing, and on a laptop it opened Outlook. The
- * founder asked that anyone on the site can reach daniel@astoryapp.com
- * directly. So the page does both: a form that sends from the page (the
+ * founder asked that anyone on the site can reach him directly (since
+ * 2026-11-02 the address shown is contact@astoryapp.com, so his own inbox
+ * stays off the page). So the page does both: a form that sends from the page (the
  * `demo-request` function, `type: "contact"`, lib/demoRequest.ts), and the
  * address itself, large, with a button that copies it.
  *
- * The other doors - book a demo, reserve, questions - are beside the form,
+ * The other doors - book a demo, questions - are beside the form,
  * so someone who came here for one of those finds it without writing.
+ *
+ * 2026-11-02 (design-spec §4C): the doors are named by what people came
+ * for ("Book a demo", "Questions & answers"; "Reserve for $1" left on
+ * 2026-11-03), with no discount. On a phone the letter and its signature come first, then the
+ * form, then the address and the doors. Visual system (spec §3): labels in
+ * sentence case, sizes from theme tokens only, and the two blocks below the
+ * opening arrive together, as one group. The doors keep their row arrow, as the
+ * kit's "Where to next" rows do.
  */
 import { useId, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { DEMO_EMAIL, sendMessage } from "../../lib/demoRequest";
+import { START_HREF, START_LABEL } from "../../lib/app";
 import { looksLikeEmail } from "../../lib/leads";
 import { track } from "../../lib/analytics";
 import { ArrowIcon, PageOpening } from "./kit/kit";
@@ -31,7 +41,7 @@ import {
   TextAnchor,
 } from "./kit/kit.styles";
 import { Done, Form } from "./kit/form.styles";
-import { color, curve, display, font, media, shadow, type } from "../../styles/theme";
+import { color, curve, display, font, media, shadow, space, type } from "../../styles/theme";
 
 const TOPICS = [
   "A question",
@@ -42,30 +52,42 @@ const TOPICS = [
   "Something else",
 ] as const;
 
+/* The other doors, by what people came for (design-spec §4C). */
 const DOORS = [
+  /* Phone-first plan task 4: the site's one action is a door here too
+     (lib/app.ts START_*; private beta: lib/today.ts:13). */
   [
-    "Booking a demo for an institution?",
-    "Pick a time on the Institutions page.",
+    START_LABEL,
+    "Calls ring in the A Story iPhone app, in a private beta.",
+    START_HREF,
+  ],
+  [
+    "Book a demo",
+    "For a school, library, company or care community.",
     "/organizations#book",
   ],
   [
-    "Ready to hold a place?",
-    "Reserve for $1 - it comes off your first year.",
-    "/reserve",
-  ],
-  [
-    "A quick question?",
+    "Questions & answers",
     "The practical things are answered here.",
     "/questions",
   ],
 ] as const;
+
+/* The address as the opening's second action. A flex item keeps its
+   min-content width, and at 320 with 150% text the address is 303px wide
+   and clipped to "contact@astoryapp." (tester, round 3). It may break
+   anywhere inside the column instead; still one 45px line elsewhere. */
+const Mail = styled(TextAnchor)`
+  min-width: 0;
+  overflow-wrap: anywhere;
+`;
 
 /* The opening's object: the person who reads the message (jury 1 #4, #7:
    Daniel's own round portrait, not a stock kitchen photograph). */
 const Reader = styled.figure`
   display: grid;
   justify-items: center;
-  gap: 18px;
+  gap: ${space.md};
   margin: 0;
   text-align: center;
   img {
@@ -81,10 +103,10 @@ const Reader = styled.figure`
   }
   p {
     display: grid;
-    gap: 4px;
+    gap: ${space.xxs};
   }
   b {
-    font: 500 clamp(28px, 2.2vw, 40px) / 1 ${font.script};
+    font: 500 ${display.sm} / 1 ${font.script};
     color: var(--ink);
   }
   span {
@@ -97,7 +119,7 @@ const Body = styled(Chapter)`
   .row {
     display: grid;
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-    gap: clamp(40px, 6vw, 110px);
+    gap: clamp(${space.xl}, 6vw, calc(${space.xxxl} + ${space.xxl}));
     align-items: start;
   }
   .side {
@@ -106,20 +128,22 @@ const Body = styled(Chapter)`
   }
   .address {
     display: grid;
-    gap: 14px;
-    padding: clamp(24px, 2.6vw, 34px) 0;
+    gap: ${space.sm};
+    padding: clamp(${space.lg}, 2.6vw, ${space.xl}) 0;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
   }
   .address small {
     font: 600 ${type.label} / 1.3 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: var(--label);
   }
   .address a.big {
     display: inline-block;
-    padding: 8px 0;
+    /* 43px measured with space.xs; 44 is the floor (taste rule 20). */
+    min-height: 44px;
+    padding: ${space.xs} 0;
     font: 400 ${display.sm} / 1.2 ${font.display};
     color: var(--ink);
     text-decoration: none;
@@ -134,7 +158,7 @@ const Body = styled(Chapter)`
   .address .acts {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: ${space.sm};
   }
   .address p {
     font: 400 ${type.read} / 1.55 ${font.text};
@@ -142,27 +166,32 @@ const Body = styled(Chapter)`
   }
   .doors {
     display: grid;
-    margin: clamp(28px, 3vw, 40px) 0 0;
+    margin: clamp(${space.lg}, 3vw, ${space.xl}) 0 0;
     padding: 0;
     list-style: none;
+  }
+  /* 8px between the stacked doors, each keeping its hairline below
+     (taste rule 20; round 3, B4 fix pass 2). */
+  main[data-premium] & .doors {
+    row-gap: 8px;
   }
   .doors a {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: 16px;
-    padding: 18px 0;
+    gap: ${space.md};
+    padding: ${space.md} 0;
     border-bottom: 1px solid var(--line);
     text-decoration: none;
     color: var(--ink);
   }
   .doors b {
     display: block;
-    font: 400 20px / 1.3 ${font.display};
+    font: 400 ${type.d5} / 1.3 ${font.display};
   }
   .doors span {
     display: block;
-    margin-top: 4px;
+    margin-top: ${space.xxs};
     font: 400 ${type.read} / 1.5 ${font.text};
     color: var(--muted);
   }
@@ -183,19 +212,19 @@ const Body = styled(Chapter)`
       0 40px 80px -48px rgba(42, 31, 24, 0.45);
   }
   .card-head {
-    margin-bottom: clamp(26px, 3vw, 36px);
-    padding-bottom: clamp(20px, 2.4vw, 28px);
+    margin-bottom: clamp(${space.lg}, 3vw, ${space.xl});
+    padding-bottom: clamp(${space.md}, 2.4vw, ${space.lg});
     border-bottom: 1px solid ${color.primaryLine};
   }
   .card-head small {
     display: block;
     font: 600 ${type.label} / 1.3 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: ${color.accentText};
   }
   .card-head h2 {
-    margin-top: 10px;
+    margin-top: ${space.xs};
     font: 400 ${display.sm} / 1.2 ${font.display};
     color: ${color.primary};
   }
@@ -268,7 +297,7 @@ export default function Contact() {
       <EditorialSeo
         title="Contact A Story"
         path="/contact"
-        description="Write to A Story. Messages from this page go straight to Daniel, our co-founder, at daniel@astoryapp.com, and are answered within a working day."
+        description="Write to A Story. Messages from this page go straight to Daniel, our co-founder, and are answered within a working day."
       />
       <PageOpening
         variant="letter"
@@ -283,12 +312,12 @@ export default function Contact() {
             <PrimaryAnchor href="#write">
               Send a message <ArrowIcon />
             </PrimaryAnchor>
-            <TextAnchor
+            <Mail
               href={`mailto:${DEMO_EMAIL}`}
               onClick={() => track("contact_mailto")}
             >
               {DEMO_EMAIL}
-            </TextAnchor>
+            </Mail>
           </>
         }
         object={
@@ -387,7 +416,7 @@ export default function Contact() {
                       <p className="hint">
                         Booking a demo?{" "}
                         <Link to="/organizations#book">
-                          Pick a time on the Institutions page
+                          Pick a time for a demo
                         </Link>{" "}
                         - or write here, either is fine.
                       </p>

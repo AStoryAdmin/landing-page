@@ -35,13 +35,16 @@ import {
   curve,
   display,
   font,
+  measure,
   media,
   motion,
   radius,
   shadow,
+  space,
   type,
 } from "../../../styles/theme";
 import { chocolateCloth, tealCloth } from "./cloth";
+import { IN_MAIN } from "./premium";
 
 /** The grounds a section can stand on. Each has a job; see Chapter below. */
 export type Ground = "ivory" | "paper" | "night" | "teal" | "sand" | "cloth";
@@ -61,6 +64,8 @@ type GroundTokens = {
   /** The keyboard focus ring and its halo, so it stays visible on this ground. */
   focus: string;
   focusHalo: string;
+  /** Premium pass: the one ring, by ground (chocolate on light, ivory on dark). */
+  ring: string;
 };
 
 const clothTokens: GroundTokens = {
@@ -73,6 +78,7 @@ const clothTokens: GroundTokens = {
   label: color.gold,
   focus: color.gold,
   focusHalo: color.chocolateDeep,
+  ring: color.ivory,
 };
 
 export const grounds: Record<Ground, GroundTokens> = {
@@ -86,6 +92,7 @@ export const grounds: Record<Ground, GroundTokens> = {
     label: color.accentText,
     focus: color.accentText,
     focusHalo: color.paperPure,
+    ring: color.chocolate,
   },
   paper: {
     bg: color.paper,
@@ -97,6 +104,7 @@ export const grounds: Record<Ground, GroundTokens> = {
     label: color.accentText,
     focus: color.accentText,
     focusHalo: color.ivory,
+    ring: color.chocolate,
   },
   sand: {
     bg: color.sand,
@@ -108,6 +116,7 @@ export const grounds: Record<Ground, GroundTokens> = {
     label: color.accentText,
     focus: color.accentText,
     focusHalo: color.paperPure,
+    ring: color.chocolate,
   },
   cloth: clothTokens,
   night: clothTokens,
@@ -122,6 +131,7 @@ export const grounds: Record<Ground, GroundTokens> = {
     label: color.goldOnTeal,
     focus: color.gold,
     focusHalo: color.teal,
+    ring: color.ivory,
   },
 };
 
@@ -145,6 +155,7 @@ export const groundVars = (g: Ground = "ivory") => css`
   --label: ${grounds[g].label};
   --focus: ${grounds[g].focus};
   --focus-halo: ${grounds[g].focusHalo};
+  --ring: ${grounds[g].ring};
 `;
 
 /**
@@ -157,6 +168,13 @@ export const Frame = styled.div`
   width: var(--frame, min(2080px, calc(100% - var(--page-gutter, 24px) * 2)));
   margin-inline: auto;
   min-width: 0;
+  /* The same 44px hit area for plain text links as Chapter gives, for the
+     sections that are not a Chapter (round 3, B4). A descendant, not a
+     child: a link inside a span in a paragraph (the pricing status line)
+     is still running text (round 3 fix, tester). */
+  ${IN_MAIN} & :is(p, li, dd, figcaption, small) a:not([class]) {
+    padding-block: 13px;
+  }
 `;
 
 /**
@@ -174,6 +192,24 @@ export const Chapter = styled.section<{ $ground?: Ground; $tight?: boolean }>`
     $tight
       ? "calc(clamp(64px, 6.5vw, 120px) * var(--sy)) 0"
       : "calc(clamp(88px, 9vw, 168px) * var(--sy)) 0"};
+  /* Round 3 (B4, mobile pass): a phone gets its own rhythm, 64px per edge
+     instead of 88 (a tight chapter 52 instead of 64). Only under the
+     premium flag, so home keeps its spacing byte for byte. */
+  ${media.sm} {
+    /* :where keeps this at one class of weight, so an Opening, a Band or any
+       section with its own padding still wins. */
+    :where(${IN_MAIN}) & {
+      padding: ${({ $tight }) =>
+        $tight ? "calc(52px * var(--sy)) 0" : "calc(64px * var(--sy)) 0"};
+    }
+  }
+  /* A plain link inside running text (a credit, "Read it", the privacy
+     link in a paragraph) keeps its line and grows a 44px hit area: padding
+     on an inline box adds nothing to the line (taste rule 20). A descendant
+     selector, so a link wrapped in a span still counts (round 3 fix). */
+  ${IN_MAIN} & :is(p, li, dd, figcaption, small) a:not([class]) {
+    padding-block: 13px;
+  }
 `;
 
 /** A section on the chocolate bookcloth. Same API as Chapter, ground fixed. */
@@ -211,6 +247,13 @@ export const Eyebrow = styled.p`
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--label, ${color.accentText});
+  /* Premium pass (spec §3.1): sentence case off home. */
+  ${IN_MAIN} & {
+    font: 600 ${type.label} / 1.4 ${font.ui};
+    letter-spacing: 0.01em;
+    text-transform: none;
+    color: var(--label, ${color.accentText});
+  }
   &::before {
     content: "";
     width: 24px;
@@ -268,6 +311,9 @@ export const Lead = styled.p`
   color: var(--text, ${color.body});
   max-width: 50ch;
   text-wrap: pretty;
+  ${IN_MAIN} & {
+    max-width: ${measure.lead};
+  }
 `;
 export const Body = styled.p`
   font: 400 ${type.read} / 1.58 ${font.text};
@@ -277,11 +323,17 @@ export const Body = styled.p`
   & + & {
     margin-top: 0.9em;
   }
+  ${IN_MAIN} & {
+    max-width: ${measure.read};
+  }
 `;
 /** Small print that is still meant to be read: Montserrat 14px, quiet. */
 export const Note = styled.p`
   font: 400 ${type.note} / 1.55 ${font.ui};
   color: var(--muted, ${color.bodyMuted});
+  ${IN_MAIN} & {
+    max-width: ${measure.read};
+  }
 `;
 
 /**
@@ -443,9 +495,33 @@ const actionBase = css`
     border-color: ${color.success};
     color: ${color.white};
   }
+  /* Premium pass (spec §3.3): one ring, by ground, never a halo alone. */
+  ${IN_MAIN} &:focus-visible {
+    outline: 2px solid var(--ring, ${color.chocolate});
+    outline-offset: 3px;
+    box-shadow: none;
+  }
+  ${IN_MAIN} &:disabled,
+  ${IN_MAIN} &[aria-disabled="true"] {
+    opacity: 0.5;
+  }
   ${media.motion} {
     &[aria-busy="true"]::after {
       animation-duration: 1.6s;
+    }
+  }
+`;
+/** A row of actions. On a phone the first (the primary) is full width. */
+export const Actions = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+  margin-top: clamp(26px, 2.6vw, 38px);
+  ${media.sm} {
+    > a:first-child,
+    > button:first-child {
+      flex: 1 1 100%;
     }
   }
 `;
@@ -468,6 +544,21 @@ const secondary = css`
   ${media.hover} {
     &:hover {
       border-color: var(--ink, ${color.primary});
+    }
+  }
+  /* Premium pass (spec §3.3): on a phone, inside a row of actions, the
+     secondary is a text link centred under the full-width primary: no
+     fill, no border, a 4px underline offset, a 44px hit area. */
+  ${media.sm} {
+    ${IN_MAIN} ${Actions} & {
+      flex: 1 1 100%;
+      min-height: 44px;
+      padding: 0;
+      border-color: transparent;
+      background: none;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
     }
   }
 `;
@@ -499,6 +590,10 @@ export const SecondaryAnchor = styled.a`
 const textLink = css`
   display: inline;
   padding-block: 12px;
+  /* 19px of line + 2 × 13 = 45px (measured 43 with 12px; taste rule 20). */
+  ${IN_MAIN} & {
+    padding-block: 13px;
+  }
   font: 600 ${type.note} / 1.45 ${font.ui};
   color: var(--ink, ${color.primary});
   text-decoration-line: underline;
@@ -539,6 +634,13 @@ const textLink = css`
     opacity: 0.55;
     pointer-events: none;
   }
+  ${IN_MAIN} &:focus-visible {
+    outline: 2px solid var(--ring, ${color.chocolate});
+    outline-offset: 3px;
+  }
+  ${IN_MAIN} &[aria-disabled="true"] {
+    opacity: 0.5;
+  }
 `;
 export const TextLink = styled(Link)`
   ${textLink}
@@ -546,19 +648,6 @@ export const TextLink = styled(Link)`
 /** The same text action for plain links (mailto, external). */
 export const TextAnchor = styled.a`
   ${textLink}
-`;
-export const Actions = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 14px 24px;
-  margin-top: clamp(26px, 2.6vw, 38px);
-  ${media.sm} {
-    > a:first-child,
-    > button:first-child {
-      flex: 1 1 100%;
-    }
-  }
 `;
 /** On cloth and teal the primary turns ivory, as the app's hero buttons do. */
 export const onDarkActions = css`
@@ -706,4 +795,75 @@ export const Plate = styled.div`
   border: 1px solid color-mix(in srgb, ${color.gold} 70%, transparent);
   outline: 1px solid color-mix(in srgb, ${color.gold} 40%, transparent);
   outline-offset: 5px;
+`;
+
+/* -- Premium pass (2026-11-02) ---------------------------------------------
+ * New pieces, used only by pages off home.
+ */
+
+/**
+ * A card (spec §3.4), for exactly two places: the /pricing plan cards and
+ * the /sign-in · /sign-up form. Everywhere else type and hairlines do the
+ * work. The sheet is a step off its ground (paper on ivory, ivory on paper),
+ * a hairline border, no shadow on light grounds; on cloth a lie shadow and
+ * no border.
+ *   <Card>…</Card>   <Card $ground="cloth">…</Card>
+ */
+export const Card = styled.div<{ $ground?: Ground }>`
+  --sheet: ${({ $ground = "ivory" }) =>
+    $ground === "paper" ? color.ivory : color.paper};
+  background: var(--sheet);
+  border: 1px solid ${color.primaryLine};
+  border-radius: ${radius.lg};
+  padding: ${space.lg};
+  ${media.up.md} {
+    padding: ${space.xl};
+  }
+  ${({ $ground }) =>
+    $ground === "cloth" || $ground === "night" || $ground === "teal"
+      ? `border-color: transparent; box-shadow: ${shadow.lie};`
+      : ""}
+`;
+
+/**
+ * A horizontal scroller (spec §3.9): use through <Scroller label> in
+ * kit/Scroller.tsx. The region is focusable (arrow keys scroll it) and shows
+ * the ground's ring; the end fades while there is more to the right.
+ */
+export const ScrollerRegion = styled.div`
+  position: relative;
+  min-width: 0;
+  margin-inline: calc(-1 * var(--page-gutter));
+  /* The region is the scroll container, so it is what takes focus and the
+     arrow keys (axe scrollable-region-focusable). */
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--page-gutter);
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--ring, ${color.chocolate});
+    outline-offset: -2px;
+    box-shadow: none;
+  }
+  &[data-overflow="end"] {
+    mask-image: linear-gradient(to right, #000 calc(100% - 64px), transparent);
+  }
+  .scroller-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(80vw, 340px);
+    gap: ${space.md};
+    width: max-content;
+    padding-inline: var(--page-gutter);
+    list-style: none;
+    margin: 0;
+  }
+  .scroller-track > li {
+    scroll-snap-align: start;
+    min-width: 0;
+  }
 `;

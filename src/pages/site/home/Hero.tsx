@@ -6,8 +6,9 @@
  * dinner, everyone listening, nobody writing it down - the thing A Story is
  * trying to catch. The headline is the app's own line ("Every life holds a
  * story worth keeping.", Bao 2026-10-23), then one sentence on what A Story
- * is, the two doors, and the honest small print: the calls ring in the A
- * Story iPhone app, in private beta, which the parent installs.
+ * is, the door (Get the iPhone app, lib/app.ts), and the honest small print:
+ * the calls ring in the A Story iPhone app, in private beta, and the family
+ * reads and adds in any browser (faqData.ts:69).
  *
  * Type floor (Bao, 2026-10-24: "i despised the small text everywhere"): the
  * sentence is EB Garamond at 20px or more (18px on a phone), the small print
@@ -21,11 +22,10 @@
  */
 import styled from "styled-components";
 import { ArrowIcon, Picture } from "../kit/kit";
-import { Frame, PrimaryLink, TextLink, onDarkActions } from "../kit/kit.styles";
+import { Frame, PrimaryLink, onDarkActions } from "../kit/kit.styles";
 import { gsap, openMasks, SplitText, useScene } from "../../../lib/scrollMotion";
 import { color, font, media } from "../../../styles/theme";
 import { START_HREF, START_LABEL } from "../../../lib/app";
-import { OFFERS } from "../../../lib/founding";
 
 const Scene = styled.section`
   --ink: ${color.onDark};
@@ -137,25 +137,36 @@ export default function Hero() {
   const ref = useScene<HTMLElement>((root) => {
     const photo = root.querySelector(".hero-photo img");
     const title = root.querySelector("h1")!;
-    const rest = root.querySelectorAll(".hero-lead, .hero-actions, .hero-small");
     gsap.fromTo(photo, { scale: 1.12 }, { scale: 1, duration: 2.4, ease: "house-out" });
-    gsap.fromTo(
-      rest,
-      { autoAlpha: 0, y: 24 },
-      { autoAlpha: 1, y: 0, duration: 1.1, ease: "house-out", stagger: 0.08, delay: 0.45 },
-    );
+    /* Phone-first fix 2 (item 13, Maya #8): the lead and the small print
+       fade in; the action only slides, at full strength from the first
+       frame, so the button never looks disabled. Same order and timing as
+       the one stagger it replaces (0.45 s, then 0.08 s apart). */
+    const rise = { y: 0, duration: 1.1, ease: "house-out" };
+    root.querySelectorAll(".hero-lead, .hero-actions, .hero-small").forEach((el, i) => {
+      const delay = 0.45 + i * 0.08;
+      if (el.classList.contains("hero-actions")) {
+        gsap.fromTo(el, { y: 24 }, { ...rise, delay });
+      } else {
+        gsap.fromTo(el, { autoAlpha: 0, y: 24 }, { ...rise, autoAlpha: 1, delay });
+      }
+    });
     SplitText.create(title, {
       type: "lines",
       mask: "lines",
       autoSplit: true,
       onSplit: (split) => {
         openMasks(split.masks);
+        /* Phone-first fix 3 (item 9, Maya #7): a shorter, earlier rise so
+           the whole headline is read by 600 ms on a slow phone (was 1.2 s,
+           0.1 s apart, after 0.1 s). Timing only: the settled layout, the
+           reduced-motion and no-JS paths are unchanged. */
         return gsap.from(split.lines, {
           yPercent: 110,
-          duration: 1.2,
+          duration: 0.7,
           ease: "house-out",
-          stagger: 0.1,
-          delay: 0.1,
+          stagger: 0.06,
+          delay: 0,
         });
       },
     });
@@ -190,14 +201,10 @@ export default function Hero() {
           <PrimaryLink to={START_HREF}>
             {START_LABEL} <ArrowIcon />
           </PrimaryLink>
-          <TextLink to="/reserve">
-            Reserve for {OFFERS.reserve.price} <ArrowIcon />
-          </TextLink>
         </div>
         <p className="hero-small">
-          Start free in your browser, no card, or reserve for $1 and we’ll email
-          you when the calls open. The calls are in private beta and ring in the
-          A Story app on your parent’s iPhone.
+          The calls ring in the A Story app on your parent’s iPhone, in a
+          private beta. The family reads and adds in any browser.
         </p>
       </Frame>
     </Scene>

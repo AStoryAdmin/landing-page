@@ -18,10 +18,16 @@ export const APP = {
     contribute: (slug: string) => `${APP_ORIGIN}/c/${encodeURIComponent(slug)}`,
 } as const;
 
-/** What the one primary action says, everywhere it appears. */
-export const START_LABEL = "Start free";
-/** Where it goes. */
-export const START_HREF = APP.createAccount;
+/**
+ * What the one primary action says, everywhere it appears (phone-first
+ * plan, 2026-11-04). The moat is the iPhone app: strangers ask for an
+ * invite on /get-the-app; the web app's create-account page is no longer
+ * advertised. `APP.createAccount` stays only for the doors of people who
+ * already belong to a family (AppDoor, /join).
+ */
+export const START_LABEL = "Get the iPhone app";
+/** Where it goes: the invite page on this site. */
+export const START_HREF = "/get-the-app";
 
 /** A family code, as the app makes them: six letters and digits. */
 export const FAMILY_CODE = /^[A-Za-z0-9]{6}$/;

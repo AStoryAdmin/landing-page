@@ -45,16 +45,16 @@
       "destination": "/questions/index.html"
     },
     {
-      "source": "/reserve",
-      "destination": "/reserve/index.html"
-    },
-    {
       "source": "/guides",
       "destination": "/guides/index.html"
     },
     {
       "source": "/contact",
       "destination": "/contact/index.html"
+    },
+    {
+      "source": "/get-the-app",
+      "destination": "/get-the-app/index.html"
     },
     {
       "source": "/privacy",
@@ -150,6 +150,11 @@
       "permanent": true
     },
     {
+      "source": "/care",
+      "destination": "/care-communities",
+      "permanent": true
+    },
+    {
       "source": "/story",
       "destination": "/our-story",
       "permanent": true
@@ -162,6 +167,11 @@
     {
       "source": "/why-it-matters",
       "destination": "/#why-a-story",
+      "permanent": true
+    },
+    {
+      "source": "/reserve",
+      "destination": "/pricing",
       "permanent": true
     }
   ]

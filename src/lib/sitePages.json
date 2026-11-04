@@ -41,12 +41,12 @@
   },
   {
     "path": "/organizations",
-    "name": "Organizations",
+    "name": "Schools, libraries & companies",
     "og": "organizations",
     "photo": "08",
     "phrase": [
-      "The knowledge people carry",
-      "should not leave with them."
+      "The people who made the place.",
+      "In their own words."
     ]
   },
   {
@@ -61,7 +61,7 @@
   },
   {
     "path": "/compare",
-    "name": "How A Story is different",
+    "name": "Compare",
     "og": "compare",
     "photo": "S01",
     "phrase": [
@@ -109,17 +109,6 @@
     ]
   },
   {
-    "path": "/reserve",
-    "name": "Reserve",
-    "card": "Before launch · Reserve for $1",
-    "og": "reserve",
-    "photo": "05",
-    "phrase": [
-      "Hold your place",
-      "for a dollar."
-    ]
-  },
-  {
     "path": "/guides",
     "name": "Guides",
     "og": "guides",
@@ -137,6 +126,16 @@
     "phrase": [
       "Write to us.",
       "A person reads every message."
+    ]
+  },
+  {
+    "path": "/get-the-app",
+    "name": "Get the iPhone app",
+    "og": "get-the-app",
+    "photo": "27",
+    "phrase": [
+      "Every life holds a story",
+      "worth keeping."
     ]
   },
   {

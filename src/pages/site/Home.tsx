@@ -1,18 +1,14 @@
 import { useEffect } from "react";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { refreshWhenSettled } from "../../lib/scrollMotion";
-import { OTHER_PLANS } from "../../lib/pricing";
+import { Link } from "react-router-dom";
 import { Invitation } from "./kit/kit";
+import { ORG_TAB_LABEL } from "../../lib/nav";
 import CodeFromFamily from "./home/CodeFromFamily";
 import Hero from "./home/Hero";
-import Film from "./home/Film";
 import WhatGetsLost from "./home/WhatGetsLost";
 import EveryVoice from "./home/EveryVoice";
 import FamilyBook from "./home/FamilyBook";
-
-const monthly = OTHER_PLANS.find((p) => p.id === "monthly")!;
-/** "$19.99/mo" -> "$19.99": the cheapest way in to the calls, said once. */
-const monthlyPrice = monthly.price.replace(/\/mo$/, "");
 
 /**
  * Home, 2026-10-24: back to the past version's best (commit bd23f2f), at
@@ -26,19 +22,17 @@ const monthlyPrice = monthly.price.replace(/\/mo$/, "");
  *   1. Hero          the Sunday-dinner photograph filling the window; "Every
  *                    life holds a story worth keeping."; the two doors and
  *                    the honest small print (iPhone app, private beta).
- *   1b. Film        (2026-11-03) straight after the hero: a silent ten-second
- *                    loop while in view, the full film with sound in a
- *                    lightbox from "Watch the film" (home/Film.tsx), so a
- *                    visitor sees one call become a page before reading why.
  *   2. WhatGetsLost  the milestone pile you can touch; "It's the everyday."
  *                    in a scatter of prints on the cloth, with the three
  *                    things that slip away; "A Story exists to catch what
  *                    the photograph can't", with how it works in a sentence.
  *   3. EveryVoice    one memory, the family's versions flying into it, then
  *                    "One life. Many witnesses." on the cloth.
- *   4. FamilyBook    the Hartleys' book (a sample) to open and turn, cover to
- *                    today; the way to the three sample books on /samples.
- *   5. Invitation    the site's close on the cloth, with the one price line.
+ *   4. FamilyBook    a teaser since 2026-11-04 (phone-first plan): one open
+ *                    spread of the Hartleys' sample book and one line; its
+ *                    one action is "Open the sample books" -> /samples.
+ *   5. Invitation    the site's close on the cloth: the beta in one line and
+ *                    "See pricing" (no figure since phone-first fix 1).
  *
  * Left out, and why: the intro cover (Intro.tsx; it held the page for five
  * seconds); StepOne (Bao: "horrible"); ThreeSteps (a row of three equal
@@ -62,17 +56,37 @@ export default function Home() {
           large, and the three steps to use it. */}
       <CodeFromFamily />
       <Hero />
-      <Film />
       <WhatGetsLost />
       <EveryVoice />
       <FamilyBook />
       <Invitation
+        /* Phone-first fix 2 (item 12, Tuan #5): "today" left the title, as
+           an invite queue cannot keep it. The new title claims no time or
+           fact. (The brief called it the kit's closer elsewhere; no kit
+           page uses it: kit.tsx CLOSERS / DEFAULT_CLOSER "Ask for an
+           iPhone invite." is the fallback if a reviewer prefers that.) */
         title={
           <>
-            Start the family’s book <em>today.</em>
+            It starts with <em>one call.</em>
           </>
         }
-        line={`The whole family can write in the archive for free in your browser, with no card. The calls are from ${monthlyPrice} a month and ring in the A Story app on your parent’s iPhone, now in private beta.`}
+        /* Phone-first fix 1 (item 5, Maya #1, Harold #6): one price story.
+           /pricing says the calls "aren't on sale yet" (Pricing.tsx), so the
+           monthly figure left this band; "See pricing" is the way to it.
+           Sources: "by invite", AppDoor.tsx:91; "in a private beta",
+           lib/today.ts:14; the family, lib/pricing.ts:183.
+           Phone-first fix 3 (item 2, Priya #7, Denise #7): a second quiet
+           link for institutions, labelled with lib/nav.ts ORG_TAB_LABEL. */
+        line={
+          <>
+            The calls ring in the A Story app on your parent’s iPhone, by
+            invite in a private beta. Inviting family, writing and reading
+            never cost extra. <Link to="/pricing">See pricing</Link>
+            <br />
+            Running a program or a care community?{" "}
+            <Link to="/organizations">{ORG_TAB_LABEL}</Link>
+          </>
+        }
       />
     </>
   );

@@ -21,20 +21,19 @@
  *
  * Each note is signed by hand at its foot, with a small round portrait of
  * its writer and one line of credentials (Bao's ruling, 2026-10-23: a
- * round portrait, never a posed hero). A short "why now" band with two
- * sourced numbers sits between the letters and the close (on this page
- * only). The prints are illustrative album photographs (public/our-story,
+ * round portrait, never a posed hero). The "why now" band of statistics
+ * was removed in panel round 2 (CHIEF-LOG B1.4). The prints are illustrative album photographs (public/our-story,
  * from the pitch decks, and mission 34).
  */
-import type { ReactNode } from "react";
+import { useLayoutEffect, useRef, type ReactNode } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
-import { ArrowIcon } from "./kit/kit";
-import { Frame, PrimaryLink, SecondaryLink } from "./kit/kit.styles";
-import { color, display, font, media, type } from "../../styles/theme";
+import { ArrowIcon, Bond } from "./kit/kit";
+import { Actions, Frame, PrimaryLink, SecondaryLink } from "./kit/kit.styles";
+import { color, display, font, media, space, type } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
 import { DEMO_EMAIL } from "../../lib/demoRequest";
-import { riseLines, useScene } from "../../lib/scrollMotion";
+import { useScene } from "../../lib/scrollMotion";
 import { Snapshot } from "./our-story/Snapshot";
 import { benchCloth, benchVars } from "./our-story/bench";
 import { cssOut, layDown, riseIn } from "./our-story/motion";
@@ -109,10 +108,6 @@ const Bench = styled.section`
       background-size: 100% 1px;
     }
   }
-  .who a:focus-visible {
-    outline: 2px solid ${color.gold};
-    outline-offset: 4px;
-  }
   .who svg {
     width: 14px;
     height: 14px;
@@ -143,11 +138,17 @@ const Bench = styled.section`
 
   /* ── The two notes, side by side on the bench ── */
   .letters {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(28px, 3.4vw, 64px);
     align-items: stretch;
     margin-top: calc(clamp(56px, 6vw, 110px) * var(--sy));
+  }
+  /* Bond, the founder's dog, asleep on the letters' ledge: the one place he
+     appears on the marketing site off home (spec §3.8, §4D). */
+  .letters > img {
+    z-index: 3;
   }
 
   ${media.lg} {
@@ -163,7 +164,13 @@ const Bench = styled.section`
       margin-inline: auto;
     }
   }
+  /* Phones (spec §4D, ≤ 5 screens at 390 with the letters folded): the
+     bench's spacing tightens; the letters' words are untouched. */
   ${media.sm} {
+    padding: calc(${space.xl} * var(--sy)) 0 calc(${space.xl} * var(--sy));
+    .letters {
+      margin-top: calc(${space.xl} * var(--sy));
+    }
     .prints {
       padding: 0 0 72px;
     }
@@ -240,7 +247,7 @@ const Sheet = styled.article<{ $tilt: number }>`
   }
   .sign b {
     display: block;
-    font: 500 clamp(30px, 2.3vw, 42px) / 1 ${font.script};
+    font: 500 ${display.md} / 1 ${font.script};
     color: ${color.primary};
     transform: rotate(-2deg);
     transform-origin: left bottom;
@@ -249,8 +256,7 @@ const Sheet = styled.article<{ $tilt: number }>`
     display: block;
     margin-top: 8px;
     font: 600 ${type.label} / 1.3 ${font.body};
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   .sign .cred {
@@ -276,10 +282,6 @@ const Sheet = styled.article<{ $tilt: number }>`
       color: ${color.primary};
     }
   }
-  .sign a:focus-visible {
-    outline: 2px solid ${color.accentText};
-    outline-offset: 3px;
-  }
   .sr {
     position: absolute;
     width: 1px;
@@ -300,15 +302,51 @@ const Sheet = styled.article<{ $tilt: number }>`
   p.body.turn + p.body {
     margin-top: 1.1em;
   }
-  p.first::first-letter {
-    float: left;
-    margin: 0.06em 0.1em 0 0;
-    font: 400 3.5em/0.8 ${font.display};
-    color: ${color.teal};
+  /* Drop caps only on a wide screen (spec §4D); on a phone the letter
+     starts as plain text. */
+  ${media.up.md} {
+    p.first::first-letter {
+      float: left;
+      margin: 0.06em 0.1em 0 0;
+      font: 400 3.5em/0.8 ${font.display};
+      color: ${color.teal};
+    }
   }
   p.body.turn {
     font: italic 400 ${display.sm} / 1.35 ${font.display};
     color: ${color.accent};
+  }
+  /* The rest of the letter. On a phone it folds after the first three
+     paragraphs ("Read the whole letter"); on a wide screen it is always
+     open and the fold's summary is not shown. The words are all in the DOM
+     either way. */
+  .more > summary {
+    display: inline-flex;
+    align-items: center;
+    gap: ${space.xs};
+    min-height: 44px;
+    margin-top: ${space.md};
+    font: 600 ${type.note} / 1.3 ${font.ui};
+    color: ${color.primary};
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, ${color.gold} 70%, transparent);
+    text-underline-offset: 5px;
+    cursor: pointer;
+    list-style: none;
+  }
+  .more > summary::-webkit-details-marker {
+    display: none;
+  }
+  .more[open] > summary {
+    display: none;
+  }
+  .more > p.body:first-of-type {
+    margin-top: 0.95em;
+  }
+  ${media.up.md} {
+    .more > summary {
+      display: none;
+    }
   }
   ${media.lg} {
     transform: none;
@@ -320,92 +358,6 @@ const Sheet = styled.article<{ $tilt: number }>`
     }
     .sign {
       gap: 2px 16px;
-    }
-  }
-`;
-
-/* ── Why now: two sourced numbers, on the paper (Bao's ruling, 2026-10-23:
-   on /our-story only, never Home). A ratio and a count, each with its unit
-   and its source linked. ── */
-const WhyNow = styled.section`
-  background: ${color.sand};
-  color: ${color.primary};
-  padding: calc(clamp(56px, 6vw, 112px) * var(--sy)) 0;
-  .why {
-    display: grid;
-    grid-template-columns: minmax(0, 0.6fr) minmax(0, 2fr);
-    gap: clamp(28px, 5vw, 110px);
-    align-items: start;
-  }
-  h2 {
-    font: 400 ${display.lg} / 1 ${font.display};
-    letter-spacing: -0.02em;
-  }
-  h2 em {
-    font-style: normal;
-    font-weight: 500;
-    color: ${color.accent};
-  }
-  dl {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(28px, 4vw, 96px);
-    margin: 0;
-  }
-  dl > div {
-    padding-top: 18px;
-    border-top: 1px solid ${color.primaryLineStrong};
-  }
-  dt {
-    font: 500 clamp(2.6rem, 1.6rem + 3vw, 5.4rem) / 1 ${font.display};
-    letter-spacing: -0.02em;
-    font-variant-numeric: lining-nums;
-    color: ${color.primary};
-  }
-  dt span[aria-hidden] {
-    color: ${color.accent};
-    font-weight: 400;
-  }
-  dd {
-    margin: 14px 0 0;
-    max-width: 38ch;
-    font: 400 ${type.read} / 1.5 ${font.text};
-    color: ${color.body};
-  }
-  /* Each source is a 44px target (jury 2 R2 N3). */
-  dd a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0;
-    font: 500 ${type.note} / 1.4 ${font.body};
-    color: ${color.bodyMuted};
-    text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, ${color.gold} 70%, transparent);
-    text-underline-offset: 4px;
-    transition: color 160ms ${cssOut};
-  }
-  @media (hover: hover) and (pointer: fine) {
-    dd a:hover {
-      color: ${color.primary};
-    }
-  }
-  dd a:focus-visible {
-    outline: 2px solid ${color.accentText};
-    outline-offset: 3px;
-  }
-  .sr {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-  ${media.md} {
-    .why,
-    dl {
-      grid-template-columns: minmax(0, 1fr);
     }
   }
 `;
@@ -473,12 +425,44 @@ const Close = styled.section`
       width: min(92%, 520px);
     }
   }
+  /* Premium pass (spec §4D, ≤ 5 screens at 390): on a phone the close is
+     the words and the two doors; the dock print shows from 641px up. The
+     doors are the kit's Actions, so on a phone the secondary is a text link
+     under the full-width primary (spec §3.3). */
   ${media.sm} {
-    .doors > * {
-      flex: 1 1 100%;
+    padding: calc(${space.xl} * var(--sy)) 0;
+    .dock {
+      display: none;
     }
   }
 `;
+
+/**
+ * The rest of a letter (premium pass, spec §4D): folded on a phone behind
+ * "Read the whole letter", always open on a wide screen. The prerender
+ * (1280 wide) captures it open, so every word is in the static HTML.
+ */
+const PHONE = "(max-width: 860px)";
+function Fold({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDetailsElement>(null);
+  useLayoutEffect(() => {
+    const d = ref.current;
+    if (!d) return;
+    const mq = window.matchMedia(PHONE);
+    const set = () => {
+      d.open = !mq.matches;
+    };
+    set();
+    mq.addEventListener("change", set);
+    return () => mq.removeEventListener("change", set);
+  }, []);
+  return (
+    <details ref={ref} className="more" open>
+      <summary>Read the whole letter</summary>
+      {children}
+    </details>
+  );
+}
 
 function Note({
   from,
@@ -532,20 +516,12 @@ function Note({
 
 export default function OurStory() {
   const bench = useScene<HTMLElement>((root) => {
-    const h1 = root.querySelector("h1");
-    if (h1) riseLines(h1, { trigger: false });
-    riseIn([...root.querySelectorAll(".opening .lead, .opening .who")], {
-      delay: 0.25,
-    });
+    /* Panel round 2 (CHIEF-LOG B1.1): the title, lead and note links are
+       there on first paint; only the prints are laid down. */
     layDown([...root.querySelectorAll(".prints [data-snap]")], { delay: 0.2 });
     layDown([...root.querySelectorAll("[data-sheet]")], {
       trigger: root.querySelector(".letters") ?? undefined,
       start: "top 88%",
-    });
-  });
-  const why = useScene<HTMLElement>((root) => {
-    riseIn([...root.querySelectorAll("[data-why]")], {
-      trigger: root.querySelector(".why") ?? undefined,
     });
   });
   const close = useScene<HTMLElement>((root) => {
@@ -608,6 +584,7 @@ export default function OurStory() {
           </div>
 
           <div className="letters">
+            <Bond pose="sleep" ledge="right" width={112} />
             <Note
               from="Daniel"
               name="Daniel Hoang Nguyen"
@@ -628,17 +605,19 @@ export default function OurStory() {
                 words that had always come easily.
               </p>
               <p className="body turn">I had never thought to ask.</p>
-              <p className="body">
-                I did not know how my grandparents met. I did not know what my
-                uncles had been afraid of, or proudest of, or what they would
-                have done differently. I am a finance researcher. I had spent
-                years learning to understand systems, without turning that same
-                attention toward the people who made my life.
-              </p>
-              <p className="body">
-                So I started building A Story: someone to ask, time to listen,
-                and a place for a family to keep the answers.
-              </p>
+              <Fold>
+                <p className="body">
+                  I did not know how my grandparents met. I did not know what my
+                  uncles had been afraid of, or proudest of, or what they would
+                  have done differently. I am a finance researcher. I had spent
+                  years learning to understand systems, without turning that same
+                  attention toward the people who made my life.
+                </p>
+                <p className="body">
+                  So I started building A Story: someone to ask, time to listen,
+                  and a place for a family to keep the answers.
+                </p>
+              </Fold>
             </Note>
 
             <Note
@@ -663,64 +642,20 @@ export default function OurStory() {
               <p className="body turn">
                 I knew what happened. I didn’t always know what it felt like.
               </p>
-              <p className="body">
-                I want A Story to keep all of that without asking a family to
-                become archivists. My parents should just be able to talk.
-              </p>
-              <p className="body turn">
-                A family is not a résumé. A life shouldn’t become one when we
-                preserve it.
-              </p>
+              <Fold>
+                <p className="body">
+                  I want A Story to keep all of that without asking a family to
+                  become archivists. My parents should just be able to talk.
+                </p>
+                <p className="body turn">
+                  A family is not a résumé. A life shouldn’t become one when we
+                  preserve it.
+                </p>
+              </Fold>
             </Note>
           </div>
         </Frame>
       </Bench>
-
-      <WhyNow ref={why} aria-labelledby="why-title">
-        <Frame className="why">
-          <h2 id="why-title" data-why>
-            Why <em>now.</em>
-          </h2>
-          <dl>
-            <div data-why>
-              <dt>
-                18% <span aria-hidden="true">→</span>
-                <span className="sr">to</span> 30%
-              </dt>
-              <dd>
-                Adults 50 and over who use generative AI, 2024 to 2025.{" "}
-                <a
-                  href="https://www.aarp.org/2026techtrends"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  AARP, 2026 Tech Trends
-                </a>
-              </dd>
-            </div>
-            <div data-why>
-              <dt>11,200</dt>
-              <dd>
-                Americans turn 65 every day, through 2027.{" "}
-                <a
-                  href="https://www.limraconsumer.com/peak65/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Alliance for Lifetime Income, Peak 65
-                </a>
-              </dd>
-            </div>
-            <div data-why>
-              <dt>Voice AI</dt>
-              <dd>
-                Can now hold an unhurried conversation, ask a follow-up about
-                what it just heard, and know when to stop.
-              </dd>
-            </div>
-          </dl>
-        </Frame>
-      </WhyNow>
 
       <Close ref={close} aria-labelledby="close-title">
         <Frame className="row">
@@ -744,16 +679,16 @@ export default function OurStory() {
               the whole family’s memories.
             </p>
             <p className="write">
-              Write to Daniel at{" "}
+              Write to us at{" "}
               <a href={`mailto:${DEMO_EMAIL}`}>{DEMO_EMAIL}</a>. We answer every
               email ourselves.
             </p>
-            <div className="doors">
+            <Actions className="doors">
               <PrimaryLink to={START_HREF}>
                 {START_LABEL} <ArrowIcon />
               </PrimaryLink>
               <SecondaryLink to="/how-it-works">See how it works</SecondaryLink>
-            </div>
+            </Actions>
           </div>
         </Frame>
       </Close>

@@ -122,10 +122,15 @@ export const daysToDeadline = (now = Date.now()): number | null => {
     return ms < 0 ? null : Math.ceil(ms / 86_400_000);
 };
 
-/** The one sentence of urgency, in its three states. */
+/**
+ * The one sentence of urgency. Once the deadline has passed it is "" — no
+ * "closed" line (spec 2026-11-02, D1: never frame an ending). Callers render
+ * nothing for "". Since D1 no public page calls it (Reserve.tsx dropped its
+ * one call); kept for the dates above and any future offer.
+ */
 export const deadlineLine = (now = Date.now()): string => {
     const days = daysToDeadline(now);
-    if (days === null) return `The ${OFFERS.reserve.discount}% offer closed on ${RESERVE_DEADLINE_LABEL}`;
+    if (days === null) return '';
     if (days <= 1) return `${OFFERS.reserve.discount}% off ends today`;
     if (days <= 7) return `${OFFERS.reserve.discount}% off ends in ${days} days`;
     return `${OFFERS.reserve.discount}% off if you reserve by ${RESERVE_DEADLINE_LABEL}`;
@@ -307,8 +312,7 @@ export const offerCheckoutUrl = (id: OfferId, account?: { id: string; email: str
 export const INCLUDES: Record<OfferId, string[]> = {
     reserve: [
         'Your place in line: we email you when the calls open, in the order families reserved',
-        `${OFFERS.reserve.discount}% off your first year, if you reserve by ${RESERVE_DEADLINE_LABEL}`,
-        'The dollar comes off that year too',
+        'The dollar comes off your first year',
         `Up to ${MAX_PER_FAMILY} places per family, so Mom and Dad can each have their own`,
         'Refunded any time before launch, no questions',
     ],
@@ -327,10 +331,8 @@ export const INCLUDES: Record<OfferId, string[]> = {
 /** "Why pay anything at all?" — the objection a dollar raises, answered. */
 export const WHY_PAY = [
     {
-        t: 'It holds your price',
-        d: OFFERS.founding.open
-            ? `${OFFERS.founding.discount}% off the first year for founding families, ${OFFERS.reserve.discount}% for everyone who reserves by ${RESERVE_DEADLINE_LABEL}.`
-            : `${OFFERS.reserve.discount}% off your first year, for every family that reserves by ${RESERVE_DEADLINE_LABEL}.`,
+        t: 'It holds your place',
+        d: 'We email you when the calls open, in the order families reserved.',
     },
     {
         t: 'It comes off your plan',
@@ -357,7 +359,7 @@ export const WHY_PAY = [
 export const reserveMetaDescription = (): string =>
     OFFERS.founding.open
         ? `A Story opens to ${FOUNDING_PLACES} founding families before launch, set up with you by hand. Or hold a place in line for ${OFFERS.reserve.price}.`
-        : `The founding places are filled. ${OFFERS.reserve.price} holds your family a place in line for the calls, and we email you when they open, in the order families reserved. The dollar comes off your first year and is refundable any time before launch.`;
+        : `${OFFERS.reserve.price} holds your family a place in line for the calls, and we email you when they open, in the order families reserved. The dollar comes off your first year and is refundable any time before launch.`;
 
 /** Both offers in the words the Terms need. Rendered on /terms. */
 export const OFFER_TERMS =

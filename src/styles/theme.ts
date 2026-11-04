@@ -188,6 +188,16 @@ export const tracking = {
   normal: "0",
   wide: "0.04em",
   eyebrow: "0.16em",
+  /** Premium pass (2026-11-02): the few capitals left off home (plan-card
+      "Recommended", table heads). Home keeps `eyebrow`. */
+  eyebrowPremium: "0.08em",
+} as const;
+
+/** Reading measures (premium pass, spec §3.1). Applied off home only. */
+export const measure = {
+  lead: "52ch",
+  read: "64ch",
+  max: "72ch",
 } as const;
 
 /* -- Space, radius, shadow, motion ----------------------------------------- */
@@ -293,6 +303,14 @@ export const bp = {
 /** `${media.md} { ... }` reads better than repeating the query. */
 export const media = {
   nav: "@media (max-width: 1100px)",
+  /**
+   * The header's own breakpoint (premium pass, spec §1.1): the bar from
+   * 1180px, the drawer below. The spec's 1024 does not fit: the row needs
+   * about 1010px of frame and 1024 leaves 922, so its fallback S20 applies
+   * (logged in CHIEF-LOG.md). Used only by Header.tsx and chrome.styles.ts;
+   * `nav` stays at 1100px so nothing else (home included) moves.
+   */
+  navBar: "@media (max-width: 1179px)",
   xs: `@media (max-width: ${bp.xs})`,
   sm: `@media (max-width: ${bp.sm})`,
   md: `@media (max-width: ${bp.md})`,
@@ -320,6 +338,7 @@ const theme = {
   weight,
   leading,
   tracking,
+  measure,
   space,
   radius,
   shadow,

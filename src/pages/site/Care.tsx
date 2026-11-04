@@ -8,71 +8,234 @@
  *
  * Fix round 2 (2026-10-23, jury 1 #5 #7 #9 #10 #24): the page no longer uses
  * the shared audience template. It opens on the cloth with the page's words
- * on an ivory leaf and one print beside it - the photo-sorting scene, shown
- * once on this page and nowhere else on the site. Then one room for knowing
- * the person (two prints, three ruled rows), the question that opens a
- * conversation beside how it works, and what to agree before beginning. No
- * photograph is drawn larger than its file, and none repeats Home's.
+ * on an ivory leaf and one object beside it. Then one room for knowing the
+ * person, the question that opens a conversation beside how it works, and
+ * what to agree before beginning.
  *
  * 2026-10-29 (founder: the page's goal "is not really there"): the page now
- * books its own demo. "Book a demo" used to leave for /organizations, and
- * the page ended on the family close ("The archive is free...", Start
- * free), which is not what a care community came for. The last room is the
- * booking form itself (kit/DemoSection.tsx) with the care kind picked and
- * what we agree before anyone is called beside it, plus a door to
- * /organizations for every other kind of place.
+ * books its own demo. The last room is the booking form itself
+ * (kit/DemoSection.tsx) with the care kind picked and what we agree before
+ * anyone is called beside it, plus a door to /organizations for every other
+ * kind of place.
+ *
+ * 2026-11-02, premium pass (docs/premium/design-spec.md §4 Group C): on a
+ * phone the object comes before the leaf (CSS order, same DOM), so the
+ * first screen is not all text. "What you need" sits straight after the
+ * opening. The circle's three roles are three typeset columns on a wide
+ * screen. A text link in the residents' room opens the film on
+ * /how-it-works. The today note (lib/today.ts) sits under the opening's
+ * actions.
+ *
+ * 2026-11-03 (panel round 2): the opening's lead names the AI-guided
+ * interviewer, the iPhone app and the staff-member option.
+ *
+ * Round 3 (2026-11-03, Builder 3; docs/plans/2026-11-03-premium-round-3.md
+ * task 3; panel: Denise):
+ *   - The photographs are gone (the hero print read as a younger couple,
+ *     the second as a young woman with a cake). The page's objects are two
+ *     real screens of the app (public/app, captured from the app itself):
+ *     a call in progress in the opening, cropped on a phone so the title
+ *     stays inside the first screen, and a memory page in the residents'
+ *     room. No new photograph (plan: licence).
+ *   - "What you need" lists the real requirements (NEED below, each line
+ *     from the site or the app), and "What we can say today" replaces the
+ *     three privacy labels with six sourced lines (orgQuestions.ts) and a
+ *     plain line on what is not claimed. Both fold under one line on a
+ *     phone, open in the prerender and on wider screens.
+ *   - The demo form is one step, asks for the "Community", and its "What
+ *     kind" offers care settings (CARE_KINDS, from lib/contact.ts) instead
+ *     of colleges and schools.
+ *   - No phone number: the site has none to give (logged for Daniel).
  */
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { Link } from "react-router-dom";
-import { ArrowIcon, PageOpening, Print } from "./kit/kit";
+import { ArrowIcon, PageOpening } from "./kit/kit";
+import { AppShot, Phone } from "./app/Phone";
 import { useReveals } from "./kit/reveals";
 import {
-  Actions,
   Chapter,
   Frame,
   PrimaryAnchor,
   SecondaryAnchor,
   Statement,
+  TextAnchor,
 } from "./kit/kit.styles";
 import { QuoteBand, RuledSteps } from "./rooms/Rooms";
 import DemoSection from "./kit/DemoSection";
-import { color, font, media, type } from "../../styles/theme";
+import ReviewQuestions from "./kit/ReviewQuestions";
+import { QUESTION_COUNT } from "../../lib/product";
+import {
+  CAN_SAY,
+  CARE_SAY_ORDER,
+  DEMO_AGENDA,
+  WRITE_TO_DANIEL,
+} from "./orgQuestions";
+import PrintSheet from "./kit/PrintSheet";
+import { CONTACT } from "../../lib/contact";
+import { color, display, font, media, space, type } from "../../styles/theme";
+
+/* The opening's object: a call in progress in the real app (public/app/
+   talk.webp). On a wide screen the whole phone; on a phone the top of it,
+   where the question is, fading out before the words so the title is in
+   the first screen (panel: Denise, "the hero image pushes the headline
+   almost below the first screen"). */
+const Call = styled.figure`
+  display: grid;
+  justify-items: center;
+  gap: ${space.sm};
+  margin: 0;
+  width: 100%;
+  .device {
+    width: min(100%, 300px);
+  }
+  figcaption {
+    max-width: 34ch;
+    font: 400 ${type.note} / 1.5 ${font.ui};
+    color: var(--muted);
+    text-align: center;
+    text-wrap: balance;
+  }
+  /* Round 3 fix 1 (item 12b, Denise): on a wide screen the phone stops
+     under the microphone, so the capture's call-time counter (and the
+     status line above it) never shows; a timer reads as a meter running
+     out. CSS only: the frame is 390:820 with a 2.4cqw bezel, so the screen
+     image is 2.057 x the device width tall; the microphone ends at 1.54 x,
+     the status line starts at 1.61 x, and the band ends at 1.58 x. */
+  @media (min-width: 861px) {
+    .device {
+      aspect-ratio: 1 / 1.58;
+      overflow: hidden;
+      mask-image: linear-gradient(to bottom, #000 97%, transparent 100%);
+    }
+  }
+  /* Phone: the top of the real phone, bezel and all, cut straight at the
+     bottom of a 250 px band and fading only there, so it reads as the app
+     on a device and not as a cropped screenshot (round-3 supervisor: the
+     frameless band at 236 px set the question at ~10 px and faded through
+     the pill). The phone is as wide as the measure allows (320 px at 390),
+     which lands the question line at about 14 px rendered. Inside the
+     screen, the capture is lifted by 16 % of its own height: the app's
+     Leave / Topic row slides under the kit's status bar, and the "A STORY"
+     eyebrow, both lines of the question and the "Rose is here with me"
+     button all sit in the solid part of the band. */
+  @media (max-width: 860px) {
+    .device {
+      width: min(84vw, 320px);
+      height: 250px;
+      overflow: hidden;
+      mask-image: linear-gradient(to bottom, #000 86%, transparent 100%);
+    }
+    .device .screen img {
+      transform: translateY(-16%);
+    }
+  }
+  /* A short phone screen (320 x 568, an SE held upright): the band stops
+     just under the "Rose is here with me" pill instead of 60px below it,
+     so the whole title is in the first screen (tester, round 3: its h1
+     ended at 624 of 568). Same crop, same fade, less empty screen. */
+  @media (max-width: 860px) and (max-height: 700px) {
+    gap: ${space.xs};
+    .device {
+      height: 205px;
+      mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
+    }
+  }
+`;
+
+/* The hero screen (public/app/talk.webp), drawn like the kit AppShot but
+   loaded eagerly: it is the first screen's only image, and once the
+   frame is lifted inside the crop the unloaded img sits outside the clip,
+   so a lazy load never fires (measured in headless Chromium: memory.webp
+   below requested, talk.webp never). The LCP image eager with a high
+   priority is also the taste rule (taste.md §1, vercel/commerce). */
+const HeroShot = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+`;
 
 const Know = styled(Chapter)`
-  scroll-margin-top: 80px;
+  scroll-margin-top: calc(${space.xxxl} + ${space.md});
   .row {
     display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-    gap: clamp(40px, 6vw, 140px);
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(${space.xl}, 6vw, calc(${space.xxxl} + ${space.xxxl} + ${space.sm}));
     align-items: center;
   }
-  /* Two prints laid on each other, the smaller over the larger's corner. */
-  .pair {
-    position: relative;
-    padding: 0 0 clamp(60px, 7vw, 120px) 0;
+  /* A person's page in the real app (public/app/person.webp since
+     phone-first fix 3): the object of this room, one treatment, no print. */
+  .shot {
+    display: grid;
+    justify-items: center;
+    gap: ${space.sm};
+    margin: 0;
   }
-  .pair > figure:first-child {
-    width: min(86%, 640px);
+  .shot .device {
+    width: min(100%, 320px);
   }
-  .pair > figure:last-child {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: min(46%, 340px);
+  /* Round 3 fix 1 (item 12b): a band 1.49 x the device width, fading over
+     its last 10 %. On person.webp (phone-first fix 3) it ends inside the
+     short life story, before the editable rows and "Linda suggests".
+     Phones keep their shorter band below. */
+  @media (min-width: 861px) {
+    .shot .device {
+      aspect-ratio: 1 / 1.49;
+      overflow: hidden;
+      mask-image: linear-gradient(to bottom, #000 90%, transparent 100%);
+    }
   }
-  .words > p {
-    margin: 18px 0 clamp(22px, 2.4vw, 34px);
+  .shot figcaption {
+    max-width: 34ch;
+    font: 400 ${type.note} / 1.5 ${font.ui};
+    color: var(--muted);
+    text-align: center;
+    text-wrap: balance;
+  }
+  .words > p:not(.film) {
+    margin: ${space.md} 0 clamp(${space.lg}, 2.4vw, ${space.xl});
     max-width: 44ch;
     font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
+  }
+  .words > p.film {
+    margin-top: clamp(${space.md}, 2.2vw, ${space.xl});
   }
   ${media.lg} {
     .row {
       grid-template-columns: minmax(0, 1fr);
     }
-    .pair {
-      max-width: 640px;
+  }
+  /* Phone: the room's rhythm tightened so the page keeps near its old
+     length (spec §4C target ≤ 7.9 screens at 390). */
+  ${media.md} {
+    padding: ${space.xxl} 0;
+    .row {
+      gap: ${space.lg};
+    }
+    /* The top of the person page (her name, the four actions, "for the
+       family only"), fading out, so the room keeps its height. */
+    .shot .device {
+      width: min(62vw, 240px);
+      height: clamp(240px, 62vw, 290px);
+      overflow: hidden;
+      mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+    }
+    .words li {
+      padding-top: ${space.sm};
+      padding-bottom: ${space.sm};
+    }
+  }
+  /* Round 3 fix 1 (item 12, 8 screens at 390): on a phone the first screen
+     already shows the app, so this room is its words only. */
+  ${media.sm} {
+    padding: ${space.xl} 0;
+    .shot {
+      display: none;
     }
   }
 `;
@@ -85,7 +248,7 @@ const Know = styled(Chapter)`
  * wrap freely, so while Cormorant was still loading the fallback serif set it
  * on four lines, then it fell to two and the whole sheet jumped. On a wide
  * screen the title is now two set lines, sized to the sheet (its container),
- * so it takes the same height in either face; the sheet and the print hang
+ * so it takes the same height in either face; the sheet and the object hang
  * from the top of the row, so a lead that grows a line moves nothing above it.
  */
 const Fit = styled.div`
@@ -108,11 +271,6 @@ const Fit = styled.div`
       white-space: nowrap;
     }
   }
-  @media (max-width: 640px) {
-    ${Actions} > a {
-      flex: 1 1 100%;
-    }
-  }
   @media (max-width: 860px) {
     section[data-variant] .opening-grid h1 {
       max-width: none;
@@ -123,26 +281,475 @@ const Fit = styled.div`
       font-size: 2.1rem;
     }
   }
+  /* On a tablet the app screen comes first (the kit puts a flipped object
+     back after the words below 861 px). Round 3 fix 2 (item 12a, Denise
+     and Priya #6): at 640 px and below the headline, the lead, Book a demo
+     and the agenda under it come first, and the phone follows, its band
+     capped at about 40 % of the screen, so at 390 the headline starts
+     near the top of the first screen. */
+  @media (min-width: 641px) and (max-width: 860px) {
+    section[data-variant][data-flip] .opening-object {
+      order: -1;
+    }
+  }
+  @media (max-width: 640px) {
+    section[data-variant][data-flip] .opening-object {
+      order: 2;
+    }
+    section[data-variant] .opening-object .device {
+      /* Phone-first fix 1 (item 4): 250px -> 200px. */
+      height: min(200px, 32svh);
+    }
+  }
+  /* Phone-first fix 1 (item 3): the link to "What we can say today", a
+     44px row (phone-first fix 2 moved the agenda beside it to the form). */
+  section[data-variant] .opening-note a.say-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: ${space.xxs};
+    font-weight: 600;
+    text-underline-offset: 4px;
+  }
+  /* A short phone screen: the phone and the sheet a little closer, and the
+     sheet's top margin a little less, so the title ends inside 568px. */
+  @media (max-width: 860px) and (max-height: 700px) {
+    section[data-variant] .opening-grid {
+      row-gap: ${space.lg};
+    }
+    section[data-variant="letter"] .opening-sheet {
+      padding-top: ${space.lg};
+    }
+  }
 `;
 
+/* What you need, then what we can say today: straight after the opening
+   (Denise and Priya look for both first). */
+const Need = styled(Chapter)`
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+    gap: clamp(${space.lg}, 5vw, calc(${space.xxxl} + ${space.xxl}));
+    align-items: start;
+  }
+  h2 {
+    font: 400 ${display.sm} / 1.2 ${font.display};
+    color: var(--ink);
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .need li {
+    padding: ${space.md} 0;
+    border-top: 1px solid var(--line);
+  }
+  .need li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+  .need b {
+    display: block;
+    font: 400 ${display.sm} / 1.2 ${font.display};
+    color: var(--ink);
+  }
+  .need span {
+    display: block;
+    margin-top: ${space.xxs};
+    max-width: 56ch;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--muted);
+  }
+  /* What we can say today: the same two columns, six lines as one ruled
+     list, then the line on what is not claimed and where to read more. */
+  .say {
+    margin-top: clamp(${space.lg}, 3vw, ${space.xl});
+  }
+  .say ul {
+    padding: ${space.sm} 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .say li {
+    padding: ${space.xxs} 0;
+    max-width: 56ch;
+    font: 400 ${type.read} / 1.5 ${font.text};
+    color: var(--muted);
+  }
+  .say li b {
+    font-weight: 500;
+    color: var(--ink);
+  }
+  /* The address to write to and the two links, each on its own line
+     (round 3 fix 2: the "not stated" line became the agenda under Book a
+     demo). */
+  .say .ask {
+    margin-top: ${space.sm};
+    max-width: 56ch;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--muted);
+  }
+  .say .ask a {
+    display: inline-block;
+    padding: ${space.xxs} 0;
+    color: var(--ink);
+    font-weight: 600;
+    text-underline-offset: 4px;
+    /* The address is one long word: at 320px with 150% text it was 335px
+       in a 280px line and pushed the page 35px sideways (tester, pf). */
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  /* The ways on: one link a line, each a 44px row, 8px apart (taste
+     rule 20; round 3 fix 1). */
+  .say .ways {
+    display: grid;
+    gap: ${space.xs};
+    margin: ${space.xs} 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .say .ways li {
+    padding: 0;
+  }
+  main[data-premium] & .say .ways a:not([class]),
+  .say .ways a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0;
+    color: var(--ink);
+    font-weight: 600;
+    text-underline-offset: 4px;
+  }
+  /* Phone-first fix 1 (item 4): "What we can say today" is two lists, the
+     first three lines and the rest (folded on a phone); on wider screens
+     they read as the one ruled list they were. */
+  .say ul[aria-labelledby] {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .say .more > ul {
+    border-top: 0;
+    padding-top: ${space.xxs};
+  }
+  ${media.sm} {
+    .say ul[aria-labelledby] {
+      padding-bottom: ${space.xs};
+    }
+    .say .fold.more {
+      border-top: 1px solid var(--line);
+      border-bottom: 0;
+    }
+    .say .fold.more[open] {
+      padding-bottom: 0;
+    }
+  }
+  /* The folds: on a phone only. From 641 px the summary is hidden and the
+     details stay open (closed details with no summary could never open
+     again, so the content shows either way). */
+  .fold > summary {
+    display: none;
+  }
+  @media (min-width: 641px) {
+    .fold::details-content {
+      content-visibility: visible;
+      display: contents;
+    }
+  }
+  ${media.md} {
+    padding: ${space.lg} 0;
+    .row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: ${space.sm};
+    }
+    .need li {
+      padding: ${space.xs} 0;
+    }
+    .need span {
+      font-size: ${type.note};
+    }
+    .say ul {
+      padding: ${space.xs} 0;
+    }
+  }
+  /* On a phone each block folds under one line that names it, so the h2
+     steps out of the layout; it still names the list (aria-labelledby). */
+  ${media.sm} {
+    .say {
+      margin-top: 0;
+    }
+    .row > h2 {
+      display: none;
+    }
+    .need .fold {
+      border-top: 1px solid var(--line);
+    }
+    .fold {
+      border-bottom: 1px solid var(--line);
+    }
+    .need .fold li:first-child {
+      border-top: 0;
+    }
+    .need .fold li:last-child {
+      border-bottom: 0;
+    }
+    .fold > summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: ${space.md};
+      min-height: 44px;
+      padding: ${space.xs} 0;
+      cursor: pointer;
+      list-style: none;
+      color: var(--ink);
+      font: 600 ${type.ui} / 1.3 ${font.ui};
+    }
+    .fold > summary::-webkit-details-marker {
+      display: none;
+    }
+    .fold > summary::after {
+      content: "+";
+      font: 400 ${display.sm} / 1 ${font.display};
+      color: var(--muted);
+    }
+    .fold[open] > summary::after {
+      content: "−";
+    }
+    .fold > summary:focus-visible {
+      outline: 2px solid ${color.primary};
+      outline-offset: 2px;
+    }
+    .fold[open] {
+      padding-bottom: ${space.sm};
+    }
+  }
+`;
+
+/* The booking room on a phone: the same parts, closer together (the
+   section and its list are kit/DemoSection.tsx; only spacing changes here). */
+const Booking = styled.div`
+  display: contents;
+  ${media.md} {
+    > section {
+      padding: ${space.xxl} 0;
+    }
+    > section .row {
+      gap: ${space.lg};
+    }
+    > section .side ul {
+      margin-top: ${space.sm};
+    }
+    > section .side li {
+      padding: ${space.sm} 0;
+    }
+  }
+  /* Phone-first fix 1 (item 4): the section rhythm steps down on a phone,
+     as on /organizations (--sy 0.55). Words and order are unchanged. */
+  ${media.sm} {
+    > section {
+      --sy: 0.55;
+      padding: ${space.xl} 0;
+    }
+    > section .side li {
+      padding: ${space.xs} 0;
+    }
+  }
+`;
+
+/* The circle around each resident: on a wide screen the line to remember
+   sits above three typeset columns, one per role (no cards). */
+const Circle = styled.div`
+  display: contents;
+  ${media.md} {
+    > section {
+      padding-top: ${space.xxl};
+      padding-bottom: ${space.xxl};
+    }
+  }
+  /* Round 3 fix 1 (item 12, each line once): on a phone the band is its
+     line to remember and its title. Its three rows repeat lines this page
+     already says above ("An agreed hour", "One link, no account" on the
+     family, "Only the people ... invite"), so the phone, which reads the
+     page top to bottom, skips them (8 screens at 390). */
+  ${media.sm} {
+    > section ul {
+      display: none;
+    }
+  }
+  /* Phone-first fix 1 (item 4, Denise #7, Priya #6): at 640 px and below
+     the band goes too (its rows were already skipped there), and one link
+     takes its place, back up to "What you need". */
+  > .see-need {
+    display: none;
+  }
+  ${media.sm} {
+    > section {
+      display: none;
+    }
+    > .see-need {
+      display: block;
+      padding-block: ${space.sm};
+    }
+    > .see-need a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: ${color.primary};
+      font: 600 ${type.ui} / 1.3 ${font.ui};
+      text-underline-offset: 4px;
+    }
+  }
+  ${media.up.lg} {
+    > section .row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: clamp(${space.xl}, 4vw, ${space.xxxl});
+    }
+    > section blockquote {
+      max-width: 22ch;
+    }
+    > section ul {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(${space.lg}, 3vw, ${space.xxl});
+    }
+    > section li,
+    > section li:last-child {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      border-bottom: 0;
+    }
+  }
+`;
+
+/* The opening's lead names what does the asking and how the calls happen,
+   so both are read before the first scroll (CHIEF-LOG panel round 2, B4.1).
+   "An AI-guided interviewer" and the question count are the FAQ's own
+   answer (faqData.ts, "Who asks the questions?"); the count is the
+   constant, never typed. The iPhone and the staff member come from "What
+   you need" below; "private beta" stays in the note under the actions and
+   in that block (spec §3.7: no hero lead contains "beta"). */
+const LEAD = `An AI-guided interviewer asks each resident about their life, from ${QUESTION_COUNT} questions, in the A Story iPhone app or with a staff member beside them.`;
+
+/* Where the two blocks fold (the same width as media.sm). */
+const FOLD = "(max-width: 640px)";
+
+/* What a community needs before anyone is called. Each line is worded from
+   a line the site or the app already says:
+   - the iPhone: faqData.ts "Will it ring on another phone or tablet?"
+     ("Today, A Story rings on an iPhone"), Organizations.tsx
+     NEED ("we help them install the app"), and this page's own line "or a
+     staff member starts a conversation together with them";
+   - the hour: this page ("at an agreed hour"), faqData.ts "the app rings
+     at the hour your family picked and they answer and talk";
+   - one person: AGREE "Who helps" below; kit/DemoSection.tsx NEXT "A
+     program can begin with one class, one floor or one team";
+   - consent: privacy.tsx section 6; AGREE "Consent" below. The last
+     sentence names a question and claims nothing;
+   - pricing: this page's lead "Community pricing is quoted individually,
+     on the demo"; faqData.ts "There is no fee per relative". */
+const NEED: readonly [string, string][] = [
+  [
+    /* Phone-first fix 1 (item 2, Denise #3): the workaround leads, not the
+       deal-breaker. The same three sentences as before, reordered (round 3
+       fix 2 moved lib/today.ts TODAY_NOTE's first sentence here); the
+       label says what the body says, and adds no claim. */
+    "An iPhone for the calls, today.",
+    "Where a resident has none, a staff member starts a conversation together with them. We help install the app. Today the calls ring in the A Story iPhone app, in a private beta.",
+  ],
+  ["An agreed hour.", "The app rings then, and they answer and talk."],
+  [
+    "One person on your side.",
+    "For installation, introductions and support. A program can begin with one floor.",
+  ],
+  [
+    "The resident’s consent, before the first call.",
+    /* Round 3 fix 1 (item 12a): the demo half of this line moved out; in
+       fix 2 it is the agenda under Book a demo (orgQuestions.ts
+       DEMO_AGENDA). Phone-first fix 2 (item 5, Denise #3): the line we
+       already publish, orgQuestions.ts ORG_GROUP "How is consent
+       handled?" (privacy.tsx section 6: "If you set A Story up on
+       someone's behalf, you are responsible for making sure they
+       understand and agree"; "How that works for a resident who cannot
+       decide alone is a question we answer on the demo"). No guardian or
+       POA wording (blocked on Daniel). */
+    "Agreed with them, together with who may read or contribute. If someone sets A Story up on a resident’s behalf, they make sure the resident understands and agrees. How that works for a resident who cannot decide alone, we go through on the demo.",
+  ],
+  [
+    "Pricing, quoted on the demo.",
+    "For the program you describe. Relatives who read and add pay nothing.",
+  ],
+];
+
+/* The "What kind" options on this page's form: care settings, from the
+   kinds lib/contact.ts already names for this audience ("senior living,
+   memory care, hospice"). The stored row keeps source "care:demo". */
+const CARE_KINDS = [
+  "Senior living",
+  "Memory care",
+  "Hospice",
+  "Something else",
+] as const;
+
 /* What a care community and A Story settle on the demo, before anyone is
-   called (the checklist that used to be the BeginCard). */
+   called (the checklist that used to be the BeginCard). Round 3: "Who
+   helps" and "Consent" moved up into "What you need", so only the two
+   that are decided together remain here (the page stays near 8 screens
+   at 390). */
 const AGREE: [string, string][] = [
-  ["Who helps", "With installation, introductions and support, on your side and ours."],
-  ["Consent", "Each resident agrees, and who may read or contribute is set with them."],
   ["What stays private", "Which stories stay with the family, and which the care team may read."],
   ["How families are invited", "And when, so the first call is not a surprise to anyone."],
 ];
 
+/* "What we can say today", in this page's order. */
+const CARE_SAY = CARE_SAY_ORDER.map((i, n) => ({ ...CAN_SAY[i], first: n === 0 }));
+const sayLine = (t: (typeof CARE_SAY)[number]) => (
+  <li key={t.lead}>
+    <b>{t.lead}</b>
+    {/* The repeats line (CARE_SAY_ORDER[0]) keeps only its lead here:
+        "never a test" is in Know below. The storage line's rest is its
+        link to /privacy#s13. */}
+    {t.rest && !t.first && (
+      <>
+        {" "}
+        {t.href ? <Link to={t.href}>{t.rest}</Link> : t.rest}
+      </>
+    )}
+  </li>
+);
+
 export default function Care() {
   const know = useReveals<HTMLElement>();
+  /* "What you need" and "What we can say today" are <details> that a
+     phone can fold under one line each, but both ship open and stay open
+     after hydration (round-3 supervisor: the six privacy and consent lines
+     are what Denise and Priya score trust on, so they are not hidden
+     behind a bare "+"). The script only reopens them when a phone turns
+     sideways, where the summary is hidden. */
+  const need = useRef<HTMLDetailsElement>(null);
+  const say = useRef<HTMLDetailsElement>(null);
+  const more = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    const fold = window.matchMedia(FOLD);
+    const folds = [need.current, say.current, more.current];
+    if (fold.matches && more.current) more.current.open = false;
+    /* From 641 px the summary is hidden, so closed details could never be
+       opened again (a phone turned sideways). Leaving the fold opens them. */
+    const unfold = (e: MediaQueryListEvent) => {
+      if (!e.matches) for (const d of folds) if (d) d.open = true;
+    };
+    fold.addEventListener("change", unfold);
+    return () => fold.removeEventListener("change", unfold);
+  }, []);
   return (
     <>
       <EditorialSeo
         title="A Story for care communities"
         path="/care-communities"
-        description="Make room for a resident’s own stories and family perspectives. Discuss participation, setup, privacy and a small community program."
+        description="Make room for a resident’s own stories and family perspectives. What you need, what we can say today about privacy and consent, and a small community program."
       />
+      <PrintSheet />
       <Fit>
         <PageOpening
           variant="letter"
@@ -155,27 +762,75 @@ export default function Care() {
               </span>
             </>
           }
-          lead="The work they did. The music in the house. The way they made Sunday lunch. Give those stories somewhere to stay, and give the people caring for them a way to learn them."
+          lead={LEAD}
+          /* Round 3 fix 2 (items 2 and 12b) put the agenda here;
+             phone-first fix 2 (item 3, Priya #3, Denise #7) moved it next
+             to the form (DemoSection lead below), so it is said once. */
+          note={
+            <>
+              {/* Phone-first fix 1 (item 3, Denise #4, Priya #2): the way
+                  to what is already answered. */}
+              <a className="say-link" href="#say">
+                What we can say today&nbsp;↓
+              </a>
+            </>
+          }
           actions={
             <>
               <PrimaryAnchor href="#book">
                 Book a demo <ArrowIcon />
               </PrimaryAnchor>
-              <SecondaryAnchor href="#know">How it works</SecondaryAnchor>
+              <SecondaryAnchor href="#need">What you need</SecondaryAnchor>
             </>
           }
           object={
-            <Print
-              id="23"
-              alt="Two people going through a box of old photographs together"
-              sizes="(max-width: 860px) 92vw, 46vw"
-              tilt={-1.6}
-              caption="Who is that, beside your mother?"
-              priority
-            />
+            <Call>
+              <div className="device">
+                <Phone
+                  width="100%"
+                  lightStatus
+                  label="The A Story app during a call. On screen: the question “What’s something you remember Rose always doing?”, a button “Rose is here with me”, and “Listening — just start talking”."
+                >
+                  <HeroShot
+                    src="/app/talk.webp"
+                    alt=""
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
+                  />
+                </Phone>
+              </div>
+              <figcaption>
+                A call in the A Story app: it asks, then listens. Someone can
+                sit beside them.
+              </figcaption>
+            </Call>
           }
         />
       </Fit>
+
+      <Need
+        $ground="paper"
+        $tight
+        id="need"
+        aria-labelledby="need-title"
+        style={{ scrollMarginTop: 80 }}
+      >
+        <Frame className="row need">
+          <h2 id="need-title">What you need</h2>
+          <details className="fold" ref={need} open>
+            <summary>What you need</summary>
+            <ul aria-labelledby="need-title">
+              {NEED.map(([t, d]) => (
+                <li key={t}>
+                  <b>{t}</b>
+                  <span>{d}</span>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </Frame>
+      </Need>
 
       <Know
         ref={know}
@@ -184,22 +839,27 @@ export default function Care() {
         aria-labelledby="know-title"
       >
         <Frame className="row">
-          <div className="pair" data-rise="settle">
-            <Print
-              id="13"
-              alt="The end of a birthday: candles out, the cake cut, 1991"
-              sizes="(max-width: 1024px) 86vw, 36vw"
-              tilt={-1.2}
-            />
-            <Print
-              id="29"
-              alt="An ordinary morning at home: a man at the kitchen table, 1982"
-              sizes="(max-width: 1024px) 46vw, 20vw"
-              tilt={2}
-            />
-          </div>
+          <figure className="shot" data-rise="settle">
+            <div className="device">
+              {/* Phone-first fix 3 (item 3, Denise #4): the memory capture
+                  showed a "Public" badge on a resident's memory; this is
+                  the person page (public/app/person.webp), whose band shows
+                  "Living · Details are for the family only" and no
+                  Public, delete or save-date chrome. */}
+              <Phone
+                width="100%"
+                label="A person’s page in the A Story app: Rose Miller, your grandmother, born 1945, marked “Details are for the family only”, with a few lines about her life."
+              >
+                <AppShot name="person" />
+              </Phone>
+            </div>
+            <figcaption>
+              A person’s page in the app: who she is, with details kept for
+              the family only.
+            </figcaption>
+          </figure>
           <div className="words">
-            <Statement id="know-title" $size="lg" data-lines>
+            <Statement id="know-title" $size="lg">
               Know the person <em>behind the care.</em>
             </Statement>
             <p data-rise>
@@ -222,10 +882,61 @@ export default function Care() {
                 ],
               ]}
             />
+            <p className="film">
+              <TextAnchor href="/how-it-works#film">
+                See a call become a book&nbsp;·&nbsp;49&nbsp;s
+              </TextAnchor>
+            </p>
           </div>
         </Frame>
       </Know>
 
+      {/* Phone-first fix 3 (item 4, Denise #5): the person before the
+          paperwork. "What we can say today" and the review questions
+          follow "Know the person", in the same room styles. */}
+      <Need $ground="paper" $tight aria-labelledby="say-title">
+        <Frame className="row say" id="say" style={{ scrollMarginTop: 80 }}>
+          <h2 id="say-title">What we can say today</h2>
+          <div>
+          <details className="fold" ref={say} open>
+            <summary>What we can say today</summary>
+            <ul aria-labelledby="say-title">
+              {CARE_SAY.slice(0, 3).map(sayLine)}
+            </ul>
+            {/* Phone-first fix 1 (item 4): on a phone the first three lines
+                stay open and the rest fold under one line; from 641 px
+                this fold has no summary and is open. */}
+            <details className="fold more" ref={more} open>
+              <summary>{CARE_SAY.length - 3} more we can say today</summary>
+              <ul aria-label="More we can say today">
+                {CARE_SAY.slice(3).map(sayLine)}
+              </ul>
+            </details>
+            {/* Round 3 fix 2 (item 2): the "not stated" line left this
+                block for the agenda under Book a demo. */}
+            <p className="ask">
+              Write to <a href={CONTACT.general}>contact@astoryapp.com</a>;{" "}
+              {WRITE_TO_DANIEL}
+            </p>
+            <ul className="ways" aria-label="Read more">
+              <li>
+                <Link to="/privacy">Read the privacy policy</Link>
+              </li>
+              <li>
+                <Link to="/questions#organizations">
+                  Answers for organizations
+                </Link>
+              </li>
+            </ul>
+          </details>
+          {/* Phone-first fix 2 (item 4, Denise #2, Priya #2): what a
+              review asks, answered with what /questions already says. */}
+          <ReviewQuestions />
+          </div>
+        </Frame>
+      </Need>
+
+      <Circle>
       <QuoteBand
         quote={
           <>
@@ -236,7 +947,7 @@ export default function Care() {
         steps={[
           [
             "The resident talks, when they like.",
-            "A Story calls in its iPhone app at an agreed hour (in a private beta), or a staff member starts a conversation together with them.",
+            "At an agreed hour, or together with a staff member.",
           ],
           [
             "The family adds what they know.",
@@ -248,14 +959,25 @@ export default function Care() {
           ],
         ]}
       />
+      {/* Phone-first fix 1 (item 4): on a phone this band's rows repeat
+          "What you need", so the band is one link back up to it. */}
+      <Frame className="see-need">
+        <a href="#need">See what you need&nbsp;↑</a>
+      </Frame>
+      </Circle>
 
+      <Booking>
       <DemoSection
         title={
           <>
             A small program, <em>shaped with you.</em>
           </>
         }
-        lead="Begin with the residents and families who want to take part. Community pricing is quoted individually, on the demo."
+        /* Round 3 fix 1 (item 12c): "quoted on the demo" is said once on
+           this page, in "What you need" (Care.tsx NEED). */
+        /* Phone-first fix 2 (item 3): the agenda (orgQuestions.ts
+           DEMO_AGENDA), once on this page, next to the form. */
+        lead={`Begin with the residents and families who want to take part. ${DEMO_AGENDA}`}
         aside={
           <ul aria-label="What we agree before anyone is called">
             {AGREE.map(([t, d]) => (
@@ -270,17 +992,22 @@ export default function Care() {
           <>
             Not a care community?{" "}
             <Link to="/organizations">
-              A Story for colleges, libraries and more
+              A Story for schools, libraries and companies
             </Link>
           </>
         }
-        kind="Senior living or care community"
+        kind=""
+        kinds={CARE_KINDS}
+        orgLabel="Community"
+        sizeLegend="How many residents might take part"
+        compact
         source="care:demo"
         rolePlaceholder="Life enrichment director"
         notePlaceholder="The residents who moved in this year, and their families, before the holidays."
         cardLabel="A demo for your community"
         cardTitle="Tell us about your residents, and when suits you."
       />
+      </Booking>
     </>
   );
 }

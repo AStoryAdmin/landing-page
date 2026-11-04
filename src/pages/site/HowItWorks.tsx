@@ -18,11 +18,24 @@
  * 4. Everyone has a way in: four ways, in words, on one row.
  * 5. The book.
  *
+ * Premium pass (2026-11-02, design spec §4A): the film (kit/Film.tsx) after
+ * the opening; the lead cut to two sentences with the "today" note under the
+ * actions; "If you're the one being asked" for the storyteller after the
+ * four moments; the ways in as a Scroller on a phone; the closing offers
+ * /samples, /pricing and /for-families.
+ *
+ * Round 2 (2026-11-03, CHIEF-LOG B2.3): the storyteller's section is
+ * #being-asked, straight after the hero and before the film; the hero keeps
+ * two actions; the Start free row under the film is gone, and the sample
+ * call is a text link in Four moments; the call card sits at the top.
+ *
  * Product truth (Bao's rulings, 2026-10-23): the calls ring in the A Story
  * iPhone app, in a private beta, and the parent installs it. Never a regular
  * phone call, never "no app". Voice clips are in development: the page says
  * so once and promises the card and the transcript.
  */
+import { useLayoutEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { SCENARIOS } from "../../lib/demoScripts";
@@ -30,6 +43,8 @@ import { BOOK } from "../../lib/pricing";
 import CallStills from "./home/Listen";
 import MemoryCard from "./app/MemoryCard";
 import { ArrowIcon, Invitation, PageOpening, Picture } from "./kit/kit";
+import Film from "./kit/Film";
+import Scroller from "./kit/Scroller";
 import { useReveals } from "./kit/reveals";
 import { PhonePairs } from "./rooms/phonePairs";
 import {
@@ -37,14 +52,15 @@ import {
   Frame,
   Lead,
   PrimaryLink,
-  SecondaryAnchor,
   SplitHead,
   Statement,
   TextAnchor,
   TextLink,
 } from "./kit/kit.styles";
-import { color, display, font, media, shadow, type } from "../../styles/theme";
+import { color, display, font, media, shadow, space, type } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
+import TodayNow from "./TodayNow";
+import { DECLINE_HREF } from "./faqData";
 
 const love = SCENARIOS.find((s) => s.id === "love")!;
 const QUESTION = "What did the garage smell like when you were fixing things?";
@@ -100,8 +116,7 @@ const Slip = styled.figure`
   }
   blockquote {
     margin: clamp(18px, 2vw, 28px) 0 0;
-    font: italic 400 clamp(1.7rem, 1.1rem + 1.9vw, 3.4rem) / 1.16
-      ${font.display};
+    font: italic 400 ${display.md} / 1.16 ${font.display};
     letter-spacing: -0.01em;
     text-wrap: balance;
   }
@@ -148,6 +163,19 @@ function CallSlip() {
     </Slip>
   );
 }
+
+/* The call card sits at the top of its column, level with the title, so
+   the right side of the hero is not an empty field above it (CHIEF-LOG
+   B2.3). `display: contents` keeps the wrapper out of the layout. */
+const HeroTop = styled.div`
+  display: contents;
+  section[data-variant="object"] .opening-grid:not(.solo) {
+    align-items: start;
+  }
+  section[data-variant="object"] .opening-object {
+    align-items: start;
+  }
+`;
 
 /* ── Four moments, beside what one call leaves ─────────────────────────── */
 
@@ -197,11 +225,25 @@ const Moments = styled(Chapter)`
   li:last-child {
     border-bottom: 1px solid ${color.primaryLine};
   }
+  .sample {
+    margin-top: ${space.md};
+  }
+  /* The app's card keeps its chapter chip and "Told by" on one line; at
+     320, and at 150% text, they ran past the edge (round 3, B4). Page-local
+     so the card on home does not move. */
+  ${media.sm} {
+    .leaves .card .kicker,
+    .leaves .card .told {
+      white-space: normal;
+    }
+    .leaves .card .foot {
+      flex-wrap: wrap;
+    }
+  }
   .who {
     padding-top: 0.55em;
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   h3 {
@@ -224,8 +266,7 @@ const Moments = styled(Chapter)`
   }
   .leaves > p.label {
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
     margin-bottom: 14px;
   }
@@ -247,8 +288,7 @@ const Moments = styled(Chapter)`
   .sheet-head {
     margin-bottom: 10px;
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   .sheet p:not(.sheet-head) {
@@ -287,12 +327,19 @@ const Moments = styled(Chapter)`
       transform: none;
     }
   }
+  /* Supervisor ruling (CHIEF-LOG, §4A length): on a phone the typed sheet
+     stays out; the card and the "full transcript" note carry the claim. */
+  @media (max-width: 640px) {
+    .sheet {
+      display: none;
+    }
+  }
 `;
 
 function FourMoments() {
   const ref = useReveals<HTMLElement>();
   return (
-    <Moments ref={ref} $ground="ivory" aria-labelledby="moments-title">
+    <Moments ref={ref} $ground="ivory" $tight aria-labelledby="moments-title">
       <Frame>
         <SplitHead>
           <Statement id="moments-title" $size="lg" data-lines>
@@ -304,17 +351,23 @@ function FourMoments() {
           </Lead>
         </SplitHead>
         <div className="row">
-          <ol>
-            {STEPS.map((s) => (
-              <li key={s.title} data-rise>
-                <p className="who">{s.who}</p>
-                <div>
-                  <h3>{s.title}</h3>
-                  <p>{s.text}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <div data-rise>
+            <ol>
+              {STEPS.map((s) => (
+                <li key={s.title}>
+                  <p className="who">{s.who}</p>
+                  <div>
+                    <h3>{s.title}</h3>
+                    <p>{s.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            {/* The one way to the sample calls (CHIEF-LOG B2.3). */}
+            <p className="sample">
+              <TextAnchor href="#calls">See a sample call</TextAnchor>
+            </p>
+          </div>
           <div className="leaves" data-rise="settle">
             <p className="label">What one call leaves, in the app</p>
             <MemoryCard
@@ -351,6 +404,138 @@ function FourMoments() {
   );
 }
 
+/* ── For the storyteller ────────────────────────────────────────────────── */
+
+/*
+ * Harold's section (spec §4A): four lines for the person being asked, made
+ * only of sentences already on the site, turned to "you":
+ *   home/ThreeSteps.tsx:47  "It rings in the app at the hour you picked.
+ *                            Nothing to type or save. They just talk."
+ *   home/FamilyLoop.tsx:47  "Nothing appears until the storyteller says yes."
+ *   the old nav hint        "Their story belongs to them."
+ * No new facts (no call length, no device claim).
+ */
+const Asked = styled(Chapter)`
+  .asked {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: ${space.lg} ${space.xxl};
+  }
+  ul {
+    display: grid;
+    gap: ${space.sm};
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: ${color.body};
+  }
+  /* Two lines that each carry a link sit 8px apart at their 44px hit
+     areas (taste rule 20). */
+  li:has(a) + li:has(a) {
+    margin-top: ${space.md};
+  }
+  /* A link inside a line of the list stays in the line's serif. */
+  li a {
+    color: inherit;
+    font-family: inherit;
+    font-weight: 500;
+  }
+  /* Phone-first fix 1 (item 11): the line that names Daniel, with his face. */
+  li.daniel {
+    display: flex;
+    align-items: flex-start;
+    gap: ${space.md};
+  }
+  li.daniel .face {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  ${media.md} {
+    .asked {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+`;
+
+/** AppDoor.tsx CALLER_LINE, word for word (sources listed there). Round 3
+    fix 2 (item 7, Tuan #8): "Daniel, who started A Story" (OurStory.tsx:589
+    and :617, his note: "So I started building A Story"). */
+const CALLER_LINE =
+  "It’s a computer that calls and asks, not a person. Nobody at A Story reads or listens to what you say unless you ask us to help, or someone reports something. If you write to us, Daniel, who started A Story, answers himself.";
+
+function BeingAsked() {
+  return (
+    <Asked
+      id="being-asked"
+      $ground="ivory"
+      $tight
+      aria-labelledby="asked-title"
+    >
+      <Frame className="asked">
+        <Statement id="asked-title" $size="md">
+          If you’re the one being asked.
+        </Statement>
+        <ul>
+          {/* Round 3 (plan task 1): the hour is the family's choice, not the
+              storyteller's (Harold). */}
+          <li>
+            It rings in the app at the hour your family picked. Nothing to
+            type or save. You just talk.
+          </li>
+          {/* Round 3 fix 2 (item 8, Harold #5): the device line said
+              openly here, not only in a closed answer on /questions
+              (faqData.ts:48, turned to "you"). */}
+          <li>
+            Today, A Story rings on an iPhone. On other phones,
+            it reminds you to write instead.
+          </li>
+          {/* Round 3 fix 1 (item 4, Harold and Tuan): the storyteller's
+              reassurance sits in the storyteller's section. Moved from
+              beside the film (kit/Film.tsx, which keeps its first sentence);
+              the same sentence is on /join (AppDoor.tsx CALLER_LINE).
+              "Who is behind A Story" goes to /our-story. The decline line is
+              faqData.ts:73 turned to "you", linked to that answer. */}
+          {/* Phone-first fix 1 (item 11, Harold #5, Tuan #8): Daniel's
+              photograph from /our-story (OurStory.tsx:593) beside the line
+              that names him, 48px and round. */}
+          <li className="daniel">
+            <img
+              className="face"
+              src="/our-story/daniel-320.webp"
+              width={48}
+              height={48}
+              alt="Daniel Hoang Nguyen, co-founder"
+              loading="lazy"
+              decoding="async"
+            />
+            <span>
+              {CALLER_LINE}{" "}
+              <TextLink to="/our-story">Who is behind A Story</TextLink>
+            </span>
+          </li>
+          {/* Round 3 fix 2 (item 7, Harold #4, Tuan #6): plain text like
+              its neighbours; only the word "decline" links to the answer. */}
+          <li>
+            You can <Link to={DECLINE_HREF}>decline</Link> a question, pause,
+            or change the subject.
+          </li>
+          <li>Nothing appears until you say yes.</li>
+          <li>
+            Your story belongs to you.{" "}
+            <TextLink to="/privacy/">Read our privacy policy</TextLink>
+          </li>
+        </ul>
+      </Frame>
+    </Asked>
+  );
+}
+
 /* ── Everyone has a way in ─────────────────────────────────────────────── */
 
 const WAYS = [
@@ -376,14 +561,45 @@ const WAYS = [
   },
 ];
 
+/* Under the heading, one line from docs/mission.md "Phrases worth keeping",
+   verbatim (spec S27): many voices on one moment. */
+const NARRATORS = "Not one narrator, but everyone who was in the room.";
+
 const Ways = styled(Chapter)`
-  ul {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(24px, 3vw, 56px);
-    margin: calc(clamp(28px, 3.4vw, 56px) * var(--sy)) 0 0;
-    padding: 0;
-    list-style: none;
+  .narrators {
+    margin-top: ${space.lg};
+    font: italic 400 ${type.lead} / 1.4 ${font.display};
+    color: ${color.primary};
+  }
+  .list {
+    margin-top: calc(${space.xxl} * var(--sy));
+  }
+  /* A Scroller on a phone (spec §3.9: one row, the next way peeking). From
+     641px the same list is a grid of four, then of two. */
+  @media (min-width: 641px) {
+    .scroller {
+      margin-inline: 0;
+      overflow: visible;
+      mask-image: none;
+    }
+    .scroller .scroller-track {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: ${space.xxl};
+      width: auto;
+      padding-inline: 0;
+    }
+  }
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .scroller .scroller-track {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  /* Spec §4A cut: three ways in at 390 (the fourth only from 641px). */
+  @media (max-width: 640px) {
+    .scroller li:nth-child(n + 4) {
+      display: none;
+    }
   }
   li {
     padding-top: 18px;
@@ -392,8 +608,7 @@ const Ways = styled(Chapter)`
   small {
     display: block;
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   h3 {
@@ -405,16 +620,6 @@ const Ways = styled(Chapter)`
     margin-top: 10px;
     font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
-  }
-  ${media.lg} {
-    ul {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  ${media.sm} {
-    ul {
-      grid-template-columns: minmax(0, 1fr);
-    }
   }
 `;
 
@@ -437,7 +642,7 @@ const Volume = styled(Chapter)`
      headline (taste-skill statement rule). */
   .price {
     margin: 22px 0 28px;
-    font: 400 clamp(1.15rem, 1.05rem + 0.35vw, 1.4rem) / 1.55 ${font.text};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: ${color.body};
     max-width: 44ch;
   }
@@ -454,17 +659,80 @@ const Volume = styled(Chapter)`
   }
 `;
 
+/*
+ * Round 3 (2026-11-03, plan task 1): a deep link to #film or #being-asked
+ * showed the top of the page for up to two seconds (measured on the local
+ * build with motion on: the ScrollTrigger refresh that fonts.ready and load
+ * fire scrolls the window to 0 while it measures the pinned scenes, and the
+ * router's own follow only catches up later; any wheel or touch in between
+ * cancels it, which is how Maya "sat at the top"). This holds the target in
+ * place: an instant jump on the first commit, again after those two events,
+ * and on every frame for a short while, until the reader moves. The offset
+ * is the router's (RouteTransition.tsx): the header's height plus 24px.
+ */
+function useArrivalAnchor() {
+  const { hash } = useLocation();
+  useLayoutEffect(() => {
+    const id = hash.slice(1);
+    if (!id) return;
+    let stopped = false;
+    const jump = () => {
+      const el = document.getElementById(id);
+      if (!el || stopped) return;
+      const root = document.documentElement;
+      const nav =
+        parseFloat(getComputedStyle(root).getPropertyValue("--nav-total")) ||
+        88;
+      const top = Math.round(
+        el.getBoundingClientRect().top + window.scrollY - nav - 24,
+      );
+      if (Math.abs(window.scrollY - top) < 2) return;
+      /* An instant jump, whatever the stylesheet's scroll-behavior says. */
+      const previous = root.style.scrollBehavior;
+      root.style.scrollBehavior = "auto";
+      void getComputedStyle(root).scrollBehavior;
+      window.scrollTo({ top, left: 0, behavior: "instant" });
+      root.style.scrollBehavior = previous;
+    };
+    const stop = () => {
+      stopped = true;
+    };
+    const inputs = ["wheel", "touchstart", "pointerdown", "keydown"] as const;
+    inputs.forEach((e) => window.addEventListener(e, stop, { passive: true }));
+    jump();
+    let raf = 0;
+    const until = performance.now() + 3000;
+    const follow = () => {
+      if (stopped) return;
+      jump();
+      if (performance.now() < until) raf = requestAnimationFrame(follow);
+    };
+    raf = requestAnimationFrame(follow);
+    const settled = () => setTimeout(jump, 0);
+    document.fonts?.ready.then(settled);
+    window.addEventListener("load", settled, { once: true });
+    return () => {
+      stop();
+      cancelAnimationFrame(raf);
+      window.removeEventListener("load", settled);
+      inputs.forEach((e) => window.removeEventListener(e, stop));
+    };
+  }, [hash]);
+}
+
 export default function HowItWorks() {
   const ways = useReveals<HTMLElement>();
   const volume = useReveals<HTMLElement>();
+  useArrivalAnchor();
 
   return (
     <>
       <EditorialSeo
         title="How A Story works - a conversation becomes a family archive"
         path="/how-it-works"
-        description="Set it up once. A Story calls in its iPhone app, listens and follows what they actually say. See a sample call, then what the family keeps."
+        description="Choose the hour once. A Story rings in its iPhone app, listens and follows what they actually say. See a sample call, then what the family keeps."
       />
+      <HeroTop>
       <PhonePairs>
         <PageOpening
           variant="object"
@@ -473,55 +741,79 @@ export default function HowItWorks() {
               A Story does the <em>asking.</em>
             </>
           }
-          lead="You set it up once and choose the hour. A Story calls, asks about their life and follows whatever they say. For now the calls ring through the A Story app on iPhone, in a private beta. Writing, the family archive and the book work in any browser today."
+          /* Phone-first plan task 4: where the call rings and the family's
+             side, in the lead (lib/today.ts:13, home/ThreeSteps.tsx:47,
+             faqData.ts:69). The private beta is said once, in "Where A
+             Story is today" below (TodayNow), so the note is gone. */
+          lead="You choose the hour once. A Story rings them in its iPhone app, asks about their life and follows whatever they say. The family reads and adds in any browser."
           actions={
             <>
+              {/* Two actions (CHIEF-LOG B2.3); the sample call is a text
+                  link in Four moments. */}
               <PrimaryLink to={START_HREF}>
                 {START_LABEL} <ArrowIcon />
               </PrimaryLink>
-              <SecondaryAnchor href="#calls">See a sample call</SecondaryAnchor>
+              <TextAnchor href="#film">Watch the film · 49 s</TextAnchor>
+              {/* Round 3 fix 2 (item 8, Harold #3): the storyteller's door
+                  in the first screen. A navigation label (nav.ts:78). */}
+              <TextAnchor href="#being-asked">
+                Asked to tell your story? Start here
+              </TextAnchor>
             </>
           }
           object={<CallSlip />}
         />
       </PhonePairs>
+      </HeroTop>
+
+      {/* The storyteller's door, straight after the hero (CHIEF-LOG B2.3);
+          /join and the menu link to #being-asked. */}
+      <BeingAsked />
+
+      {/* Phone-first plan task 4: what works now, what comes by invite. */}
+      <TodayNow ground="paper" />
+
+      <Film />
 
       <FourMoments />
 
+      {/* One gold word for every other h2 at most (spec §3.1): this title
+          and "a way in" stay plain. */}
       <CallStills
         id="calls"
         more={false}
-        title={
-          <>
-            Good listening changes the next <em>question.</em>
-          </>
-        }
+        title={<>Good listening changes the next question.</>}
       />
 
-      <Ways ref={ways} $ground="paper" aria-labelledby="ways-title">
+      <Ways ref={ways} $ground="paper" $tight aria-labelledby="ways-title">
         <Frame>
           <SplitHead>
-            <Statement id="ways-title" $size="lg" data-lines>
-              Everyone in the family has a way <em>in.</em>
-            </Statement>
+            <div>
+              <Statement id="ways-title" $size="lg" data-lines>
+                Everyone in the family has a way in.
+              </Statement>
+              <p className="narrators">{NARRATORS}</p>
+            </div>
             <Lead data-rise>
               Everyone who knows her stories can add their part, and a memoir
               someone typed years ago comes in as it is.
             </Lead>
           </SplitHead>
-          <ul>
-            {WAYS.map((w) => (
-              <li key={w.k} data-rise>
-                <small>{w.k}</small>
-                <h3>{w.t}</h3>
-                <p>{w.d}</p>
-              </li>
-            ))}
-          </ul>
+          <div className="list" data-rise>
+            <Scroller label="Ways in">
+              {WAYS.map((w) => (
+                <li key={w.k}>
+                  <small>{w.k}</small>
+                  <h3>{w.t}</h3>
+                  <p>{w.d}</p>
+                </li>
+              ))}
+            </Scroller>
+          </div>
         </Frame>
       </Ways>
 
-      <Volume ref={volume} $ground="sand" aria-labelledby="volume-title">
+      <Volume ref={volume} $ground="sand" $tight aria-labelledby="volume-title">
         <Frame className="vol">
           <div data-print data-drift="4">
             <Picture
@@ -534,25 +826,27 @@ export default function HowItWorks() {
             <Statement id="volume-title" $size="lg" data-lines>
               When a chapter is ready, make it a <em>volume.</em>
             </Statement>
-            <p className="price" data-rise>
-              The stories and photographs, bound as a book. Print it at home
-              free, or order a printed edition from {BOOK.from} once ordering
-              opens. Individual, Family and Express include a Classic Hardcover.
-            </p>
-            <div className="links" data-rise>
-              {/* /samples is a page in public/, outside the router: a plain anchor. */}
-              <TextAnchor href="/samples">
-                Flip through three sample books <ArrowIcon />
-              </TextAnchor>
-              <TextLink to="/pricing#book">
-                See book options <ArrowIcon />
-              </TextLink>
+            <div data-rise>
+              {/* Two sentences (spec §4A). The plans that include a
+                  hardcover are on /pricing. */}
+              <p className="price">
+                The stories and photographs, bound as a book. Print it at home
+                free, or order a printed edition from {BOOK.from} once ordering
+                opens.
+              </p>
+              <div className="links">
+                {/* /samples is a page in public/, outside the router: a plain anchor. */}
+                <TextAnchor href="/samples">
+                  Flip through three sample books
+                </TextAnchor>
+                <TextLink to="/pricing#book">See book options</TextLink>
+              </div>
             </div>
           </div>
         </Frame>
       </Volume>
 
-      <Invitation />
+      <Invitation next={["/samples", "/pricing", "/for-families"]} />
     </>
   );
 }

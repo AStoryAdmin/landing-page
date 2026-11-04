@@ -92,6 +92,24 @@ const Book = styled(Chapter)`
     font-weight: 600;
     text-underline-offset: 4px;
   }
+  /* Two links in one short paragraph can land on consecutive lines. They
+     stay inline, so every line keeps one even leading (the inline-block
+     made the lines that held a link 54px and the rest 28px, the broken
+     leading the supervisor read in the film credit). The first link's
+     44px hit area reaches up over the line above, every later one's down
+     over the line below, and the paragraph's leading opens to 1.7, so two
+     links on consecutive lines sit 8px or more apart (taste rule 20;
+     round 3, B4 fix pass 2). */
+  main[data-premium] & .side .write {
+    line-height: 1.7;
+  }
+  main[data-premium] & .side .write a:not([class]) {
+    display: inline;
+    padding-block: 26px 0;
+  }
+  main[data-premium] & .side .write a:not([class]) ~ a:not([class]) {
+    padding-block: 0 26px;
+  }
   .card {
     background: ${color.paperPure};
     box-shadow:
@@ -137,6 +155,10 @@ export default function DemoSection({
   ground = "ivory",
   rolePlaceholder,
   notePlaceholder,
+  kinds,
+  orgLabel,
+  sizeLegend,
+  compact,
 }: {
   title: ReactNode;
   lead?: ReactNode;
@@ -151,6 +173,12 @@ export default function DemoSection({
   ground?: Ground;
   rolePlaceholder?: string;
   notePlaceholder?: string;
+  /** Passed through to DemoBooking (round 3: the care page's own kinds,
+   *  "Community" label, residents legend and one-step layout). */
+  kinds?: readonly string[];
+  orgLabel?: string;
+  sizeLegend?: string;
+  compact?: boolean;
 }) {
   return (
     <Book $ground={ground} id="book" aria-labelledby="book-title">
@@ -190,6 +218,10 @@ export default function DemoSection({
             source={source}
             rolePlaceholder={rolePlaceholder}
             notePlaceholder={notePlaceholder}
+            kinds={kinds}
+            orgLabel={orgLabel}
+            sizeLegend={sizeLegend}
+            compact={compact}
           />
         </Plate>
       </Frame>

@@ -3,7 +3,7 @@
  *
  * On a phone the opening's button is gone after the first screen, and the
  * next one is several screens down. Once the opening has scrolled out of
- * view, the site's primary action - "Start free", the same pill as
+ * view, the site's primary action - "Get the iPhone app" (lib/app.ts), the same pill as
  * everywhere else - sits in one bar at the foot of the window, inside the
  * safe area. Nothing else is in the bar: no countdown, no line of urgency.
  *
@@ -27,6 +27,7 @@ import { ArrowIcon } from "./kit";
 import { PrimaryAnchor, PrimaryLink } from "./kit.styles";
 import { color, media, motion } from "../../../styles/theme";
 import { START_HREF, START_LABEL } from "../../../lib/app";
+import { IN_BODY } from "./premium";
 
 const SHOW_ON = new Set([
   "/",
@@ -47,6 +48,9 @@ const bare = (path: string) => path.replace(/(.)\/$/, "$1");
 const showsOn = (path: string) =>
   SHOW_ON.has(bare(path)) || path.startsWith("/guides/");
 const DEMO_ON = new Set(["/organizations", "/care-communities"]);
+/* Round 3 fix 1 (item 6): on the gift page every Start carries the gift
+   context to the account door (AppDoor.tsx, ?for=someone). */
+const FOR_SOMEONE = new Set(["/for-families"]);
 
 const Bar = styled.div`
   display: none;
@@ -74,6 +78,20 @@ const Bar = styled.div`
     a {
       width: 100%;
       min-height: 56px;
+    }
+    /* Premium pass (spec §3.6), off home only: 56px of content plus the
+       safe area, and out of the way while the menu is open or the film
+       plays (Film.tsx sets body[data-film-playing]). */
+    ${IN_BODY} & {
+      padding: 6px var(--page-gutter) calc(6px + env(safe-area-inset-bottom, 0px));
+    }
+    ${IN_BODY} & a {
+      min-height: 44px;
+    }
+    ${IN_BODY}[data-nav-open] &,
+    ${IN_BODY}[data-film-playing] & {
+      transform: translateY(110%);
+      visibility: hidden;
     }
   }
 `;
@@ -106,7 +124,12 @@ export default function StickyStart() {
         return;
       }
       const endings = document.querySelectorAll<HTMLElement>(
-        '[aria-labelledby="invitation-title"], footer, #book, #collaborate',
+        /* Round 3 fix 1 (item 8): also any inline action row a page marks
+           with data-inline-actions (/for-families #giving), so two Start
+           buttons are never on screen at once. Round 3 fix 2 (item 10,
+           Maya #8): and anything marked data-sticky-away, the film's
+           player (kit/Film.tsx), so the bar never covers the film. */
+        '[aria-labelledby="invitation-title"], footer, #book, #collaborate, [data-inline-actions], [data-sticky-away]',
       );
       io = new IntersectionObserver((entries) => {
         for (const e of entries) {
@@ -138,7 +161,14 @@ export default function StickyStart() {
           Book a demo <ArrowIcon />
         </PrimaryAnchor>
       ) : (
-        <PrimaryLink to={START_HREF} tabIndex={shown ? 0 : -1}>
+        <PrimaryLink
+          to={
+            FOR_SOMEONE.has(bare(pathname))
+              ? `${START_HREF}?for=someone`
+              : START_HREF
+          }
+          tabIndex={shown ? 0 : -1}
+        >
           {START_LABEL} <ArrowIcon />
         </PrimaryLink>
       )}

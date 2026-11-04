@@ -18,7 +18,9 @@
  *      /account                         → app.astoryapp.com/
  *      /start (not ?intent=demo)        → app.astoryapp.com/create-account
  *    A family code is six letters or digits. The reservation's own sign-in
- *    and sign-up (?next=/reserve...) stay on this site.
+ *    and sign-up (?next=/reserve...) stay on this site. So does /join with
+ *    no valid code (2026-11-03): it is the site's page for the invited
+ *    relative and the storyteller, served from /join/index.html.
  *    Never touched: /l (printed books' listening codes), /p/, /contribute/.
  *    Old addresses (/experience, /faq, …) get a 301 to the page that
  *    replaced them.
@@ -41,9 +43,11 @@ var LEGACY = {
     '/experience': '/how-it-works/',
     '/family': '/for-families/',
     '/institution': '/care-communities/',
+    '/care': '/care-communities/',
     '/story': '/our-story/',
     '/faq': '/questions/',
     '/why-it-matters': '/#why-a-story',
+    '/reserve': '/pricing/',
 };
 
 function redirect(status, location) {
@@ -90,12 +94,15 @@ function handler(event) {
     if (/^\/(join\/?)?$/.test(path) && CODE.test(ref)) return redirect(302, APP + '/join/' + ref.toUpperCase());
     m = path.match(/^\/c\/([A-Za-z0-9_-]{1,80})\/?$/);
     if (m) return redirect(302, APP + '/c/' + m[1]);
+    /* Of the sign-up query only ?for=someone (the gift buyer, /for-families)
+       goes on to the app; ?ref= and the rest are dropped (round 3 fix 1). */
+    var make = APP + '/create-account' + (qs['for'] && qs['for'].value === 'someone' ? '?for=someone' : '');
     if (!/^\/reserve/.test(next)) {
         if (/^\/(sign-in|signin|login)\/?$/.test(path)) return redirect(302, APP + '/sign-in');
-        if (/^\/(sign-up|signup)\/?$/.test(path)) return redirect(302, APP + '/create-account');
+        if (/^\/(sign-up|signup)\/?$/.test(path)) return redirect(302, make);
         if (/^\/account\/?$/.test(path)) return redirect(302, APP + '/');
         if (/^\/start\/?$/.test(path) && !(qs.intent && qs.intent.value === 'demo')) {
-            return redirect(302, APP + '/create-account');
+            return redirect(302, make);
         }
     }
 

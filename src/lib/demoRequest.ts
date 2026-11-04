@@ -14,7 +14,7 @@ const loadSupabase = () => import("./supabase");
  * lib/leads.ts into waitlist_signups and stopped there - checked on
  * 2026-10-20, not one email had ever left it. This calls the
  * `demo-request` Supabase function (supabase/functions/demo-request),
- * which writes the same row and emails it to daniel@astoryapp.com with
+ * which writes the same row and emails it to the founders (DEMO_TO) with
  * Reply-To set to the person asking. The recipient is fixed on the server.
  * ─────────────────────────────────────────────────────────────────────────
  *
@@ -34,8 +34,9 @@ export const INSTITUTION_KINDS = [
   "Something else",
 ] as const;
 
-/** Where demo requests go, and the fallback mailto's address. */
-export const DEMO_EMAIL = "daniel@astoryapp.com";
+/** The public address: the fallback mailto, and the one the site shows.
+ *  The form itself is sent by the server, to DEMO_TO (not shown on the site). */
+export const DEMO_EMAIL = "contact@astoryapp.com";
 
 export type DemoRequest = {
   name: string;

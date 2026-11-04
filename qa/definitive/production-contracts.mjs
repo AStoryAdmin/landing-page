@@ -26,7 +26,7 @@ for(const page of ['samples',...routes.map(r=>r==='/'?'':r.slice(1))]){
  const html=await readFile(`dist/${page?page+'/':''}index.html`,'utf8');
  assert(!/(?:src|href)="\/src\//.test(html),`${page||'/'}: no /src/ path in the built page`);
 }
-assert.equal(Object.keys(redirects).length,6);
+assert.equal(Object.keys(redirects).length,8);
 for(const from of Object.keys(redirects)) await access(`dist${from}/index.html`);
 /* Until 2026-10-18 this also required pricing.ts, product.ts, checkout.ts and
    demoScripts.ts to match a September reference copy (compare-sources.mjs).

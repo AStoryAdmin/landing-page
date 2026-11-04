@@ -43,7 +43,9 @@ export const redirects = {
     '/experience': '/how-it-works',
     '/family': '/for-families',
     '/institution': '/care-communities',
+    '/care': '/care-communities',
     '/story': '/our-story',
     '/faq': '/questions',
     '/why-it-matters': '/#why-a-story',
+    '/reserve': '/pricing',
 };

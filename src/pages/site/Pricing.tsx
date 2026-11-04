@@ -4,8 +4,7 @@
  * Every figure and allowance comes from `pricing.ts` (which mirrors the
  * app) and every destination from `checkout.ts`; the page only arranges
  * them. Choose a plan, and the one action at the bottom follows the choice
- * to checkout or — while checkout is unconfigured — to /reserve with the
- * choice carried along.
+ * to checkout or — while checkout is unconfigured — to Start free.
  *
  * Until 2026-10-01 each plan also had an "Include the book" checkbox that
  * swapped its price for a bundle ($154, $319). The app never sold those: a
@@ -21,12 +20,19 @@
  *
  * 2026-10-16: the page opens with the same ladder as Home (kit/PriceLadder)
  * - the archive, the calls, the book - so the dollar and the founding place
- * are read as early access to the calls before the plans are compared. Two
- * lines the app already supports sit with "What stays yours": the trusted
- * person, and a letter for later. The book section says what a printed book
+ * are read as early access to the calls before the plans are compared.
+ * (2026-11-02, spec D3: the trusted-person and letter lines left this page.)
+ * The book section says what a printed book
  * is: Volume I.
+ *
+ * Premium pass (2026-11-02, design spec §4B): the opening is on the ivory
+ * with a sample book beside the price card; the buying state is said once,
+ * directly under the h1, with one gift line and one primary action after it
+ * (chief log B3.1); then the plan cards (the kit's Card), what stays yours, the film
+ * link, the comparison (one block per plan on a phone, one DOM), the book
+ * editions as open columns, and the questions last.
  */
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
@@ -39,21 +45,19 @@ import {
   BOOK_EDITIONS,
 } from "../../lib/pricing";
 import { checkoutFor, isCheckoutLive } from "../../lib/checkout";
+import { ORG_TAB_LABEL } from "../../lib/nav";
 import { START_HREF, START_LABEL } from "../../lib/app";
-import {
-  OFFERS,
-  RESERVE_DEADLINE_LABEL,
-  reserveDiscountOpen,
-} from "../../lib/founding";
 import { QUESTION_COUNT } from "../../lib/product";
+import TodayNow from "./TodayNow";
+import { WHO_HEARS_SHORT } from "../../lib/hears";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import { PhonePairs } from "./rooms/phonePairs";
 import {
+  Card,
   Chapter,
   Frame,
   PrimaryAnchor,
-  SecondaryLink,
   SplitHead,
   Statement,
   TextAnchor,
@@ -61,39 +65,47 @@ import {
 } from "./kit/kit.styles";
 import {
   color,
-  curve,
   display,
   font,
+  measure,
   media,
   motion,
+  radius,
   shadow,
+  space,
+  tracking,
   type,
 } from "../../styles/theme";
 
 const Plans = styled(Chapter)`
   padding-top: 0;
+  /* Phone-first fix 3 (item 6b): one label over the three cards. */
+  .plans-label {
+    margin: 0 0 ${space.sm};
+    font: 600 ${type.ui} / 1.3 ${font.ui};
+    color: ${color.primary};
+  }
   .plans {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(16px, 2vw, 28px);
     align-items: stretch;
   }
+  /* Each plan is the kit's Card (spec §3.4): paper on the ivory, a hairline,
+     no shadow. Selection and the Recommended keyline sit on top of it. */
   .plan {
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: clamp(28px, 3vw, 44px);
-    background: ${color.paperPure};
-    border: 1px solid ${color.primaryLine};
     cursor: pointer;
     transition:
       border-color ${motion.base},
-      box-shadow ${motion.slow},
-      transform ${motion.slow};
+      box-shadow ${motion.slow};
   }
-  .plan:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 24px 50px -32px rgba(42, 31, 24, 0.45);
+  ${media.hover} {
+    .plan:hover {
+      border-color: ${color.primaryLineStrong};
+    }
   }
   .plan.featured {
     border-color: color-mix(in srgb, ${color.gold} 80%, transparent);
@@ -106,6 +118,9 @@ const Plans = styled(Chapter)`
   }
   .plan-top {
     display: flex;
+    /* "Recommended" drops under the name at 150% text instead of past the
+       card's edge (round 3, B4; scrollWidth 425 of 390). */
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: baseline;
     gap: 12px;
@@ -116,9 +131,34 @@ const Plans = styled(Chapter)`
   }
   .plan .tag {
     font: 600 ${type.label} / 1.3 ${font.body};
-    letter-spacing: 0.14em;
+    letter-spacing: ${tracking.eyebrowPremium};
     text-transform: uppercase;
     color: ${color.goldOnLight};
+  }
+  /* Round 3 fix 2 (item 4b): Express's "One time" labels its own "nothing
+     renews" line, in the tag's type and the card's quiet ink (not the
+     gold of "Recommended", which stays on the yearly plan). */
+  .plan .tag.quiet {
+    color: ${color.bodyMuted};
+  }
+  /* Round 3 fix 2 (items 4a, 4c): the Express card answers "can I buy it"
+     and "what about after" itself, in the card's serif. */
+  .plan .card-note {
+    margin-top: 10px;
+    font: 400 ${type.read} / 1.45 ${font.text};
+    color: ${color.body};
+  }
+  .plan .card-note a {
+    display: inline-block;
+    padding-block: 11px;
+    color: ${color.primary};
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+  .plan .card-note + .card-note {
+    margin-top: 0;
   }
   .who {
     margin-top: 8px;
@@ -127,9 +167,9 @@ const Plans = styled(Chapter)`
   }
   .price {
     margin: 28px 0 4px;
-    font: 400 clamp(2.8rem, 2rem + 2vw, 4rem) / 1 ${font.display};
+    font: 400 ${display.lg} / 1 ${font.display};
     color: ${color.primary};
-    font-variant-numeric: lining-nums;
+    font-variant-numeric: tabular-nums lining-nums;
   }
   .period {
     font: 500 ${type.read} / 1.4 ${font.text};
@@ -139,7 +179,7 @@ const Plans = styled(Chapter)`
     margin-top: 24px;
     padding-top: 20px;
     border-top: 1px solid ${color.primaryLine};
-    font: 600 16px/1.4 ${font.body};
+    font: 600 ${type.ui} / 1.4 ${font.body};
     color: ${color.primary};
   }
   .meter-note {
@@ -189,9 +229,11 @@ const Plans = styled(Chapter)`
     opacity: 0;
     cursor: pointer;
   }
-  .plan:has(.choose:focus-visible) {
-    outline: 3px solid ${color.accent};
-    outline-offset: 4px;
+  /* The radio is invisible, so its card carries the shared ring (§3.3). */
+  .plan:has(.choose:focus-visible),
+  .other:has(.choose:focus-visible) {
+    outline: 2px solid var(--ring, ${color.chocolate});
+    outline-offset: 3px;
   }
 
   .others {
@@ -219,7 +261,7 @@ const Plans = styled(Chapter)`
     box-shadow: inset 0 0 0 1px ${color.primary};
   }
   .other b {
-    font: 400 ${display.sm} / 1.2 ${font.display};
+    font: 400 ${display.md} / 1.2 ${font.display};
     color: ${color.primary};
   }
   .other span {
@@ -246,13 +288,18 @@ const Plans = styled(Chapter)`
     --focus: ${color.gold};
     --focus-halo: ${color.night};
   }
+  /* Until a plan is chosen by hand the bar would only repeat the opening's
+     two actions, so it waits (spec §4B screen target). */
+  .decide:not(.float) {
+    display: none;
+  }
   .decide.float {
     position: sticky;
     bottom: 16px;
   }
   .decide strong {
     display: block;
-    font: 400 ${display.sm} / 1.2 ${font.display};
+    font: 600 ${type.ui} / 1.3 ${font.body};
   }
   .decide small {
     font: 400 ${type.read} / 1.4 ${font.text};
@@ -264,22 +311,6 @@ const Plans = styled(Chapter)`
     align-items: center;
     gap: 12px 24px;
   }
-  /* An inline link with a real underline, so a wrapped second line is
-     underlined under its words, never struck through (jury 3, B1). */
-  .decide .reserve {
-    display: inline-block;
-    padding: 12px 0;
-    background: none;
-    font: 500 ${type.ui} / 1.4 ${font.body};
-    color: ${color.ivory};
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-decoration-color: color-mix(in srgb, ${color.gold} 80%, transparent);
-    text-underline-offset: 5px;
-  }
-  .decide .reserve svg {
-    display: none;
-  }
   .all-plans {
     margin-top: 18px;
     font: 400 ${type.read} / 1.5 ${font.text};
@@ -290,6 +321,39 @@ const Plans = styled(Chapter)`
       grid-template-columns: minmax(0, 1fr);
     }
   }
+  /* On a phone the card keeps its price, allowance, features and book; the
+     allowance note, which the comparison table repeats word for word, stays
+     in the table (spec §4B screen target). */
+  ${media.sm} {
+    .plans {
+      gap: ${space.md};
+    }
+    .price {
+      margin-top: ${space.md};
+    }
+    .meter {
+      margin-top: ${space.md};
+      padding-top: ${space.sm};
+    }
+    .meter-note {
+      display: none;
+    }
+    li {
+      padding-block: ${space.xxs};
+    }
+    li::before {
+      top: calc(${space.xxs} + 0.75em);
+    }
+    .bundle {
+      padding-top: ${space.md};
+    }
+    ul {
+      margin-top: ${space.sm};
+    }
+    .other {
+      padding: ${space.md} ${space.lg};
+    }
+  }
   ${media.md} {
     .others {
       grid-template-columns: minmax(0, 1fr);
@@ -298,7 +362,65 @@ const Plans = styled(Chapter)`
       grid-template-columns: minmax(0, 1fr);
     }
   }
+  /* Phone-first fix 2 (item 11b): "What's included" is a fold on a phone.
+     Phone-first fix 3 (item 6c): also wherever the header shows Menu
+     (media.navBar, below 1180 px, which covers 1024 px at 150 % text).
+     From 1180 px the summary is hidden and the details stay open, so the
+     laptop card is as it was. */
+  .included > summary {
+    display: none;
+  }
+  @media (min-width: 1180px) {
+    .included::details-content {
+      content-visibility: visible;
+      display: contents;
+    }
+  }
+  ${media.navBar} {
+    .included {
+      margin-top: ${space.md};
+      border-top: 1px solid ${color.primaryLine};
+    }
+    /* Above the card's invisible radio, so a tap opens the fold. */
+    .included > summary {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: ${space.md};
+      min-height: 44px;
+      padding: ${space.xs} 0;
+      cursor: pointer;
+      list-style: none;
+      color: ${color.primary};
+      font: 600 ${type.ui} / 1.3 ${font.ui};
+    }
+    .included > summary::-webkit-details-marker {
+      display: none;
+    }
+    .included > summary::after {
+      content: "+";
+      font: 400 ${type.lead} / 1 ${font.display};
+      color: ${color.primaryMid};
+    }
+    .included[open] > summary::after {
+      content: "−";
+    }
+    .included > summary:focus-visible {
+      outline: 2px solid ${color.primary};
+      outline-offset: 2px;
+    }
+    .included .meter {
+      margin-top: ${space.xxs};
+      padding-top: 0;
+      border-top: 0;
+    }
+  }
 `;
+
+/** The header's own breakpoint (theme.ts media.navBar), as a media query. */
+const INCLUDED_FOLD = media.navBar.replace(/^@media\s+/, "");
 
 /*
  * Compare every plan — the founder asked for a layout that makes the plans
@@ -308,7 +430,7 @@ const Plans = styled(Chapter)`
  * head selects that plan, the same as the cards above.
  */
 const Compare = styled.div`
-  margin-top: clamp(40px, 5vw, 72px);
+  margin-top: ${space.xl};
   summary {
     display: flex;
     align-items: center;
@@ -350,14 +472,10 @@ const Compare = styled.div`
   details[open] summary span {
     transform: rotate(45deg);
   }
-  @media (hover: hover) {
+  ${media.hover} {
     summary:hover span {
       border-color: ${color.primary};
     }
-  }
-  summary:focus-visible {
-    outline: 2px solid ${color.accentText};
-    outline-offset: 4px;
   }
   h2 {
     font: 400 ${display.md} / 1.2 ${font.display};
@@ -367,11 +485,9 @@ const Compare = styled.div`
     margin-top: 28px;
   }
   .grid {
-    border-radius: 20px;
+    border-radius: ${radius.lg};
     background: ${color.paperPure};
-    box-shadow:
-      inset 0 0 0 1px ${color.primaryLine},
-      0 40px 80px -60px rgba(42, 31, 24, 0.45);
+    box-shadow: inset 0 0 0 1px ${color.primaryLine};
     overflow-x: auto;
   }
   table {
@@ -395,8 +511,6 @@ const Compare = styled.div`
   tbody th {
     width: 20%;
     font: 600 ${type.label} / 1.4 ${font.body};
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
     color: ${color.bodyMuted};
   }
   thead th {
@@ -412,20 +526,16 @@ const Compare = styled.div`
     cursor: pointer;
   }
   thead button b {
-    font: 400 24px/1.1 ${font.display};
+    font: 600 ${type.ui} / 1.3 ${font.body};
     color: ${color.primary};
   }
   thead button span {
-    font: 400 28px/1 ${font.display};
+    font: 400 ${display.md} / 1 ${font.display};
     color: ${color.primary};
   }
   thead button small {
     font: 500 ${type.label} / 1.3 ${font.body};
     color: ${color.bodyMuted};
-  }
-  thead button:focus-visible {
-    outline: 3px solid ${color.accent};
-    outline-offset: 4px;
   }
   .sel {
     background: color-mix(in srgb, ${color.gold} 14%, ${color.paperPure});
@@ -455,17 +565,70 @@ const Compare = styled.div`
     flex: none;
     color: ${color.teal};
   }
-  .note {
-    margin-top: 12px;
-    font: 400 ${type.note} / 1.5 ${font.body};
-    color: ${color.bodyMuted};
-  }
-  ${media.md} {
-    tbody th {
+  /* From 641px the question column stays put while the plans scroll. */
+  @media (min-width: 641px) {
+    tbody th,
+    thead th:first-child {
       position: sticky;
       left: 0;
       z-index: 1;
       background: ${color.paperPure};
+    }
+  }
+  /* To 640px (spec §4B, S12): the same table, one block per plan - its
+     name and price, then each row as "question: answer" (the question from
+     the cell's data-label). The cells are reordered by plan with CSS
+     (--o); there is no second copy of the table. */
+  ${media.sm} {
+    .grid {
+      overflow: visible;
+      border-radius: 0;
+      background: none;
+      box-shadow: none;
+    }
+    table {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      min-width: 0;
+    }
+    thead,
+    tbody,
+    tr {
+      display: contents;
+    }
+    thead th:first-child,
+    tbody th {
+      display: none;
+    }
+    thead th {
+      order: var(--o);
+      margin-top: ${space.lg};
+      padding: ${space.md} 0 ${space.xs};
+      border-bottom: 1px solid ${color.primaryLineStrong};
+      border-radius: 0;
+    }
+    thead th:nth-child(2) {
+      margin-top: 0;
+    }
+    td {
+      order: var(--o);
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: ${space.md};
+      padding: ${space.sm} 0;
+    }
+    td::before {
+      content: attr(data-label);
+      font: 600 ${type.label} / 1.4 ${font.ui};
+      color: ${color.bodyMuted};
+    }
+    tbody tr:last-child > td {
+      border-bottom: 1px solid ${color.primaryLine};
+    }
+    .sel,
+    thead .sel {
+      background: none;
+      box-shadow: none;
     }
   }
 `;
@@ -482,14 +645,45 @@ const Forever = styled(Chapter)`
   .kept li {
     padding: 20px 0;
     border-top: 1px solid ${color.primaryLine};
-    font: 400 ${display.sm} / 1.35 ${font.display};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.primary};
   }
-  .stops {
-    margin-top: clamp(40px, 5vw, 64px);
-    font: 400 ${type.read} / 1.7 ${font.text};
-    color: ${color.body};
-    max-width: 62ch;
+  /* The film link (spec §2.1): one line under what stays yours. */
+  .film {
+    margin-top: ${space.xl};
+  }
+  main[data-premium] & .film {
+    max-inline-size: ${measure.lead};
+  }
+  ${media.md} {
+    .kept {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  ${media.sm} {
+    .kept li {
+      padding: ${space.xs} 0;
+    }
+  }
+`;
+
+/* The practical questions, last (spec §4B), with the two context links that
+   replace the old "More" menu. */
+const Asked = styled.section`
+  margin-top: ${space.xxl};
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 ${space.xl};
+    margin-top: ${space.lg};
+  }
+  main[data-premium] & .links {
+    max-inline-size: ${measure.lead};
+  }
+  /* The two links wrap onto two lines on a phone: 8px between them
+     (taste rule 20; round 3, B4 fix pass 2). */
+  main[data-premium] & .links {
+    row-gap: 8px;
   }
   details {
     border-top: 1px solid ${color.primaryLineStrong};
@@ -501,27 +695,30 @@ const Forever = styled(Chapter)`
     display: flex;
     align-items: center;
     cursor: pointer;
-    font: 400 ${display.sm} / 1.3 ${font.display};
+    font: 500 ${type.read} / 1.4 ${font.text};
     color: ${color.primary};
   }
-  summary:focus-visible {
-    outline: 3px solid ${color.accent};
-    outline-offset: 4px;
-  }
   details p {
-    padding-bottom: 20px;
+    /* 28px above the answer, so a link in its first line ("Book a demo")
+       keeps 8px clear of the question's 64px row above at 1440 too, where
+       the reading line is 36px (round 3 fix, taste rule 20). */
+    padding: 28px 0 20px;
     font: 400 ${type.read} / 1.65 ${font.text};
     color: ${color.body};
+  }
+  main[data-premium] & details p a:not([class]) {
+    padding-block: 0 26px;
   }
   /* The two questions side by side across the width, not a half column. */
   .questions {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0 clamp(28px, 5vw, 80px);
-    margin-top: clamp(48px, 5vw, 88px);
+  }
+  ${media.sm} {
+    margin-top: ${space.xl};
   }
   ${media.md} {
-    .kept,
     .questions {
       grid-template-columns: minmax(0, 1fr);
     }
@@ -575,41 +772,80 @@ const Book = styled(Chapter)`
   .book p + p {
     margin-top: 12px;
   }
+  /* Round 3 fix 1 (item 9, Maya, Denise, Tuan): the six editions fold
+     into one closed row; the prices inside are pricing.ts BOOK_EDITIONS,
+     unchanged. */
+  .editions-fold {
+    margin-top: ${space.xl};
+    border-top: 1px solid ${color.primaryLine};
+    border-bottom: 1px solid ${color.primaryLine};
+  }
+  .editions-fold > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: ${space.md};
+    min-height: 56px;
+    padding-block: ${space.sm};
+    cursor: pointer;
+    list-style: none;
+    font: 600 ${display.sm} / 1.2 ${font.display};
+    color: ${color.primary};
+  }
+  .editions-fold > summary::-webkit-details-marker {
+    display: none;
+  }
+  .editions-fold > summary::after {
+    content: "+";
+    flex: none;
+    font: 400 1.5rem / 1 ${font.ui};
+    color: ${color.accentText};
+  }
+  .editions-fold[open] > summary::after {
+    content: "−";
+  }
+  .editions-fold[open] {
+    padding-bottom: ${space.lg};
+  }
+  .editions-fold:focus-within > summary:focus-visible {
+    outline: 2px solid var(--ring, ${color.chocolate});
+    outline-offset: 3px;
+  }
   .editions {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(16px, 2vw, 24px);
-    margin: clamp(48px, 6vw, 88px) 0 0;
+    margin: ${space.xxl} 0 0;
     padding: 0;
     list-style: none;
   }
+  /* Open columns with a hairline top, not boxes (spec §3.4, S23). */
   .editions li {
     display: flex;
     flex-direction: column;
-    padding: clamp(22px, 2.4vw, 32px);
-    background: ${color.paperPure};
-    box-shadow: 0 1px 2px rgba(42, 31, 24, 0.06);
+    padding: ${space.lg} 0 0;
+    border-top: 1px solid ${color.primaryLineStrong};
   }
   .editions .badge {
-    font: 600 ${type.label} / 1 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    font: 600 ${type.label} / 1.2 ${font.body};
+    letter-spacing: 0.01em;
     color: ${color.accentText};
-    min-height: 11px;
+    min-height: 1.2em;
   }
   .editions h3 {
     margin-top: 12px;
-    font: 400 ${display.sm} / 1.15 ${font.display};
+    font: 400 ${display.md} / 1.15 ${font.display};
     color: ${color.primary};
   }
   .editions .cost {
     margin-top: 10px;
-    font: 400 28px/1 ${font.display};
+    font: 400 ${display.md} / 1 ${font.display};
     color: ${color.primary};
   }
   .editions .cost small {
-    margin-left: 8px;
-    font: 400 14px/1.4 ${font.body};
+    display: block;
+    margin-top: ${space.xs};
+    font: 400 ${type.label} / 1.4 ${font.body};
     color: ${color.bodyMuted};
   }
   .editions .tag {
@@ -628,8 +864,7 @@ const Book = styled(Chapter)`
   }
   .editions ul li {
     padding: 0 0 0 16px;
-    background: none;
-    box-shadow: none;
+    border-top: 0;
     position: relative;
     font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.body};
@@ -661,14 +896,49 @@ const Book = styled(Chapter)`
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
+  /* Two columns on a phone, so every price shows without a scroller (S24). */
   ${media.sm} {
     .editions {
-      grid-template-columns: minmax(0, 1fr);
+      gap: ${space.xl} ${space.md};
+      margin-top: ${space.xl};
+    }
+    .editions li {
+      padding-top: ${space.md};
+    }
+    .editions ul {
+      gap: ${space.xxs};
+    }
+    .editions .when {
+      margin-top: ${space.xs};
+    }
+    /* Each card already names its book and that you pay only the shipping,
+       so the summary line under the editions is for wider screens. */
+    .members {
+      display: none;
+    }
+    .editions h3 {
+      margin-top: ${space.xs};
+      font: 500 ${type.read} / 1.3 ${font.text};
+    }
+    /* The tagline is a mood line; on a phone the list under it says what
+       the edition is (spec §4B screen target). */
+    .editions .tag {
+      display: none;
+    }
+    .editions ul li {
+      font-size: ${type.note};
     }
   }
   ${media.md} {
     .book {
       grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  /* On a phone the opening already shows a sample book; the editions
+     carry this section (spec §4B screen target). */
+  ${media.sm} {
+    .book img {
+      display: none;
     }
   }
 `;
@@ -680,11 +950,94 @@ const Book = styled(Chapter)`
  * the plan cards below carry the detail, and nothing else on the page
  * repeats it.
  */
+/* Premium pass (spec §4B): the opening is on the ivory, so the sheet is a
+   step lighter with a hairline, not a shadow; a sample book's cover sits
+   beside it (above it on a phone) as the page's real object. */
+const HeroObject = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 0.3fr) minmax(0, 1fr);
+  gap: ${space.xl};
+  align-items: center;
+  /* The sample book's cover with its caption (round 3, supervisor: taste
+     rule 12 wants a real object in the first screen; the caption is what
+     the stray thumbnail lacked). The caption is set in the print caption's
+     own hand, kit.styles.ts figcaption. */
+  .cover {
+    margin: 0;
+  }
+  .cover img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: ${radius.sm};
+    box-shadow: ${shadow.md};
+  }
+  .after {
+    grid-column: 1 / -1;
+    display: grid;
+    justify-items: start;
+    gap: ${space.xs};
+  }
+  .after p {
+    margin: 0;
+    max-width: 60ch;
+    font: 400 ${type.note} / 1.55 ${font.ui};
+    color: var(--muted);
+  }
+  .after .care-link {
+    display: inline-block;
+    padding-block: 11px;
+    color: var(--ink);
+    font-weight: 600;
+    text-underline-offset: 3px;
+  }
+  .cover figcaption {
+    margin-top: 12px;
+    font: 500 clamp(19px, 1.2rem + 0.2vw, 24px) / 1.15 ${font.script};
+    color: ${color.primary};
+    text-align: center;
+    text-wrap: balance;
+  }
+  .cover figcaption a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.14em;
+  }
+  ${media.md} {
+    grid-template-columns: minmax(0, 1fr);
+    gap: ${space.lg};
+    /* On a phone the cover and its caption share one short row above the
+       sheet, so the object stays inside the first screen. */
+    .cover {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      align-items: center;
+      column-gap: ${space.md};
+    }
+    .cover figcaption {
+      margin-top: 0;
+      text-align: left;
+    }
+  }
+  /* Phone-first fix 1 (item 6, Maya #6): at 640 px and below the first
+     screen is the h1, the lead, the price card and the care and
+     organizations link, with no leftovers. The small Ledger cover stays
+     from 641 px (and at 1440); the film stays at /how-it-works#film. */
+  ${media.sm} {
+    .cover,
+    .film-link {
+      display: none;
+    }
+  }
+`;
+
 const Sheet = styled.div`
   position: relative;
   color: ${color.primary};
   background: ${color.paperPure};
-  box-shadow: ${shadow.lie};
+  border: 1px solid ${color.primaryLine};
   &::before {
     content: "";
     position: absolute;
@@ -707,19 +1060,18 @@ const Sheet = styled.div`
   }
   .k {
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   .p {
     margin-top: 12px;
-    font: 500 clamp(2.6rem, 1.8rem + 2.2vw, 4.6rem) / 1 ${font.display};
+    font: 500 ${display.lg} / 1 ${font.display};
     letter-spacing: -0.02em;
-    font-variant-numeric: lining-nums;
+    font-variant-numeric: tabular-nums lining-nums;
   }
   .p small {
     margin-left: 8px;
-    font: 400 clamp(1rem, 0.95rem + 0.2vw, 1.15rem) / 1.3 ${font.text};
+    font: 400 ${type.note} / 1.3 ${font.text};
     letter-spacing: 0;
     color: ${color.bodyMuted};
   }
@@ -729,36 +1081,19 @@ const Sheet = styled.div`
     font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.body};
   }
+  /* The sheet's foot (round 3, supervisor): who hears the recordings
+     (lib/hears.ts), the privacy link and the currency, one quiet line under
+     the three columns, so the hero note above stays one line. */
   .foot {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 6px 28px;
-    margin: 0 clamp(22px, 2.6vw, 48px);
-    padding: 16px 0 clamp(22px, 2.2vw, 34px);
+    margin: 0;
+    padding: ${space.md} clamp(22px, 2.6vw, 48px);
     border-top: 1px solid ${color.primaryLine};
-    font: 400 ${type.read} / 1.5 ${font.text};
-    color: ${color.body};
+    font: 400 ${type.note} / 1.55 ${font.ui};
+    color: ${color.bodyMuted};
   }
-  /* A 44px target, the underline where it was (jury 2 R2 N3). */
   .foot a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0;
-    font: 600 ${type.note} / 1.3 ${font.ui};
     color: ${color.primary};
-    text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, ${color.gold} 80%, transparent);
-    text-underline-offset: 5px;
-    white-space: nowrap;
-    transition: color 160ms ${curve.out};
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .foot a:hover {
-      color: ${color.accentText};
-    }
+    text-underline-offset: 3px;
   }
   ${media.md} {
     .cols {
@@ -772,68 +1107,203 @@ const Sheet = styled.div`
       padding-block: 22px;
     }
   }
+  /* On a phone each column is one compact row: the name and the figure on
+     one line, the sentence under them. */
+  ${media.sm} {
+    .cols li {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: baseline;
+      column-gap: ${space.md};
+      padding: ${space.md} ${space.lg};
+    }
+    .p {
+      margin-top: 0;
+      font-size: ${display.md};
+    }
+    .l {
+      grid-column: 1 / -1;
+      margin-top: ${space.xs};
+      font-size: ${type.note};
+    }
+    .foot {
+      padding: ${space.md} ${space.lg};
+    }
+  }
+`;
+
+/* The opening's words (chief log B3.1): the status line and the gift line
+   share the lead, each on its own line; the gift line is a step quieter.
+   The film is a text link beside the one primary action. */
+const HeroWords = styled(PhonePairs)`
+  .opening-lead .status,
+  .opening-lead .gift {
+    display: block;
+  }
+  .opening-lead .status a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    /* The link sits inside a span, so the page states its own 44px hit
+       area (measured 26px at 390; taste rule 20, round 3 fix). */
+    padding-block: 13px;
+  }
+  .opening-lead .gift {
+    /* Its link and the status line's keep their 44px hit areas 8px apart. */
+    margin-top: 32px;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--muted);
+  }
+  .opening-lead .gift a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    padding-block: 13px;
+  }
+  /* Round 3 fix 1 (item 9): on a phone the price card comes before the
+     sample cover, and its row for the calls (Express, $79, one time, nothing
+     renews) comes first, so Express is in the first screen. Visual order
+     only (taste rule 19); the DOM is unchanged. */
+  ${media.sm} {
+    .opening-object .cover {
+      order: 2;
+    }
+    .opening-object .after {
+      order: 3;
+    }
+    .opening-object .cols > li:nth-child(2) {
+      order: -1;
+      border-top: 0;
+    }
+    .opening-object .cols > li:first-child {
+      border-top: 1px solid ${color.primaryLine};
+    }
+  }
+  ${media.sm} {
+    .film-link {
+      flex: 0 1 auto !important;
+    }
+  }
 `;
 
 /*
- * One opening price for the calls, the same as Home's close (fix round 3,
- * jury 1 R2 #9): "Calls from $19.99 a month". The yearly plan and Express
- * stay in view as the other ways in. Every figure is read from pricing.ts.
+ * Round 3 (B2, Maya and Tuan): the first screen carried six figures ($0,
+ * $19.99, $119, $79, $39 and the $1). It now carries two: the $1 in the
+ * status line and Express, the one-time plan, which is the figure the
+ * subscription-wary reader is looking for. The monthly and yearly plans
+ * are named, not priced, until the cards. Every figure is still read from
+ * pricing.ts (Express: price, period; relatives free: PLANS[0].features[2]).
  */
-const monthly = OTHER_PLANS.find((p) => p.id === "monthly")!;
-/** "$19.99/mo" -> "$19.99" */
-const monthlyPrice = monthly.price.replace(/\/mo$/, "");
-
 function PriceCard() {
-  const individual = PLANS.find((p) => p.id === "individual")!;
   const express = PLANS.find((p) => p.id === "express")!;
+  const [once, days] = express.period.split(" · ");
   return (
     <Sheet>
       <ul className="cols" aria-label="What A Story costs">
         <li>
           <p className="k">The archive</p>
-          <p className="p">$0</p>
+          <p className="p">Free</p>
           <p className="l">
-            Free for as long as you like. Read, write and invite the whole
-            family.
+            For as long as you like, and for every relative you invite to read
+            and add.
           </p>
         </li>
         <li>
-          <p className="k">The calls, from</p>
+          <p className="k">The calls</p>
           <p className="p">
-            {monthlyPrice}
-            <small>a month</small>
+            {express.price}
+            <small>
+              {once}, {days}
+            </small>
           </p>
           <p className="l">
-            Or {individual.price} a year for one storyteller, or{" "}
-            {express.price} once for 30 days. Every plan is side by side below.
+            {express.name}: nothing renews. Or a plan by the month or the
+            year, side by side below.
           </p>
         </li>
         <li>
           <p className="k">The book</p>
           <p className="p">Free</p>
           <p className="l">
-            To print at home, every page. Printed editions from {BOOK.from}.
+            To print at home, every page. Printed editions are below.
           </p>
         </li>
       </ul>
-      <p className="foot">
-        <span>
-          Plans aren’t on sale yet. {OFFERS.reserve.price} holds your place in
-          line
-          {reserveDiscountOpen()
-            ? `, and ${OFFERS.reserve.discount}% off your first year if you reserve by ${RESERVE_DEADLINE_LABEL}.`
-            : "."}
-        </span>
-        <Link to="/reserve">How reserving works</Link>
+      <p className="foot wide">
+        {WHO_HEARS_SHORT} <TextLink to="/privacy">Our privacy promises</TextLink>
+        {" · "}Prices in US dollars.
       </p>
     </Sheet>
+  );
+}
+
+/* The hero's object: a real sample book's cover ("The Ledger", one of the
+   three books on /samples) beside the price card, with its caption (round
+   3: the thumbnail without one read as a stray, Maya). An existing asset;
+   /samples is a page in public/, outside the router, so a plain anchor. */
+function HeroPrice() {
+  return (
+    <HeroObject>
+      <figure className="cover">
+        <img
+          src="/book-objects/sample-raymond-720.webp"
+          srcSet="/book-objects/sample-raymond-360.webp 360w, /book-objects/sample-raymond-720.webp 720w"
+          sizes="(max-width: 860px) 96px, 22vw"
+          width={720}
+          height={720}
+          alt="The cover of a sample A Story book, The Ledger, for Raymond and Elena"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
+        {/* Round 3 fix 2 (item 5, Maya #10): no caption; the sample
+            books are linked lower on the page. */}
+      </figure>
+      <PriceCard />
+      {/* Round 3 fix 2 (item 5, Maya #4): the today note, the film and the
+          organizations' door moved here from under the opening's one
+          button, so the first screen is one action, one link, then the
+          prices. Words unchanged. */}
+      <div className="after">
+        <p>
+          {/* Phone-first plan (supervisor review): TODAY_NOTE left this
+              line; the opening's status line and the TodayNow block say it. */}
+          <Link to="/care-communities" className="care-link">
+            Care communities and organizations{" "}→
+          </Link>
+        </p>
+        {/* Phone-first fix 3 (item 5, Denise #3): where an organization's
+            price is. Source: orgQuestions.ts DEMO_AGENDA ("price is quoted
+            on the demo"); the link label is lib/nav.ts ORG_TAB_LABEL. */}
+        <p className="org-price">
+          Care communities, schools and libraries: priced on the demo.{" "}
+          <Link to="/organizations" className="care-link">
+            {ORG_TAB_LABEL}{" "}→
+          </Link>
+        </p>
+        <TextLink to="/how-it-works#film" className="film-link">
+          Watch the film · 49 s
+        </TextLink>
+      </div>
+    </HeroObject>
   );
 }
 
 const individual = PLANS.find((p) => p.id === "individual")!;
 const family = PLANS.find((p) => p.id === "family")!;
 const express = PLANS.find((p) => p.id === "express")!;
+/** The gift line's "one time", from pricing.ts ("one time · 30 days"). No price:
+    the first phone screen shows at most two (chief log B3.1), and the plan
+    cards below give it. */
+const expressOnce = express.period.split(" · ")[0];
 const free = OTHER_PLANS.find((p) => p.id === "free")!;
+/* Round 3 (B2, Maya): the one-time plan comes first on the page, so the
+   person who fears renewals meets it before the yearly plans. Individual
+   keeps its "Recommended" tag and its place in the middle. pricing.ts and
+   its order are untouched. */
+const PLAN_ORDER = [express, individual, family];
 
 /** Columns of the comparison, in reading order: from nothing paid to the most shared. */
 const COLS = [
@@ -979,6 +1449,23 @@ export default function Pricing() {
   const plans = useReveals<HTMLElement>();
   const forever = useReveals<HTMLElement>();
   const book = useReveals<HTMLElement>();
+  /* Phone-first fix 2 (item 11b, Maya #3): on a phone each card's
+     allowance and features fold under "What's included". The page ships
+     them open (prerendered, and readable without script); after hydration
+     a phone folds them, and leaving the phone width opens them again,
+     because from 641 px the summary is hidden. */
+  const cards = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const mq = window.matchMedia(INCLUDED_FOLD);
+    const folds = () =>
+      cards.current?.querySelectorAll<HTMLDetailsElement>("details.included") ?? [];
+    if (mq.matches) for (const d of folds()) d.open = false;
+    const unfold = (e: MediaQueryListEvent) => {
+      if (!e.matches) for (const d of folds()) d.open = true;
+    };
+    mq.addEventListener("change", unfold);
+    return () => mq.removeEventListener("change", unfold);
+  }, []);
 
   return (
     <>
@@ -987,41 +1474,75 @@ export default function Pricing() {
         path="/pricing"
         description="Compare Individual, Family, Express, Monthly and Free: the call minutes, which plans include a hardcover, and what stays yours whatever you choose."
       />
-      <PhonePairs>
+      {/* Group B round 2 (chief log B3.1): on a phone the first screen says
+          the buying state right under the h1, then one gift line, then one
+          primary action, before any price card. */}
+      <HeroWords>
         <PageOpening
           variant="wide"
+          ground="ivory"
           title={
             <>
-              Free to start. Pay for <em>calls.</em>
+              Free for the family. Plans for the <em>calls.</em>
             </>
           }
-          lead={`No card and no time limit. Calls from ${monthlyPrice} a month, and inviting family, writing and reading never cost extra.`}
-          actions={
+          lead={
             <>
-              <PrimaryAnchor href={START_HREF}>
-                {START_LABEL} <ArrowIcon />
-              </PrimaryAnchor>
-              <SecondaryLink to="/reserve">
-                Reserve for {OFFERS.reserve.price}
-              </SecondaryLink>
+              {/* Phone-first plan task 4: the family's side is what is free,
+                  not the way in. Sources: pricing.ts START.lead (no card;
+                  inviting, writing and reading never cost extra; the calls
+                  ring in the A Story iPhone app, in a private beta),
+                  faqData.ts "no fee per relative", plan :16 (by invite). */}
+              {/* Phone-first fix 3 (item 6a, Maya #3, Harold #5): what today
+                  costs. The invite form asks for an email and the iPhone
+                  question only, no payment (GetTheApp.tsx form fields);
+                  "no card", pricing.ts START.lead. */}
+              <span className="status">
+                Relatives you invite read and add free, with no card. The
+                calls ring in the A Story iPhone app, by invite in a private
+                beta, and aren’t on sale yet. Asking for an invite is free,
+                with no card.
+              </span>
+              {/* Round 3 fix 1 (item 9): the Express line goes to its card
+                  (#express), the first card in the DOM (PLAN_ORDER). */}
+              <span className="gift">
+                Giving it, or wary of renewals?{" "}
+                <a href="#express">
+                  {express.name} is {expressOnce}, and nothing renews.
+                </a>
+              </span>
             </>
           }
-          note="Prices in US dollars. The calls ring in the A Story iPhone app, in a private beta."
-          object={<PriceCard />}
+          /* Round 3 fix 2 (item 5): one action here. The film link, the
+             today note and the organizations' door (fix 1, item 9) sit
+             under the price strip (HeroPrice). */
+          actions={
+            <PrimaryAnchor href={START_HREF}>
+              {START_LABEL} <ArrowIcon />
+            </PrimaryAnchor>
+          }
+          object={<HeroPrice />}
         />
-      </PhonePairs>
+      </HeroWords>
 
       <Plans ref={plans} $ground="ivory" aria-label="Plans">
         <Frame>
+          {/* Phone-first fix 3 (item 6b): the cards' state, said once for
+              all three (it was a note on the Express card). */}
+          <p className="plans-label">When the calls go on sale</p>
           <div
+            ref={cards}
             className="plans"
             role="radiogroup"
             aria-label="Choose your preferred plan"
+            data-rise
           >
-            {PLANS.map((p) => (
-              <article
+            {PLAN_ORDER.map((p) => (
+              <Card
+                as="article"
+                $ground="ivory"
                 key={p.id}
-                data-rise
+                id={p.id === "express" ? "express" : undefined}
                 className={`plan ${p.featured ? "featured" : ""} ${selected === p.id ? "is-selected" : ""}`}
                 onClick={() => setSelected(p.id)}
               >
@@ -1036,6 +1557,12 @@ export default function Pricing() {
                 <div className="plan-top">
                   <h2>{p.name}</h2>
                   {p.featured && <span className="tag">Recommended</span>}
+                  {/* Round 3 fix 2 (item 4b): labels the "one time ·
+                      nothing renews" line (pricing.ts express.period).
+                      Not a recommendation. */}
+                  {p.id === "express" && (
+                    <span className="tag quiet">One time</span>
+                  )}
                 </div>
                 <p className="who">{p.who}</p>
                 <p className="price">{p.price}</p>
@@ -1043,13 +1570,31 @@ export default function Pricing() {
                   {p.period}
                   {p.monthlyEquivalent && ` · ${p.monthlyEquivalent}`}
                 </p>
-                <p className="meter">{p.meter}</p>
-                <p className="meter-note">{p.meterNote}</p>
-                <ul>
-                  {p.features.map((f) => (
-                    <li key={f}>{f}</li>
-                  ))}
-                </ul>
+                {/* Round 3 fix 2 (items 4a, 4c, Maya #4-#6), Express only.
+                    Phone-first fix 2 (item 11a, Maya #3), in the positive
+                    and as one price story:
+                      "Whatever you choose, it stays yours."  the #yours
+                        section below (the archive stays with or without a
+                        plan, orgQuestions.ts ORG_GROUP "How long is it
+                        kept?", privacy.tsx section 9)
+                    Phone-first fix 3 (item 6b): "Prices for when the calls
+                    go on sale" became the one label above the cards.
+                    Nothing about leftover minutes (blocked on Daniel). */}
+                {p.id === "express" && (
+                  <p className="card-note">
+                    <a href="#yours">Whatever you choose, it stays yours.</a>
+                  </p>
+                )}
+                <details className="included" open>
+                  <summary>What’s included</summary>
+                  <p className="meter">{p.meter}</p>
+                  <p className="meter-note">{p.meterNote}</p>
+                  <ul>
+                    {p.features.map((f) => (
+                      <li key={f}>{f}</li>
+                    ))}
+                  </ul>
+                </details>
                 <div className="bundle">
                   <p>
                     {p.book}
@@ -1058,7 +1603,7 @@ export default function Pricing() {
                     </small>
                   </p>
                 </div>
-              </article>
+              </Card>
             ))}
           </div>
 
@@ -1068,7 +1613,6 @@ export default function Pricing() {
                 key={p.id}
                 className={`other ${selected === p.id ? "is-selected" : ""}`}
                 onClick={() => setSelected(p.id)}
-                data-rise
               >
                 <input
                   className="choose"
@@ -1087,6 +1631,68 @@ export default function Pricing() {
             ))}
           </div>
 
+          <div className={`decide${chosen ? " float" : ""}`} aria-live="polite">
+            <div>
+              <strong>{name}</strong>
+              {/* The buying state is said once on this page (spec §4B, S2),
+                  in the opening under the h1, so a paid plan that cannot be
+                  bought yet gets no second line here. */}
+              {selectedId === "free" ? (
+                <small>
+                  No card. The family’s side: reading, writing and adding, in
+                  any browser.
+                </small>
+              ) : isCheckoutLive(selectedId) ? (
+                <small>Continue with your selected plan.</small>
+              ) : null}
+            </div>
+            <div className="decide-actions">
+              {/* One primary action on this page (lib/app.ts START_*).
+                  Plans that cannot be bought yet show it too. */}
+              {isCheckoutLive(selectedId) ? (
+                <PrimaryAnchor href={checkoutFor(selectedId)}>
+                  Choose {name} <ArrowIcon />
+                </PrimaryAnchor>
+              ) : (
+                <PrimaryAnchor href={START_HREF}>
+                  {START_LABEL} <ArrowIcon />
+                </PrimaryAnchor>
+              )}
+            </div>
+          </div>
+        </Frame>
+      </Plans>
+
+      {/* Phone-first plan task 4: what works now, what comes by invite. */}
+      <TodayNow action={false} />
+
+      {/* What stays yours sits right after the cards (benchmarks-convert
+          §2.5), then the film link. The heading stays "Stop paying, and it
+          is still yours." by chief ruling (CHIEF-LOG B3), over the spec
+          §4B:477 rename. */}
+      <Forever
+        ref={forever}
+        $ground="paper"
+        id="yours"
+        aria-labelledby="forever-title"
+        style={{ scrollMarginTop: 80 }}
+      >
+        <Frame>
+          <SplitHead>
+            <Statement id="forever-title" $size="lg" data-lines>
+              Stop paying, and it is still <em>yours.</em>
+            </Statement>
+          </SplitHead>
+          <ul className="kept" data-rise>
+            {FOREVER.kept.map((k) => (
+              <li key={k}>{k}</li>
+            ))}
+          </ul>
+          <p className="film">
+            <TextLink to="/how-it-works#film">
+              Not sure yet? Watch the 49-second film
+            </TextLink>
+          </p>
           <Compare>
             <details>
               <summary>
@@ -1105,11 +1711,12 @@ export default function Pricing() {
                       <th scope="col">
                         <span className="sr-only">Plan</span>
                       </th>
-                      {COLS.map((c) => (
+                      {COLS.map((c, ci) => (
                         <th
                           key={c.id}
                           scope="col"
                           className={selected === c.id ? "sel" : undefined}
+                          style={{ ["--o" as string]: (ci + 1) * 100 }}
                         >
                           <button
                             type="button"
@@ -1125,7 +1732,7 @@ export default function Pricing() {
                     </tr>
                   </thead>
                   <tbody>
-                    {ROWS.map((r) => (
+                    {ROWS.map((r, ri) => (
                       <tr key={r.label}>
                         <th scope="row">{r.label}</th>
                         {r.cells.map(([main, sub], i) => (
@@ -1134,12 +1741,16 @@ export default function Pricing() {
                             className={
                               selected === COLS[i].id ? "sel" : undefined
                             }
+                            data-label={r.label}
+                            style={{ ["--o" as string]: (i + 1) * 100 + ri + 1 }}
                           >
-                            <strong className={r.yes ? "yes" : undefined}>
-                              {r.yes && <YesTick />}
-                              {main}
-                            </strong>
-                            {sub && <span>{sub}</span>}
+                            <div>
+                              <strong className={r.yes ? "yes" : undefined}>
+                                {r.yes && <YesTick />}
+                                {main}
+                              </strong>
+                              {sub && <span>{sub}</span>}
+                            </div>
                           </td>
                         ))}
                       </tr>
@@ -1149,64 +1760,68 @@ export default function Pricing() {
               </div>
             </details>
           </Compare>
+        </Frame>
+      </Forever>
 
-          <div className={`decide${chosen ? " float" : ""}`} aria-live="polite">
-            <div>
-              <strong>{name}</strong>
-              <small>
-                {selectedId === "free"
-                  ? "No card. Make your account in your browser and begin today."
-                  : isCheckoutLive(selectedId)
-                    ? "Continue with your selected plan."
-                    : "Plans open at launch."}
-              </small>
-            </div>
-            <div className="decide-actions">
-              {/* One primary action on this page: Start free. Plans that
-                  cannot be bought yet offer the $1 reservation beside it, the
-                  only place on the site that still does. */}
-              {isCheckoutLive(selectedId) ? (
-                <PrimaryAnchor href={checkoutFor(selectedId)}>
-                  Choose {name} <ArrowIcon />
-                </PrimaryAnchor>
-              ) : (
-                <PrimaryAnchor href={START_HREF}>
-                  {START_LABEL} <ArrowIcon />
-                </PrimaryAnchor>
-              )}
-              {selectedId !== "free" && !isCheckoutLive(selectedId) && (
-                <Link to={checkoutFor(selectedId)} className="reserve">
-                  {reserveDiscountOpen()
-                    ? `Or reserve for ${OFFERS.reserve.price}, ${OFFERS.reserve.discount}% off`
-                    : `Or reserve for ${OFFERS.reserve.price}`}
-                </Link>
-              )}
-            </div>
+      <Book ref={book} $ground="sand" id="book" aria-labelledby="book-title">
+        <Frame className="book">
+          {/* The cover of a real sample book (the /samples page), not the
+              product mock-up whose cover still read "Family name". */}
+          <img
+            src="/book-objects/sample-carolyn-720.webp"
+            srcSet="/book-objects/sample-carolyn-360.webp 360w, /book-objects/sample-carolyn-720.webp 720w"
+            sizes="(max-width: 640px) 56vw, (max-width: 860px) 92vw, 460px"
+            width={720}
+            height={720}
+            alt="The cover of a sample A Story book, Moments & Memories, with family photographs on navy linen"
+            loading="lazy"
+          />
+          <div>
+            <Statement id="book-title" $size="lg" data-lines>
+              Six ways to hold the <em>book.</em>
+            </Statement>
+            <p>
+              From a PDF you print at the library to a linen Heirloom in its
+              box, or an editor of ours doing all of it. {BOOK.pages}.
+            </p>
+            <p>
+              {/* /samples is a page in public/, outside the router: a plain anchor. */}
+              <TextAnchor href="/samples">
+                Flip through three sample books
+              </TextAnchor>
+            </p>
           </div>
         </Frame>
-      </Plans>
-
-      <Forever ref={forever} $ground="paper" aria-labelledby="forever-title">
         <Frame>
-          <SplitHead>
-            <Statement id="forever-title" $size="lg" data-lines>
-              Stop paying, and it is still <em>yours.</em>
-            </Statement>
-          </SplitHead>
-          <ul className="kept">
-            {FOREVER.kept.map((k) => (
-              <li key={k} data-rise>
-                {k}
+          <details className="editions-fold">
+          <summary>
+            Printed books, from {BOOK_EDITIONS[0].price} to{" "}
+            {BOOK_EDITIONS[BOOK_EDITIONS.length - 1].price}
+          </summary>
+          <ul className="editions" aria-label="Book editions">
+            {BOOK_EDITIONS.map((e) => (
+              <li key={e.id}>
+                <span className="badge">{e.badge ?? ""}</span>
+                <h3>{e.name}</h3>
+                <p className="cost">
+                  {e.price}
+                  {e.extra && <small>{e.extra} each extra copy</small>}
+                </p>
+                <p className="tag">{e.tagline}</p>
+                <ul>
+                  {e.includes.map((x) => (
+                    <li key={x}>{x}</li>
+                  ))}
+                </ul>
+                <p className="when">{e.delivery}</p>
               </li>
             ))}
-            <li data-rise>
-              Name a trusted person, who receives what you wrote if you can’t
-            </li>
-            <li data-rise>
-              Write a letter to one person, delivered on the date you choose
-            </li>
           </ul>
-
+          </details>
+          <p className="members">
+            <strong>With a plan:</strong> {BOOK.members} {BOOK.allowance}.
+          </p>
+          <Asked aria-label="Questions">
           <div className="questions">
             <details>
               <summary>What is included in Free?</summary>
@@ -1224,64 +1839,11 @@ export default function Pricing() {
               </p>
             </details>
           </div>
-        </Frame>
-      </Forever>
-
-      <Book ref={book} $ground="sand" id="book" aria-labelledby="book-title">
-        <Frame className="book">
-          {/* The cover of a real sample book (the /samples page), not the
-              product mock-up whose cover still read "Family name". */}
-          <img
-            data-rise
-            data-drift="5"
-            src="/book-objects/sample-carolyn-720.webp"
-            srcSet="/book-objects/sample-carolyn-360.webp 360w, /book-objects/sample-carolyn-720.webp 720w"
-            sizes="(max-width: 860px) 92vw, 460px"
-            width={720}
-            height={720}
-            alt="The cover of a sample A Story book, Moments & Memories, with family photographs on navy linen"
-            loading="lazy"
-          />
-          <div>
-            <Statement id="book-title" $size="lg" data-lines>
-              Six ways to hold the <em>book.</em>
-            </Statement>
-            <p data-rise>
-              From a PDF you print at the library to a linen Heirloom in its
-              box, or an editor of ours doing all of it. {BOOK.pages}.
-            </p>
-            <p data-rise>
-              {/* /samples is a page in public/, outside the router: a plain anchor. */}
-              <TextAnchor href="/samples">
-                Flip through three sample books <ArrowIcon />
-              </TextAnchor>
-            </p>
-          </div>
-        </Frame>
-        <Frame>
-          <ul className="editions" aria-label="Book editions">
-            {BOOK_EDITIONS.map((e) => (
-              <li key={e.id} data-rise>
-                <span className="badge">{e.badge ?? ""}</span>
-                <h3>{e.name}</h3>
-                <p className="cost">
-                  {e.price}
-                  {e.extra && <small>{e.extra} each extra copy</small>}
-                </p>
-                <p className="tag">{e.tagline}</p>
-                <ul>
-                  {e.includes.map((x) => (
-                    <li key={x}>{x}</li>
-                  ))}
-                </ul>
-                <p className="when">{e.delivery}</p>
-              </li>
-            ))}
-          </ul>
-          <p className="members" data-rise>
-            <strong>With a plan:</strong> {BOOK.members} {BOOK.allowance}.
-            Ordering opens soon.
+          <p className="links">
+            <TextLink to="/compare">Compare A Story with others</TextLink>
+            <TextLink to="/questions">All questions &amp; answers</TextLink>
           </p>
+          </Asked>
         </Frame>
       </Book>
     </>

@@ -3,8 +3,13 @@
  * (founder, Pass 11g: "lowkey the your own story can target the younger").
  * Mission: A Story "captures the life you're living now and the one behind
  * you … Today is part of it too." So this page is about the twenties and
- * thirties - the first apartment, the friends you'll miss, the years that go
- * fast - recorded while they're still happening.
+ * thirties - the first apartment, the friends who shaped you, the years that
+ * go fast - recorded while they're still happening.
+ *
+ * Premium pass (2026-11-02, design spec §4A): the opening is on paper, split,
+ * with one photograph as a crop (it was three snapshots on the cloth); one
+ * gold word at most for every other h2; the closing offers /how-it-works,
+ * /samples and /pricing.
  *
  * Fix round 2 (2026-10-23, jury 1 #5 #9 #10): no longer the shared audience
  * template. It opens on the cloth with three snapshots laid down beside the
@@ -21,11 +26,12 @@
  * sample) - beside the three ways in, and what Free covers in one line. The
  * site's closing Invitation follows with the one action.
  */
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { FREE_TIER } from "../../lib/pricing";
 import MemoryCard from "./app/MemoryCard";
-import { ArrowIcon, Invitation, PageOpening, Print } from "./kit/kit";
+import { ArrowIcon, Invitation, PageOpening, Picture, Print } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
 import { PhonePairs } from "./rooms/phonePairs";
 import {
@@ -39,34 +45,34 @@ import {
 import { START_HREF, START_LABEL } from "../../lib/app";
 import { color, display, font, media, type } from "../../styles/theme";
 
-/* The opening's object: three snapshots dropped on the cloth. */
-const Snaps = styled.div`
-  position: relative;
-  width: min(100%, 720px);
-  aspect-ratio: 6 / 5;
-  > figure {
-    position: absolute;
+/* The opening's object (premium pass, spec §4A): on paper, one photograph
+   of the young-adult set as a crop (§3.5), at its own 4:3, never upscaled. */
+/* Round 3 fix 2 (item 8): the storyteller's door, at reading size in the
+   lead's serif, on its own line above the buttons. */
+const Opening = styled(PhonePairs)`
+  .opening-lead .asked {
+    display: block;
+    margin-top: 16px;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--text, ${color.body});
   }
-  > figure:nth-child(1) {
-    left: 0;
-    top: 4%;
-    width: 58%;
-    z-index: 1;
+  .opening-lead .asked a {
+    display: inline-block;
+    padding-block: 11px;
+    color: var(--ink, ${color.primary});
+    font-weight: 500;
+    text-underline-offset: 0.18em;
   }
-  > figure:nth-child(2) {
-    right: 0;
-    top: 0;
-    width: 36%;
-    z-index: 2;
-  }
-  > figure:nth-child(3) {
-    right: 8%;
-    bottom: 0;
-    width: 50%;
-    z-index: 3;
-  }
-  ${media.md} {
-    aspect-ratio: 5 / 4;
+`;
+
+const Crop = styled.div`
+  width: min(100%, 1448px);
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
   }
 `;
 
@@ -95,8 +101,7 @@ const Wall = styled(Chapter)`
     display: block;
     margin-top: 22px;
     font: 600 ${type.label} / 1.3 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   h3 {
@@ -217,6 +222,14 @@ const Kept = styled(Chapter)`
       width: 100%;
       margin-top: -36px;
     }
+    /* "Told by Maya" wrapped past the edge at 320 (29px; round 3, B4). */
+    .card .foot {
+      flex-wrap: wrap;
+    }
+    .card .told,
+    .card .kicker {
+      white-space: normal;
+    }
   }
   ${media.motion} {
     .card {
@@ -248,7 +261,7 @@ function KeptRoom() {
     <Kept ref={ref} $ground="teal" aria-labelledby="kept-title">
       <Frame>
         <Statement id="kept-title" $size="lg" data-lines>
-          Future you will want to know <em>what this felt like.</em>
+          Future you will want to know what this felt like.
         </Statement>
         <div className="row">
           <div data-rise="settle">
@@ -286,13 +299,14 @@ function KeptRoom() {
               ))}
             </ol>
             <p className="free" data-rise>
-              <b>{FREE_TIER.headline}:</b> {lower(FREE_TIER.includes[1])},{" "}
-              {lower(FREE_TIER.includes[2])} and the whole family invited.
-              Guided calls are the only paid part.
+              {/* Phone-first plan task 4: the free part is what you have once
+                  you are in, not the way in (pricing.ts FREE_TIER; the calls:
+                  lib/today.ts:13, plan :16). */}
+              <b>Once you’re in, free:</b> {lower(FREE_TIER.includes[1])},{" "}
+              {lower(FREE_TIER.includes[2])} and the whole family invited. The
+              calls ring in the A Story iPhone app, by invite.
               <br />
-              <TextLink to="/pricing">
-                What Free includes <ArrowIcon />
-              </TextLink>
+              <TextLink to="/pricing">What Free includes</TextLink>
             </p>
           </div>
         </div>
@@ -306,7 +320,7 @@ const YEARS = [
     photo: "46",
     alt: "College roommates in a shared room",
     k: "The people",
-    t: "The friends you’ll miss later.",
+    t: "The friends who shaped you.",
     d: "The roommate, the group chat, the one who always drove. Invite them, and their version of the night sits beside yours.",
   },
   {
@@ -332,16 +346,35 @@ export default function YourStory() {
       <EditorialSeo
         title="Your own story - record the life you’re living now"
         path="/your-story"
-        description="You don’t have to be old to have a story. Talk or write about the life you’re living now - the first apartment, the friends - and keep it private."
+        description="The life you’re living now is a story too, at any age. Talk or write about it - the first apartment, the friends, this year - and keep it private."
       />
-      <PhonePairs>
+      <Opening>
+        {/* Round 3 (2026-11-03, plan task 1, Harold): the opening no longer
+            says you don't have to be old; it says the life being lived now
+            counts, at any age, and points the person being asked by their
+            family to their own door. Mission: "Today is part of it too." */}
         <PageOpening
+          variant="split"
+          ground="paper"
           title={
             <>
-              You don’t have to be old to have <em>a story.</em>
+              The life you’re living now is <em>a story.</em>
             </>
           }
-          lead="The first apartment. The group of friends. The year everything changed. Keep it while it’s still happening, in your own words, on your own time."
+          lead={
+            <>
+              The first apartment. The group of friends. The year everything
+              changed. At any age, keep it while it’s still happening, in
+              your own words, on your own time.
+              {/* Round 3 fix 2 (item 8, Harold #6): the storyteller's door
+                  at reading size, above the buttons (the note under them
+                  before this fix, word for word). */}
+              <span className="asked">
+                Being asked by your family to tell yours?{" "}
+                <Link to="/join#being-asked">Start here instead</Link>.
+              </span>
+            </>
+          }
           actions={
             <>
               <PrimaryLink to={START_HREF}>
@@ -351,36 +384,23 @@ export default function YourStory() {
             </>
           }
           object={
-            <Snaps>
-              <Print
+            <Crop>
+              <Picture
                 id="45"
+                frame="crop"
                 alt="Friends talking late at night on a living-room floor"
-                sizes="(max-width: 860px) 56vw, 26vw"
-                tilt={-2.2}
+                sizes="(max-width: 860px) 92vw, 46vw"
                 priority
               />
-              <Print
-                id="42"
-                alt="A private snapshot: two friends taking a selfie"
-                sizes="(max-width: 860px) 36vw, 16vw"
-                tilt={2.6}
-              />
-              <Print
-                id="44"
-                alt="Building furniture in a first apartment"
-                sizes="(max-width: 860px) 48vw, 23vw"
-                tilt={-0.8}
-                caption="The first place, 2024"
-              />
-            </Snaps>
+            </Crop>
           }
         />
-      </PhonePairs>
+      </Opening>
 
       <Wall ref={wall} $ground="ivory" aria-labelledby="years-title">
         <Frame>
           <Statement id="years-title" $size="lg" data-lines>
-            The years that go <em>fastest.</em>
+            The years that go fastest.
           </Statement>
           <ul>
             {YEARS.map((y, i) => (
@@ -389,7 +409,7 @@ export default function YourStory() {
                   id={y.photo}
                   alt={y.alt}
                   ratio="4 / 3"
-                  tilt={[-1.1, 0.9, -0.6][i]}
+                  tilt={[-1.1, 0, -0.6][i] || undefined}
                   sizes="(max-width: 860px) 92vw, 30vw"
                 />
                 <small>{y.k}</small>
@@ -403,7 +423,7 @@ export default function YourStory() {
 
       <KeptRoom />
 
-      <Invitation />
+      <Invitation next={["/how-it-works", "/samples", "/pricing"]} />
     </>
   );
 }

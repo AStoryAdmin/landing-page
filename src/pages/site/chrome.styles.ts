@@ -14,7 +14,7 @@
  * opacity move. It is its own View Transition layer, so it holds still
  * while the page under it changes.
  *
- * Below 1100px the rooms open on a full-screen sheet of the same cloth.
+ * Below 1180px (media.navBar, spec fallback S20) the rooms open on a full-screen sheet of the same cloth.
  *
  * The footer is the back board: the same cloth, quiet. The wordmark at an
  * ordinary size, the link columns, the five program badges, and one line
@@ -134,17 +134,18 @@ export const HeaderShell = styled.header`
     margin-inline: auto;
     display: flex;
     align-items: center;
-    gap: clamp(14px, 1.7vw, 34px);
+    /* Four words with air between them (phone-first plan): the calm of a
+       short bar comes from the space, not from smaller type. */
+    gap: clamp(20px, 2.4vw, 48px);
   }
   .gf-nav-right {
     display: flex;
     align-items: center;
     gap: clamp(16px, 1.6vw, 28px);
   }
-  /* The rooms: Montserrat, quiet ivory; the room you are in is full ivory
+  /* The tabs: Montserrat, quiet ivory; the tab you are on is full ivory
      with a gold rule under the word. */
   .gf-nav-links > a,
-  .more-toggle,
   .gf-signin {
     position: relative;
     min-height: 44px;
@@ -176,7 +177,6 @@ export const HeaderShell = styled.header`
   }
   ${media.hover} {
     .gf-nav-links > a:hover,
-    .more-toggle:hover,
     .gf-signin:hover {
       color: ${color.onDark};
     }
@@ -191,150 +191,13 @@ export const HeaderShell = styled.header`
     transform: scaleX(1);
   }
   .gf-nav-links > a:active,
-  .more-toggle:active,
   .gf-signin:active {
     opacity: 0.7;
   }
-  .more-chevron {
-    width: 14px;
-    height: 14px;
-    opacity: 0.7;
-    transition: transform ${motion.base};
+  /* Sign in is the small door: a step quieter than the tabs. */
+  .gf-signin {
+    font-size: 16px;
   }
-  .more-toggle[aria-expanded="true"] {
-    color: ${color.onDark};
-  }
-  .more-toggle[aria-expanded="true"] .more-chevron {
-    transform: rotate(180deg);
-  }
-  .more-wrap {
-    position: relative;
-  }
-
-  /* The More panel: a leaf of paper laid under the bar, from the word that opened it. */
-  .more-panel {
-    position: absolute;
-    top: calc(100% + 14px);
-    left: 50%;
-    width: min(820px, 92vw);
-    margin-left: calc(min(820px, 92vw) / -2);
-    display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: 28px;
-    padding: 28px;
-    border-radius: 6px;
-    background: ${color.paper};
-    color: ${color.primary};
-    box-shadow:
-      0 0 0 1px ${color.primaryLine},
-      0 40px 80px -40px rgba(0, 0, 0, 0.6);
-    transform-origin: top center;
-    transition:
-      opacity 160ms ${curve.out},
-      transform 200ms ${curve.out},
-      display 200ms allow-discrete;
-  }
-  @starting-style {
-    .more-panel:not([hidden]) {
-      opacity: 0;
-      transform: scale(0.97) translateY(-6px);
-    }
-  }
-  .more-panel[hidden] {
-    display: none;
-    opacity: 0;
-    transform: scale(0.97) translateY(-6px);
-    transition-duration: 120ms, 120ms, 120ms;
-  }
-  .more-groups {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 22px;
-  }
-  .more-groups h2,
-  .gf-mobile-more h2 {
-    margin-bottom: 8px;
-    font: 600 ${type.label} / 1.4 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: ${color.accentText};
-  }
-  .more-groups a {
-    display: block;
-    padding: 10px 12px;
-    margin: 0 -12px;
-    border-radius: 6px;
-    text-decoration: none;
-    transition: background-color ${motion.fast};
-  }
-  ${media.hover} {
-    .more-groups a:hover {
-      background: ${color.ivory};
-    }
-  }
-  .more-groups strong {
-    display: block;
-    font: 600 22px/1.15 ${font.display};
-    color: ${color.primary};
-  }
-  .more-groups small {
-    display: block;
-    margin-top: 2px;
-    font: 400 ${type.note} / 1.45 ${font.ui};
-    color: ${color.bodyMuted};
-  }
-  .more-feature {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    min-height: 260px;
-    padding: 22px;
-    border-radius: 4px;
-    overflow: hidden;
-    color: ${color.onDark};
-    text-decoration: none;
-    isolation: isolate;
-  }
-  .more-feature img {
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform ${motion.slow};
-  }
-  .more-feature::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(
-      transparent 30%,
-      color-mix(in srgb, ${color.chocolateInk} 88%, transparent)
-    );
-  }
-  ${media.hover} {
-    .more-feature:hover img {
-      transform: scale(1.03);
-    }
-  }
-  .more-feature small {
-    font: 600 ${type.label} / 1 ${font.ui};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: ${color.gold};
-  }
-  .more-feature b {
-    margin-top: 8px;
-    font: 600 24px/1.15 ${font.display};
-  }
-  .more-feature span {
-    margin-top: 10px;
-    font: 600 ${type.note} / 1 ${font.ui};
-  }
-
   /* The one action: the ivory pill, as the app's buttons on the cloth. */
   .gf-button {
     display: inline-flex;
@@ -354,6 +217,7 @@ export const HeaderShell = styled.header`
       transform ${motion.press};
   }
   .gf-button svg {
+    flex: none;
     width: 16px;
     height: 16px;
     transition: transform ${motion.base};
@@ -369,13 +233,38 @@ export const HeaderShell = styled.header`
   .gf-button:active {
     transform: scale(0.97);
   }
+  /* Phone-first fix 1 (item 9b, Tuan #1-2): on /join the same button in
+     the quieter secondary style, so the code box is the page's one action.
+     Label, target and count are unchanged. */
+  .gf-button[data-quiet] {
+    background: transparent;
+    color: ${color.onDark};
+    box-shadow: inset 0 0 0 1px ${color.onDarkLine};
+  }
+  ${media.hover} {
+    .gf-button[data-quiet]:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
 
-  .gf-menu-toggle,
-  .gf-mobile-more {
+  .gf-menu-toggle {
     display: none;
   }
 
-  ${media.nav} {
+  /* 1180-1279px: the gaps give way first; labels and the arrow never wrap
+     or shrink. */
+  @media (min-width: 1180px) and (max-width: 1279px) {
+    .gf-nav-inner,
+    nav {
+      gap: 20px;
+    }
+    .gf-nav-links,
+    .gf-nav-right {
+      gap: 20px;
+    }
+  }
+
+  ${media.navBar} {
     .gf-nav-inner {
       height: 64px;
       justify-content: space-between;
@@ -434,6 +323,7 @@ export const HeaderShell = styled.header`
       z-index: 2;
     }
 
+    /* The drawer moves on motion.move. */
     nav {
       position: fixed;
       inset: 0;
@@ -454,17 +344,17 @@ export const HeaderShell = styled.header`
       transform: translateY(-12px);
       visibility: hidden;
       transition:
-        opacity 200ms ${curve.out},
-        transform 240ms ${curve.move},
-        visibility 0s 240ms;
+        opacity ${motion.move},
+        transform ${motion.move},
+        visibility 0s 320ms;
     }
     &.is-open nav {
       opacity: 1;
       transform: none;
       visibility: visible;
       transition:
-        opacity 200ms ${curve.out},
-        transform 240ms ${curve.move};
+        opacity ${motion.move},
+        transform ${motion.move};
     }
     .gf-nav-links,
     .gf-nav-right {
@@ -473,13 +363,22 @@ export const HeaderShell = styled.header`
       gap: 0;
       margin: 0;
     }
-    .gf-nav-links > a,
-    .gf-signin {
+    /* 1. The same four tabs, one run of large serif rows, all one size
+       (phone-first plan, 2026-11-04). Nothing opens inside the drawer. */
+    .gf-nav-links > a {
+      width: 100%;
+      justify-content: space-between;
+      min-height: 64px;
       font: 600 ${display.md} / 1.1 ${font.display};
       letter-spacing: -0.005em;
       color: ${color.onDark};
       padding: 12px 0;
       border-bottom: 1px solid ${color.onDarkLine};
+      white-space: normal;
+      text-align: left;
+    }
+    .gf-nav-links > a:first-child {
+      border-top: 1px solid ${color.onDarkLine};
     }
     .gf-nav-links > a::after {
       display: none;
@@ -487,35 +386,30 @@ export const HeaderShell = styled.header`
     .gf-nav-links > a[aria-current="page"] {
       color: ${color.gold};
     }
-    .more-wrap {
-      display: none;
+    @media (max-width: 374px) {
+      /* The list keeps one size, one step down, so no row wraps. */
+      .gf-nav-links > a {
+        font-size: ${display.sm};
+      }
     }
+    /* 2. Sign in as a quiet text link, for the families already in a
+       book, then the one button, full width. */
     .gf-nav-right {
-      order: 3;
+      margin-top: 24px;
+      gap: 12px;
+    }
+    .gf-signin {
+      align-self: flex-start;
+      font: 500 ${type.ui} / 1.3 ${font.ui};
+      color: ${color.onDark};
+      text-decoration: underline;
+      text-decoration-color: ${color.onDarkLine};
+      text-underline-offset: 4px;
     }
     .gf-button {
-      margin-top: 28px;
       min-height: 56px;
       justify-content: center;
       font-size: 16px;
-    }
-    .gf-mobile-more {
-      order: 2;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-top: 28px;
-    }
-    .gf-mobile-more h2 {
-      color: ${color.gold};
-    }
-    .gf-mobile-more a {
-      display: flex;
-      align-items: center;
-      min-height: 44px;
-      font: 500 ${type.ui} / 1.3 ${font.ui};
-      color: ${color.onDarkMuted};
-      text-decoration: none;
     }
   }
   ${media.motion} {
@@ -586,9 +480,12 @@ export const FooterShell = styled.footer`
   }
 
   /* The rooms: four balanced columns of four or five. */
+  /* Columns sized to their words where there is room (premium pass: the
+     longer names - "Schools, libraries & companies" - stay on one line). */
   .gf-footer-links {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(4, auto);
+    justify-content: space-between;
     gap: 24px;
   }
   .gf-footer-links h2,
@@ -599,13 +496,26 @@ export const FooterShell = styled.footer`
     color: ${color.gold};
     margin-bottom: 6px;
   }
+  /* Phone-first fix 3 (item 14): the small heading over the three doors
+     for someone who was sent a link; sentence case, the label size. */
+  .gf-footer-links h3,
+  .gf-footer-fold h3 {
+    margin: 14px 0 2px;
+    font: 600 ${type.label} / 1.4 ${font.ui};
+    color: ${color.onDark};
+  }
+  /* Phone-first fix 3 (item 14, Harold #7): link text at the note size
+     (rem, so it grows with the reader's text size) and every row at least
+     44px, also when a label wraps at 150 % text. */
   .gf-footer-links a,
   .gf-footer-fold a {
     display: flex;
     align-items: center;
     min-height: 44px;
+    padding-block: 4px;
     width: fit-content;
-    font: 400 ${type.ui} / 1.3 ${font.ui};
+    max-width: 100%;
+    font: 400 ${type.note} / 1.3 ${font.ui};
     color: ${color.onDarkMuted};
     text-decoration: none;
     transition: color ${motion.base};
@@ -634,7 +544,8 @@ export const FooterShell = styled.footer`
     min-height: 56px;
     list-style: none;
     cursor: pointer;
-    font: 600 16px/1.3 ${font.ui};
+    /* Phone-first fix 3 (item 14): 16px -> the note size, which scales. */
+    font: 600 ${type.note} / 1.3 ${font.ui};
     color: ${color.onDark};
   }
   .gf-footer-fold summary::-webkit-details-marker {
@@ -654,14 +565,26 @@ export const FooterShell = styled.footer`
     gap: 8px 20px;
     padding: 4px 0 18px;
   }
+  /* Two even columns, as before, until a column would be narrower than
+     8rem: then one. At 100% text nothing moves; at 150% on a narrow phone
+     "communities" alone is wider than half the fold and pushed the page
+     10px sideways (round 3, B4 fix pass 2). */
+  .gf-footer-fold .fold-body {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(max(8rem, calc(50% - 10px)), 1fr)
+    );
+  }
 
   /*
    * The five program marks on one cream plate (round 3, jury 1 #5: never one
    * mark alone on a row). The plate is sized from the footer's width:
    *   - one row, 40-48px, where the five fit with their clear space;
    *   - three and two where they don't (the narrow three on top);
-   *   - two by two on a phone, NVIDIA at its 30px digital minimum, with
-   *     "What each one is" in the sixth cell.
+   *   - two by two on a phone, NVIDIA at its 30px digital minimum, the
+   *     fifth centred under them (premium pass, 2026-11-02: the plate is a
+   *     figure, not a link; "Programs & grants" in the columns is the way in,
+   *     so the "What each one is" cell went with the link).
    * Each badge keeps NVIDIA's clear space (0.22 of 48px a side).
    */
   .footer-credential {
@@ -688,11 +611,10 @@ export const FooterShell = styled.footer`
     background: ${color.paper};
     box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.55);
     color: ${color.chocolate};
-    text-decoration: none;
-    transition: transform ${motion.press};
   }
-  .footer-plate:active {
-    transform: scale(0.99);
+  figure.footer-credential {
+    margin-inline: 0;
+    margin-bottom: 0;
   }
   .footer-marks {
     /* 20.49 = the five marks' widths over their height; 106px their clear
@@ -706,24 +628,6 @@ export const FooterShell = styled.footer`
   .footer-marks img {
     height: var(--mark-h) !important;
     width: auto;
-  }
-  .footer-plate-more {
-    display: none;
-    align-items: center;
-    gap: 6px;
-    font: 600 ${type.note} / 1.3 ${font.ui};
-    color: ${color.chocolate};
-  }
-  .footer-plate-more svg {
-    width: 16px;
-    height: 16px;
-    flex: none;
-    transition: transform ${motion.base};
-  }
-  ${media.hover} {
-    .footer-plate:hover .footer-plate-more svg {
-      transform: translateX(3px);
-    }
   }
   @container (max-width: 965px) {
     .footer-marks {
@@ -771,8 +675,9 @@ export const FooterShell = styled.footer`
       max-width: 100%;
       object-fit: contain;
     }
-    .footer-plate-more {
-      display: inline-flex;
+    /* Five marks two by two: the fifth sits centred under them. */
+    .footer-marks > span:last-child {
+      grid-column: 1 / -1;
     }
   }
 
@@ -827,6 +732,40 @@ export const FooterShell = styled.footer`
     margin-top: 8px;
     line-height: 1.6;
     color: ${color.onDarkMuted};
+  }
+  /* The slim variant (sign-in, sign-up, account, thanks, /l): the legal
+     line and Privacy · Terms · Contact, nothing else. */
+  &[data-variant="slim"] {
+    padding: 24px 0 20px;
+  }
+  .gf-footer-slim {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 32px;
+    font: 400 ${type.note} / 1.6 ${font.ui};
+  }
+  .gf-footer-slim .footer-legal {
+    padding-block: 0;
+  }
+  .gf-footer-slim nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 24px;
+  }
+  .gf-footer-slim nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: ${color.onDarkMuted};
+    text-decoration: none;
+    transition: color ${motion.base};
+  }
+  ${media.hover} {
+    .gf-footer-slim nav a:hover {
+      color: ${color.onDark};
+    }
   }
   ${media.lg} {
     .gf-footer-top {

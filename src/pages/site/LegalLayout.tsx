@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import type { ReactNode } from "react";
 import useActiveSection from "../../hooks/useActiveSection";
+import { CONTENTS_ID } from "./legalPrimitives";
+import { IN_MAIN } from "./kit/premium";
 
 /*
  * Privacy and Terms (round 3, jury 1 #15 and #3): the reading text is EB
@@ -10,9 +12,28 @@ import useActiveSection from "../../hooks/useActiveSection";
  * they fold into one "Contents" disclosure above the sections. The grid and
  * every style live on `LegalContent` (legalPrimitives.ts), the one box that
  * holds the notice, the summary and the sections.
+ *
+ * Premium pass (2026-11-02, spec §4D): the folded contents carry the id that
+ * every section's "Back to contents" link returns to (legalPrimitives.ts).
  */
 const Contents = styled.div`
   display: contents;
+  /* A link in the legal text (the styled contact address included) keeps
+     its line and grows a 44px hit area: inline padding adds nothing to the
+     line box, so the text does not move (taste rule 20; round 3, B4 fix
+     pass 2). The contents list is a nav and keeps its own rows. */
+  ${IN_MAIN} & :is(p, li, small, dd) a:not(nav a) {
+    padding-block: 11px;
+  }
+  /* The contents rows are 44px each; 8px between them and under the
+     "Contents" line, so no two targets touch (taste rule 20). */
+  ${IN_MAIN} & :is(.gf-legal-rail, .gf-legal-contents) ol {
+    display: grid;
+    row-gap: 8px;
+  }
+  ${IN_MAIN} & .gf-legal-contents nav {
+    padding-top: 8px;
+  }
 `;
 
 export function LegalLayout({ children }: { children: ReactNode }) {
@@ -84,7 +105,7 @@ export function TableOfContents({
         </p>
         <Entries sections={sections} active={active} />
       </nav>
-      <details className="gf-legal-contents">
+      <details className="gf-legal-contents" id={CONTENTS_ID}>
         <summary>
           <span>
             Contents <small>{sections.length} sections</small>

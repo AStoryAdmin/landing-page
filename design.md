@@ -20,8 +20,13 @@ write a raw hex in a component; lift it into `theme.ts` first.
   per heading.
 
 ## Typography
-- Display and anything a person says: Source Serif 4.
-- Interface, labels, explanation: Figtree.
+The four faces in `theme.ts` (`font.*`), each with one job (corrected
+2026-11-02; Source Serif 4 and Figtree left with phase 2):
+- **Cormorant Garamond** (`font.display`): every heading, set at 600.
+- **EB Garamond** (`font.text`): anything meant to be read - leads,
+  paragraphs, quotes.
+- **Montserrat** (`font.ui`): the interface - buttons, nav, labels, small print.
+- **Caveat** (`font.script`): handwritten captions under prints. Nothing else.
 - **Emphasis in headings is roman, carried by colour** — never italic
   (2026-10-14: fourteen italic `h1/h2/h3 em` rules were made upright). Italic
   survives only in quotations and running body copy.
@@ -108,13 +113,16 @@ astory.css §9) carried over line for line, with the app's inks in
 `theme.ts` (`app`). Its book faces are not loaded here - no new fonts - so
 it falls through to Source Serif 4 and Figtree, the app's own fallbacks.
 
-## The phone bar (2026-10-16)
+## The phone bar (2026-10-16, premium pass 2026-11-02)
 `kit/StickyStart.tsx`: on phones only, once the opening has scrolled out of
 view, the primary action in one bar at the foot of the window, inside the
 safe area (`viewport-fit=cover` in index.html). It steps away when the
 closing invitation or the footer is in view, and is not shown on Pricing
 (its own decision bar), Reserve, Start, the account or legal pages. No
 countdown, no urgency copy.
+Off home (premium pass) the bar's content is 56px tall plus the safe area
+(home keeps its ~77px), and it also steps away while the menu drawer is open
+(`body[data-nav-open]`) and while the film plays (`body[data-film-playing]`).
 
 ## Scripts off (2026-10-16)
 The `<noscript>` block in index.html is the name, one sentence and where to
@@ -148,6 +156,57 @@ about 1,400 / 14 (a third of what is left is the Hartley book's pages).
 GSAP via `lib/scrollMotion.ts`. Animate transform and opacity only. Every
 scene must be complete with `prefers-reduced-motion: reduce` (the prerender
 runs with it). No autoplay of anything long; no pinned scroll scenes.
+
+## Navigation (premium pass, 2026-11-02)
+- Labels live once, in `src/lib/nav.ts` (header, drawer, footer, "Where to
+  next"; `public/samples/index.html` copies them by hand).
+- Bar from 1180px (`media.navBar`; the spec's 1024 did not fit, so its
+  fallback S20 moved it; `media.nav` stays 1100px for everything else): How it works · Sample books · Pricing · For organizations ▾ · Our
+  story, then Sign in as a quiet link and one filled button (Book a demo on
+  /organizations and /care-communities, Start free elsewhere). No "More".
+- The org menu (Care communities · Schools, libraries & companies · Book a
+  demo) opens on click or a 120ms hover; the Book a demo row is left out on
+  the two org pages. Programs & grants is in the footer only.
+- Drawer below 1180px: five large serif rows (the org menu opens in place),
+  a hairline, a 2 × 2 quiet group (For families · Your own story · Questions
+  & answers · Contact), then Sign in and the full-width button.
+- Footer: four columns, 16 page links and the email, no repeats; the
+  program-marks plate is a figure, not a link, and is not shown on
+  /programs. `<Footer variant="slim">` (legal line + Privacy · Terms ·
+  Contact) on the account doors, /thanks and /l.
+
+## Premium pass (2026-11-02)
+Opt-in for every page but home (`kit/premium.ts`): App.tsx sets
+`main[data-premium]` and `body[data-premium]` off `/`, and every rule below
+is scoped under them; `usePremium()` for components with logic. Home stays
+pixel-identical outside the header and footer (`scripts/home-diff.mjs`).
+- **Type (§3.1):** eyebrows and "Where to next" in sentence case
+  (`tracking.eyebrowPremium` 0.08em for the few capitals left); no
+  page-local font sizes; measures `measure.lead/read/max` (52/64/72ch);
+  tabular lining numbers on prices, tables and `[data-num]`; a gold `<em>`
+  in the h1 and at most half the h2s.
+- **Spacing (§3.2):** only `space.*`; the closing band starts at
+  `space.section × --sy`.
+- **Buttons (§3.3):** only the primary carries the arrow; on a phone the
+  secondary in a row of actions is a centred text link; one 2px focus ring
+  by ground (`--ring`: chocolate on light, ivory on cloth/teal/night; set
+  per element on focus from the colour actually behind it,
+  `kit/premium.ts` `useGroundRing`); press 0.97;
+  disabled 0.5.
+- **Cards (§3.4):** `Card` only for the /pricing plan cards and the
+  sign-in/up form; elsewhere type and hairlines.
+- **Photographs (§3.5):** one treatment per section, `<Picture frame="crop">`
+  (md radius) or `"print"`; one aspect ratio per row; first-screen image
+  eager, the rest lazy; no filters; ≤ 250 KB at 390.
+- **Phone bar (§3.6):** see "The phone bar".
+- **Today note (§3.7):** `lib/today.ts`, the hero note on /how-it-works,
+  /pricing, /organizations, /care-communities and /reserve; never in a lead.
+- **Endings (§3.8):** `Invitation` compares paths without the trailing
+  slash, takes `next`, has a closing line per page, and no Bond off home.
+- **Scrollers (§3.9):** `kit/Scroller.tsx`, a labelled focusable region
+  around a real list, CSS end fade; no arrows or dots.
+- **Motion (§3.10):** one hero arrival plus at most three reveal groups,
+  on containers.
 
 ## Guarded files — never edit
 `src/lib/pricing.ts`, `product.ts`, `checkout.ts`, `demoScripts.ts`,

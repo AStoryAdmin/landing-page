@@ -51,11 +51,6 @@ const Steps = styled(Chapter)`
     gap: 16px 32px;
     margin-top: clamp(40px, 5vw, 72px);
   }
-  .note {
-    margin-top: 24px;
-    font: 400 ${type.note} / 1.55 ${font.body};
-    color: ${color.bodyMuted};
-  }
   ${media.md} {
     ol {
       grid-template-columns: minmax(0, 1fr);
@@ -95,10 +90,11 @@ export default function Thanks() {
         eyebrow="The next step"
         title={
           <>
-            Now, the first <em>conversation.</em>
+            Thank <em>you.</em>
           </>
         }
-        lead="If you’ve completed a purchase, sign up in the app with the same email address - it connects your purchase to your account."
+        lead="If you’ve completed a purchase, sign up in the app with the same email you paid with. That connects your purchase to your account."
+        note="Your checkout receipt is your confirmation. This page does not verify a payment."
       />
       <Steps $ground="ivory" aria-label="What happens next">
         <Frame>
@@ -119,10 +115,6 @@ export default function Thanks() {
               Get help with your purchase
             </TextAnchor>
           </div>
-          <p className="note">
-            This page does not verify a payment. Your checkout receipt is your
-            confirmation.
-          </p>
         </Frame>
       </Steps>
     </>

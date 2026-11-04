@@ -2,7 +2,8 @@
  * /reserve — two ways in before launch. It replaced the waitlist on
  * 2026-09-29; every "Reserve for $1" button on the site lands here.
  *
- *   Reserve, $1           a place in line and 15% off the first year
+ *   Reserve, $1           a place in line; the dollar comes off the first year
+ *                         (its first-year discount is no longer mentioned, spec D1)
  *   Founding Family, $29  start now, set up by hand, half off the first year
  *
  * The offers live in lib/founding.ts and nowhere else; this page presents
@@ -41,13 +42,10 @@ import {
   FULL_PRICE,
   INCLUDES,
   OFFERS,
-  RESERVE_DEADLINE_LABEL,
   WHY_PAY,
-  deadlineLine,
   foundingLeft,
   foundingPlacesLine,
   isOfferLive,
-  reserveDiscountOpen,
   reserveMetaDescription,
   offerCheckoutUrl,
   type OfferId,
@@ -56,6 +54,8 @@ import { markOffer, useAccount, useReferralCode } from "../../lib/auth";
 import { useFoundingTaken } from "../../lib/foundingCount";
 import { track } from "../../lib/analytics";
 import { SITE } from "../../lib/seo";
+import { TODAY_NOTE } from "../../lib/today";
+import { WHO_HEARS_SHORT } from "../../lib/hears";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import ComingSoon from "./kit/ComingSoon";
 import CheckoutDetails, { type CheckoutIntent } from "./CheckoutDetails";
@@ -100,8 +100,7 @@ const cardRules = css`
   }
   .tag {
     font: 600 ${type.label} / 1 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   .name {
@@ -127,8 +126,7 @@ const cardRules = css`
   }
   .price span {
     font: 600 ${type.label} / 1 ${font.body};
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: ${color.accentText};
   }
   .held {
@@ -137,7 +135,7 @@ const cardRules = css`
     background: ${color.ivory};
   }
   .held p.h {
-    font: 400 ${display.sm} / 1.2 ${font.display};
+    font: 400 ${display.md} / 1.2 ${font.display};
     color: ${color.primary};
   }
   .held dl {
@@ -163,11 +161,11 @@ const cardRules = css`
     white-space: nowrap;
   }
   .held s {
-    font: 400 18px / 1 ${font.text};
+    font: 400 ${type.read} / 1 ${font.text};
     color: ${color.bodyMuted};
   }
   .held dd b {
-    font: 400 26px/1 ${font.display};
+    font: 400 ${display.md} / 1 ${font.display};
     color: ${color.primary};
   }
   .held p.f {
@@ -219,7 +217,7 @@ const cardRules = css`
     background: ${color.ivory};
   }
   .done h3 {
-    font: 400 ${display.sm} / 1.2 ${font.display};
+    font: 400 ${display.md} / 1.2 ${font.display};
     color: ${color.primary};
   }
   .done p {
@@ -298,7 +296,7 @@ const cardRules = css`
     padding: 10px 18px;
     border: 1px solid ${color.primaryLine};
     background: ${color.paperPure};
-    font: 500 18px / 1.3 ${font.text};
+    font: 500 ${type.read} / 1.3 ${font.text};
     color: ${color.body};
   }
   .choice span small {
@@ -356,7 +354,7 @@ const HeroCard = styled.div`
   ul.inc {
     margin-top: 18px;
   }
-  ul.inc li:nth-child(-n + 3) {
+  ul.inc li:nth-child(-n + 2) {
     display: none;
   }
   .act {
@@ -387,6 +385,11 @@ const CenterOpening = styled.div`
   [data-variant="object"] .opening-grid:not(.solo) {
     align-items: center;
   }
+  /* The note is two lines: who hears the recordings, then today's state. */
+  .opening-note .today {
+    display: block;
+    margin-top: 8px;
+  }
 `;
 
 /* What happens next, and why a dollar: one room on the ivory page. */
@@ -400,7 +403,7 @@ const Next = styled(Chapter)`
   .then {
     margin-top: clamp(18px, 2vw, 28px);
     max-width: 40ch;
-    font: 400 clamp(1.2rem, 1.05rem + 0.5vw, 1.6rem) / 1.5 ${font.text};
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: ${color.primary};
   }
   .then + p {
@@ -425,7 +428,7 @@ const Next = styled(Chapter)`
     border-bottom: 1px solid ${color.primaryLine};
   }
   li h3 {
-    font: 400 ${display.sm} / 1.25 ${font.display};
+    font: 500 ${type.read} / 1.4 ${font.text};
     color: ${color.primary};
   }
   li p {
@@ -604,7 +607,7 @@ const COPY: Record<
     signUp: "Create your account to reserve",
     claimed: "Your place is reserved.",
     paid: "You’re reserved.",
-    paidBody: `${OFFERS.reserve.discount}% off your first year, held. A receipt is on its way from Stripe.`,
+    paidBody: "The dollar comes off your first year. A receipt is on its way from Stripe.",
   },
   founding: {
     pay: `Start now for ${OFFERS.founding.price}`,
@@ -661,8 +664,6 @@ export default function Reserve() {
 
   /* The one question before the $29 (see the header). */
   const [iphone, setIphone] = useState<"yes" | "no" | null>(null);
-  const discountOpen = reserveDiscountOpen();
-  const deadline = deadlineLine();
   const isOpen = (id: OfferId) =>
     id === "founding" ? foundingOpen : OFFERS[id].open;
   const live = (id: OfferId) => isOpen(id) && isOfferLive(id);
@@ -705,7 +706,7 @@ export default function Reserve() {
   const shareUrl = code ? `${SITE.url}/reserve?ref=${code}` : null;
   const share = async () => {
     if (!shareUrl) return;
-    const text = `I've reserved A Story - it calls my parents and asks about their life. Reserve for ${OFFERS.reserve.price} and it's ${OFFERS.reserve.discount}% off the first year:`;
+    const text = `I've reserved A Story - it calls my parents and asks about their life. Reserve for ${OFFERS.reserve.price} to hold your family a place in line:`;
     track("offer_share");
     try {
       if (navigator.share) {
@@ -764,8 +765,8 @@ export default function Reserve() {
       return (
         <>
           <p className="small">
-            The founding places are filled - thank you. A dollar still holds
-            your place for launch, and comes off your first year.
+            A dollar holds your place for launch, and comes off your first
+            year.
           </p>
           <SecondaryAnchor
             href={openingHref}
@@ -808,13 +809,9 @@ export default function Reserve() {
           {iphone === "no" && (
             <>
               <p className="small" role="status">
-                Before launch, A Story can only ring an iPhone - on other phones
+                Today, A Story rings on an iPhone - on other phones
                 it reminds them to write instead, which is not what a founding
-                place is for. A dollar holds your place and
-                {discountOpen
-                  ? ` ${OFFERS.reserve.discount}% off`
-                  : " the price"}{" "}
-                instead.
+                place is for. A dollar holds your place instead.
               </p>
               <SecondaryAnchor
                 href={openingHref}
@@ -960,35 +957,21 @@ export default function Reserve() {
     const body = (
       <>
         <p className="tag">
-          {isFounding
-            ? !foundingOpen
-              ? "Filled"
-              : `Open now · ${placesLine}`
-            : discountOpen
-              ? `Reserve · ends ${RESERVE_DEADLINE_LABEL}`
-              : "Reserve"}
+          {isFounding ? `Open now · ${placesLine}` : "Reserve"}
         </p>
         <h2 className="name">{o.name}</h2>
         <p className="who">
           {isFounding
             ? "Start now, before launch, set up with us by hand."
-            : discountOpen
-              ? "Hold your place in line, and the price."
-              : "Hold your place in line."}
+            : "Hold your place in line."}
         </p>
         <p className="price">
           <b>{o.price}</b>
           <span>{isFounding ? "once" : "once, per place"}</span>
         </p>
         <div className="held">
-          <p className="h">
-            {isFounding
-              ? "Half off your first year"
-              : discountOpen
-                ? `${o.discount}% off your first year`
-                : deadline}
-          </p>
-          {(isFounding || discountOpen) && (
+          {isFounding && <p className="h">Half off your first year</p>}
+          {isFounding && (
             <dl>
               <div>
                 <dt>Individual</dt>
@@ -1007,17 +990,13 @@ export default function Reserve() {
           <p className="f">
             {isFounding
               ? `The ${o.price} counts toward it - ${FOUNDING_BALANCE.individual} more for Individual, whenever you choose.`
-              : discountOpen
-                ? "And the dollar comes off that."
-                : "A dollar still holds your place in line, and still comes off your first year."}
+              : "A dollar holds your place in line, and comes off your first year."}
           </p>
         </div>
         <ul className="inc">
-          {INCLUDES[id]
-            .filter((f) => isFounding || discountOpen || !f.includes("% off"))
-            .map((f) => (
-              <li key={f}>{f}</li>
-            ))}
+          {INCLUDES[id].map((f) => (
+            <li key={f}>{f}</li>
+          ))}
         </ul>
         <div className="act">{action(id)}</div>
         {foot}
@@ -1100,21 +1079,25 @@ export default function Reserve() {
                 Hold your place <em>for a dollar.</em>
               </>
             }
-            lead={`Anyone can start A Story free in a browser. The calls come with a plan, and they ring in the A Story iPhone app, which is in a private beta. ${reserve.price} holds your family a place in line.`}
+            lead={`Anyone can start A Story free in a browser. The calls come with a plan. ${reserve.price} holds your family a place in line.`}
+            /* Round 3 (B2): who hears the recordings, by the one paid
+               action on the site (lib/hears.ts, from the privacy summary). */
+            note={
+              <>
+                {WHO_HEARS_SHORT} <Link to="/privacy">Our privacy promises</Link>
+                <span className="today">{TODAY_NOTE}</span>
+              </>
+            }
             object={
               <HeroCard>
                 {card(
                   "reserve",
-                  <p className="card-foot">
-                    The founding places are filled - thank you.
-                    {!isIn && account === null && (
-                      <>
-                        {" "}
-                        Already have an account?{" "}
-                        <Link to="/sign-in?next=/reserve">Sign in</Link>
-                      </>
-                    )}
-                  </p>,
+                  !isIn && account === null ? (
+                    <p className="card-foot">
+                      Already have an account?{" "}
+                      <Link to="/sign-in?next=/reserve">Sign in</Link>
+                    </p>
+                  ) : undefined,
                 )}
               </HeroCard>
             }
@@ -1142,9 +1125,8 @@ export default function Reserve() {
               <div className="share" data-rise>
                 <Heading as="h2">Bring your brothers and sisters in.</Heading>
                 <Lead>
-                  Anyone who reserves through your link gets the same{" "}
-                  {reserve.discount}% off - and it is one more person who will
-                  read what your parents say.
+                  Anyone who reserves through your link is one more person who
+                  will read what your parents say.
                 </Lead>
                 <div className="row">
                   <code>{shareUrl}</code>
@@ -1170,7 +1152,7 @@ export default function Reserve() {
           <Frame className="two">
             <div>
               <Statement id="next-title" $size="lg" data-lines>
-                What happens <em>next.</em>
+                What happens next.
               </Statement>
               <p className="then" data-rise>
                 When the calls open, we email you, in the order families
@@ -1254,9 +1236,7 @@ export default function Reserve() {
                   meaning to ask for years. Founding families start before
                   launch, with one of us beside you for the first call, at half
                   price for the year.{" "}
-                  {foundingOpen
-                    ? `There are ${founding.places} places, and they go in the order families join.`
-                    : "The founding places are filled."}
+                  {`There are ${founding.places} places, and they go in the order families join.`}
                 </p>
               </div>
             </div>
@@ -1267,17 +1247,14 @@ export default function Reserve() {
       <Closing $ground="night" aria-labelledby="closing-title">
         <Frame>
           <Statement id="closing-title" $size="lg">
-            The questions you keep meaning <em>to ask.</em>
+            The questions you keep meaning to ask.
           </Statement>
           <p className="lead">
             {foundingOpen
               ? `Twenty-nine dollars has it asked before launch, with one of us on the call (${placesLine}, in the order families join). `
               : ""}
-            A dollar puts you in line
-            {discountOpen
-              ? `, with ${OFFERS.reserve.discount}% off if you reserve by ${RESERVE_DEADLINE_LABEL}`
-              : ""}
-            . If the timing turns out wrong, we refund it.
+            A dollar puts you in line. If the timing turns out wrong, we refund
+            it.
           </p>
           <Actions className="acts">
             {foundingOpen && (

@@ -17,9 +17,10 @@ export const SITE = {
       /\/$/,
       "",
     ) ?? "https://astoryapp.com",
-  /* daniel@ since 2026-10-20: the founder asked that the site's contact
-     reach him directly. The legal pages keep contact@ as the notice address. */
-  email: "daniel@astoryapp.com",
+  /* contact@ since 2026-11-02 (daniel@ from 10-20): the founder asked that
+     his own inbox stay off the public site, where scrapers collect it. The
+     /contact form still reaches him through the server (DEMO_TO). */
+  email: "contact@astoryapp.com",
   tagline: "Your Family’s Living Memories",
   ogImage: "/og/home.jpg",
   twitter: "@astoryapp",

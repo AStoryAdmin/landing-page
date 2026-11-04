@@ -28,6 +28,10 @@ const CASES = [
     ['https://astoryapp.com/sign-in/', `${APP}/sign-in`],
     ['https://astoryapp.com/login', `${APP}/sign-in`],
     ['https://astoryapp.com/sign-up?ref=FRIEND', `${APP}/create-account`],
+    ['https://astoryapp.com/sign-up?for=someone', `${APP}/create-account?for=someone`],
+    ['https://astoryapp.com/sign-up?for=someone&ref=FRIEND', `${APP}/create-account?for=someone`],
+    ['https://astoryapp.com/start?for=someone', `${APP}/create-account?for=someone`],
+    ['https://astoryapp.com/sign-up?for=me', `${APP}/create-account`],
     ['https://astoryapp.com/account', `${APP}/`],
     ['https://astoryapp.com/start', `${APP}/create-account`],
     ['https://astoryapp.com/start?plan=individual', `${APP}/create-account`],
@@ -38,6 +42,8 @@ const CASES = [
     ['https://astoryapp.com/p/rosa', null, '/p/rosa/index.html'],
     ['https://astoryapp.com/contribute/rosa', null, '/contribute/rosa/index.html'],
     ['https://astoryapp.com/pricing/', null, '/pricing/index.html'],
+    /* Round 3 fix 2 (item 11): /care-communities, where /care now goes, stays a page. */
+    ['https://astoryapp.com/care-communities', null, '/care-communities/index.html'],
     ['https://astoryapp.com/terms.html', null, '/terms.html'],
     ['https://astoryapp.com/assets/index-abc.js', null, '/assets/index-abc.js'],
     ['https://astoryapp.com/', null, '/index.html'],
@@ -95,4 +101,12 @@ for (const [from, target] of Object.entries(redirects)) {
         assert.equal(out.headers.location.value, want, `edge: ${variant}`);
     }
 }
+/* Round 3 fix 2 (item 11, Denise #8): /care is a 301 to /care-communities/,
+   with or without a slash, keeping the query. */
+for (const variant of ['/care', '/care/', '/care?utm=x']) {
+    const out = fn(toEvent('https://astoryapp.com' + variant));
+    assert.equal(out.statusCode, 301, `edge: ${variant} is an old address`);
+    assert.equal(out.headers.location.value, '/care-communities/' + (variant.includes('?') ? '?utm=x' : ''), `edge: ${variant}`);
+}
+assert.equal(redirects['/care'], '/care-communities', 'site-routes: /care → /care-communities');
 console.log(`PASS: ${CASES.length} addresses, edge function and inline script agree.`);
