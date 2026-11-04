@@ -79,8 +79,12 @@ export const CAN_SAY: readonly { lead: string; rest: string; href?: string }[] =
  *  export formats, consent for a resident who cannot decide alone, price)
  *  minus storage, which the privacy policy answers (CAN_SAY above). Nothing is claimed about any of
  *  the four; price stays "quoted on the demo" (Care.tsx NEED). */
+/* Phone-first pass (panel r3, Denise and Priya: "Bring these to the demo"
+   read as homework and an admission). Same four topics, said as what the
+   demo covers; "thirty minutes, with a founder" is nav.ts's Book a demo
+   hint (nav.ts:59, Organizations.tsx:1039). No answer is claimed. */
 export const DEMO_AGENDA =
-  "Bring these to the demo: HIPAA and a BAA, export formats, consent for a resident who cannot decide alone, and price.";
+  "Thirty minutes with a founder, about your program: privacy and HIPAA, consent, exports and price.";
 /** The address line in "What we can say today": a strict subset of this
  *  file's ORG_GROUP HIPAA answer ("... or write to contact@astoryapp.com;
  *  Daniel answers every message himself."). Rendered with the address as a

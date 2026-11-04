@@ -28,7 +28,13 @@ import { useEffect, useId, useState, type FormEvent } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Seo from "../../components/ui/Seo";
-import { APP, FAMILY_CODE, goToApp } from "../../lib/app";
+import {
+  APP,
+  FAMILY_CODE,
+  START_HREF,
+  START_LABEL,
+  goToApp,
+} from "../../lib/app";
 import { LAKE_MONSTER as M } from "../../lib/homeExamples";
 import {
   color,
@@ -44,6 +50,7 @@ import { ArrowIcon, PageOpening, Picture } from "./kit/kit";
 import {
   Chapter,
   Frame,
+  PrimaryAnchor,
   PrimaryButton,
   PrimaryLink,
   Statement,
@@ -81,7 +88,7 @@ const forSomeone = (search: string) =>
 /* The create-account lead for the gift buyer opens with the second half of
    the usual lead (AppDoor.tsx:94 before round 3 fix 1), unchanged. */
 const FOR_SOMEONE_LEAD =
-  "Setting it up for a parent? You make the account and choose a good time for the first call; their story belongs to them. Make your account in A Story, in your browser. No card.";
+  "Setting it up for a parent? A Story starts with the A Story iPhone app, by invite. You choose a good time for the first call; their story belongs to them.";
 
 const WORDS: Record<Door, { title: string; lead: string; action: string; seo: string }> = {
   join: {
@@ -103,14 +110,15 @@ const WORDS: Record<Door, { title: string; lead: string; action: string; seo: st
     seo: "Sign in to A Story",
   },
   "create-account": {
-    title: "Start free.",
-    /* Round 3 (B2, WORDS only): the gift buyer arrives here from
-       /for-families with ?for=someone. The second sentence is from
-       faqData.ts "How does giving A Story work?" and the privacy summary
-       (components/privacy.tsx:93, "The storyteller owns it"). */
-    lead: "Make your account in A Story, in your browser. No card. Setting it up for a parent? You make the account and choose a good time for the first call; their story belongs to them.",
-    action: "Start free",
-    seo: "Start A Story free",
+    /* Phone-first plan task 4 (WORDS only; where the door goes is
+       unchanged): A Story starts with the iPhone app, by invite (plan :13,
+       :16); a family code or link is the way into the family's side
+       (faqData.ts:40). The page's own actions point a stranger to the
+       site's one action and a relative to /join (Leaving below). */
+    title: "A Story starts on iPhone.",
+    lead: "A Story starts with the A Story iPhone app, by invite. Joining your family? Their six-letter code or link brings you in.",
+    action: "Open A Story",
+    seo: "Begin with A Story",
   },
   account: {
     title: "Your account is in A Story.",
@@ -161,12 +169,24 @@ function Leaving({
         title={w.title}
         lead={w.lead}
         actions={
-          <>
-            <PrimaryLink to={to}>
-              {w.action} <ArrowIcon />
-            </PrimaryLink>
-            <TextLink to="/">About A Story</TextLink>
-          </>
+          door === "create-account" ? (
+            /* Phone-first plan (AC3): no link on the site to the web app's
+               create-account page; a stranger gets the one action, a
+               relative the family-code door. */
+            <>
+              <PrimaryAnchor href={START_HREF}>
+                {START_LABEL} <ArrowIcon />
+              </PrimaryAnchor>
+              <TextLink to="/join">I have a family code</TextLink>
+            </>
+          ) : (
+            <>
+              <PrimaryLink to={to}>
+                {w.action} <ArrowIcon />
+              </PrimaryLink>
+              <TextLink to="/">About A Story</TextLink>
+            </>
+          )
         }
       />
     </>
@@ -275,10 +295,29 @@ const JoinTop = styled.div`
     flex: 1 1 100%;
     max-width: 44ch;
   }
-  .join-after p {
+  .join-after ol {
     margin: 0;
-    font: 400 ${type.read} / 1.55 ${font.text};
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+    display: grid;
+    gap: ${space.xs};
+  }
+  .join-after li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 1.6em minmax(0, 1fr);
+    font: 400 ${type.read} / 1.5 ${font.text};
     color: var(--text, ${color.body});
+  }
+  .join-after li::before {
+    content: counter(step) ".";
+    font-family: ${font.display};
+    font-weight: 600;
+    color: ${color.accentText};
+  }
+  .opening-lead .doors.after {
+    margin: ${space.sm} 0 0;
   }
   /* The words and the card start on one line, so neither column leaves a
      band of empty paper under the shorter one (Harold, 1440). */
@@ -595,14 +634,17 @@ function JoinHere({ given }: { given: string }) {
                       :80-81 and lib/app.ts:17 (a link opens on its own)
                     "Asked to tell your story? Start here"  the menu label
                       (nav.ts:78), to this page's #being-asked */}
-              <span className="doors">
-                Got a link? Just open it, and you’re in.{" "}
-                <a href="#being-asked">Asked to tell your story? Start here ↓</a>
-              </span>
+              {/* Phone-first pass (panel r3, Tuan #1, #2): what he is
+                  invited to do comes first; the storyteller's door follows
+                  in one line, and the code-or-link rule is said once, in
+                  the steps under the box. */}
               <span className="lede">
                 Someone in your family invited you. Add what you remember,
                 under your own name, through one link and with no account
                 needed. There is no fee per relative.
+              </span>
+              <span className="doors after">
+                <a href="#being-asked">Asked to tell your story? Start here ↓</a>
               </span>
             </>
           }
@@ -659,13 +701,24 @@ function JoinHere({ given }: { given: string }) {
                   repeated the button and is gone; the other steps join
                   this one paragraph, each sentence as it was. The link
                   half of the rule is in the line under the h1. */}
-              <p>
-                The relative who invited you sent either a six-letter code or
-                a link. A code goes in the box above. No app needed to add
-                yours: any browser works. Add a memory in writing, or
-                photographs; it appears once the storyteller says yes. Add
-                one memory or many, whenever you like.
-              </p>
+              {/* Phone-first pass (panel r3, Tuan #3, #4): the same
+                  sentences as three short steps, so what happens after the
+                  button is visible. "You read what the family has kept so
+                  far" is WORDS.join.lead above. */}
+              <ol aria-label="What happens next">
+                <li>
+                  Your relative sent a six-letter code or a link. A code goes
+                  in the box; a link opens on its own.
+                </li>
+                <li>
+                  You read what the family has kept so far, and add yours in
+                  any browser: a memory in writing, or photographs.
+                </li>
+                <li>
+                  It appears once the storyteller says yes. Add one memory or
+                  many, whenever you like.
+                </li>
+              </ol>
             </div>
             </>
           }

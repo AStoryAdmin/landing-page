@@ -55,6 +55,7 @@ import {
   type,
 } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
+import TodayNow from "./TodayNow";
 
 /* ── The reasons ───────────────────────────────────────────────────────── */
 
@@ -310,15 +311,20 @@ const TILTS = [-1.2, 0, 0.8, 0, -0.9];
    plans that renew is left out; /questions keeps the whole answer. No gift
    button, card, note or date (blocked on Daniel). */
 const GIFT_STEPS = [
-  "Set up the archive for your relative today, free.",
+  /* Phone-first plan task 4: the first step is the invite (plan :13, :16);
+     the other two are faqData.ts "How does giving A Story work?". */
+  "Ask for an invite to the A Story iPhone app.",
+  "Set up the archive for your relative, free.",
   "Choose a good time for the first call.",
 ];
 const GIFT_ONCE = `${PLANS[2].name} is the one-time plan, ${PLANS[2].price}, and nothing renews.`;
 /** Questions.tsx:431, word for word. */
 const DANIEL = "Daniel answers every email himself.";
 
-/** The gift context, carried by every Start on this page (AppDoor.tsx). */
-const GIFT_START = `${START_HREF}?for=someone`;
+/** Every action on this page is the site's one action (lib/app.ts). The
+    ?for=someone context was for the web app's create-account page, which
+    stops taking strangers (docs/premium/webapp-invite-only-brief.md). */
+const GIFT_START = START_HREF;
 
 /** Verbatim from docs/mission.md, "Phrases worth keeping" (spec S27). */
 const NOT_FINISHED =
@@ -624,8 +630,8 @@ function PhoneRoom() {
             <dt>No</dt>
             <dd>
               Before launch, A Story can only ring an iPhone. On other phones
-              it reminds them to write instead, and writing, the family
-              archive and the book work in any browser.
+              it reminds them to write instead, and the family reads and adds
+              in any browser.
             </dd>
           </div>
         </dl>
@@ -719,8 +725,11 @@ export default function Families() {
                   yes/no block directly below states it. */}
               {/* Round 3 fix 2 (item 3): with the first sentence now the
                   h1, this line is the whole lead, at the lead's size. */}
-              Today you can set up their archive free, in your browser, with
-              no card.
+              {/* Phone-first plan task 4 (sources: lib/today.ts:13,
+                  faqData.ts:40 and :44, plan :16). */}
+              A Story rings them in its iPhone app and asks about their life.
+              The calls come by invite today; the whole family reads and adds
+              free.
             </>
           }
           actions={
@@ -756,6 +765,8 @@ export default function Families() {
       </Fit>
 
       <PhoneRoom />
+      {/* Phone-first plan task 4: what works now, what comes by invite. */}
+      <TodayNow action={false} />
       <OccasionsRoom />
       <ReasonsRoom />
 

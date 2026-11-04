@@ -299,8 +299,12 @@ function KeptRoom() {
               ))}
             </ol>
             <p className="free" data-rise>
-              <b>{FREE_TIER.headline}:</b> {lower(FREE_TIER.includes[1])},{" "}
-              {lower(FREE_TIER.includes[2])} and the whole family invited.
+              {/* Phone-first plan task 4: the free part is what you have once
+                  you are in, not the way in (pricing.ts FREE_TIER; the calls:
+                  lib/today.ts:13, plan :16). */}
+              <b>Once you’re in, free:</b> {lower(FREE_TIER.includes[1])},{" "}
+              {lower(FREE_TIER.includes[2])} and the whole family invited. The
+              calls ring in the A Story iPhone app, by invite.
               <br />
               <TextLink to="/pricing">What Free includes</TextLink>
             </p>
