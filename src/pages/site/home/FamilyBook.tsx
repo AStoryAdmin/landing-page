@@ -14,7 +14,8 @@
  * a Caveat caption on the left page, and on the right the chapter line, the
  * title, the teller's words with a drop cap and one other voice at the
  * foot. Wide screens get the open spread; narrow screens the two pages
- * stacked, as before. Content: `homeExamples.ts` (SPREADS[0]).
+ * stacked, as before, and phones (640 px and below) the right page only
+ * (phone-first fix 3). Content: `homeExamples.ts` (SPREADS[0]).
  *
  * Gone with the rest of the book: the price line ("Print it at home for
  * free, or order a printed edition from ..."), "See book options" and the
@@ -372,6 +373,33 @@ const Scene = styled.section`
       justify-content: center;
     }
   }
+
+  /* Phone-first fix 3 (item 8, Maya #5): on a phone the teaser is one
+     page, the memory with the second voice (what the lead describes), so
+     the heading, the page, the lead and "Open the sample books" fit one
+     390 x 844 screen. The print stays on /samples; 861 px and up is
+     unchanged, and 641-860 keeps both pages. */
+  ${media.sm} {
+    .single > div.photo {
+      display: none;
+    }
+    .single > div.photo + div {
+      border-top-width: 8px;
+    }
+    .single .photo-page,
+    .single .text-page {
+      padding: 6cqw 7cqw 5cqw;
+    }
+    .single > div.flow > .text-page .also {
+      margin-top: 5cqw;
+    }
+    .single .text-page .folio {
+      display: none;
+    }
+    .go {
+      margin-top: 28px;
+    }
+  }
 `;
 
 function PhotoPage() {
@@ -458,7 +486,7 @@ export default function FamilyBook() {
 
           {/* Narrow: the same spread, the two pages stacked. */}
           <div className="single">
-            <div className="flow">
+            <div className="flow photo">
               <PhotoPage />
             </div>
             <div className="flow">
