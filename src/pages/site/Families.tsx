@@ -41,9 +41,9 @@ import {
   Chapter,
   Frame,
   PrimaryAnchor,
+  SecondaryAnchor,
   SecondaryLink,
   Statement,
-  TextAnchor,
   TextLink,
 } from "./kit/kit.styles";
 import { WHO_HEARS_SHORT, WHO_OWNS } from "../../lib/hears";
@@ -650,13 +650,6 @@ const Fit = styled.div`
   section[data-variant="object"] .opening-object > figure {
     width: 100%;
   }
-  /* What A Story is, one plain line under the lead (CHIEF-LOG B2.1). */
-  .opening-what {
-    display: block;
-    margin-top: ${space.sm};
-    font: 400 ${type.read} / 1.5 ${font.text};
-    color: var(--text);
-  }
   @media (max-width: 860px) {
     section[data-variant] .opening-grid h1 {
       max-width: none;
@@ -667,9 +660,30 @@ const Fit = styled.div`
       grid-template-columns: minmax(0, 1fr);
     }
   }
+  /* Round 3 fix 2 (item 3, Maya #1): "Give it as a gift" is a secondary
+     button the same height as Start free (both 52px, kit actionBase). On a
+     phone the kit turns a secondary into a text link; here it stays a
+     button, side by side with Start free where both fit, and each full
+     width, stacked, where they do not (150 % text, 320 px). */
+  @media (max-width: 640px) {
+    section[data-variant] .opening-words div:has(> a[href="#giving"]) {
+      column-gap: 12px;
+    }
+    section[data-variant] .opening-words div:has(> a[href="#giving"]) > a {
+      flex: 1 1 auto;
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+    section[data-variant] .opening-words a[href="#giving"] {
+      min-height: 52px;
+      padding: 0 18px;
+      border-color: color-mix(in srgb, var(--ink, ${color.primary}) 42%, transparent);
+      text-decoration: none;
+    }
+  }
   @media (max-width: 480px) {
     section[data-variant] .opening-grid h1 {
-      font-size: 2.5rem;
+      font-size: 2.25rem;
     }
     /* Round 2: the line saying what A Story is costs the phone page a few
        lines; the opening print gives them back (7.6 screens, CHIEF-LOG B2.1). */
@@ -683,7 +697,7 @@ export default function Families() {
   return (
     <>
       <EditorialSeo
-        title="For families - the stories between you"
+        title="For families - give it to a parent, or begin together"
         path="/for-families"
         description="For the questions you want to ask your parents, the life you want to record yourself, and the days your family remembers differently."
       />
@@ -692,14 +706,17 @@ export default function Families() {
           variant="object"
           flip
           ground="ivory"
+          /* Round 3 fix 2 (item 3, Maya #1): the page leads with the gift.
+             The h1 is the lead's first sentence before this fix
+             (Families.tsx:701), and the old h1 is the eyebrow. */
+          eyebrow="The stories between you"
           title={
             <>
-              The stories <em>between you.</em>
+              Give it to a parent, <em>or begin together.</em>
             </>
           }
           lead={
             <>
-              Give it to a parent, or begin together.
               {/* Round 3 (B2, Maya): the gift answer in the first screen,
                   from faqData.ts "How does giving A Story work?" (set up the
                   archive, free), Reserve.tsx:762 (a dollar holds your place)
@@ -707,11 +724,11 @@ export default function Families() {
                   calls open). No date is promised. The iPhone / private
                   beta line left the lead (taste rule 6, supervisor r3): the
                   yes/no block directly below states it. */}
-              <span className="opening-what">
-                Today you can set up their archive free, and{" "}
-                {OFFERS.reserve.price} holds your family’s place in line for
-                the calls. We email you when they open.
-              </span>
+              {/* Round 3 fix 2 (item 3): with the first sentence now the
+                  h1, this line is the whole lead, at the lead's size. */}
+              Today you can set up their archive free, and{" "}
+              {OFFERS.reserve.price} holds your family’s place in line for
+              the calls. We email you when they open.
             </>
           }
           actions={
@@ -721,8 +738,10 @@ export default function Families() {
               </PrimaryAnchor>
               {/* The gift buyer's own door (Maya: "no Give-as-a-gift button
                   anywhere"). The film link ("Watch the 49-second film") is
-                  in the gift block's actions, where this anchor lands. */}
-              <TextAnchor href="#giving">Give it as a gift</TextAnchor>
+                  in the gift block's actions, where this anchor lands.
+                  Round 3 fix 2 (item 3): a secondary button, the same
+                  height as Start free. */}
+              <SecondaryAnchor href="#giving">Give it as a gift</SecondaryAnchor>
             </>
           }
           note={
