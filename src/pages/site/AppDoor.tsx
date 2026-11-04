@@ -58,6 +58,10 @@ import {
   TextLink,
 } from "./kit/kit.styles";
 import { Form } from "./kit/form.styles";
+import { faqAnchor } from "./faqData";
+
+/** The /questions answer the privacy line links to (faqData.ts:35). */
+const WHO_SEES = "Who can see our stories?";
 
 type Door = "join" | "contribute" | "sign-in" | "create-account" | "account";
 
@@ -270,25 +274,78 @@ const JoinTop = styled.div`
      every width and wraps under it with large text; it never covers the box. */
   .code-row .field {
     flex: 0 1 auto;
-    width: 9em;
+    width: 11em;
     max-width: 100%;
   }
+  /* Phone-first fix 3 (item 12): the label, then its hint on a line of
+     its own. */
   .code-row .field > span {
+    display: grid;
+    justify-content: start;
+    gap: 2px;
     font: 500 ${type.note} / 1.3 ${font.ui};
     letter-spacing: 0.01em;
     text-transform: none;
-    color: var(--muted, ${color.bodyMuted});
+    color: var(--ink, ${color.primary});
     white-space: nowrap;
   }
+  .code-row .field > span small {
+    font: 400 ${type.note} / 1.3 ${font.ui};
+    letter-spacing: 0.01em;
+    color: var(--muted, ${color.bodyMuted});
+  }
+  /* Phone-first fix 3 (item 12): a whole box, 1px, at every width
+     (controlBorder #86766A is 3:1 or more on the ivory and paper grounds),
+     so the field reads as a place to type. Focus and invalid colour the
+     whole box, as the underline did. */
   .code-row input {
     width: 100%;
     min-width: 0;
+    padding: 6px 12px 8px;
+    border: 1px solid ${color.controlBorder};
+    border-radius: ${radius.sm};
+    background: ${color.paperPure};
     text-transform: uppercase;
     letter-spacing: 0.14em;
   }
+  .code-row input:focus {
+    border-color: ${color.goldDeep};
+    box-shadow: 0 0 0 1px ${color.goldDeep};
+  }
+  .code-row input:not(:placeholder-shown):valid {
+    border-color: ${color.primary};
+  }
+  .code-row .field[data-invalid="true"] input {
+    border-color: ${color.error};
+    box-shadow: 0 0 0 1px ${color.error};
+  }
+  /* An example, not a value: "e.g." in plain case, at 4.5:1 or more
+     (faint #56473A on paperPure, full opacity). */
   .code-row input::placeholder {
     font-style: normal;
-    letter-spacing: 0.14em;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    color: ${color.faint};
+    opacity: 1;
+  }
+  /* Phone-first fix 3 (item 11): two quiet lines, one under the box and
+     one under the steps. */
+  .join-after .no-app {
+    margin: 0 0 ${space.sm};
+    font: 500 ${type.note} / 1.5 ${font.ui};
+    color: var(--text, ${color.body});
+  }
+  .join-after .private {
+    margin: ${space.sm} 0 0;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--text, ${color.body});
+  }
+  .join-after .private a {
+    display: inline-block;
+    padding-block: 11px;
+    color: var(--ink, ${color.primary});
+    font-weight: 500;
+    text-underline-offset: 0.18em;
   }
   .code-row > button {
     flex: 0 0 auto;
@@ -442,10 +499,15 @@ const Addition = styled.figure`
     padding: ${space.lg};
     border-bottom: 1px solid ${color.primaryLine};
   }
+  /* Phone-first fix 3 (item 13, Tuan #4): the box is reserved and holds the
+     ground colour until the photograph lands (the Picture is already eager
+     with a high priority, with its width and height). */
   .memory img {
     display: block;
     width: 100%;
+    height: auto;
     aspect-ratio: 4 / 3;
+    background: ${color.ivoryDeep};
     object-fit: cover;
     border-radius: ${radius.sm};
   }
@@ -746,13 +808,20 @@ function JoinHere({ given }: { given: string }) {
                   htmlFor={`${uid}-code`}
                   data-invalid={invalid}
                 >
-                  <span>Your six-letter code</span>
+                  {/* Phone-first fix 3 (item 12, Tuan #3, Harold #6): the
+                      label says what the error below says ("A family
+                      code is six letters or digits") and the edge rule
+                      (deploy/cloudfront-viewer-request.js:20). */}
+                  <span>
+                    Your family code
+                    <small>Six letters or digits</small>
+                  </span>
                   <input
                     id={`${uid}-code`}
                     name="ref"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
-                    placeholder="ABC123"
+                    placeholder="e.g. ABC123"
                     maxLength={6}
                     autoComplete="off"
                     autoCapitalize="characters"
@@ -772,6 +841,12 @@ function JoinHere({ given }: { given: string }) {
               )}
             </Form>
             <div className="join-after">
+              {/* Phone-first fix 3 (item 11, Tuan #2): this page's own
+                  "with no account needed" (the lede) and "add yours in any
+                  browser" (step 2 below), said under the box. */}
+              <p className="no-app">
+                Adding works in any browser. You don’t need the app.
+              </p>
               {/* Round 3 fix 1 (items 1, 2, 5), in the serif:
                     code or link     this file's note before round 3 fix 1
                     no app needed    faqData.ts:56 ("no app is needed: any
@@ -806,6 +881,16 @@ function JoinHere({ given }: { given: string }) {
                   many, whenever you like.
                 </li>
               </ol>
+              {/* Phone-first fix 3 (item 11, Tuan #1): faqData.ts:35-36
+                  ("Your archive is private by default ... contributions
+                  are reviewed before publication"), shortened, linked to
+                  that answer. It does not say exactly who sees an
+                  addition (blocked on Daniel). */}
+              <p className="private">
+                Your family’s archive is private by default, and additions
+                are reviewed before they are shared.{" "}
+                <a href={`/questions#${faqAnchor(WHO_SEES)}`}>{WHO_SEES}</a>
+              </p>
               <p className="doors after">
                 <a href="#being-asked">Asked to tell your story? Start here ↓</a>
               </p>
