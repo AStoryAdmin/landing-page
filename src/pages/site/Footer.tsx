@@ -50,11 +50,23 @@ const FOLDS = [
   { title: "Help and company", groups: FOOTER_GROUPS.slice(2) },
 ];
 
-function LegalLine({ nvidia }: { nvidia: string }) {
+/* Phone-first fix 1 (item 10, Tuan #5, Priya #3): the funding logo wall
+   shows only where it belongs, the pages that speak to partners and
+   institutions. /programs shows the marks itself (and so keeps the
+   trademark note below). Everywhere else the Company column's "Programs &
+   grants" link is the way in. */
+const MARKS_PAGES = new Set(["/our-story", "/organizations", "/care-communities"]);
+const NVIDIA_NOTE_PAGES = new Set([...MARKS_PAGES, "/programs"]);
+
+function LegalLine({ nvidia }: { nvidia?: string }) {
   return (
     <div className="footer-legal">
       © {new Date().getFullYear()} A Story Technologies, Inc.{" "}
-      <span className="footer-trademark">{nvidia}</span>{" "}
+      {nvidia && (
+        <>
+          <span className="footer-trademark">{nvidia}</span>{" "}
+        </>
+      )}
       <details className="footer-about">
         <summary>About the examples</summary>
         <p>
@@ -69,12 +81,15 @@ function LegalLine({ nvidia }: { nvidia: string }) {
 export default function Footer({ variant }: { variant?: "slim" }) {
   const { pathname } = useLocation();
   /* NVIDIA's note opens with its own "© year"; the line already has one. */
-  const nvidia = NVIDIA_TRADEMARK_NOTE.replace(/^©\s*\d{4}\s*/, "");
+  const page = bare(pathname);
+  const nvidia = NVIDIA_NOTE_PAGES.has(page)
+    ? NVIDIA_TRADEMARK_NOTE.replace(/^©\s*\d{4}\s*/, "")
+    : undefined;
   if (variant === "slim")
     return (
       <FooterShell data-variant="slim">
         <div className="gf-width gf-footer-slim">
-          <LegalLine nvidia={nvidia} />
+          <LegalLine />
           <nav aria-label="Site">
             {FOOTER_SLIM.map((p) => (
               <RoomLink key={p} path={p} />
@@ -133,7 +148,7 @@ export default function Footer({ variant }: { variant?: "slim" }) {
           </nav>
         </div>
 
-        {bare(pathname) !== "/programs" && (
+        {MARKS_PAGES.has(page) && (
           <figure
             className="footer-credential"
             aria-label="Startup programs and grants: A Story is a member of NVIDIA Inception, Google for Startups, the AssemblyAI Startup Program and the Deepgram Startup Program, and a Cartesia Startups grant recipient"
