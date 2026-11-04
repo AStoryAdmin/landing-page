@@ -297,7 +297,8 @@ const Fit = styled.div`
       order: 2;
     }
     section[data-variant] .opening-object .device {
-      height: min(250px, 40svh);
+      /* Phone-first fix 1 (item 4): 250px -> 200px. */
+      height: min(200px, 32svh);
     }
   }
   /* Round 3 fix 2 (item 2): the agenda under Book a demo is set in the
@@ -308,6 +309,15 @@ const Fit = styled.div`
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--text, ${color.body});
     max-width: 44ch;
+  }
+  /* Phone-first fix 1 (item 3): the link under the agenda, a 44px row. */
+  section[data-variant] .opening-note a.say-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: ${space.xxs};
+    font-weight: 600;
+    text-underline-offset: 4px;
   }
   /* A short phone screen: the phone and the sheet a little closer, and the
      sheet's top margin a little less, so the title ends inside 568px. */
@@ -420,6 +430,29 @@ const Need = styled(Chapter)`
     font-weight: 600;
     text-underline-offset: 4px;
   }
+  /* Phone-first fix 1 (item 4): "What we can say today" is two lists, the
+     first three lines and the rest (folded on a phone); on wider screens
+     they read as the one ruled list they were. */
+  .say ul[aria-labelledby] {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .say .more > ul {
+    border-top: 0;
+    padding-top: ${space.xxs};
+  }
+  ${media.sm} {
+    .say ul[aria-labelledby] {
+      padding-bottom: ${space.xs};
+    }
+    .say .fold.more {
+      border-top: 1px solid var(--line);
+      border-bottom: 0;
+    }
+    .say .fold.more[open] {
+      padding-bottom: 0;
+    }
+  }
   /* The folds: on a phone only. From 641 px the summary is hidden and the
      details stay open (closed details with no summary could never open
      again, so the content shows either way). */
@@ -520,6 +553,17 @@ const Booking = styled.div`
       padding: ${space.sm} 0;
     }
   }
+  /* Phone-first fix 1 (item 4): the section rhythm steps down on a phone,
+     as on /organizations (--sy 0.55). Words and order are unchanged. */
+  ${media.sm} {
+    > section {
+      --sy: 0.55;
+      padding: ${space.xl} 0;
+    }
+    > section .side li {
+      padding: ${space.xs} 0;
+    }
+  }
 `;
 
 /* The circle around each resident: on a wide screen the line to remember
@@ -540,6 +584,29 @@ const Circle = styled.div`
   ${media.sm} {
     > section ul {
       display: none;
+    }
+  }
+  /* Phone-first fix 1 (item 4, Denise #7, Priya #6): at 640 px and below
+     the band goes too (its rows were already skipped there), and one link
+     takes its place, back up to "What you need". */
+  > .see-need {
+    display: none;
+  }
+  ${media.sm} {
+    > section {
+      display: none;
+    }
+    > .see-need {
+      display: block;
+      padding-block: ${space.sm};
+    }
+    > .see-need a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: ${color.primary};
+      font: 600 ${type.ui} / 1.3 ${font.ui};
+      text-underline-offset: 4px;
     }
   }
   ${media.up.lg} {
@@ -592,11 +659,12 @@ const FOLD = "(max-width: 640px)";
      on the demo"; faqData.ts "There is no fee per relative". */
 const NEED: readonly [string, string][] = [
   [
-    "An iPhone for each resident, before launch.",
-    /* Round 3 fix 2 (item 12b, Denise #5): the first sentence of
-       lib/today.ts TODAY_NOTE moved here from the opening's note, so the
-       private beta is said once, beside the iPhone it is about. */
-    "Today the calls ring in the A Story iPhone app, in a private beta. We help install the app. Where a resident has none, a staff member starts a conversation together with them.",
+    /* Phone-first fix 1 (item 2, Denise #3): the workaround leads, not the
+       deal-breaker. The same three sentences as before, reordered (round 3
+       fix 2 moved lib/today.ts TODAY_NOTE's first sentence here); the
+       label says what the body says, and adds no claim. */
+    "An iPhone for the calls, today.",
+    "Where a resident has none, a staff member starts a conversation together with them. We help install the app. Today the calls ring in the A Story iPhone app, in a private beta.",
   ],
   ["An agreed hour.", "The app rings then, and they answer and talk."],
   [
@@ -636,6 +704,23 @@ const AGREE: [string, string][] = [
   ["How families are invited", "And when, so the first call is not a surprise to anyone."],
 ];
 
+/* "What we can say today", in this page's order. */
+const CARE_SAY = CARE_SAY_ORDER.map((i, n) => ({ ...CAN_SAY[i], first: n === 0 }));
+const sayLine = (t: (typeof CARE_SAY)[number]) => (
+  <li key={t.lead}>
+    <b>{t.lead}</b>
+    {/* The repeats line (CARE_SAY_ORDER[0]) keeps only its lead here:
+        "never a test" is in Know below. The storage line's rest is its
+        link to /privacy#s13. */}
+    {t.rest && !t.first && (
+      <>
+        {" "}
+        {t.href ? <Link to={t.href}>{t.rest}</Link> : t.rest}
+      </>
+    )}
+  </li>
+);
+
 export default function Care() {
   const know = useReveals<HTMLElement>();
   /* "What you need" and "What we can say today" are <details> that a
@@ -646,9 +731,11 @@ export default function Care() {
      sideways, where the summary is hidden. */
   const need = useRef<HTMLDetailsElement>(null);
   const say = useRef<HTMLDetailsElement>(null);
+  const more = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     const fold = window.matchMedia(FOLD);
-    const folds = [need.current, say.current];
+    const folds = [need.current, say.current, more.current];
+    if (fold.matches && more.current) more.current.open = false;
     /* From 641 px the summary is hidden, so closed details could never be
        opened again (a phone turned sideways). Leaving the fold opens them. */
     const unfold = (e: MediaQueryListEvent) => {
@@ -681,7 +768,16 @@ export default function Care() {
           /* Round 3 fix 2 (items 2 and 12b): under Book a demo, the agenda
              (orgQuestions.ts DEMO_AGENDA) instead of the today note, whose
              private-beta sentence moved into "What you need". */
-          note={<span className="agenda-line">{DEMO_AGENDA}</span>}
+          note={
+            <>
+              <span className="agenda-line">{DEMO_AGENDA}</span>
+              {/* Phone-first fix 1 (item 3, Denise #4, Priya #2): beside
+                  the agenda, the way to what is already answered. */}
+              <a className="say-link" href="#say">
+                What we can say today&nbsp;↓
+              </a>
+            </>
+          }
           actions={
             <>
               <PrimaryAnchor href="#book">
@@ -737,26 +833,22 @@ export default function Care() {
             </ul>
           </details>
         </Frame>
-        <Frame className="row say">
+        <Frame className="row say" id="say" style={{ scrollMarginTop: 80 }}>
           <h2 id="say-title">What we can say today</h2>
           <details className="fold" ref={say} open>
             <summary>What we can say today</summary>
             <ul aria-labelledby="say-title">
-              {CARE_SAY_ORDER.map((i) => CAN_SAY[i]).map((t, i) => (
-                <li key={t.lead}>
-                  <b>{t.lead}</b>
-                  {/* The repeats line (CARE_SAY_ORDER[0]) keeps only its
-                      lead here: "never a test" is in Know below. The
-                      storage line's rest is its link to /privacy#s13. */}
-                  {t.rest && i > 0 && (
-                    <>
-                      {" "}
-                      {t.href ? <Link to={t.href}>{t.rest}</Link> : t.rest}
-                    </>
-                  )}
-                </li>
-              ))}
+              {CARE_SAY.slice(0, 3).map(sayLine)}
             </ul>
+            {/* Phone-first fix 1 (item 4): on a phone the first three lines
+                stay open and the rest fold under one line; from 641 px
+                this fold has no summary and is open. */}
+            <details className="fold more" ref={more} open>
+              <summary>{CARE_SAY.length - 3} more we can say today</summary>
+              <ul aria-label="More we can say today">
+                {CARE_SAY.slice(3).map(sayLine)}
+              </ul>
+            </details>
             {/* Round 3 fix 2 (item 2): the "not stated" line left this
                 block for the agenda under Book a demo. */}
             <p className="ask">
@@ -854,6 +946,11 @@ export default function Care() {
           ],
         ]}
       />
+      {/* Phone-first fix 1 (item 4): on a phone this band's rows repeat
+          "What you need", so the band is one link back up to it. */}
+      <Frame className="see-need">
+        <a href="#need">See what you need&nbsp;↑</a>
+      </Frame>
       </Circle>
 
       <Booking>

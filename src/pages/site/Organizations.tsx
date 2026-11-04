@@ -70,6 +70,7 @@ import { INSTITUTION_KINDS } from "../../lib/demoRequest";
 import { CAN_SAY, DEMO_AGENDA, WRITE_TO_DANIEL } from "./orgQuestions";
 import PrintSheet from "./kit/PrintSheet";
 import { CONTACT } from "../../lib/contact";
+import { route } from "../../lib/nav";
 import { color, display, font, media, shadow, space, type } from "../../styles/theme";
 
 type Kind = (typeof INSTITUTION_KINDS)[number];
@@ -266,6 +267,49 @@ const Book = styled.figure`
 
 const Opening = styled.div`
   display: contents;
+  /* Phone-first fix 1 (item 1): the two doors take the whole first row of
+     the actions, above the buttons, at every width. */
+  .org-doors {
+    flex: 1 1 100%;
+    display: grid;
+    gap: ${space.xs};
+    margin: 0 0 ${space.xs};
+    padding: ${space.xs} 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .org-doors a,
+  .org-doors p {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px ${space.xs};
+    min-height: 44px;
+    margin: 0;
+    font: 400 ${type.ui} / 1.35 ${font.ui};
+    color: var(--muted);
+  }
+  .org-doors a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .org-doors a .to {
+    display: inline-flex;
+    align-items: center;
+    gap: ${space.xxs};
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .org-doors a svg {
+    width: 16px;
+    height: 16px;
+  }
+  @media (max-width: 640px) {
+    .org-doors + a {
+      flex: 1 1 100%;
+    }
+  }
   @media (min-width: 641px) and (max-width: 860px) {
     section[data-variant] .opening-object {
       order: -1;
@@ -280,7 +324,13 @@ const Opening = styled.div`
       order: 2;
     }
     section[data-variant] .opening-object a.cover {
-      width: min(64vw, 300px, 40svh);
+      width: min(56vw, 240px, 32svh);
+    }
+    /* Phone-first fix 1 (item 4): the film link leaves the phone opening
+       (as on /pricing, item 6); "See one conversation become a book" stays
+       under the steps, and the film on /how-it-works#film. */
+    section[data-variant] .opening-words a[href="${FILM}"] {
+      display: none;
     }
   }
 `;
@@ -421,6 +471,42 @@ const Who = styled(Chapter)`
   @media (min-width: 641px) and (max-width: 1024px) {
     .kinds .scroller-track {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  /* Phone-first fix 1 (item 4): the names list replaces the columns at
+     640 px and below. */
+  .names {
+    display: none;
+  }
+  @media (max-width: 640px) {
+    .kinds {
+      display: none;
+    }
+    .head p {
+      margin-top: ${space.xs};
+    }
+    .names {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 ${space.md};
+      margin: ${space.md} 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .names li {
+      display: block;
+      padding: 0;
+      border-top: 1px solid var(--line);
+    }
+    .names a {
+      display: flex;
+      align-items: center;
+      min-height: 52px;
+      padding: ${space.xs} 0;
+      color: var(--ink);
+      font: 600 ${type.ui} / 1.3 ${font.ui};
+      text-underline-offset: 4px;
+      overflow-wrap: anywhere;
     }
   }
   ${media.md} {
@@ -661,6 +747,12 @@ const Program = styled(Chapter)`
     .privacy .fold > ul {
       margin-top: 0;
     }
+    /* Phone-first fix 1 (item 4): the fold for the last lines. */
+    .privacy .fold.more {
+      margin-top: ${space.xs};
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
   }
   ${media.md} {
     .grid {
@@ -746,8 +838,45 @@ const Rhythm = styled.div`
     #book .side li {
       padding: ${space.sm} 0;
     }
+    /* Phone-first fix 1 (item 4, Denise #7, Priya #6): shorter on a
+       phone. The one-line band (a saying, no claim) is left to wider
+       screens; the four steps fold (see Program); the steps' heading
+       sits closer to its fold. */
+    section[aria-label="In one line"] {
+      display: none;
+    }
+    #how .steps {
+      margin-top: ${space.sm};
+    }
+    #how .steps > ul {
+      margin-top: 0;
+    }
   }
 `;
+
+/* Phone-first fix 1 (item 1): the opening's two doors, worded from
+   lib/nav.ts. The care door leads with the first half of its hint
+   ("Senior living and memory care. Know the person behind the care."). */
+const CARE_ROUTE = route("/care-communities");
+const CARE_DOOR = {
+  to: CARE_ROUTE.to,
+  label: CARE_ROUTE.label,
+  lead: (CARE_ROUTE.hint ?? "").split(". ")[0],
+};
+const ORG_DOOR = route("/organizations");
+
+/** One line of "What we can say today". */
+const sayLine = (t: (typeof CAN_SAY)[number]) => (
+  <li key={t.lead}>
+    <b>{t.lead}</b>
+    {t.rest && (
+      <>
+        {" "}
+        {t.href ? <Link to={t.href}>{t.rest}</Link> : t.rest}
+      </>
+    )}
+  </li>
+);
 
 const kindFromParams =(params: URLSearchParams): string =>
   params.get("for") === "care"
@@ -767,10 +896,14 @@ export default function Organizations() {
      screen. */
   const decide = useRef<HTMLDetailsElement>(null);
   const privacy = useRef<HTMLDetailsElement>(null);
+  const more = useRef<HTMLDetailsElement>(null);
+  const steps = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     const fold = window.matchMedia(FOLD);
-    const folds = [decide.current, privacy.current];
-    if (fold.matches && decide.current) decide.current.open = false;
+    const folds = [decide.current, privacy.current, more.current, steps.current];
+    if (fold.matches)
+      for (const d of [decide.current, more.current, steps.current])
+        if (d) d.open = false;
     /* From 641 px the summary is hidden, so closed details could never be
        opened again (a phone turned sideways). Leaving the fold opens them. */
     const unfold = (e: MediaQueryListEvent) => {
@@ -823,6 +956,21 @@ export default function Organizations() {
             note={TODAY_NOTE}
             actions={
               <>
+                {/* Phone-first fix 1 (item 1, Denise #1-2, Priya #5): the
+                    two doors of the "For organizations" tab, under the
+                    lead, before the buttons, at every width. Labels and
+                    the care hint are lib/nav.ts ROUTES. */}
+                <nav className="org-doors" aria-label="Which page is yours">
+                  <Link to={CARE_DOOR.to}>
+                    <span>{CARE_DOOR.lead}</span>
+                    <span className="to">
+                      <ArrowIcon /> {CARE_DOOR.label}
+                    </span>
+                  </Link>
+                  <p aria-current="page">
+                    {ORG_DOOR.label}: you’re here
+                  </p>
+                </nav>
                 <PrimaryAnchor href="#book">
                   Book a demo <ArrowIcon />
                 </PrimaryAnchor>
@@ -909,6 +1057,27 @@ export default function Organizations() {
                 </li>
               ))}
             </Scroller>
+            {/* Phone-first fix 1 (item 4, Denise #7, Priya #6): at 640 px
+                and below the six kinds are a compact two-column list of
+                names, each the same door as its column above (the columns
+                are hidden there, so nothing is read twice). */}
+            <ul className="names" aria-label="Who we work with">
+              {WHO.map((w) => (
+                <li key={w.kind}>
+                  {w.kind === CARE ? (
+                    <Link to="/care-communities">{w.label}</Link>
+                  ) : (
+                    <a
+                      href={`?kind=${encodeURIComponent(w.kind)}#book`}
+                      onClick={pick(w.kind)}
+                      aria-label={`${w.label}: start the demo here`}
+                    >
+                      {w.label}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
             <p className="else">
               Somewhere else, or not sure it fits?{" "}
               <a
@@ -943,14 +1112,20 @@ export default function Organizations() {
               <Statement as="h2" id="how-title" $size="md">
                 From a demo to an archive.
               </Statement>
-              <ul>
-                {STEPS.map(([t, d]) => (
-                  <li key={t}>
-                    <Heading>{t}</Heading>
-                    <p>{d}</p>
-                  </li>
-                ))}
-              </ul>
+              {/* Phone-first fix 1 (item 4): on a phone the four steps
+                  fold under one line, like "What you decide"; from 641 px
+                  the summary is hidden and they are open. */}
+              <details className="fold steps" ref={steps} open>
+                <summary>How a program runs</summary>
+                <ul>
+                  {STEPS.map(([t, d]) => (
+                    <li key={t}>
+                      <Heading>{t}</Heading>
+                      <p>{d}</p>
+                    </li>
+                  ))}
+                </ul>
+              </details>
               <Actions>
                 <PrimaryAnchor href="#book">
                   Book a demo <ArrowIcon />
@@ -989,22 +1164,19 @@ export default function Organizations() {
                 <details className="fold" ref={privacy} open>
                   <summary>What we can say today</summary>
                   <ul aria-labelledby="privacy-title">
-                    {CAN_SAY.map((t) => (
-                      <li key={t.lead}>
-                        <b>{t.lead}</b>
-                        {t.rest && (
-                          <>
-                            {" "}
-                            {t.href ? (
-                              <Link to={t.href}>{t.rest}</Link>
-                            ) : (
-                              t.rest
-                            )}
-                          </>
-                        )}
-                      </li>
-                    ))}
+                    {CAN_SAY.slice(0, 3).map(sayLine)}
                   </ul>
+                  {/* Phone-first fix 1 (item 4): on a phone the first three
+                      lines stay open and the rest fold under one line;
+                      from 641 px this fold has no summary and is open. */}
+                  <details className="fold more" ref={more} open>
+                    <summary>
+                      {CAN_SAY.length - 3} more we can say today
+                    </summary>
+                    <ul aria-label="More we can say today">
+                      {CAN_SAY.slice(3).map(sayLine)}
+                    </ul>
+                  </details>
                   {/* Round 3 fix 2 (item 2): the "not stated" line left
                       this block for the agenda under Book a demo above. */}
                   <p className="ask">

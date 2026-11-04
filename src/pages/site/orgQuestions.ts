@@ -83,8 +83,12 @@ export const CAN_SAY: readonly { lead: string; rest: string; href?: string }[] =
    read as homework and an admission). Same four topics, said as what the
    demo covers; "thirty minutes, with a founder" is nav.ts's Book a demo
    hint (nav.ts:59, Organizations.tsx:1039). No answer is claimed. */
+/* Phone-first fix 1 (item 3, Denise #4, Priya #2): read as an agenda, not
+   an admission. "HIPAA" left the blurb; the HIPAA question on /questions
+   (ORG_GROUP below) still answers it. "Price is quoted on the demo" is
+   Care.tsx / Organizations.tsx NEED "Pricing, quoted on the demo." */
 export const DEMO_AGENDA =
-  "Thirty minutes with a founder, about your program: privacy and HIPAA, consent, exports and price.";
+  "Thirty minutes with a founder, about your program. Bring your questions on privacy, consent and exports; price is quoted on the demo.";
 /** The address line in "What we can say today": a strict subset of this
  *  file's ORG_GROUP HIPAA answer ("... or write to contact@astoryapp.com;
  *  Daniel answers every message himself."). Rendered with the address as a
