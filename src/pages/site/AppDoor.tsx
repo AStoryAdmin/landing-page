@@ -35,6 +35,7 @@ import {
   START_LABEL,
   goToApp,
 } from "../../lib/app";
+import { CONTACT } from "../../lib/contact";
 import { LAKE_MONSTER as M } from "../../lib/homeExamples";
 import {
   color,
@@ -223,7 +224,16 @@ function Leaving({
     CALLER_LINE). Phone-first fix 1 (item 9c): /join keeps the last one. */
 const CALLER_LINE =
   "It’s a computer that calls and asks, not a person. Nobody at A Story reads or listens to what you say unless you ask us to help, or someone reports something. If you write to us, Daniel, who started A Story, answers himself.";
-const DANIEL_LINE = CALLER_LINE.slice(CALLER_LINE.indexOf("If you write to us"));
+/* Phone-first fix 2 (item 6, Harold #2/#5, Tuan #1): three short lines to
+   the storyteller. The first is CALLER_LINE's first sentence; "You can
+   stop at any time" is orgQuestions.ts ORG_GROUP "How is consent
+   handled?" ("can stop at any time", privacy.tsx section 6); the last is
+   CALLER_LINE's last, after "Write to contact@astoryapp.com" (the public
+   address, lib/contact.ts). */
+const COMPUTER_LINE = CALLER_LINE.slice(0, CALLER_LINE.indexOf(". ") + 1);
+const DANIEL_ANSWERS = CALLER_LINE.slice(
+  CALLER_LINE.indexOf("Daniel, who started A Story"),
+);
 
 /** Phone-first fix 1 (item 11, Harold #5, Tuan #8): a face beside "Daniel
     answers himself". The photograph already published on /our-story
@@ -358,9 +368,25 @@ const JoinTop = styled.div`
   section[data-variant="object"] .opening-object {
     align-items: start;
   }
+  /* Phone-first fix 2 (item 7, Tuan #6, Harold #6): with large text the
+     words run long beside the card (1024 x 150 %), so the card stays in
+     view while they scroll instead of leaving the right side empty. */
+  @media (min-width: 861px) {
+    section[data-variant="object"] .opening-grid:not(.solo) > .opening-object {
+      position: sticky;
+      top: 112px;
+      align-self: start;
+    }
+  }
   ${media.sm} {
     .code-row > button {
       flex: 1 1 100%;
+    }
+    /* Phone-first fix 2 (item 7): the code box as wide as the button
+       under it, so its underline matches. The form is unchanged. */
+    .code-row .field {
+      flex: 1 1 100%;
+      width: 100%;
     }
     /* At a phone width the card follows the code box, so its top is in the
        first screen (taste rule 19: visual order only; the DOM keeps the
@@ -542,9 +568,13 @@ function SampleAddition() {
 }
 
 const Doors = styled(Chapter)`
+  /* Phone-first fix 2 (item 6, Harold #2): the heading and the three
+     lines share one row, the lines' column wider, so neither half reads
+     empty at 1440. */
   .door {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    align-items: start;
     gap: ${space.lg} ${space.xxl};
     padding-top: ${space.xl};
     border-top: 1px solid ${color.primaryLine};
@@ -583,6 +613,15 @@ const Doors = styled(Chapter)`
     max-width: 56ch;
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--text, ${color.body});
+  }
+  .asked + .daniel {
+    margin-top: ${space.md};
+  }
+  .daniel a {
+    color: var(--ink, ${color.primary});
+    font-weight: 500;
+    text-underline-offset: 0.18em;
+    overflow-wrap: anywhere;
   }
   .daniel .face {
     flex: 0 0 48px;
@@ -798,9 +837,17 @@ function JoinHere({ given }: { given: string }) {
               </Statement>
             </div>
             <div>
+              <ul className="asked" aria-label="If you are asked">
+                <li>{COMPUTER_LINE}</li>
+                <li>You can stop at any time.</li>
+              </ul>
               <p className="daniel">
                 <DanielFace />
-                <span>{DANIEL_LINE}</span>
+                <span>
+                  Write to{" "}
+                  <a href={CONTACT.general}>contact@astoryapp.com</a>;{" "}
+                  {DANIEL_ANSWERS}
+                </span>
               </p>
               <p className="links">
                 <TextLink to="/how-it-works#being-asked">
