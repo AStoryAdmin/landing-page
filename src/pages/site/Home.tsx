@@ -59,9 +59,14 @@ export default function Home() {
       <EveryVoice />
       <FamilyBook />
       <Invitation
+        /* Phone-first fix 2 (item 12, Tuan #5): "today" left the title, as
+           an invite queue cannot keep it. The new title claims no time or
+           fact. (The brief called it the kit's closer elsewhere; no kit
+           page uses it: kit.tsx CLOSERS / DEFAULT_CLOSER "Ask for an
+           iPhone invite." is the fallback if a reviewer prefers that.) */
         title={
           <>
-            Start the family’s book <em>today.</em>
+            It starts with <em>one call.</em>
           </>
         }
         /* Phone-first fix 1 (item 5, Maya #1, Harold #6): one price story.
