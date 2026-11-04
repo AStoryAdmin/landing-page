@@ -1,32 +1,34 @@
 /**
- * Navigation and footer checks (premium pass, design spec Checks 1.1-1.3).
+ * Navigation and footer checks (premium pass, design spec Checks 1.1-1.3;
+ * rule rewritten for the phone-first plan, 2026-11-04: "Make it only 3-4
+ * tab").
  *
  *   npm run build:static && npx vite preview --port 5201 --strictPort
- *   node scripts/nav-count.mjs [--base http://localhost:5201] [--pages /pricing/,/organizations/]
+ *   node scripts/nav-count.mjs [--base http://localhost:5201] [--pages /,/pricing/,/organizations/]
  *                              [--shots qa/premium-2026-11/after] [--no-footer]
  *
- * 1.1 desktop bar at 1440, 1280, 1180 (the bar starts at 1180, spec fallback
- *     S20; at 1179 and 1024 the drawer's Menu button shows instead): 4 links +
- *     1 menu button + Sign in + exactly 1 .gf-button, no label wrapping, no
- *     "More"; round 3 (plan task 1): plus exactly one quiet .gf-door that
- *     reads "Invited?" and goes to /join, counted apart from the 4 links
- *     (absent on the two org pages, where "Book a demo" takes the room); no
- *     "More"; the chevron ≥ 14px and the button's arrow ≥ 16px wide (nothing
- *     crushed); the right gutter matches the left (±2px); the org panel has 3
- *     rows (2 on the org pages, no "Book a demo"); hover-then-click keeps it
- *     open; Esc closes it and focus is on the trigger.
- * 1.2 drawer at 390 (and 320 for wrapping): no duplicate labels, no "More",
- *     nesting depth ≤ 2, quiet links ≥ 44px tall; screenshots. Round 3 fix 1
- *     (item 10): the main list is, in this order and in one font size, How
- *     it works, Sample books, Pricing, For families, Invited to a family’s
- *     book, Asked to tell your story?, For organizations, Our story; the
- *     quiet group is Questions & answers, Compare, Conversation guides and
- *     Contact.
+ * The rule: 4 tabs + Sign in + 1 button, the same in the laptop bar and the
+ * phone drawer.
+ *
+ * 1.1 bar at 1440, 1280, 1180 (at 1179 and 1024 the drawer's Menu button
+ *     shows instead): exactly the 4 tab links How it works, Sample books,
+ *     Pricing, For organizations (-> /organizations), in that order; no
+ *     other button, no menu, no "Invited?" door, no "More"; exactly one
+ *     Sign in and one .gf-button, which reads "Get the iPhone app" and goes
+ *     to /get-the-app (on the two org pages "Book a demo" -> #book); no
+ *     label wraps; the button's arrow >= 16px; the right gutter matches the
+ *     left (+-2px); "For organizations" reads as current on both org pages.
+ * 1.2 drawer at 390 and 320: exactly the same 4 tabs, Sign in and the one
+ *     button, nothing else, no duplicate labels, nothing nested, no label
+ *     wraps, every row >= 44px tall, the 4 tabs in one font size;
+ *     screenshots at 390.
  * 1.3 footer at 1440: every public route reachable from the footer or the
- *     bar, no href twice in the footer, 18 page links including "Privacy, in
- *     short" (/privacy/#legal-short) and, from round 3 fix 2 (item 8),
- *     "Asked to tell your story?" (/how-it-works#being-asked); at 390 the footer ≤ 1.3 screens with
- *     both folds closed.
+ *     bar, no href twice in the footer, 19 page links + 1 email, including
+ *     "Privacy, in short" (/privacy/#legal-short), "Asked to tell your
+ *     story?" (/how-it-works#being-asked) and "Get the iPhone app"
+ *     (/get-the-app); no link to the web app's create-account page in the
+ *     header or footer; at 390 the footer <= 1.3 screens with both folds
+ *     closed.
  *
  * Prints one line per check and exits 1 if any fails.
  */
@@ -42,10 +44,18 @@ const arg = (name, fallback) => {
     return i > -1 ? process.argv[i + 1] : fallback;
 };
 const base = arg('base', 'http://localhost:5201').replace(/\/$/, '');
-const navPages = arg('pages', '/pricing/,/organizations/,/care-communities/').split(',');
+const navPages = arg('pages', '/,/pricing/,/get-the-app/,/organizations/,/care-communities/').split(',');
 const shots = arg('shots', join(root, '..', 'a-story-landing-premium', 'qa', 'premium-2026-11', 'after'));
 const doFooter = !process.argv.includes('--no-footer');
 mkdirSync(shots, { recursive: true });
+
+const TABS = [
+    ['How it works', '/how-it-works'],
+    ['Sample books', '/samples'],
+    ['Pricing', '/pricing'],
+    ['For organizations', '/organizations'],
+];
+const BUTTON = ['Get the iPhone app', '/get-the-app'];
 
 const results = [];
 const check = (name, ok, detail = '') => {
@@ -64,9 +74,42 @@ const open = async (path, width, height) => {
     await page.waitForTimeout(300);
 };
 
-/* ---- 1.1 desktop bar ---------------------------------------------------- */
+/* Shared by 1.1 and 1.2: what the header's nav shows right now. */
+const readNav = () =>
+    page.evaluate(() => {
+        const nav = document.querySelector('nav#site-navigation');
+        const visible = (el) => el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
+        const items = [...nav.querySelectorAll('a,button')].filter(visible);
+        const lines = (el) => {
+            const tops = [];
+            const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+            for (let n = walk.nextNode(); n; n = walk.nextNode()) {
+                if (!n.textContent.trim()) continue;
+                const r = document.createRange();
+                r.selectNodeContents(n);
+                for (const x of r.getClientRects()) if (x.width > 0) tops.push(x.top);
+            }
+            return tops.filter((t, i) => tops.findIndex((u) => Math.abs(u - t) < 6) === i).length;
+        };
+        const tabs = [...nav.querySelectorAll('.gf-nav-links > a')].filter(visible);
+        return {
+            all: items.map((el) => el.innerText.trim()),
+            tabs: tabs.map((a) => ({ label: a.innerText.trim(), href: a.getAttribute('href'), current: a.getAttribute('aria-current'), size: getComputedStyle(a).fontSize, h: a.getBoundingClientRect().height })),
+            buttons: items.filter((el) => el.tagName === 'BUTTON').map((el) => el.innerText.trim()),
+            others: items.filter((el) => el.tagName === 'A' && !el.closest('.gf-nav-links') && !el.classList.contains('gf-button') && !el.classList.contains('gf-signin')).map((el) => el.innerText.trim()),
+            signIn: items.filter((el) => el.classList.contains('gf-signin')).length,
+            primary: items.filter((el) => el.classList.contains('gf-button')).map((el) => ({ label: el.innerText.trim(), href: el.getAttribute('href') })),
+            door: document.querySelectorAll('header .gf-door, header .gf-bar-door, header .org-panel, header .org-toggle').length,
+            wrapped: items.filter((el) => el.getClientRects().length !== 1 || lines(el) > 1).map((el) => el.innerText.trim()),
+            short: items.filter((el) => el.getBoundingClientRect().height < 44).map((el) => el.innerText.trim()),
+            more: [...document.querySelectorAll('header *')].some((el) => el.childElementCount === 0 && el.textContent.trim() === 'More'),
+            arrow: document.querySelector('header .gf-button svg')?.getBoundingClientRect().width ?? null,
+            overflow: document.documentElement.scrollWidth > innerWidth,
+        };
+    });
+
+/* ---- 1.1 the bar ------------------------------------------------------- */
 for (const path of navPages) {
-    /* Below the bar's breakpoint the drawer's Menu button takes over. */
     for (const width of [1179, 1024]) {
         await open(path, width, 900);
         const narrow = await page.evaluate(() => {
@@ -77,166 +120,54 @@ for (const path of navPages) {
     }
     for (const width of [1440, 1280, 1180]) {
         await open(path, width, 900);
-        const bar = await page.evaluate(() => {
-            const nav = document.querySelector('nav#site-navigation');
-            const panel = nav.querySelector('#org-panel');
-            const visible = (el) => el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
-            const items = [...nav.querySelectorAll('a,button')].filter(
-                (el) => visible(el) && !(panel && panel.contains(el)),
-            );
-            return {
-                links: items.filter((el) => el.tagName === 'A' && !el.classList.contains('gf-button') && !el.classList.contains('gf-signin') && !el.classList.contains('gf-door')).map((el) => el.textContent.trim()),
-                door: items.filter((el) => el.classList.contains('gf-door')).map((el) => ({ label: el.textContent.trim(), href: el.getAttribute('href') })),
-                buttons: items.filter((el) => el.tagName === 'BUTTON').map((el) => el.textContent.trim()),
-                signIn: items.filter((el) => el.classList.contains('gf-signin')).length,
-                primary: items.filter((el) => el.classList.contains('gf-button')).map((el) => el.textContent.trim()),
-                wrapped: items.filter((el) => {
-                    /* A label that wraps has text on more than one line. */
-                    const label = el.querySelector('strong') ?? el;
-                    const tops = [];
-                    const walk = document.createTreeWalker(label, NodeFilter.SHOW_TEXT);
-                    for (let n = walk.nextNode(); n; n = walk.nextNode()) {
-                        if (!n.textContent.trim()) continue;
-                        const r = document.createRange();
-                        r.selectNodeContents(n);
-                        for (const x of r.getClientRects()) if (x.width > 0) tops.push(x.top);
-                    }
-                    const lines = tops.filter((t, i) => tops.findIndex((u) => Math.abs(u - t) < 6) === i);
-                    return el.getClientRects().length !== 1 || lines.length > 1;
-                }).map((el) => el.innerText.trim()),
-                more: [...document.querySelectorAll('header *')].some((el) => el.childElementCount === 0 && el.textContent.trim() === 'More'),
-                chevron: nav.querySelector('.org-toggle .org-chevron')?.getBoundingClientRect().width ?? 0,
-                arrow: document.querySelector('header .gf-button svg')?.getBoundingClientRect().width ?? null,
-                gutters: (() => {
-                    const logo = document.querySelector('.gf-nav-inner > span').getBoundingClientRect();
-                    const ends = [...document.querySelectorAll('.gf-nav-inner *')].filter((e) => e.getClientRects().length && !(panel && panel.contains(e))).map((e) => e.getBoundingClientRect().right);
-                    return { left: Math.round(logo.left), right: Math.round(innerWidth - Math.max(...ends)) };
-                })(),
-            };
+        const bar = await readNav();
+        const gutters = await page.evaluate(() => {
+            const logo = document.querySelector('.gf-nav-inner > span').getBoundingClientRect();
+            const ends = [...document.querySelectorAll('.gf-nav-inner *')].filter((e) => e.getClientRects().length).map((e) => e.getBoundingClientRect().right);
+            return { left: Math.round(logo.left), right: Math.round(innerWidth - Math.max(...ends)) };
         });
         const tag = `1.1 ${path} @${width}`;
-        check(`${tag} 4 links`, bar.links.length === 4, JSON.stringify(bar.links));
-        check(`${tag} 1 menu button`, bar.buttons.length === 1, JSON.stringify(bar.buttons));
+        check(`${tag} exactly the 4 tabs, in order`, JSON.stringify(bar.tabs.map((t) => [t.label, t.href])) === JSON.stringify(TABS), JSON.stringify(bar.tabs.map((t) => t.label)));
+        check(`${tag} no other link or button in the bar`, bar.buttons.length === 0 && bar.others.length === 0 && bar.door === 0, JSON.stringify({ buttons: bar.buttons, others: bar.others, door: bar.door }));
         check(`${tag} Sign in`, bar.signIn === 1);
-        if (isOrg(path)) check(`${tag} no .gf-door on an org page`, bar.door.length === 0, JSON.stringify(bar.door));
-        else check(`${tag} 1 .gf-door "Invited?" → /join`, bar.door.length === 1 && bar.door[0].label === 'Invited?' && bar.door[0].href === '/join', JSON.stringify(bar.door));
         check(`${tag} 1 .gf-button`, bar.primary.length === 1, JSON.stringify(bar.primary));
+        if (isOrg(path)) check(`${tag} button reads Book a demo`, bar.primary[0]?.label === 'Book a demo', JSON.stringify(bar.primary[0]));
+        else check(`${tag} button reads ${BUTTON[0]} -> ${BUTTON[1]}`, bar.primary[0]?.label === BUTTON[0] && bar.primary[0]?.href === BUTTON[1], JSON.stringify(bar.primary[0]));
         check(`${tag} nothing wraps`, bar.wrapped.length === 0, JSON.stringify(bar.wrapped));
         check(`${tag} no "More"`, !bar.more);
-        check(`${tag} chevron ≥ 14px`, bar.chevron >= 14, `${bar.chevron}px`);
-        check(`${tag} button arrow ≥ 16px`, bar.arrow === null || bar.arrow >= 16, `${bar.arrow}px`);
-        check(`${tag} right gutter = left gutter`, Math.abs(bar.gutters.left - bar.gutters.right) <= 2, JSON.stringify(bar.gutters));
-        if (isOrg(path)) check(`${tag} button reads Book a demo`, bar.primary[0] === 'Book a demo', bar.primary[0]);
-        else check(`${tag} button reads Start free`, bar.primary[0] === 'Start free', bar.primary[0]);
-
-        if (width !== 1440) continue;
-        /* The panel: click open, count rows. */
-        const trigger = page.locator('nav#site-navigation .org-toggle');
-        await trigger.click();
-        await page.waitForTimeout(250);
-        const rows = await page.$$eval('#org-panel a', (as) => as.filter((a) => a.getClientRects().length).map((a) => a.querySelector('strong')?.textContent.trim()));
-        const want = isOrg(path) ? 2 : 3;
-        check(`${tag} panel has ${want} rows`, rows.length === want, JSON.stringify(rows));
-        check(`${tag} Book a demo row ${isOrg(path) ? 'absent' : 'present'}`, rows.includes('Book a demo') === !isOrg(path));
-        await page.screenshot({ path: join(shots, `nav-panel-${path.replace(/\//g, '') || 'home'}-1440.png`), clip: { x: 0, y: 0, width: 1440, height: 420 } });
-        /* Esc closes and returns focus to the trigger. */
-        await page.keyboard.press('Escape');
-        await page.waitForTimeout(100);
-        const afterEsc = await page.evaluate(() => ({
-            hidden: document.querySelector('#org-panel').hidden,
-            focus: document.activeElement?.classList.contains('org-toggle'),
-        }));
-        check(`${tag} Esc closes, focus on trigger`, afterEsc.hidden && afterEsc.focus, JSON.stringify(afterEsc));
-        /* Hover opens; a click on the hover-opened panel keeps it open (S21). */
-        await page.mouse.move(5, 5);
-        await trigger.hover();
-        await page.waitForTimeout(200);
-        const hoverOpen = await page.evaluate(() => !document.querySelector('#org-panel').hidden);
-        await trigger.click();
-        await page.waitForTimeout(150);
-        const stillOpen = await page.evaluate(() => !document.querySelector('#org-panel').hidden);
-        check(`${tag} hover opens, click keeps open`, hoverOpen && stillOpen, JSON.stringify({ hoverOpen, stillOpen }));
-        await trigger.click();
-        await page.waitForTimeout(100);
-        const closed = await page.evaluate(() => document.querySelector('#org-panel').hidden);
-        check(`${tag} second click closes`, closed);
-        /* The trigger reads as active on the org pages. */
-        const active = await trigger.getAttribute('aria-current');
-        check(`${tag} trigger active ${isOrg(path) ? 'on' : 'off'}`, (active === 'true') === isOrg(path));
+        check(`${tag} button arrow >= 16px`, bar.arrow === null || bar.arrow >= 16, `${bar.arrow}px`);
+        check(`${tag} right gutter = left gutter`, Math.abs(gutters.left - gutters.right) <= 2, JSON.stringify(gutters));
+        check(`${tag} no horizontal overflow`, !bar.overflow);
+        const orgTab = bar.tabs.find((t) => t.label === 'For organizations');
+        check(`${tag} For organizations current ${isOrg(path) ? 'on' : 'off'}`, (orgTab?.current === 'page') === isOrg(path), String(orgTab?.current));
+        if (width === 1440) await page.screenshot({ path: join(shots, `nav-bar-${path.replace(/\//g, '') || 'home'}-1440.png`), clip: { x: 0, y: 0, width: 1440, height: 120 } });
     }
 }
 
-/* ---- 1.2 drawer --------------------------------------------------------- */
+/* ---- 1.2 the drawer ---------------------------------------------------- */
 for (const path of navPages) {
     for (const width of [390, 320]) {
         await open(path, width, 844);
         const slug = path.replace(/\//g, '') || 'home';
         await page.click('.gf-menu-toggle');
         await page.waitForTimeout(400);
-        const orgOpen = await page.getAttribute('.org-toggle', 'aria-expanded');
-        check(`1.2 ${path} @${width} disclosure ${isOrg(path) ? 'open' : 'closed'} by default`, (orgOpen === 'true') === isOrg(path));
-        if (width === 390 && slug === 'pricing') await page.screenshot({ path: join(shots, 'nav-drawer-390.png') });
-        if (orgOpen !== 'true') await page.click('.org-toggle');
-        await page.waitForTimeout(300);
-        if (width === 390 && slug === 'pricing') await page.screenshot({ path: join(shots, 'nav-drawer-390-open.png') });
-        if (width === 390 && slug === 'organizations') await page.screenshot({ path: join(shots, 'nav-drawer-org-390.png') });
-        const drawer = await page.evaluate(() => {
-            const nav = document.querySelector('#site-navigation');
-            const visible = (el) => el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
-            const items = [...nav.querySelectorAll('a,button')].filter(visible);
-            const panels = [...nav.querySelectorAll('[aria-controls]')].map((b) => document.getElementById(b.getAttribute('aria-controls'))).filter(Boolean);
-            const depth = (el) => 1 + panels.filter((p) => p.contains(el)).length;
-            const wraps = (el) => {
-                const label = el.querySelector('strong') ?? el;
-                const tops = [];
-                const walk = document.createTreeWalker(label, NodeFilter.SHOW_TEXT);
-                for (let n = walk.nextNode(); n; n = walk.nextNode()) {
-                    if (!n.textContent.trim()) continue;
-                    const r = document.createRange();
-                    r.selectNodeContents(n);
-                    for (const x of r.getClientRects()) if (x.width > 0) tops.push(x.top);
-                }
-                return tops.filter((t, i) => tops.findIndex((u) => Math.abs(u - t) < 6) === i).length > 1;
-            };
-            return {
-                labels: items.map((el) => el.innerText.trim()),
-                door: items.filter((el) => el.classList.contains('gf-door')).length,
-                maxDepth: Math.max(...items.map(depth)),
-                wrapped: items.filter(wraps).map((el) => el.innerText.trim()),
-                /* Round 3 fix 2 (item 14): a row with a hint keeps its label in <strong>. */
-                firstTier: [...nav.querySelectorAll('.gf-nav-links > a, .org-toggle')].filter(visible).map((el) => ({ label: (el.querySelector(':scope > span > strong') ?? el).innerText.trim(), href: el.getAttribute('href'), depth: depth(el), size: getComputedStyle(el).fontSize })),
-                muted: [...nav.querySelectorAll('.gf-nav-muted a')].filter(visible).map((a) => a.textContent.trim()),
-                shortMuted: [...nav.querySelectorAll('.gf-nav-muted a')].filter((a) => a.getBoundingClientRect().height < 44).map((a) => a.textContent.trim()),
-                overflow: document.documentElement.scrollWidth > innerWidth,
-            };
-        });
-        const dups = drawer.labels.filter((l, i, a) => a.indexOf(l) !== i);
+        if (width === 390) await page.screenshot({ path: join(shots, `nav-drawer-${slug}-390.png`) });
+        const d = await readNav();
+        const nested = await page.evaluate(() => document.querySelectorAll('#site-navigation [aria-controls], #site-navigation [hidden]').length);
         const tag = `1.2 ${path} @${width}`;
-        check(`${tag} no duplicates`, dups.length === 0, JSON.stringify(dups));
-        check(`${tag} "Invited?" hidden in the drawer`, drawer.door === 0, String(drawer.door));
-        check(`${tag} no "More"`, !drawer.labels.includes('More'));
-        check(`${tag} depth ≤ 2`, drawer.maxDepth <= 2, String(drawer.maxDepth));
-        check(`${tag} Book a demo exactly once`, drawer.labels.filter((l) => l === 'Book a demo').length === 1);
-        check(`${tag} no label wraps`, drawer.wrapped.length === 0, JSON.stringify(drawer.wrapped));
-        check(`${tag} quiet links ≥ 44px`, drawer.shortMuted.length === 0, JSON.stringify(drawer.shortMuted));
-        const MAIN = ['How it works', 'Sample books', 'Pricing', 'For families', 'Invited to a family’s book', 'Asked to tell your story?', 'For organizations', 'Our story'];
-        const QUIET = ['Questions & answers', 'Compare', 'Conversation guides', 'Contact'];
-        const mainLabels = drawer.firstTier.map((r) => r.label);
-        check(`${tag} main list in order`, JSON.stringify(mainLabels) === JSON.stringify(MAIN), JSON.stringify(mainLabels));
-        check(`${tag} main list one size`, new Set(drawer.firstTier.map((r) => r.size)).size === 1, JSON.stringify([...new Set(drawer.firstTier.map((r) => r.size))]));
-        check(`${tag} quiet group`, JSON.stringify(drawer.muted) === JSON.stringify(QUIET), JSON.stringify(drawer.muted));
-        for (const [label, href] of [
-            ["Invited to a family’s book", '/join'],
-            ['Asked to tell your story?', '/how-it-works#being-asked'],
-        ]) {
-            const row = drawer.firstTier.find((r) => r.label === label);
-            check(`${tag} first tier: ${label}`, !!row && row.href === href && row.depth === 1 && !drawer.muted.includes(label), JSON.stringify(row ?? null));
-        }
-        if (width === 390) console.log('      drawer:', drawer.labels.join(' | '));
+        const want = [...TABS.map((t) => t[0]), 'Sign in', isOrg(path) ? 'Book a demo' : BUTTON[0]];
+        check(`${tag} exactly 4 tabs + Sign in + 1 button`, JSON.stringify(d.all) === JSON.stringify(want), JSON.stringify(d.all));
+        check(`${tag} no duplicates`, new Set(d.all).size === d.all.length);
+        check(`${tag} nothing nested`, nested === 0, String(nested));
+        check(`${tag} no label wraps`, d.wrapped.length === 0, JSON.stringify(d.wrapped));
+        check(`${tag} every row >= 44px`, d.short.length === 0, JSON.stringify(d.short));
+        check(`${tag} tabs in one size`, new Set(d.tabs.map((t) => t.size)).size === 1, JSON.stringify([...new Set(d.tabs.map((t) => t.size))]));
+        check(`${tag} no horizontal overflow`, !d.overflow);
+        if (width === 390) console.log('      drawer:', d.all.join(' | '));
     }
 }
 
-/* ---- 1.3 footer --------------------------------------------------------- */
+/* ---- 1.3 footer -------------------------------------------------------- */
 if (doFooter) {
     await open('/pricing/', 1440, 900);
     const f = await page.evaluate(() => {
@@ -247,6 +178,7 @@ if (doFooter) {
         const bar = [...document.querySelectorAll('header a[href]')].map((a) => a.getAttribute('href'));
         return {
             footer,
+            chrome: [...footer, ...bar],
             reach: [...new Set([...footer, ...bar].filter((h) => h.startsWith('/')).map(norm))],
         };
     });
@@ -256,10 +188,12 @@ if (doFooter) {
     const missing = wanted.filter((p) => !f.reach.includes(p));
     check(`1.3 ${wanted.length} routes reachable from footer or bar`, missing.length === 0, JSON.stringify(missing));
     check('1.3 footer has Privacy, in short', f.footer.includes('/privacy/#legal-short'));
-    check('1.3 footer page links = 18 + 1 email', f.footer.filter((h) => h.startsWith('/')).length === 18 && f.footer.filter((h) => h.startsWith('mailto:')).length === 1 && f.footer.includes('/how-it-works#being-asked'), String(f.footer.length));
+    check('1.3 footer has Get the iPhone app', f.footer.includes('/get-the-app'));
+    check('1.3 footer page links = 19 + 1 email', f.footer.filter((h) => h.startsWith('/')).length === 19 && f.footer.filter((h) => h.startsWith('mailto:')).length === 1 && f.footer.includes('/how-it-works#being-asked'), String(f.footer.length));
+    check('1.3 no create-account link in the chrome', !f.chrome.some((h) => /create-account/.test(h)), JSON.stringify(f.chrome.filter((h) => /create-account/.test(h))));
     await open('/pricing/', 390, 844);
     const h = await page.evaluate(() => document.querySelector('footer').getBoundingClientRect().height);
-    check('1.3 footer ≤ 1.3 screens @390 (folds closed)', h <= 1.3 * 844, `${Math.round(h)}px = ${(h / 844).toFixed(2)} screens`);
+    check('1.3 footer <= 1.3 screens @390 (folds closed)', h <= 1.3 * 844, `${Math.round(h)}px = ${(h / 844).toFixed(2)} screens`);
 }
 
 await browser.close();

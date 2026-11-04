@@ -134,18 +134,18 @@ export const HeaderShell = styled.header`
     margin-inline: auto;
     display: flex;
     align-items: center;
-    gap: clamp(14px, 1.7vw, 34px);
+    /* Four words with air between them (phone-first plan): the calm of a
+       short bar comes from the space, not from smaller type. */
+    gap: clamp(20px, 2.4vw, 48px);
   }
   .gf-nav-right {
     display: flex;
     align-items: center;
     gap: clamp(16px, 1.6vw, 28px);
   }
-  /* The rooms: Montserrat, quiet ivory; the room you are in is full ivory
+  /* The tabs: Montserrat, quiet ivory; the tab you are on is full ivory
      with a gold rule under the word. */
   .gf-nav-links > a,
-  .org-toggle,
-  .gf-door,
   .gf-signin {
     position: relative;
     min-height: 44px;
@@ -163,8 +163,7 @@ export const HeaderShell = styled.header`
     cursor: pointer;
     transition: color ${motion.base};
   }
-  .gf-nav-links > a::after,
-  .org-toggle::after {
+  .gf-nav-links > a::after {
     content: "";
     position: absolute;
     left: 0;
@@ -178,8 +177,6 @@ export const HeaderShell = styled.header`
   }
   ${media.hover} {
     .gf-nav-links > a:hover,
-    .org-toggle:hover,
-    .gf-door:hover,
     .gf-signin:hover {
       color: ${color.onDark};
     }
@@ -187,121 +184,20 @@ export const HeaderShell = styled.header`
       transform: scaleX(1);
     }
   }
-  .gf-nav-links > a[aria-current="page"],
-  .org-toggle[aria-current="true"] {
+  .gf-nav-links > a[aria-current="page"] {
     color: ${color.onDark};
   }
-  .gf-nav-links > a[aria-current="page"]::after,
-  .org-toggle[aria-current="true"]::after {
+  .gf-nav-links > a[aria-current="page"]::after {
     transform: scaleX(1);
   }
   .gf-nav-links > a:active,
-  .org-toggle:active,
-  .gf-door:active,
   .gf-signin:active {
     opacity: 0.7;
   }
-  /* The invited relative's door (round 3, plan task 1): a quiet link beside
-     Sign in, full ivory on its own page. */
-  .gf-door[aria-current="page"] {
-    color: ${color.onDark};
+  /* Sign in is the small door: a step quieter than the tabs. */
+  .gf-signin {
+    font-size: 16px;
   }
-  .org-chevron {
-    flex: none;
-    width: 14px;
-    height: 14px;
-    opacity: 0.7;
-    transition: transform ${motion.base};
-  }
-  .org-toggle[aria-expanded="true"] {
-    color: ${color.onDark};
-  }
-  .org-toggle[aria-expanded="true"] .org-chevron {
-    transform: rotate(180deg);
-  }
-  .org-wrap {
-    position: relative;
-  }
-
-  /* The org panel: a leaf of paper anchored under the word that opened it,
-     about 380px wide. It enters with opacity and a 4px rise in 200ms and
-     has no exit. */
-  .org-panel {
-    position: absolute;
-    top: calc(100% + 14px);
-    left: -20px;
-    width: min(380px, 92vw);
-    display: grid;
-    gap: 2px;
-    padding: 10px;
-    border-radius: 6px;
-    background: ${color.paper};
-    color: ${color.primary};
-    box-shadow:
-      0 0 0 1px ${color.primaryLine},
-      0 40px 80px -40px rgba(0, 0, 0, 0.6);
-    transition:
-      opacity ${motion.base},
-      transform ${motion.base};
-  }
-  @starting-style {
-    .org-panel:not([hidden]) {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-  }
-  .org-panel[hidden] {
-    display: none;
-  }
-  .org-panel a {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 12px;
-    min-height: 44px;
-    padding: 12px 14px;
-    border-radius: 4px;
-    color: inherit;
-    text-decoration: none;
-    transition: background-color ${motion.fast};
-  }
-  ${media.hover} {
-    .org-panel a:hover {
-      background: ${color.ivory};
-    }
-  }
-  .org-panel strong {
-    display: block;
-    font: 600 ${type.ui} / 1.3 ${font.ui};
-    color: ${color.primary};
-  }
-  .org-panel small {
-    display: block;
-    margin-top: 2px;
-    font: 400 ${type.note} / 1.45 ${font.ui};
-    color: ${color.bodyMuted};
-  }
-  .org-panel a[aria-current="page"] strong {
-    text-decoration: underline;
-    text-decoration-color: ${color.gold};
-    text-underline-offset: 4px;
-  }
-  /* Book a demo: set apart on the wash, with the arrow. */
-  .org-panel .org-demo {
-    margin-top: 6px;
-    background: ${color.primaryWash};
-  }
-  ${media.hover} {
-    .org-panel .org-demo:hover {
-      background: ${color.ivoryDeep};
-    }
-  }
-  .org-panel .org-demo svg {
-    width: 18px;
-    height: 18px;
-    color: ${color.primary};
-  }
-
   /* The one action: the ivory pill, as the app's buttons on the cloth. */
   .gf-button {
     display: inline-flex;
@@ -338,14 +234,12 @@ export const HeaderShell = styled.header`
     transform: scale(0.97);
   }
 
-  .gf-menu-toggle,
-  .gf-nav-links > a.gf-drawer-only,
-  .gf-nav-muted {
+  .gf-menu-toggle {
     display: none;
   }
 
-  /* 1180-1279px: the gaps give way first; labels, the chevron and the
-     arrow never wrap or shrink (flex: none above). */
+  /* 1180-1279px: the gaps give way first; labels and the arrow never wrap
+     or shrink. */
   @media (min-width: 1180px) and (max-width: 1279px) {
     .gf-nav-inner,
     nav {
@@ -456,17 +350,12 @@ export const HeaderShell = styled.header`
       gap: 0;
       margin: 0;
     }
-    /* 1. One run of large serif rows, all one size (round 3 fix 1):
-       How it works, Sample books, Pricing, For families, Invited to a
-       family's book, Asked to tell your story?, For organizations (opens in
-       place), Our story. */
-    .gf-nav-links > a.gf-drawer-only {
-      display: flex;
-    }
-    .gf-nav-links > a,
-    .org-toggle {
+    /* 1. The same four tabs, one run of large serif rows, all one size
+       (phone-first plan, 2026-11-04). Nothing opens inside the drawer. */
+    .gf-nav-links > a {
       width: 100%;
       justify-content: space-between;
+      min-height: 64px;
       font: 600 ${display.md} / 1.1 ${font.display};
       letter-spacing: -0.005em;
       color: ${color.onDark};
@@ -475,84 +364,26 @@ export const HeaderShell = styled.header`
       white-space: normal;
       text-align: left;
     }
-    .gf-nav-links > a::after,
-    .org-toggle::after {
-      display: none;
-    }
-    .gf-nav-links > a[aria-current="page"],
-    .org-toggle[aria-current="true"] {
-      color: ${color.gold};
-    }
-    .org-chevron {
-      width: 22px;
-      height: 22px;
-    }
-    .org-panel {
-      position: static;
-      width: auto;
-      padding: 6px 0 10px 20px;
-      gap: 0;
-      background: none;
-      color: ${color.onDark};
-      box-shadow: none;
-      border-bottom: 1px solid ${color.onDarkLine};
-    }
-    .org-panel a,
-    .org-panel .org-demo {
-      margin: 0;
-      padding: 10px 0;
-      background: none;
-    }
-    .org-panel strong {
-      font: 500 ${type.ui} / 1.3 ${font.ui};
-      color: ${color.onDark};
-    }
-    .org-panel small {
-      display: none;
-    }
-    .org-panel .org-demo strong,
-    .org-panel .org-demo svg {
-      color: ${color.gold};
-    }
-    /* 2. A hairline, then the quiet group (≥ 7:1 on the cloth). */
-    .gf-nav-muted {
-      display: grid;
-      /* Two columns sized to their words, so no label wraps at 375+; under
-         that the four sit in one column rather than break a line. */
-      grid-template-columns: max-content max-content;
-      gap: 8px 28px;
-      margin-top: 20px;
-      padding-top: 16px;
+    .gf-nav-links > a:first-child {
       border-top: 1px solid ${color.onDarkLine};
     }
-    .gf-nav-muted a {
-      display: flex;
-      align-items: center;
-      min-height: 44px;
-      font: 500 ${type.ui} / 1.3 ${font.ui};
-      color: ${color.onDarkMuted};
-      text-decoration: none;
+    .gf-nav-links > a::after {
+      display: none;
     }
-    .gf-nav-muted a[aria-current="page"] {
+    .gf-nav-links > a[aria-current="page"] {
       color: ${color.gold};
     }
     @media (max-width: 374px) {
-      .gf-nav-muted {
-        grid-template-columns: max-content;
-      }
-      /* The main list keeps one size, one step down, so no row wraps. */
-      .gf-nav-links > a,
-      .org-toggle {
+      /* The list keeps one size, one step down, so no row wraps. */
+      .gf-nav-links > a {
         font-size: ${display.sm};
       }
     }
-    /* 3. Sign in as a text link, then the one button, full width. The
-       short "Invited?" stays out: the drawer has the full row above. */
+    /* 2. Sign in as a quiet text link, for the families already in a
+       book, then the one button, full width. */
     .gf-nav-right {
       margin-top: 24px;
-    }
-    .gf-door {
-      display: none;
+      gap: 12px;
     }
     .gf-signin {
       align-self: flex-start;
@@ -563,7 +394,6 @@ export const HeaderShell = styled.header`
       text-underline-offset: 4px;
     }
     .gf-button {
-      margin-top: 12px;
       min-height: 56px;
       justify-content: center;
       font-size: 16px;
@@ -573,8 +403,7 @@ export const HeaderShell = styled.header`
     nav,
     &,
     .gf-nav-inner,
-    .gf-nav-inner > span svg,
-    .org-panel {
+    .gf-nav-inner > span svg {
       transition: none !important;
     }
   }

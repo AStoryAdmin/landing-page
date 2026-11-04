@@ -129,6 +129,16 @@
     ]
   },
   {
+    "path": "/get-the-app",
+    "name": "Get the iPhone app",
+    "og": "get-the-app",
+    "photo": "27",
+    "phrase": [
+      "Every life holds a story",
+      "worth keeping."
+    ]
+  },
+  {
     "path": "/privacy",
     "name": "Privacy",
     "og": "privacy",

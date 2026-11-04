@@ -30,6 +30,7 @@ import {
   Eyebrow,
   Frame,
   PrimaryAnchor,
+  PrimaryLink,
   PrintMat,
   Title,
   onDarkActions,
@@ -757,18 +758,18 @@ const CLOSERS: Record<string, ReactNode> = {
   ),
   "/questions": (
     <>
-      Everyone starts <em>free.</em>
+      Ask for an iPhone <em>invite.</em>
     </>
   ),
   "/programs": (
     <>
-      Everyone starts <em>free.</em>
+      Bring it to <em>your own family.</em>
     </>
   ),
 };
 const DEFAULT_CLOSER = (
   <>
-    Everyone starts <em>free.</em>
+    Ask for an iPhone <em>invite.</em>
   </>
 );
 
@@ -783,7 +784,8 @@ const DEFAULT_CLOSER = (
  * its old path and renders exactly what it did (Bond included).
  */
 export function Invitation({
-  line = "The archive is free for as long as you like. A plan adds A Story doing the asking.",
+  /* Phone-first plan (2026-11-04): faqData.ts:69 and lib/pricing.ts:183. */
+  line = "The calls ring in the A Story iPhone app, which is in a private beta. Inviting family, writing and reading never cost extra.",
   title,
   next,
   startHref = START_HREF,
@@ -815,9 +817,16 @@ export function Invitation({
           </h2>
           <p>{line}</p>
           <Actions>
-            <PrimaryAnchor href={startHref}>
-              {START_LABEL} <ArrowIcon />
-            </PrimaryAnchor>
+            {/* The invite page is on this site: a router link, no reload. */}
+            {startHref.startsWith("/") ? (
+              <PrimaryLink to={startHref}>
+                {START_LABEL} <ArrowIcon />
+              </PrimaryLink>
+            ) : (
+              <PrimaryAnchor href={startHref}>
+                {START_LABEL} <ArrowIcon />
+              </PrimaryAnchor>
+            )}
           </Actions>
         </div>
         <nav className="next" aria-label="Where to go next">
