@@ -3,6 +3,7 @@ import EditorialSeo from "../../components/ui/EditorialSeo";
 import { refreshWhenSettled } from "../../lib/scrollMotion";
 import { Link } from "react-router-dom";
 import { Invitation } from "./kit/kit";
+import { ORG_TAB_LABEL } from "../../lib/nav";
 import CodeFromFamily from "./home/CodeFromFamily";
 import Hero from "./home/Hero";
 import WhatGetsLost from "./home/WhatGetsLost";
@@ -73,12 +74,17 @@ export default function Home() {
            /pricing says the calls "aren't on sale yet" (Pricing.tsx), so the
            monthly figure left this band; "See pricing" is the way to it.
            Sources: "by invite", AppDoor.tsx:91; "in a private beta",
-           lib/today.ts:14; the family, lib/pricing.ts:183. */
+           lib/today.ts:14; the family, lib/pricing.ts:183.
+           Phone-first fix 3 (item 2, Priya #7, Denise #7): a second quiet
+           link for institutions, labelled with lib/nav.ts ORG_TAB_LABEL. */
         line={
           <>
             The calls ring in the A Story app on your parent’s iPhone, by
             invite in a private beta. Inviting family, writing and reading
             never cost extra. <Link to="/pricing">See pricing</Link>
+            <br />
+            Running a program or a care community?{" "}
+            <Link to="/organizations">{ORG_TAB_LABEL}</Link>
           </>
         }
       />
