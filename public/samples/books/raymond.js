@@ -62,7 +62,7 @@ DATA.raymond = {
         ]
       },
       { id: "m13", title: "Spring Lake, the first week of August", dateline: "August 1987 · aged 36", askedBy: "Maya",
-        headnote: "On the porch on a hot evening, Elena in the next chair correcting the years.",
+        headnote: "On the porch on a hot evening, Marisol in the next chair correcting the years.",
         faces: [
           [
             "Elena made one rule when we started the shop. The first week of August, the doors close, everybody paid, nobody in the building. Especially me. Once we could afford it, every August we rented the same cottage on Spring Lake."
@@ -139,17 +139,17 @@ DATA.raymond = {
         faces: [
           [
             "My father came north once. June 1985, on the Greyhound, because he didn’t trust airplanes or my driving.",
-            "I wanted him to see the garage on Godfrey Avenue, the mill, the work on the board, the sign. He walked around it a long time and didn’t say anything."
+            "I wanted him to see the garage on Godfrey Avenue, the mill, the work on the board, the sign. He walked around it a long time and didn’t say anything.",
+            "Then he found Elena’s mother’s fan on my bench and fixed it. He couldn’t be in a room with tools and not work. When he was done he wiped the bench where his arm had been."
           ],
           [
-            "Then he found Elena’s mother’s fan, broken on my bench since Easter, and fixed it. He couldn’t be in a room with tools and not work. When he was done he wiped the bench where his arm had been.",
-            "Outside he looked at the sign. Ortiz Precision. He said, no first name. Good. That was the whole review.",
-            "He died in March 1987. Elena took the call on the hall phone. We drove to San Antonio in twenty-two hours. I didn’t let her take the wheel once.",
-            "I didn’t cry at the funeral. I cried on the way home, at a gas station in Texarkana, for no reason I could have told you.",
+            "Outside he looked at the sign. Ortiz Precision. He said, no first name. Good.",
+            "He died in March 1987. Elena took the call on the hall phone. We drove to San Antonio in twenty-two hours.",
+            "I didn’t cry at the funeral. I cried at a gas station in Texarkana on the way home.",
             "He only came north once. I spent it showing him the mill. I should have shown him the kids."
           ]
         ],
-        photos: [ { img: "/mission/16-1200.webp", ratio: 1.5, pos: "50% 50%", caption: "Leaving Grand Rapids, March 1987, on the way down. Elena took it from the passenger seat. I don’t remember the road.", face: 0 } ],
+        photos: [ { img: "/mission/16-1200.webp", ratio: 1.5, pos: "50% 50%", caption: "Leaving Grand Rapids, March 1987. Elena took it from the passenger seat. I don’t remember the road.", face: 1 } ],
         voice: { rec: "Dec 4, 2025", len: "1:19", quote: "My father came north once." }
       },
       { id: "m8", title: "The customer who was sixty percent", dateline: "1986 – 1991 · aged 35 to 39", askedBy: "Maya",
@@ -234,7 +234,7 @@ DATA.raymond = {
         headnote: "On the phone from the recliner on a Thursday, just back from the shop.",
         faces: [
           [
-            "I go in on Thursdays. Nobody asked me to and nobody’s told me to stop. I walk the floor before anybody’s read their email, the way I always did, and I say good morning to a hundred and forty people and I don’t know all their names anymore, which is the point. Then I stand by the Bridgeport for a while. It’s at the front of the shop. Every new hire makes a first part on it. Forty-two years and it still holds a thousandth.",
+            "I go in on Thursdays. Nobody asked me to and nobody’s told me to stop. I walk the floor before anybody’s read their email, the way I always did, and I say good morning to a hundred and forty people and I don’t know all their names anymore. Then I stand by the Bridgeport for a while. It’s at the front of the shop. Every new hire makes a first part on it. Forty-two years and it still holds a thousandth.",
             "Nobody needs me there. Best feeling I’ve had in forty years. I’m home by eleven and Elena asks how it was and I say, running."
           ],
           [
@@ -279,7 +279,7 @@ DATA.raymond = {
     { name: "Tomás Ortiz", relation: "his son", line: "Taught me to swim when he was seven. Ready for the keys long before I saw it." },
     { name: "Marisol Ortiz", relation: "his daughter", line: "Found an error in her mother’s ledger at eight. Keeps an empty green one on her desk now." },
     { name: "Maya Ortiz", relation: "his granddaughter", line: "Asked most of the questions in this book. Took my caliper without asking. Good." },
-    { name: "Hector Ruiz", relation: "his first employee", line: "Wiped the mill table before I’d said the pay. Thirty-eight years. Kept the first bracket." },
+    { name: "Hector Ruiz", relation: "his first employee", line: "Wiped the mill table before he’d asked the pay. Thirty-eight years. Kept the first bracket." },
     { name: "Ramón Ortiz", relation: "his father", line: "Fixed cars on South Flores Street. Came north once, and fixed a fan." },
     { name: "Consuelo Ortiz", relation: "his mother", line: "Asked if Michigan was cold. I said no. She knew." }
   ],
@@ -288,7 +288,7 @@ DATA.raymond = {
     { who: "Elena Ortiz", relation: "his wife", title: "The kitchen table", dateline: "2026",
       faces: [[
         "The table is the same table. We bought it in 1976 from a man on Leonard Street for forty dollars and it has one short leg, and I did the books on it for twenty-one years with a folded matchbook under the leg. I kept them whenever the children were asleep or at school or outside, and on the bus to my mother’s.",
-        "A green ledger from the stationery store on Monroe, $3.49. I bought one every August. The first line of the first one is the mill. He thinks that page is about him. It’s about the arithmetic under it. Eleven thousand, less the mill, the deposit, tooling and three months’ rent, left seven thousand and change to last until somebody paid us. I never told him how close it was. He’s seventy-five. He can read it here."
+        "A green ledger from the stationery store on Monroe, $3.49. I bought one every August. The first thing spent in the first one is the mill. He thinks that page is about him. It’s about the arithmetic under it. Eleven thousand, less the mill, the deposit, tooling and three months’ rent, left seven thousand and change to last until somebody paid us. I never told him how close it was. He’s seventy-five. He can read it here."
       ]] },
     { who: "Marisol Ortiz", relation: "his daughter", title: "The empty ledger", dateline: "2026",
       faces: [[
