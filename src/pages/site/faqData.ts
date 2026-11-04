@@ -61,16 +61,21 @@ export const groups = [
         a: `An AI-guided interviewer asks from ${QUESTION_COUNT} questions across ${CHAPTER_COUNT} chapters and follows up on what the storyteller shares. You can explore the scripted sample on How it works.`,
       },
       {
-        q: "Can I sign up today?",
-        a: "Yes. Start free at app.astoryapp.com: make an account in your browser, with no card. The plans where A Story makes the calls open to a few families at a time.",
+        /* Phone-first plan task 4: A Story starts with the iPhone app, by
+           invite (plan :13, :16). The rest of the answer is this file's
+           "Does my family member need to install an app?" and "Can
+           relatives add a different version?". The old answer sent
+           strangers to make an account in the browser. */
+        q: "How do I start?",
+        a: "A Story starts with the A Story iPhone app, which is in a private beta. Ask for an invite, and we help you set it up. Once your family is in, everyone reads and adds through the family’s code or link, in any browser, with no card.",
       },
       {
         q: "Does my family member need to install an app?",
-        a: "To be called, yes. The calls ring in the A Story iPhone app, which is in a private beta. Your parent installs it once on their iPhone, and we help you set it up. After that, the app rings at the hour your family picked and they answer and talk. To read or add to the archive, no app is needed: any browser works, at app.astoryapp.com.",
+        a: "To be called, yes. The calls ring in the A Story iPhone app, which is in a private beta. Your parent installs it once on their iPhone, and we help you set it up. After that, the app rings at the hour your family picked and they answer and talk. To read or add to the archive, no app is needed: any browser works, through the family’s link.",
       },
       {
         q: "Can I use A Story on a computer?",
-        a: "Yes. At app.astoryapp.com you can write, read the archive, see the family tree and read the book, in any browser. The calls ring in the A Story iPhone app.",
+        a: "Yes, once your family is in. At app.astoryapp.com you can write, read the archive, see the family tree and read the book, in any browser. The calls ring in the A Story iPhone app.",
       },
       {
         q: "Can I record my own story?",
@@ -117,7 +122,7 @@ export const groups = [
            six-letter code" on /for-families. One rule now: nothing to redeem,
            and the relative comes in through the family's code or the link
            that carries it (lib/app.ts:17, index.html:80-81). */
-        a: `You set up the archive for your relative today, free, and choose a good time for the first call. There is nothing to redeem and no gift card: your relative comes in through the family's six-letter code, or the link that carries it. ${PLANS[2].name} is the one-time plan, ${PLANS[2].price}, and nothing renews; the annual and monthly plans renew.`,
+        a: `You ask for an invite to the A Story iPhone app, set up the archive for your relative, free, and choose a good time for the first call. There is nothing to redeem and no gift card: your relative comes in through the family's six-letter code, or the link that carries it. ${PLANS[2].name} is the one-time plan, ${PLANS[2].price}, and nothing renews; the annual and monthly plans renew.`,
       },
     ],
   },

@@ -300,7 +300,10 @@ export default function Programs() {
         labelledBy="programs-title"
         title={
           <>
-            Startup programs <em>and grants.</em>
+            {/* Phone-first pass (panel r3, Priya: "Startup programs and
+                grants" read as programs for institutions). The page is
+                about the programs A Story itself belongs to. */}
+            The programs A Story <em>belongs to.</em>
           </>
         }
         /* 2026-11-03 (panel round 2, B4.5): the first sentence says what the
@@ -308,7 +311,7 @@ export default function Programs() {
            Cartesia a grant; the SEO description above). No new names, and
            never "supported by" or "backed by". Fix round 4: one sentence plus
            the disclaimer (spec §3.1 lead length). */
-        lead="The startup programs A Story belongs to, one of them with a grant. None is an endorsement, an investment or a partnership."
+        lead="Startup programs for the company behind A Story, one of them with a grant. None is an endorsement, an investment or a partnership."
         object={
           <Plate aria-label="The five programs’ marks">
             {ROWS.map((r) => (

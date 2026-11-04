@@ -393,6 +393,10 @@ const Need = styled(Chapter)`
     color: var(--ink);
     font-weight: 600;
     text-underline-offset: 4px;
+    /* The address is one long word: at 320px with 150% text it was 335px
+       in a 280px line and pushed the page 35px sideways (tester, pf). */
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
   /* The ways on: one link a line, each a 44px row, 8px apart (taste
      rule 20; round 3 fix 1). */

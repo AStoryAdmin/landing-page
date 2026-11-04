@@ -47,7 +47,7 @@ import {
 import { checkoutFor, isCheckoutLive } from "../../lib/checkout";
 import { START_HREF, START_LABEL } from "../../lib/app";
 import { QUESTION_COUNT } from "../../lib/product";
-import { TODAY_NOTE } from "../../lib/today";
+import TodayNow from "./TodayNow";
 import { WHO_HEARS_SHORT } from "../../lib/hears";
 import { ArrowIcon, PageOpening } from "./kit/kit";
 import { useReveals } from "./kit/reveals";
@@ -1193,7 +1193,8 @@ function HeroPrice() {
           prices. Words unchanged. */}
       <div className="after">
         <p>
-          {TODAY_NOTE}{" "}
+          {/* Phone-first plan (supervisor review): TODAY_NOTE left this
+              line; the opening's status line and the TodayNow block say it. */}
           <Link to="/care-communities" className="care-link">
             Care communities and organizations{" "}→
           </Link>
@@ -1381,18 +1382,20 @@ export default function Pricing() {
           ground="ivory"
           title={
             <>
-              Free to start. Pay for <em>calls.</em>
+              Free for the family. Plans for the <em>calls.</em>
             </>
           }
           lead={
             <>
-              {/* Round 3 (B2): what is free comes first, and the relatives'
-                  line is in the first screen (Tuan). Sources: pricing.ts
-                  START.lead (no card, no time limit; inviting never costs
-                  extra), faqData.ts "no fee per relative". */}
+              {/* Phone-first plan task 4: the family's side is what is free,
+                  not the way in. Sources: pricing.ts START.lead (no card;
+                  inviting, writing and reading never cost extra; the calls
+                  ring in the A Story iPhone app, in a private beta),
+                  faqData.ts "no fee per relative", plan :16 (by invite). */}
               <span className="status">
-                Everyone starts free, with no card; relatives you invite pay
-                nothing. The calls aren’t on sale yet.
+                Relatives you invite read and add free, with no card. The
+                calls ring in the A Story iPhone app, by invite in a private
+                beta, and aren’t on sale yet.
               </span>
               {/* Round 3 fix 1 (item 9): the Express line goes to its card
                   (#express), the first card in the DOM (PLAN_ORDER). */}
@@ -1471,8 +1474,7 @@ export default function Pricing() {
                     </p>
                     {!isCheckoutLive(p.id) && (
                       <p className="card-note">
-                        The calls aren’t on sale yet. Start free today, in
-                        your browser.
+                        The calls aren’t on sale yet.
                       </p>
                     )}
                   </>
@@ -1528,15 +1530,16 @@ export default function Pricing() {
                   bought yet gets no second line here. */}
               {selectedId === "free" ? (
                 <small>
-                  No card. Make your account in your browser and begin today.
+                  No card. The family’s side: reading, writing and adding, in
+                  any browser.
                 </small>
               ) : isCheckoutLive(selectedId) ? (
                 <small>Continue with your selected plan.</small>
               ) : null}
             </div>
             <div className="decide-actions">
-              {/* One primary action on this page: Start free. Plans that
-                  cannot be bought yet show Start free too. */}
+              {/* One primary action on this page (lib/app.ts START_*).
+                  Plans that cannot be bought yet show it too. */}
               {isCheckoutLive(selectedId) ? (
                 <PrimaryAnchor href={checkoutFor(selectedId)}>
                   Choose {name} <ArrowIcon />
@@ -1550,6 +1553,9 @@ export default function Pricing() {
           </div>
         </Frame>
       </Plans>
+
+      {/* Phone-first plan task 4: what works now, what comes by invite. */}
+      <TodayNow action={false} />
 
       {/* What stays yours sits right after the cards (benchmarks-convert
           §2.5), then the film link. The heading stays "Stop paying, and it

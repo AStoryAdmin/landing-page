@@ -25,6 +25,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { DEMO_EMAIL, sendMessage } from "../../lib/demoRequest";
+import { START_HREF, START_LABEL } from "../../lib/app";
 import { looksLikeEmail } from "../../lib/leads";
 import { track } from "../../lib/analytics";
 import { ArrowIcon, PageOpening } from "./kit/kit";
@@ -53,6 +54,13 @@ const TOPICS = [
 
 /* The other doors, by what people came for (design-spec §4C). */
 const DOORS = [
+  /* Phone-first plan task 4: the site's one action is a door here too
+     (lib/app.ts START_*; private beta: lib/today.ts:13). */
+  [
+    START_LABEL,
+    "Calls ring in the A Story iPhone app, in a private beta.",
+    START_HREF,
+  ],
   [
     "Book a demo",
     "For a school, library, company or care community.",

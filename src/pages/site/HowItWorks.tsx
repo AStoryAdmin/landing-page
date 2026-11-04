@@ -59,7 +59,7 @@ import {
 } from "./kit/kit.styles";
 import { color, display, font, media, shadow, space, type } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
-import { TODAY_NOTE } from "../../lib/today";
+import TodayNow from "./TodayNow";
 import { DECLINE_HREF } from "./faqData";
 
 const love = SCENARIOS.find((s) => s.id === "love")!;
@@ -703,7 +703,7 @@ export default function HowItWorks() {
       <EditorialSeo
         title="How A Story works - a conversation becomes a family archive"
         path="/how-it-works"
-        description="Set it up once. A Story calls in its iPhone app, listens and follows what they actually say. See a sample call, then what the family keeps."
+        description="Choose the hour once. A Story rings in its iPhone app, listens and follows what they actually say. See a sample call, then what the family keeps."
       />
       <HeroTop>
       <PhonePairs>
@@ -714,8 +714,11 @@ export default function HowItWorks() {
               A Story does the <em>asking.</em>
             </>
           }
-          lead="You set it up once and choose the hour. A Story calls, asks about their life and follows whatever they say."
-          note={TODAY_NOTE}
+          /* Phone-first plan task 4: where the call rings and the family's
+             side, in the lead (lib/today.ts:13, home/ThreeSteps.tsx:47,
+             faqData.ts:69). The private beta is said once, in "Where A
+             Story is today" below (TodayNow), so the note is gone. */
+          lead="You choose the hour once. A Story rings them in its iPhone app, asks about their life and follows whatever they say. The family reads and adds in any browser."
           actions={
             <>
               {/* Two actions (CHIEF-LOG B2.3); the sample call is a text
@@ -739,6 +742,9 @@ export default function HowItWorks() {
       {/* The storyteller's door, straight after the hero (CHIEF-LOG B2.3);
           /join and the menu link to #being-asked. */}
       <BeingAsked />
+
+      {/* Phone-first plan task 4: what works now, what comes by invite. */}
+      <TodayNow ground="paper" />
 
       <Film />
 

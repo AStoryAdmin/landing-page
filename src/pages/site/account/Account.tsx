@@ -56,7 +56,7 @@ export default function Account() {
         intro={
           holds
             ? "Nothing more to do today. We will email you when payment opens, or when it is your turn."
-            : "Start free in A Story, in your browser."
+            : "A Story starts with the A Story iPhone app, by invite. We will write to you when it is your turn."
         }
       >
         <dl className="details">
