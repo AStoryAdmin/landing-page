@@ -496,13 +496,26 @@ export const FooterShell = styled.footer`
     color: ${color.gold};
     margin-bottom: 6px;
   }
+  /* Phone-first fix 3 (item 14): the small heading over the three doors
+     for someone who was sent a link; sentence case, the label size. */
+  .gf-footer-links h3,
+  .gf-footer-fold h3 {
+    margin: 14px 0 2px;
+    font: 600 ${type.label} / 1.4 ${font.ui};
+    color: ${color.onDark};
+  }
+  /* Phone-first fix 3 (item 14, Harold #7): link text at the note size
+     (rem, so it grows with the reader's text size) and every row at least
+     44px, also when a label wraps at 150 % text. */
   .gf-footer-links a,
   .gf-footer-fold a {
     display: flex;
     align-items: center;
     min-height: 44px;
+    padding-block: 4px;
     width: fit-content;
-    font: 400 ${type.ui} / 1.3 ${font.ui};
+    max-width: 100%;
+    font: 400 ${type.note} / 1.3 ${font.ui};
     color: ${color.onDarkMuted};
     text-decoration: none;
     transition: color ${motion.base};
@@ -531,7 +544,8 @@ export const FooterShell = styled.footer`
     min-height: 56px;
     list-style: none;
     cursor: pointer;
-    font: 600 16px/1.3 ${font.ui};
+    /* Phone-first fix 3 (item 14): 16px -> the note size, which scales. */
+    font: 600 ${type.note} / 1.3 ${font.ui};
     color: ${color.onDark};
   }
   .gf-footer-fold summary::-webkit-details-marker {

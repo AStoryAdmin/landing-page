@@ -44,6 +44,36 @@ function RoomLink({ path }: { path: RoutePath }) {
   );
 }
 
+/* Phone-first fix 3 (item 14, Harold #7, Tuan #5): the three doors for
+   someone who was sent a link sit together under one small heading, in
+   the "Who it's for" column. Every page stays linked; the labels are still
+   lib/nav.ts ROUTES ("Invited to a family's book", "Asked to tell your
+   story?", "Your own story"). */
+const SENT_HERE: RoutePath[] = ["/join", "/how-it-works#being-asked", "/your-story"];
+const SENT_TITLE = "If you were sent here";
+
+function Group({ title, rooms }: { title: string; rooms: RoutePath[] }) {
+  const sent = rooms.filter((p) => SENT_HERE.includes(p));
+  return (
+    <div>
+      <h2>{title}</h2>
+      {rooms
+        .filter((p) => !SENT_HERE.includes(p))
+        .map((p) => (
+          <RoomLink key={p} path={p} />
+        ))}
+      {sent.length > 0 && (
+        <>
+          <h3>{SENT_TITLE}</h3>
+          {SENT_HERE.filter((p) => sent.includes(p)).map((p) => (
+            <RoomLink key={p} path={p} />
+          ))}
+        </>
+      )}
+    </div>
+  );
+}
+
 /** The two folds on a phone. */
 const FOLDS = [
   { title: "The product and who it’s for", groups: FOOTER_GROUPS.slice(0, 2) },
@@ -115,12 +145,7 @@ export default function Footer({ variant }: { variant?: "slim" }) {
 
           <nav className="gf-footer-links" aria-label="Site">
             {FOOTER_GROUPS.map((g) => (
-              <div key={g.title}>
-                <h2>{g.title}</h2>
-                {g.rooms.map((p) => (
-                  <RoomLink key={p} path={p} />
-                ))}
-              </div>
+              <Group key={g.title} title={g.title} rooms={g.rooms} />
             ))}
           </nav>
 
@@ -135,12 +160,7 @@ export default function Footer({ variant }: { variant?: "slim" }) {
                 </summary>
                 <div className="fold-body">
                   {f.groups.map((g) => (
-                    <div key={g.title}>
-                      <h2>{g.title}</h2>
-                      {g.rooms.map((p) => (
-                        <RoomLink key={p} path={p} />
-                      ))}
-                    </div>
+                    <Group key={g.title} title={g.title} rooms={g.rooms} />
                   ))}
                 </div>
               </details>
