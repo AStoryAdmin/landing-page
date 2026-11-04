@@ -41,7 +41,7 @@ for (const c of B.chapters || []) {
       for (const p of f) if (/^\s*[“"]?(What|Why|How|When|Where|Who|Did|Was|Were|Is|Do|Does)\b[^.]*\?\s*$/.test(p)) fail(`${m.id}: a paragraph that is only a question`);
     });
     if (m.headnote && BANNED.test(m.headnote)) fail(`${m.id}: banned phrase in headnote`);
-    for (const p of m.photos || []) { nPhotos++; if (!IMG.includes(p.img)) fail(`${m.id}: unknown photo key ${p.img}`); if (!p.caption) fail(`${m.id}: photo without caption`); }
+    for (const p of m.photos || []) { nPhotos++; if (String(p.img).startsWith("/mission/")) { if (!fs.existsSync("public" + p.img)) fail(`${m.id}: no file public${p.img}`); if (!(p.ratio > 0)) fail(`${m.id}: a library photo needs ratio (width/height)`); } else if (!IMG.includes(p.img)) fail(`${m.id}: unknown photo key ${p.img}`); if (!p.caption) fail(`${m.id}: photo without caption`); }
     for (const s of m.sides || []) { nSides++; if (!s.heading || !s.body || !s.by) fail(`${m.id}: side needs heading, body, by`); if (words(s.body) > 80) fail(`${m.id}: side ${words(s.body)} words > 80`); if (!/^[A-Z][^,]+, (his|her) .+/.test(s.by)) warn(`${m.id}: side.by should read "Full Name, her daughter"`); if (!/ remembers it (too|differently)/.test(s.heading)) warn(`${m.id}: side.heading should be "<First name> remembers it too" or "… differently"`); }
     if (m.voice) { nVoice++; if (!m.voice.rec || !m.voice.len || !m.voice.quote) fail(`${m.id}: voice needs rec, len, quote`); }
     if (m.kept) { const all = fold(m.faces.flat().join(" ")); if (!all.includes(fold(m.kept))) fail(`${m.id}: kept line is not a verbatim span of her words`); }

@@ -148,3 +148,24 @@ Banned on the page: summary boxes, source tags, layer bars, stats, lesson boxes,
 asked", "A Story asked for more", "nine minutes later", "still alive / for Ellie",
 "what she passes on", "to the reader", "five questions", revenue chart, import demos,
 and any sentence an editor wrote about her ("a testament to", "not just X but Y").
+
+## Raymond, round 3 (4 Nov, branch `raymond-v3`)
+
+Raymond scored 7.65 in round 2, below the bar of 8. The readers said it has no photographs, it reads like a founder's book rather than a grandfather's, and the cover has a rising red chart line.
+
+Pass / fail:
+- R1. At least half of his memories are about home, family or loss, not the company. Before the change it was 5 of 12.
+- R2. The book has three to five photographs from the site's own synthetic library (`public/mission/`), captioned in his voice, and none of them is used on a live page. Result: three (16, 30, 32); 03 and 08 were dropped because the home page and /organizations use them.
+- R3. The cover has no chart line, and its date line and motto are about him, not the company.
+- R4. Every round-2 flag on Raymond is fixed or kept on purpose with a reason: the salesman answer, the email answer, the "one more year" question, the "aged 35 to 40" dateline, the ledger plate without a heading, the speech to strangers in m8, the repeated term sheet in m11, Maya's closing line, "First order!", and "Four-day weeks" read as a case study.
+- R5. The data check, overflow check, lint and build pass, and the covers are re-captured.
+- R6. A cold-reader panel scores Raymond at least 8.0.
+
+| # | Task | Check | State |
+|---|------|-------|-------|
+| R-a | Engine: library photos with a ratio; cover chart line and "First order!" removed; label "A machinist's life" | page renders | done |
+| R-b | Rewrite: cut "Four-day weeks"; add "Spring Lake" (learning to swim from his son) and "My father comes north" (his father's visit and death); new letter, little answers, people, dedication and cover line | `samples-check-data.mjs` OK | done |
+| R-c | Photographs 16, 30, 32 | overflow OK | done |
+| R-d | Checks, covers, panel rounds 3–6 | R5, R6 | done: 7.50 → 7.65 → 8.00 → 7.95; checks pass |
+
+Panel rounds 3–6 are in `docs/plans/sample-books-v2/panel-round{3..6}-raymond.md`. Scores now move ±0.05 between rounds on unchanged text in (c), which is panel variance. R6 sits on the bar, not clearly over it. The panel says the remaining (d) cost is the listen cards and the "What Raymond learned" page, both part of the app's book, so they stay unless Daniel decides otherwise.
