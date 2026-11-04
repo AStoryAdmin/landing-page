@@ -59,31 +59,7 @@ DATA.raymond = {
             "We were married in August 1975 at her mother’s parish. Her father told me at the reception, in Spanish, that she had never once been wrong about money, and I’d do well to remember it. I thought it was a toast. It was instructions.",
             "Marisol came in 1977 and Tomás in 1980. Elena kept the books for a dry cleaner and a plumber from the kitchen table, for cash, so she could stay home. I didn’t know I was watching the best bookkeeper in Kent County learn her trade."
           ]
-        ],
-        photos: [ { img: "/mission/03-1200.webp", ratio: 1.5, pos: "50% 55%", caption: "Burton Street, 1982. Marisol on the step, first one in. Everything we owned still fit in that wagon.", face: 1 } ]
-      },
-      { id: "m4", title: "Elena’s ledger", dateline: "1983 – 2004 · aged 32 to 53", askedBy: "Maya",
-        headnote: "At the kitchen table where the ledgers were kept, the first one open between them.",
-        faces: [
-          [
-            "Your grandmother was the most important person in that company, and nobody knew it. That’s not even a question.",
-            "For twenty-one years, most nights after the kids were down and all day Sunday, she sat at this table with a green ledger, a pencil and an adding machine. Everything with a dollar sign. She chased the late invoices. She handled the bank. She told me which jobs were losing money, usually before I wanted to hear it, and she was never wrong, which was worse.",
-            "She was never on the payroll. She wasn’t on the incorporation papers. Customers who called the house thought she was the receptionist. She let them."
-          ],
-          [
-            "In 1991, when we nearly went under, it was her ledger that showed the bank a way through. Not my machines. Her pencil.",
-            "She went on the papers as a partner in 2004. Twenty-one years late. I was proud and I was stupid, and in 1983 those were the same thing. I thought the company was the machines. It was the machines and the money, and she ran the money. If someone does the work of a partner, put their name on it the first day."
-          ]
-        ],
-        sides: [
-          { heading: "Marisol remembers it too",
-            body: "I was eight. Mom had a column that wouldn’t foot and she’d been at it an hour. I was doing homework across from her and I said, Mom, the seven’s a one. It was. She didn’t say good girl. She slid the ledger over and said, check the rest. I checked the rest. That’s the night I got my job, whatever my business card says now.",
-            by: "Marisol Ortiz, his daughter" }
-        ],
-        voice: { rec: "Oct 2, 2025", len: "0:58", quote: "Your grandmother was the most important person in that company, and nobody knew it." },
-        plate: { kind: "ledger", heading: "Ortiz Precision · 1983",
-          rows: [["Aug","Mill, used","2,300"],["Aug","Rent, Godfrey","180"],["Sep","First order","412"],["Oct","Kerosene","38"],["Nov","Bracket job","1,150"],["Dec","Our draw","0"]],
-          caption: "The first page of Elena’s first ledger. She kept twenty-one of them." }
+        ]
       },
       { id: "m13", title: "Spring Lake, the first week of August", dateline: "August 1987 · aged 36", askedBy: "Maya",
         headnote: "On the porch on a hot evening, Elena in the next chair correcting the years.",
@@ -94,7 +70,7 @@ DATA.raymond = {
           [
             "I couldn’t swim. Where I grew up the pool on our side of town was closed more than it was open, and then I was working. I’d stand in the lake up to my knees and call it swimming.",
             "Then Tomás learned at the Y. He was seven. He walked out to where I was standing and said, Dad, put your face in. It’s just water. I said I knew it was just water. He said, then put your face in.",
-            "It took three Augusts. He never laughed and he counted out loud. That’s how I taught him the lathe ten years later.",
+            "It took three Augusts. He never laughed and he counted out loud. That’s how I taught him the lathe when he was sixteen.",
             "I can swim the length of a dock now. Elena says that’s plenty."
           ]
         ],
@@ -104,26 +80,7 @@ DATA.raymond = {
             body: "He says three Augusts. It was four. The last one he swam in front of Mom on purpose. She clapped from her chair like it was the Olympics. He walked very slowly to his towel.",
             by: "Marisol Ortiz, his daughter" }
         ]
-      },
-      { id: "m14", title: "My father comes north", dateline: "June 1985 – March 1987 · aged 34 to 36", askedBy: "Maya",
-        headnote: "At the kitchen table late in the afternoon, the caliper case open; he closes it before the last part.",
-        faces: [
-          [
-            "My father came north once. June 1985, on the Greyhound, because he didn’t trust airplanes or my driving.",
-            "I wanted him to see the garage on Godfrey Avenue, the mill, the work on the board, the sign. He walked around it a long time and didn’t say anything."
-          ],
-          [
-            "Then he found Elena’s mother’s fan, broken on my bench since Easter, and fixed it. He couldn’t be in a room with tools and not work. When he was done he wiped the bench where his arm had been.",
-            "Outside he looked at the sign. Ortiz Precision. He said, no first name. Good. That was the whole review.",
-            "He died in March 1987. Elena took the call on the hall phone. I drove to San Antonio in twenty-two hours.",
-            "I didn’t cry at the funeral. I cried on the way home, at a gas station in Texarkana, for no reason I could have told you.",
-            "He only came north once. I spent it showing him the mill. I should have shown him the kids."
-          ]
-        ],
-        kept: "no first name. Good.",
-        photos: [ { img: "/mission/08-1200.webp", ratio: 1.5, pos: "40% 50%", caption: "My father at my bench, Godfrey Avenue, June 1985. Elena’s mother’s fan. He wouldn’t sit down.", face: 0 } ],
-        voice: { rec: "Dec 4, 2025", len: "1:19", quote: "My father came north once." }
-      },
+      }
     ]},
 
     { era: "Work & making a living", memories: [
@@ -141,6 +98,29 @@ DATA.raymond = {
           ]
         ],
       },
+      { id: "m4", title: "Elena’s ledger", dateline: "1983 – 2004 · aged 32 to 53", askedBy: "Maya",
+        headnote: "At the kitchen table where the ledgers were kept, the first one open between them.",
+        faces: [
+          [
+            "Your grandmother was the most important person in that company, and nobody knew it. That’s not even a question.",
+            "For twenty-one years, most nights after the kids were down and all day Sunday, she sat at this table with a green ledger, a pencil and an adding machine. Everything with a dollar sign. She chased the late invoices. She handled the bank. She told me which jobs were losing money, usually before I wanted to hear it, and she was never wrong, which was worse.",
+            "She was never on the payroll. She wasn’t on the incorporation papers. Customers who called the house thought she was the receptionist. She let them."
+          ],
+          [
+            "In 1991, when we nearly went under, it was her ledger that showed the bank a way through. Not my machines. Her pencil.",
+            "She went on the papers as a partner in 2004. Twenty-one years late. I was proud and I was stupid, and in 1983 those were the same thing. I thought the company was the machines. It was the machines and the money, and she ran the money."
+          ]
+        ],
+        sides: [
+          { heading: "Marisol remembers it too",
+            body: "I was eight. Mom had a column that wouldn’t foot and she’d been at it an hour. I was doing homework across from her and I said, Mom, the seven’s a one. It was. She didn’t say good girl. She slid the ledger over and said, check the rest. I checked the rest. That’s the night I got my job, whatever my business card says now.",
+            by: "Marisol Ortiz, his daughter" }
+        ],
+        voice: { rec: "Oct 2, 2025", len: "0:58", quote: "Your grandmother was the most important person in that company, and nobody knew it." },
+        plate: { kind: "ledger", heading: "Ortiz Precision · 1983",
+          rows: [["Aug","Savings + loan","11,000"],["Aug","Mill, used","−2,300"],["Aug","Rent ×3, Godfrey","−540"],["Aug","Deposit","−180"],["Aug","Tooling","−900"],["Sep","First order","+412"],["Dec","Our draw","0"]],
+          caption: "The first page of Elena’s first ledger. She kept twenty-one of them." }
+      },
       { id: "m7", title: "Hiring Hector", dateline: "Spring 1984 · aged 33", askedBy: "Maya",
         headnote: "At the shop, standing by the Bridgeport; he runs his thumb along the table to show Maya what Hector did.",
         faces: [
@@ -150,6 +130,27 @@ DATA.raymond = {
             "He came and looked. He walked over to the mill and ran his thumb along the table, the way you check for chips, and then he wiped the table with his rag. I hired him before he’d said what he wanted an hour. It was $7.50. He stayed thirty-eight years. I never put another card on that board."
           ]
         ]
+      }
+    ]},
+
+    { era: "When everything changed", memories: [
+      { id: "m14", title: "My father comes north", dateline: "June 1985 – March 1987 · aged 34 to 36", askedBy: "Maya",
+        headnote: "At the kitchen table late in the afternoon, the caliper case open; he closes it before the last part.",
+        faces: [
+          [
+            "My father came north once. June 1985, on the Greyhound, because he didn’t trust airplanes or my driving.",
+            "I wanted him to see the garage on Godfrey Avenue, the mill, the work on the board, the sign. He walked around it a long time and didn’t say anything."
+          ],
+          [
+            "Then he found Elena’s mother’s fan, broken on my bench since Easter, and fixed it. He couldn’t be in a room with tools and not work. When he was done he wiped the bench where his arm had been.",
+            "Outside he looked at the sign. Ortiz Precision. He said, no first name. Good. That was the whole review.",
+            "He died in March 1987. Elena took the call on the hall phone. We drove to San Antonio in twenty-two hours. I didn’t let her take the wheel once.",
+            "I didn’t cry at the funeral. I cried on the way home, at a gas station in Texarkana, for no reason I could have told you.",
+            "He only came north once. I spent it showing him the mill. I should have shown him the kids."
+          ]
+        ],
+        photos: [ { img: "/mission/16-1200.webp", ratio: 1.5, pos: "50% 50%", caption: "Leaving Grand Rapids, March 1987, on the way down. Elena took it from the passenger seat. I don’t remember the road.", face: 0 } ],
+        voice: { rec: "Dec 4, 2025", len: "1:19", quote: "My father came north once." }
       },
       { id: "m8", title: "The customer who was sixty percent", dateline: "1986 – 1991 · aged 35 to 39", askedBy: "Maya",
         headnote: "In the truck on the way back from Tomás’s shop, on a Thursday afternoon in November.",
@@ -165,10 +166,7 @@ DATA.raymond = {
           ]
         ],
         photos: [ { img: "/mission/32-1200.webp", ratio: 1.5, pos: "50% 50%", caption: "Clay Avenue, 1988, the day we went to look at it. Offices in front. The floor was behind.", face: 0 } ]
-      }
-    ]},
-
-    { era: "When everything changed", memories: [
+      },
       { id: "m9", title: "The Friday I couldn’t make payroll", dateline: "February 8, 1991 · aged 39", askedBy: "Maya",
         headnote: "At the kitchen table, the green ledger for 1991 open to February.",
         faces: [
@@ -198,8 +196,8 @@ DATA.raymond = {
             "The honest reason is I didn’t know what the company was without me in it. I’d walked that floor every morning for thirty-six years. If I handed Tomás the keys, I was going to be a man who used to own a machine shop, and I couldn’t see him yet."
           ],
           [
-            "In March 2019 a private equity firm put an offer on my desk. An outfit that buys companies with borrowed money and sells the pieces. They’d move half the work to Mexico. I kept it in a drawer three months and didn’t tell Tomás. That was wrong.",
-            "Hector found out. He asked who was going to tell the twelve who stayed in 1991. I didn’t have an answer, so that was the answer.",
+            "In March 2019 a private equity firm put an offer on my desk. An outfit that buys companies with borrowed money and sells the pieces. They’d move half the work to Mexico. I kept it on my desk three months and didn’t tell Tomás. That was wrong.",
+            "Hector found out. He asked who was going to tell the ones who stayed in 1991. I didn’t have an answer, so that was the answer.",
             "It was Elena’s idea and Tomás did the work. Fine. Both. The keys went to the people on the floor. Tomás got his own shop, and Hector."
           ]
         ],
@@ -221,7 +219,7 @@ DATA.raymond = {
           ],
           [
             "My last day was a Friday in March 2022. Payday. I signed the payroll one more time, by hand, the way I had since 1983, and then I walked the floor.",
-            "At the end of second shift they called me to the back. Hector had something under a towel. A frame, and in the frame the first bracket I ever made in the garage on Godfrey Avenue. He’d kept it in his toolbox for thirty-eight years. I didn’t know. I’d thought it was gone.",
+            "At the end of first shift they called me to the back. Hector had something under a towel. A frame, and in the frame the first bracket I ever made in the garage on Godfrey Avenue. He’d kept it in his toolbox for thirty-eight years. I didn’t know. I’d thought it was gone.",
             "It runs without me, which was the whole idea."
           ]
         ],
