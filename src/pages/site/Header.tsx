@@ -1,152 +1,62 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
 import { Wordmark } from "./shared";
 import { ArrowIcon } from "./kit/kit";
 import { HeaderShell } from "./chrome.styles";
-import { color, font, media, type } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
-import {
-  BAR,
-  BAR_AFTER,
-  DRAWER_DOORS,
-  DRAWER_MUTED,
-  INVITED_LABEL,
-  ORG_MENU_LABEL,
-  SIGN_IN,
-  bare,
-  isFile,
-  isOrgPage,
-  orgMenu,
-  route,
-  type RoutePath,
-} from "../../lib/nav";
+import { SIGN_IN, TABS, isOrgPage, type Tab } from "../../lib/nav";
 
 /*
- * The bar (premium pass, 2026-11-02, design spec §1):
- *   How it works · Sample books · Pricing · For organizations ▾ · Our story
- *   Sign in  [Start free →]
- * "More" and its panel are gone; Compare, Q&A, Guides, Privacy, Your own
- * story and Contact live in the footer and in context links. The labels
- * come from lib/nav.ts. The startup programs stay out of the bar (2026-10-16)
- * and out of the org menu: /programs is reached from the footer.
+ * The bar (phone-first plan, 2026-11-04, Daniel: "utilize our tabs (really)
+ * there are currently too much. Make it only 3-4 tab."):
  *
- * The org menu copies Radix NavigationMenu: it opens on click, and on hover
- * after 120ms where there is a pointer that hovers; a click on a panel that
- * hover opened keeps it open (only a second click closes it). Esc, an
- * outside pointer and a route change close it; Esc gives focus back to the
- * trigger.
+ *   How it works · Sample books · Pricing · For organizations
+ *   Sign in  [Get the iPhone app →]
  *
- * Below 1180px (media.navBar; spec §1.1 fallback S20, the row does not fit
- * at 1024) the rooms open on a full-screen sheet of the same cloth: five
- * large rows (the org menu becomes a disclosure that opens in place), a
- * quiet 2 × 2 group, then Sign in and the one button.
+ * The way the calm product sites do it (Linear, Arc, Superhuman, Calm,
+ * Headspace, small YC consumer apps): a handful of plain words, no menus
+ * that open, one quiet door for people who already have an account, and
+ * one button. "For organizations" is a single link (no panel); Our story,
+ * For families, the /join door, questions, guides and contact are in the
+ * footer. The phone drawer has the same four rows, then Sign in and the
+ * same button, and nothing else. On the two organization pages the button
+ * stays "Book a demo" (#book), because that is what those pages are for
+ * (spec M11, kept; logged in CHIEF-LOG).
+ *
+ * Below 1180px (media.navBar) the four open on a full-screen sheet of the
+ * same cloth.
  */
 const WIDE = "(min-width:1180px)";
 
-/*
- * Round 3 fix 2 (item 9, Harold #2): whenever the bar folds to Menu (below
- * 1180 px, media.navBar), the invited relative's short door stays in the
- * bar beside Menu, at any text size; the drawer keeps its full row. It
- * steps out below 360 px, where the wordmark and Menu need the room, and
- * while the drawer is open. Not on the two org pages (as in the desktop
- * bar). A different class from the desktop .gf-door, so
- * scripts/nav-count.mjs counts the desktop bar as before.
- */
-const BarDoor = styled(Link)`
-  display: none;
-  ${media.navBar} {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    margin-left: auto;
-    margin-right: -8px;
-    padding: 0 4px;
-    color: inherit;
-    font: 500 ${type.ui} / 1 ${font.ui};
-    text-decoration: none;
-    white-space: nowrap;
-    position: relative;
-    z-index: 2;
-    .is-open & {
-      display: none;
-    }
-  }
-  @media (max-width: 359px) {
-    display: none;
-  }
-`;
-
-/*
- * Round 3 fix 2 (item 14, Maya #9): in the drawer, the two family rows
- * carry their one-line hint (lib/nav.ts) under the label, in a small serif,
- * so "For families" and "Invited to a family's book" read apart. The label
- * stays in <strong>, which nav-count reads.
- */
-const HINTED: RoutePath[] = ["/for-families", "/join"];
-const Hinted = styled.span`
-  display: grid;
-  gap: 4px;
-  small {
-    font: 400 ${type.note} / 1.4 ${font.text};
-    letter-spacing: 0;
-    color: ${color.onDarkMuted};
-  }
-`;
-const HOVER = "(hover: hover) and (pointer: fine)";
-
-function RoomLink({
-  path,
+function TabLink({
+  t,
   pathname,
   onClick,
-  className,
 }: {
-  path: RoutePath;
+  t: Tab;
   pathname: string;
   onClick: () => void;
-  className?: string;
 }) {
-  const r = route(path);
-  const label =
-    HINTED.includes(path) && r.hint ? (
-      <Hinted>
-        <strong>{r.label}</strong>
-        <small>{r.hint}</small>
-      </Hinted>
-    ) : (
-      r.label
-    );
+  const current = t.current(pathname) ? "page" : undefined;
   /* /samples is a page in public/, outside the React router: a router Link
      would show the not-found route, so it needs a full navigation. */
-  return isFile(r.to) ? (
-    <a href={r.to} onClick={onClick} className={className}>
-      {label}
+  return t.file ? (
+    <a href={t.to} onClick={onClick} aria-current={current}>
+      {t.label}
     </a>
   ) : (
-    <Link
-      to={r.to}
-      onClick={onClick}
-      className={className}
-      aria-current={bare(pathname) === r.to ? "page" : undefined}
-    >
-      {label}
+    <Link to={t.to} onClick={onClick} aria-current={current}>
+      {t.label}
     </Link>
   );
 }
 
 export default function Header() {
   const [open, setOpen] = useState(false),
-    [org, setOrg] = useState(false),
     [tucked, setTucked] = useState(false),
     [condensed, setCondensed] = useState(false);
   const header = useRef<HTMLElement>(null),
-    toggle = useRef<HTMLButtonElement>(null),
-    orgToggle = useRef<HTMLButtonElement>(null),
-    orgWrap = useRef<HTMLDivElement>(null),
-    hoverTimer = useRef(0),
-    /* How the open panel was opened: a hover-opened panel survives the click
-       that follows it (Radix). */
-    openedBy = useRef<"hover" | "click" | null>(null);
+    toggle = useRef<HTMLButtonElement>(null);
   const location = useLocation();
   const onOrgPage = isOrgPage(location.pathname);
   /*
@@ -180,38 +90,9 @@ export default function Header() {
     return () => ro.disconnect();
   }, []);
   useEffect(() => {
-    const t = setTimeout(() => {
-      setOpen(false);
-      setOrg(false);
-      openedBy.current = null;
-    }, 0);
+    const t = setTimeout(() => setOpen(false), 0);
     return () => clearTimeout(t);
   }, [location.pathname, location.hash]);
-  useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
-  /* The desktop panel: Esc and an outside pointer close it. In the drawer
-     the disclosure stays until it is toggled or the drawer closes. */
-  useEffect(() => {
-    if (!org || open) return;
-    const key = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOrg(false);
-        openedBy.current = null;
-        orgToggle.current?.focus();
-      }
-    };
-    const outside = (e: PointerEvent) => {
-      if (!orgWrap.current?.contains(e.target as Node)) {
-        setOrg(false);
-        openedBy.current = null;
-      }
-    };
-    document.addEventListener("keydown", key);
-    document.addEventListener("pointerdown", outside);
-    return () => {
-      document.removeEventListener("keydown", key);
-      document.removeEventListener("pointerdown", outside);
-    };
-  }, [org, open]);
   useEffect(() => {
     if (!open) return;
     const old = document.body.style.overflow;
@@ -256,53 +137,13 @@ export default function Header() {
       media.removeEventListener("change", wide);
     };
   }, [open]);
-  const close = () => {
-    setOpen(false);
-    setOrg(false);
-    openedBy.current = null;
-  };
-  const toggleDrawer = () => {
-    /* The org disclosure starts open on the two org pages, closed elsewhere. */
-    if (!open) setOrg(onOrgPage);
-    else setOrg(false);
-    setOpen(!open);
-  };
-  const desktopHover = () =>
-    !open && matchMedia(WIDE).matches && matchMedia(HOVER).matches;
-  const onOrgEnter = () => {
-    if (!desktopHover()) return;
-    window.clearTimeout(hoverTimer.current);
-    if (org) return;
-    hoverTimer.current = window.setTimeout(() => {
-      openedBy.current = "hover";
-      setOrg(true);
-    }, 120);
-  };
-  const onOrgLeave = () => {
-    if (!desktopHover()) return;
-    window.clearTimeout(hoverTimer.current);
-    if (openedBy.current !== "hover") return;
-    hoverTimer.current = window.setTimeout(() => {
-      openedBy.current = null;
-      setOrg(false);
-    }, 200);
-  };
-  const onOrgClick = () => {
-    window.clearTimeout(hoverTimer.current);
-    if (org && openedBy.current === "hover") {
-      openedBy.current = "click";
-      return;
-    }
-    openedBy.current = org ? null : "click";
-    setOrg(!org);
-  };
-  const rows = orgMenu(location.pathname);
+  const close = () => setOpen(false);
   return (
     <HeaderShell
       ref={header}
       className={[
         "gf-header",
-        tucked && !open && !org ? "is-tucked" : "",
+        tucked && !open ? "is-tucked" : "",
         condensed ? "is-condensed" : "",
         open ? "is-open" : "",
       ].join(" ")}
@@ -312,113 +153,21 @@ export default function Header() {
         <span onClick={close}>
           <Wordmark light />
         </span>
-        {!onOrgPage && (
-          <BarDoor to="/join" onClick={close} className="gf-bar-door">
-            {INVITED_LABEL}
-          </BarDoor>
-        )}
         <button
           className="gf-menu-toggle"
           ref={toggle}
           aria-controls="site-navigation"
           aria-expanded={open}
-          onClick={toggleDrawer}
+          onClick={() => setOpen(!open)}
         >
           {open ? "Close" : "Menu"} <i aria-hidden="true" />
         </button>
         <nav id="site-navigation" aria-label="Main navigation">
           <div className="gf-nav-links">
-            {BAR.map((p) => (
-              <RoomLink
-                key={p}
-                path={p}
-                pathname={location.pathname}
-                onClick={close}
-              />
-            ))}
-            {/* Drawer only (round 3 fix 1, item 10): the visitor's own
-                pages, in the main list and its one size, before the
-                organizations'. Hidden in the desktop bar (chrome.styles.ts),
-                which does not change. */}
-            {DRAWER_DOORS.map((p) => (
-              <RoomLink
-                key={p}
-                path={p}
-                pathname={location.pathname}
-                onClick={close}
-                className="gf-drawer-only"
-              />
-            ))}
-            <div
-              className="org-wrap"
-              ref={orgWrap}
-              onPointerEnter={onOrgEnter}
-              onPointerLeave={onOrgLeave}
-              onBlur={(e) => {
-                if (
-                  !open &&
-                  !e.currentTarget.contains(e.relatedTarget as Node)
-                ) {
-                  setOrg(false);
-                  openedBy.current = null;
-                }
-              }}
-            >
-              <button
-                ref={orgToggle}
-                className="org-toggle"
-                aria-expanded={org}
-                aria-controls="org-panel"
-                aria-current={onOrgPage ? "true" : undefined}
-                onClick={onOrgClick}
-              >
-                {ORG_MENU_LABEL}
-                <svg
-                  className="org-chevron"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                  aria-hidden="true"
-                >
-                  <path d="m5 7 5 5 5-5" />
-                </svg>
-              </button>
-              <div id="org-panel" className="org-panel" hidden={!org}>
-                {rows.map((r) => (
-                  <Link
-                    key={r.to}
-                    to={r.to}
-                    onClick={close}
-                    className={r.to.includes("#") ? "org-demo" : undefined}
-                    aria-current={
-                      bare(location.pathname) === r.to ? "page" : undefined
-                    }
-                  >
-                    <span>
-                      <strong>{r.label}</strong>
-                      {r.hint && <small>{r.hint}</small>}
-                    </span>
-                    {r.to.includes("#") && <ArrowIcon />}
-                  </Link>
-                ))}
-              </div>
-            </div>
-            {BAR_AFTER.map((p) => (
-              <RoomLink
-                key={p}
-                path={p}
-                pathname={location.pathname}
-                onClick={close}
-              />
-            ))}
-          </div>
-          {/* The drawer's quiet group; not shown in the desktop bar. */}
-          <div className="gf-nav-muted">
-            {DRAWER_MUTED.map((p) => (
-              <RoomLink
-                key={p}
-                path={p}
+            {TABS.map((t) => (
+              <TabLink
+                key={t.path}
+                t={t}
                 pathname={location.pathname}
                 onClick={close}
               />
@@ -426,19 +175,6 @@ export default function Header() {
           </div>
           {/* The door for people who already have an account, beside the one action. */}
           <div className="gf-nav-right">
-            {/* Round 3 (plan task 1, Tuan): the invited relative's door in
-                the desktop bar, a quiet link beside Sign in. The drawer has
-                its full row ("Invited to a family's book"), so this one is
-                hidden there (chrome.styles.ts). scripts/nav-count.mjs
-                counts it apart from the four rooms. Not on the two org
-                pages: their wider "Book a demo" leaves no room at 1180, and
-                their reader is not the invited relative (spec M11 keeps
-                the bar lean there too). */}
-            {!onOrgPage && (
-              <Link className="gf-door" to="/join" onClick={close}>
-                {INVITED_LABEL}
-              </Link>
-            )}
             <a className="gf-signin" href={SIGN_IN.to} onClick={close}>
               {SIGN_IN.label}
             </a>
@@ -448,9 +184,16 @@ export default function Header() {
                 Book a demo <ArrowIcon />
               </a>
             ) : (
-              <a className="gf-button" href={START_HREF} onClick={close}>
+              <Link
+                className="gf-button"
+                to={START_HREF}
+                onClick={close}
+                aria-current={
+                  location.pathname.startsWith(START_HREF) ? "page" : undefined
+                }
+              >
                 {START_LABEL} <ArrowIcon />
-              </a>
+              </Link>
             )}
           </div>
         </nav>

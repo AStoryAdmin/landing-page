@@ -31,8 +31,9 @@ const monthlyPrice = monthly.price.replace(/\/mo$/, "");
  *                    the photograph can't", with how it works in a sentence.
  *   3. EveryVoice    one memory, the family's versions flying into it, then
  *                    "One life. Many witnesses." on the cloth.
- *   4. FamilyBook    the Hartleys' book (a sample) to open and turn, cover to
- *                    today; the way to the three sample books on /samples.
+ *   4. FamilyBook    a teaser since 2026-11-04 (phone-first plan): one open
+ *                    spread of the Hartleys' sample book and one line; its
+ *                    one action is "Open the sample books" -> /samples.
  *   5. Invitation    the site's close on the cloth, with the one price line.
  *
  * Left out, and why: the intro cover (Intro.tsx; it held the page for five
@@ -66,7 +67,10 @@ export default function Home() {
             Start the family’s book <em>today.</em>
           </>
         }
-        line={`The whole family can write in the archive for free in your browser, with no card. The calls are from ${monthlyPrice} a month and ring in the A Story app on your parent’s iPhone, now in private beta.`}
+        /* Phone-first plan (2026-11-04): the web app is no longer
+           advertised. Sources: the price, lib/pricing.ts OTHER_PLANS
+           "monthly"; the beta, faqData.ts:69; the family, pricing.ts:183. */
+        line={`The calls ring in the A Story app on your parent’s iPhone, now in private beta, from ${monthlyPrice} a month. Inviting family, writing and reading never cost extra.`}
       />
     </>
   );

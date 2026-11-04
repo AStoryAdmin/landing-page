@@ -37,7 +37,7 @@ export const ROUTES = {
      was false and is not used anywhere. */
   "/pricing": {
     label: "Pricing",
-    hint: "Everyone starts free. Writing and reading never cost extra.",
+    hint: "Writing and reading never cost extra.",
   },
   "/our-story": { label: "Our story", hint: "Why we started, in our own words." },
   "/for-families": {
@@ -88,14 +88,18 @@ export const ROUTES = {
   /* The short version at the top of the privacy policy (privacy.tsx:89-122,
      LegalLayout's h2#legal-short). */
   "/privacy#legal-short": { label: "Privacy, in short", href: "/privacy/#legal-short" },
+  /* Phone-first plan (2026-11-04): the one action's page. The hint is
+     faqData.ts:69 ("The calls ring in the A Story iPhone app, which is in a
+     private beta"), shortened. */
+  "/get-the-app": {
+    label: "Get the iPhone app",
+    hint: "The calls ring in the A Story iPhone app, in a private beta.",
+  },
 } as const satisfies Record<string, RouteInfo>;
 
-/** The web app's sign-in: a quiet text link beside the one button. */
+/** The web app's sign-in: a quiet text link beside the one button. Kept for
+    the families already in a book (phone-first plan, 2026-11-04). */
 export const SIGN_IN = { label: "Sign in", to: APP.signIn } as const;
-
-/** The desktop bar's short form of the /join door (round 3, plan task 1):
-    a quiet link beside Sign in, hidden in the drawer, which has the full row. */
-export const INVITED_LABEL = "Invited?";
 
 export type RoutePath = keyof typeof ROUTES;
 
@@ -111,41 +115,40 @@ export const bare = (pathname: string) => pathname.replace(/(.)\/$/, "$1");
 export const ORG_PAGES = new Set(["/organizations", "/care-communities"]);
 export const isOrgPage = (pathname: string) => ORG_PAGES.has(bare(pathname));
 
-/** The desktop bar's text items, in order. The org menu sits fourth. */
-export const BAR: RoutePath[] = ["/how-it-works", "/samples", "/pricing"];
-export const BAR_AFTER: RoutePath[] = ["/our-story"];
-export const ORG_MENU_LABEL = "For organizations";
-/** The org menu's rows. "Book a demo" is left out on the org pages (spec M11). */
-export const orgMenu = (pathname: string) =>
-  (["/care-communities", "/organizations", "/organizations#book"] as RoutePath[])
-    .filter((p) => !(p === "/organizations#book" && isOrgPage(pathname)))
-    .map(route);
-
-/** Round 3 fix 1 (item 10, Maya and Harold): the drawer's main list is one
-    run in one type size, the visitor's own pages before the organizations':
-    How it works, Sample books, Pricing, then these three (drawer only, not
-    in the desktop bar), then For organizations and Our story. */
-export const DRAWER_DOORS: RoutePath[] = [
-  "/for-families",
-  "/join",
-  "/how-it-works#being-asked",
+/**
+ * The bar (phone-first plan, 2026-11-04: "Make it only 3-4 tab"). Four
+ * tabs, the same four in the laptop bar and the phone drawer, then a small
+ * Sign in and the one button. "For organizations" is a single link to
+ * /organizations, which links on to care communities; it reads as current
+ * on both pages. Our story, For families, the /join door and the rest live
+ * in the footer.
+ */
+export const ORG_TAB_LABEL = "For organizations";
+export type Tab = { path: RoutePath; label: string; to: string; file?: boolean; current: (pathname: string) => boolean };
+const tab = (path: RoutePath, label?: string, also: string[] = []): Tab => {
+  const r = route(path);
+  return {
+    path,
+    label: label ?? r.label,
+    to: r.to,
+    file: r.file,
+    current: (pathname) => [r.to, ...also].includes(bare(pathname)),
+  };
+};
+export const TABS: Tab[] = [
+  tab("/how-it-works"),
+  tab("/samples"),
+  tab("/pricing"),
+  tab("/organizations", ORG_TAB_LABEL, ["/care-communities"]),
 ];
 
-/** The drawer's quiet group, under the main list. */
-export const DRAWER_MUTED: RoutePath[] = [
-  "/questions",
-  "/compare",
-  "/guides",
-  "/contact",
-];
-
-/** The footer's four columns: 18 page links, no repeats (spec §1.3; "Privacy,
+/** The footer's four columns: 19 page links, no repeats ("Get the iPhone app" added by the phone-first plan, 2026-11-04; spec §1.3; "Privacy,
     in short" added in panel round 2, CHIEF-LOG B1.3; "Asked to tell your
     story?" above "Your own story" in round 3 fix 2, item 8, Harold). */
 export const FOOTER_GROUPS: { title: string; rooms: RoutePath[] }[] = [
   {
     title: "The product",
-    rooms: ["/how-it-works", "/samples", "/pricing", "/compare"],
+    rooms: ["/how-it-works", "/samples", "/pricing", "/compare", "/get-the-app"],
   },
   {
     title: "Who it’s for",

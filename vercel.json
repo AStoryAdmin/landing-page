@@ -53,6 +53,10 @@
       "destination": "/contact/index.html"
     },
     {
+      "source": "/get-the-app",
+      "destination": "/get-the-app/index.html"
+    },
+    {
       "source": "/privacy",
       "destination": "/privacy/index.html"
     },

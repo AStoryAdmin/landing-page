@@ -951,3 +951,12 @@ Commits on `site-premium` (base 104779a): 07e1b35, 96b2c37, 79e19ab, 32ef203, 5c
 - **copy-check:** one HIT on /pricing, "Stop paying" (the section heading kept by chief ruling, CHIEF-LOG B3, and now the Express card's link to it, as the brief asked).
 - **film-check:** Edge 1440 and 390 pass; WebKit still not installed.
 - **Request (B1 / chief):** `public/samples/index.html` copies the footer by hand and now lacks "Asked to tell your story?" and the drawer hints; it needs the samples-chrome regeneration logged in fix 1 (`scripts/samples-chrome.mjs:196`, `\r?\n`).
+
+## Phone-first requests
+
+From Builder A (pf/a, shell + action + home), 2026-11-04:
+
+- **Start / sign-up doors (owners: `index.html`, `deploy/cloudfront-viewer-request.js`, `qa/routing/cloudfront.test.mjs`, `src/pages/site/Start.tsx`, `AppDoor.tsx`):** `/start` (not `?intent=demo`), `/sign-up` and `/signup` still send a stranger to `app.astoryapp.com/create-account` (`index.html:80`, `cloudfront-viewer-request.js:99`), and the prerendered `/start` page shows a "Start free" link to it (AppDoor `create-account` door, `AppDoor.tsx:105-112`). Suggest: send those three (without `?next=/reserve`) to `/get-the-app`, all three places together so `test:routing` keeps agreeing. Left alone by A: not A's files, and the edge function must change with them.
+- **Page copy (Builder B):** `faqData.ts:65` ("Start free at app.astoryapp.com...") and the Pricing "Start free today" lines (`Pricing.tsx:1474`) now sit next to a button that reads "Get the iPhone app"; `Families.tsx:321` appends `?for=someone` to `/get-the-app` (harmless; the page ignores it).
+- **`scripts/samples-chrome.mjs:196`:** still fails on a CRLF checkout (`<script>\n`); A converted `public/samples/index.html` to LF before running it (git normalises the endings). A one-character fix (`\r?\n`) belongs to its owner.
+- **Assumption logged:** on `/organizations` and `/care-communities` the bar's button stays "Book a demo" (#book), as spec M11; everywhere else it is "Get the iPhone app". `scripts/nav-count.mjs` encodes this.

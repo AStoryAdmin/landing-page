@@ -105,6 +105,11 @@ const MISSING_COLUMN = new Set(["42703", "PGRST204"]);
 /** Everything the extra columns would have held, as one readable line. */
 function foldedNote(lead: Lead): string {
   return [
+    /* An email-only lead (the iPhone invite) has no phone number, so the
+       folded line would be the same for everyone, and supabase/
+       phone-first.sql's unique index on phone would turn the second person
+       into a "duplicate". The address keeps each folded line unique. */
+    !normalizePhone(lead.phone) && lead.email?.trim() && `Email: ${lead.email.trim().toLowerCase()}`,
     lead.giftFor && `For: ${lead.giftFor}`,
     lead.neededBy && `Needed by: ${lead.neededBy}`,
     lead.note && `Note: ${lead.note}`,
@@ -114,12 +119,38 @@ function foldedNote(lead: Lead): string {
     .join(" · ");
 }
 
+/**
+ * The iPhone invite (phone-first plan, 2026-11-04): /get-the-app asks for
+ * an email and whether the person who will be called has an iPhone. Its
+ * source ends with this intent, so the row is easy to find in
+ * waitlist_signups and the fallback email says what was asked for.
+ */
+export const INVITE_INTENT = ":iphone_invite";
+
+/** The fallback for an invite: the same address as every other fallback
+    (CONTACT.waitlist), with the request already written. */
+const inviteMailto = (lead: Lead) =>
+  CONTACT.waitlist.replace(/\?.*$/, "") +
+  `?subject=${encodeURIComponent("An invite to the A Story iPhone app")}` +
+  `&body=${encodeURIComponent(
+    [
+      "Hi - I'd like an invite to the A Story iPhone app.",
+      "",
+      lead.email?.trim() ? `My email: ${lead.email.trim()}` : null,
+      lead.note || null,
+    ]
+      .filter((x): x is string => x !== null)
+      .join("\n"),
+  )}`;
+
 export async function submitLead(lead: Lead): Promise<LeadResult> {
-  const fallbackMailto = lead.source.endsWith(":demo")
-    ? CONTACT.demo
-    : lead.giftFor?.trim()
-      ? CONTACT.gift
-      : CONTACT.waitlist;
+  const fallbackMailto = lead.source.endsWith(INVITE_INTENT)
+    ? inviteMailto(lead)
+    : lead.source.endsWith(":demo")
+      ? CONTACT.demo
+      : lead.giftFor?.trim()
+        ? CONTACT.gift
+        : CONTACT.waitlist;
   try {
     const { getSupabase, isSupabaseConfigured } = await loadSupabase();
     const supabase = getSupabase();

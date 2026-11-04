@@ -3,7 +3,7 @@
  *
  * On a phone the opening's button is gone after the first screen, and the
  * next one is several screens down. Once the opening has scrolled out of
- * view, the site's primary action - "Start free", the same pill as
+ * view, the site's primary action - "Get the iPhone app" (lib/app.ts), the same pill as
  * everywhere else - sits in one bar at the foot of the window, inside the
  * safe area. Nothing else is in the bar: no countdown, no line of urgency.
  *

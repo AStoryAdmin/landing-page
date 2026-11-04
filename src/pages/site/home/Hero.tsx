@@ -6,8 +6,9 @@
  * dinner, everyone listening, nobody writing it down - the thing A Story is
  * trying to catch. The headline is the app's own line ("Every life holds a
  * story worth keeping.", Bao 2026-10-23), then one sentence on what A Story
- * is, the door (Start free), and the honest small print: the calls ring in the A
- * Story iPhone app, in private beta, which the parent installs.
+ * is, the door (Get the iPhone app, lib/app.ts), and the honest small print:
+ * the calls ring in the A Story iPhone app, in private beta, and the family
+ * reads and adds in any browser (faqData.ts:69).
  *
  * Type floor (Bao, 2026-10-24: "i despised the small text everywhere"): the
  * sentence is EB Garamond at 20px or more (18px on a phone), the small print
@@ -191,8 +192,8 @@ export default function Hero() {
           </PrimaryLink>
         </div>
         <p className="hero-small">
-          Start free in your browser, no card. The calls are in private beta and
-          ring in the A Story app on your parent’s iPhone.
+          The calls ring in the A Story app on your parent’s iPhone, in a
+          private beta. The family reads and adds in any browser.
         </p>
       </Frame>
     </Scene>
