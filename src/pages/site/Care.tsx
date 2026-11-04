@@ -167,8 +167,8 @@ const Know = styled(Chapter)`
     gap: clamp(${space.xl}, 6vw, calc(${space.xxxl} + ${space.xxxl} + ${space.sm}));
     align-items: center;
   }
-  /* A memory page in the real app (public/app/memory.webp): the object of
-     this room, one treatment, no print. */
+  /* A person's page in the real app (public/app/person.webp since
+     phone-first fix 3): the object of this room, one treatment, no print. */
   .shot {
     display: grid;
     justify-items: center;
@@ -178,11 +178,10 @@ const Know = styled(Chapter)`
   .shot .device {
     width: min(100%, 320px);
   }
-  /* Round 3 fix 1 (item 12b, Denise): the memory page stops under "Who's in
-     it / Add people", so the capture's red delete button, its save date and
-     "2 waiting for you" never show. CSS only (same geometry as the hero:
-     "Created by" starts at 1.53 x the device width; the band ends at 1.49 x,
-     fading over its last 10 %). Phones keep their shorter band below. */
+  /* Round 3 fix 1 (item 12b): a band 1.49 x the device width, fading over
+     its last 10 %. On person.webp (phone-first fix 3) it ends inside the
+     short life story, before the editable rows and "Linda suggests".
+     Phones keep their shorter band below. */
   @media (min-width: 861px) {
     .shot .device {
       aspect-ratio: 1 / 1.49;
@@ -218,8 +217,8 @@ const Know = styled(Chapter)`
     .row {
       gap: ${space.lg};
     }
-    /* The top of the memory page (photograph, title, her words), fading
-       out, so the room stays near its old height on a phone. */
+    /* The top of the person page (her name, the four actions, "for the
+       family only"), fading out, so the room keeps its height. */
     .shot .device {
       width: min(62vw, 240px);
       height: clamp(240px, 62vw, 290px);
@@ -831,6 +830,71 @@ export default function Care() {
             </ul>
           </details>
         </Frame>
+      </Need>
+
+      <Know
+        ref={know}
+        $ground="ivory"
+        id="know"
+        aria-labelledby="know-title"
+      >
+        <Frame className="row">
+          <figure className="shot" data-rise="settle">
+            <div className="device">
+              {/* Phone-first fix 3 (item 3, Denise #4): the memory capture
+                  showed a "Public" badge on a resident's memory; this is
+                  the person page (public/app/person.webp), whose band shows
+                  "Living · Details are for the family only" and no
+                  Public, delete or save-date chrome. */}
+              <Phone
+                width="100%"
+                label="A person’s page in the A Story app: Rose Miller, your grandmother, born 1945, marked “Details are for the family only”, with a few lines about her life."
+              >
+                <AppShot name="person" />
+              </Phone>
+            </div>
+            <figcaption>
+              A person’s page in the app: who she is, with details kept for
+              the family only.
+            </figcaption>
+          </figure>
+          <div className="words">
+            <Statement id="know-title" $size="lg">
+              Know the person <em>behind the care.</em>
+            </Statement>
+            <p data-rise>
+              A Story records personal stories. It is not a clinical assessment
+              or treatment.
+            </p>
+            <RuledSteps
+              steps={[
+                [
+                  "Start with what they choose.",
+                  "A photograph, a recipe or a song can open a conversation. It is an invitation, never a test of what someone remembers.",
+                ],
+                [
+                  "Let the family fill in the edges.",
+                  "Relatives recognise faces, remember names and bring their own accounts, each beside the resident’s words.",
+                ],
+                [
+                  "A few lines before the next shift.",
+                  "What they did for a living, who they miss, the song that settles them.",
+                ],
+              ]}
+            />
+            <p className="film">
+              <TextAnchor href="/how-it-works#film">
+                See a call become a book&nbsp;·&nbsp;49&nbsp;s
+              </TextAnchor>
+            </p>
+          </div>
+        </Frame>
+      </Know>
+
+      {/* Phone-first fix 3 (item 4, Denise #5): the person before the
+          paperwork. "What we can say today" and the review questions
+          follow "Know the person", in the same room styles. */}
+      <Need $ground="paper" $tight aria-labelledby="say-title">
         <Frame className="row say" id="say" style={{ scrollMarginTop: 80 }}>
           <h2 id="say-title">What we can say today</h2>
           <div>
@@ -871,60 +935,6 @@ export default function Care() {
           </div>
         </Frame>
       </Need>
-
-      <Know
-        ref={know}
-        $ground="ivory"
-        id="know"
-        aria-labelledby="know-title"
-      >
-        <Frame className="row">
-          <figure className="shot" data-rise="settle">
-            <div className="device">
-              <Phone
-                width="100%"
-                label="A memory page in the A Story app: “The house with the blue door”, 1951, with the storyteller’s words, her recording, and the people who added to it."
-              >
-                <AppShot name="memory" />
-              </Phone>
-            </div>
-            <figcaption>
-              A memory page in the app: her words from the call, and who
-              added what.
-            </figcaption>
-          </figure>
-          <div className="words">
-            <Statement id="know-title" $size="lg">
-              Know the person <em>behind the care.</em>
-            </Statement>
-            <p data-rise>
-              A Story records personal stories. It is not a clinical assessment
-              or treatment.
-            </p>
-            <RuledSteps
-              steps={[
-                [
-                  "Start with what they choose.",
-                  "A photograph, a recipe or a song can open a conversation. It is an invitation, never a test of what someone remembers.",
-                ],
-                [
-                  "Let the family fill in the edges.",
-                  "Relatives recognise faces, remember names and bring their own accounts, each beside the resident’s words.",
-                ],
-                [
-                  "A few lines before the next shift.",
-                  "What they did for a living, who they miss, the song that settles them.",
-                ],
-              ]}
-            />
-            <p className="film">
-              <TextAnchor href="/how-it-works#film">
-                See a call become a book&nbsp;·&nbsp;49&nbsp;s
-              </TextAnchor>
-            </p>
-          </div>
-        </Frame>
-      </Know>
 
       <Circle>
       <QuoteBand
