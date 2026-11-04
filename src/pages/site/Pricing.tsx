@@ -47,7 +47,6 @@ import {
 import { checkoutFor, isCheckoutLive } from "../../lib/checkout";
 import { START_HREF, START_LABEL } from "../../lib/app";
 import { QUESTION_COUNT } from "../../lib/product";
-import { TODAY_NOTE } from "../../lib/today";
 import TodayNow from "./TodayNow";
 import { WHO_HEARS_SHORT } from "../../lib/hears";
 import { ArrowIcon, PageOpening } from "./kit/kit";
@@ -1194,7 +1193,8 @@ function HeroPrice() {
           prices. Words unchanged. */}
       <div className="after">
         <p>
-          {TODAY_NOTE}{" "}
+          {/* Phone-first plan (supervisor review): TODAY_NOTE left this
+              line; the opening's status line and the TodayNow block say it. */}
           <Link to="/care-communities" className="care-link">
             Care communities and organizations{" "}→
           </Link>
@@ -1474,8 +1474,7 @@ export default function Pricing() {
                     </p>
                     {!isCheckoutLive(p.id) && (
                       <p className="card-note">
-                        The calls aren’t on sale yet. Today they come by
-                        invite.
+                        The calls aren’t on sale yet.
                       </p>
                     )}
                   </>

@@ -55,7 +55,6 @@ import {
   type,
 } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
-import TodayNow from "./TodayNow";
 
 /* ── The reasons ───────────────────────────────────────────────────────── */
 
@@ -622,8 +621,8 @@ function PhoneRoom() {
             <dd>
               The calls ring in the A Story app on it, at the hour your family
               picked.
-              The app is in a private beta: they install it once, and we help
-              you set it up.
+              The app is in a private beta, by invite: they install it once,
+              and we help you set it up.
             </dd>
           </div>
           <div>
@@ -728,8 +727,7 @@ export default function Families() {
               {/* Phone-first plan task 4 (sources: lib/today.ts:13,
                   faqData.ts:40 and :44, plan :16). */}
               A Story rings them in its iPhone app and asks about their life.
-              The calls come by invite today; the whole family reads and adds
-              free.
+              The whole family reads and adds, free.
             </>
           }
           actions={
@@ -764,9 +762,11 @@ export default function Families() {
         />
       </Fit>
 
+      {/* Phone-first plan task 4: PhoneRoom is this page's "today" (the
+          calls by invite, the family in any browser). The TodayNow block
+          stood under it and said it again (supervisor review; panel-r3.md
+          :59, :95). */}
       <PhoneRoom />
-      {/* Phone-first plan task 4: what works now, what comes by invite. */}
-      <TodayNow action={false} />
       <OccasionsRoom />
       <ReasonsRoom />
 
