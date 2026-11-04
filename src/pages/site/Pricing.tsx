@@ -130,6 +130,31 @@ const Plans = styled(Chapter)`
     text-transform: uppercase;
     color: ${color.goldOnLight};
   }
+  /* Round 3 fix 2 (item 4b): Express's "One time" labels its own "nothing
+     renews" line, in the tag's type and the card's quiet ink (not the
+     gold of "Recommended", which stays on the yearly plan). */
+  .plan .tag.quiet {
+    color: ${color.bodyMuted};
+  }
+  /* Round 3 fix 2 (items 4a, 4c): the Express card answers "can I buy it"
+     and "what about after" itself, in the card's serif. */
+  .plan .card-note {
+    margin-top: 10px;
+    font: 400 ${type.read} / 1.45 ${font.text};
+    color: ${color.body};
+  }
+  .plan .card-note a {
+    display: inline-block;
+    padding-block: 11px;
+    color: ${color.primary};
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+  .plan .card-note + .card-note {
+    margin-top: 0;
+  }
   .who {
     margin-top: 8px;
     font: 400 ${type.read} / 1.45 ${font.text};
@@ -901,6 +926,25 @@ const HeroObject = styled.div`
     border-radius: ${radius.sm};
     box-shadow: ${shadow.md};
   }
+  .after {
+    grid-column: 1 / -1;
+    display: grid;
+    justify-items: start;
+    gap: ${space.xs};
+  }
+  .after p {
+    margin: 0;
+    max-width: 60ch;
+    font: 400 ${type.note} / 1.55 ${font.ui};
+    color: var(--muted);
+  }
+  .after .care-link {
+    display: inline-block;
+    padding-block: 11px;
+    color: var(--ink);
+    font-weight: 600;
+    text-underline-offset: 3px;
+  }
   .cover figcaption {
     margin-top: 12px;
     font: 500 clamp(19px, 1.2rem + 0.2vw, 24px) / 1.15 ${font.script};
@@ -1061,11 +1105,6 @@ const HeroWords = styled(PhonePairs)`
     text-underline-offset: 0.18em;
     padding-block: 13px;
   }
-  .opening-note .care-link {
-    display: inline-block;
-    padding-block: 11px;
-    font-weight: 600;
-  }
   /* Round 3 fix 1 (item 9): on a phone the price card comes before the
      sample cover, and its row for the calls (Express, $79, one time, nothing
      renews) comes first, so Express is in the first screen. Visual order
@@ -1073,6 +1112,9 @@ const HeroWords = styled(PhonePairs)`
   ${media.sm} {
     .opening-object .cover {
       order: 2;
+    }
+    .opening-object .after {
+      order: 3;
     }
     .opening-object .cols > li:nth-child(2) {
       order: -1;
@@ -1159,11 +1201,25 @@ function HeroPrice() {
           fetchPriority="high"
           decoding="async"
         />
-        <figcaption>
-          <a href="/samples">The Ledger, one of three sample books</a>
-        </figcaption>
+        {/* Round 3 fix 2 (item 5, Maya #10): no caption; the sample
+            books are linked lower on the page. */}
       </figure>
       <PriceCard />
+      {/* Round 3 fix 2 (item 5, Maya #4): the today note, the film and the
+          organizations' door moved here from under the opening's one
+          button, so the first screen is one action, one link, then the
+          prices. Words unchanged. */}
+      <div className="after">
+        <p>
+          {TODAY_NOTE}{" "}
+          <Link to="/care-communities" className="care-link">
+            Care communities and organizations{" "}→
+          </Link>
+        </p>
+        <TextLink to="/how-it-works#film" className="film-link">
+          Watch the film · 49 s
+        </TextLink>
+      </div>
     </HeroObject>
   );
 }
@@ -1372,26 +1428,13 @@ export default function Pricing() {
               </span>
             </>
           }
+          /* Round 3 fix 2 (item 5): one action here. The film link, the
+             today note and the organizations' door (fix 1, item 9) sit
+             under the price strip (HeroPrice). */
           actions={
-            <>
-              <PrimaryAnchor href={START_HREF}>
-                {START_LABEL} <ArrowIcon />
-              </PrimaryAnchor>
-              <TextLink to="/how-it-works#film" className="film-link">
-                Watch the film · 49 s
-              </TextLink>
-            </>
-          }
-          note={
-            <>
-              {TODAY_NOTE}{" "}
-              {/* Round 3 fix 1 (item 9, Denise): the organizations' door in
-                  the first screen. The label is the /pricing question
-                  "Care communities and organizations" below. */}
-              <Link to="/care-communities" className="care-link">
-                Care communities and organizations{" "}→
-              </Link>
-            </>
+            <PrimaryAnchor href={START_HREF}>
+              {START_LABEL} <ArrowIcon />
+            </PrimaryAnchor>
           }
           object={<HeroPrice />}
         />
@@ -1425,6 +1468,12 @@ export default function Pricing() {
                 <div className="plan-top">
                   <h2>{p.name}</h2>
                   {p.featured && <span className="tag">Recommended</span>}
+                  {/* Round 3 fix 2 (item 4b): labels the "one time ·
+                      nothing renews" line (pricing.ts express.period).
+                      Not a recommendation. */}
+                  {p.id === "express" && (
+                    <span className="tag quiet">One time</span>
+                  )}
                 </div>
                 <p className="who">{p.who}</p>
                 <p className="price">{p.price}</p>
@@ -1432,6 +1481,31 @@ export default function Pricing() {
                   {p.period}
                   {p.monthlyEquivalent && ` · ${p.monthlyEquivalent}`}
                 </p>
+                {/* Round 3 fix 2 (items 4a, 4c, Maya #4-#6), Express only:
+                      "Stop paying, and it is still yours."  this page's
+                                                             heading below
+                                                             (#yours)
+                      "The calls aren’t on sale yet: $1 holds your place."
+                                                             the status line
+                                                             above, and
+                                                             Reserve.tsx:762
+                    Nothing about leftover minutes (blocked on Daniel). */}
+                {p.id === "express" && (
+                  <>
+                    <p className="card-note">
+                      <a href="#yours">Stop paying, and it is still yours.</a>
+                    </p>
+                    {!isCheckoutLive(p.id) && (
+                      <p className="card-note">
+                        The calls aren’t on sale yet:{" "}
+                        {OFFERS.reserve.price} holds your place.{" "}
+                        <Link to={checkoutFor(p.id)}>
+                          Reserve for {OFFERS.reserve.price}
+                        </Link>
+                      </p>
+                    )}
+                  </>
+                )}
                 <p className="meter">{p.meter}</p>
                 <p className="meter-note">{p.meterNote}</p>
                 <ul>
@@ -1516,7 +1590,13 @@ export default function Pricing() {
           §2.5), then the film link. The heading stays "Stop paying, and it
           is still yours." by chief ruling (CHIEF-LOG B3), over the spec
           §4B:477 rename. */}
-      <Forever ref={forever} $ground="paper" aria-labelledby="forever-title">
+      <Forever
+        ref={forever}
+        $ground="paper"
+        id="yours"
+        aria-labelledby="forever-title"
+        style={{ scrollMarginTop: 80 }}
+      >
         <Frame>
           <SplitHead>
             <Statement id="forever-title" $size="lg" data-lines>
