@@ -176,7 +176,7 @@ export const ORG_GROUP = {
       /* faqData.ts "Will it ring on another phone or tablet?";
          Organizations.tsx NEED "we help them install the app"; Care.tsx
          "a staff member starts a conversation together with them". */
-      a: "Before launch, A Story can only ring an iPhone, so each storyteller needs one, and we help install the app. Where a resident has none, a staff member can start a conversation together with them. Shared devices for a floor or a class: ask on the demo.",
+      a: "Today, A Story rings on an iPhone, so each storyteller needs one, and we help install the app. Where a resident has none, a staff member can start a conversation together with them. Shared devices for a floor or a class: ask on the demo.",
     },
     {
       q: "Where is data stored, and what about HIPAA or a BAA?",

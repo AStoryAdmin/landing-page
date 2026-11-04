@@ -45,7 +45,7 @@ export const groups = [
       },
       {
         q: "Will it ring on another phone or tablet?",
-        a: "Before launch, A Story can only ring an iPhone. On other phones, it reminds them to write instead.",
+        a: "Today, A Story rings on an iPhone. On other phones, it reminds them to write instead.",
       },
     ],
   },

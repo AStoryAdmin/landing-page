@@ -809,7 +809,7 @@ export default function Reserve() {
           {iphone === "no" && (
             <>
               <p className="small" role="status">
-                Before launch, A Story can only ring an iPhone - on other phones
+                Today, A Story rings on an iPhone - on other phones
                 it reminds them to write instead, which is not what a founding
                 place is for. A dollar holds your place instead.
               </p>

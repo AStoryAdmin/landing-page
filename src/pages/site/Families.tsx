@@ -628,7 +628,7 @@ function PhoneRoom() {
           <div>
             <dt>No</dt>
             <dd>
-              Before launch, A Story can only ring an iPhone. On other phones
+              Today, A Story rings on an iPhone. On other phones
               it reminds them to write instead, and the family reads and adds
               in any browser.
             </dd>

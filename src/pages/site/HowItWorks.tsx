@@ -492,7 +492,7 @@ function BeingAsked() {
               openly here, not only in a closed answer on /questions
               (faqData.ts:48, turned to "you"). */}
           <li>
-            Before launch, A Story can only ring an iPhone. On other phones,
+            Today, A Story rings on an iPhone. On other phones,
             it reminds you to write instead.
           </li>
           {/* Round 3 fix 1 (item 4, Harold and Tuan): the storyteller's

@@ -639,7 +639,7 @@ const FOLD = "(max-width: 640px)";
 /* What a community needs before anyone is called. Each line is worded from
    a line the site or the app already says:
    - the iPhone: faqData.ts "Will it ring on another phone or tablet?"
-     ("Before launch, A Story can only ring an iPhone"), Organizations.tsx
+     ("Today, A Story rings on an iPhone"), Organizations.tsx
      NEED ("we help them install the app"), and this page's own line "or a
      staff member starts a conversation together with them";
    - the hour: this page ("at an agreed hour"), faqData.ts "the app rings

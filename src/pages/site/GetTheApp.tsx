@@ -513,7 +513,7 @@ export default function GetTheApp() {
                         </label>
                       ))}
                     </div>
-                    {/* faqData.ts:48 ("Before launch, A Story can only ring an iPhone.") */}
+                    {/* faqData.ts:48 ("Today, A Story rings on an iPhone.") */}
                     {answer === "no" && (
                       <p className="when-no">
                         For now, A Story can only ring an iPhone. Ask anyway:
