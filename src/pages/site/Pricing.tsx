@@ -32,7 +32,7 @@
  * link, the comparison (one block per plan on a phone, one DOM), the book
  * editions as open columns, and the questions last.
  */
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
@@ -355,7 +355,62 @@ const Plans = styled(Chapter)`
       grid-template-columns: minmax(0, 1fr);
     }
   }
+  /* Phone-first fix 2 (item 11b): "What's included" is a fold on a phone
+     only. From 641 px the summary is hidden and the details stay open, so
+     the laptop card is as it was. */
+  .included > summary {
+    display: none;
+  }
+  @media (min-width: 641px) {
+    .included::details-content {
+      content-visibility: visible;
+      display: contents;
+    }
+  }
+  ${media.sm} {
+    .included {
+      margin-top: ${space.md};
+      border-top: 1px solid ${color.primaryLine};
+    }
+    /* Above the card's invisible radio, so a tap opens the fold. */
+    .included > summary {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: ${space.md};
+      min-height: 44px;
+      padding: ${space.xs} 0;
+      cursor: pointer;
+      list-style: none;
+      color: ${color.primary};
+      font: 600 ${type.ui} / 1.3 ${font.ui};
+    }
+    .included > summary::-webkit-details-marker {
+      display: none;
+    }
+    .included > summary::after {
+      content: "+";
+      font: 400 ${type.lead} / 1 ${font.display};
+      color: ${color.primaryMid};
+    }
+    .included[open] > summary::after {
+      content: "−";
+    }
+    .included > summary:focus-visible {
+      outline: 2px solid ${color.primary};
+      outline-offset: 2px;
+    }
+    .included .meter {
+      margin-top: ${space.xxs};
+      padding-top: 0;
+      border-top: 0;
+    }
+  }
 `;
+
+const INCLUDED_FOLD = "(max-width: 640px)";
 
 /*
  * Compare every plan — the founder asked for a layout that makes the plans
@@ -1375,6 +1430,23 @@ export default function Pricing() {
   const plans = useReveals<HTMLElement>();
   const forever = useReveals<HTMLElement>();
   const book = useReveals<HTMLElement>();
+  /* Phone-first fix 2 (item 11b, Maya #3): on a phone each card's
+     allowance and features fold under "What's included". The page ships
+     them open (prerendered, and readable without script); after hydration
+     a phone folds them, and leaving the phone width opens them again,
+     because from 641 px the summary is hidden. */
+  const cards = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const mq = window.matchMedia(INCLUDED_FOLD);
+    const folds = () =>
+      cards.current?.querySelectorAll<HTMLDetailsElement>("details.included") ?? [];
+    if (mq.matches) for (const d of folds()) d.open = false;
+    const unfold = (e: MediaQueryListEvent) => {
+      if (!e.matches) for (const d of folds()) d.open = true;
+    };
+    mq.addEventListener("change", unfold);
+    return () => mq.removeEventListener("change", unfold);
+  }, []);
 
   return (
     <>
@@ -1432,6 +1504,7 @@ export default function Pricing() {
       <Plans ref={plans} $ground="ivory" aria-label="Plans">
         <Frame>
           <div
+            ref={cards}
             className="plans"
             role="radiogroup"
             aria-label="Choose your preferred plan"
@@ -1470,32 +1543,40 @@ export default function Pricing() {
                   {p.period}
                   {p.monthlyEquivalent && ` · ${p.monthlyEquivalent}`}
                 </p>
-                {/* Round 3 fix 2 (items 4a, 4c, Maya #4-#6), Express only:
-                      "Stop paying, and it is still yours."  this page's
-                                                             heading below
-                                                             (#yours)
-                      "The calls aren’t on sale yet."    the status line
-                                                             above
+                {/* Round 3 fix 2 (items 4a, 4c, Maya #4-#6), Express only.
+                    Phone-first fix 2 (item 11a, Maya #3), in the positive
+                    and as one price story:
+                      "Whatever you choose, it stays yours."  the #yours
+                        section below (the archive stays with or without a
+                        plan, orgQuestions.ts ORG_GROUP "How long is it
+                        kept?", privacy.tsx section 9)
+                      "Prices for when the calls go on sale; today it is by
+                        invite."  the status line above ("by invite in a
+                        private beta, and aren’t on sale yet"); no date.
                     Nothing about leftover minutes (blocked on Daniel). */}
                 {p.id === "express" && (
                   <>
                     <p className="card-note">
-                      <a href="#yours">Stop paying, and it is still yours.</a>
+                      <a href="#yours">Whatever you choose, it stays yours.</a>
                     </p>
                     {!isCheckoutLive(p.id) && (
                       <p className="card-note">
-                        The calls aren’t on sale yet.
+                        Prices for when the calls go on sale; today it is by
+                        invite.
                       </p>
                     )}
                   </>
                 )}
-                <p className="meter">{p.meter}</p>
-                <p className="meter-note">{p.meterNote}</p>
-                <ul>
-                  {p.features.map((f) => (
-                    <li key={f}>{f}</li>
-                  ))}
-                </ul>
+                <details className="included" open>
+                  <summary>What’s included</summary>
+                  <p className="meter">{p.meter}</p>
+                  <p className="meter-note">{p.meterNote}</p>
+                  <ul>
+                    {p.features.map((f) => (
+                      <li key={f}>{f}</li>
+                    ))}
+                  </ul>
+                </details>
                 <div className="bundle">
                   <p>
                     {p.book}
