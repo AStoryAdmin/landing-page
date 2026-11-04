@@ -956,6 +956,16 @@ const HeroObject = styled.div`
       text-align: left;
     }
   }
+  /* Phone-first fix 1 (item 6, Maya #6): at 640 px and below the first
+     screen is the h1, the lead, the price card and the care and
+     organizations link, with no leftovers. The small Ledger cover stays
+     from 641 px (and at 1440); the film stays at /how-it-works#film. */
+  ${media.sm} {
+    .cover,
+    .film-link {
+      display: none;
+    }
+  }
 `;
 
 const Sheet = styled.div`
