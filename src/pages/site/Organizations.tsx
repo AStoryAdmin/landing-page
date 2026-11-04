@@ -24,11 +24,10 @@
  *   - "What you need" follows the opening: three lines the site already
  *     says (STEPS, DECIDE, and the program line on /pricing), so the iPhone
  *     requirement is read early.
- *   - The six kinds are open columns (a hairline on top, no box). Their
- *     action reads "Start the demo here", so "Book a demo" appears three
- *     times in the page: the opening, after "From a demo to an archive", and
- *     the form. The care column sends people to /care-communities instead of
- *     repeating that page.
+ *   - The six kinds are open columns (a hairline on top, no box) with no
+ *     button each; one "Book a demo for your program" link follows them
+ *     (phone-first fix 3), so "Book a demo" is a button twice: the opening
+ *     and the form. No film link here: it tells a family story.
  *   - A short privacy block quotes three labels from the policy's short
  *     version and links to /privacy. No HIPAA, BAA, SOC 2 or residency
  *     claim either way (flagged for Daniel); those questions go to the demo.
@@ -56,14 +55,11 @@ import { TODAY_NOTE } from "../../lib/today";
 import { QUESTION_COUNT } from "../../lib/product";
 import { PhonePairs } from "./rooms/phonePairs";
 import {
-  Actions,
   Chapter,
   Frame,
   Heading,
   PrimaryAnchor,
-  SecondaryAnchor,
   Statement,
-  TextAnchor,
 } from "./kit/kit.styles";
 import DemoSection from "./kit/DemoSection";
 import { INSTITUTION_KINDS } from "../../lib/demoRequest";
@@ -80,10 +76,6 @@ const DEMO_AGENDA_BRING = DEMO_AGENDA.slice(DEMO_AGENDA.indexOf(". ") + 2);
 
 type Kind = (typeof INSTITUTION_KINDS)[number];
 const CARE: Kind = "Senior living or care community";
-
-/* The film on /how-it-works (kit/Film.tsx, Builder 2). A plain href, so the
-   browser lands on the anchor after the page loads. */
-const FILM = "/how-it-works#film";
 
 /* Where "You decide" and "Privacy, in short" fold (the same width as
    media.sm). */
@@ -201,7 +193,9 @@ const DECIDE = [
      is called"). */
   [
     "Who takes part",
-    "The people you choose, and how they are invited. Consent comes first.",
+    /* Phone-first fix 3 (item 1c): "Consent comes first" is said once,
+       in STEPS[1]; the Consent row below covers it here. */
+    "The people you choose, and how they are invited.",
   ],
   [
     "Who can listen",
@@ -343,12 +337,6 @@ const Opening = styled.div`
     section[data-variant] .opening-object a.cover {
       width: min(56vw, 240px, 32svh);
     }
-    /* Phone-first fix 1 (item 4): the film link leaves the phone opening
-       (as on /pricing, item 6); "See one conversation become a book" stays
-       under the steps, and the film on /how-it-works#film. */
-    section[data-variant] .opening-words a[href="${FILM}"] {
-      display: none;
-    }
   }
 `;
 
@@ -457,29 +445,15 @@ const Who = styled(Chapter)`
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--text);
   }
-  .go {
-    display: flex;
-    flex-wrap: wrap;
-    gap: ${space.xxs} ${space.md};
-    margin-top: auto;
-    padding-top: ${space.sm};
-  }
-  .go a {
-    display: inline-flex;
-    align-items: center;
-    gap: ${space.xs};
-    min-height: 44px;
-    color: var(--ink);
-    font: 600 ${type.ui} / 1.3 ${font.ui};
-    text-underline-offset: 4px;
-  }
   .else {
     margin-top: clamp(${space.lg}, 2.4vw, ${space.xl});
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
   }
   .else a {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     padding: ${space.xs} 0;
     color: var(--ink);
     font-weight: 600;
@@ -983,9 +957,6 @@ export default function Organizations() {
                 <PrimaryAnchor href="#book">
                   Book a demo <ArrowIcon />
                 </PrimaryAnchor>
-                <SecondaryAnchor href={FILM}>
-                  Watch the film&nbsp;·&nbsp;49&nbsp;s
-                </SecondaryAnchor>
               </>
             }
             object={
@@ -1037,10 +1008,7 @@ export default function Organizations() {
               <Statement id="who-title" $size="md">
                 Who we work with.
               </Statement>
-              <p>
-                Any place with people worth hearing from. Pick yours and the
-                demo starts from it.
-              </p>
+              <p>Any place with people worth hearing from.</p>
             </div>
             <Scroller label="Who we work with" className="kinds">
               {WHO.map((w) => (
@@ -1048,21 +1016,6 @@ export default function Organizations() {
                   <small>{w.label}</small>
                   <h3>{w.title}</h3>
                   {w.body && <p>{w.body}</p>}
-                  <div className="go">
-                    {w.kind === CARE ? (
-                      <Link to="/care-communities">
-                        See care communities
-                      </Link>
-                    ) : (
-                      <a
-                        href={`?kind=${encodeURIComponent(w.kind)}#book`}
-                        onClick={pick(w.kind)}
-                        aria-label={`Start the demo here, for ${w.label.toLowerCase()}`}
-                      >
-                        Start the demo here
-                      </a>
-                    )}
-                  </div>
                 </li>
               ))}
             </Scroller>
@@ -1087,15 +1040,10 @@ export default function Organizations() {
                 </li>
               ))}
             </ul>
+            {/* Phone-first fix 3 (item 1a, Priya #3): the six per-kind
+                buttons left the columns; one door follows the list. */}
             <p className="else">
-              Somewhere else, or not sure it fits?{" "}
-              <a
-                href={`?kind=${encodeURIComponent("Something else")}#book`}
-                onClick={pick("Something else")}
-              >
-                Start the demo anyway
-              </a>
-              .
+              <a href="#book">Book a demo for your program&nbsp;↓</a>
             </p>
           </Frame>
         </Who>
@@ -1135,14 +1083,9 @@ export default function Organizations() {
                   ))}
                 </ul>
               </details>
-              <Actions>
-                <PrimaryAnchor href="#book">
-                  Book a demo <ArrowIcon />
-                </PrimaryAnchor>
-                <TextAnchor href={FILM}>
-                  See one conversation become a book&nbsp;·&nbsp;49&nbsp;s
-                </TextAnchor>
-              </Actions>
+              {/* Phone-first fix 3 (items 1b, 1d): "Book a demo" is said in
+                  the opening and at the form only; the film (a family
+                  story) stays on /how-it-works#film. */}
               {/* Phone-first fix 2 (item 3, Priya #3, Denise #7): the
                   agenda (orgQuestions.ts DEMO_AGENDA) moved from here to
                   the form below, so it is said once. */}
@@ -1202,11 +1145,6 @@ export default function Organizations() {
                       </Link>
                     </li>
                   </ul>
-                  <p className="compare">
-                    Looking at StoryCorps as well? It is a public archive, not
-                    a private family one. A Story’s archive is private by
-                    default. <Link to="/compare">How A Story compares</Link>
-                  </p>
                 </details>
               </div>
               {/* Phone-first fix 2 (item 4, Denise #2, Priya #2): what a
