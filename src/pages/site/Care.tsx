@@ -64,6 +64,7 @@ import {
 } from "./kit/kit.styles";
 import { QuoteBand, RuledSteps } from "./rooms/Rooms";
 import DemoSection from "./kit/DemoSection";
+import ReviewQuestions from "./kit/ReviewQuestions";
 import { QUESTION_COUNT } from "../../lib/product";
 import {
   CAN_SAY,
@@ -301,16 +302,8 @@ const Fit = styled.div`
       height: min(200px, 32svh);
     }
   }
-  /* Round 3 fix 2 (item 2): the agenda under Book a demo is set in the
-     page's serif at reading size, in the ground's own ink: a list to bring,
-     not a warning. */
-  section[data-variant] .opening-note .agenda-line {
-    display: block;
-    font: 400 ${type.read} / 1.55 ${font.text};
-    color: var(--text, ${color.body});
-    max-width: 44ch;
-  }
-  /* Phone-first fix 1 (item 3): the link under the agenda, a 44px row. */
+  /* Phone-first fix 1 (item 3): the link to "What we can say today", a
+     44px row (phone-first fix 2 moved the agenda beside it to the form). */
   section[data-variant] .opening-note a.say-link {
     display: inline-flex;
     align-items: center;
@@ -675,8 +668,14 @@ const NEED: readonly [string, string][] = [
     "The resident’s consent, before the first call.",
     /* Round 3 fix 1 (item 12a): the demo half of this line moved out; in
        fix 2 it is the agenda under Book a demo (orgQuestions.ts
-       DEMO_AGENDA). */
-    "Agreed with them, together with who may read or contribute.",
+       DEMO_AGENDA). Phone-first fix 2 (item 5, Denise #3): the line we
+       already publish, orgQuestions.ts ORG_GROUP "How is consent
+       handled?" (privacy.tsx section 6: "If you set A Story up on
+       someone's behalf, you are responsible for making sure they
+       understand and agree"; "How that works for a resident who cannot
+       decide alone is a question we answer on the demo"). No guardian or
+       POA wording (blocked on Daniel). */
+    "Agreed with them, together with who may read or contribute. If someone sets A Story up on a resident’s behalf, they make sure the resident understands and agrees. How that works for a resident who cannot decide alone, we go through on the demo.",
   ],
   [
     "Pricing, quoted on the demo.",
@@ -765,14 +764,13 @@ export default function Care() {
             </>
           }
           lead={LEAD}
-          /* Round 3 fix 2 (items 2 and 12b): under Book a demo, the agenda
-             (orgQuestions.ts DEMO_AGENDA) instead of the today note, whose
-             private-beta sentence moved into "What you need". */
+          /* Round 3 fix 2 (items 2 and 12b) put the agenda here;
+             phone-first fix 2 (item 3, Priya #3, Denise #7) moved it next
+             to the form (DemoSection lead below), so it is said once. */
           note={
             <>
-              <span className="agenda-line">{DEMO_AGENDA}</span>
-              {/* Phone-first fix 1 (item 3, Denise #4, Priya #2): beside
-                  the agenda, the way to what is already answered. */}
+              {/* Phone-first fix 1 (item 3, Denise #4, Priya #2): the way
+                  to what is already answered. */}
               <a className="say-link" href="#say">
                 What we can say today&nbsp;↓
               </a>
@@ -835,6 +833,7 @@ export default function Care() {
         </Frame>
         <Frame className="row say" id="say" style={{ scrollMarginTop: 80 }}>
           <h2 id="say-title">What we can say today</h2>
+          <div>
           <details className="fold" ref={say} open>
             <summary>What we can say today</summary>
             <ul aria-labelledby="say-title">
@@ -866,6 +865,10 @@ export default function Care() {
               </li>
             </ul>
           </details>
+          {/* Phone-first fix 2 (item 4, Denise #2, Priya #2): what a
+              review asks, answered with what /questions already says. */}
+          <ReviewQuestions />
+          </div>
         </Frame>
       </Need>
 
@@ -962,7 +965,9 @@ export default function Care() {
         }
         /* Round 3 fix 1 (item 12c): "quoted on the demo" is said once on
            this page, in "What you need" (Care.tsx NEED). */
-        lead="Begin with the residents and families who want to take part."
+        /* Phone-first fix 2 (item 3): the agenda (orgQuestions.ts
+           DEMO_AGENDA), once on this page, next to the form. */
+        lead={`Begin with the residents and families who want to take part. ${DEMO_AGENDA}`}
         aside={
           <ul aria-label="What we agree before anyone is called">
             {AGREE.map(([t, d]) => (

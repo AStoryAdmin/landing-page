@@ -197,3 +197,44 @@ export const ORG_GROUP = {
     },
   ],
 } as const;
+
+/** Phone-first fix 2 (item 4, Denise #2, Priya #2): "Questions a review
+ *  will ask", on /care-communities and /organizations, each row shortened
+ *  from an ORG_GROUP answer above (already public on /questions) and
+ *  linking to it there. No new claim:
+ *  - stored: "Where is data stored ...?" ("stored and processed in the
+ *    United States (privacy policy, section 13)");
+ *  - kept: "How long is it kept?" (its first two sentences, "the account"
+ *    shortened to "it");
+ *  - exports: "Can we export it?" ("audio, transcripts and photographs
+ *    ... a PDF of the book");
+ *  - HIPAA: "Where is data stored ...?" ("For HIPAA and a BAA, bring them
+ *    to the demo, or write to contact@astoryapp.com"). */
+export const REVIEW: readonly {
+  label: string;
+  answer: string;
+  /** The ORG_GROUP question it answers; its /questions anchor. */
+  q: (typeof ORG_GROUP.items)[number]["q"];
+}[] = [
+  {
+    label: "Where data is stored",
+    answer: "In the United States (privacy policy, section 13).",
+    q: "Where is data stored, and what about HIPAA or a BAA?",
+  },
+  {
+    label: "How long it is kept",
+    answer:
+      "For as long as the account or archive is active. Deleting it, in the app or by asking us, removes it within thirty days.",
+    q: "How long is it kept?",
+  },
+  {
+    label: "Exports",
+    answer: "Audio, transcripts and photographs, and a PDF of the book.",
+    q: "Can we export it?",
+  },
+  {
+    label: "HIPAA and a BAA",
+    answer: "Bring them to the demo, or write to contact@astoryapp.com.",
+    q: "Where is data stored, and what about HIPAA or a BAA?",
+  },
+];

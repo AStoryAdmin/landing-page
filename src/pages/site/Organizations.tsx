@@ -68,10 +68,15 @@ import {
 import DemoSection from "./kit/DemoSection";
 import { INSTITUTION_KINDS } from "../../lib/demoRequest";
 import { CAN_SAY, DEMO_AGENDA, WRITE_TO_DANIEL } from "./orgQuestions";
+import ReviewQuestions from "./kit/ReviewQuestions";
 import PrintSheet from "./kit/PrintSheet";
 import { CONTACT } from "../../lib/contact";
 import { route } from "../../lib/nav";
 import { color, display, font, media, shadow, space, type } from "../../styles/theme";
+
+/** DEMO_AGENDA's second sentence ("Bring your questions on privacy,
+ *  consent and exports; price is quoted on the demo."). */
+const DEMO_AGENDA_BRING = DEMO_AGENDA.slice(DEMO_AGENDA.indexOf(". ") + 2);
 
 type Kind = (typeof INSTITUTION_KINDS)[number];
 const CARE: Kind = "Senior living or care community";
@@ -140,8 +145,14 @@ const WHO: { kind: Kind; label: string; title: string; body: string }[] = [
      relative". */
 const NEED: readonly [string, string][] = [
   [
-    "An iPhone for each person, before launch.",
-    "We help them install the app. On other phones it reminds them to write instead.",
+    /* Phone-first fix 2 (item 1, Priya #1, Denise #5): the workaround the
+       site already states, orgQuestions.ts ORG_GROUP "What equipment do
+       we need?" ("Where a resident has none, a staff member can start a
+       conversation together with them. Shared devices for a floor or a
+       class: ask on the demo."), public on /questions; "a class or a
+       team" are examples from this page's own NEED[2]. */
+    "An iPhone for the calls, today.",
+    "Where a person has none, a staff member can start a conversation together with them. We help install the app. Shared devices for a class or a team: ask on the demo.",
   ],
   [
     "An hour each person picks.",
@@ -182,13 +193,19 @@ const STEPS = [
 ] as const;
 
 const DECIDE = [
+  /* Phone-first fix 2 (item 2, Priya #6): each row states the default.
+     "Who takes part": STEPS[1] ("The people you want heard, and how we
+     reach them. Consent comes first."). "Who can listen": orgQuestions.ts
+     ORG_GROUP "Which staff can read an archive?" ("Only the people the
+     storyteller and their family invite ... agreed with you before anyone
+     is called"). */
   [
     "Who takes part",
-    "And how they are invited. We agree it with you.",
+    "The people you choose, and how they are invited. Consent comes first.",
   ],
   [
     "Who can listen",
-    "A private archive, the participants' own families, or the public. We agree it with you, before anyone is called.",
+    "Only the people the storyteller and their family invite, unless you agree something else with us before anyone is called.",
   ],
   [
     "Consent",
@@ -560,14 +577,6 @@ const Program = styled(Chapter)`
     max-width: 46ch;
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
-  }
-  /* Round 3 fix 2 (item 2): the agenda under Book a demo, one line in the
-     page's serif, in the ground's own ink (no warning colour). */
-  .agenda {
-    margin-top: ${space.md};
-    max-width: 46ch;
-    font: 400 ${type.read} / 1.55 ${font.text};
-    color: var(--text, var(--ink));
   }
   ul {
     display: grid;
@@ -1134,10 +1143,9 @@ export default function Organizations() {
                   See one conversation become a book&nbsp;·&nbsp;49&nbsp;s
                 </TextAnchor>
               </Actions>
-              {/* Round 3 fix 2 (item 2, Priya #2, Denise #3): what the site
-                  does not state yet, as an agenda for the demo
-                  (orgQuestions.ts DEMO_AGENDA), out of the trust block. */}
-              <p className="agenda">{DEMO_AGENDA}</p>
+              {/* Phone-first fix 2 (item 3, Priya #3, Denise #7): the
+                  agenda (orgQuestions.ts DEMO_AGENDA) moved from here to
+                  the form below, so it is said once. */}
             </div>
             <div>
               <Statement as="h2" id="decide-title" $size="md">
@@ -1201,6 +1209,9 @@ export default function Organizations() {
                   </p>
                 </details>
               </div>
+              {/* Phone-first fix 2 (item 4, Denise #2, Priya #2): what a
+                  review asks, answered with what /questions already says. */}
+              <ReviewQuestions />
             </div>
           </Frame>
         </Program>
@@ -1211,6 +1222,11 @@ export default function Organizations() {
               Thirty minutes, <em>with a founder.</em>
             </>
           }
+          /* Phone-first fix 2 (item 3): the agenda, once on this page,
+             next to the form. The title already says "Thirty minutes,
+             with a founder", so the lead is DEMO_AGENDA's second
+             sentence only. */
+          lead={DEMO_AGENDA_BRING}
           kind={kind}
           footer={
             <>
