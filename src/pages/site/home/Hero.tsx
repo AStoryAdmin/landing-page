@@ -137,13 +137,20 @@ export default function Hero() {
   const ref = useScene<HTMLElement>((root) => {
     const photo = root.querySelector(".hero-photo img");
     const title = root.querySelector("h1")!;
-    const rest = root.querySelectorAll(".hero-lead, .hero-actions, .hero-small");
     gsap.fromTo(photo, { scale: 1.12 }, { scale: 1, duration: 2.4, ease: "house-out" });
-    gsap.fromTo(
-      rest,
-      { autoAlpha: 0, y: 24 },
-      { autoAlpha: 1, y: 0, duration: 1.1, ease: "house-out", stagger: 0.08, delay: 0.45 },
-    );
+    /* Phone-first fix 2 (item 13, Maya #8): the lead and the small print
+       fade in; the action only slides, at full strength from the first
+       frame, so the button never looks disabled. Same order and timing as
+       the one stagger it replaces (0.45 s, then 0.08 s apart). */
+    const rise = { y: 0, duration: 1.1, ease: "house-out" };
+    root.querySelectorAll(".hero-lead, .hero-actions, .hero-small").forEach((el, i) => {
+      const delay = 0.45 + i * 0.08;
+      if (el.classList.contains("hero-actions")) {
+        gsap.fromTo(el, { y: 24 }, { ...rise, delay });
+      } else {
+        gsap.fromTo(el, { autoAlpha: 0, y: 24 }, { ...rise, autoAlpha: 1, delay });
+      }
+    });
     SplitText.create(title, {
       type: "lines",
       mask: "lines",
