@@ -47,6 +47,24 @@ import { color, display, font, media, type } from "../../styles/theme";
 
 /* The opening's object (premium pass, spec §4A): on paper, one photograph
    of the young-adult set as a crop (§3.5), at its own 4:3, never upscaled. */
+/* Round 3 fix 2 (item 8): the storyteller's door, at reading size in the
+   lead's serif, on its own line above the buttons. */
+const Opening = styled(PhonePairs)`
+  .opening-lead .asked {
+    display: block;
+    margin-top: 16px;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--text, ${color.body});
+  }
+  .opening-lead .asked a {
+    display: inline-block;
+    padding-block: 11px;
+    color: var(--ink, ${color.primary});
+    font-weight: 500;
+    text-underline-offset: 0.18em;
+  }
+`;
+
 const Crop = styled.div`
   width: min(100%, 1448px);
   img {
@@ -326,7 +344,7 @@ export default function YourStory() {
         path="/your-story"
         description="The life you’re living now is a story too, at any age. Talk or write about it - the first apartment, the friends, this year - and keep it private."
       />
-      <PhonePairs>
+      <Opening>
         {/* Round 3 (2026-11-03, plan task 1, Harold): the opening no longer
             says you don't have to be old; it says the life being lived now
             counts, at any age, and points the person being asked by their
@@ -339,19 +357,26 @@ export default function YourStory() {
               The life you’re living now is <em>a story.</em>
             </>
           }
-          lead="The first apartment. The group of friends. The year everything changed. At any age, keep it while it’s still happening, in your own words, on your own time."
+          lead={
+            <>
+              The first apartment. The group of friends. The year everything
+              changed. At any age, keep it while it’s still happening, in
+              your own words, on your own time.
+              {/* Round 3 fix 2 (item 8, Harold #6): the storyteller's door
+                  at reading size, above the buttons (the note under them
+                  before this fix, word for word). */}
+              <span className="asked">
+                Being asked by your family to tell yours?{" "}
+                <Link to="/join#being-asked">Start here instead</Link>.
+              </span>
+            </>
+          }
           actions={
             <>
               <PrimaryLink to={START_HREF}>
                 {START_LABEL} <ArrowIcon />
               </PrimaryLink>
               <SecondaryLink to="/how-it-works">See how it works</SecondaryLink>
-            </>
-          }
-          note={
-            <>
-              Being asked by your family to tell yours?{" "}
-              <Link to="/join#being-asked">Start here instead</Link>.
             </>
           }
           object={
@@ -366,7 +391,7 @@ export default function YourStory() {
             </Crop>
           }
         />
-      </PhonePairs>
+      </Opening>
 
       <Wall ref={wall} $ground="ivory" aria-labelledby="years-title">
         <Frame>

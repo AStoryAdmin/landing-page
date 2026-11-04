@@ -132,8 +132,9 @@ export const DRAWER_MUTED: RoutePath[] = [
   "/contact",
 ];
 
-/** The footer's four columns: 17 page links, no repeats (spec §1.3; "Privacy,
-    in short" added in panel round 2, CHIEF-LOG B1.3). */
+/** The footer's four columns: 18 page links, no repeats (spec §1.3; "Privacy,
+    in short" added in panel round 2, CHIEF-LOG B1.3; "Asked to tell your
+    story?" above "Your own story" in round 3 fix 2, item 8, Harold). */
 export const FOOTER_GROUPS: { title: string; rooms: RoutePath[] }[] = [
   {
     title: "The product",
@@ -143,6 +144,7 @@ export const FOOTER_GROUPS: { title: string; rooms: RoutePath[] }[] = [
     title: "Who it’s for",
     rooms: [
       "/for-families",
+      "/how-it-works#being-asked",
       "/your-story",
       "/join",
       "/care-communities",

@@ -35,7 +35,7 @@
  * so once and promises the card and the transcript.
  */
 import { useLayoutEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { SCENARIOS } from "../../lib/demoScripts";
@@ -450,9 +450,11 @@ const Asked = styled(Chapter)`
   }
 `;
 
-/** AppDoor.tsx CALLER_LINE, word for word (sources listed there). */
+/** AppDoor.tsx CALLER_LINE, word for word (sources listed there). Round 3
+    fix 2 (item 7, Tuan #8): "Daniel, who started A Story" (OurStory.tsx:589
+    and :617, his note: "So I started building A Story"). */
 const CALLER_LINE =
-  "It’s a computer that calls and asks, not a person. Nobody at A Story reads or listens to what you say unless you ask us to help, or someone reports something. If you write to us, Daniel answers himself.";
+  "It’s a computer that calls and asks, not a person. Nobody at A Story reads or listens to what you say unless you ask us to help, or someone reports something. If you write to us, Daniel, who started A Story, answers himself.";
 
 function BeingAsked() {
   return (
@@ -473,6 +475,13 @@ function BeingAsked() {
             It rings in the app at the hour your family picked. Nothing to
             type or save. You just talk.
           </li>
+          {/* Round 3 fix 2 (item 8, Harold #5): the device line said
+              openly here, not only in a closed answer on /questions
+              (faqData.ts:48, turned to "you"). */}
+          <li>
+            Before launch, A Story can only ring an iPhone. On other phones,
+            it reminds you to write instead.
+          </li>
           {/* Round 3 fix 1 (item 4, Harold and Tuan): the storyteller's
               reassurance sits in the storyteller's section. Moved from
               beside the film (kit/Film.tsx, which keeps its first sentence);
@@ -483,10 +492,11 @@ function BeingAsked() {
             {CALLER_LINE}{" "}
             <TextLink to="/our-story">Who is behind A Story</TextLink>
           </li>
+          {/* Round 3 fix 2 (item 7, Harold #4, Tuan #6): plain text like
+              its neighbours; only the word "decline" links to the answer. */}
           <li>
-            <TextLink to={DECLINE_HREF}>
-              You can decline a question, pause, or change the subject.
-            </TextLink>
+            You can <Link to={DECLINE_HREF}>decline</Link> a question, pause,
+            or change the subject.
           </li>
           <li>Nothing appears until you say yes.</li>
           <li>
@@ -714,6 +724,11 @@ export default function HowItWorks() {
                 {START_LABEL} <ArrowIcon />
               </PrimaryLink>
               <TextAnchor href="#film">Watch the film · 49 s</TextAnchor>
+              {/* Round 3 fix 2 (item 8, Harold #3): the storyteller's door
+                  in the first screen. A navigation label (nav.ts:78). */}
+              <TextAnchor href="#being-asked">
+                Asked to tell your story? Start here
+              </TextAnchor>
             </>
           }
           object={<CallSlip />}

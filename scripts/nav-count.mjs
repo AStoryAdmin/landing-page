@@ -23,8 +23,9 @@
  *     quiet group is Questions & answers, Compare, Conversation guides and
  *     Contact.
  * 1.3 footer at 1440: every public route reachable from the footer or the
- *     bar, no href twice in the footer, 17 page links including "Privacy, in
- *     short" (/privacy/#legal-short); at 390 the footer ≤ 1.3 screens with
+ *     bar, no href twice in the footer, 18 page links including "Privacy, in
+ *     short" (/privacy/#legal-short) and, from round 3 fix 2 (item 8),
+ *     "Asked to tell your story?" (/how-it-works#being-asked); at 390 the footer ≤ 1.3 screens with
  *     both folds closed.
  *
  * Prints one line per check and exits 1 if any fails.
@@ -254,7 +255,7 @@ if (doFooter) {
     const missing = wanted.filter((p) => !f.reach.includes(p));
     check(`1.3 ${wanted.length} routes reachable from footer or bar`, missing.length === 0, JSON.stringify(missing));
     check('1.3 footer has Privacy, in short', f.footer.includes('/privacy/#legal-short'));
-    check('1.3 footer page links = 17 + 1 email', f.footer.filter((h) => h.startsWith('/')).length === 17 && f.footer.filter((h) => h.startsWith('mailto:')).length === 1, String(f.footer.length));
+    check('1.3 footer page links = 18 + 1 email', f.footer.filter((h) => h.startsWith('/')).length === 18 && f.footer.filter((h) => h.startsWith('mailto:')).length === 1 && f.footer.includes('/how-it-works#being-asked'), String(f.footer.length));
     await open('/pricing/', 390, 844);
     const h = await page.evaluate(() => document.querySelector('footer').getBoundingClientRect().height);
     check('1.3 footer ≤ 1.3 screens @390 (folds closed)', h <= 1.3 * 844, `${Math.round(h)}px = ${(h / 844).toFixed(2)} screens`);

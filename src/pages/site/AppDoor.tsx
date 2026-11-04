@@ -25,7 +25,7 @@
  *   "six letters or digits" deploy/cloudfront-viewer-request.js:20
  */
 import { useEffect, useId, useState, type FormEvent } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Seo from "../../components/ui/Seo";
 import { APP, FAMILY_CODE, goToApp } from "../../lib/app";
@@ -192,7 +192,8 @@ function Leaving({
  *   a computer calls, not a person   faqData.ts:46 ("An AI-guided
  *                                    interviewer asks"), lib/seo.ts:175
  *   nobody at A Story reads/listens  components/privacy.tsx:98
- *   Daniel answers himself           Questions.tsx:411
+ *   Daniel answers himself           Questions.tsx:411; "who started A
+ *                                    Story": OurStory.tsx:589, :617
  *   privacy promises                 components/privacy.tsx:101, 105, 117
  *   the sample addition              lib/homeExamples.ts LAKE_MONSTER (a
  *                                    fictional family; the footer says so)
@@ -201,7 +202,7 @@ function Leaving({
 
 /** The same sentence sits under the film on /how-it-works (kit/Film.tsx). */
 const CALLER_LINE =
-  "It’s a computer that calls and asks, not a person. Nobody at A Story reads or listens to what you say unless you ask us to help, or someone reports something. If you write to us, Daniel answers himself.";
+  "It’s a computer that calls and asks, not a person. Nobody at A Story reads or listens to what you say unless you ask us to help, or someone reports something. If you write to us, Daniel, who started A Story, answers himself.";
 const JoinTop = styled.div`
   > section {
     padding-bottom: calc(${space.xl} * var(--sy));
@@ -247,41 +248,37 @@ const JoinTop = styled.div`
   .opening-grid .error {
     margin-top: ${space.sm};
   }
-  /* Round 3 fix 1 (items 1, 2, 5): under the code box, in the same serif
-     as the lead (one typeface for the words): the code-or-link rule, what
-     you need, and what happens after "Open the invitation". */
-  .join-after {
-    flex: 1 1 100%;
-    display: grid;
-    gap: ${space.sm};
-    max-width: 44ch;
+  /* Round 3 fix 2 (item 6, Harold #1, Tuan #3/#4/#9): the two doors in one
+     quiet line straight under the h1, then the lead. */
+  .opening-lead .doors,
+  .opening-lead .lede {
+    display: block;
   }
-  .join-after p,
-  .join-after li {
-    margin: 0;
-    font: 400 ${type.read} / 1.5 ${font.text};
+  .opening-lead .doors {
+    margin-bottom: ${space.md};
+    font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--text, ${color.body});
   }
-  .join-after .needs {
+  .opening-lead .doors a {
+    display: inline-block;
+    padding-block: 11px;
     color: var(--ink, ${color.primary});
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
   }
-  .join-after ol {
-    margin: ${space.xs} 0 0;
-    padding: 0;
-    list-style: none;
-    counter-reset: step;
-    display: grid;
-    gap: ${space.xs};
+  /* Round 3 fix 1 (items 1, 2, 5) and fix 2 (item 6): under the code box,
+     one paragraph in the lead's serif: who sent the code, the browser,
+     what you add and when it appears. */
+  .join-after {
+    flex: 1 1 100%;
+    max-width: 44ch;
   }
-  .join-after ol li {
-    counter-increment: step;
-    display: grid;
-    grid-template-columns: 1.6em minmax(0, 1fr);
-    color: var(--ink, ${color.primary});
-  }
-  .join-after ol li::before {
-    content: counter(step) ".";
-    color: ${color.accentText};
+  .join-after p {
+    margin: 0;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--text, ${color.body});
   }
   /* The words and the card start on one line, so neither column leaves a
      band of empty paper under the shorter one (Harold, 1440). */
@@ -317,11 +314,13 @@ const JoinTop = styled.div`
       order: 3;
       margin-top: ${space.lg};
     }
-    .opening-object {
-      order: 4;
-      margin-top: ${space.lg};
-    }
+    /* Round 3 fix 2 (item 6): the code-or-link paragraph directly under
+       the code box, then the sample card. */
     .join-after {
+      order: 4;
+      margin-top: ${space.md};
+    }
+    .opening-object {
       order: 5;
       margin-top: ${space.lg};
     }
@@ -587,7 +586,26 @@ function JoinHere({ given }: { given: string }) {
           ground="ivory"
           variant="object"
           title="Joining a family’s book."
-          lead="Someone in your family invited you. Add what you remember, under your own name, through one link and with no account needed. There is no fee per relative."
+          lead={
+            <>
+              {/* Round 3 fix 2 (item 6): both doors in the first screen.
+                    "Got a link? Just open it, and you’re in."  the
+                      code-or-link rule (this page before fix 2: "A link
+                      needs nothing: open it, and you are in."), index.html
+                      :80-81 and lib/app.ts:17 (a link opens on its own)
+                    "Asked to tell your story? Start here"  the menu label
+                      (nav.ts:78), to this page's #being-asked */}
+              <span className="doors">
+                Got a link? Just open it, and you’re in.{" "}
+                <a href="#being-asked">Asked to tell your story? Start here ↓</a>
+              </span>
+              <span className="lede">
+                Someone in your family invited you. Add what you remember,
+                under your own name, through one link and with no account
+                needed. There is no fee per relative.
+              </span>
+            </>
+          }
           actions={
             /* Without script the form still works: /join?ref=CODE is sent
                on to the app by the inline script and the edge. */
@@ -637,20 +655,17 @@ function JoinHere({ given }: { given: string }) {
                     one or many      faqData.ts:56 (the archive is open in
                                      any browser; no limit is stated)
                   No voice notes: clips are in development (below). */}
+              {/* Round 3 fix 2 (item 6): step 1 "Open the invitation."
+                  repeated the button and is gone; the other steps join
+                  this one paragraph, each sentence as it was. The link
+                  half of the rule is in the line under the h1. */}
               <p>
                 The relative who invited you sent either a six-letter code or
-                a link. A code goes in the box above. A link needs nothing:
-                open it, and you are in.
+                a link. A code goes in the box above. No app needed to add
+                yours: any browser works. Add a memory in writing, or
+                photographs; it appears once the storyteller says yes. Add
+                one memory or many, whenever you like.
               </p>
-              <p className="needs">
-                No app needed to add yours: any browser works.
-              </p>
-              <ol aria-label="What happens next">
-                <li>Open the invitation.</li>
-                <li>Add a memory in writing, or photographs.</li>
-                <li>It appears once the storyteller says yes.</li>
-              </ol>
-              <p>Add one memory or many, whenever you like.</p>
             </div>
             </>
           }
@@ -692,10 +707,11 @@ function JoinHere({ given }: { given: string }) {
                   {CALLER_LINE}{" "}
                   <TextLink to="/our-story">Who is behind A Story</TextLink>
                 </li>
+                {/* Round 3 fix 2 (item 7, Harold #4, Tuan #6): plain text
+                    like its neighbours; only "decline" links. */}
                 <li>
-                  <TextLink to={DECLINE_HREF}>
-                    You can decline a question, pause, or change the subject.
-                  </TextLink>
+                  You can <Link to={DECLINE_HREF}>decline</Link> a question,
+                  pause, or change the subject.
                 </li>
                 <li>Nothing appears until you say yes.</li>
                 <li>Your story belongs to you.</li>
