@@ -150,6 +150,11 @@
       "permanent": true
     },
     {
+      "source": "/care",
+      "destination": "/care-communities",
+      "permanent": true
+    },
+    {
       "source": "/story",
       "destination": "/our-story",
       "permanent": true

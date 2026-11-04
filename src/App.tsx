@@ -153,6 +153,8 @@ const legacy = {
   "/experience": "/how-it-works",
   "/family": "/for-families",
   "/institution": "/care-communities",
+  /* Round 3 fix 2 (item 11, Denise #8): the short address people type. */
+  "/care": "/care-communities",
   "/story": "/our-story",
   "/faq": "/questions",
   "/why-it-matters": "/#why-a-story",
