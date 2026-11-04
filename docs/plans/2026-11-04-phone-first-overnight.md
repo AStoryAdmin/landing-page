@@ -28,12 +28,12 @@ Push, deploy, new photographs, new facts (devices beyond iPhone, prices for orga
 6. Panel (same 5 personas + rubric): every persona average ≥ 8.
 
 ## Tasks
-- [ ] 1. Merge origin/main into site-premium — done when build + check pass.
-- [ ] 2. Shell + action: lib/nav.ts, Header, Footer, StickyStart, lib/app.ts, /get-the-app page + route + sitemap/routes, nav-count rule.
-- [ ] 3. Home: book teaser → /samples; CTAs; no video.
-- [ ] 4. Pages for the stage: how-it-works, pricing, for-families, your-story, our-story, questions, organizations/care/programs, contact, join — phone-first copy, Start free removed, one "Today / by invite" explanation.
-- [ ] 5. Web app brief.
-- [ ] 6. Panel, fix rounds until every persona ≥ 8 (max 3), report `docs/premium/RESULT-phone-first.md`.
+- [x] 1. Merge origin/main into site-premium — done when build + check pass. (3e21fae + 84a964b)
+- [x] 2. Shell + action: lib/nav.ts, Header, Footer, StickyStart, lib/app.ts, /get-the-app page + route + sitemap/routes, nav-count rule. (944db74)
+- [x] 3. Home: book teaser → /samples; CTAs; no video. (609fa4b, f0620a1)
+- [x] 4. Pages for the stage: how-it-works, pricing, for-families, your-story, our-story, questions, organizations/care/programs, contact, join — phone-first copy, Start free removed, one "Today / by invite" explanation. (6a51f73 and fix rounds 1-3)
+- [x] 5. Web app brief. (docs/premium/webapp-invite-only-brief.md)
+- [x] 6. Panel, fix rounds until every persona ≥ 8 (max 3), report `docs/premium/RESULT-phone-first.md`. Three fix rounds run; AC6 not met (pf-3: 2 of 5 personas at 8 or more, lowest 7.57); see docs/premium/panel-pf.md.
 
 ## Verification
 | # | Check | Where | Evidence |
@@ -51,3 +51,7 @@ None new. Existing sourced lines only ("private beta", "rings in the A Story app
 ## Risks
 - Hiding Start free cuts web sign-ups to zero for strangers; that is the decision.
 - `waitlist_signups` RLS may reject anonymous insert; leads.ts has a fallback email path — tester confirms which path runs.
+
+## Status (2026-11-04, chief, at 6668713, not deployed)
+- AC1 pass (nav-count 252/252). AC2 pass (qa/pf-final-form.mjs: stub build shows the thank-you, plain build the fallback). AC3 pass (0 create-account hrefs, routing 35/35). AC4 pass with a reading (no video; home-diff vs cb745f3 changes only in the hero small print/button, the book and the band, plus round-3 lazy-print noise at 390). AC5 pass (check, CLS 0.0000, sweep: the same 22 non-overflow findings as 894f4b1; copy-check's standing B3 hit). AC6 not met: Maya 7.93, Harold 8.14, Tuan 8.21, Denise 7.57, Priya 7.57.
+- Report: docs/premium/RESULT-phone-first.md.
