@@ -19,12 +19,13 @@
  * Nothing here says "Start free" or links to the web app's create-account
  * page: the web app is the family's side, reached through their link.
  */
-import { useId, useState, type FormEvent } from "react";
+import { useId, useState, useSyncExternalStore, type FormEvent } from "react";
 import styled from "styled-components";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { INVITE_INTENT, looksLikeEmail, submitLead } from "../../lib/leads";
 import { track } from "../../lib/analytics";
 import { SITE } from "../../lib/seo";
+import { route } from "../../lib/nav";
 import { Phone } from "./app/Phone";
 import { ArrowIcon } from "./kit/kit";
 import {
@@ -53,6 +54,21 @@ const ANSWERS = [
   ["not-sure", "Not sure"],
 ] as const;
 type Answer = (typeof ANSWERS)[number][0];
+
+/* Phone-first fix 1 (item 7b, Maya #2-3): Families.tsx:321 sends givers
+   here with ?for=someone. The prerendered page has no address to read, so
+   the flag is false while the page hydrates and set right after (no
+   hydration mismatch). */
+const noSubscribe = () => () => {};
+const readGift = () =>
+  new URLSearchParams(window.location.search).get("for") === "someone";
+const useGift = () => useSyncExternalStore(noSubscribe, readGift, () => false);
+
+/* Phone-first fix 1: the two quiet doors under the lead. Labels from
+   lib/nav.ts ("For families"; "Asked to tell your story?", the label used
+   on /join and in the footer). */
+const FAMILIES = route("/for-families");
+const BEING_ASKED = route("/how-it-works#being-asked");
 
 const Opening = styled(Chapter)`
   padding: calc(clamp(40px, 5vw, 96px) * var(--sy)) 0
@@ -115,6 +131,37 @@ const Opening = styled(Chapter)`
     min-width: 72px;
     justify-content: center;
   }
+  /* Phone-first fix 1 (items 7a and 12): two quiet doors under the lead,
+     one 44px row each. */
+  .doors {
+    display: grid;
+    justify-items: start;
+    gap: ${space.xxs};
+    margin: ${space.sm} 0 0;
+    padding: 0;
+    list-style: none;
+    font: 400 ${type.note} / 1.5 ${font.ui};
+    color: var(--muted);
+  }
+  .doors a {
+    display: inline-flex;
+    align-items: center;
+    gap: ${space.xxs};
+    min-height: 44px;
+    color: var(--ink);
+    font-weight: 600;
+    text-underline-offset: 4px;
+  }
+  .doors svg {
+    width: 16px;
+    height: 16px;
+  }
+  /* Item 7b: under the email field, for a gift. */
+  .gift-note {
+    margin: -10px 0 0;
+    font: 400 ${type.note} / 1.5 ${font.text};
+    color: ${color.bodyMuted};
+  }
   .when-no {
     margin: 10px 0 0;
     font: 400 ${type.note} / 1.5 ${font.text};
@@ -153,6 +200,13 @@ const Opening = styled(Chapter)`
   .fallback {
     display: grid;
     gap: ${space.sm};
+  }
+  /* Phone-first fix 1 (item 8): the fallback reads as the next step, not
+     an error. */
+  .fallback h2 {
+    margin: 0;
+    font: 600 ${display.md} / 1.1 ${font.display};
+    color: ${color.primary};
   }
   .fallback p {
     margin: 0;
@@ -292,6 +346,7 @@ export default function GetTheApp() {
   const [trap, setTrap] = useState("");
   const [tried, setTried] = useState(false);
   const [sent, setSent] = useState<Sent>({ state: "idle" });
+  const gift = useGift();
 
   const emailOk = looksLikeEmail(email);
   const answerOk = answer !== "";
@@ -313,7 +368,8 @@ export default function GetTheApp() {
       lastName: "",
       email: clean,
       phone: "",
-      note: `Their iPhone: ${label}`,
+      /* "· gift" lets Daniel tell gift requests apart (item 7b). */
+      note: `Their iPhone: ${label}${gift ? " · gift" : ""}`,
       source: `get-the-app${INVITE_INTENT}`,
     });
     if (result.ok) {
@@ -334,7 +390,9 @@ export default function GetTheApp() {
       <Opening $ground="cloth" aria-labelledby="page-title">
         <Frame className="row">
           <div>
-            <p className="kicker">Private beta, by invite</p>
+            <p className="kicker">
+              {gift ? "A gift, by invite" : "Private beta, by invite"}
+            </p>
             <h1 id="page-title">
               Get the A Story <em>iPhone app.</em>
             </h1>
@@ -343,6 +401,19 @@ export default function GetTheApp() {
               about their life, and keeps what they tell in a private book the
               whole family can add to.
             </p>
+            <ul className="doors" aria-label="Other ways in">
+              <li>
+                Giving it as a gift?{" "}
+                <TextLink to={FAMILIES.to}>
+                  <ArrowIcon /> {FAMILIES.label}
+                </TextLink>
+              </li>
+              <li>
+                <TextLink to={BEING_ASKED.to}>
+                  {BEING_ASKED.label} Start here
+                </TextLink>
+              </li>
+            </ul>
 
             <div className="sheet" aria-live="polite">
               {sent.state === "done" ? (
@@ -358,16 +429,21 @@ export default function GetTheApp() {
                   </p>
                 </div>
               ) : sent.state === "fallback" ? (
+                /* Phone-first fix 1 (item 8, Maya #4, Harold #2, Priya #4):
+                   the same state whatever the reason (lib/leads.ts
+                   "unconfigured" or "failed"): one more step, no error
+                   wording. The mailto is lib/leads.ts inviteMailto. */
                 <div className="fallback">
+                  <h2>One more step</h2>
                   <p>
-                    The form couldn’t send just now. Your request is written as
-                    an email instead; press send and it reaches us.
+                    Your request is written as an email to us. Press send, and
+                    it reaches Daniel.
                   </p>
                   <PrimaryAnchor href={sent.mailto} className="go">
                     Open the email <ArrowIcon />
                   </PrimaryAnchor>
                   <p>
-                    Or write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+                    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
                   </p>
                 </div>
               ) : (
@@ -394,10 +470,21 @@ export default function GetTheApp() {
                       Check the email address.
                     </p>
                   )}
+                  {/* Item 7b: what the form already does ("We'll send your
+                      invite to <email>"), said before it is sent. */}
+                  {gift && (
+                    <p className="gift-note">
+                      Use your own email. The invite comes to you.
+                    </p>
+                  )}
                   <fieldset
                     aria-describedby={tried && !answerOk ? `${ids}-answer` : undefined}
                   >
-                    <legend>Does the person you’ll call have an iPhone?</legend>
+                    <legend>
+                      {gift
+                        ? "Does the person you’re giving it to have an iPhone?"
+                        : "Does the person you’ll call have an iPhone?"}
+                    </legend>
                     <div className="chips">
                       {ANSWERS.map(([value, label]) => (
                         <label className="chip" key={value}>
