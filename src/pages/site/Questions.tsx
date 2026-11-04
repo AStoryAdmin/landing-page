@@ -45,12 +45,19 @@ const groups = [
   ),
   ORG_GROUP,
 ];
+/* Round 3 fix 2 (item 15, Maya #10, Priya): every group has an address,
+   so the row of jump links under the title can reach it. The two older
+   addresses (#invited, #organizations) are kept. */
 const anchor = (title: string) =>
   INVITED.test(title)
     ? "invited"
     : title === ORG_GROUP.title
       ? "organizations"
-      : undefined;
+      : title
+          .toLowerCase()
+          .replace(/&/g, "and")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
 import { ArrowIcon, Invitation } from "./kit/kit";
 import Scroller from "./kit/Scroller";
 import { useReveals } from "./kit/reveals";
@@ -75,6 +82,29 @@ const Opening = styled(Chapter)`
   }
   .lead {
     margin-top: ${space.lg};
+  }
+  /* Round 3 fix 2 (item 15): one quiet row of jump links, one per group,
+     each a 44px target, 8px apart. */
+  .jump {
+    margin-top: ${space.lg};
+  }
+  .jump ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px ${space.lg};
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .jump a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font: 600 ${type.ui} / 1.3 ${font.ui};
+    color: var(--ink, ${color.primary});
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
   }
   /* A real person to write to: Daniel, on a leaf of the book's paper (jury 1
      #20: his round portrait, not a blurred thumbnail). Flat on the paper. */
@@ -441,6 +471,23 @@ export default function Questions() {
               What people ask before the first conversation - about calls,
               privacy, the family, plans and the book.
             </Lead>
+            <nav className="jump" aria-label="Jump to a group of answers">
+              <ul>
+                {groups.map((g) => (
+                  <li key={g.title}>
+                    <a
+                      href={`#${anchor(g.title)}`}
+                      onClick={() => {
+                        setTopic(null);
+                        setSearch("");
+                      }}
+                    >
+                      {g.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
           <aside className="concierge" data-rise aria-label="Talk to a person">
             <img
@@ -525,8 +572,15 @@ export default function Questions() {
                   </small>
                 </div>
                 <div className="items">
-                  {g.items.map((x) => (
-                    <details key={x.q} id={faqAnchor(x.q)}>
+                  {/* Round 3 fix 2 (item 15): the first answer in each
+                      group is open, so the page reads before it is
+                      clicked. */}
+                  {g.items.map((x, i) => (
+                    <details
+                      key={x.q}
+                      id={faqAnchor(x.q)}
+                      open={i === 0 || undefined}
+                    >
                       <summary>
                         {x.q}
                         <i aria-hidden="true" />
