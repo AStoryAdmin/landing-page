@@ -33,12 +33,12 @@ DATA.raymond = {
         headnote: "On the phone from the recliner; he gets up once to find a pay stub he has kept since 1968.",
         faces: [
           [
-            "I was supposed to finish high school. I finished most of it. In the spring of 1968 a man named Walt Brenner came into my father’s bay with a Pontiac that wouldn’t idle, and while my father fixed it he watched me deburr a bracket with a file. He had a job shop on Roosevelt Avenue, eleven men, and he needed a kid to sweep. A dollar sixty an hour.",
+            "I was supposed to finish high school. I finished most of it. In the spring of 1968 a man named Walt Brenner came into my father’s bay with a Pontiac that wouldn’t idle, and while my father fixed it he watched me deburr a bracket with a file. He had a job shop on Roosevelt Avenue, eleven men, and he needed a kid to sweep. A dollar sixty an hour. I still have the first stub.",
             "I swept for four months. Then the second-shift lathe man quit on a Friday and Walt said, you’ve been watching, get on it. I turned bushings until two in the morning and scrapped nine of the first twenty. He didn’t fire me. He showed me where my hand was wrong."
           ],
           [
             "That’s the whole trade, if you want it in one line. Somebody shows you where your hand is wrong and you don’t make them show you twice.",
-            "I stayed six years. By 1974 I could set up anything in the building and Walt was paying me three dollars and a quarter, which was the most he could pay anybody. A supplier’s rep told me the furniture plants in Michigan were hiring tool and die men at twice that and couldn’t find enough. I’d never been north of Dallas. I had two hundred and sixty dollars and a 1966 Ford Falcon.",
+            "I stayed six years. By 1974 I could set up anything in the building and Walt was paying me three dollars and a quarter, which was the most he could pay anybody. A supplier’s rep told me the furniture plants in Michigan were hiring tool and die men and couldn’t find enough. I’d never been north of Dallas. I had two hundred and sixty dollars and a 1966 Ford Falcon.",
             "I drove to Grand Rapids in October without a job waiting. Sight unseen. My mother cried at the curb and my father handed me the caliper, in its case, and said, don’t lose it. For keeps this time. He never said don’t go. I think he knew there was nothing on South Flores Street for a fourth son but the broom.",
             "I got hired the second day. Tool and die, southwest side, four dollars and ten cents. I called home from a pay phone and my mother asked if it was cold. It was. I said no."
           ]
@@ -61,7 +61,7 @@ DATA.raymond = {
             "Marisol came in 1977 and Tomás in 1980. Elena kept the books for a dry cleaner and a plumber from the kitchen table, for cash, so she could stay home. I didn’t know I was watching the best bookkeeper in Kent County learn her trade."
           ]
         ],
-        photos: [ { img: "/mission/03-1200.webp", ratio: 1.5, pos: "50% 55%", caption: "Burton Street, 1979. Marisol in the doorway, supervising. Everything we owned fit in that wagon.", face: 1 } ]
+        photos: [ { img: "/mission/03-1200.webp", ratio: 1.5, pos: "50% 55%", caption: "Burton Street, 1982. Marisol on the step, supervising. Everything we owned still fit in that wagon.", face: 1 } ]
       },
       { id: "m4", title: "Elena’s ledger", dateline: "1983 – 2004 · aged 32 to 53", askedBy: "Maya",
         headnote: "At the kitchen table where the ledgers were kept, the first one open between them.",
@@ -76,7 +76,6 @@ DATA.raymond = {
             "Her name went on the company in 2004. Twenty-one years late. I was proud and I was stupid, and in 1983 those were the same thing. I thought the company was the machines. It was the machines and the money, and she ran the money. If someone does the work of a partner, put their name on it the first day."
           ]
         ],
-        kept: "It was the machines and the money, and she ran the money.",
         sides: [
           { heading: "Marisol remembers it too",
             body: "I was eight. Mom had a column that wouldn’t foot and she’d been at it an hour. I was doing homework across from her and I said, Mom, the seven’s a one. It was. She didn’t say good girl. She slid the ledger over and said, check the rest. I checked the rest. That’s the night I got my job, whatever my business card says now.",
@@ -84,14 +83,14 @@ DATA.raymond = {
         ],
         voice: { rec: "Oct 2, 2025", len: "0:58", quote: "Your grandmother was the most important person in that company, and nobody knew it." },
         plate: { kind: "ledger", heading: "Ortiz Precision · 1983",
-          rows: [["Aug","Mill, used","2,300"],["Aug","Rent, Godfrey","180"],["Sep","First order","412"],["Oct","Kerosene","38"],["Nov","Bracket job","1,150"],["Dec","Payday","Fri"]],
+          rows: [["Aug","Mill, used","2,300"],["Aug","Rent, Godfrey","180"],["Sep","First order","412"],["Oct","Kerosene","38"],["Nov","Bracket job","1,150"],["Dec","Our draw","0"]],
           caption: "The first page of Elena’s first ledger. She kept twenty-one of them." }
       },
-      { id: "m13", title: "Grand Haven, the first week of August", dateline: "August 1987 · aged 36", askedBy: "Maya",
+      { id: "m13", title: "Spring Lake, the first week of August", dateline: "August 1987 · aged 36", askedBy: "Maya",
         headnote: "On the porch on a hot evening, Elena in the next chair correcting the years.",
         faces: [
           [
-            "Elena made one rule when we started the shop. The first week of August, the doors close, everybody paid, nobody in the building. Especially me. So every August we rented the same cottage at Grand Haven."
+            "Elena made one rule when we started the shop. The first week of August, the doors close, everybody paid, nobody in the building. Especially me. So every August we rented the same cottage on Spring Lake, by Grand Haven."
           ],
           [
             "I couldn’t swim. Where I grew up the pool on our side of town was closed more than it was open, and then I was working. I’d stand in the lake up to my knees and call it swimming.",
@@ -101,7 +100,7 @@ DATA.raymond = {
           ]
         ],
         kept: "Dad, put your face in. It’s just water.",
-        photos: [ { img: "/mission/30-1200.webp", ratio: 1.5, pos: "50% 50%", caption: "Grand Haven, 1987. Tomás is teaching me. Elena is keeping score.", face: 0 } ],
+        photos: [ { img: "/mission/30-1200.webp", ratio: 1.5, pos: "50% 50%", caption: "Spring Lake, 1987. Tomás is teaching me. Elena is keeping score.", face: 0 } ],
         sides: [
           { heading: "Marisol remembers it differently",
             body: "He says three Augusts. It was four. The last one he swam in front of Mom on purpose. She clapped from her chair like it was the Olympics. He walked very slowly to his towel.",
@@ -120,15 +119,13 @@ DATA.raymond = {
           ],
           [
             "That first winter I worked in my coat. The only heat was a kerosene heater and the machine. The mill was the only thing in there making money, so it got the heat first. I’d stand close to it between cuts.",
-            "Elena came at noon with lunch in a coffee can and sat on an upturned bucket while I ate. She brought the ledger. She always brought the ledger. Marisol drew on the floor in chalk, and Tomás slept in a parts box lined with a moving blanket.",
+            "Elena came at noon with lunch in a coffee can and sat on an upturned bucket while I ate. She brought the ledger. She always brought the ledger. On Saturdays Marisol drew on the floor in chalk, and Tomás slept in a parts box lined with a moving blanket.",
             "The first order was $412. Twelve brackets for a chair company. I still have the first one, in a frame, and how it got there is a story for later."
           ]
         ],
-        kept: "The mill was the only thing in there making money, so it got the heat first.",
-        voice: { rec: "Sep 14, 2025", len: "0:41", quote: "I had a good job." }
       },
       { id: "m7", title: "Hiring Hector", dateline: "Spring 1984 · aged 33", askedBy: "Maya",
-        headnote: "At the shop, standing by the Bridgeport; he runs his thumb along the table to show what Hector did.",
+        headnote: "At the shop, standing by the Bridgeport; he runs his thumb along the table to show Maya what Hector did.",
         faces: [
           [
             "By spring of ’84 I had more work than hands. I put a card on the board at the hardware store on Division. Machinist wanted, must own tools. Three men called. Two wanted to know the pay first.",
@@ -150,9 +147,7 @@ DATA.raymond = {
             "After that Elena drew a line in pencil across the front page of every ledger. One customer, no more than a quarter of us. We turned down work to stay under that line, good work, more than once. Tomás runs his own shop by it now. He calls it Dad’s quarter. It should be called Mom’s."
           ]
         ],
-        kept: "It felt like winning. It was a trap with a nice paint job.",
-        photos: [ { img: "/mission/32-1200.webp", ratio: 1.5, pos: "50% 50%", caption: "Clay Avenue, 1988. Our first real building. Hector’s wagon, out front before anybody.", face: 0 } ],
-        voice: { rec: "Oct 19, 2025", len: "0:36", quote: "The most expensive mistake I ever made came in on a Tuesday in 1986, and it looked like the best day of my life." }
+        photos: [ { img: "/mission/32-1200.webp", ratio: 1.5, pos: "50% 50%", caption: "Clay Avenue, 1988, the day we went to look at it. Our first real building.", face: 0 } ]
       }
     ]},
 
@@ -168,7 +163,7 @@ DATA.raymond = {
             "Then he found Elena’s mother’s fan, broken on my bench since Easter, and fixed it. He couldn’t be in a room with tools and not work. When he was done he wiped the bench where his arm had been.",
             "Outside he looked at the sign. Ortiz Precision. He said, no first name. Good. That was the whole review.",
             "He died in March 1987. Elena took the call on the hall phone. I drove to San Antonio in twenty-two hours.",
-            "I didn’t cry at the funeral. I cried on the way home, at a gas station in Texarkana, wiping down a pump handle somebody had left greasy.",
+            "I didn’t cry at the funeral. I cried on the way home, at a gas station in Texarkana, for no reason I could have told you.",
             "He only came north once. I spent it showing him the mill. I should have shown him the kids."
           ]
         ],
@@ -177,7 +172,7 @@ DATA.raymond = {
         voice: { rec: "Dec 4, 2025", len: "1:19", quote: "My father came north once." }
       },
       { id: "m9", title: "The Friday I couldn’t make payroll", dateline: "February 8, 1991 · aged 39",
-        headnote: "Alone in the shop after second shift; he stops for a long while before the part about the pallet.",
+        headnote: "At the kitchen table, the green ledger for 1991 open to February.",
         faces: [
           [
             "It was February 8, 1991, a Friday, two weeks after the call from the lakeshore. Fourteen people, and the money for payroll wasn’t there. I’d done the arithmetic four times and it came out the same four times.",
@@ -188,7 +183,7 @@ DATA.raymond = {
             "Then I had to tell the fourteen.",
             "I stood on a pallet at the back of the floor at three o’clock and told them the truth. We’d lost a third of our work and I didn’t know if we’d make it. Payroll was covered through June because Elena and I were taking nothing. After that I couldn’t promise. Two men quit that afternoon, and I didn’t blame them. Twelve stayed.",
             "They stayed because I told them first. Before the bank, before the customer. People can take bad news. What they can’t take is finding out last.",
-            "Nine of the twelve were still there in 2022. They own part of it now. Every one of them got paid that Friday by noon, and every Friday after, and I’d stand on that pallet again tomorrow."
+            "Five of the twelve were still there in 2022, and they own part of it now. Every one of them got paid that Friday by noon, and every Friday after, and I’d stand on that pallet again tomorrow."
           ]
         ],
         kept: "So we didn’t pay us. Four months.",
@@ -206,9 +201,9 @@ DATA.raymond = {
             "The honest reason is I didn’t know what the company was without me in it. I’d walked that floor every morning for thirty-six years. If I handed Tomás the keys, I was going to be a man who used to own a machine shop, and I couldn’t see him yet."
           ],
           [
-            "Then in March 2019 a private equity firm put a term sheet on my desk. An outfit that buys companies with borrowed money and sells the pieces. Good money. They were going to move half the work to Mexico. I kept it in the drawer three months and didn’t tell Tomás, which was wrong.",
-            "Hector found out. He’d been with me since the garage. He asked who was going to tell the twelve who stayed in 1991. I didn’t have an answer, so that was the answer.",
-            "It was Elena’s idea and Tomás did the work. Fine. Both."
+            "In March 2019 a private equity firm put an offer on my desk. An outfit that buys companies with borrowed money and sells the pieces. They’d move half the work to Mexico. I kept it in a drawer three months and didn’t tell Tomás. That was wrong.",
+            "Hector found out. He asked who was going to tell the twelve who stayed in 1991. I didn’t have an answer, so that was the answer.",
+            "It was Elena’s idea and Tomás did the work. Fine. Both. The keys went to the people on the floor. Tomás got his own shop, and Hector."
           ]
         ],
         sides: [
@@ -216,7 +211,7 @@ DATA.raymond = {
             body: "You said not yet for five years, Dad. Not a few times. Five years, and I counted. I’d have taken the keys in 2016 and I’d have been fine. What I’ll give him is this: when the term sheet came, he was more scared of it than I was. That’s when I knew he wasn’t keeping the company from me. He was keeping it from them. After the sale I opened my own shop. He didn’t argue. He sent Hector.",
             by: "Tomás Ortiz, his son" },
           { heading: "Elena remembers it too",
-            body: "I read an article about a company in Ohio that sold itself to the people who worked there. I cut it out and put it on his desk, under the term sheet, and I left it there a month. He says he found it. He didn’t find it. I moved it to the top every Monday until he read it.",
+            body: "I read an article about a company in Ohio that sold itself to the people who worked there. I cut it out and put it on his desk, under the offer, and I left it there a month. He says he found it. He didn’t find it. I moved it to the top every Monday until he read it.",
             by: "Elena Ortiz, his wife" }
         ]
       },
@@ -225,16 +220,14 @@ DATA.raymond = {
         faces: [
           [
             "The private equity offer was the better deal on paper. I’m not going to pretend otherwise.",
-            "In the end I took about a fifth less and sold the company to the people who worked there. An employee stock ownership plan. A piece of it for every one of them. The better part of three years and four lawyers to build, and I understood maybe half of what the lawyers said, and Marisol understood the other half and translated. A hundred and forty people. Every one of them in Grand Rapids. Every one of them still here.",
-            "People ask if I left money on the table. I didn’t leave it on the table. I left it in a hundred and forty houses."
+            "In the end I took about a fifth less and sold the company to the people who worked there. An employee stock ownership plan. A piece of it for every one of them. The better part of three years and four lawyers to build, and I understood maybe half of what the lawyers said, and Marisol understood the other half and translated. A hundred and forty people. Every one of them in Grand Rapids."
           ],
           [
-            "My last day was a Friday in March 2022. Payday. I signed the checks one more time, by hand, the way I had since 1983, and then I walked the floor.",
+            "My last day was a Friday in March 2022. Payday. I signed the payroll one more time, by hand, the way I had since 1983, and then I walked the floor.",
             "At the end of second shift they called me to the back. Hector had something under a towel. A frame, and in the frame the first bracket I ever made in the garage on Godfrey Avenue. He’d kept it in his toolbox for thirty-eight years. I didn’t know. I’d thought it was gone.",
             "It runs without me, which was the whole idea. If it’s still here in fifty years and nobody remembers my name, I did it right."
           ]
         ],
-        kept: "If it’s still here in fifty years and nobody remembers my name, I did it right.",
         sides: [
           { heading: "Hector remembers it too",
             body: "He gave me that bracket my first morning, in 1984. Said, match this. I matched it. Then I put his in the bottom of my box under the parallels, because I figured a man who starts a company in a garage is going to want the first part back someday and won’t think to keep it himself. I was right. Thirty-eight years. He cried. He’ll say he didn’t.",
@@ -243,7 +236,7 @@ DATA.raymond = {
         voice: { rec: "Jan 10, 2026", len: "1:04", quote: "The private equity offer was the better deal on paper." }
       },
       { id: "m12", title: "Thursdays", dateline: "2025 · aged 74", askedBy: "Maya",
-        headnote: "On the phone from the recliner on a Thursday evening, just back from the shop.",
+        headnote: "On the phone from the recliner on a Thursday, just back from the shop.",
         faces: [
           [
             "I go in on Thursdays. Nobody asked me to and nobody’s told me to stop. I walk the floor before anybody’s read their email, the way I always did, and I say good morning to a hundred and forty people and I don’t know all their names anymore, which is the point. Then I stand by the Bridgeport for a while. It’s at the front of the shop. Every new hire makes a first part on it. Forty-two years and it still holds a thousandth.",
@@ -257,7 +250,7 @@ DATA.raymond = {
         ],
         sides: [
           { heading: "Maya remembers it differently",
-            body: "He says nobody needs him there. I went with him one Thursday in October. The second-shift lead had a list on a clipboard. Four questions, saved up all week, and she waited until he’d done his walk before she asked them. He answered all four in under a minute each and said, you didn’t need me for that. She said, no, Ray. Then she wrote the answers down.",
+            body: "He says nobody needs him there. I went with him one Thursday in October. The first-shift lead had a list on a clipboard. Four questions, saved up all week, and she waited until he’d done his walk before she asked them. He answered all four in under a minute each and said, you didn’t need me for that. She said, no, Ray. Then she wrote the answers down.",
             by: "Maya Ortiz, his granddaughter" }
         ]
       }
@@ -277,10 +270,10 @@ DATA.raymond = {
     { q: "What do you and Elena argue about?", a: "The thermostat. Fifty years. She’s winning." },
     { q: "What were you like as a father?", a: "Gone too much and home for dinner. Both are true. Ask Marisol." },
     { q: "What do you look for in a person?", a: "Whether they clean their station without being told." },
-    { q: "Favorite tool?", a: "My father’s six-inch dial caliper. It’s off by a thousandth. I know which way." },
-    { q: "What do you miss about San Antonio?", a: "My mother asking if I was cold. Breakfast. In that order." },
+    { q: "Favorite sound?", a: "A mill cutting right. You can hear it from the office with the door shut." },
+    { q: "What do you miss about San Antonio?", a: "Breakfast tacos at six in the morning. Nobody up here gets it right." },
     { q: "Something you never learned?", a: "Dancing. Elena stopped asking in 1979." },
-    { q: "Proudest decision?", a: "2009. Orders fell forty percent and nobody lost a job. Not one." },
+    { q: "Proudest decision?", a: "2009. Orders fell forty percent and nobody lost a job. The banker called to say congratulations. I let it ring." },
     { q: "Advice for your 1983 self?", a: "Get a second customer before you need one." },
     { q: "What does retirement feel like?", a: "Saturday, every day. I miss Mondays." },
     { q: "What are you still learning?", a: "How to let Maya explain her circuit boards without interrupting." }
@@ -288,7 +281,7 @@ DATA.raymond = {
 
   people: [
     { name: "Elena Ortiz", relation: "his wife", line: "Kept the books and kept me. Never wrong about money. Never once." },
-    { name: "Tomás Ortiz", relation: "his son", line: "Taught me to swim at seven. Ready for the keys long before I saw it." },
+    { name: "Tomás Ortiz", relation: "his son", line: "Taught me to swim when he was seven. Ready for the keys long before I saw it." },
     { name: "Marisol Ortiz", relation: "his daughter", line: "Found an error in her mother’s ledger at eight. Keeps an empty green one on her desk now." },
     { name: "Maya Ortiz", relation: "his granddaughter", line: "Asked most of the questions in this book. Took my caliper without asking. Good." },
     { name: "Hector Ruiz", relation: "his first employee", line: "Wiped the mill table before I’d said the pay. Thirty-eight years. Kept the first bracket." },
@@ -305,7 +298,7 @@ DATA.raymond = {
     { who: "Marisol Ortiz", relation: "his daughter", title: "The empty ledger", dateline: "2026",
       faces: [[
         "There’s a green ledger on my desk at work. Same kind, same stationery store, which still exists, which surprised me. It’s empty. People ask about it in meetings and I say it’s a reminder, and they nod like they know what of.",
-        "It’s this. Every number on every page of every real one of those was true. Twenty-one years. My mother never rounded, never moved a loss to next month, never wrote what my father wanted to see. I run finance for a company with four thousand people and software that cost more than the shop did, and the hardest thing in the job is still that. Write down what’s true, the night it’s true.",
+        "It’s this. Every number on every page of every real one of those was true. Twenty-one years. My mother never rounded, never moved a loss to next month, never wrote what my father wanted to see. I run finance for a company with four thousand people and software that cost more than the shop did, and the hardest thing in the job is still that.",
         "The empty one is so I remember the pencil. She let me check the rest. I’m still checking."
       ]] },
     { who: "Maya Ortiz", relation: "his granddaughter", title: "The first part", dateline: "2026",
@@ -321,9 +314,8 @@ DATA.raymond = {
       "You asked most of the questions in this book, so you get the letter.",
       "I don’t have advice. You’ve heard all of it, and you took the caliper anyway, which tells me you’ll be fine.",
       "Here is what I didn’t say on the phone. I missed things. Marisol’s first science fair, because a fixture was wrong. Most of your father’s games in 1991. Your grandmother went to all of them and told me the scores at dinner, and I nodded like I’d been there. The shop would have run fine those nights without me. I know that now.",
-      "So come to dinner. Whatever you’re building will still be there at eight o’clock.",
-      "Tell your father he was ready in three. Tell your aunt the green book is hers to fill. Look after your grandmother, which she won’t let you do, so do it anyway.",
-      "When you’re seventy-five and somebody asks what you built, I hope you have trouble answering, because it’s too many people to name.",
+      "Tell your father he was ready in 2016. He counted right. Tell your aunt the green book is hers to fill. Look after your grandmother, which she won’t let you do, so do it anyway.",
+      "And come to dinner. Whatever you’re building will still be there at eight o’clock.",
       "Payday is Friday by noon."
     ]],
     sig: "Grandpa" },

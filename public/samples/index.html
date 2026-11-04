@@ -1213,7 +1213,7 @@ const raymondArt = `<svg class="cv-art" viewBox="0 0 66 80" aria-hidden="true">
     ${Array.from({length:15},(_,i)=>`<line x1="6" x2="58" y1="${16+i*3.8}" y2="${16+i*3.8}" stroke="#9fb6a5" stroke-width=".18"/>`).join('')}
     <line x1="16" x2="16" y1="6" y2="72" stroke="#c46b4b" stroke-width=".25"/><line x1="44" x2="44" y1="6" y2="72" stroke="#9fb6a5" stroke-width=".18"/>
     <text x="9" y="12.5" font-family="Caveat, cursive" font-size="4.2" fill="#2f3f63">Ortiz Precision · 1983</text>
-    ${[["Aug","Mill, used","2,300"],["Aug","Rent, Godfrey","180"],["Sep","First order","412"],["Oct","Kerosene","38"],["Nov","Bracket job","1,150"],["Dec","Payday","Fri"]].map((r,i)=>`<text x="8" y="${23+i*3.8}" font-family="Caveat, cursive" font-size="3" fill="#2f3f63">${r[0]}</text><text x="18" y="${23+i*3.8}" font-family="Caveat, cursive" font-size="3" fill="#2f3f63">${r[1]}</text><text x="56" y="${23+i*3.8}" text-anchor="end" font-family="Caveat, cursive" font-size="3" fill="#2f3f63">${r[2]}</text>`).join('')}
+    ${[["Aug","Mill, used","2,300"],["Aug","Rent, Godfrey","180"],["Sep","First order","412"],["Oct","Kerosene","38"],["Nov","Bracket job","1,150"],["Dec","Our draw","0"]].map((r,i)=>`<text x="8" y="${23+i*3.8}" font-family="Caveat, cursive" font-size="3" fill="#2f3f63">${r[0]}</text><text x="18" y="${23+i*3.8}" font-family="Caveat, cursive" font-size="3" fill="#2f3f63">${r[1]}</text><text x="56" y="${23+i*3.8}" text-anchor="end" font-family="Caveat, cursive" font-size="3" fill="#2f3f63">${r[2]}</text>`).join('')}
   </g></svg>`;
 const tomArt = `<svg class="cv-art" viewBox="0 0 66 80" aria-hidden="true">
   <path d="M30 2 C 18 10, 14 20, 22 30" fill="none" stroke="currentColor" stroke-width=".6" stroke-dasharray=".6 .9" opacity=".8"/>
@@ -1494,10 +1494,9 @@ function compileBook(D, forceToc){
   /* what she learned */
   const learned = (D.learned||[]).filter(g => (g.quotes||[]).length);
   if(learned.length){
-    chNo++;
     const lt = `What ${name} learned`;
-    toc.push({name:lt, years:'', num:chNo, page:n+1});
-    opener(`Chapter ${WORDS[chNo-1]||chNo}`, String(chNo).padStart(2,'0'), lt, '', 'In this chapter', learned.map(g=>g.theme).join(', '), lt);
+    toc.push({name:lt, years:'', num:0, page:n+1});
+    opener(`In ${pron === 'he' ? 'his' : 'her'} words`, '', lt, '', 'In this chapter', learned.map(g=>g.theme).join(', '), lt);
     /* one block per quote; the first of a theme carries the theme's heading, and a quote that opens a later face repeats it as "(continued)" */
     const blocks = learned.flatMap(g => g.quotes.map((q,i) => {
       const from = mem[q.from], yr = from ? yearsOf(from.dateline)[0] : '';
