@@ -126,8 +126,10 @@ export default function StickyStart() {
       const endings = document.querySelectorAll<HTMLElement>(
         /* Round 3 fix 1 (item 8): also any inline action row a page marks
            with data-inline-actions (/for-families #giving), so two Start
-           buttons are never on screen at once. */
-        '[aria-labelledby="invitation-title"], footer, #book, #collaborate, [data-inline-actions]',
+           buttons are never on screen at once. Round 3 fix 2 (item 10,
+           Maya #8): and anything marked data-sticky-away, the film's
+           player (kit/Film.tsx), so the bar never covers the film. */
+        '[aria-labelledby="invitation-title"], footer, #book, #collaborate, [data-inline-actions], [data-sticky-away]',
       );
       io = new IntersectionObserver((entries) => {
         for (const e of entries) {

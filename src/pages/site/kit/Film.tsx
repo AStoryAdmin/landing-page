@@ -383,7 +383,10 @@ export default function Film({
           <Note className="caller">{CALLER_LINE}</Note>
         </div>
 
-        <div className="player">
+        {/* Round 3 fix 2 (item 10): the phone's sticky Start bar steps
+            away while the player is on screen (kit/StickyStart.tsx). The
+            "Voices are synthetic" line above is untouched. */}
+        <div className="player" data-sticky-away>
           <Screen>
             {source ? (
               <video
