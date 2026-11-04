@@ -47,6 +47,7 @@ var LEGACY = {
     '/story': '/our-story/',
     '/faq': '/questions/',
     '/why-it-matters': '/#why-a-story',
+    '/reserve': '/pricing/',
 };
 
 function redirect(status, location) {

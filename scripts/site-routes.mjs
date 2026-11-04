@@ -47,4 +47,5 @@ export const redirects = {
     '/story': '/our-story',
     '/faq': '/questions',
     '/why-it-matters': '/#why-a-story',
+    '/reserve': '/pricing',
 };

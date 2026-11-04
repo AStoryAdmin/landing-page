@@ -109,17 +109,6 @@
     ]
   },
   {
-    "path": "/reserve",
-    "name": "Reserve",
-    "card": "Before launch · Reserve for $1",
-    "og": "reserve",
-    "photo": "05",
-    "phrase": [
-      "Hold your place",
-      "for a dollar."
-    ]
-  },
-  {
     "path": "/guides",
     "name": "Guides",
     "og": "guides",

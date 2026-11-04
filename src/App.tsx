@@ -74,8 +74,6 @@ const Thanks = lazyRoute("/thanks", () => import("./pages/site/Thanks"));
 /* The conversion page. Every call to action on the site ends here —
    it used to end in the visitor's email client. See components/start.tsx. */
 const Start = lazyRoute("/start", () => import("./pages/site/Start"));
-/* Before launch: reserve for $1, or start now for $29. See lib/founding.ts. */
-const Reserve = lazyRoute("/reserve", () => import("./pages/site/Reserve"));
 /* Accounts live in the web app since 2026-10-18 (lib/app.ts). The site's own
    sign-in and sign-up stay only for the $1 / $29 reservation, which comes
    back to /reserve (?next=/reserve); every other visit goes to the app. */
@@ -158,6 +156,8 @@ const legacy = {
   "/story": "/our-story",
   "/faq": "/questions",
   "/why-it-matters": "/#why-a-story",
+  /* The $1 reservations (and the $29 founding place, which lived on the same page) stopped on 2 November 2026; the founder asked on 3 November that the page come down. */
+  "/reserve": "/pricing",
 };
 /** /sign-in and /sign-up: the site's own form only on the way back to /reserve. */
 function AuthDoor({ form }: { form: "sign-in" | "sign-up" }) {
@@ -224,7 +224,6 @@ function App() {
           ))}
           {/* Post-purchase. Stripe redirects here; noindex. */}
           <Route path="/thanks" element={<Thanks />} />
-          <Route path="/reserve" element={<Reserve />} />
           <Route path="/sign-up" element={<AuthDoor form="sign-up" />} />
           <Route path="/sign-in" element={<AuthDoor form="sign-in" />} />
           <Route path="/account" element={<AppDoor door="account" path="/account" />} />
@@ -234,7 +233,7 @@ function App() {
           <Route path="/c/:slug" element={<AppDoor door="contribute" path="/c" />} />
           {/* The spellings people type, and the $29-only offer's old address.
               Kept out of `legacy` above: the contracts count those seven. */}
-          <Route path="/founding" element={<Legacy to="/reserve" />} />
+          <Route path="/founding" element={<Legacy to="/pricing" />} />
           <Route path="/signup" element={<Legacy to="/sign-up" />} />
           <Route path="/signin" element={<Legacy to="/sign-in" />} />
           <Route path="/login" element={<Legacy to="/sign-in" />} />

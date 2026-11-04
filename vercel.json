@@ -45,10 +45,6 @@
       "destination": "/questions/index.html"
     },
     {
-      "source": "/reserve",
-      "destination": "/reserve/index.html"
-    },
-    {
       "source": "/guides",
       "destination": "/guides/index.html"
     },
@@ -167,6 +163,11 @@
     {
       "source": "/why-it-matters",
       "destination": "/#why-a-story",
+      "permanent": true
+    },
+    {
+      "source": "/reserve",
+      "destination": "/pricing",
       "permanent": true
     }
   ]
