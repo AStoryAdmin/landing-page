@@ -64,12 +64,12 @@ import {
 } from "./kit/kit.styles";
 import { QuoteBand, RuledSteps } from "./rooms/Rooms";
 import DemoSection from "./kit/DemoSection";
-import { TODAY_NOTE } from "../../lib/today";
 import { QUESTION_COUNT } from "../../lib/product";
 import {
   CAN_SAY,
   CARE_SAY_ORDER,
-  NOT_STATED,
+  DEMO_AGENDA,
+  WRITE_TO_DANIEL,
 } from "./orgQuestions";
 import PrintSheet from "./kit/PrintSheet";
 import { CONTACT } from "../../lib/contact";
@@ -281,12 +281,33 @@ const Fit = styled.div`
       font-size: 2.1rem;
     }
   }
-  /* On a phone the app screen comes first, so the first screen holds it
-     (the kit puts a flipped object back after the words below 861 px). */
-  @media (max-width: 860px) {
+  /* On a tablet the app screen comes first (the kit puts a flipped object
+     back after the words below 861 px). Round 3 fix 2 (item 12a, Denise
+     and Priya #6): at 640 px and below the headline, the lead, Book a demo
+     and the agenda under it come first, and the phone follows, its band
+     capped at about 40 % of the screen, so at 390 the headline starts
+     near the top of the first screen. */
+  @media (min-width: 641px) and (max-width: 860px) {
     section[data-variant][data-flip] .opening-object {
       order: -1;
     }
+  }
+  @media (max-width: 640px) {
+    section[data-variant][data-flip] .opening-object {
+      order: 2;
+    }
+    section[data-variant] .opening-object .device {
+      height: min(250px, 40svh);
+    }
+  }
+  /* Round 3 fix 2 (item 2): the agenda under Book a demo is set in the
+     page's serif at reading size, in the ground's own ink: a list to bring,
+     not a warning. */
+  section[data-variant] .opening-note .agenda-line {
+    display: block;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--text, ${color.body});
+    max-width: 44ch;
   }
   /* A short phone screen: the phone and the sheet a little closer, and the
      sheet's top margin a little less, so the title ends inside 568px. */
@@ -357,16 +378,11 @@ const Need = styled(Chapter)`
     font-weight: 500;
     color: var(--ink);
   }
-  /* Round 3 fix 1 (item 12a): what is not stated yet, in the ink, then
-     the ask and the two links, each on its own line. */
-  .say .not-stated {
-    margin-top: ${space.sm};
-    max-width: 56ch;
-    font: 400 ${type.read} / 1.55 ${font.text};
-    color: var(--ink);
-  }
+  /* The address to write to and the two links, each on its own line
+     (round 3 fix 2: the "not stated" line became the agenda under Book a
+     demo). */
   .say .ask {
-    margin-top: ${space.xs};
+    margin-top: ${space.sm};
     max-width: 56ch;
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
@@ -573,7 +589,10 @@ const FOLD = "(max-width: 640px)";
 const NEED: readonly [string, string][] = [
   [
     "An iPhone for each resident, before launch.",
-    "We help install the app. Where a resident has none, a staff member starts a conversation together with them.",
+    /* Round 3 fix 2 (item 12b, Denise #5): the first sentence of
+       lib/today.ts TODAY_NOTE moved here from the opening's note, so the
+       private beta is said once, beside the iPhone it is about. */
+    "Today the calls ring in the A Story iPhone app, in a private beta. We help install the app. Where a resident has none, a staff member starts a conversation together with them.",
   ],
   ["An agreed hour.", "The app rings then, and they answer and talk."],
   [
@@ -582,8 +601,9 @@ const NEED: readonly [string, string][] = [
   ],
   [
     "The resident’s consent, before the first call.",
-    /* Round 3 fix 1 (item 12a): the demo half of this line moved into the
-       one "Not stated on this page yet" line (orgQuestions.ts NOT_STATED). */
+    /* Round 3 fix 1 (item 12a): the demo half of this line moved out; in
+       fix 2 it is the agenda under Book a demo (orgQuestions.ts
+       DEMO_AGENDA). */
     "Agreed with them, together with who may read or contribute.",
   ],
   [
@@ -654,7 +674,10 @@ export default function Care() {
             </>
           }
           lead={LEAD}
-          note={TODAY_NOTE}
+          /* Round 3 fix 2 (items 2 and 12b): under Book a demo, the agenda
+             (orgQuestions.ts DEMO_AGENDA) instead of the today note, whose
+             private-beta sentence moved into "What you need". */
+          note={<span className="agenda-line">{DEMO_AGENDA}</span>}
           actions={
             <>
               <PrimaryAnchor href="#book">
@@ -719,16 +742,22 @@ export default function Care() {
                 <li key={t.lead}>
                   <b>{t.lead}</b>
                   {/* The repeats line (CARE_SAY_ORDER[0]) keeps only its
-                      lead here: "never a test" is in Know below. */}
-                  {t.rest && i > 0 && <> {t.rest}</>}
+                      lead here: "never a test" is in Know below. The
+                      storage line's rest is its link to /privacy#s13. */}
+                  {t.rest && i > 0 && (
+                    <>
+                      {" "}
+                      {t.href ? <Link to={t.href}>{t.rest}</Link> : t.rest}
+                    </>
+                  )}
                 </li>
               ))}
             </ul>
-            <p className="not-stated">{NOT_STATED}</p>
+            {/* Round 3 fix 2 (item 2): the "not stated" line left this
+                block for the agenda under Book a demo. */}
             <p className="ask">
-              Bring them to the demo, or write to{" "}
-              <a href={CONTACT.general}>contact@astoryapp.com</a>; Daniel
-              answers every message himself.
+              Write to <a href={CONTACT.general}>contact@astoryapp.com</a>;{" "}
+              {WRITE_TO_DANIEL}
             </p>
             <ul className="ways" aria-label="Read more">
               <li>

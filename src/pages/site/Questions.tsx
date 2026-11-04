@@ -18,7 +18,7 @@
  * product.ts); the FAQ schema is unchanged.
  */
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Seo from "../../components/ui/Seo";
 import {
@@ -531,7 +531,17 @@ export default function Questions() {
                         {x.q}
                         <i aria-hidden="true" />
                       </summary>
-                      <p>{x.a}</p>
+                      <p>
+                        {x.a}
+                        {/* Round 3 fix 2 (item 1): the storage answer links
+                            to section 13 of the privacy policy. */}
+                        {"link" in x && x.link && (
+                          <>
+                            {" "}
+                            <Link to={x.link.to}>{x.link.label}</Link>
+                          </>
+                        )}
+                      </p>
                     </details>
                   ))}
                 </div>

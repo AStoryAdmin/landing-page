@@ -67,7 +67,7 @@ import {
 } from "./kit/kit.styles";
 import DemoSection from "./kit/DemoSection";
 import { INSTITUTION_KINDS } from "../../lib/demoRequest";
-import { CAN_SAY, NOT_STATED } from "./orgQuestions";
+import { CAN_SAY, DEMO_AGENDA, WRITE_TO_DANIEL } from "./orgQuestions";
 import PrintSheet from "./kit/PrintSheet";
 import { CONTACT } from "../../lib/contact";
 import { color, display, font, media, shadow, space, type } from "../../styles/theme";
@@ -266,9 +266,21 @@ const Book = styled.figure`
 
 const Opening = styled.div`
   display: contents;
-  @media (max-width: 860px) {
+  @media (min-width: 641px) and (max-width: 860px) {
     section[data-variant] .opening-object {
       order: -1;
+    }
+  }
+  /* Round 3 fix 2 (item 12a, Denise and Priya #6): at 640 px and below the
+     headline, the lead and Book a demo come first, and the Ledger follows,
+     no taller than about 40 % of the screen, so at 390 the headline starts
+     near the top of the first screen. */
+  @media (max-width: 640px) {
+    section[data-variant] .opening-object {
+      order: 2;
+    }
+    section[data-variant] .opening-object a.cover {
+      width: min(64vw, 300px, 40svh);
     }
   }
 `;
@@ -463,6 +475,14 @@ const Program = styled(Chapter)`
     font: 400 ${type.read} / 1.55 ${font.text};
     color: var(--muted);
   }
+  /* Round 3 fix 2 (item 2): the agenda under Book a demo, one line in the
+     page's serif, in the ground's own ink (no warning colour). */
+  .agenda {
+    margin-top: ${space.md};
+    max-width: 46ch;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--text, var(--ink));
+  }
   ul {
     display: grid;
     margin: clamp(${space.lg}, 3vw, ${space.xxl}) 0 0;
@@ -597,12 +617,9 @@ const Program = styled(Chapter)`
   main[data-premium] & .privacy p a:not([class]) ~ a:not([class]) {
     padding-block: 0 26px;
   }
-  /* Round 3 fix 1 (item 12a): what is not stated yet, in the ink; the ask
-     with its one address; then the two ways on, one 44px row each, 8px
-     apart. */
-  .privacy p.not-stated {
-    color: var(--ink);
-  }
+  /* The address to write to; then the two ways on, one 44px row each, 8px
+     apart (round 3 fix 1; fix 2 moved the "not stated" line to the agenda
+     under Book a demo). */
   main[data-premium] & .privacy p.ask a:not([class]) {
     padding-block: 13px;
   }
@@ -942,6 +959,10 @@ export default function Organizations() {
                   See one conversation become a book&nbsp;·&nbsp;49&nbsp;s
                 </TextAnchor>
               </Actions>
+              {/* Round 3 fix 2 (item 2, Priya #2, Denise #3): what the site
+                  does not state yet, as an agenda for the demo
+                  (orgQuestions.ts DEMO_AGENDA), out of the trust block. */}
+              <p className="agenda">{DEMO_AGENDA}</p>
             </div>
             <div>
               <Statement as="h2" id="decide-title" $size="md">
@@ -971,18 +992,25 @@ export default function Organizations() {
                     {CAN_SAY.map((t) => (
                       <li key={t.lead}>
                         <b>{t.lead}</b>
-                        {t.rest && <> {t.rest}</>}
+                        {t.rest && (
+                          <>
+                            {" "}
+                            {t.href ? (
+                              <Link to={t.href}>{t.rest}</Link>
+                            ) : (
+                              t.rest
+                            )}
+                          </>
+                        )}
                       </li>
                     ))}
                   </ul>
-                  {/* Round 3 fix 1 (item 12a): one place for what the site
-                      does not state yet (orgQuestions.ts NOT_STATED), then
-                      orgQuestions.ts:145's ask, word for word. */}
-                  <p className="not-stated">{NOT_STATED}</p>
+                  {/* Round 3 fix 2 (item 2): the "not stated" line left
+                      this block for the agenda under Book a demo above. */}
                   <p className="ask">
-                    Bring them to the demo, or write to{" "}
-                    <a href={CONTACT.general}>contact@astoryapp.com</a>;
-                    Daniel answers every message himself.
+                    Write to{" "}
+                    <a href={CONTACT.general}>contact@astoryapp.com</a>;{" "}
+                    {WRITE_TO_DANIEL}
                   </p>
                   <ul className="ways" aria-label="Read more">
                     <li>

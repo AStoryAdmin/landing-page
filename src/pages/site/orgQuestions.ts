@@ -17,7 +17,7 @@
 
 /** "What we can say today": six lines, each from the privacy policy's
  *  short version (components/privacy.tsx, PlainSummary) or the FAQ. */
-export const CAN_SAY: readonly { lead: string; rest: string }[] = [
+export const CAN_SAY: readonly { lead: string; rest: string; href?: string }[] = [
   {
     /* faqData.ts "Who asks the questions?" (AI-guided interviewer);
        privacy.tsx:108-110 "Nobody at A Story reads, listens to or looks at
@@ -60,27 +60,40 @@ export const CAN_SAY: readonly { lead: string; rest: string }[] = [
     lead: "A story told twice is fine.",
     rest: "It is an invitation, never a test of what someone remembers.",
   },
+  {
+    /* Round 3 fix 2 (item 1, Priya #1, Denise #3): the privacy policy,
+       section 13 (components/privacy.tsx:522-527, "your information is
+       stored and processed in the United States"), a strict subset. The
+       rest is the link's label, to /privacy#s13. The provider is named on
+       /privacy only. */
+    lead: "Stored and processed in the United States.",
+    rest: "The privacy policy, section 13.",
+    href: "/privacy#s13",
+  },
 ];
 
-/** The line under CAN_SAY on both pages: what is not claimed, and where
- *  it is answered. Nothing about HIPAA, a BAA or residency either way
- *  (design-spec §4C, flagged for Daniel).
- *  Round 3 fix 1 (item 12a, Denise and Priya): the run of "bring it to the
- *  demo" answers on the page becomes this one place. It names what the site
- *  does not state yet (the facts blocked on Daniel, plan round 3) and claims
- *  nothing about any of them; the second sentence is this file's ORG_GROUP
- *  HIPAA answer (orgQuestions.ts:145) word for word. */
-export const NOT_STATED =
-  "Not stated on this page yet: HIPAA and a BAA, where data is stored, export formats, consent for a resident who cannot decide alone, and price.";
-export const NOT_STATED_ASK =
-  "Bring them to the demo, or write to contact@astoryapp.com; Daniel answers every message himself.";
+/** Round 3 fix 2 (item 2, Priya #2, Denise #3): what the site does not
+ *  state yet is no longer a line in "What we can say today". It is a calm
+ *  agenda under the Book a demo action on both pages, in the page's serif.
+ *  It rewords fix 1's NOT_STATED ("Not stated on this page yet: HIPAA and
+ *  a BAA, where data is stored, export formats, consent for a resident who
+ *  cannot decide alone, and price.") minus the storage line, which the
+ *  privacy policy answers (CAN_SAY above). Nothing is claimed about any of
+ *  the four; price stays "quoted on the demo" (Care.tsx NEED). */
+export const DEMO_AGENDA =
+  "Bring these to the demo: HIPAA and a BAA, export formats, consent for a resident who cannot decide alone, and price.";
+/** The address line in "What we can say today": a strict subset of this
+ *  file's ORG_GROUP HIPAA answer ("... or write to contact@astoryapp.com;
+ *  Daniel answers every message himself."). Rendered with the address as a
+ *  link, so the pages spell it out themselves. */
+export const WRITE_TO_DANIEL = "Daniel answers every message himself.";
 
 /** Round 3 fix 1 (item 12d): on /care-communities the care-relevant lines
  *  come first (repeats are fine, nothing appears until "yes", who owns it,
  *  who listens), then data and export. Indexes into CAN_SAY. The "never a
  *  test" half of the repeats line is said once on that page, in its own
  *  steps, so the care list carries the lead only (item 12c). */
-export const CARE_SAY_ORDER = [5, 1, 3, 0, 2, 4] as const;
+export const CARE_SAY_ORDER = [5, 1, 3, 0, 2, 6, 4] as const;
 
 /** The group on /questions. Each answer names its source in a comment. */
 export const ORG_GROUP = {
@@ -126,7 +139,14 @@ export const ORG_GROUP = {
          cannot decide alone, we go through on the demo." The word
          "memory care" is one of the care kinds lib/contact.ts names. No
          clinical claim is made. */
-      a: "A Story records personal stories. It is not a clinical assessment or treatment. A photograph, a recipe or a song can open a conversation; it is an invitation, never a test of what someone remembers. A resident talks at an agreed hour, or together with a staff member, and can stop at any time. Consent for a resident who cannot decide alone is a question we go through on the demo, for your setting.",
+      /* Round 3 fix 2 (item 13, Denise #4): what happens when a resident
+         is upset, instead of the hero's lines again. "Decline a question,
+         pause, or change the subject": faqData.ts:73 ("What if a question
+         feels too personal?"); "stop at any time": this group's consent
+         answer and privacy.tsx section 6; "a story told twice is fine" and
+         "nothing appears until they say yes": CAN_SAY above. No claim about
+         what staff do. */
+      a: "A Story records personal stories. It is not a clinical assessment or treatment. A resident can decline a question, pause, or change the subject, and stop at any time; a story told twice is fine, and nothing appears until they say yes.",
     },
     {
       q: "How long is it kept?",
@@ -152,11 +172,15 @@ export const ORG_GROUP = {
       a: "Before launch, A Story can only ring an iPhone, so each storyteller needs one, and we help install the app. Where a resident has none, a staff member can start a conversation together with them. Shared devices for a floor or a class: ask on the demo.",
     },
     {
-      q: "What about HIPAA, a BAA or where data lives?",
-      /* Care.tsx and Organizations.tsx, "Questions about consent, staff
-         access or HIPAA? Bring them to the demo." No claim either way.
-         Questions.tsx:423 "Daniel answers every email himself." */
-      a: "We make no claim about those on the site. Bring them to the demo, or write to contact@astoryapp.com; Daniel answers every message himself.",
+      q: "Where is data stored, and what about HIPAA or a BAA?",
+      /* Round 3 fix 2 (item 1, Priya #1): the storage answer is the privacy
+         policy's own, section 13 (components/privacy.tsx:526-527), at
+         /privacy#s13. HIPAA and a BAA: no claim either way, the tail of
+         this answer before fix 2 (Questions.tsx:423 "Daniel answers every
+         email himself."). */
+      a: "Your information is stored and processed in the United States (privacy policy, section 13). For HIPAA and a BAA, bring them to the demo, or write to contact@astoryapp.com; Daniel answers every message himself.",
+      /* Questions.tsx renders this after the answer. */
+      link: { to: "/privacy#s13", label: "The privacy policy, section 13" },
     },
     {
       q: "What does a program cost?",
