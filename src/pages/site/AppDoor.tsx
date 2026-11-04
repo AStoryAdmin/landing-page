@@ -223,7 +223,7 @@ function Leaving({
     CALLER_LINE). Phone-first fix 1 (item 9c): /join keeps the last one. */
 const CALLER_LINE =
   "It’s a computer that calls and asks, not a person. Nobody at A Story reads or listens to what you say unless you ask us to help, or someone reports something. If you write to us, Daniel, who started A Story, answers himself.";
-const DANIEL_LINE = CALLER_LINE.split(/(?<=.)s+/).pop()!;
+const DANIEL_LINE = CALLER_LINE.slice(CALLER_LINE.indexOf("If you write to us"));
 
 /** Phone-first fix 1 (item 11, Harold #5, Tuan #8): a face beside "Daniel
     answers himself". The photograph already published on /our-story
