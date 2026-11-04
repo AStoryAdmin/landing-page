@@ -37,14 +37,14 @@ const BOOKS = [
   {
     id: "carolyn",
     name: "Carolyn Bennett",
-    kind: "A family memoir",
-    line: "Baker, Holland, Michigan. Fifteen memories, in her own words.",
+    kind: "A baker’s life",
+    line: "Baker, Holland, Michigan. Twelve memories, in her own words.",
   },
   {
     id: "raymond",
     name: "Raymond Ortiz",
     kind: "A founder’s ledger",
-    line: "Machinist and founder. Forty years of a shop, told by the family.",
+    line: "Machinist and founder. Forty years of a shop, in his own words.",
   },
   {
     id: "tom",
