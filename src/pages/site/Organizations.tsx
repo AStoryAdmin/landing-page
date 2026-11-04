@@ -77,9 +77,11 @@ const DEMO_AGENDA_BRING = DEMO_AGENDA.slice(DEMO_AGENDA.indexOf(". ") + 2);
 type Kind = (typeof INSTITUTION_KINDS)[number];
 const CARE: Kind = "Senior living or care community";
 
-/* Where "You decide" and "Privacy, in short" fold (the same width as
-   media.sm). */
-const FOLD = "(max-width: 640px)";
+/* Where "You decide", "Privacy, in short" and the steps fold. Phone-first
+   fix 3 (item 1, Priya #5): wherever the header shows Menu (theme.ts
+   media.navBar, below 1180 px, which covers 1024 px at 150 % text), as
+   /pricing does with "What's included"; it was media.sm. */
+const FOLD = media.navBar.replace(/^@media\s+/, "");
 
 const WHO: { kind: Kind; label: string; title: string; body: string }[] = [
   {
@@ -572,20 +574,21 @@ const Program = styled(Chapter)`
     font: 400 ${type.read} / 1.6 ${font.text};
     color: var(--muted);
   }
-  /* "You decide" and "Privacy, in short": folds on a phone only. From
-     641 px the summaries are hidden and the details stay open. */
+  /* "You decide" and "Privacy, in short": folds below the header's
+     breakpoint (FOLD). From 1180 px the summaries are hidden and the
+     details stay open. */
   .fold > summary {
     display: none;
   }
   /* Closed details with no summary could never open again, so wider
      screens show the content either way (the script also reopens them). */
-  @media (min-width: 641px) {
+  @media (min-width: 1180px) {
     .fold::details-content {
       content-visibility: visible;
       display: contents;
     }
   }
-  ${media.sm} {
+  ${media.navBar} {
     .fold {
       margin-top: ${space.md};
       border-top: 1px solid var(--line);
@@ -713,10 +716,10 @@ const Program = styled(Chapter)`
     font-weight: 600;
     text-underline-offset: 4px;
   }
-  /* On a phone the privacy fold sits flush under "You decide" (one rule
-     between them) and its summary names the block, so the h3 steps out
-     of the layout; it still names the list (aria-labelledby). */
-  ${media.sm} {
+  /* Where it folds, the privacy fold sits flush under "You decide" (one
+     rule between them) and its summary names the block, so the h3 steps
+     out of the layout; it still names the list (aria-labelledby). */
+  ${media.navBar} {
     .privacy {
       margin-top: 0;
     }
@@ -887,7 +890,7 @@ export default function Organizations() {
     if (fold.matches)
       for (const d of [decide.current, more.current, steps.current])
         if (d) d.open = false;
-    /* From 641 px the summary is hidden, so closed details could never be
+    /* From 1180 px the summary is hidden, so closed details could never be
        opened again (a phone turned sideways). Leaving the fold opens them. */
     const unfold = (e: MediaQueryListEvent) => {
       if (!e.matches) for (const d of folds) if (d) d.open = true;
