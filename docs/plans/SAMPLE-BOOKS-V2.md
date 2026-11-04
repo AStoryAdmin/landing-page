@@ -148,3 +148,22 @@ Banned on the page: summary boxes, source tags, layer bars, stats, lesson boxes,
 asked", "A Story asked for more", "nine minutes later", "still alive / for Ellie",
 "what she passes on", "to the reader", "five questions", revenue chart, import demos,
 and any sentence an editor wrote about her ("a testament to", "not just X but Y").
+
+## Raymond, round 3 (4 Nov, branch `raymond-v3`)
+
+Raymond scored 7.65 in round 2, below the bar of 8. The readers said it has no photographs, it reads like a founder's book rather than a grandfather's, and the cover has a rising red chart line.
+
+Pass / fail:
+- R1. At least half of his memories are about home, family or loss, not the company. Before the change it was 5 of 12.
+- R2. The book has three to five photographs from the site's own synthetic library (`public/mission/`), captioned in his voice, and none of them is used on a live page.
+- R3. The cover has no chart line, and nothing on the cover is about the company.
+- R4. Every round-2 flag on Raymond is fixed or kept on purpose with a reason: the salesman answer, the email answer, the "one more year" question, the "aged 35 to 40" dateline, the ledger plate without a heading, the speech to strangers in m8, the repeated term sheet in m11, Maya's closing line, "First order!", and "Four-day weeks" read as a case study.
+- R5. The data check, overflow check, lint and build pass, and the covers are re-captured.
+- R6. A cold-reader panel scores Raymond at least 8.0.
+
+| # | Task | Check | State |
+|---|------|-------|-------|
+| R-a | Engine: library photos with a ratio; cover chart line and "First order!" removed; label "A machinist's life" | page renders | done |
+| R-b | Rewrite: cut "Four-day weeks"; add "Grand Haven" (learning to swim, from his son) and "My father comes north" (his father's one visit and death); a new letter, little answers, people, dedication and cover line | `samples-check-data.mjs` OK | in progress |
+| R-c | Four photographs: 08 for his father at the bench, 30 for Grand Haven, 32 for the first building, 03 for the house | overflow OK | |
+| R-d | Checks, covers, panel round 3 | R5, R6 | |
