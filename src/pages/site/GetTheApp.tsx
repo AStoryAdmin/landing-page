@@ -198,6 +198,7 @@ const Opening = styled(Chapter)`
   }
   .done .next {
     margin-top: ${space.lg};
+    --ink: ${color.primary}; /* the link sits on paper, not the cloth's ivory ink */
   }
   .fallback {
     display: grid;
