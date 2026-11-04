@@ -1500,7 +1500,7 @@ function compileBook(D, forceToc){
     /* one block per quote; the first of a theme carries the theme's heading, and a quote that opens a later face repeats it as "(continued)" */
     const blocks = learned.flatMap(g => g.quotes.map((q,i) => {
       const from = mem[q.from], yr = from ? yearsOf(from.dateline)[0] : '';
-      const quote = `<blockquote class="lesson"><p>${tw(q.text)}</p><div class="lesson-from">— from “${from?tw(from.title):'?'}”${yr?` · ${yr}`:''}</div></blockquote>`;
+      const quote = `<blockquote class="lesson"><p>${tw(q.text)}</p><div class="lesson-from">— from “${from?tw(from.title):'?'}”</div></blockquote>`;
       const head = c => `<div class="lesson-theme"><h3>${tw(g.theme)}${c?' <small>(continued)</small>':''}</h3>${quote}</div>`;
       return i===0 ? {html:head(false), startHtml:head(false)} : {html:quote, startHtml:head(true)};
     }));
