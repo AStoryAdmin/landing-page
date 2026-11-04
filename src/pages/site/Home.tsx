@@ -1,17 +1,13 @@
 import { useEffect } from "react";
 import EditorialSeo from "../../components/ui/EditorialSeo";
 import { refreshWhenSettled } from "../../lib/scrollMotion";
-import { OTHER_PLANS } from "../../lib/pricing";
+import { Link } from "react-router-dom";
 import { Invitation } from "./kit/kit";
 import CodeFromFamily from "./home/CodeFromFamily";
 import Hero from "./home/Hero";
 import WhatGetsLost from "./home/WhatGetsLost";
 import EveryVoice from "./home/EveryVoice";
 import FamilyBook from "./home/FamilyBook";
-
-const monthly = OTHER_PLANS.find((p) => p.id === "monthly")!;
-/** "$19.99/mo" -> "$19.99": the cheapest way in to the calls, said once. */
-const monthlyPrice = monthly.price.replace(/\/mo$/, "");
 
 /**
  * Home, 2026-10-24: back to the past version's best (commit bd23f2f), at
@@ -34,7 +30,8 @@ const monthlyPrice = monthly.price.replace(/\/mo$/, "");
  *   4. FamilyBook    a teaser since 2026-11-04 (phone-first plan): one open
  *                    spread of the Hartleys' sample book and one line; its
  *                    one action is "Open the sample books" -> /samples.
- *   5. Invitation    the site's close on the cloth, with the one price line.
+ *   5. Invitation    the site's close on the cloth: the beta in one line and
+ *                    "See pricing" (no figure since phone-first fix 1).
  *
  * Left out, and why: the intro cover (Intro.tsx; it held the page for five
  * seconds); StepOne (Bao: "horrible"); ThreeSteps (a row of three equal
@@ -67,10 +64,18 @@ export default function Home() {
             Start the family’s book <em>today.</em>
           </>
         }
-        /* Phone-first plan (2026-11-04): the web app is no longer
-           advertised. Sources: the price, lib/pricing.ts OTHER_PLANS
-           "monthly"; the beta, faqData.ts:69; the family, pricing.ts:183. */
-        line={`The calls ring in the A Story app on your parent’s iPhone, now in private beta, from ${monthlyPrice} a month. Inviting family, writing and reading never cost extra.`}
+        /* Phone-first fix 1 (item 5, Maya #1, Harold #6): one price story.
+           /pricing says the calls "aren't on sale yet" (Pricing.tsx), so the
+           monthly figure left this band; "See pricing" is the way to it.
+           Sources: "by invite", AppDoor.tsx:91; "in a private beta",
+           lib/today.ts:14; the family, lib/pricing.ts:183. */
+        line={
+          <>
+            The calls ring in the A Story app on your parent’s iPhone, by
+            invite in a private beta. Inviting family, writing and reading
+            never cost extra. <Link to="/pricing">See pricing</Link>
+          </>
+        }
       />
     </>
   );

@@ -625,6 +625,11 @@ const Band = styled(Chapter)`
     color: var(--text);
     max-width: 40ch;
   }
+  .band-row > div > p a {
+    color: var(--ink);
+    font-weight: 600;
+    text-underline-offset: 4px;
+  }
   .next {
     position: relative;
     display: grid;
@@ -792,7 +797,8 @@ export function Invitation({
 }: {
   /** Round 3 fix 1: where the closing Start goes (default START_HREF). */
   startHref?: string;
-  line?: string;
+  /** Phone-first fix 1 (item 5): may carry a quiet link ("See pricing"). */
+  line?: ReactNode;
   title?: ReactNode;
   /** Off home: the three rooms to offer next, as paths from lib/nav.ts. */
   next?: RoutePath[];
