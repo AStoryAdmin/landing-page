@@ -4,7 +4,7 @@ import { Wordmark } from "./shared";
 import { ArrowIcon } from "./kit/kit";
 import { HeaderShell } from "./chrome.styles";
 import { START_HREF, START_LABEL } from "../../lib/app";
-import { SIGN_IN, TABS, isOrgPage, type Tab } from "../../lib/nav";
+import { SIGN_IN, TABS, bare, isOrgPage, type Tab } from "../../lib/nav";
 
 /*
  * The bar (phone-first plan, 2026-11-04, Daniel: "utilize our tabs (really)
@@ -191,6 +191,8 @@ export default function Header() {
                 aria-current={
                   location.pathname.startsWith(START_HREF) ? "page" : undefined
                 }
+                /* Phone-first fix 1 (item 9b): quieter on /join only. */
+                data-quiet={bare(location.pathname) === "/join" || undefined}
               >
                 {START_LABEL} <ArrowIcon />
               </Link>

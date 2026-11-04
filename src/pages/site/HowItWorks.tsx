@@ -443,6 +443,19 @@ const Asked = styled(Chapter)`
     font-family: inherit;
     font-weight: 500;
   }
+  /* Phone-first fix 1 (item 11): the line that names Daniel, with his face. */
+  li.daniel {
+    display: flex;
+    align-items: flex-start;
+    gap: ${space.md};
+  }
+  li.daniel .face {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
   ${media.md} {
     .asked {
       grid-template-columns: minmax(0, 1fr);
@@ -488,9 +501,23 @@ function BeingAsked() {
               the same sentence is on /join (AppDoor.tsx CALLER_LINE).
               "Who is behind A Story" goes to /our-story. The decline line is
               faqData.ts:73 turned to "you", linked to that answer. */}
-          <li>
-            {CALLER_LINE}{" "}
-            <TextLink to="/our-story">Who is behind A Story</TextLink>
+          {/* Phone-first fix 1 (item 11, Harold #5, Tuan #8): Daniel's
+              photograph from /our-story (OurStory.tsx:593) beside the line
+              that names him, 48px and round. */}
+          <li className="daniel">
+            <img
+              className="face"
+              src="/our-story/daniel-320.webp"
+              width={48}
+              height={48}
+              alt="Daniel Hoang Nguyen, co-founder"
+              loading="lazy"
+              decoding="async"
+            />
+            <span>
+              {CALLER_LINE}{" "}
+              <TextLink to="/our-story">Who is behind A Story</TextLink>
+            </span>
           </li>
           {/* Round 3 fix 2 (item 7, Harold #4, Tuan #6): plain text like
               its neighbours; only the word "decline" links to the answer. */}

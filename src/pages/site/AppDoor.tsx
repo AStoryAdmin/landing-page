@@ -25,7 +25,7 @@
  *   "six letters or digits" deploy/cloudfront-viewer-request.js:20
  */
 import { useEffect, useId, useState, type FormEvent } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Seo from "../../components/ui/Seo";
 import {
@@ -57,7 +57,6 @@ import {
   TextLink,
 } from "./kit/kit.styles";
 import { Form } from "./kit/form.styles";
-import { DECLINE_HREF } from "./faqData";
 
 type Door = "join" | "contribute" | "sign-in" | "create-account" | "account";
 
@@ -220,9 +219,28 @@ function Leaving({
  *   "six letters or digits"          deploy/cloudfront-viewer-request.js:20
  */
 
-/** The same sentence sits under the film on /how-it-works (kit/Film.tsx). */
+/** The same sentences sit in /how-it-works#being-asked (HowItWorks.tsx
+    CALLER_LINE). Phone-first fix 1 (item 9c): /join keeps the last one. */
 const CALLER_LINE =
   "It’s a computer that calls and asks, not a person. Nobody at A Story reads or listens to what you say unless you ask us to help, or someone reports something. If you write to us, Daniel, who started A Story, answers himself.";
+const DANIEL_LINE = CALLER_LINE.split(/(?<=.)s+/).pop()!;
+
+/** Phone-first fix 1 (item 11, Harold #5, Tuan #8): a face beside "Daniel
+    answers himself". The photograph already published on /our-story
+    (OurStory.tsx:593), 48px and round; no new photo, no new words. */
+function DanielFace() {
+  return (
+    <img
+      className="face"
+      src="/our-story/daniel-320.webp"
+      width={48}
+      height={48}
+      alt="Daniel Hoang Nguyen, co-founder"
+      loading="lazy"
+      decoding="async"
+    />
+  );
+}
 const JoinTop = styled.div`
   > section {
     padding-bottom: calc(${space.xl} * var(--sy));
@@ -316,8 +334,21 @@ const JoinTop = styled.div`
     font-weight: 600;
     color: ${color.accentText};
   }
-  .opening-lead .doors.after {
+  /* Phone-first fix 1 (item 9a): the storyteller's door, just below the
+     steps under the code box. */
+  .join-after .doors {
     margin: ${space.sm} 0 0;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--text, ${color.body});
+  }
+  .join-after .doors a {
+    display: inline-block;
+    padding-block: 11px;
+    color: var(--ink, ${color.primary});
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
   }
   /* The words and the card start on one line, so neither column leaves a
      band of empty paper under the shorter one (Harold, 1440). */
@@ -543,6 +574,23 @@ const Doors = styled(Chapter)`
   }
   /* Round 3 fix 1 (item 5): the left column carries where the calls ring
      and the ways on, so it is not an empty column beside the list. */
+  /* Phone-first fix 1 (items 9c and 11): one sentence with Daniel's face. */
+  .daniel {
+    display: flex;
+    align-items: flex-start;
+    gap: ${space.md};
+    margin: 0;
+    max-width: 56ch;
+    font: 400 ${type.read} / 1.55 ${font.text};
+    color: var(--text, ${color.body});
+  }
+  .daniel .face {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
   .door-head p {
     margin: ${space.md} 0 0;
     max-width: 32ch;
@@ -638,13 +686,13 @@ function JoinHere({ given }: { given: string }) {
                   invited to do comes first; the storyteller's door follows
                   in one line, and the code-or-link rule is said once, in
                   the steps under the box. */}
+              {/* Phone-first fix 1 (item 9a, Tuan #1-2): the storyteller's
+                  door moved from here to just below the steps under the
+                  code box, so the invited relative's task comes first. */}
               <span className="lede">
                 Someone in your family invited you. Add what you remember,
                 under your own name, through one link and with no account
                 needed. There is no fee per relative.
-              </span>
-              <span className="doors after">
-                <a href="#being-asked">Asked to tell your story? Start here ↓</a>
               </span>
             </>
           }
@@ -719,6 +767,9 @@ function JoinHere({ given }: { given: string }) {
                   many, whenever you like.
                 </li>
               </ol>
+              <p className="doors after">
+                <a href="#being-asked">Asked to tell your story? Start here ↓</a>
+              </p>
             </div>
             </>
           }
@@ -735,48 +786,26 @@ function JoinHere({ given }: { given: string }) {
                 change the subject: faqData.ts:73, turned to "you", linked to
                 that answer on /questions. The promises join the list in one
                 run (privacy.tsx:101, 105, 117). */}
+            {/* Phone-first fix 1 (item 9c, Tuan #6): the heading, one
+                sentence and the existing link; the rest of the storyteller's
+                lines are on /how-it-works#being-asked (HowItWorks.tsx
+                BeingAsked, the same sentences). The sentence kept is the
+                last of CALLER_LINE, with Daniel's photograph from
+                /our-story (item 11, Harold #5, Tuan #8). */}
             <div className="door-head">
               <Statement id="asked-here-title" $size="md">
                 Being asked to tell your story?
               </Statement>
-              <p>
-                Today the calls ring in the A Story iPhone app, in a private
-                beta.
+            </div>
+            <div>
+              <p className="daniel">
+                <DanielFace />
+                <span>{DANIEL_LINE}</span>
               </p>
               <p className="links">
                 <TextLink to="/how-it-works#being-asked">
                   How it works for you
                 </TextLink>
-                <TextLink to="/privacy/">Read our privacy policy</TextLink>
-              </p>
-            </div>
-            <div>
-              <ul>
-                <li>
-                  It rings in the app at the hour your family picked. Nothing
-                  to type or save. You just talk.
-                </li>
-                <li>
-                  {CALLER_LINE}{" "}
-                  <TextLink to="/our-story">Who is behind A Story</TextLink>
-                </li>
-                {/* Round 3 fix 2 (item 7, Harold #4, Tuan #6): plain text
-                    like its neighbours; only "decline" links. */}
-                <li>
-                  You can <Link to={DECLINE_HREF}>decline</Link> a question,
-                  pause, or change the subject.
-                </li>
-                <li>Nothing appears until you say yes.</li>
-                <li>Your story belongs to you.</li>
-                <li>We never sell data.</li>
-                <li>We never train AI on your stories.</li>
-                <li>You can delete it all.</li>
-              </ul>
-              <p className="links door-foot">
-                <TextLink to="/how-it-works#being-asked">
-                  How it works for you
-                </TextLink>
-                <TextLink to="/privacy/">Read our privacy policy</TextLink>
               </p>
             </div>
           </section>

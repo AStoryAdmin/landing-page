@@ -233,6 +233,19 @@ export const HeaderShell = styled.header`
   .gf-button:active {
     transform: scale(0.97);
   }
+  /* Phone-first fix 1 (item 9b, Tuan #1-2): on /join the same button in
+     the quieter secondary style, so the code box is the page's one action.
+     Label, target and count are unchanged. */
+  .gf-button[data-quiet] {
+    background: transparent;
+    color: ${color.onDark};
+    box-shadow: inset 0 0 0 1px ${color.onDarkLine};
+  }
+  ${media.hover} {
+    .gf-button[data-quiet]:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
 
   .gf-menu-toggle {
     display: none;
