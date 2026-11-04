@@ -40,7 +40,7 @@ const words = porch.words.replace(/neighbours/g, "neighbors");
 
 /** The three sample books on /samples (fictional families, as /samples says). */
 const BOOKS = [
-  { id: "carolyn", name: "Carolyn Bennett", kind: "A family memoir" },
+  { id: "carolyn", name: "Carolyn Bennett", kind: "A baker’s life" },
   { id: "raymond", name: "Raymond Ortiz", kind: "A founder’s ledger" },
   { id: "tom", name: "Thomas Kessler", kind: "A veteran’s homecoming" },
 ];
