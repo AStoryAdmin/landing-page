@@ -940,3 +940,14 @@ Ground rules: as in fix 1. One builder owns every file named here. Do not edit a
 - Maya's sign-up handoff can't be fixed on the site. `index.html:80` sends `/sign-up?for=someone` to the app's create-account page before paint, and that page is in the app repo. It stays on the Daniel list.
 - No institutional section on /compare. Comparing against StoryCorps or recorder + OHMS would need claims we have no source for.
 - Denise and Priya trust/desire, and Maya desire, cannot reach 9 until the blocked facts are answered. This pass aims at the highest scores reachable without them, around 8.
+
+## Round 3 fix 2: builder report
+
+Commits on `site-premium` (base 104779a): 07e1b35, 96b2c37, 79e19ab, 32ef203, 5cc2047, 29f4e62, b9f8442, 0b1a06d, ec22f9c, plus this report. Nothing pushed. Final `npm run check` (lint, test:contracts, test:routing, build, production contracts) passed at ec22f9c; dist/ is that build.
+
+- **Done:** items 1-15. Evidence in `qa/premium-2026-11/r3-fix2/` (before-*/after-* first screens at 390 and 1024 x 150 %, full pages at 390/1440, care and org print PDFs, drawer and home-diff shots). QA scripts: `qa/r3-fix2-shots.mjs` (first screens, full pages, PDFs, overflow/tap sweep 320/390/1024/1440 x 100/150 %), `qa/r3-fix2-hidden.mjs` (reveal blocks still hidden on an unscrolled page), `qa/r3-fix2-anchors.mjs` (#film, #being-asked), `qa/r3-fix2-el.mjs` (element shots).
+- **Deviations:** the /questions HIPAA question reads "Where is data stored, and what about HIPAA or a BAA?" (the brief's title contains the phrase the done-check grep must not find). "Got a link? Just open it, and you're in." is plain text (there is nothing to link to); only "Asked to tell your story? Start here" is a link. The organizations agenda sits under the program's Book a demo (the hero keeps its today note); on care it replaces the hero note, whose private-beta sentence moved to "What you need". The reveal fallback finishes arrivals 1 s after mount if the page has not been scrolled (off home only): readers who wait a second before scrolling see the blocks already in place.
+- **home-diff:** origin/main has moved (home film merged upstream), so against the default base the diff is meaningless; against cc87bfe + P0 (fix 1's base): 1440 PASS 0 px; 390 the known lazy-print noise (5.25 %, prints only), same main height 8884.
+- **copy-check:** one HIT on /pricing, "Stop paying" (the section heading kept by chief ruling, CHIEF-LOG B3, and now the Express card's link to it, as the brief asked).
+- **film-check:** Edge 1440 and 390 pass; WebKit still not installed.
+- **Request (B1 / chief):** `public/samples/index.html` copies the footer by hand and now lacks "Asked to tell your story?" and the drawer hints; it needs the samples-chrome regeneration logged in fix 1 (`scripts/samples-chrome.mjs:196`, `\r?\n`).
