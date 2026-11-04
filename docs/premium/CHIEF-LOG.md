@@ -970,3 +970,85 @@ From Builder B (pf/b, plan tasks 4-5), 2026-11-03. Each item is in a file B does
 - **Phone-first B-5 (nav, Builder A):** the `/pricing` hint in `lib/nav.ts` "Everyone starts free. Writing and reading never cost extra." Suggested: "Free for the family. Plans for the calls." (the new /pricing h1).
 - **Phone-first B status (Builder B, review round):** B-2 and B-5 are done on pf/a (kit.tsx Invitation line and closers; nav.ts /pricing hint is now "Writing and reading never cost extra."). B-3 is still open on pf/a (kit/ComingSoon.tsx:79 names app.astoryapp.com). B-1 is still the chief's call. Merge order: pf/a before or with pf/b; B's pages were checked on a throwaway merge of pf/b + pf/a (0 Start free, 0 create-account links, every action -> /get-the-app, 0 sideways overflow at 320/390/1440 x 100/150% text on all 12 pages).
 - **Not fixed, needs Daniel or an asset:** the "Public" badge in `memory.webp` on /care-communities (Denise); the "looking for our first partners" line (panel-r3 table item 8, a new claim); the privacy short line (item 12).
+
+## Phone-first fix 1
+
+Panel pf-0 at abf4d03: Denise 7.21, Maya 7.43, Priya 7.64, Tuan 7.86, Harold 8.07. The ceilings are trust and desire (6 to 7). Most of what holds them down is a blocked fact (devices, BAA, export formats, pilots, a phone number, timing). This pass fixes what needs no new fact: wrong doors, mixed price messages, leftovers on the phone, an error-looking form state, and pages that are too long. One builder works on `site-premium` and owns every file named below. Plan decisions stay as they are: 4 tabs, Get the iPhone app -> /get-the-app, /join flows untouched, no create-account links, no home video, and on home only the header, footer, CTA band and book change.
+
+### Changes (lowest persona first)
+
+1. **The "For organizations" tab lands care directors on the right page** (`Organizations.tsx` opening, ~l.800-835). Directly under the h1/lead, before the actions, add a two-door row at every width. First "Senior living and memory care -> Care communities" (`/care-communities`, with the nav.ts hint), then "Schools, libraries & companies: you're here". Use the labels from `lib/nav.ts`; the link, not the body, carries the text. On ≤640 it must sit above the hero image. *Denise #1 and #2 (navigation, clarity), Priya #5.*
+
+2. **/care-communities "What you need": the workaround first, not the deal-breaker** (`Care.tsx:593-600` NEED[0]). Label: "An iPhone for the calls, today." Body, the same three existing sentences reordered: "Where a resident has none, a staff member starts a conversation together with them. We help install the app. Today the calls ring in the A Story iPhone app, in a private beta." No new claim. Keep the `/organizations` NEED[0] (`Organizations.tsx:142`) wording as it is, because there is no sourced workaround for it. *Denise #3 (clarity, desire).*
+
+3. **The demo blurb reads as an agenda, not an admission** (`orgQuestions.ts:87`). Change it to "Thirty minutes with a founder, about your program. Bring your questions on privacy, consent and exports; price is quoted on the demo." Drop "HIPAA" from the blurb: the /questions HIPAA row still answers it, and the blurb should not list as a topic something we cannot say yes to. Where the blurb sits beside it on /care-communities, add a "What we can say today ↓" anchor link so the director sees what *is* answered. *Denise #4, Priya #2 (trust).*
+
+4. **Care and organizations get shorter on a phone** (`Care.tsx`, `Organizations.tsx`). At ≤640: (a) /organizations "Who we work with" (l.877+) becomes a compact two-column list of names with no per-kind paragraphs, or a `<details>` with the first three open. (b) On /care-communities, fold the second requirement-style block (the one after "What we can say today" that repeats What-you-need lines) into a single "See what you need ↑" link. Target heights at 390: care ≤ 5,200 px, organizations ≤ 6,000 px (now 6,700 and 7,800). Keep every sourced sentence reachable. *Denise #7, Priya #6 (mobile).*
+
+5. **One price story: the home CTA band drops the month figure** (`Home.tsx:64-73`, the Invitation `line`; plus `Home.tsx:12-14`). /pricing says the calls "aren't on sale yet" (`Pricing.tsx:1398,1477`), so "from $19.99 a month" on home disagrees with it, and Maya reads it as the headline commitment. New line, built only from existing sourced phrases: "The calls ring in the A Story app on your parent's iPhone, by invite in a private beta. Inviting family, writing and reading never cost extra." Then add a quiet "See pricing" text link in the same band. Remove the unused `monthlyPrice` const. This is the CTA band (in scope under "fix the call to action"). home-diff must show only this band, the header, the footer and the book. *Maya #1 (trust, clarity), Harold #6 (warmth).*
+
+6. **/pricing first screen on a phone: no leftovers** (`Pricing.tsx:1167-1207` HeroPrice). At ≤640, hide the Ledger cover thumbnail (`display:none`; the image stays for 1440) and move "Watch the film · 49 s" out of `.after` to sit under the plan cards, or drop it from /pricing at ≤640 (the film stays on /how-it-works#film). The first phone screen should be: h1, lead, price card, the care/org link. *Maya #6 (premium, mobile).*
+
+7. **A gift path that does not depend on the footer** (`GetTheApp.tsx` ~l.330-345 and the legend at l.400; `Families.tsx:321` already sends `?for=someone`).
+   - (a) Under the /get-the-app lead, add one secondary text link: "Giving it as a gift? -> For families" (`/for-families`, the nav.ts label).
+   - (b) Read `?for=someone` with `useSearchParams`. When it is present, the kicker becomes "A gift, by invite", the legend becomes "Does the person you're giving it to have an iPhone?", and a note under the email field says "Use your own email. The invite comes to you." That is the existing thank-you behaviour ("We'll send your invite to <email>"), not a new promise. Record `for=someone` in the lead note (`note: "Their iPhone: … · gift"`) so Daniel can tell gift requests apart.
+   - Do not add a recipient-email field (blocked: invite in Dad's name).
+
+   *Maya #2, #3 (navigation, desire).*
+
+8. **The form's fallback must not look broken** (`GetTheApp.tsx` ~l.356-368; `lib/leads.ts:156-161` already returns `reason: "unconfigured"`).
+   - (a) When `reason === "unconfigured"`, or on any failure, replace "The form couldn't send just now." with a calm next step: heading "One more step", then "Your request is written as an email to us. Press send, and it reaches Daniel." (`SITE.email` stays below). Open the mailto as the primary button. No error wording.
+   - (b) Evidence for the panel's main open item: build once with a stub env (`VITE_SUPABASE_URL=http://supabase.stub.test VITE_SUPABASE_ANON_KEY=stub npm run build`, into a scratch outDir, not dist). In Playwright, intercept `**/rest/v1/waitlist_signups*`, return 201, and screenshot the real thank-you at 390 and 1440 into `qa/premium-2026-11/pf-fix1/`. Never hit real Supabase. Production env/RLS stays on the Daniel list.
+
+   *Maya #4, Harold #2, Priya #4 (trust).*
+
+9. **/join: the invited relative's task leads** (`AppDoor.tsx` ~l.640-650, 732-780; `Header.tsx` ~l.190-197).
+   - (a) Move the "Asked to tell your story? Start here ↓" line from above the code box to just below the form's steps.
+   - (b) On `/join` only, render the header's Get the iPhone app as the quiet secondary style. The label, target and count stay the same, so nav-count passes.
+   - (c) Collapse the ~10-line "Being asked to tell your story?" block (l.732+) to its heading, one sentence and the existing link to `/how-it-works#being-asked`. Keep `id="being-asked"` on it so the anchor still lands. Do not touch the form, its action, the ref handling or the code/link rule.
+
+   *Tuan #1, #2, #6 (clarity, mobile).*
+
+10. **The funding logo wall only where it belongs** (`Footer.tsx:136-150`). Show the "Startup programs & grants" figure and the NVIDIA trademark paragraph only on /our-story, /organizations, /care-communities and /programs (it is already hidden on /programs, where the page itself shows them). Everywhere else, including home and /join, keep the "Programs & grants" text link that is already in the Company column, and nothing more. Keep the trademark note wherever the NVIDIA mark appears. Check `public/samples/index.html` (hand copy): drop the wall there too, or log it for samples-chrome regeneration. *Tuan #5 (warmth, premium), Priya #3.*
+
+11. **A face beside "Daniel answers himself"** (`AppDoor.tsx` near the Daniel line; `HowItWorks.tsx` #being-asked). Reuse the published `/our-story/daniel-320.webp` (`OurStory.tsx:593`) as a 48 px round image, with alt "Daniel Hoang Nguyen, co-founder", next to the existing sentence. Use no new photo and no new words. *Harold #5, Tuan #8 (trust).*
+
+12. **A door for the storyteller who was sent to /get-the-app** (`GetTheApp.tsx`, under the lead). Add one quiet line linking "Asked to tell your story? Start here" -> `/how-it-works#being-asked`, the nav.ts label already used on /join and in the footer. Do not add a "your family sets it up" claim (blocked). *Harold #1 (warmth, clarity).*
+
+13. **Optional, only if home-diff stays clean: home reveals never sit blank.** Extend the round-3 reveal fallback (finish arrivals 1 s after mount if unscrolled, plus `@media print`) to home sections. Do this only if `node scripts/home-diff.mjs` at 1440 stays 0 px apart from items 5 and 10, and the 390 main height is unchanged. Otherwise drop it and log why. *Maya #5 (mobile).*
+
+### Done-checks (show output, not a summary)
+- At the start and at the end: a fresh `npm run build:static`, with the HEAD hash printed. After it, restore `vercel.json public/_redirects public/robots.txt public/sitemap.xml` only if `git diff --ignore-cr-at-eol` on them is empty.
+- lint, test:contracts, test:routing, check, nav-count and copy-check all pass. `/join` routing tests are unchanged and pass.
+- `grep -rn "create-account" dist` -> 0 site links; `grep -c "<video" dist/index.html` -> 0.
+- `node scripts/home-diff.mjs`: diffs only in the header, the footer (item 10), the CTA band (item 5) and the book.
+- No horizontal overflow or small tap targets at 320/390/1024/1440 x 100/150% text, on /, /get-the-app (?for=someone too), /join, /pricing, /organizations, /care-communities and /how-it-works.
+- Before/after first screens at 390: /organizations (care door visible above the fold), /pricing (no thumbnail or film link), /get-the-app and /get-the-app?for=someone, /join (code box before the storyteller line).
+- Full-page heights at 390 for care and organizations, against the targets in item 4.
+- The stubbed thank-you and the new fallback state, with screenshots (item 8).
+- A source table: every new or moved sentence with its file:line.
+- Commit per item or small group. Messages end with "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>". No push.
+
+### Chief's assumptions (Daniel asleep)
+- Item 5 counts as the "call to action" the founder asked to fix. It removes a figure and adds none. If a reviewer rules that it moves home beyond the plan, revert to the old line and keep the "See pricing" link only.
+- Item 11 reuses a photo Daniel already published on /our-story. It is not a new photograph. If Daniel objects, it comes out in one commit.
+- Item 7(b) promises only what the form already does (the invite goes to the email entered).
+- Item 3 removes "HIPAA" from a blurb. It does not change what /questions answers.
+- Not attempted (blocked facts, see panel pf-0 lists): iPhone alternatives for storytellers or residents, BAA/IRB, export formats, institutional price, pilots or quotes, a phone number or calendar link, invite timing, call length, what contributors see, the 1024 x 150% tab bar (4 tabs + button do not fit at an effective 683 px, so Menu stays). Denise and Priya trust/desire will likely stay at 6 to 7 until those are answered.
+
+## Phone-first fix 1: builder report
+
+Start HEAD abf4d03 (build:static exit 0); end HEAD 47d860a (build:static exit 0). Generated files restored after each build (their `git diff --ignore-cr-at-eol` was empty). Commits d4b0802..47d860a, not pushed.
+
+Done: items 1-12. Skipped: item 13 (home reveal fallback) - it needs `kit/reveals.ts`, whose comment pins "Home keeps its arrivals exactly as before", and home-diff runs with reduced motion so it cannot prove the 0 px rule; left for a reviewer.
+
+Assumptions and files outside the brief's list:
+- `kit/kit.tsx`: Invitation's `line` widened from string to ReactNode (renders strings identically) so the home band can carry "See pricing" (item 5), plus one rule for a link in that line.
+- `chrome.styles.ts`: one `.gf-button[data-quiet]` rule (item 9b); Header sets `data-quiet` on /join only.
+- Item 4 care: the "second block" read as the "One circle" band (its rows repeat What you need); at 640 px and below it is one "See what you need ↑" link. Org: "Who we work with" is a two-column list of names; the last four "What we can say today" lines (care and org) and org's four steps fold under one line on a phone ("4 more we can say today", "How a program runs"); the one-line saying band is hidden on a phone; the opening film link leaves the phone opening.
+- Item 9c: the one sentence kept on /join is CALLER_LINE's last ("If you write to us, Daniel, who started A Story, answers himself."), so item 11's face sits beside it; the full list stays on /how-it-works#being-asked.
+- Item 10: the NVIDIA note shows on /programs (its page shows the marks) and the three marks pages only; `public/samples/index.html` footer edited by hand (figure and note removed).
+
+Heights at 390 (item 4): care 6715 -> 6226 (target 5200, missed); organizations 7818 -> 6880 (target 6000, missed). What is left is the shared demo form (`kit/DemoSection.tsx`, about 1,700 px with its side list) and the footer (881 px, marks kept on these pages). Reaching the targets needs the form's second step and DemoSection's "what happens next" list folded on a phone (owner of kit/DemoSection.tsx), which carries sentences found nowhere else on the page ("Within a working day").
+
+Checks: lint 0, test:contracts 0, test:routing PASS 35, production-contracts PASS, nav-count 252/252, copy-check exit 0 (one /pricing "Stop paying" hit, same as at abf4d03), 0 create-account hrefs in dist (one inline routing script string, pre-existing), `<video` in dist/index.html 0, sweep 64 runs (8 pages incl. ?for=someone x 320/390/1024/1440 x 100/150 %) 0 overflow, 0 small targets. home-diff vs abf4d03: 390 changed rows 8227-8752 of 8765, 1440 rows 6959-7339 of 7360, i.e. only the closing band (header and footer masked); main 28/32 px shorter because the band line lost its price clause. Stubbed form (scratch build, VITE_SUPABASE_URL=http://supabase.stub.test, insert answered 201 in Playwright): thank-you "We'll send your invite to qa-stub@example.test."; plain build (no env): "One more step" state, 0 off-site requests. Evidence: `qa/premium-2026-11/pf-fix1/` (before-/after- first screens, after-*-full, form-thank-you-*, form-fallback-*, vs-abf4d03/home-diff-*), scripts `qa/pf-fix1-shots.mjs`, `qa/pf-fix1-measure.mjs`.
