@@ -75,10 +75,9 @@ export const CAN_SAY: readonly { lead: string; rest: string; href?: string }[] =
 /** Round 3 fix 2 (item 2, Priya #2, Denise #3): what the site does not
  *  state yet is no longer a line in "What we can say today". It is a calm
  *  agenda under the Book a demo action on both pages, in the page's serif.
- *  It rewords fix 1's NOT_STATED ("Not stated on this page yet: HIPAA and
- *  a BAA, where data is stored, export formats, consent for a resident who
- *  cannot decide alone, and price.") minus the storage line, which the
- *  privacy policy answers (CAN_SAY above). Nothing is claimed about any of
+ *  It rewords fix 1's NOT_STATED line (HIPAA and a BAA, data storage,
+ *  export formats, consent for a resident who cannot decide alone, price)
+ *  minus storage, which the privacy policy answers (CAN_SAY above). Nothing is claimed about any of
  *  the four; price stays "quoted on the demo" (Care.tsx NEED). */
 export const DEMO_AGENDA =
   "Bring these to the demo: HIPAA and a BAA, export formats, consent for a resident who cannot decide alone, and price.";

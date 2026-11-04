@@ -48,19 +48,26 @@ export function useReveals<T extends HTMLElement>() {
       quick &&
       (el.tagName === "H1" ||
         el.getBoundingClientRect().top + window.scrollY < window.innerHeight);
+    /* Round 3 fix 2 (item 12c, Denise #7): off home, every arrival is kept
+       so it can be finished at once (below). */
+    const made: gsap.core.Tween[] = [];
+    const keep = (t: gsap.core.Tween) => {
+      if (quick) made.push(t);
+      return t;
+    };
     root.querySelectorAll<HTMLElement>("[data-lines]").forEach((el) => {
       if (still(el)) return;
       if (!quick) {
         riseLines(el, { delay: Number(el.dataset.lines) || 0 });
         return;
       }
-      gsap.fromTo(el, { y: 12, opacity: 0 }, {
+      keep(gsap.fromTo(el, { y: 12, opacity: 0 }, {
         y: 0,
         opacity: 1,
         duration: QUICK,
         clearProps: "transform,opacity",
         scrollTrigger: arrival(el, "top 88%"),
-      });
+      }));
     });
     root.querySelectorAll<HTMLElement>("[data-drift]").forEach((el) =>
       drift(el, Number(el.dataset.drift) || 5),
@@ -80,20 +87,20 @@ export function useReveals<T extends HTMLElement>() {
       const many = els.length > 1;
       const trigger = arrival(els[0]);
       if (kind === "settle") {
-        gsap.fromTo(els, { opacity: 0, scale: 1.03 }, {
+        keep(gsap.fromTo(els, { opacity: 0, scale: 1.03 }, {
           opacity: 1,
           scale: 1,
           duration: quick ? QUICK : 0.8,
           stagger: many && !quick ? 0.08 : 0,
           clearProps: "transform,opacity",
           scrollTrigger: trigger,
-        });
+        }));
         return;
       }
       /* fromTo, not from: an element whose CSS has an opacity transition
          (a text link) could otherwise read its own half-faded value as the
          end state and stay at 0. */
-      gsap.fromTo(els, { y: kind === "row" ? 12 : many ? 18 : 24, opacity: 0 }, {
+      keep(gsap.fromTo(els, { y: kind === "row" ? 12 : many ? 18 : 24, opacity: 0 }, {
         y: 0,
         opacity: 1,
         duration: quick ? QUICK : kind === "row" ? 0.6 : 0.7,
@@ -101,7 +108,7 @@ export function useReveals<T extends HTMLElement>() {
         /* hand the element back to its own CSS (a tilt, a hover lift) */
         clearProps: "transform,opacity",
         scrollTrigger: trigger,
-      });
+      }));
     });
 
     /*
@@ -111,7 +118,7 @@ export function useReveals<T extends HTMLElement>() {
     root.querySelectorAll<HTMLElement>("[data-print]").forEach((el) => {
       if (still(el)) return;
       const turn = Number(gsap.getProperty(el, "rotation")) || 0;
-      gsap.fromTo(
+      keep(gsap.fromTo(
         el,
         { opacity: 0, y: 14, rotation: turn - 1.2, scale: 1.02 },
         {
@@ -123,11 +130,45 @@ export function useReveals<T extends HTMLElement>() {
           clearProps: "transform,opacity",
           scrollTrigger: arrival(el),
         },
-      );
+      ));
     });
 
     /* Lazy pictures land after the triggers are measured; measure again. */
-    return refreshWhenSettled();
+    const settle = refreshWhenSettled();
+    if (!quick) return settle;
+
+    /*
+     * Round 3 fix 2 (item 12c, Denise #7: "One circle" and "Know the
+     * person" printed and screenshotted as empty bands). Off home, nothing
+     * waits for a scroll that may never come: printing finishes every
+     * arrival first (beforeprint; PrintSheet.tsx also forces them visible
+     * in print CSS), and a page left unscrolled for a second, as in a
+     * full-page capture, shows every block in its final state. Home keeps
+     * its arrivals exactly as before.
+     */
+    const finish = () => {
+      for (const t of made) {
+        if (t.progress() >= 1) continue;
+        t.scrollTrigger?.kill();
+        t.progress(1);
+      }
+    };
+    /* A reader who scrolls in the first second keeps the arrivals. */
+    let scrolled = false;
+    const moved = () => {
+      scrolled = true;
+    };
+    window.addEventListener("scroll", moved, { once: true, passive: true });
+    window.addEventListener("beforeprint", finish);
+    const timer = window.setTimeout(() => {
+      if (!scrolled) finish();
+    }, 1000);
+    return () => {
+      settle();
+      window.removeEventListener("scroll", moved);
+      window.removeEventListener("beforeprint", finish);
+      window.clearTimeout(timer);
+    };
   });
 }
 
