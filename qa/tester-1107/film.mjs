@@ -1,8 +1,8 @@
 /**
  * Plan task 4c (docs/plans/2026-11-07-tester-report.md, criterion 9): the
- * /how-it-works film is v5.7, plays from one press, runs to its end
+ * /how-it-works film is v5.8, plays from one press, runs to its end
  * ("Watch again" appears), its length matches the "49" the page states,
- * and the captions are the v5.7 timings.
+ * and the captions are the v5.7/v5.8 timings (unchanged in v5.8).
  *   node qa/tester-1107/film.mjs [--base http://localhost:5313]
  * Uses installed Chrome (Chromium has no H.264).
  */
@@ -24,10 +24,10 @@ for (const [w, h, file] of [[1440, 900, 'a-story-film-'], [390, 844, 'a-story-fi
   const v = await page.$eval('#film video', (v) => ({ src: v.currentSrc, d: v.duration, t: v.currentTime }));
   ok(v.t > 0.5, `${w}: plays after one press (t=${v.t.toFixed(2)})`);
   ok(v.src.includes(file), `${w}: serves ${v.src.split('/').pop()}`);
-  // v5.6 byte sizes: a served file of exactly that size is still the old cut.
-  const V56 = [7743270, 5266797, 7732566, 5256251];
+  // v5.6 and v5.7 byte sizes: a served file of exactly that size is still an old cut.
+  const V56 = [7743270, 5266797, 7732566, 5256251, 7947955, 4904318, 7904091, 4984191];
   const size = await page.evaluate(async (u) => Number((await fetch(u, { method: 'HEAD' })).headers.get('content-length')), v.src);
-  ok(size > 0 && !V56.includes(size), `${w}: not the v5.6 file (${size} bytes)`);
+  ok(size > 0 && !V56.includes(size), `${w}: not the v5.6 or v5.7 file (${size} bytes)`);
   ok(v.d > 48.9 && v.d <= 49.45, `${w}: duration ${v.d.toFixed(3)} s (≤ 49.4)`);
   ok(Number(stated) === Math.floor(v.d), `${w}: the page says ${stated}-second, the file is ${v.d.toFixed(1)} s`);
   await page.$eval('#film video', (v) => { v.currentTime = v.duration - 1.5; });
