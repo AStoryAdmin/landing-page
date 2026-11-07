@@ -60,6 +60,7 @@ import {
 import { color, display, font, media, shadow, space, type } from "../../styles/theme";
 import { START_HREF, START_LABEL } from "../../lib/app";
 import TodayNow from "./TodayNow";
+import SetupSteps from "./how-it-works/SetupSteps";
 import { DECLINE_HREF } from "./faqData";
 
 const love = SCENARIOS.find((s) => s.id === "love")!;
@@ -225,9 +226,6 @@ const Moments = styled(Chapter)`
   li:last-child {
     border-bottom: 1px solid ${color.primaryLine};
   }
-  .sample {
-    margin-top: ${space.md};
-  }
   /* The app's card keeps its chapter chip and "Told by" on one line; at
      320, and at 150% text, they ran past the edge (round 3, B4). Page-local
      so the card on home does not move. */
@@ -363,10 +361,9 @@ function FourMoments() {
                 </li>
               ))}
             </ol>
-            {/* The one way to the sample calls (CHIEF-LOG B2.3). */}
-            <p className="sample">
-              <TextAnchor href="#calls">See a sample call</TextAnchor>
-            </p>
+            {/* "See a sample call" is gone (tester report 7 Nov, plan D1): it
+                led to written stills, with nothing to watch or hear. The
+                written samples stay further down, under their own title. */}
           </div>
           <div className="leaves" data-rise="settle">
             <p className="label">What one call leaves, in the app</p>
@@ -766,16 +763,21 @@ export default function HowItWorks() {
       </PhonePairs>
       </HeroTop>
 
-      {/* The storyteller's door, straight after the hero (CHIEF-LOG B2.3);
-          /join and the menu link to #being-asked. */}
+      {/* Tester report 7 Nov 2026 (plan task 1d): the four moments first,
+          then the setup as numbered steps with the real screens, then the
+          rest as it was. */}
+      <FourMoments />
+
+      <SetupSteps />
+
+      {/* The storyteller's door (CHIEF-LOG B2.3); /join and the menu link
+          to #being-asked, and the hero links to it. */}
       <BeingAsked />
 
       {/* Phone-first plan task 4: what works now, what comes by invite. */}
       <TodayNow ground="paper" />
 
       <Film />
-
-      <FourMoments />
 
       {/* One gold word for every other h2 at most (spec §3.1): this title
           and "a way in" stay plain. */}
