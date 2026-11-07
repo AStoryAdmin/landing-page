@@ -8,7 +8,7 @@
  * autoplay, no muted loop, no loop: on `ended` the last frame (the lockup)
  * holds and "Watch again" appears.
  *
- * Files come from public/film (encoded from the v5.6 masters in
+ * Files come from public/film (encoded from the v5.8 masters (7 Nov 2026: "A-Story" said as one word, no shot under 3 s, smoother phone changes, screens from the app as of 7 Nov) in
  * a-story-demo-video/out). Captions and the transcript come from one source,
  * scripts/film-captions.mjs → a-story-film.en.vtt + lib/filmTranscript.json.
  * Captions ship OFF by default (spec D4): the film already sets its lines on
