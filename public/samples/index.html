@@ -1863,8 +1863,8 @@ function compileBook(D, forceToc){
 const scanEl = document.getElementById('scan'), phBody = document.getElementById('phBody');
 let lastFocus = null;
 const BRAND = `<div class="ph-brand"><span class="ph-logo"></span>A Story<small>Your Family’s Living Memories</small></div>`;
-/* No voice is played here: clips in the storyteller's own voice are in development,
-   and a voice is never generated. A scan opens the memory, as the app does. */
+/* No voice is played here: a sample has no real recording (the /read sample page plays a labelled synthetic voice),
+   and this view plays nothing. A scan opens the memory, as the app does. */
 function openScan(key){
   lastFocus = document.activeElement; scanEl.hidden = false; setPhLabel('Sample · what this code opens');
   key==='archive' ? showArchive() : showMem(MEM[key] ? key : (codeOf(key) || {}).mem);
@@ -1928,7 +1928,7 @@ function showArchive(){
 function showMem(k){
   const m = MEM[k]; if(!m) return showArchive();
   const player = m.voice ? `<div class="a-player" role="group" aria-label="Recording ${attr(m.voice.rec)}, ${attr(m.voice.len)}"><span class="play" aria-hidden="true"></span><span class="a-track"><i></i></span><span class="a-len">${tw(m.voice.len)}</span></div>
-    <p class="vdemo">Sample book: voice playback is in development. What plays here will be ${tw(P.name)}’s own recording from ${tw(m.voice.rec)}, never a synthetic voice.</p>` : '';
+    <p class="vdemo">Sample book: ${tw(P.name)} is a sample, so there is no real recording. Scanning the code with a phone plays this chapter in a synthetic voice, labelled as one. In your family’s book, it is their own voice from the call.</p>` : '';
   phBody.innerHTML = `<button class="ph-back" data-go="archive">← Archive</button>
     <span class="a-pill">${tw(m.ch)}</span><h2 class="a-h">${tw(m.title)}</h2><div class="a-meta">${tw(m.dateline)}</div>
     ${player}
