@@ -293,7 +293,7 @@ const Everyday = styled.section`
     padding: 0.3em 0.6em;
     text-align: center;
     white-space: nowrap;
-    font: 600 clamp(3.4rem, 1rem + 7.4vw, 10rem) / 1 ${font.display};
+    font: 600 clamp(2.4rem, 0.8rem + 4.6vw, 6.6rem) / 1.04 ${font.display};
     letter-spacing: -0.02em;
     color: ${color.onDark};
   }
@@ -308,6 +308,10 @@ const Everyday = styled.section`
       color-mix(in srgb, ${color.chocolate} 92%, transparent) 50%,
       transparent
     );
+  }
+  /* Three short sentences, one a line (plan D4). */
+  .collage h2 > span {
+    display: block;
   }
   .collage h2 b {
     font-weight: 600;
@@ -381,7 +385,7 @@ const Everyday = styled.section`
       height: 600px;
     }
     .collage h2 {
-      font-size: 11.6vw;
+      font-size: 8.4vw;
     }
     .collage .snap:nth-child(n + 8) {
       display: none;
@@ -483,7 +487,10 @@ function EverydayRoom() {
           );
         })}
         <h2 id="everyday-title">
-          It’s the <b>everyday.</b>
+          {/* Tester report 7 Nov 2026 (plan D4, line A): what A Story does, in
+              the family's words, one sentence a line. */}
+          <span>One question a day.</span> <span><b>Their voice, kept.</b></span>{" "}
+          <span>A book when you’re ready.</span>
         </h2>
       </div>
 
