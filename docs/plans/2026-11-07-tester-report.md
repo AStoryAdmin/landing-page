@@ -133,3 +133,25 @@ Each line avoids "legacy", hype words and the "It’s not X, it’s Y" shape (`p
 | Tasks 0–5 | Claude | after approval, one commit each |
 | /read deploy (§6 step 3) | Daniel | unblocks criterion 7 on the real target |
 | Merge the site PR | Daniel | after review |
+
+## Hand-off (7 Nov 2026, night)
+
+**Passed on the real target:** none yet. Merging was blocked in this session ("merge without review"), so nothing is live on astoryapp.com.
+
+**Passed only locally / in preview**
+| Criterion | Evidence | Where it lives |
+|---|---|---|
+| 1–3 Four moments first, six folding steps with real screens | `qa/tester-1107/steps.mjs` all passed at 1440 and 390; `npm run check` exit 0; shots `qa/tester-1107/shots/{before,after}-how-it-works-*.png` | PR #14 (`tester-2026-11-07`) |
+| 5 No empty Watch/See/Hear promise | `qa/tester-1107/promises.mjs` 8/8 locally; live fails 4 (before) | PR #14 |
+| 6 Sample codes decode to `app.astoryapp.com/read?sample=…&c=…` | `scripts/qa/samples-qr.mjs` 24 codes, 21 URLs, 0 failures; overflow and data checks OK | branch `tester-1107-samples` (held) |
+| 7 /read sample page: chapter words + "Hear it", labelled synthetic | web-app vitest 1174 pass, build OK, `e2e/readSample` 4/4 | web-app `t18-read-page` 17e59d8 |
+| 8 Film ≤ 49.4 s, every shot ≥ 3.0 s, "AY Story" by ASR | 49.400 s, 13 shots, min 3.03 s (v5.6: min 0.60 s), ASR "a story"; `brief/v5.7-cut-list.md` | studio a65c1c2 |
+| 9 Site plays v5.7 | `qa/tester-1107/film.mjs` 14/14 locally; live fails 4 (before) | PR #15 (`tester-1107-film`) |
+| 10 Line A in place | `qa/tester-1107/line.mjs` 12/12 at 1440/390/320 | branch `tester-1107-line` (held) |
+
+**Blocked or not done**
+- Merge PR #14 and PR #15 (Daniel). Then re-run `steps.mjs`, `promises.mjs` and `film.mjs` with `--base https://astoryapp.com`.
+- Criterion 4 (D2): the iPhone's own lock-screen call needs Daniel's device screenshot → `public/how-it-works/steps/02b-iphone-rings.webp`, then set `DEVICE_RING` in `SetupSteps.tsx`.
+- Criterion 8, by ear: Daniel listens to `a-story-demo-video/out/v5.7/compare/` and `audition/` before merging #15.
+- Criterion 7 on the real target: the /read deploy (THANH-2026-11-06 §6 step 3). Then merge `tester-1107-samples` to the site; until then its codes would land on a page that does not exist yet.
+- Criterion 10: "Their voice, kept" disagrees with the site's "clips … are in development". It ships once the voice playback (the `listen` function) is live and that sentence changes with it.
