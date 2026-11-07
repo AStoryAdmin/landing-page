@@ -31,7 +31,7 @@ const SETUP: Step[] = [
   {
     line: "Your parent installs A Story on their iPhone.",
     detail:
-      "They open it once and say who they are. You can sit beside them, or walk them through it on the phone. A Story is in a private beta on iPhone for now.",
+      "They open it and tap Begin your story, or use the code or link you sent them. You can sit beside them, or walk them through it on the phone. A Story is in a private beta on iPhone for now.",
     shots: [{ src: `${DIR}/01-install-welcome.webp`, alt: "The A Story app’s first screen on an iPhone" }],
   },
   {
